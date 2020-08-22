@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.connection.repository.database;
+package com.github.mrglassdanny.mocalanguageserver.moca.repository.database;
 
 public class Table {
     public String table_name;

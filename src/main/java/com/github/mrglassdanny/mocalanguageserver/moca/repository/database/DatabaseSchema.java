@@ -1,11 +1,11 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.connection.repository.database;
+package com.github.mrglassdanny.mocalanguageserver.moca.repository.database;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
+import com.github.mrglassdanny.mocalanguageserver.moca.MocaResults;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
-import com.redprairie.moca.MocaResults;
 
 public class DatabaseSchema {
 
@@ -47,10 +47,11 @@ public class DatabaseSchema {
         MocaResults res = conn.executeCommand(DatabaseSchema.TABLES_SCRIPT).results;
 
         if (res != null) {
-            while (res.next()) {
-                String tableName = res.getString("table_name").toLowerCase();
-                this.tables.put(tableName, new Table(tableName, res.getString("description")));
+            for (int rowIdx = 0; rowIdx < res.values.length; rowIdx++) {
+                String tableName = res.getString(rowIdx, "table_name").toLowerCase();
+                this.tables.put(tableName, new Table(tableName, res.getString(rowIdx, "description")));
             }
+
         }
     }
 
@@ -61,14 +62,15 @@ public class DatabaseSchema {
         MocaResults res = conn.executeCommand(DatabaseSchema.VIEWS_SCRIPT).results;
 
         if (res != null) {
-            while (res.next()) {
-                String viewName = res.getString("view_name").toLowerCase();
+
+            for (int rowIdx = 0; rowIdx < res.values.length; rowIdx++) {
+                String viewName = res.getString(rowIdx, "view_name").toLowerCase();
                 this.views.put(viewName, new Table(viewName, ""));
             }
         }
 
         // Add 'dual' - lol.
-        this.views.put("dual", new Table("dual", res.getString("")));
+        this.views.put("dual", new Table("dual", ""));
 
     }
 
@@ -86,8 +88,9 @@ public class DatabaseSchema {
         // For table columns and view columns, we can assume that the data is sorted by
         // table_name, column_name.
         if (tableColRes != null) {
-            while (tableColRes.next()) {
-                String tableName = tableColRes.getString("table_name");
+
+            for (int rowIdx = 0; rowIdx < tableColRes.values.length; rowIdx++) {
+                String tableName = tableColRes.getString(rowIdx, "table_name");
                 String curRowTableName = tableName; // Gets updated each row.
                 ArrayList<TableColumn> tableCols = new ArrayList<>();
 
@@ -100,23 +103,26 @@ public class DatabaseSchema {
 
                 while (tableName.compareToIgnoreCase(curRowTableName) == 0) {
 
-                    tableCols.add(new TableColumn(tableName, tableColRes.getString("column_name"),
-                            tableColRes.getString("lngdsc"), tableColRes.getString("comtyp"),
-                            tableColRes.getInt("length"), tableColRes.getBoolean("null_flg"),
-                            tableColRes.getBoolean("pk_flg"), tableColRes.getBoolean("ident_flg"),
-                            tableColRes.getString("column_comment")));
+                    tableCols.add(new TableColumn(tableName, tableColRes.getString(rowIdx, "column_name"),
+                            tableColRes.getString(rowIdx, "lngdsc"), tableColRes.getString(rowIdx, "comtyp"),
+                            tableColRes.getInt(rowIdx, "length"), tableColRes.getBoolean(rowIdx, "null_flg"),
+                            tableColRes.getBoolean(rowIdx, "pk_flg"), tableColRes.getBoolean(rowIdx, "ident_flg"),
+                            tableColRes.getString(rowIdx, "column_comment")));
 
-                    if (!tableColRes.next()) {
+                    if (rowIdx >= tableColRes.values.length) {
                         break;
+                    } else {
+                        rowIdx++;
                     }
-                    curRowTableName = tableColRes.getString("table_name");
+
+                    curRowTableName = tableColRes.getString(rowIdx, "table_name");
                     if (tableName.compareToIgnoreCase(curRowTableName) != 0) {
                         // New table. Need to save off some info so we dont lose the first column!
-                        firstColumn = new TableColumn(tableName, tableColRes.getString("column_name"),
-                                tableColRes.getString("lngdsc"), tableColRes.getString("comtyp"),
-                                tableColRes.getInt("length"), tableColRes.getBoolean("null_flg"),
-                                tableColRes.getBoolean("pk_flg"), tableColRes.getBoolean("ident_flg"),
-                                tableColRes.getString("column_comment"));
+                        firstColumn = new TableColumn(tableName, tableColRes.getString(rowIdx, "column_name"),
+                                tableColRes.getString(rowIdx, "lngdsc"), tableColRes.getString(rowIdx, "comtyp"),
+                                tableColRes.getInt(rowIdx, "length"), tableColRes.getBoolean(rowIdx, "null_flg"),
+                                tableColRes.getBoolean(rowIdx, "pk_flg"), tableColRes.getBoolean(rowIdx, "ident_flg"),
+                                tableColRes.getString(rowIdx, "column_comment"));
                     }
                 }
 
@@ -130,8 +136,8 @@ public class DatabaseSchema {
 
         if (viewColRes != null) {
 
-            while (viewColRes.next()) {
-                String viewName = viewColRes.getString("table_name");
+            for (int rowIdx = 0; rowIdx < viewColRes.values.length; rowIdx++) {
+                String viewName = viewColRes.getString(rowIdx, "table_name");
                 String curRowViewName = viewName; // Gets updated each row.
                 ArrayList<TableColumn> viewCols = new ArrayList<>();
 
@@ -144,22 +150,26 @@ public class DatabaseSchema {
 
                 while (viewName.compareToIgnoreCase(curRowViewName) == 0) {
 
-                    viewCols.add(new TableColumn(viewName, viewColRes.getString("column_name"),
-                            viewColRes.getString("lngdsc"), viewColRes.getString("comtyp"), viewColRes.getInt("length"),
-                            viewColRes.getBoolean("null_flg"), viewColRes.getBoolean("pk_flg"),
-                            viewColRes.getBoolean("ident_flg"), viewColRes.getString("column_comment")));
+                    viewCols.add(new TableColumn(viewName, viewColRes.getString(rowIdx, "column_name"),
+                            viewColRes.getString(rowIdx, "lngdsc"), viewColRes.getString(rowIdx, "comtyp"),
+                            viewColRes.getInt(rowIdx, "length"), viewColRes.getBoolean(rowIdx, "null_flg"),
+                            viewColRes.getBoolean(rowIdx, "pk_flg"), viewColRes.getBoolean(rowIdx, "ident_flg"),
+                            viewColRes.getString(rowIdx, "column_comment")));
 
-                    if (!viewColRes.next()) {
+                    if (rowIdx >= viewColRes.values.length) {
                         break;
+                    } else {
+                        rowIdx++;
                     }
-                    curRowViewName = viewColRes.getString("table_name");
+
+                    curRowViewName = viewColRes.getString(rowIdx, "table_name");
                     if (viewName.compareToIgnoreCase(curRowViewName) != 0) {
                         // New view. Need to save off some info so we dont lose the first column!
-                        firstColumn = new TableColumn(viewName, viewColRes.getString("column_name"),
-                                viewColRes.getString("lngdsc"), viewColRes.getString("comtyp"),
-                                viewColRes.getInt("length"), viewColRes.getBoolean("null_flg"),
-                                viewColRes.getBoolean("pk_flg"), viewColRes.getBoolean("ident_flg"),
-                                viewColRes.getString("column_comment"));
+                        firstColumn = new TableColumn(viewName, viewColRes.getString(rowIdx, "column_name"),
+                                viewColRes.getString(rowIdx, "lngdsc"), viewColRes.getString(rowIdx, "comtyp"),
+                                viewColRes.getInt(rowIdx, "length"), viewColRes.getBoolean(rowIdx, "null_flg"),
+                                viewColRes.getBoolean(rowIdx, "pk_flg"), viewColRes.getBoolean(rowIdx, "ident_flg"),
+                                viewColRes.getString(rowIdx, "column_comment"));
                     }
                 }
 

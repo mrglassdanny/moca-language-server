@@ -1,10 +1,10 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.connection.repository;
+package com.github.mrglassdanny.mocalanguageserver.moca.repository;
 
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.repository.database.*;
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.repository.moca.*;
+import com.github.mrglassdanny.mocalanguageserver.moca.repository.database.*;
+import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.*;
 
 public class MocaRepository {
 

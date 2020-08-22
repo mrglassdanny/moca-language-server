@@ -6,9 +6,7 @@ import java.sql.SQLException;
 
 import com.github.mrglassdanny.mocalanguageserver.appdata.db.DatabaseMetadata;
 import com.github.mrglassdanny.mocalanguageserver.appdata.db.SqliteConnection;
-import com.redprairie.moca.MocaResults;
-import com.redprairie.moca.MocaType;
-import com.redprairie.moca.SimpleResults;
+import com.github.mrglassdanny.mocalanguageserver.moca.MocaResults;
 
 public class AppDataManager {
 
@@ -36,12 +34,12 @@ public class AppDataManager {
 
     public static MocaResults getExecutionHistory() {
 
-        SimpleResults mocaRes = null;
+        MocaResults mocaRes = null;
 
         SqliteConnection conn = new SqliteConnection();
         try {
 
-            mocaRes = (SimpleResults) conn.openGetResultsAsMocaResultsClose(
+            mocaRes = conn.openGetResultsAsMocaResultsClose(
                     "select * from " + DatabaseMetadata.TABLE_NAME_EXECUTION_HISTORY + " order by start_time desc");
 
         } catch (Exception ex) {

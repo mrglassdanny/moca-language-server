@@ -11,11 +11,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.repository.database.Table;
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.repository.database.TableColumn;
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.repository.moca.MocaCommand;
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.repository.moca.MocaCommandArgument;
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.repository.moca.MocaTrigger;
+import com.github.mrglassdanny.mocalanguageserver.moca.repository.database.Table;
+import com.github.mrglassdanny.mocalanguageserver.moca.repository.database.TableColumn;
+import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaCommand;
+import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaCommandArgument;
+import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaTrigger;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.CommandUnitStruct;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;

@@ -2,8 +2,8 @@ package com.github.mrglassdanny.mocalanguageserver.client.response;
 
 import java.util.ArrayList;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.repository.moca.MocaCommand;
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.repository.moca.MocaTrigger;
+import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaCommand;
+import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaTrigger;
 
 public class MocaCommandLookupResponse {
 
