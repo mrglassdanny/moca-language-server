@@ -1,0 +1,171 @@
+package com.github.mrglassdanny.mocalanguageserver.moca.connection.repository.moca;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
+
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
+import com.redprairie.moca.MocaResults;
+
+public class CommandRepository {
+
+    private static final String COMMANDS_SCRIPT = "list active commands";
+    private static final String COMMAND_ARGUMENTS_SCRIPT = "list active command arguments";
+    private static final String TRIGGERS_SCRIPT = "list active triggers";
+
+    public ArrayList<String> distinctCommands;
+    public HashMap<String, ArrayList<MocaCommand>> commands;
+    public HashMap<String, ArrayList<MocaCommandArgument>> commandArguments;
+    public HashMap<String, ArrayList<MocaTrigger>> triggers;
+
+    public CommandRepository() {
+        this.distinctCommands = new ArrayList<>();
+        this.commands = new HashMap<>();
+        this.commandArguments = new HashMap<>();
+        this.triggers = new HashMap<>();
+
+    }
+
+    public void prepareForLoad() {
+        // Clear all lists.
+        this.distinctCommands.clear();
+        this.commands.clear();
+        this.commandArguments.clear();
+        this.triggers.clear();
+    }
+
+    public void loadAsync(MocaConnectionWrapper conn) {
+
+        this.prepareForLoad();
+
+        CompletableFuture.runAsync(() -> {
+            this.loadCommands(conn);
+        });
+
+        CompletableFuture.runAsync(() -> {
+            this.loadCommandArguments(conn);
+        });
+
+        CompletableFuture.runAsync(() -> {
+            this.loadTriggers(conn);
+        });
+    }
+
+    public void loadCommands(MocaConnectionWrapper conn) {
+
+        this.distinctCommands.clear();
+        this.commands.clear();
+
+        MocaResults res = conn.executeCommand(CommandRepository.COMMANDS_SCRIPT).results;
+
+        if (res != null) {
+
+            while (res.next()) {
+                String command = res.getString("command");
+                if (this.commands.containsKey(command)) {
+
+                    // Do not add to distinct mcmd list.
+
+                    ArrayList<MocaCommand> cmds = this.commands.get(command);
+                    cmds.add(new MocaCommand(res.getString("cmplvl"), res.getInt("cmplvlseq"), command,
+                            res.getString("type"), res.getString("syntax"), res.getString("desc")));
+                } else {
+
+                    ArrayList<MocaCommand> cmds = new ArrayList<>();
+                    cmds.add(new MocaCommand(res.getString("cmplvl"), res.getInt("cmplvlseq"), command,
+                            res.getString("type"), res.getString("syntax"), res.getString("desc")));
+                    this.commands.put(command, cmds);
+
+                    // Add to distinct mcmd list.
+                    this.distinctCommands.add(command);
+                }
+            }
+        }
+
+        // Add built in commands..
+        ArrayList<MocaCommand> noopCmds = new ArrayList<>();
+        noopCmds.add(new MocaCommand("N/A", 0, "noop", "N/A", "", "Built in command"));
+        this.commands.put("noop", noopCmds);
+        this.distinctCommands.add("noop");
+        ArrayList<MocaCommand> commitCmds = new ArrayList<>();
+        commitCmds.add(new MocaCommand("N/A", 0, "commit", "N/A", "", "Built in command"));
+        this.commands.put("commit", commitCmds);
+        this.distinctCommands.add("commit");
+        ArrayList<MocaCommand> rollbackCmds = new ArrayList<>();
+        rollbackCmds.add(new MocaCommand("N/A", 0, "rollback", "N/A", "", "Built in command"));
+        this.commands.put("rollback", rollbackCmds);
+        this.distinctCommands.add("rollback");
+        ArrayList<MocaCommand> nodbcommitCmds = new ArrayList<>();
+        nodbcommitCmds.add(new MocaCommand("N/A", 0, "nodbcommit", "N/A", "", "Built in command"));
+        this.commands.put("nodbcommit", nodbcommitCmds);
+        this.distinctCommands.add("nodbcommit");
+        ArrayList<MocaCommand> nodbrollbackCmds = new ArrayList<>();
+        nodbrollbackCmds.add(new MocaCommand("N/A", 0, "nodbrollback", "N/A", "", "Built in command"));
+        this.commands.put("nodbrollback", nodbrollbackCmds);
+        this.distinctCommands.add("nodbrollback");
+        ArrayList<MocaCommand> prepareCmds = new ArrayList<>();
+        prepareCmds.add(new MocaCommand("N/A", 0, "prepare", "N/A", "", "Built in command"));
+        this.commands.put("prepare", prepareCmds);
+        this.distinctCommands.add("prepare");
+        ArrayList<MocaCommand> pingCmds = new ArrayList<>();
+        pingCmds.add(new MocaCommand("N/A", 0, "ping", "N/A", "", "Built in command"));
+        this.commands.put("ping", pingCmds);
+        this.distinctCommands.add("ping");
+
+    }
+
+    public void loadCommandArguments(MocaConnectionWrapper conn) {
+
+        this.commandArguments.clear();
+
+        MocaResults res = conn.executeCommand(CommandRepository.COMMAND_ARGUMENTS_SCRIPT).results;
+
+        if (res != null) {
+
+            while (res.next()) {
+                String command = res.getString("command");
+                if (this.commandArguments.containsKey(command)) {
+
+                    ArrayList<MocaCommandArgument> cmdArgs = this.commandArguments.get(command);
+                    cmdArgs.add(new MocaCommandArgument(res.getString("cmplvl"), res.getString("command"),
+                            res.getString("argnam"), res.getString("altnam"), res.getString("argtyp"),
+                            res.getString("fixval"), res.getInt("argidx"), res.getBoolean("argreq")));
+                } else {
+
+                    ArrayList<MocaCommandArgument> cmdArgs = new ArrayList<>();
+                    cmdArgs.add(new MocaCommandArgument(res.getString("cmplvl"), res.getString("command"),
+                            res.getString("argnam"), res.getString("altnam"), res.getString("argtyp"),
+                            res.getString("fixval"), res.getInt("argidx"), res.getBoolean("argreq")));
+                    this.commandArguments.put(command, cmdArgs);
+                }
+            }
+        }
+    }
+
+    public void loadTriggers(MocaConnectionWrapper conn) {
+        this.triggers.clear();
+
+        MocaResults res = conn.executeCommand(CommandRepository.TRIGGERS_SCRIPT).results;
+
+        if (res != null) {
+
+            while (res.next()) {
+                String command = res.getString("command");
+                if (this.triggers.containsKey(command)) {
+                    // No need to worry about sorting, as the result set is sorted by command,
+                    // trigger seq!
+                    ArrayList<MocaTrigger> triggers = this.triggers.get(command);
+                    triggers.add(new MocaTrigger(res.getString("name"), command, res.getInt("trgseq"),
+                            res.getString("syntax")));
+                } else {
+
+                    ArrayList<MocaTrigger> triggers = new ArrayList<>();
+                    triggers.add(new MocaTrigger(res.getString("name"), command, res.getInt("trgseq"),
+                            res.getString("syntax")));
+                    this.triggers.put(command, triggers);
+                }
+            }
+        }
+    }
+
+}

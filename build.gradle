@@ -1,0 +1,49 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '4.0.3'
+    id 'java'
+}
+
+group 'com.github.mrglassdanny.mocalanguageserver'
+version '1.1.2'
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+ext.mainClass = 'com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer'
+
+tasks.build.dependsOn tasks.shadowJar
+
+shadowJar {
+    manifest {
+        attributes 'Main-Class': 'com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.eclipse.lsp4j:org.eclipse.lsp4j:0.7.2'
+    compile 'org.eclipse.lsp4j:org.eclipse.lsp4j.jsonrpc:0.7.2'
+    compile 'org.codehaus.groovy:groovy-all:2.5.7'
+    compile 'org.reflections:reflections:0.9.+'
+    compile 'io.github.classgraph:classgraph:4.8.53'
+    implementation files('lib/log4j-1.2-api-2.1.jar')
+    implementation files('lib/log4j-api-2.1.jar')
+    implementation files('lib/log4j-core-2.1.jar')
+    implementation files('lib/log4j-slf4j-impl-2.1.jar')
+    implementation files('lib/joda-time-2.9.4.jar')
+    implementation files('lib/moca-server.jar')
+    implementation files('lib/moca-core.jar')
+    implementation files('lib/jsqlparser-3.1-SNAPSHOT.jar')
+    implementation files('lib/sqlite-jdbc-3.23.1.jar')
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
