@@ -8,9 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.redprairie.moca.MocaResults;
-import com.redprairie.moca.MocaType;
-import com.redprairie.moca.SimpleResults;
+import com.github.mrglassdanny.mocalanguageserver.moca.MocaResults;
 
 public class SqliteConnection {
 
@@ -78,40 +76,42 @@ public class SqliteConnection {
 
     public MocaResults openGetResultsAsMocaResultsClose(String query) throws SQLException {
 
-        SimpleResults mocaRes = null;
+        MocaResults mocaRes = null;
 
-        try {
+        // TODO: Fix this at some point!
 
-            this.open();
-            Statement stmt = this.connection.createStatement();
-            ResultSet res = stmt.executeQuery(query);
+        // try {
 
-            ResultSetMetaData resMetadata = res.getMetaData();
+        // this.open();
+        // Statement stmt = this.connection.createStatement();
+        // ResultSet res = stmt.executeQuery(query);
 
-            // Now build moca results.
-            mocaRes = new SimpleResults();
+        // ResultSetMetaData resMetadata = res.getMetaData();
 
-            int colCount = resMetadata.getColumnCount();
+        // // Now build moca results.
+        // mocaRes = new MocaResults();
 
-            for (int i = 0; i < colCount; i++) {
-                mocaRes.addColumn(resMetadata.getColumnName(i + 1), MocaType.STRING);
-            }
+        // int colCount = resMetadata.getColumnCount();
 
-            while (res.next()) {
-                mocaRes.addRow();
-                for (int i = 0; i < colCount; i++) {
-                    mocaRes.setStringValue(i, new String(res.getBytes(i + 1)));
-                }
-            }
+        // for (int i = 0; i < colCount; i++) {
+        // mocaRes.addColumn(resMetadata.getColumnName(i + 1), MocaType.STRING);
+        // }
 
-            res.close();
-            stmt.close();
+        // while (res.next()) {
+        // mocaRes.addRow();
+        // for (int i = 0; i < colCount; i++) {
+        // mocaRes.setStringValue(i, new String(res.getBytes(i + 1)));
+        // }
+        // }
 
-        } catch (Exception ex) {
+        // res.close();
+        // stmt.close();
 
-        } finally {
-            this.close();
-        }
+        // } catch (Exception ex) {
+
+        // } finally {
+        // this.close();
+        // }
 
         return mocaRes;
     }

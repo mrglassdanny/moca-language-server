@@ -31,14 +31,14 @@ import org.eclipse.lsp4j.services.LanguageClient;
 
 public class ExecuteCommandProvider {
 
-    public static final String CONNECT = "longbow.moca.server.connect";
-    public static final String LOAD_REPOSITORY = "longbow.moca.server.loadRepository";
-    public static final String EXECUTE = "longbow.moca.server.execute";
-    public static final String TRACE = "longbow.moca.server.trace";
-    public static final String COMMAND_LOOKUP = "longbow.moca.server.commandLookup";
-    public static final String EXECUTION_HISTORY = "longbow.moca.server.executionHistory";
-    public static final String CANCEL_EXECUTION = "longbow.moca.server.cancelExecution";
-    public static final String MLOAD = "longbow.moca.server.mload";
+    public static final String CONNECT = "mocalanguageserver.server.connect";
+    public static final String LOAD_REPOSITORY = "mocalanguageserver.server.loadRepository";
+    public static final String EXECUTE = "mocalanguageserver.server.execute";
+    public static final String TRACE = "mocalanguageserver.server.trace";
+    public static final String COMMAND_LOOKUP = "mocalanguageserver.server.commandLookup";
+    public static final String EXECUTION_HISTORY = "mocalanguageserver.server.executionHistory";
+    public static final String CANCEL_EXECUTION = "mocalanguageserver.server.cancelExecution";
+    public static final String MLOAD = "mocalanguageserver.server.mload";
 
     public static ArrayList<String> mocaLanguageServerCommands = new ArrayList<>();
     static {
@@ -110,6 +110,7 @@ public class ExecuteCommandProvider {
 
                     // Check to see if our connection timed out. We will know whether or not this is
                     // the case based on the error message in the mocaResultsResponse.
+                    // TODO: Should be able to use http response headers to determine this.
                     if (mocaResultsResponse.exception != null
                             && mocaResultsResponse.exception instanceof MocaException) {
                         MocaException resMocaException = (MocaException) mocaResultsResponse.exception;
@@ -143,7 +144,7 @@ public class ExecuteCommandProvider {
 
                     int rowCount = 0;
                     if (mocaResultsResponse.results != null) {
-                        rowCount = mocaResultsResponse.results.getRowCount();
+                        rowCount = mocaResultsResponse.results.values.length;
                     }
 
                     languageClient.logMessage(new MessageParams(MessageType.Info, mocaResultsRequest.fileName

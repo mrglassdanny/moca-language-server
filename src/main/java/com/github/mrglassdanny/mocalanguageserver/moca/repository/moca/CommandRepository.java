@@ -1,11 +1,11 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.connection.repository.moca;
+package com.github.mrglassdanny.mocalanguageserver.moca.repository.moca;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
-import com.redprairie.moca.MocaResults;
+import com.github.mrglassdanny.mocalanguageserver.moca.MocaResults;
 
 public class CommandRepository {
 
@@ -60,20 +60,22 @@ public class CommandRepository {
 
         if (res != null) {
 
-            while (res.next()) {
-                String command = res.getString("command");
+            for (int rowIdx = 0; rowIdx < res.values.length; rowIdx++) {
+                String command = res.getString(rowIdx, "command");
                 if (this.commands.containsKey(command)) {
 
                     // Do not add to distinct mcmd list.
 
                     ArrayList<MocaCommand> cmds = this.commands.get(command);
-                    cmds.add(new MocaCommand(res.getString("cmplvl"), res.getInt("cmplvlseq"), command,
-                            res.getString("type"), res.getString("syntax"), res.getString("desc")));
+                    cmds.add(new MocaCommand(res.getString(rowIdx, "cmplvl"), res.getInt(rowIdx, "cmplvlseq"), command,
+                            res.getString(rowIdx, "type"), res.getString(rowIdx, "syntax"),
+                            res.getString(rowIdx, "desc")));
                 } else {
 
                     ArrayList<MocaCommand> cmds = new ArrayList<>();
-                    cmds.add(new MocaCommand(res.getString("cmplvl"), res.getInt("cmplvlseq"), command,
-                            res.getString("type"), res.getString("syntax"), res.getString("desc")));
+                    cmds.add(new MocaCommand(res.getString(rowIdx, "cmplvl"), res.getInt(rowIdx, "cmplvlseq"), command,
+                            res.getString(rowIdx, "type"), res.getString(rowIdx, "syntax"),
+                            res.getString(rowIdx, "desc")));
                     this.commands.put(command, cmds);
 
                     // Add to distinct mcmd list.
@@ -122,20 +124,24 @@ public class CommandRepository {
 
         if (res != null) {
 
-            while (res.next()) {
-                String command = res.getString("command");
+            for (int rowIdx = 0; rowIdx < res.values.length; rowIdx++) {
+                String command = res.getString(rowIdx, "command");
                 if (this.commandArguments.containsKey(command)) {
 
                     ArrayList<MocaCommandArgument> cmdArgs = this.commandArguments.get(command);
-                    cmdArgs.add(new MocaCommandArgument(res.getString("cmplvl"), res.getString("command"),
-                            res.getString("argnam"), res.getString("altnam"), res.getString("argtyp"),
-                            res.getString("fixval"), res.getInt("argidx"), res.getBoolean("argreq")));
+                    cmdArgs.add(
+                            new MocaCommandArgument(res.getString(rowIdx, "cmplvl"), res.getString(rowIdx, "command"),
+                                    res.getString(rowIdx, "argnam"), res.getString(rowIdx, "altnam"),
+                                    res.getString(rowIdx, "argtyp"), res.getString(rowIdx, "fixval"),
+                                    res.getInt(rowIdx, "argidx"), res.getBoolean(rowIdx, "argreq")));
                 } else {
 
                     ArrayList<MocaCommandArgument> cmdArgs = new ArrayList<>();
-                    cmdArgs.add(new MocaCommandArgument(res.getString("cmplvl"), res.getString("command"),
-                            res.getString("argnam"), res.getString("altnam"), res.getString("argtyp"),
-                            res.getString("fixval"), res.getInt("argidx"), res.getBoolean("argreq")));
+                    cmdArgs.add(
+                            new MocaCommandArgument(res.getString(rowIdx, "cmplvl"), res.getString(rowIdx, "command"),
+                                    res.getString(rowIdx, "argnam"), res.getString(rowIdx, "altnam"),
+                                    res.getString(rowIdx, "argtyp"), res.getString(rowIdx, "fixval"),
+                                    res.getInt(rowIdx, "argidx"), res.getBoolean(rowIdx, "argreq")));
                     this.commandArguments.put(command, cmdArgs);
                 }
             }
@@ -149,19 +155,19 @@ public class CommandRepository {
 
         if (res != null) {
 
-            while (res.next()) {
-                String command = res.getString("command");
+            for (int rowIdx = 0; rowIdx < res.values.length; rowIdx++) {
+                String command = res.getString(rowIdx, "command");
                 if (this.triggers.containsKey(command)) {
                     // No need to worry about sorting, as the result set is sorted by command,
                     // trigger seq!
                     ArrayList<MocaTrigger> triggers = this.triggers.get(command);
-                    triggers.add(new MocaTrigger(res.getString("name"), command, res.getInt("trgseq"),
-                            res.getString("syntax")));
+                    triggers.add(new MocaTrigger(res.getString(rowIdx, "name"), command, res.getInt(rowIdx, "trgseq"),
+                            res.getString(rowIdx, "syntax")));
                 } else {
 
                     ArrayList<MocaTrigger> triggers = new ArrayList<>();
-                    triggers.add(new MocaTrigger(res.getString("name"), command, res.getInt("trgseq"),
-                            res.getString("syntax")));
+                    triggers.add(new MocaTrigger(res.getString(rowIdx, "name"), command, res.getInt(rowIdx, "trgseq"),
+                            res.getString(rowIdx, "syntax")));
                     this.triggers.put(command, triggers);
                 }
             }

@@ -33,6 +33,9 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
     // Same as ^.
     public static String globalStoragePath = null;
 
+    // TODO: Remove
+    public static LanguageClient languageClient = null;
+
     public static void main(String[] args) {
         MocaLanguageServer server = new MocaLanguageServer();
         Launcher<LanguageClient> launcher = Launcher.createLauncher(server, LanguageClient.class, System.in,
@@ -183,6 +186,8 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
     @Override
     public void connect(LanguageClient client) {
         this.services.connect(client);
+        // TODO: Remove
+        MocaLanguageServer.languageClient = client;
     }
 
 }

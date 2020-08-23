@@ -1,15 +1,14 @@
 
 package com.github.mrglassdanny.mocalanguageserver.moca.connection;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.repository.MocaRepository;
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.UnsupportedConnectionTypeException;
+import com.github.mrglassdanny.mocalanguageserver.moca.repository.MocaRepository;
+
+import java.io.IOException;
+
 import com.github.mrglassdanny.mocalanguageserver.client.response.MocaConnectionResponse;
 import com.github.mrglassdanny.mocalanguageserver.client.response.MocaResultsResponse;
-import com.redprairie.moca.MocaException;
-import com.redprairie.moca.client.ConnectionFailedException;
-import com.redprairie.moca.client.ConnectionUtils;
-import com.redprairie.moca.client.LoginFailedException;
-import com.redprairie.moca.client.LogoutFailedException;
-import com.redprairie.moca.client.MocaConnection;
 
 public class MocaConnectionWrapper {
 
@@ -43,20 +42,24 @@ public class MocaConnectionWrapper {
 
         MocaConnectionResponse response = new MocaConnectionResponse();
 
+        // Test to see if url is correct type -- we will only support http and https.
+        if (!this.url.startsWith("http") && !this.url.startsWith("https")) {
+            this.mocaConnection = null;
+            response.eOk = false;
+            response.exception = new UnsupportedConnectionTypeException("URL must be either HTTP or HTTPS!");
+            return response;
+        }
+
+        // Now attempt to connect.
         try {
-            this.mocaConnection = ConnectionUtils.createConnection(this.url, null);
-            ConnectionUtils.login(this.mocaConnection, this.userId, this.password);
+            this.mocaConnection = new MocaConnection(this.url);
+            this.mocaConnection.login(this.userId, this.password);
             response.eOk = true;
             response.exception = null;
-        } catch (LoginFailedException loginException) {
-            this.mocaConnection.close();
+        } catch (IOException ioException) {
             this.mocaConnection = null;
             response.eOk = false;
-            response.exception = loginException;
-        } catch (ConnectionFailedException connectionFailException) {
-            this.mocaConnection = null;
-            response.eOk = false;
-            response.exception = connectionFailException;
+            response.exception = ioException;
         } catch (MocaException mocaException) {
             this.mocaConnection = null;
             response.eOk = false;
@@ -70,30 +73,10 @@ public class MocaConnectionWrapper {
         return response;
     }
 
-    public MocaConnectionResponse disconnect() {
-
-        MocaConnectionResponse response = new MocaConnectionResponse();
-
+    public MocaResultsResponse executeCommand(String command) {
         try {
-            ConnectionUtils.logout(this.mocaConnection);
-            this.mocaConnection.close();
-            response.eOk = true;
-            response.exception = null;
-        } catch (LogoutFailedException logoutException) {
-            this.mocaConnection.close();
-            response.eOk = false;
-            response.exception = logoutException;
-        } finally {
-            this.mocaConnection = null;
-        }
-
-        return response;
-    }
-
-    public MocaResultsResponse executeCommand(String script) {
-        try {
-            return new MocaResultsResponse(this.mocaConnection.executeCommand(script), null);
-        } catch (MocaException e) {
+            return new MocaResultsResponse(this.mocaConnection.executeCommand(command), null);
+        } catch (Exception e) {
             return new MocaResultsResponse(null, e);
         }
     }

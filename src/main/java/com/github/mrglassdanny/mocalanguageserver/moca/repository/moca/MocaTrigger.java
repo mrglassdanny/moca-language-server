@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.connection.repository.moca;
+package com.github.mrglassdanny.mocalanguageserver.moca.repository.moca;
 
 public class MocaTrigger {
 
