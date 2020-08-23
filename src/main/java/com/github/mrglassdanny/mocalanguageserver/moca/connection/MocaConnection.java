@@ -8,9 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.MocaResults;
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.LoginFailException;
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 
 public class MocaConnection {
 
@@ -22,13 +21,9 @@ public class MocaConnection {
         this.environmentVariablesXmlStr = "";
     }
 
-    public void login(String userId, String password) throws IOException, LoginFailException {
+    public void login(String userId, String password) throws IOException, MocaException, Exception {
         MocaResults res = this
                 .executeCommand(String.format("login user where usr_id = '%s' and usr_pswd = '%s'", userId, password));
-
-        if (res == null) {
-            throw new LoginFailException();
-        }
 
         String localeId = res.getString(0, "locale_id");
         String usrId = res.getString(0, "usr_id");
@@ -39,8 +34,7 @@ public class MocaConnection {
                 localeId, usrId, sessionKey);
     }
 
-    // TODO - use headers to determine status of request, ie login failed, etc.
-    public MocaResults executeCommand(String command) throws IOException, JsonSyntaxException {
+    public MocaResults executeCommand(String command) throws IOException, MocaException, Exception {
 
         // Setup connection object(s).
         URL url = new URL(this.urlStr);
@@ -76,8 +70,24 @@ public class MocaConnection {
             responseJsonStr = responseBuf.toString();
         }
 
+        // If response is null, I guess just go ahead and return null.
         if (responseJsonStr == null) {
             return null;
+        }
+
+        // Process headers -- these will tell the story if something went wrong.
+        int commandStatusHeader = 0;
+        String messageHeader = null;
+        try {
+            commandStatusHeader = Integer.parseInt(httpConnection.getHeaderField("Command-Status"));
+            messageHeader = httpConnection.getHeaderField("Message");
+        } catch (Exception headerAnalysisException) {
+            // Do not care about doing anything here -- just want to make sure we do not
+            // crash.
+        }
+
+        if (commandStatusHeader != 0) {
+            throw new MocaException(messageHeader != null ? messageHeader : "Unknown Error Occured");
         }
 
         return new Gson().fromJson(responseJsonStr, MocaResults.class);

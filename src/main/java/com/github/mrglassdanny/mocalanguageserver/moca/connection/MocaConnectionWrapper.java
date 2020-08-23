@@ -1,7 +1,7 @@
 
 package com.github.mrglassdanny.mocalanguageserver.moca.connection;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.LoginFailException;
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.UnsupportedConnectionTypeException;
 import com.github.mrglassdanny.mocalanguageserver.moca.repository.MocaRepository;
 
@@ -56,14 +56,14 @@ public class MocaConnectionWrapper {
             this.mocaConnection.login(this.userId, this.password);
             response.eOk = true;
             response.exception = null;
-        } catch (LoginFailException loginFailException) {
-            this.mocaConnection = null;
-            response.eOk = false;
-            response.exception = loginFailException;
         } catch (IOException ioException) {
             this.mocaConnection = null;
             response.eOk = false;
             response.exception = ioException;
+        } catch (MocaException mocaException) {
+            this.mocaConnection = null;
+            response.eOk = false;
+            response.exception = mocaException;
         } catch (Exception exception) {
             this.mocaConnection = null;
             response.eOk = false;
