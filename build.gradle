@@ -7,6 +7,10 @@ plugins {
 group 'com.github.mrglassdanny.mocalanguageserver'
 version '0.0.1'
 
+generateGrammarSource {
+    outputDirectory = file('src/main/java/com/github/mrglassdanny/mocalanguageserver/moca/lang/parse')
+}
+
 compileJava {
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'

@@ -1,4 +1,7 @@
 // Generated from c:\dev\moca-language-server\src\main\antlr\Moca.g4 by ANTLR 4.8
+
+		package com.github.mrglassdanny.mocalanguageserver.moca.lang.parse;
+
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

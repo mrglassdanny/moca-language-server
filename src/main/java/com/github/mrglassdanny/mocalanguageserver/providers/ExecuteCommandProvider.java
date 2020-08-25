@@ -7,6 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.appdata.AppDataManager;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.GroovyCompiler;
 import com.github.mrglassdanny.mocalanguageserver.client.request.CancelMocaExecutionRequest;
 import com.github.mrglassdanny.mocalanguageserver.client.request.MocaExecutionHistoryRequest;
@@ -22,7 +23,6 @@ import com.github.mrglassdanny.mocalanguageserver.client.response.MocaCommandLoo
 import com.github.mrglassdanny.mocalanguageserver.client.response.MocaConnectionResponse;
 import com.github.mrglassdanny.mocalanguageserver.client.response.MocaResultsResponse;
 import com.github.mrglassdanny.mocalanguageserver.client.response.MocaTraceResponse;
-import com.redprairie.moca.MocaException;
 
 import org.eclipse.lsp4j.ExecuteCommandParams;
 import org.eclipse.lsp4j.MessageParams;
@@ -110,12 +110,11 @@ public class ExecuteCommandProvider {
 
                     // Check to see if our connection timed out. We will know whether or not this is
                     // the case based on the error message in the mocaResultsResponse.
-                    // TODO: Should be able to use http response headers to determine this.
                     if (mocaResultsResponse.exception != null
                             && mocaResultsResponse.exception instanceof MocaException) {
                         MocaException resMocaException = (MocaException) mocaResultsResponse.exception;
 
-                        int curSts = resMocaException.getErrorCode();
+                        int curSts = resMocaException.getStatus();
                         if (curSts == 301 || curSts == 203 || curSts == 523) {
                             // If connection timed out, we need to quitely try to reconnect and rerun the
                             // script.
@@ -157,7 +156,7 @@ public class ExecuteCommandProvider {
                         if (mocaResultsResponse.exception != null) {
                             if (mocaResultsResponse.exception instanceof MocaException) {
                                 MocaException mocaException = (MocaException) mocaResultsResponse.exception;
-                                status = mocaException.getErrorCode();
+                                status = mocaException.getStatus();
                                 message = mocaException.getMessage();
                             } else {
                                 status = 0;

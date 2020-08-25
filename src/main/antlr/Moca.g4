@@ -1,5 +1,9 @@
 grammar Moca;
 
+@header {
+		package com.github.mrglassdanny.mocalanguageserver.moca.lang.parse;
+}
+
 // UNIMPLEMENTED: Annotations, SQL Hints, Special command arguments
 
 // PARSER --------------------------------------------------------
@@ -22,7 +26,8 @@ block: command | moca_remote_expr? sub_sequence;
 
 command: sql_script | groovy_script | verb_noun_clause;
 
-verb_noun_clause: (
+verb_noun_clause:
+	CARET? (
 		WORD
 		| AND
 		| LIKE

@@ -52,7 +52,7 @@ public class GroovyCompiler {
         ArrayList<String> addedMocaRedirectNames = new ArrayList<>();
         int groovyScriptOffset = Positions.getOffset(mocaScript, mocaCompiler.groovyRanges.get(rangeIdx).getStart());
         if (mocaCompiler.lastSuccessfulCompilationResult != null) {
-            for (Map.Entry<Token, String> entry : mocaCompiler.lastSuccessfulCompilationResult.mocaParserReImpl.redirects
+            for (Map.Entry<Token, String> entry : mocaCompiler.lastSuccessfulCompilationResult.mocaParseTreeListener.mocaRedirects
                     .entrySet()) {
                 if (entry.getKey().getStartIndex() <= groovyScriptOffset) {
                     String curMocaRedirectName = entry.getValue();

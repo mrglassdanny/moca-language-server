@@ -16,7 +16,6 @@ import com.github.mrglassdanny.mocalanguageserver.moca.repository.database.Table
 import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaCommand;
 import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaCommandArgument;
 import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaTrigger;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.CommandUnitStruct;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
@@ -25,6 +24,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.ast.SqlStatementVisitor;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.parse.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
 import org.codehaus.groovy.ast.ASTNode;
@@ -92,9 +92,11 @@ public class CompletionProvider {
 
                 // Check if bracket string before we do anything else. If so, return nothing for
                 // now.
-                MocaToken potentialBracketStringMocaToken = mocaCompiler.mocaTokens[curMocaTokenIdx];
+                org.antlr.v4.runtime.Token potentialBracketStringMocaToken = mocaCompiler.mocaTokens
+                        .get(curMocaTokenIdx);
                 if (potentialBracketStringMocaToken != null
-                        && potentialBracketStringMocaToken.type == MocaTokenType.BRACKET_STRING) {
+                        && (potentialBracketStringMocaToken.getType() == MocaLexer.SINGLE_BRACKET_STRING
+                                || potentialBracketStringMocaToken.getType() == MocaLexer.DOUBLE_BRACKET_STRING)) {
                     return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
                 }
 
@@ -114,17 +116,17 @@ public class CompletionProvider {
                 }
 
                 for (int i = curMocaTokenIdx; i >= 0; i--) {
-                    MocaToken curMocaToken = mocaCompiler.mocaTokens[i];
-                    switch (curMocaToken.type) {
-                        case WHERE:
+                    org.antlr.v4.runtime.Token curMocaToken = mocaCompiler.mocaTokens.get(i);
+                    switch (curMocaToken.getType()) {
+                        case MocaLexer.WHERE:
                             // case AND:
                             // Do not look for AND!
                             // We want args!
 
                             // Get command unit current moca token is in.
-                            CommandUnitStruct cmdUnitStruct = null;
+                            String verbNounClause = null;
                             boolean foundTokenMatch = false;
-                            for (Map.Entry<CommandUnitStruct, ArrayList<MocaToken>> entry : mocaCompilationResult.mocaParserReImpl.commandUnitStructs
+                            for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                                     .entrySet()) {
 
                                 // We are checking for 2 things:
@@ -133,21 +135,21 @@ public class CompletionProvider {
                                 // 2. a token match between the curMocaToken(WHERE) and the soon-to-be WHERE
                                 // token that is part of the last successful parse result(where|wher|whe|wh|w).
                                 // This will be a match of begin and regex match of parsed token value.
-                                for (MocaToken parsedMocaToken : entry.getValue()) {
+                                for (org.antlr.v4.runtime.Token parsedMocaToken : entry.getValue()) {
 
-                                    if (((parsedMocaToken.beginToken >= curMocaToken.beginToken - 10
-                                            && parsedMocaToken.beginToken <= curMocaToken.beginToken)
+                                    if (((parsedMocaToken.getStartIndex() >= curMocaToken.getStartIndex() - 10
+                                            && parsedMocaToken.getStartIndex() <= curMocaToken.getStartIndex())
                                             // This is a little goofy, but if
                                             // formatting on type is turned on,
                                             // the begin for the parsed token and
                                             // the begin for the curtoken will be
                                             // different.
-                                            && parsedMocaToken.getValue().matches("(?i)\\b(where|wher|whe|wh|w)\\b"))
-                                            || (parsedMocaToken.beginToken == curMocaToken.beginToken
-                                                    && parsedMocaToken.end == curMocaToken.end
-                                                    && parsedMocaToken.type == curMocaToken.type)) {
+                                            && parsedMocaToken.getText().matches("(?i)\\b(where|wher|whe|wh|w)\\b"))
+                                            || (parsedMocaToken.getStartIndex() == curMocaToken.getStartIndex()
+                                                    && parsedMocaToken.getStopIndex() == curMocaToken.getStopIndex()
+                                                    && parsedMocaToken.getType() == curMocaToken.getType())) {
 
-                                        cmdUnitStruct = entry.getKey();
+                                        verbNounClause = entry.getKey();
                                         foundTokenMatch = true;
                                         break;
                                     }
@@ -157,9 +159,7 @@ public class CompletionProvider {
                                 }
                             }
                             // Now we can get the command unit's data.
-                            String commandName = null;
-                            if (cmdUnitStruct != null) {
-                                commandName = cmdUnitStruct.verbNounClause;
+                            if (verbNounClause != null) {
                                 // Now, need to potentially remove the last token from the verbNounClause
                                 // IF we matched the 2nd condition above.
                                 // Let's check all the distinct commands for both conditions: as it is, and
@@ -167,43 +167,44 @@ public class CompletionProvider {
 
                                 // First checking verbNounClause as is.
                                 if (!MocaLanguageServer.currentMocaConnection.repository.commandRepository.distinctCommands
-                                        .contains(commandName)) {
+                                        .contains(verbNounClause)) {
                                     // Remove last token and try again.
                                     try {
-                                        commandName = commandName.substring(0, commandName.lastIndexOf(" "));
+                                        verbNounClause = verbNounClause.substring(0, verbNounClause.lastIndexOf(" "));
                                     } catch (StringIndexOutOfBoundsException stringIndexOutOfBoundsException) {
                                         // Do nothing...
                                     }
 
                                     if (!MocaLanguageServer.currentMocaConnection.repository.commandRepository.distinctCommands
-                                            .contains(commandName)) {
+                                            .contains(verbNounClause)) {
                                         // This will stop us from trying to get completion items below.
-                                        commandName = null;
+                                        verbNounClause = null;
                                     }
                                 }
                             }
 
-                            if (commandName != null) {
+                            if (verbNounClause != null) {
                                 // HACK - getting the first letter typed for command arg population; see
                                 // function for more info.
                                 char firstTypedLetter = Positions.getCharacterAtPosition(textDocumentContents,
                                         new Position(position.getLine(), position.getCharacter() - 1));
-                                populateMocaCommandArguments(commandName, items, firstTypedLetter);
+                                populateMocaCommandArguments(verbNounClause, items, firstTypedLetter);
                                 return CompletableFuture.completedFuture(Either.forLeft(items));
                             }
 
                             // If nothing for some reason, return empty list.
                             return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
-                        case REDIR_INTO:
-                        case CATCH:
+                        case MocaLexer.DOUBLE_GREATER:
+                        case MocaLexer.CATCH:
                             // Nothing for now.
                             return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
-                        case BRACKET_STRING:
-                        case CLOSE_BRACE:
-                        case SEMICOLON:
-                        case AMPERSAND:
-                        case PIPE:
-                        case CARET:
+                        case MocaLexer.SINGLE_BRACKET_STRING:
+                        case MocaLexer.DOUBLE_BRACKET_STRING:
+                        case MocaLexer.RIGHT_BRACE:
+                        case MocaLexer.SEMI_COLON:
+                        case MocaLexer.AMPERSAND:
+                        case MocaLexer.PIPE:
+                        case MocaLexer.CARET:
                             // Commands.
                             populateMocaCommands(items);
                             return CompletableFuture.completedFuture(Either.forLeft(items));

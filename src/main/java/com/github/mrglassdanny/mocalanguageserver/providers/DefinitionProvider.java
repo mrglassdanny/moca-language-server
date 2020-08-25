@@ -13,7 +13,6 @@ import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaCommand;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.CommandUnitStruct;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
@@ -59,72 +58,60 @@ public class DefinitionProvider {
                     mocaWord = mocaWord.toLowerCase();
 
                     // Get current moca token at position.
-                    MocaToken curMocaToken = mocaCompiler.getMocaTokenAtPosition(textDocumentContents, position);
+                    org.antlr.v4.runtime.Token curMocaToken = mocaCompiler.getMocaTokenAtPosition(textDocumentContents,
+                            position);
 
                     // Get command unit current moca token is in.
-                    CommandUnitStruct cmdUnitStruct = null;
-                    for (Map.Entry<CommandUnitStruct, ArrayList<MocaToken>> entry : mocaCompilationResult.mocaParserReImpl.commandUnitStructs
+                    String verbNounClause = null;
+                    for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                             .entrySet()) {
 
                         // Checking for begin/end match since token objects parsed and lexed will not be
                         // the same objects.
-                        for (MocaToken parsedMocaToken : entry.getValue()) {
-                            if (parsedMocaToken.beginToken == curMocaToken.beginToken
-                                    && parsedMocaToken.end == curMocaToken.end
-                                    && parsedMocaToken.type == curMocaToken.type) {
+                        for (org.antlr.v4.runtime.Token parsedMocaToken : entry.getValue()) {
+                            if (parsedMocaToken.getStartIndex() == curMocaToken.getStartIndex()
+                                    && parsedMocaToken.getStopIndex() == curMocaToken.getStopIndex()
+                                    && parsedMocaToken.getType() == curMocaToken.getType()) {
 
-                                cmdUnitStruct = entry.getKey();
-                                String commandName = cmdUnitStruct.verbNounClause;
+                                verbNounClause = entry.getKey();
 
                                 ArrayList<MocaCommand> mcmds = MocaLanguageServer.currentMocaConnection.repository.commandRepository.commands
-                                        .get(commandName);
+                                        .get(verbNounClause);
                                 if (mcmds != null) {
 
-                                    // NOTE: The highest level mcmd will always be at the 'top'.
-                                    MocaCommand mcmd;
-                                    if (cmdUnitStruct.override) {
-                                        // Take next index if override.
-                                        // Also make sure there is a cmd at index 1.
-                                        if (mcmds.size() == 1) {
-                                            mcmd = mcmds.get(0);
-                                        } else {
-                                            mcmd = mcmds.get(1);
+                                    ArrayList<Location> locations = new ArrayList<>();
+
+                                    // For override mcmd support, let's go ahead and load all local syntax levels.
+                                    for (MocaCommand mcmd : mcmds) {
+                                        // Before we go any further, make sure command is local syntax.
+                                        if (mcmd.type.compareToIgnoreCase(MocaCommand.TYPE_LOCAL_SYNTAX) == 0) {
+                                            try {
+
+                                                String mcmdFileName = MocaLanguageServer.globalStoragePath
+                                                        + "\\command_lookup\\"
+                                                        + (mcmd.cmplvl + "-" + mcmd.command).replace(" ", "_")
+                                                        + ".msql.readonly";
+                                                File mcmdFile = new File(mcmdFileName);
+                                                URI mcmdFileUri = mcmdFile.toURI();
+                                                BufferedWriter mcmdBufferedWriter = new BufferedWriter(
+                                                        new FileWriter(mcmdFile));
+                                                mcmdBufferedWriter.write(mcmd.syntax);
+                                                mcmdBufferedWriter.close();
+
+                                                Position startPos = new Position(0, 0);
+                                                Location location = new Location(mcmdFileUri.toString(),
+                                                        new Range(startPos, startPos));
+
+                                                locations.add(location);
+
+                                            } catch (IOException ioE) {
+                                                return CompletableFuture
+                                                        .completedFuture(Either.forLeft(Collections.emptyList()));
+                                            }
                                         }
-
-                                    } else {
-
-                                        mcmd = mcmds.get(0);
                                     }
 
-                                    // Before we go any further, make sure command is local syntax.
-                                    if (mcmd.type.compareToIgnoreCase(MocaCommand.TYPE_LOCAL_SYNTAX) != 0) {
-                                        return CompletableFuture
-                                                .completedFuture(Either.forLeft(Collections.emptyList()));
-                                    }
-
-                                    try {
-
-                                        String mcmdFileName = MocaLanguageServer.globalStoragePath
-                                                + "\\command_lookup\\"
-                                                + (mcmd.cmplvl + "-" + mcmd.command).replace(" ", "_")
-                                                + ".msql.readonly";
-                                        File mcmdFile = new File(mcmdFileName);
-                                        URI mcmdFileUri = mcmdFile.toURI();
-                                        BufferedWriter mcmdBufferedWriter = new BufferedWriter(
-                                                new FileWriter(mcmdFile));
-                                        mcmdBufferedWriter.write(mcmd.syntax);
-                                        mcmdBufferedWriter.close();
-
-                                        Position startPos = new Position(0, 0);
-                                        Location location = new Location(mcmdFileUri.toString(),
-                                                new Range(startPos, startPos));
-
-                                        return CompletableFuture
-                                                .completedFuture(Either.forLeft(Collections.singletonList(location)));
-                                    } catch (IOException ioE) {
-                                        return CompletableFuture
-                                                .completedFuture(Either.forLeft(Collections.emptyList()));
-                                    }
+                                    return CompletableFuture.completedFuture(Either.forLeft(locations));
                                 }
                             }
                         }

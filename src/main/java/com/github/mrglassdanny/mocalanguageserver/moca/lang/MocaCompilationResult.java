@@ -11,6 +11,7 @@ import org.antlr.v4.runtime.RecognitionException;
 public class MocaCompilationResult {
 
     public MocaParser mocaParser;
+    public MocaParseTreeListener mocaParseTreeListener;
     public RecognitionException parseException;
 
     public HashMap<Integer, SqlCompilationResult> sqlCompilationResults;
@@ -22,6 +23,7 @@ public class MocaCompilationResult {
     public MocaCompilationResult() {
 
         this.mocaParser = null;
+        this.mocaParseTreeListener = null;
         this.parseException = null;
 
         this.sqlCompilationResults = null;

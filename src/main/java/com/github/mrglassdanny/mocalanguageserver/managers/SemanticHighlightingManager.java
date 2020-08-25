@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.CommandUnitStruct;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 
@@ -251,27 +250,26 @@ public class SemanticHighlightingManager {
 
         // Go ahead and stop now if now compilation result.
         if (mocaCompilationResult != null) {
-            for (Map.Entry<CommandUnitStruct, ArrayList<MocaToken>> entry : mocaCompilationResult.mocaParserReImpl.commandUnitStructs
+            for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                     .entrySet()) {
 
-                CommandUnitStruct commandUnitStruct = entry.getKey();
-                ArrayList<MocaToken> mocaTokens = entry.getValue();
-                String commandName = commandUnitStruct.verbNounClause;
-                if (commandName != null) {
+                String verbNounClause = entry.getKey();
+                ArrayList<org.antlr.v4.runtime.Token> mocaTokens = entry.getValue();
+                if (verbNounClause != null) {
 
                     // Make sure command exists before we color it.
                     if (MocaLanguageServer.currentMocaConnection.repository.commandRepository.commands
-                            .containsKey(commandName)) {
-                        Position pos = Positions.getPosition(mocaScript, mocaTokens.get(0).beginToken);
+                            .containsKey(verbNounClause)) {
+                        Position pos = Positions.getPosition(mocaScript, mocaTokens.get(0).getStartIndex());
 
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
-                                preInfos.get(pos.getLine()).add(
-                                        new Token(pos.getCharacter(), commandName.length(), MOCA_COMMAND_SCOPES_IDX));
+                                preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(), verbNounClause.length(),
+                                        MOCA_COMMAND_SCOPES_IDX));
                             } else {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
-                                tokensArr.add(
-                                        new Token(pos.getCharacter(), commandName.length(), MOCA_COMMAND_SCOPES_IDX));
+                                tokensArr.add(new Token(pos.getCharacter(), verbNounClause.length(),
+                                        MOCA_COMMAND_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }
                         }

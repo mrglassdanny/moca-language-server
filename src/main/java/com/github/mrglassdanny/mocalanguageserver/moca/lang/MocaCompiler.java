@@ -18,6 +18,7 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 
@@ -91,6 +92,8 @@ public class MocaCompiler {
             MocaLexer mocaLexer = new MocaLexer(CharStreams.fromString(mocaScript));
             compilationResult.mocaParser = new MocaParser(new CommonTokenStream(mocaLexer));
             ParseTree parseTree = compilationResult.mocaParser.moca_script();
+            compilationResult.mocaParseTreeListener = new MocaParseTreeListener();
+            new ParseTreeWalker().walk(compilationResult.mocaParseTreeListener, parseTree);
             // If exception, we stop here.
             this.lastSuccessfulCompilationResult = compilationResult;
         } catch (RecognitionException parseException) {

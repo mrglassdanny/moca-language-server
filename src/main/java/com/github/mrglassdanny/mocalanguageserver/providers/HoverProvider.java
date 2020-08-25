@@ -10,7 +10,6 @@ import com.github.mrglassdanny.mocalanguageserver.moca.repository.database.Table
 import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaCommand;
 import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaCommandArgument;
 import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaTrigger;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.CommandUnitStruct;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
@@ -63,27 +62,27 @@ public class HoverProvider {
                     mocaWord = mocaWord.toLowerCase();
 
                     // Get current moca token at position.
-                    MocaToken curMocaToken = mocaCompiler.getMocaTokenAtPosition(textDocumentContents, position);
+                    org.antlr.v4.runtime.Token curMocaToken = mocaCompiler.getMocaTokenAtPosition(textDocumentContents,
+                            position);
 
                     // Get command unit current moca token is in.
-                    CommandUnitStruct cmdUnitStruct = null;
-                    for (Map.Entry<CommandUnitStruct, ArrayList<MocaToken>> entry : mocaCompilationResult.mocaParserReImpl.commandUnitStructs
+                    String verbNounClause = null;
+                    for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                             .entrySet()) {
 
                         // Checking for begin/end match since token objects parsed and lexed will not be
                         // the same objects.
-                        for (MocaToken parsedMocaToken : entry.getValue()) {
-                            if (parsedMocaToken.beginToken == curMocaToken.beginToken
-                                    && parsedMocaToken.end == curMocaToken.end
-                                    && parsedMocaToken.type == curMocaToken.type) {
+                        for (org.antlr.v4.runtime.Token parsedMocaToken : entry.getValue()) {
+                            if (parsedMocaToken.getStartIndex() == curMocaToken.getStartIndex()
+                                    && parsedMocaToken.getStopIndex() == curMocaToken.getStopIndex()
+                                    && parsedMocaToken.getType() == curMocaToken.getType()) {
 
-                                cmdUnitStruct = entry.getKey();
-                                String commandName = cmdUnitStruct.verbNounClause;
+                                verbNounClause = entry.getKey();
 
                                 ArrayList<MocaCommand> mcmds = MocaLanguageServer.currentMocaConnection.repository.commandRepository.commands
-                                        .get(commandName);
+                                        .get(verbNounClause);
                                 if (mcmds != null) {
-                                    String content = getMocaContent(commandName, mcmds);
+                                    String content = getMocaContent(verbNounClause, mcmds);
 
                                     contents.add(Either.forRight(new MarkedString("plaintext", content)));
                                     return CompletableFuture.completedFuture(hover);

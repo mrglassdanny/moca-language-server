@@ -87,7 +87,8 @@ public class MocaConnection {
         }
 
         if (commandStatusHeader != 0) {
-            throw new MocaException(messageHeader != null ? messageHeader : "Unknown Error Occured");
+            throw new MocaException(messageHeader != null ? messageHeader : "Unknown Error Occured",
+                    commandStatusHeader);
         }
 
         return new Gson().fromJson(responseJsonStr, MocaResults.class);
