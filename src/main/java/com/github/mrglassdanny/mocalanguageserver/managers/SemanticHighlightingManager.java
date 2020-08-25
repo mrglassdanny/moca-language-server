@@ -12,9 +12,8 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.util.SqlLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.reimpl.MocaLexerReImpl.MocaToken;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.parse.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
-import com.redprairie.moca.server.parse.MocaTokenType;
 
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
@@ -294,9 +293,9 @@ public class SemanticHighlightingManager {
         // object.
         HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
 
-        for (MocaToken mocaToken : mocaCompiler.mocaTokens) {
-            if (mocaToken.type == MocaTokenType.SEMICOLON) {
-                Position pos = Positions.getPosition(mocaScript, mocaToken.beginToken);
+        for (org.antlr.v4.runtime.Token mocaToken : mocaCompiler.mocaTokens) {
+            if (mocaToken.getType() == MocaLexer.SEMI_COLON) {
+                Position pos = Positions.getPosition(mocaScript, mocaToken.getStartIndex());
                 int lineNum = pos.getLine();
                 if (preInfos.containsKey(lineNum)) {
                     preInfos.get(lineNum).add(new Token(0, pos.getCharacter(), MOCA_COMMAND_STREAM_END_SCOPES_IDX));

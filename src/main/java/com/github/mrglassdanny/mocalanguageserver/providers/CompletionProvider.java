@@ -25,9 +25,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.ast.SqlStatementVisitor;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.reimpl.MocaLexerReImpl.MocaToken;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
-import com.redprairie.moca.server.parse.MocaTokenType;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ClassNode;

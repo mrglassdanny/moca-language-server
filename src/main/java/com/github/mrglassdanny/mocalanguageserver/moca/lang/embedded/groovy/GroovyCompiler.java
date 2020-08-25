@@ -8,9 +8,9 @@ import java.util.Map;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util.GroovyLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.reimpl.MocaLexerReImpl.MocaToken;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
+import org.antlr.v4.runtime.Token;
 import org.codehaus.groovy.GroovyBugError;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
@@ -52,9 +52,9 @@ public class GroovyCompiler {
         ArrayList<String> addedMocaRedirectNames = new ArrayList<>();
         int groovyScriptOffset = Positions.getOffset(mocaScript, mocaCompiler.groovyRanges.get(rangeIdx).getStart());
         if (mocaCompiler.lastSuccessfulCompilationResult != null) {
-            for (Map.Entry<MocaToken, String> entry : mocaCompiler.lastSuccessfulCompilationResult.mocaParserReImpl.redirects
+            for (Map.Entry<Token, String> entry : mocaCompiler.lastSuccessfulCompilationResult.mocaParserReImpl.redirects
                     .entrySet()) {
-                if (entry.getKey().beginToken <= groovyScriptOffset) {
+                if (entry.getKey().getStartIndex() <= groovyScriptOffset) {
                     String curMocaRedirectName = entry.getValue();
                     if (!addedMocaRedirectNames.contains(curMocaRedirectName)) {
                         mocaRedirects += ("SimpleResults " + curMocaRedirectName + "; ");

@@ -19,7 +19,6 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.ast.
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util.GroovyASTUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util.GroovyNodeToStringUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.reimpl.MocaLexerReImpl.MocaToken;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
 import org.codehaus.groovy.ast.ASTNode;

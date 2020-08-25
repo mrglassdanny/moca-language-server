@@ -2,17 +2,16 @@ package com.github.mrglassdanny.mocalanguageserver.moca.lang;
 
 import java.util.HashMap;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaExecutableComponentVisitor;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.reimpl.MocaParserReImpl;
-import com.redprairie.moca.server.parse.MocaParseException;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.parse.MocaParser;
+
+import org.antlr.v4.runtime.RecognitionException;
 
 public class MocaCompilationResult {
 
-    public MocaParserReImpl mocaParserReImpl;
-    public MocaExecutableComponentVisitor astVisitor;
-    public MocaParseException parseException;
+    public MocaParser mocaParser;
+    public RecognitionException parseException;
 
     public HashMap<Integer, SqlCompilationResult> sqlCompilationResults;
     // Based on how parser works(no ast data when exception in parse), we need to
@@ -21,8 +20,8 @@ public class MocaCompilationResult {
     public HashMap<Integer, GroovyCompilationResult> groovyCompilationResults;
 
     public MocaCompilationResult() {
-        this.mocaParserReImpl = null;
-        this.astVisitor = null;
+
+        this.mocaParser = null;
         this.parseException = null;
 
         this.sqlCompilationResults = null;
@@ -36,7 +35,7 @@ public class MocaCompilationResult {
     }
 
     public String getParseErrorText() {
-        return this.parseException.getArgValue("text").toString();
+        return this.parseException.getMessage();
     }
 
 }
