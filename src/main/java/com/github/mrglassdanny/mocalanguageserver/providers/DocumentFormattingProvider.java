@@ -3,17 +3,19 @@ package com.github.mrglassdanny.mocalanguageserver.providers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.regex.Matcher;
 
+import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.util.SqlLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.reimpl.MocaLexerReImpl.MocaToken;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
-import com.redprairie.moca.server.parse.MocaTokenType;
 
 import org.eclipse.lsp4j.DocumentFormattingParams;
 import org.eclipse.lsp4j.DocumentRangeFormattingParams;
+import org.eclipse.lsp4j.MessageParams;
+import org.eclipse.lsp4j.MessageType;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextEdit;
@@ -76,47 +78,66 @@ public class DocumentFormattingProvider {
                 // Starting at -1 because we will increment counter before we get any data from
                 // counter.
                 int sqlRangesVisited = -1, groovyRangesVisited = -1;
-                int mocaTokenCount = mocaCompiler.mocaTokens.length;
-                MocaToken curMocaToken = null, prevMocaToken = null, nextMocaToken = null;
+                int mocaTokenCount = mocaCompiler.mocaTokens.size();
+                org.antlr.v4.runtime.Token curMocaToken = null, prevMocaToken = null, nextMocaToken = null;
                 StringBuilder indentBuilder = new StringBuilder();
                 int parenStack = 0;
                 for (int i = 0; i < mocaTokenCount; i++) {
 
-                        curMocaToken = mocaCompiler.mocaTokens[i];
+                        curMocaToken = mocaCompiler.mocaTokens.get(i);
+                        int curMocaTokenStartIdx = curMocaToken.getStartIndex();
+                        int curMocaTokenStopIdx = MocaTokenUtils
+                                        .getAdjustedMocaTokenStopIndex(curMocaToken.getStopIndex());
+
                         if (i > 0) {
-                                prevMocaToken = mocaCompiler.mocaTokens[i - 1];
+                                prevMocaToken = mocaCompiler.mocaTokens.get(i - 1);
                         } else {
                                 prevMocaToken = null;
                         }
 
+                        int prevMocaTokenStartIdx = curMocaTokenStartIdx;
+                        int prevMocaTokenStopIdx = curMocaTokenStartIdx;
+                        if (prevMocaToken != null) {
+                                prevMocaTokenStartIdx = prevMocaToken.getStartIndex();
+                                prevMocaTokenStopIdx = MocaTokenUtils
+                                                .getAdjustedMocaTokenStopIndex(prevMocaToken.getStopIndex());
+                        }
+
                         if (i < mocaTokenCount - 1) {
-                                nextMocaToken = mocaCompiler.mocaTokens[i + 1];
+                                nextMocaToken = mocaCompiler.mocaTokens.get(i + 1);
                         } else {
                                 nextMocaToken = null;
                         }
 
-                        switch (curMocaToken.type) {
-                                case BRACKET_STRING:
-                                        // Dig into contents of bracket string.
-                                        // Gonna be either groovy or sql.
-                                        String curMocaTokenValue = curMocaToken.getValue();
-                                        int curMocaTokenValueLen = curMocaTokenValue.length();
-                                        boolean isSql = false, isGroovy = false;
-                                        if (curMocaTokenValueLen >= 4 && curMocaTokenValue.charAt(1) == '['
-                                                        && curMocaTokenValue.charAt(curMocaTokenValueLen - 2) == ']') {
-                                                isGroovy = true;
-                                                groovyRangesVisited++;
-                                        } else {
-                                                // Making sure we are actually dealing with an sql statement before we
-                                                // add this
-                                                // range.
-                                                if (SqlLanguageUtils.isMocaTokenValueSqlScript(curMocaTokenValue)) {
-                                                        isSql = true;
-                                                        sqlRangesVisited++;
-                                                }
-                                                // Else, just a bracket string.
+                        int nextMocaTokenStartIdx = curMocaTokenStopIdx;
+                        int nextMocaTokenStopIdx = curMocaTokenStopIdx;
+                        if (nextMocaToken != null) {
+                                nextMocaTokenStartIdx = nextMocaToken.getStartIndex();
+                                nextMocaTokenStopIdx = MocaTokenUtils
+                                                .getAdjustedMocaTokenStopIndex(nextMocaToken.getStopIndex());
+                        }
 
+                        // Have to manually calculate begin whitespace.
+                        int curMocaTokenBeginWhitespaceIdx = 0;
+                        if (prevMocaToken != null) {
+                                curMocaTokenBeginWhitespaceIdx = prevMocaTokenStopIdx;
+                        }
+
+                        switch (curMocaToken.getType()) {
+                                case MocaLexer.SINGLE_BRACKET_STRING:
+                                        // Dig into contents of bracket string.
+                                        // Gonna be either sql or just a bracket string.
+                                        String curMocaTokenValue = curMocaToken.getText();
+                                        boolean isSql = false;
+
+                                        // Making sure we are actually dealing with an sql statement before we
+                                        // add this
+                                        // range.
+                                        if (SqlLanguageUtils.isMocaTokenValueSqlScript(curMocaTokenValue)) {
+                                                isSql = true;
+                                                sqlRangesVisited++;
                                         }
+                                        // Else, just a bracket string.
 
                                         if (isSql) {
 
@@ -130,266 +151,271 @@ public class DocumentFormattingProvider {
                                                                         curMocaTokenValue, indentBuilder);
                                                 }
 
-                                        } else if (isGroovy) {
-
-                                                // Nothing for now.
-
                                         } else {
                                                 // Just a bracket string; do nothing.
                                         }
 
                                         break;
-                                case SEMICOLON:
-                                        // Remove whitespace before and add newline after.
+                                case MocaLexer.DOUBLE_BRACKET_STRING:
+                                        groovyRangesVisited++;
+                                        Range groovyScriptRange = mocaCompiler.groovyRanges.get(groovyRangesVisited);
+
+                                        // Remove '[[]]'.
+                                        String groovyScript = curMocaToken.getText().replaceAll("(\\[\\[)|(\\]\\])",
+                                                        "");
+
+                                        // Format.
+                                        break;
+                                case MocaLexer.SEMI_COLON:
+                                        // Remove whitespace before.
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginWhitespace),
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginToken)),
+                                                        Positions.getPosition(mocaScript,
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
                                                         EMPTY));
 
+                                        // Add newline and indents after.
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.end),
-                                                        Positions.getPosition(mocaScript,
-                                                                        (nextMocaToken == null ? curMocaToken.end
-                                                                                        : nextMocaToken.beginToken))),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStopIdx),
+                                                        // It is not a mistake that we are repeating
+                                                        // curMocaTokenStopIdx -- it is needed for
+                                                        // proper semicolon formatting!
+                                                        Positions.getPosition(mocaScript, nextMocaTokenStartIdx)),
                                                         NEWLINE + indentBuilder.toString()));
 
                                         break;
-                                case OPEN_BRACE:
-                                        // Space before(only if prev did not add new line
-                                        // (pipe/amp/semicolon/open_brace)) and
-                                        // newline after.
+                                case MocaLexer.LEFT_BRACE:
+                                        // Newline before(only if prev did not add new line
+                                        // (pipe/amp/semicolon/open_brace)).
                                         if (prevMocaToken != null) {
-                                                if (prevMocaToken.type != MocaTokenType.PIPE
-                                                                && prevMocaToken.type != MocaTokenType.AMPERSAND
-                                                                && prevMocaToken.type != MocaTokenType.SEMICOLON
-                                                                && prevMocaToken.type != MocaTokenType.OPEN_BRACE) {
+                                                if (prevMocaToken.getType() != MocaLexer.PIPE
+                                                                && prevMocaToken.getType() != MocaLexer.AMPERSAND
+                                                                && prevMocaToken.getType() != MocaLexer.SEMI_COLON
+                                                                && prevMocaToken.getType() != MocaLexer.LEFT_BRACE) {
                                                         edits.add(new TextEdit(new Range(
                                                                         Positions.getPosition(mocaScript,
-                                                                                        curMocaToken.beginWhitespace),
+                                                                                        curMocaTokenBeginWhitespaceIdx),
                                                                         Positions.getPosition(mocaScript,
-                                                                                        curMocaToken.beginToken)),
+                                                                                        curMocaTokenStartIdx)),
                                                                         SPACE));
                                                 }
                                         }
 
                                         indentBuilder.append(TAB);
+
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.end),
-                                                        Positions.getPosition(mocaScript,
-                                                                        (nextMocaToken == null ? curMocaToken.end
-                                                                                        : nextMocaToken.beginToken))),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStopIdx),
+                                                        Positions.getPosition(mocaScript, nextMocaTokenStartIdx)),
                                                         NEWLINE + indentBuilder.toString()));
+
                                         break;
-                                case CLOSE_BRACE:
+                                case MocaLexer.RIGHT_BRACE:
 
                                         if (indentBuilder.length() > 0) {
                                                 indentBuilder.deleteCharAt(0);
                                         }
                                         // Newline before.
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginWhitespace),
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginToken)),
+                                                        Positions.getPosition(mocaScript,
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
                                                         NEWLINE + indentBuilder.toString()));
+
                                         break;
-                                case PIPE:
+                                case MocaLexer.PIPE:
                                         // Need to make sure we are not dealing with a double pipe.
                                         // We will do this by checking next token and previous token.
-                                        if (nextMocaToken != null && nextMocaToken.type == MocaTokenType.PIPE) {
+                                        if (nextMocaToken != null && nextMocaToken.getType() == MocaLexer.PIPE) {
                                                 // Space at beginning and remove whitespace after.
                                                 edits.add(new TextEdit(new Range(
                                                                 Positions.getPosition(mocaScript,
-                                                                                curMocaToken.beginWhitespace),
+                                                                                curMocaTokenBeginWhitespaceIdx),
                                                                 Positions.getPosition(mocaScript,
-                                                                                curMocaToken.beginToken)),
+                                                                                curMocaTokenStartIdx)),
                                                                 SPACE));
-                                                edits.add(new TextEdit(new Range(
-                                                                Positions.getPosition(mocaScript, curMocaToken.end),
-                                                                Positions.getPosition(mocaScript, (nextMocaToken == null
-                                                                                ? curMocaToken.end
-                                                                                : nextMocaToken.beginToken))),
+                                                edits.add(new TextEdit(
+                                                                new Range(Positions.getPosition(mocaScript,
+                                                                                curMocaTokenStopIdx),
+                                                                                Positions.getPosition(mocaScript,
+                                                                                                nextMocaTokenStartIdx)),
                                                                 EMPTY));
-                                        } else if (prevMocaToken != null && prevMocaToken.type == MocaTokenType.PIPE) {
+                                        } else if (prevMocaToken != null && prevMocaToken.getType() == MocaLexer.PIPE) {
                                                 // Space in back - we are remove whitespace between pipes in cond above.
-                                                edits.add(new TextEdit(new Range(
-                                                                Positions.getPosition(mocaScript, curMocaToken.end),
-                                                                Positions.getPosition(mocaScript, (nextMocaToken == null
-                                                                                ? curMocaToken.end
-                                                                                : nextMocaToken.beginToken))),
+                                                edits.add(new TextEdit(
+                                                                new Range(Positions.getPosition(mocaScript,
+                                                                                curMocaTokenStopIdx),
+                                                                                Positions.getPosition(mocaScript,
+                                                                                                nextMocaTokenStartIdx)),
                                                                 SPACE));
                                         } else {
+
                                                 // Newline before and after.
-                                                edits.add(new TextEdit(new Range(
-                                                                Positions.getPosition(mocaScript,
-                                                                                curMocaToken.beginWhitespace),
-                                                                Positions.getPosition(mocaScript,
-                                                                                curMocaToken.beginToken)),
+                                                edits.add(new TextEdit(
+                                                                new Range(Positions.getPosition(mocaScript,
+                                                                                curMocaTokenBeginWhitespaceIdx),
+                                                                                Positions.getPosition(mocaScript,
+                                                                                                curMocaTokenStartIdx)),
                                                                 NEWLINE + indentBuilder.toString()));
 
                                                 edits.add(new TextEdit(new Range(
-                                                                Positions.getPosition(mocaScript, curMocaToken.end),
-                                                                Positions.getPosition(mocaScript, (nextMocaToken == null
-                                                                                ? curMocaToken.end
-                                                                                : nextMocaToken.beginToken))),
+                                                                Positions.getPosition(mocaScript, curMocaTokenStopIdx),
+                                                                Positions.getPosition(mocaScript,
+                                                                                nextMocaTokenStartIdx)),
                                                                 NEWLINE + indentBuilder.toString()));
                                         }
-
                                         break;
-                                case OPEN_PAREN:
+                                case MocaLexer.LEFT_PAREN:
                                         parenStack++;
                                         // Remove whitespace after.
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.end),
-                                                        Positions.getPosition(mocaScript,
-                                                                        (nextMocaToken == null ? curMocaToken.end
-                                                                                        : nextMocaToken.beginToken))),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStopIdx),
+                                                        Positions.getPosition(mocaScript, nextMocaTokenStartIdx)),
                                                         EMPTY));
                                         break;
-                                case CLOSE_PAREN:
+                                case MocaLexer.RIGHT_PAREN:
                                         parenStack--;
                                         // Remove whitespace before.
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginWhitespace),
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginToken)),
+                                                        Positions.getPosition(mocaScript,
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
                                                         EMPTY));
                                         break;
-                                case IF:
+                                case MocaLexer.IF:
                                         // Remove whitespace after.
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.end),
-                                                        Positions.getPosition(mocaScript,
-                                                                        (nextMocaToken == null ? curMocaToken.end
-                                                                                        : nextMocaToken.beginToken))),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStopIdx),
+                                                        Positions.getPosition(mocaScript, nextMocaTokenStartIdx)),
                                                         EMPTY));
                                         break;
-                                case ELSE:
+                                case MocaLexer.ELSE:
                                         // Space before.
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginWhitespace),
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginToken)),
+                                                        Positions.getPosition(mocaScript,
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
                                                         SPACE));
                                         break;
-                                case REDIR_INTO:
-                                case DOUBLEPIPE:
-                                case EQ:
-                                case NE:
-                                case LT:
-                                case GT:
-                                case LE:
-                                case GE:
-                                case LIKE:
-                                case OR:
-                                case NOT:
-                                case IS:
+                                case MocaLexer.DOUBLE_GREATER:
+                                case MocaLexer.DOUBLE_PIPE:
+                                case MocaLexer.EQUAL:
+                                case MocaLexer.NOT_EQUAL:
+                                case MocaLexer.LESS:
+                                case MocaLexer.GREATER:
+                                case MocaLexer.LESS_EQUAL:
+                                case MocaLexer.GREATER_EQUAL:
+                                case MocaLexer.LIKE:
+                                case MocaLexer.OR:
+                                case MocaLexer.NOT:
+                                case MocaLexer.IS:
                                         // Space before and after.
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginWhitespace),
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginToken)),
+                                                        Positions.getPosition(mocaScript,
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
                                                         SPACE));
 
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.end),
-                                                        Positions.getPosition(mocaScript,
-                                                                        (nextMocaToken == null ? curMocaToken.end
-                                                                                        : nextMocaToken.beginToken))),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStopIdx),
+                                                        Positions.getPosition(mocaScript, nextMocaTokenStartIdx)),
                                                         SPACE));
 
                                         break;
-                                case WHERE:
+                                case MocaLexer.WHERE:
                                         // Newline + tab before and add space after.
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginWhitespace),
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginToken)),
-                                                        NEWLINE + TAB + indentBuilder.toString()));
-                                        edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.end),
                                                         Positions.getPosition(mocaScript,
-                                                                        (nextMocaToken == null ? curMocaToken.end
-                                                                                        : nextMocaToken.beginToken))),
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
+                                                        NEWLINE + TAB + indentBuilder.toString()));
+
+                                        edits.add(new TextEdit(new Range(
+                                                        Positions.getPosition(mocaScript, curMocaTokenStopIdx),
+                                                        Positions.getPosition(mocaScript, nextMocaTokenStartIdx)),
                                                         SPACE));
                                         break;
-                                case AND:
+                                case MocaLexer.AND:
                                         // Do not want to add newline if within parenthesis.
                                         if (parenStack > 0) {
                                                 // Space before and after.
                                                 edits.add(new TextEdit(new Range(
                                                                 Positions.getPosition(mocaScript,
-                                                                                curMocaToken.beginWhitespace),
+                                                                                curMocaTokenBeginWhitespaceIdx),
                                                                 Positions.getPosition(mocaScript,
-                                                                                curMocaToken.beginToken)),
+                                                                                curMocaTokenStartIdx)),
                                                                 SPACE));
-                                                edits.add(new TextEdit(new Range(
-                                                                Positions.getPosition(mocaScript, curMocaToken.end),
-                                                                Positions.getPosition(mocaScript, (nextMocaToken == null
-                                                                                ? curMocaToken.end
-                                                                                : nextMocaToken.beginToken))),
+                                                edits.add(new TextEdit(
+                                                                new Range(Positions.getPosition(mocaScript,
+                                                                                curMocaTokenStopIdx),
+                                                                                Positions.getPosition(mocaScript,
+                                                                                                nextMocaTokenStartIdx)),
                                                                 SPACE));
                                         } else {
                                                 // Newline + tab + space before and add space after.
-                                                edits.add(new TextEdit(new Range(
-                                                                Positions.getPosition(mocaScript,
-                                                                                curMocaToken.beginWhitespace),
-                                                                Positions.getPosition(mocaScript,
-                                                                                curMocaToken.beginToken)),
+                                                edits.add(new TextEdit(
+                                                                new Range(Positions.getPosition(mocaScript,
+                                                                                curMocaTokenBeginWhitespaceIdx),
+                                                                                Positions.getPosition(mocaScript,
+                                                                                                curMocaTokenStartIdx)),
                                                                 NEWLINE + TAB + indentBuilder.toString() + SPACE
                                                                                 + SPACE));
-                                                edits.add(new TextEdit(new Range(
-                                                                Positions.getPosition(mocaScript, curMocaToken.end),
-                                                                Positions.getPosition(mocaScript, (nextMocaToken == null
-                                                                                ? curMocaToken.end
-                                                                                : nextMocaToken.beginToken))),
+
+                                                edits.add(new TextEdit(
+                                                                new Range(Positions.getPosition(mocaScript,
+                                                                                curMocaTokenStopIdx),
+                                                                                Positions.getPosition(mocaScript,
+                                                                                                nextMocaTokenStartIdx)),
                                                                 SPACE));
                                         }
 
                                         break;
-                                case TRY:
+                                case MocaLexer.TRY:
                                         break;
-                                case CATCH:
+                                case MocaLexer.CATCH:
                                         // Space before and remove whitespace after.
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginWhitespace),
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginToken)),
+                                                        Positions.getPosition(mocaScript,
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
                                                         SPACE));
 
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.end),
-                                                        Positions.getPosition(mocaScript,
-                                                                        (nextMocaToken == null ? curMocaToken.end
-                                                                                        : nextMocaToken.beginToken))),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStopIdx),
+                                                        Positions.getPosition(mocaScript, nextMocaTokenStartIdx)),
                                                         EMPTY));
                                         break;
-                                case FINALLY:
+                                case MocaLexer.FINALLY:
                                         break;
-                                case AMPERSAND:
+                                case MocaLexer.AMPERSAND:
                                         // Space before and newline after.
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginWhitespace),
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginToken)),
+                                                        Positions.getPosition(mocaScript,
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
                                                         SPACE));
 
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.end),
-                                                        Positions.getPosition(mocaScript,
-                                                                        (nextMocaToken == null ? curMocaToken.end
-                                                                                        : nextMocaToken.beginToken))),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStopIdx),
+                                                        Positions.getPosition(mocaScript, nextMocaTokenStartIdx)),
                                                         NEWLINE + indentBuilder.toString()));
                                         break;
-                                case COMMA:
+                                case MocaLexer.COMMA:
                                         // Remove whitespace before and add space after.
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginWhitespace),
-                                                        Positions.getPosition(mocaScript, curMocaToken.beginToken)),
+                                                        Positions.getPosition(mocaScript,
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
                                                         EMPTY));
 
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.end),
-                                                        Positions.getPosition(mocaScript,
-                                                                        (nextMocaToken == null ? curMocaToken.end
-                                                                                        : nextMocaToken.beginToken))),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStopIdx),
+                                                        Positions.getPosition(mocaScript, nextMocaTokenStartIdx)),
                                                         SPACE));
                                         break;
                                 default:
                                         break;
                         }
+
                 }
         }
 

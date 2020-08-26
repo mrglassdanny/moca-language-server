@@ -6,23 +6,23 @@ import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.appdata.AppDataManager;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.request.CancelMocaExecutionRequest;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaCommandLookupRequest;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaConnectionRequest;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaExecutionHistoryRequest;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaMloadRequest;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaResultsRequest;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaTraceRequest;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.response.CancelMocaExecutionResponse;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaCommandLookupResponse;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaConnectionResponse;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaExecutionHistoryResponse;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaMloadResponse;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaResultsResponse;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaTraceResponse;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.GroovyCompiler;
-import com.github.mrglassdanny.mocalanguageserver.client.request.CancelMocaExecutionRequest;
-import com.github.mrglassdanny.mocalanguageserver.client.request.MocaExecutionHistoryRequest;
-import com.github.mrglassdanny.mocalanguageserver.client.request.MocaMloadRequest;
-import com.github.mrglassdanny.mocalanguageserver.client.request.MocaCommandLookupRequest;
-import com.github.mrglassdanny.mocalanguageserver.client.request.MocaConnectionRequest;
-import com.github.mrglassdanny.mocalanguageserver.client.request.MocaResultsRequest;
-import com.github.mrglassdanny.mocalanguageserver.client.request.MocaTraceRequest;
-import com.github.mrglassdanny.mocalanguageserver.client.response.CancelMocaExecutionResponse;
-import com.github.mrglassdanny.mocalanguageserver.client.response.MocaExecutionHistoryResponse;
-import com.github.mrglassdanny.mocalanguageserver.client.response.MocaMloadResponse;
-import com.github.mrglassdanny.mocalanguageserver.client.response.MocaCommandLookupResponse;
-import com.github.mrglassdanny.mocalanguageserver.client.response.MocaConnectionResponse;
-import com.github.mrglassdanny.mocalanguageserver.client.response.MocaResultsResponse;
-import com.github.mrglassdanny.mocalanguageserver.client.response.MocaTraceResponse;
-import com.redprairie.moca.MocaException;
 
 import org.eclipse.lsp4j.ExecuteCommandParams;
 import org.eclipse.lsp4j.MessageParams;
@@ -70,7 +70,7 @@ public class ExecuteCommandProvider {
                             && MocaLanguageServer.currentMocaConnection != null) {
                         MocaLanguageServer.currentMocaConnection = new MocaConnectionWrapper(mocaConnectionRequest.url,
                                 mocaConnectionRequest.userId, mocaConnectionRequest.password,
-                                MocaLanguageServer.currentMocaConnection.repository);
+                                MocaLanguageServer.currentMocaConnection.cache);
                     } else {
                         MocaLanguageServer.currentMocaConnection = new MocaConnectionWrapper(mocaConnectionRequest.url,
                                 mocaConnectionRequest.userId, mocaConnectionRequest.password);
@@ -110,12 +110,11 @@ public class ExecuteCommandProvider {
 
                     // Check to see if our connection timed out. We will know whether or not this is
                     // the case based on the error message in the mocaResultsResponse.
-                    // TODO: Should be able to use http response headers to determine this.
                     if (mocaResultsResponse.exception != null
                             && mocaResultsResponse.exception instanceof MocaException) {
                         MocaException resMocaException = (MocaException) mocaResultsResponse.exception;
 
-                        int curSts = resMocaException.getErrorCode();
+                        int curSts = resMocaException.getStatus();
                         if (curSts == 301 || curSts == 203 || curSts == 523) {
                             // If connection timed out, we need to quitely try to reconnect and rerun the
                             // script.
@@ -144,7 +143,7 @@ public class ExecuteCommandProvider {
 
                     int rowCount = 0;
                     if (mocaResultsResponse.results != null) {
-                        rowCount = mocaResultsResponse.results.values.length;
+                        rowCount = mocaResultsResponse.results.getRowCount();
                     }
 
                     languageClient.logMessage(new MessageParams(MessageType.Info, mocaResultsRequest.fileName
@@ -157,7 +156,7 @@ public class ExecuteCommandProvider {
                         if (mocaResultsResponse.exception != null) {
                             if (mocaResultsResponse.exception instanceof MocaException) {
                                 MocaException mocaException = (MocaException) mocaResultsResponse.exception;
-                                status = mocaException.getErrorCode();
+                                status = mocaException.getStatus();
                                 message = mocaException.getMessage();
                             } else {
                                 status = 0;
@@ -219,13 +218,13 @@ public class ExecuteCommandProvider {
                     MocaCommandLookupResponse mocaCommandLookupResponse;
                     if (mocaCommandLookupRequest.requestedMocaCommand == null) {
                         mocaCommandLookupResponse = new MocaCommandLookupResponse(
-                                MocaLanguageServer.currentMocaConnection.repository.commandRepository.distinctCommands,
-                                null, null, null);
+                                MocaLanguageServer.currentMocaConnection.cache.commandRepository.distinctCommands, null,
+                                null, null);
                     } else {
                         mocaCommandLookupResponse = new MocaCommandLookupResponse(null,
-                                MocaLanguageServer.currentMocaConnection.repository.commandRepository.commands
+                                MocaLanguageServer.currentMocaConnection.cache.commandRepository.commands
                                         .get(mocaCommandLookupRequest.requestedMocaCommand),
-                                MocaLanguageServer.currentMocaConnection.repository.commandRepository.triggers
+                                MocaLanguageServer.currentMocaConnection.cache.commandRepository.triggers
                                         .get(mocaCommandLookupRequest.requestedMocaCommand),
                                 null);
                     }

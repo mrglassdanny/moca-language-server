@@ -7,21 +7,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.CommandUnitStruct;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaSyntaxError;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.ast.SqlStatementVisitor;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.util.SqlLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.reimpl.MocaLexerReImpl.MocaToken;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
 
-import org.apache.logging.log4j.message.Message;
 import org.codehaus.groovy.control.messages.ExceptionMessage;
+import org.codehaus.groovy.control.messages.Message;
 import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
 import org.codehaus.groovy.syntax.SyntaxException;
 import org.eclipse.lsp4j.Diagnostic;
@@ -52,7 +51,7 @@ public class DiagnosticManager {
 
         // Make sure nothing we need is null, as exceptions could be thrown.
         if (MocaLanguageServer.currentMocaConnection == null
-                || MocaLanguageServer.currentMocaConnection.repository == null) {
+                || MocaLanguageServer.currentMocaConnection.cache == null) {
             return;
         }
 
@@ -146,12 +145,16 @@ public class DiagnosticManager {
         } else {
             ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
-            Range range = MocaLanguageUtils.syntaxExceptionToRange(compilationResult.parseException);
-            Diagnostic diagnostic = new Diagnostic();
-            diagnostic.setRange(range);
-            diagnostic.setSeverity(DiagnosticSeverity.Error);
-            diagnostic.setMessage("MOCA: " + compilationResult.getParseErrorText());
-            diagnostics.add(diagnostic);
+            for (MocaSyntaxError mocaSyntaxError : compilationResult.mocaSyntaxErrorListener.mocaSyntaxErrors) {
+                Position pos = new Position(mocaSyntaxError.line, mocaSyntaxError.charPositionInLine);
+                Range range = new Range(pos, pos);
+                Diagnostic diagnostic = new Diagnostic();
+                diagnostic.setRange(range);
+                diagnostic.setSeverity(DiagnosticSeverity.Error);
+                diagnostic.setMessage(String.format("MOCA: line %d:%d %s", mocaSyntaxError.line,
+                        mocaSyntaxError.charPositionInLine, mocaSyntaxError.msg));
+                diagnostics.add(diagnostic);
+            }
 
             return diagnostics;
 
@@ -177,33 +180,31 @@ public class DiagnosticManager {
         // Loop through all command units and see if we have any verbNounClauses that do
         // not exist in repository. If so, we will get the range, build the diagnosic,
         // and add it to the list.
-        for (Map.Entry<CommandUnitStruct, ArrayList<MocaToken>> entry : mocaCompilationResult.mocaParserReImpl.commandUnitStructs
+        for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                 .entrySet()) {
 
             // Need the struct so that we can look at the verbNounClause.
-            CommandUnitStruct commandUnitStruct = entry.getKey();
+            String verbNounClause = entry.getKey();
 
-            // Also make sure sql and script are null; we want to make sure we are looking
-            // at a command unit that is calling a command.
-            if (!MocaLanguageServer.currentMocaConnection.repository.commandRepository.distinctCommands
-                    .contains(commandUnitStruct.verbNounClause) && commandUnitStruct.sql == null
-                    && commandUnitStruct.script == null) {
+            if (!MocaLanguageServer.currentMocaConnection.cache.commandRepository.distinctCommands
+                    .contains(verbNounClause)) {
 
-                ArrayList<MocaToken> mocaTokens = entry.getValue();
-                // No need to valide size -- we can assume that we have at least 1 moca token in
-                // list.
-                MocaToken beginToken = mocaTokens.get(0);
-                MocaToken endToken = mocaTokens.get(mocaTokens.size() - 1);
+                ArrayList<org.antlr.v4.runtime.Token> mocaTokens = entry.getValue();
+                // No need to validate size -- we can assume that we have
+                // at least 1 moca token in list.
+                org.antlr.v4.runtime.Token beginToken = mocaTokens.get(0);
+                org.antlr.v4.runtime.Token endToken = mocaTokens.get(mocaTokens.size() - 1);
 
-                Position beginPos = Positions.getPosition(script, beginToken.beginToken);
-                Position endPos = Positions.getPosition(script, endToken.end);
+                Position beginPos = Positions.getPosition(script, beginToken.getStartIndex());
+                Position endPos = Positions.getPosition(script,
+                        MocaTokenUtils.getAdjustedMocaTokenStopIndex(endToken.getStopIndex()));
 
                 if (beginPos != null && endPos != null) {
                     Range range = new Range(beginPos, endPos);
                     Diagnostic diagnostic = new Diagnostic();
                     diagnostic.setRange(range);
                     diagnostic.setSeverity(DiagnosticSeverity.Warning);
-                    diagnostic.setMessage("MOCA: Command '" + commandUnitStruct.verbNounClause + "' may not exist");
+                    diagnostic.setMessage("MOCA: Command '" + verbNounClause + "' may not exist");
                     diagnostics.add(diagnostic);
                 }
             }
@@ -247,13 +248,13 @@ public class DiagnosticManager {
 
             boolean foundTable = false;
 
-            if (MocaLanguageServer.currentMocaConnection.repository.databaseSchema.tables
+            if (MocaLanguageServer.currentMocaConnection.cache.schema.tables
                     .containsKey(astTable.getName().toLowerCase())) {
                 foundTable = true;
             }
 
             if (!foundTable) {
-                if (MocaLanguageServer.currentMocaConnection.repository.databaseSchema.views
+                if (MocaLanguageServer.currentMocaConnection.cache.schema.views
                         .containsKey(astTable.getName().toLowerCase())) {
                     foundTable = true;
                 }

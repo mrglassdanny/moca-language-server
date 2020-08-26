@@ -6,11 +6,10 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.moca.repository.database.Table;
-import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaCommand;
-import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaCommandArgument;
-import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaTrigger;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.CommandUnitStruct;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommand;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommandArgument;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaTrigger;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.schema.Table;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
@@ -19,7 +18,6 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.ast.
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util.GroovyASTUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util.GroovyNodeToStringUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.reimpl.MocaLexerReImpl.MocaToken;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
 import org.codehaus.groovy.ast.ASTNode;
@@ -64,27 +62,33 @@ public class HoverProvider {
                     mocaWord = mocaWord.toLowerCase();
 
                     // Get current moca token at position.
-                    MocaToken curMocaToken = mocaCompiler.getMocaTokenAtPosition(textDocumentContents, position);
+                    org.antlr.v4.runtime.Token curMocaToken = mocaCompiler.getMocaTokenAtPosition(textDocumentContents,
+                            position);
+
+                    // Validate curMocaToken.
+                    if (curMocaToken == null) {
+                        return CompletableFuture.completedFuture(hover);
+                    }
 
                     // Get command unit current moca token is in.
-                    CommandUnitStruct cmdUnitStruct = null;
-                    for (Map.Entry<CommandUnitStruct, ArrayList<MocaToken>> entry : mocaCompilationResult.mocaParserReImpl.commandUnitStructs
+                    String verbNounClause = null;
+                    for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                             .entrySet()) {
 
                         // Checking for begin/end match since token objects parsed and lexed will not be
                         // the same objects.
-                        for (MocaToken parsedMocaToken : entry.getValue()) {
-                            if (parsedMocaToken.beginToken == curMocaToken.beginToken
-                                    && parsedMocaToken.end == curMocaToken.end
-                                    && parsedMocaToken.type == curMocaToken.type) {
+                        for (org.antlr.v4.runtime.Token verbNounClauseToken : entry.getValue()) {
+                            if (verbNounClauseToken.getStartIndex() == curMocaToken.getStartIndex()
+                                    // No need to adjust stop index here!
+                                    && verbNounClauseToken.getStopIndex() == curMocaToken.getStopIndex()
+                                    && verbNounClauseToken.getType() == curMocaToken.getType()) {
 
-                                cmdUnitStruct = entry.getKey();
-                                String commandName = cmdUnitStruct.verbNounClause;
+                                verbNounClause = entry.getKey();
 
-                                ArrayList<MocaCommand> mcmds = MocaLanguageServer.currentMocaConnection.repository.commandRepository.commands
-                                        .get(commandName);
+                                ArrayList<MocaCommand> mcmds = MocaLanguageServer.currentMocaConnection.cache.commandRepository.commands
+                                        .get(verbNounClause);
                                 if (mcmds != null) {
-                                    String content = getMocaContent(commandName, mcmds);
+                                    String content = getMocaContent(verbNounClause, mcmds);
 
                                     contents.add(Either.forRight(new MarkedString("plaintext", content)));
                                     return CompletableFuture.completedFuture(hover);
@@ -115,14 +119,13 @@ public class HoverProvider {
                     sqlWord = sqlWord.toLowerCase();
 
                     // Check first to see if sql word is table/view in database.
-                    Table table = MocaLanguageServer.currentMocaConnection.repository.databaseSchema.tables
-                            .get(sqlWord);
+                    Table table = MocaLanguageServer.currentMocaConnection.cache.schema.tables.get(sqlWord);
                     if (table != null) {
                         contents.add(Either.forRight(new MarkedString("plaintext", getSqlContent(table, false))));
                         return CompletableFuture.completedFuture(hover);
                     }
 
-                    Table view = MocaLanguageServer.currentMocaConnection.repository.databaseSchema.views.get(sqlWord);
+                    Table view = MocaLanguageServer.currentMocaConnection.cache.schema.views.get(sqlWord);
                     if (view != null) {
                         contents.add(Either.forRight(new MarkedString("plaintext", getSqlContent(view, true))));
                         return CompletableFuture.completedFuture(hover);
@@ -191,7 +194,7 @@ public class HoverProvider {
 
         // Add required args to documentation if there are any.
         contents += "\n\nRequired Arguments:\n";
-        ArrayList<MocaCommandArgument> args = MocaLanguageServer.currentMocaConnection.repository.commandRepository.commandArguments
+        ArrayList<MocaCommandArgument> args = MocaLanguageServer.currentMocaConnection.cache.commandRepository.commandArguments
                 .get(mcmds.get(0).command);
         if (args != null) {
             for (MocaCommandArgument arg : args) {
@@ -206,7 +209,7 @@ public class HoverProvider {
         }
         // Go ahead and add triggers to documentation if there are any.
         contents += "\nTriggers:\n";
-        ArrayList<MocaTrigger> triggers = MocaLanguageServer.currentMocaConnection.repository.commandRepository.triggers
+        ArrayList<MocaTrigger> triggers = MocaLanguageServer.currentMocaConnection.cache.commandRepository.triggers
                 .get(mcmds.get(0).command);
         if (triggers != null) {
             for (MocaTrigger trg : triggers) {

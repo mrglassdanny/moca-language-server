@@ -6,15 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.CommandUnitStruct;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
-
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.util.SqlLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.reimpl.MocaLexerReImpl.MocaToken;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
-import com.redprairie.moca.server.parse.MocaTokenType;
 
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
@@ -252,27 +249,26 @@ public class SemanticHighlightingManager {
 
         // Go ahead and stop now if now compilation result.
         if (mocaCompilationResult != null) {
-            for (Map.Entry<CommandUnitStruct, ArrayList<MocaToken>> entry : mocaCompilationResult.mocaParserReImpl.commandUnitStructs
+            for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                     .entrySet()) {
 
-                CommandUnitStruct commandUnitStruct = entry.getKey();
-                ArrayList<MocaToken> mocaTokens = entry.getValue();
-                String commandName = commandUnitStruct.verbNounClause;
-                if (commandName != null) {
+                String verbNounClause = entry.getKey();
+                ArrayList<org.antlr.v4.runtime.Token> mocaTokens = entry.getValue();
+                if (verbNounClause != null) {
 
                     // Make sure command exists before we color it.
-                    if (MocaLanguageServer.currentMocaConnection.repository.commandRepository.commands
-                            .containsKey(commandName)) {
-                        Position pos = Positions.getPosition(mocaScript, mocaTokens.get(0).beginToken);
+                    if (MocaLanguageServer.currentMocaConnection.cache.commandRepository.commands
+                            .containsKey(verbNounClause)) {
+                        Position pos = Positions.getPosition(mocaScript, mocaTokens.get(0).getStartIndex());
 
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
-                                preInfos.get(pos.getLine()).add(
-                                        new Token(pos.getCharacter(), commandName.length(), MOCA_COMMAND_SCOPES_IDX));
+                                preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(), verbNounClause.length(),
+                                        MOCA_COMMAND_SCOPES_IDX));
                             } else {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
-                                tokensArr.add(
-                                        new Token(pos.getCharacter(), commandName.length(), MOCA_COMMAND_SCOPES_IDX));
+                                tokensArr.add(new Token(pos.getCharacter(), verbNounClause.length(),
+                                        MOCA_COMMAND_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }
                         }
@@ -294,9 +290,9 @@ public class SemanticHighlightingManager {
         // object.
         HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
 
-        for (MocaToken mocaToken : mocaCompiler.mocaTokens) {
-            if (mocaToken.type == MocaTokenType.SEMICOLON) {
-                Position pos = Positions.getPosition(mocaScript, mocaToken.beginToken);
+        for (org.antlr.v4.runtime.Token mocaToken : mocaCompiler.mocaTokens) {
+            if (mocaToken.getType() == MocaLexer.SEMI_COLON) {
+                Position pos = Positions.getPosition(mocaScript, mocaToken.getStartIndex());
                 int lineNum = pos.getLine();
                 if (preInfos.containsKey(lineNum)) {
                     preInfos.get(lineNum).add(new Token(0, pos.getCharacter(), MOCA_COMMAND_STREAM_END_SCOPES_IDX));
@@ -341,9 +337,8 @@ public class SemanticHighlightingManager {
                     String sqlWord = curSqlToken.image.toLowerCase();
 
                     // Check if exists in tables/views before we add to map.
-                    if (MocaLanguageServer.currentMocaConnection.repository.databaseSchema.tables.containsKey(sqlWord)
-                            || MocaLanguageServer.currentMocaConnection.repository.databaseSchema.views
-                                    .containsKey(sqlWord)) {
+                    if (MocaLanguageServer.currentMocaConnection.cache.schema.tables.containsKey(sqlWord)
+                            || MocaLanguageServer.currentMocaConnection.cache.schema.views.containsKey(sqlWord)) {
 
                         // Let's make sure real quick that this is not a '@' var.
                         int offset = Positions.getOffset(mocaScript, pos);
