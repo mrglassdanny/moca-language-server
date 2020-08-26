@@ -257,7 +257,7 @@ public class SemanticHighlightingManager {
                 if (verbNounClause != null) {
 
                     // Make sure command exists before we color it.
-                    if (MocaLanguageServer.currentMocaConnection.repository.commandRepository.commands
+                    if (MocaLanguageServer.currentMocaConnection.cache.commandRepository.commands
                             .containsKey(verbNounClause)) {
                         Position pos = Positions.getPosition(mocaScript, mocaTokens.get(0).getStartIndex());
 
@@ -337,8 +337,8 @@ public class SemanticHighlightingManager {
                     String sqlWord = curSqlToken.image.toLowerCase();
 
                     // Check if exists in tables/views before we add to map.
-                    if (MocaLanguageServer.currentMocaConnection.repository.schema.tables.containsKey(sqlWord)
-                            || MocaLanguageServer.currentMocaConnection.repository.schema.views.containsKey(sqlWord)) {
+                    if (MocaLanguageServer.currentMocaConnection.cache.schema.tables.containsKey(sqlWord)
+                            || MocaLanguageServer.currentMocaConnection.cache.schema.views.containsKey(sqlWord)) {
 
                         // Let's make sure real quick that this is not a '@' var.
                         int offset = Positions.getOffset(mocaScript, pos);

@@ -6,12 +6,12 @@ import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.*;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.schema.*;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
 
-public class MocaRepository {
+public class MocaCache {
 
     public Schema schema;
     public CommandRepository commandRepository;
 
-    public MocaRepository() {
+    public MocaCache() {
         this.schema = new Schema();
         this.commandRepository = new CommandRepository();
     }

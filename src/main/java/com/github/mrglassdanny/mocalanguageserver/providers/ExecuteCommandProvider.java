@@ -70,7 +70,7 @@ public class ExecuteCommandProvider {
                             && MocaLanguageServer.currentMocaConnection != null) {
                         MocaLanguageServer.currentMocaConnection = new MocaConnectionWrapper(mocaConnectionRequest.url,
                                 mocaConnectionRequest.userId, mocaConnectionRequest.password,
-                                MocaLanguageServer.currentMocaConnection.repository);
+                                MocaLanguageServer.currentMocaConnection.cache);
                     } else {
                         MocaLanguageServer.currentMocaConnection = new MocaConnectionWrapper(mocaConnectionRequest.url,
                                 mocaConnectionRequest.userId, mocaConnectionRequest.password);
@@ -218,13 +218,13 @@ public class ExecuteCommandProvider {
                     MocaCommandLookupResponse mocaCommandLookupResponse;
                     if (mocaCommandLookupRequest.requestedMocaCommand == null) {
                         mocaCommandLookupResponse = new MocaCommandLookupResponse(
-                                MocaLanguageServer.currentMocaConnection.repository.commandRepository.distinctCommands,
-                                null, null, null);
+                                MocaLanguageServer.currentMocaConnection.cache.commandRepository.distinctCommands, null,
+                                null, null);
                     } else {
                         mocaCommandLookupResponse = new MocaCommandLookupResponse(null,
-                                MocaLanguageServer.currentMocaConnection.repository.commandRepository.commands
+                                MocaLanguageServer.currentMocaConnection.cache.commandRepository.commands
                                         .get(mocaCommandLookupRequest.requestedMocaCommand),
-                                MocaLanguageServer.currentMocaConnection.repository.commandRepository.triggers
+                                MocaLanguageServer.currentMocaConnection.cache.commandRepository.triggers
                                         .get(mocaCommandLookupRequest.requestedMocaCommand),
                                 null);
                     }

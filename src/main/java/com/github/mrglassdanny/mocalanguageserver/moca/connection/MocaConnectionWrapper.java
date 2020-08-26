@@ -3,7 +3,7 @@ package com.github.mrglassdanny.mocalanguageserver.moca.connection;
 
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaConnectionResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaResultsResponse;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaRepository;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.UnsupportedConnectionTypeException;
 
@@ -15,7 +15,7 @@ public class MocaConnectionWrapper {
     public String url;
     public String userId;
     private String password;
-    public MocaRepository repository;
+    public MocaCache cache;
 
     public MocaConnectionWrapper(String url, String userId, String password) {
 
@@ -24,17 +24,17 @@ public class MocaConnectionWrapper {
         this.userId = userId;
         this.password = password;
 
-        this.repository = new MocaRepository();
+        this.cache = new MocaCache();
     }
 
-    public MocaConnectionWrapper(String url, String userId, String password, MocaRepository existingMocaRepo) {
+    public MocaConnectionWrapper(String url, String userId, String password, MocaCache existingMocaRepo) {
 
         this.mocaConnection = null;
         this.url = url;
         this.userId = userId;
         this.password = password;
 
-        this.repository = existingMocaRepo;
+        this.cache = existingMocaRepo;
     }
 
     public MocaConnectionResponse connect() {
@@ -81,7 +81,7 @@ public class MocaConnectionWrapper {
     }
 
     public void loadRepository() {
-        this.repository.loadAsync(this);
+        this.cache.loadAsync(this);
     }
 
 }

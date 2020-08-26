@@ -51,7 +51,7 @@ public class DiagnosticManager {
 
         // Make sure nothing we need is null, as exceptions could be thrown.
         if (MocaLanguageServer.currentMocaConnection == null
-                || MocaLanguageServer.currentMocaConnection.repository == null) {
+                || MocaLanguageServer.currentMocaConnection.cache == null) {
             return;
         }
 
@@ -186,7 +186,7 @@ public class DiagnosticManager {
             // Need the struct so that we can look at the verbNounClause.
             String verbNounClause = entry.getKey();
 
-            if (!MocaLanguageServer.currentMocaConnection.repository.commandRepository.distinctCommands
+            if (!MocaLanguageServer.currentMocaConnection.cache.commandRepository.distinctCommands
                     .contains(verbNounClause)) {
 
                 ArrayList<org.antlr.v4.runtime.Token> mocaTokens = entry.getValue();
@@ -248,13 +248,13 @@ public class DiagnosticManager {
 
             boolean foundTable = false;
 
-            if (MocaLanguageServer.currentMocaConnection.repository.schema.tables
+            if (MocaLanguageServer.currentMocaConnection.cache.schema.tables
                     .containsKey(astTable.getName().toLowerCase())) {
                 foundTable = true;
             }
 
             if (!foundTable) {
-                if (MocaLanguageServer.currentMocaConnection.repository.schema.views
+                if (MocaLanguageServer.currentMocaConnection.cache.schema.views
                         .containsKey(astTable.getName().toLowerCase())) {
                     foundTable = true;
                 }

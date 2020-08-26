@@ -76,7 +76,7 @@ public class DefinitionProvider {
 
                                 verbNounClause = entry.getKey();
 
-                                ArrayList<MocaCommand> mcmds = MocaLanguageServer.currentMocaConnection.repository.commandRepository.commands
+                                ArrayList<MocaCommand> mcmds = MocaLanguageServer.currentMocaConnection.cache.commandRepository.commands
                                         .get(verbNounClause);
                                 if (mcmds != null) {
 

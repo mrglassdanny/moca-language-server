@@ -169,7 +169,7 @@ public class CompletionProvider {
                                 // removing the last token.
 
                                 // First checking verbNounClause as is.
-                                if (!MocaLanguageServer.currentMocaConnection.repository.commandRepository.distinctCommands
+                                if (!MocaLanguageServer.currentMocaConnection.cache.commandRepository.distinctCommands
                                         .contains(verbNounClause)) {
                                     // Remove last token and try again.
                                     try {
@@ -178,7 +178,7 @@ public class CompletionProvider {
                                         // Do nothing...
                                     }
 
-                                    if (!MocaLanguageServer.currentMocaConnection.repository.commandRepository.distinctCommands
+                                    if (!MocaLanguageServer.currentMocaConnection.cache.commandRepository.distinctCommands
                                             .contains(verbNounClause)) {
                                         // This will stop us from trying to get completion items below.
                                         verbNounClause = null;
@@ -376,7 +376,7 @@ public class CompletionProvider {
     // MOCA.
     private static void populateMocaCommands(List<CompletionItem> items) {
 
-        for (Map.Entry<String, ArrayList<MocaCommand>> entry : MocaLanguageServer.currentMocaConnection.repository.commandRepository.commands
+        for (Map.Entry<String, ArrayList<MocaCommand>> entry : MocaLanguageServer.currentMocaConnection.cache.commandRepository.commands
                 .entrySet()) {
             CompletionItem item = new CompletionItem(entry.getKey());
             ArrayList<MocaCommand> mcmds = entry.getValue();
@@ -390,7 +390,7 @@ public class CompletionProvider {
 
             // Add required args to documentation if there are any.
             docStr += "\n\nRequired Arguments:\n";
-            ArrayList<MocaCommandArgument> args = MocaLanguageServer.currentMocaConnection.repository.commandRepository.commandArguments
+            ArrayList<MocaCommandArgument> args = MocaLanguageServer.currentMocaConnection.cache.commandRepository.commandArguments
                     .get(mcmds.get(0).command);
             if (args != null) {
                 for (MocaCommandArgument arg : args) {
@@ -407,7 +407,7 @@ public class CompletionProvider {
 
             // Go ahead and add triggers to documentation if there are any.
             docStr += "\nTriggers:\n";
-            ArrayList<MocaTrigger> triggers = MocaLanguageServer.currentMocaConnection.repository.commandRepository.triggers
+            ArrayList<MocaTrigger> triggers = MocaLanguageServer.currentMocaConnection.cache.commandRepository.triggers
                     .get(mcmds.get(0).command);
             if (triggers != null) {
                 for (MocaTrigger trg : triggers) {
@@ -425,7 +425,7 @@ public class CompletionProvider {
     private static void populateMocaCommandArguments(String mocaCommandName, List<CompletionItem> items,
             char firstTypedLetter) {
 
-        ArrayList<MocaCommandArgument> cmdArgs = MocaLanguageServer.currentMocaConnection.repository.commandRepository.commandArguments
+        ArrayList<MocaCommandArgument> cmdArgs = MocaLanguageServer.currentMocaConnection.cache.commandRepository.commandArguments
                 .get(mocaCommandName);
         if (cmdArgs == null) {
             return;
@@ -462,7 +462,7 @@ public class CompletionProvider {
     // Includes views.
     private static void populateSqlTables(List<CompletionItem> items) {
 
-        for (Map.Entry<String, Table> tableEntry : MocaLanguageServer.currentMocaConnection.repository.schema.tables
+        for (Map.Entry<String, Table> tableEntry : MocaLanguageServer.currentMocaConnection.cache.schema.tables
                 .entrySet()) {
             Table tbl = tableEntry.getValue();
             CompletionItem item = new CompletionItem(tbl.table_name);
@@ -471,7 +471,7 @@ public class CompletionProvider {
             items.add(item);
         }
 
-        for (Map.Entry<String, Table> viewEntry : MocaLanguageServer.currentMocaConnection.repository.schema.views
+        for (Map.Entry<String, Table> viewEntry : MocaLanguageServer.currentMocaConnection.cache.schema.views
                 .entrySet()) {
             Table view = viewEntry.getValue();
             CompletionItem item = new CompletionItem(view.table_name);
@@ -504,7 +504,7 @@ public class CompletionProvider {
 
     private static void populateSqlColumnsFromTableName(String tableName, String aliasName,
             boolean excludeColPrefixForFirstForAllCols, List<CompletionItem> items) {
-        ArrayList<TableColumn> cols = MocaLanguageServer.currentMocaConnection.repository.schema
+        ArrayList<TableColumn> cols = MocaLanguageServer.currentMocaConnection.cache.schema
                 .getColumnsForTable(tableName);
 
         // Could be null.
