@@ -147,35 +147,30 @@ public class DocumentOnTypeFormattingProvider {
                                         break;
                                 case MocaLexer.SEMI_COLON:
 
-                                        // Add newline to start only if we are at typedPos.
-                                        // Since we are formatting above typedPos, typedPos's offset will either be <=
-                                        // current moca token offset. Make sure to quit right after!
-                                        // TODO: Just testing this!
-                                        if (typedChar.compareToIgnoreCase(curMocaToken.getText()) == 0
-                                                        && typedPosOffset <= curMocaTokenOffset) {
-                                                // Remove whitespace before.
-                                                edits.add(new TextEdit(new Range(
-                                                                Positions.getPosition(mocaScript,
-                                                                                curMocaTokenBeginWhitespaceIdx),
-                                                                Positions.getPosition(mocaScript,
-                                                                                curMocaTokenStartIdx)),
-                                                                EMPTY));
-                                                return;
-                                        }
+                                        // Remove whitespace before.
+                                        edits.add(new TextEdit(new Range(
+                                                        Positions.getPosition(mocaScript,
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
+                                                        EMPTY));
 
                                         // Add newline to end only if we are at typedPos.
-                                        // Since we are formatting above typedPos, typedPos's offset will either be <=
+                                        // Since we are formatting above typedPos, typedPos's offset will either
+                                        // be <=
                                         // current moca token offset. Make sure to quit right after!
                                         if (typedChar.compareToIgnoreCase(curMocaToken.getText()) == 0
                                                         && typedPosOffset <= curMocaTokenOffset) {
 
                                                 edits.add(new TextEdit(new Range(
                                                                 Positions.getPosition(mocaScript, curMocaTokenStopIdx),
-                                                                Positions.getPosition(mocaScript,
-                                                                                nextMocaTokenStartIdx)),
+                                                                // It is not a mistake that we are repeating
+                                                                // curMocaTokenStopIdx -- it is needed for
+                                                                // proper semicolon formatting!
+                                                                Positions.getPosition(mocaScript, curMocaTokenStopIdx)),
                                                                 NEWLINE + indentBuilder.toString()));
                                                 return;
                                         }
+
                                         break;
                                 case MocaLexer.LEFT_BRACE:
                                         // Newline before(only if prev did not add new line
@@ -220,7 +215,8 @@ public class DocumentOnTypeFormattingProvider {
                                                                                                 nextMocaTokenStartIdx)),
                                                                 EMPTY));
                                         } else if (prevMocaToken != null && prevMocaToken.getType() == MocaLexer.PIPE) {
-                                                // Space in back - we are remove whitespace between pipes in cond above.
+                                                // Space in back - we are remove whitespace between pipes in
+                                                // cond above.
                                                 edits.add(new TextEdit(
                                                                 new Range(Positions.getPosition(mocaScript,
                                                                                 curMocaTokenStopIdx),
@@ -229,26 +225,17 @@ public class DocumentOnTypeFormattingProvider {
                                                                 SPACE));
                                         } else {
 
-                                                // Add newline to start only if we are at typedPos.
-                                                // Since we are formatting above typedPos, typedPos's offset will either
-                                                // be <=
-                                                // current moca token offset. Make sure to quit right after!
-                                                // TODO: Just testing this!
-                                                if (typedChar.compareToIgnoreCase(curMocaToken.getText()) == 0
-                                                                && typedPosOffset <= curMocaTokenOffset) {
-
-                                                        // Newline before.
-                                                        edits.add(new TextEdit(new Range(
-                                                                        Positions.getPosition(mocaScript,
-                                                                                        curMocaTokenBeginWhitespaceIdx),
-                                                                        Positions.getPosition(mocaScript,
-                                                                                        curMocaTokenStartIdx)),
-                                                                        NEWLINE + indentBuilder.toString()));
-                                                        return;
-                                                }
+                                                // Newline before.
+                                                edits.add(new TextEdit(
+                                                                new Range(Positions.getPosition(mocaScript,
+                                                                                curMocaTokenBeginWhitespaceIdx),
+                                                                                Positions.getPosition(mocaScript,
+                                                                                                curMocaTokenStartIdx)),
+                                                                NEWLINE + indentBuilder.toString()));
 
                                                 // Add newline to end only if we are at typedPos.
-                                                // Since we are formatting above typedPos, typedPos's offset will either
+                                                // Since we are formatting above typedPos, typedPos's offset
+                                                // will either
                                                 // be <=
                                                 // current moca token offset. Make sure to quit right after!
                                                 if (typedChar.compareToIgnoreCase(curMocaToken.getText()) == 0
@@ -262,6 +249,7 @@ public class DocumentOnTypeFormattingProvider {
                                                                         NEWLINE + indentBuilder.toString()));
                                                         return;
                                                 }
+
                                         }
                                         break;
                                 case MocaLexer.LEFT_PAREN:
@@ -376,24 +364,15 @@ public class DocumentOnTypeFormattingProvider {
                                         break;
                                 case MocaLexer.AMPERSAND:
                                         // Space before.
-
-                                        // Add newline to start only if we are at typedPos.
-                                        // Since we are formatting above typedPos, typedPos's offset will either be <=
-                                        // current moca token offset. Make sure to quit right after!
-                                        // TODO: Just testing this!
-                                        if (typedChar.compareToIgnoreCase(curMocaToken.getText()) == 0
-                                                        && typedPosOffset <= curMocaTokenOffset) {
-                                                edits.add(new TextEdit(new Range(
-                                                                Positions.getPosition(mocaScript,
-                                                                                curMocaTokenBeginWhitespaceIdx),
-                                                                Positions.getPosition(mocaScript,
-                                                                                curMocaTokenStartIdx)),
-                                                                SPACE));
-                                                return;
-                                        }
+                                        edits.add(new TextEdit(new Range(
+                                                        Positions.getPosition(mocaScript,
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
+                                                        SPACE));
 
                                         // Add newline to end only if we are at typedPos.
-                                        // Since we are formatting above typedPos, typedPos's offset will either be <=
+                                        // Since we are formatting above typedPos, typedPos's offset will either
+                                        // be <=
                                         // current moca token offset. Make sure to quit right after!
                                         if (typedChar.compareToIgnoreCase(curMocaToken.getText()) == 0
                                                         && typedPosOffset <= curMocaTokenOffset) {
@@ -405,6 +384,7 @@ public class DocumentOnTypeFormattingProvider {
                                                                 NEWLINE + indentBuilder.toString()));
                                                 return;
                                         }
+
                                         break;
                                 case MocaLexer.COMMA:
                                         // Remove whitespace before and add space after.

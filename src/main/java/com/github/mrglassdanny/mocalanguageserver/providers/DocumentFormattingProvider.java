@@ -174,6 +174,15 @@ public class DocumentFormattingProvider {
                                                         Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
                                                         EMPTY));
 
+                                        // Add newline and indents after.
+                                        edits.add(new TextEdit(new Range(
+                                                        Positions.getPosition(mocaScript, curMocaTokenStopIdx),
+                                                        // It is not a mistake that we are repeating
+                                                        // curMocaTokenStopIdx -- it is needed for
+                                                        // proper semicolon formatting!
+                                                        Positions.getPosition(mocaScript, nextMocaTokenStartIdx)),
+                                                        NEWLINE + indentBuilder.toString()));
+
                                         break;
                                 case MocaLexer.LEFT_BRACE:
                                         // Newline before(only if prev did not add new line
