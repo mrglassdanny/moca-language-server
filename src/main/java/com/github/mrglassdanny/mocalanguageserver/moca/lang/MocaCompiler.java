@@ -31,7 +31,7 @@ public class MocaCompiler {
     private static final Pattern XML_HEADER_PATTERN = Pattern
             .compile("<!\\[CDATA\\[(?=(?:[^(\"|')]*(\"|')[^(\"|')]*(\"|'))*[^(\"|')]*$)");
 
-    public List<Token> mocaTokens; // From lexer.
+    public List<? extends Token> mocaTokens; // From lexer.
     public MocaCompilationResult currentCompilationResult;
 
     public ArrayList<Range> sqlRanges;
@@ -101,13 +101,7 @@ public class MocaCompiler {
         compilationResult.mocaParseTreeListener = new MocaParseTreeListener();
         new ParseTreeWalker().walk(compilationResult.mocaParseTreeListener, parseTree);
 
-        MocaLexer mocaLexer = new MocaLexer(CharStreams.fromString(mocaScript));
-        List tokens = mocaLexer.getAllTokens();
-        // If we get here, the lexer must not have had any issues.
-        // Go ahead and set mocaTokens.
-        if (tokens != null) {
-            this.mocaTokens = tokens;
-        }
+        this.mocaTokens = new MocaLexer(CharStreams.fromString(mocaScript)).getAllTokens();
 
         // Update embedded lang ranges, then compile them.
         this.updateEmbeddedLanguageRanges(mocaScript);
@@ -128,8 +122,9 @@ public class MocaCompiler {
         // Now Groovy.
         for (int i = 0; i < this.groovyRanges.size(); i++) {
             // Remove '[[]]'.
-            String groovyScript = Ranges.getText(mocaScript, this.groovyRanges.get(i)).replaceAll("(\\[\\[)|(\\]\\])",
-                    "");
+
+            String groovyScript = Ranges.getText(mocaScript, this.groovyRanges.get(i));
+            groovyScript = groovyScript.substring(2, groovyScript.length() - 2);
 
             this.groovyCompiler.compileScript(i, groovyScript, this, mocaScript);
         }
@@ -165,8 +160,6 @@ public class MocaCompiler {
 
     }
 
-    // TODO: cant we just get the current moca lexer token for position and just
-    // check that way? Probably would be faster...
     public MocaLanguageContext getMocaLanguageContextFromPosition(Position position) {
 
         // Check sql.

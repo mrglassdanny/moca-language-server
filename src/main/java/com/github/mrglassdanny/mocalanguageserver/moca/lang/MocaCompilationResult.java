@@ -35,10 +35,4 @@ public class MocaCompilationResult {
         return this.mocaSyntaxErrorListener != null && this.mocaSyntaxErrorListener.mocaSyntaxErrors.size() > 0;
     }
 
-    // // TODO
-    // public String getParseErrorText() {
-    // // return this.parseException.getMessage();
-    // return "";
-    // }
-
 }
