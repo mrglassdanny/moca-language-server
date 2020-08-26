@@ -17,7 +17,6 @@ import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
 
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ConsoleErrorListener;
-import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;

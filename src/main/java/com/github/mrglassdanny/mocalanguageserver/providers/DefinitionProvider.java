@@ -68,11 +68,11 @@ public class DefinitionProvider {
 
                         // Checking for begin/end match since token objects parsed and lexed will not be
                         // the same objects.
-                        for (org.antlr.v4.runtime.Token parsedMocaToken : entry.getValue()) {
-                            if (parsedMocaToken.getStartIndex() == curMocaToken.getStartIndex()
+                        for (org.antlr.v4.runtime.Token verbNounClauseToken : entry.getValue()) {
+                            if (verbNounClauseToken.getStartIndex() == curMocaToken.getStartIndex()
                                     // No need to adjust stop index here!
-                                    && parsedMocaToken.getStopIndex() == curMocaToken.getStopIndex()
-                                    && parsedMocaToken.getType() == curMocaToken.getType()) {
+                                    && verbNounClauseToken.getStopIndex() == curMocaToken.getStopIndex()
+                                    && verbNounClauseToken.getType() == curMocaToken.getType()) {
 
                                 verbNounClause = entry.getKey();
 
@@ -105,7 +105,7 @@ public class DefinitionProvider {
 
                                                 locations.add(location);
 
-                                            } catch (IOException ioE) {
+                                            } catch (IOException ioException) {
                                                 return CompletableFuture
                                                         .completedFuture(Either.forLeft(Collections.emptyList()));
                                             }

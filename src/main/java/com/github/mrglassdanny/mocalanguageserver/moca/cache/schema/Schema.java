@@ -47,7 +47,7 @@ public class Schema {
         MocaResults res = conn.executeCommand(Schema.TABLES_SCRIPT).results;
 
         if (res != null) {
-            for (int rowIdx = 0; rowIdx < res.values.length; rowIdx++) {
+            for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
                 String tableName = res.getString(rowIdx, "table_name").toLowerCase();
                 this.tables.put(tableName, new Table(tableName, res.getString(rowIdx, "description")));
             }
@@ -63,7 +63,7 @@ public class Schema {
 
         if (res != null) {
 
-            for (int rowIdx = 0; rowIdx < res.values.length; rowIdx++) {
+            for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
                 String viewName = res.getString(rowIdx, "view_name").toLowerCase();
                 this.views.put(viewName, new Table(viewName, ""));
             }
@@ -89,7 +89,7 @@ public class Schema {
         // table_name, column_name.
         if (tableColRes != null) {
 
-            for (int rowIdx = 0; rowIdx < tableColRes.values.length; rowIdx++) {
+            for (int rowIdx = 0; rowIdx < tableColRes.getRowCount(); rowIdx++) {
                 String tableName = tableColRes.getString(rowIdx, "table_name");
                 String curRowTableName = tableName; // Gets updated each row.
                 ArrayList<TableColumn> tableCols = new ArrayList<>();
@@ -109,7 +109,7 @@ public class Schema {
                             tableColRes.getBoolean(rowIdx, "pk_flg"), tableColRes.getBoolean(rowIdx, "ident_flg"),
                             tableColRes.getString(rowIdx, "column_comment")));
 
-                    if (rowIdx >= tableColRes.values.length) {
+                    if (rowIdx >= tableColRes.getRowCount()) {
                         break;
                     } else {
                         rowIdx++;
@@ -136,7 +136,7 @@ public class Schema {
 
         if (viewColRes != null) {
 
-            for (int rowIdx = 0; rowIdx < viewColRes.values.length; rowIdx++) {
+            for (int rowIdx = 0; rowIdx < viewColRes.getRowCount(); rowIdx++) {
                 String viewName = viewColRes.getString(rowIdx, "table_name");
                 String curRowViewName = viewName; // Gets updated each row.
                 ArrayList<TableColumn> viewCols = new ArrayList<>();
@@ -156,7 +156,7 @@ public class Schema {
                             viewColRes.getBoolean(rowIdx, "pk_flg"), viewColRes.getBoolean(rowIdx, "ident_flg"),
                             viewColRes.getString(rowIdx, "column_comment")));
 
-                    if (rowIdx >= viewColRes.values.length) {
+                    if (rowIdx >= viewColRes.getRowCount()) {
                         break;
                     } else {
                         rowIdx++;

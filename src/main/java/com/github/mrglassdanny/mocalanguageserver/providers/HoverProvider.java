@@ -65,6 +65,11 @@ public class HoverProvider {
                     org.antlr.v4.runtime.Token curMocaToken = mocaCompiler.getMocaTokenAtPosition(textDocumentContents,
                             position);
 
+                    // Validate curMocaToken.
+                    if (curMocaToken == null) {
+                        return CompletableFuture.completedFuture(hover);
+                    }
+
                     // Get command unit current moca token is in.
                     String verbNounClause = null;
                     for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
@@ -72,11 +77,11 @@ public class HoverProvider {
 
                         // Checking for begin/end match since token objects parsed and lexed will not be
                         // the same objects.
-                        for (org.antlr.v4.runtime.Token parsedMocaToken : entry.getValue()) {
-                            if (parsedMocaToken.getStartIndex() == curMocaToken.getStartIndex()
+                        for (org.antlr.v4.runtime.Token verbNounClauseToken : entry.getValue()) {
+                            if (verbNounClauseToken.getStartIndex() == curMocaToken.getStartIndex()
                                     // No need to adjust stop index here!
-                                    && parsedMocaToken.getStopIndex() == curMocaToken.getStopIndex()
-                                    && parsedMocaToken.getType() == curMocaToken.getType()) {
+                                    && verbNounClauseToken.getStopIndex() == curMocaToken.getStopIndex()
+                                    && verbNounClauseToken.getType() == curMocaToken.getType()) {
 
                                 verbNounClause = entry.getKey();
 

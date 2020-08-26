@@ -143,7 +143,7 @@ public class ExecuteCommandProvider {
 
                     int rowCount = 0;
                     if (mocaResultsResponse.results != null) {
-                        rowCount = mocaResultsResponse.results.values.length;
+                        rowCount = mocaResultsResponse.results.getRowCount();
                     }
 
                     languageClient.logMessage(new MessageParams(MessageType.Info, mocaResultsRequest.fileName

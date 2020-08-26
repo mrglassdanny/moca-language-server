@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
+
 import com.github.mrglassdanny.mocalanguageserver.moca.MocaResults;
 
 public class CommandRepository {
@@ -26,17 +27,7 @@ public class CommandRepository {
 
     }
 
-    public void prepareForLoad() {
-        // Clear all lists.
-        this.distinctCommands.clear();
-        this.commands.clear();
-        this.commandArguments.clear();
-        this.triggers.clear();
-    }
-
     public void loadAsync(MocaConnectionWrapper conn) {
-
-        this.prepareForLoad();
 
         CompletableFuture.runAsync(() -> {
             this.loadCommands(conn);
@@ -57,16 +48,16 @@ public class CommandRepository {
         this.commands.clear();
 
         MocaResults res = conn.executeCommand(CommandRepository.COMMANDS_SCRIPT).results;
-
         if (res != null) {
 
-            for (int rowIdx = 0; rowIdx < res.values.length; rowIdx++) {
+            for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
                 String command = res.getString(rowIdx, "command");
                 if (this.commands.containsKey(command)) {
 
                     // Do not add to distinct mcmd list.
 
                     ArrayList<MocaCommand> cmds = this.commands.get(command);
+
                     cmds.add(new MocaCommand(res.getString(rowIdx, "cmplvl"), res.getInt(rowIdx, "cmplvlseq"), command,
                             res.getString(rowIdx, "type"), res.getString(rowIdx, "syntax"),
                             res.getString(rowIdx, "desc")));
@@ -76,6 +67,7 @@ public class CommandRepository {
                     cmds.add(new MocaCommand(res.getString(rowIdx, "cmplvl"), res.getInt(rowIdx, "cmplvlseq"), command,
                             res.getString(rowIdx, "type"), res.getString(rowIdx, "syntax"),
                             res.getString(rowIdx, "desc")));
+
                     this.commands.put(command, cmds);
 
                     // Add to distinct mcmd list.
@@ -124,7 +116,7 @@ public class CommandRepository {
 
         if (res != null) {
 
-            for (int rowIdx = 0; rowIdx < res.values.length; rowIdx++) {
+            for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
                 String command = res.getString(rowIdx, "command");
                 if (this.commandArguments.containsKey(command)) {
 
@@ -155,7 +147,7 @@ public class CommandRepository {
 
         if (res != null) {
 
-            for (int rowIdx = 0; rowIdx < res.values.length; rowIdx++) {
+            for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
                 String command = res.getString(rowIdx, "command");
                 if (this.triggers.containsKey(command)) {
                     // No need to worry about sorting, as the result set is sorted by command,

@@ -25,6 +25,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.ast.SqlStatementVisitor;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
 import org.codehaus.groovy.ast.ASTNode;
@@ -78,10 +79,8 @@ public class CompletionProvider {
                 // For completion, we need to make sure the moca compiliation result we are
                 // looking at has no errors.
                 MocaCompilationResult mocaCompilationResult = mocaCompiler.currentCompilationResult;
-                if (mocaCompilationResult.hasMocaErrors()) {
-                    mocaCompilationResult = mocaCompiler.lastSuccessfulCompilationResult;
-                }
 
+                // Validate compilation result.
                 if (mocaCompilationResult == null) {
                     // Can assume user wants commands.
                     populateMocaCommands(items);
@@ -91,6 +90,13 @@ public class CompletionProvider {
                 // Now, we need to see where we are in token list based on the position that was
                 // passed in.
                 int curMocaTokenIdx = mocaCompiler.getMocaTokenIndexAtPosition(textDocumentContents, position);
+
+                // Validate we have a valid index.
+                if (curMocaTokenIdx == -1) {
+                    // Can assume user wants commands.
+                    populateMocaCommands(items);
+                    return CompletableFuture.completedFuture(Either.forLeft(items));
+                }
 
                 // Check if bracket string before we do anything else. If so, return nothing for
                 // now.
@@ -102,12 +108,6 @@ public class CompletionProvider {
                     return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
                 }
 
-                if (curMocaTokenIdx == -1) {
-                    // Can assume user wants commands.
-                    populateMocaCommands(items);
-                    return CompletableFuture.completedFuture(Either.forLeft(items));
-                }
-
                 // Check if the word we are typing resembles "where".
                 // If so, we want nothing for now.
                 String curWord = Positions.getWordAtPosition(textDocumentContents, position);
@@ -117,13 +117,13 @@ public class CompletionProvider {
                     return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
                 }
 
+                // Now we are just going to look backward until we find something that we know
+                // what to do with.
                 for (int i = curMocaTokenIdx; i >= 0; i--) {
                     org.antlr.v4.runtime.Token curMocaToken = mocaCompiler.mocaTokens.get(i);
                     switch (curMocaToken.getType()) {
                         case MocaLexer.WHERE:
-                            // case AND:
-                            // Do not look for AND!
-                            // We want args!
+                            // Do not look for AND -- we know that we want args here.
 
                             // Get command unit current moca token is in.
                             String verbNounClause = null;
@@ -131,27 +131,23 @@ public class CompletionProvider {
                             for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                                     .entrySet()) {
 
-                                // We are checking for 2 things:
-                                // 1. a WHERE token match - this will be the case if more than 1 arg has been
-                                // typed. This will be a match of begin, end, and type.
-                                // 2. a token match between the curMocaToken(WHERE) and the soon-to-be WHERE
-                                // token that is part of the last successful parse result(where|wher|whe|wh|w).
-                                // This will be a match of begin and regex match of parsed token value.
-                                for (org.antlr.v4.runtime.Token parsedMocaToken : entry.getValue()) {
+                                // We have a WHERE token match, therefore we know that the token prior to our
+                                // current token is part of a verb noun clause. All we need to do is get that
+                                // token and figure out what the verb noun clause is. Unfortunatley, we do not
+                                // have an easy way of just doing a token lookup in our verb noun clause map.
+                                // So, that means we need to go through each entry in the map and find the token
+                                // that we think corresponds to the token right before where we currently
+                                // are(WHERE).
 
-                                    if (((parsedMocaToken.getStartIndex() >= curMocaToken.getStartIndex() - 10
-                                            && parsedMocaToken.getStartIndex() <= curMocaToken.getStartIndex())
-                                            // This is a little goofy, but if
-                                            // formatting on type is turned on,
-                                            // the begin for the parsed token and
-                                            // the begin for the curtoken will be
-                                            // different.
-                                            && parsedMocaToken.getText().matches("(?i)\\b(where|wher|whe|wh|w)\\b"))
-                                            || (parsedMocaToken.getStartIndex() == curMocaToken.getStartIndex()
-                                                    // No need to adjust stop index here!
-                                                    && parsedMocaToken.getStopIndex() == curMocaToken.getStopIndex()
-                                                    && parsedMocaToken.getType() == curMocaToken.getType())) {
+                                for (org.antlr.v4.runtime.Token verbNounClauseToken : entry.getValue()) {
 
+                                    // Idea here is that it is extremely unlikely that the stop index of the verb
+                                    // noun clause token we are checking will not be within 5 characters of our
+                                    // current token's start. Also, the verb noun clause token's start index needs
+                                    // to be less than our current token index.
+                                    if (((MocaTokenUtils.getAdjustedMocaTokenStopIndex(
+                                            verbNounClauseToken.getStopIndex()) >= curMocaToken.getStartIndex() - 5
+                                            && verbNounClauseToken.getStartIndex() <= curMocaToken.getStartIndex()))) {
                                         verbNounClause = entry.getKey();
                                         foundTokenMatch = true;
                                         break;
@@ -161,38 +157,18 @@ public class CompletionProvider {
                                     break;
                                 }
                             }
-                            // Now we can get the command unit's data.
+                            // Now we can get the command unit's data from our distinct commands list!
                             if (verbNounClause != null) {
-                                // Now, need to potentially remove the last token from the verbNounClause
-                                // IF we matched the 2nd condition above.
-                                // Let's check all the distinct commands for both conditions: as it is, and
-                                // removing the last token.
-
-                                // First checking verbNounClause as is.
-                                if (!MocaLanguageServer.currentMocaConnection.cache.commandRepository.distinctCommands
+                                if (MocaLanguageServer.currentMocaConnection.cache.commandRepository.distinctCommands
                                         .contains(verbNounClause)) {
-                                    // Remove last token and try again.
-                                    try {
-                                        verbNounClause = verbNounClause.substring(0, verbNounClause.lastIndexOf(" "));
-                                    } catch (StringIndexOutOfBoundsException stringIndexOutOfBoundsException) {
-                                        // Do nothing...
-                                    }
 
-                                    if (!MocaLanguageServer.currentMocaConnection.cache.commandRepository.distinctCommands
-                                            .contains(verbNounClause)) {
-                                        // This will stop us from trying to get completion items below.
-                                        verbNounClause = null;
-                                    }
+                                    // HACK - getting the first letter typed for command arg population; see
+                                    // function for more info.
+                                    char firstTypedLetter = Positions.getCharacterAtPosition(textDocumentContents,
+                                            new Position(position.getLine(), position.getCharacter() - 1));
+                                    populateMocaCommandArguments(verbNounClause, items, firstTypedLetter);
+                                    return CompletableFuture.completedFuture(Either.forLeft(items));
                                 }
-                            }
-
-                            if (verbNounClause != null) {
-                                // HACK - getting the first letter typed for command arg population; see
-                                // function for more info.
-                                char firstTypedLetter = Positions.getCharacterAtPosition(textDocumentContents,
-                                        new Position(position.getLine(), position.getCharacter() - 1));
-                                populateMocaCommandArguments(verbNounClause, items, firstTypedLetter);
-                                return CompletableFuture.completedFuture(Either.forLeft(items));
                             }
 
                             // If nothing for some reason, return empty list.

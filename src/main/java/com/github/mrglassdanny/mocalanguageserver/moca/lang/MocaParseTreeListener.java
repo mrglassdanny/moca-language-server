@@ -36,8 +36,7 @@ public class MocaParseTreeListener extends MocaBaseListener {
                 // Let's also ignore WHERE token.
                 if (commonToken.getType() != MocaLexer.CARET && commonToken.getType() != MocaLexer.WHERE) {
                     verbNounClauseBuf.append(commonToken.getText() + " "); // Need to put a space since we skip
-                                                                           // whitespace
-                    // in parser!
+                                                                           // whitespace in parser!
                     tokens.add(commonToken);
                 }
             } else {
@@ -45,7 +44,8 @@ public class MocaParseTreeListener extends MocaBaseListener {
             }
         }
 
-        String verbNounClause = verbNounClauseBuf.toString();
+        String verbNounClause = verbNounClauseBuf.toString().trim(); // Need to make sure string is trimmed, especially
+                                                                     // since we added spaces above.
 
         this.verbNounClauses.put(verbNounClause, tokens);
 
