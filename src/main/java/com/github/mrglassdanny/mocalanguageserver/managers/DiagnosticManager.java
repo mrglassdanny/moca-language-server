@@ -168,9 +168,6 @@ public class DiagnosticManager {
 
         // Need to make sure we have a moca ast.
         MocaCompilationResult mocaCompilationResult = mocaCompiler.currentCompilationResult;
-        if (mocaCompilationResult.hasMocaErrors()) {
-            mocaCompilationResult = mocaCompiler.lastSuccessfulCompilationResult;
-        }
 
         if (mocaCompilationResult == null) {
             // Return empty list.

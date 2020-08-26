@@ -33,9 +33,6 @@ public class MocaCompiler {
 
     public List<Token> mocaTokens; // From lexer.
     public MocaCompilationResult currentCompilationResult;
-    // Based on how parser works(no ast data when exception in parse), we need to
-    // store last successful compilation results.
-    public MocaCompilationResult lastSuccessfulCompilationResult;
 
     public ArrayList<Range> sqlRanges;
     public ArrayList<Range> groovyRanges;
@@ -46,7 +43,6 @@ public class MocaCompiler {
     public MocaCompiler() {
         this.mocaTokens = null;
         this.currentCompilationResult = null;
-        this.lastSuccessfulCompilationResult = null;
 
         this.sqlRanges = new ArrayList<>();
         this.groovyRanges = new ArrayList<>();
@@ -104,11 +100,6 @@ public class MocaCompiler {
         ParseTree parseTree = compilationResult.mocaParser.moca_script();
         compilationResult.mocaParseTreeListener = new MocaParseTreeListener();
         new ParseTreeWalker().walk(compilationResult.mocaParseTreeListener, parseTree);
-
-        // Check if we have any syntax errors.
-        if (!compilationResult.hasMocaErrors()) {
-            this.lastSuccessfulCompilationResult = compilationResult;
-        }
 
         MocaLexer mocaLexer = new MocaLexer(CharStreams.fromString(mocaScript));
         List tokens = mocaLexer.getAllTokens();
@@ -174,6 +165,8 @@ public class MocaCompiler {
 
     }
 
+    // TODO: cant we just get the current moca lexer token for position and just
+    // check that way? Probably would be faster...
     public MocaLanguageContext getMocaLanguageContextFromPosition(Position position) {
 
         // Check sql.
