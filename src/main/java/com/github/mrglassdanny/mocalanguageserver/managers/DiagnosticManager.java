@@ -9,12 +9,13 @@ import java.util.regex.Pattern;
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaSyntaxError;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.ast.SqlStatementVisitor;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.util.SqlLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
 
@@ -24,8 +25,6 @@ import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
 import org.codehaus.groovy.syntax.SyntaxException;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
-import org.eclipse.lsp4j.MessageParams;
-import org.eclipse.lsp4j.MessageType;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.Range;
@@ -145,13 +144,17 @@ public class DiagnosticManager {
             return new ArrayList<>();
         } else {
             ArrayList<Diagnostic> diagnostics = new ArrayList<>();
-            MocaLanguageServer.languageClient.logMessage(new MessageParams(MessageType.Error, "HAS ERROR"));
-            Range range = MocaLanguageUtils.syntaxExceptionToRange(compilationResult.parseException);
-            Diagnostic diagnostic = new Diagnostic();
-            diagnostic.setRange(range);
-            diagnostic.setSeverity(DiagnosticSeverity.Error);
-            diagnostic.setMessage("MOCA: " + compilationResult.getParseErrorText());
-            diagnostics.add(diagnostic);
+
+            for (MocaSyntaxError mocaSyntaxError : compilationResult.mocaSyntaxErrorListener.mocaSyntaxErrors) {
+                Position pos = new Position(mocaSyntaxError.line, mocaSyntaxError.charPositionInLine);
+                Range range = new Range(pos, pos);
+                Diagnostic diagnostic = new Diagnostic();
+                diagnostic.setRange(range);
+                diagnostic.setSeverity(DiagnosticSeverity.Error);
+                diagnostic.setMessage(String.format("MOCA: line %d:%d %s", mocaSyntaxError.line,
+                        mocaSyntaxError.charPositionInLine, mocaSyntaxError.msg));
+                diagnostics.add(diagnostic);
+            }
 
             return diagnostics;
 
@@ -187,13 +190,14 @@ public class DiagnosticManager {
                     .contains(verbNounClause)) {
 
                 ArrayList<org.antlr.v4.runtime.Token> mocaTokens = entry.getValue();
-                // No need to valide size -- we can assume that we have at least 1 moca token in
-                // list.
+                // No need to validate size -- we can assume that we have
+                // at least 1 moca token in list.
                 org.antlr.v4.runtime.Token beginToken = mocaTokens.get(0);
                 org.antlr.v4.runtime.Token endToken = mocaTokens.get(mocaTokens.size() - 1);
 
                 Position beginPos = Positions.getPosition(script, beginToken.getStartIndex());
-                Position endPos = Positions.getPosition(script, endToken.getStopIndex());
+                Position endPos = Positions.getPosition(script,
+                        MocaTokenUtils.getAdjustedMocaTokenStopIndex(endToken.getStopIndex()));
 
                 if (beginPos != null && endPos != null) {
                     Range range = new Range(beginPos, endPos);

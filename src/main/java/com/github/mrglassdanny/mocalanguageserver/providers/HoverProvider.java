@@ -74,6 +74,7 @@ public class HoverProvider {
                         // the same objects.
                         for (org.antlr.v4.runtime.Token parsedMocaToken : entry.getValue()) {
                             if (parsedMocaToken.getStartIndex() == curMocaToken.getStartIndex()
+                                    // No need to adjust stop index here!
                                     && parsedMocaToken.getStopIndex() == curMocaToken.getStopIndex()
                                     && parsedMocaToken.getType() == curMocaToken.getType()) {
 

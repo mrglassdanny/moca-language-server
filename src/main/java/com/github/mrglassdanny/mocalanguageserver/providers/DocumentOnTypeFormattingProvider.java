@@ -8,6 +8,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.util.SqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
 import org.eclipse.lsp4j.DocumentOnTypeFormattingParams;
@@ -60,12 +61,25 @@ public class DocumentOnTypeFormattingProvider {
                 for (int i = 0; i < mocaTokenCount; i++) {
 
                         curMocaToken = mocaCompiler.mocaTokens.get(i);
-                        curMocaTokenOffset = curMocaToken.getStartIndex() + 1; // Not 100% sure we we have to add 1...
+
+                        int curMocaTokenStartIdx = curMocaToken.getStartIndex();
+                        int curMocaTokenStopIdx = MocaTokenUtils
+                                        .getAdjustedMocaTokenStopIndex(curMocaToken.getStopIndex());
+
+                        curMocaTokenOffset = curMocaTokenStartIdx + 1; // Not 100% sure we we have to add 1...
 
                         if (i > 0) {
                                 prevMocaToken = mocaCompiler.mocaTokens.get(i - 1);
                         } else {
                                 prevMocaToken = null;
+                        }
+
+                        int prevMocaTokenStartIdx = curMocaTokenStartIdx;
+                        int prevMocaTokenStopIdx = curMocaTokenStartIdx;
+                        if (prevMocaToken != null) {
+                                prevMocaTokenStartIdx = prevMocaToken.getStartIndex();
+                                prevMocaTokenStopIdx = MocaTokenUtils
+                                                .getAdjustedMocaTokenStopIndex(prevMocaToken.getStopIndex());
                         }
 
                         if (i < mocaTokenCount - 1) {
@@ -74,10 +88,18 @@ public class DocumentOnTypeFormattingProvider {
                                 nextMocaToken = null;
                         }
 
+                        int nextMocaTokenStartIdx = curMocaTokenStopIdx;
+                        int nextMocaTokenStopIdx = curMocaTokenStopIdx;
+                        if (nextMocaToken != null) {
+                                nextMocaTokenStartIdx = nextMocaToken.getStartIndex();
+                                nextMocaTokenStopIdx = MocaTokenUtils
+                                                .getAdjustedMocaTokenStopIndex(nextMocaToken.getStopIndex());
+                        }
+
                         // Have to manually calculate begin whitespace.
-                        int curMocaTokenBeginWhitespace = 0;
+                        int curMocaTokenBeginWhitespaceIdx = 0;
                         if (prevMocaToken != null) {
-                                curMocaTokenBeginWhitespace = prevMocaToken.getStopIndex() + 1;
+                                curMocaTokenBeginWhitespaceIdx = prevMocaTokenStopIdx;
                         }
 
                         switch (curMocaToken.getType()) {
@@ -124,13 +146,22 @@ public class DocumentOnTypeFormattingProvider {
                                         // Format.
                                         break;
                                 case MocaLexer.SEMI_COLON:
-                                        // Remove whitespace before.
-                                        edits.add(new TextEdit(
-                                                        new Range(Positions.getPosition(mocaScript,
-                                                                        curMocaTokenBeginWhitespace),
-                                                                        Positions.getPosition(mocaScript,
-                                                                                        curMocaToken.getStartIndex())),
-                                                        EMPTY));
+
+                                        // Add newline to start only if we are at typedPos.
+                                        // Since we are formatting above typedPos, typedPos's offset will either be <=
+                                        // current moca token offset. Make sure to quit right after!
+                                        // TODO: Just testing this!
+                                        if (typedChar.compareToIgnoreCase(curMocaToken.getText()) == 0
+                                                        && typedPosOffset <= curMocaTokenOffset) {
+                                                // Remove whitespace before.
+                                                edits.add(new TextEdit(new Range(
+                                                                Positions.getPosition(mocaScript,
+                                                                                curMocaTokenBeginWhitespaceIdx),
+                                                                Positions.getPosition(mocaScript,
+                                                                                curMocaTokenStartIdx)),
+                                                                EMPTY));
+                                                return;
+                                        }
 
                                         // Add newline to end only if we are at typedPos.
                                         // Since we are formatting above typedPos, typedPos's offset will either be <=
@@ -139,10 +170,9 @@ public class DocumentOnTypeFormattingProvider {
                                                         && typedPosOffset <= curMocaTokenOffset) {
 
                                                 edits.add(new TextEdit(new Range(
+                                                                Positions.getPosition(mocaScript, curMocaTokenStopIdx),
                                                                 Positions.getPosition(mocaScript,
-                                                                                curMocaToken.getStopIndex()),
-                                                                Positions.getPosition(mocaScript,
-                                                                                curMocaToken.getStopIndex())),
+                                                                                nextMocaTokenStartIdx)),
                                                                 NEWLINE + indentBuilder.toString()));
                                                 return;
                                         }
@@ -157,9 +187,9 @@ public class DocumentOnTypeFormattingProvider {
                                                                 && prevMocaToken.getType() != MocaLexer.LEFT_BRACE) {
                                                         edits.add(new TextEdit(new Range(
                                                                         Positions.getPosition(mocaScript,
-                                                                                        curMocaTokenBeginWhitespace),
+                                                                                        curMocaTokenBeginWhitespaceIdx),
                                                                         Positions.getPosition(mocaScript,
-                                                                                        curMocaToken.getStartIndex())),
+                                                                                        curMocaTokenStartIdx)),
                                                                         SPACE));
                                                 }
                                         }
@@ -179,38 +209,43 @@ public class DocumentOnTypeFormattingProvider {
                                                 // Space at beginning and remove whitespace after.
                                                 edits.add(new TextEdit(new Range(
                                                                 Positions.getPosition(mocaScript,
-                                                                                curMocaTokenBeginWhitespace),
+                                                                                curMocaTokenBeginWhitespaceIdx),
                                                                 Positions.getPosition(mocaScript,
-                                                                                curMocaToken.getStartIndex())),
+                                                                                curMocaTokenStartIdx)),
                                                                 SPACE));
                                                 edits.add(new TextEdit(
-                                                                new Range(Positions.getPosition(
-                                                                                mocaScript,
-                                                                                curMocaToken.getStopIndex()),
+                                                                new Range(Positions.getPosition(mocaScript,
+                                                                                curMocaTokenStopIdx),
                                                                                 Positions.getPosition(mocaScript,
-                                                                                                (nextMocaToken == null
-                                                                                                                ? curMocaToken.getStopIndex()
-                                                                                                                : nextMocaToken.getStartIndex()))),
+                                                                                                nextMocaTokenStartIdx)),
                                                                 EMPTY));
                                         } else if (prevMocaToken != null && prevMocaToken.getType() == MocaLexer.PIPE) {
                                                 // Space in back - we are remove whitespace between pipes in cond above.
                                                 edits.add(new TextEdit(
-                                                                new Range(Positions.getPosition(
-                                                                                mocaScript,
-                                                                                curMocaToken.getStopIndex()),
+                                                                new Range(Positions.getPosition(mocaScript,
+                                                                                curMocaTokenStopIdx),
                                                                                 Positions.getPosition(mocaScript,
-                                                                                                (nextMocaToken == null
-                                                                                                                ? curMocaToken.getStopIndex()
-                                                                                                                : nextMocaToken.getStartIndex()))),
+                                                                                                nextMocaTokenStartIdx)),
                                                                 SPACE));
                                         } else {
-                                                // Newline before.
-                                                edits.add(new TextEdit(new Range(
-                                                                Positions.getPosition(mocaScript,
-                                                                                curMocaTokenBeginWhitespace),
-                                                                Positions.getPosition(mocaScript,
-                                                                                curMocaToken.getStartIndex())),
-                                                                NEWLINE + indentBuilder.toString()));
+
+                                                // Add newline to start only if we are at typedPos.
+                                                // Since we are formatting above typedPos, typedPos's offset will either
+                                                // be <=
+                                                // current moca token offset. Make sure to quit right after!
+                                                // TODO: Just testing this!
+                                                if (typedChar.compareToIgnoreCase(curMocaToken.getText()) == 0
+                                                                && typedPosOffset <= curMocaTokenOffset) {
+
+                                                        // Newline before.
+                                                        edits.add(new TextEdit(new Range(
+                                                                        Positions.getPosition(mocaScript,
+                                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                                        Positions.getPosition(mocaScript,
+                                                                                        curMocaTokenStartIdx)),
+                                                                        NEWLINE + indentBuilder.toString()));
+                                                        return;
+                                                }
 
                                                 // Add newline to end only if we are at typedPos.
                                                 // Since we are formatting above typedPos, typedPos's offset will either
@@ -221,9 +256,9 @@ public class DocumentOnTypeFormattingProvider {
 
                                                         edits.add(new TextEdit(new Range(
                                                                         Positions.getPosition(mocaScript,
-                                                                                        curMocaToken.getStopIndex()),
+                                                                                        curMocaTokenStopIdx),
                                                                         Positions.getPosition(mocaScript,
-                                                                                        curMocaToken.getStopIndex())),
+                                                                                        nextMocaTokenStartIdx)),
                                                                         NEWLINE + indentBuilder.toString()));
                                                         return;
                                                 }
@@ -233,38 +268,32 @@ public class DocumentOnTypeFormattingProvider {
                                         parenStack++;
                                         // Remove whitespace after.
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.getStopIndex()),
-                                                        Positions.getPosition(mocaScript, (nextMocaToken == null
-                                                                        ? curMocaToken.getStopIndex()
-                                                                        : nextMocaToken.getStartIndex()))),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStopIdx),
+                                                        Positions.getPosition(mocaScript, nextMocaTokenStartIdx)),
                                                         EMPTY));
                                         break;
                                 case MocaLexer.RIGHT_PAREN:
                                         parenStack--;
                                         // Remove whitespace before.
-                                        edits.add(new TextEdit(
-                                                        new Range(Positions.getPosition(mocaScript,
-                                                                        curMocaTokenBeginWhitespace),
-                                                                        Positions.getPosition(mocaScript,
-                                                                                        curMocaToken.getStartIndex())),
+                                        edits.add(new TextEdit(new Range(
+                                                        Positions.getPosition(mocaScript,
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
                                                         EMPTY));
                                         break;
                                 case MocaLexer.IF:
                                         // Remove whitespace after.
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.getStopIndex()),
-                                                        Positions.getPosition(mocaScript, (nextMocaToken == null
-                                                                        ? curMocaToken.getStopIndex()
-                                                                        : nextMocaToken.getStartIndex()))),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStopIdx),
+                                                        Positions.getPosition(mocaScript, nextMocaTokenStartIdx)),
                                                         EMPTY));
                                         break;
                                 case MocaLexer.ELSE:
                                         // Space before.
-                                        edits.add(new TextEdit(
-                                                        new Range(Positions.getPosition(mocaScript,
-                                                                        curMocaTokenBeginWhitespace),
-                                                                        Positions.getPosition(mocaScript,
-                                                                                        curMocaToken.getStartIndex())),
+                                        edits.add(new TextEdit(new Range(
+                                                        Positions.getPosition(mocaScript,
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
                                                         SPACE));
                                         break;
                                 case MocaLexer.DOUBLE_GREATER:
@@ -280,27 +309,24 @@ public class DocumentOnTypeFormattingProvider {
                                 case MocaLexer.NOT:
                                 case MocaLexer.IS:
                                         // Space before and after.
-                                        edits.add(new TextEdit(
-                                                        new Range(Positions.getPosition(mocaScript,
-                                                                        curMocaTokenBeginWhitespace),
-                                                                        Positions.getPosition(mocaScript,
-                                                                                        curMocaToken.getStartIndex())),
+                                        edits.add(new TextEdit(new Range(
+                                                        Positions.getPosition(mocaScript,
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
                                                         SPACE));
 
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.getStopIndex()),
-                                                        Positions.getPosition(mocaScript, (nextMocaToken == null
-                                                                        ? curMocaToken.getStopIndex()
-                                                                        : nextMocaToken.getStartIndex()))),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStopIdx),
+                                                        Positions.getPosition(mocaScript, nextMocaTokenStartIdx)),
                                                         SPACE));
 
                                         break;
                                 case MocaLexer.WHERE:
                                         // Newline + tab before.
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaTokenBeginWhitespace),
                                                         Positions.getPosition(mocaScript,
-                                                                        curMocaToken.getStartIndex())),
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
                                                         NEWLINE + TAB + indentBuilder.toString()));
                                         break;
                                 case MocaLexer.AND:
@@ -309,26 +335,23 @@ public class DocumentOnTypeFormattingProvider {
                                                 // Space before and after.
                                                 edits.add(new TextEdit(new Range(
                                                                 Positions.getPosition(mocaScript,
-                                                                                curMocaTokenBeginWhitespace),
+                                                                                curMocaTokenBeginWhitespaceIdx),
                                                                 Positions.getPosition(mocaScript,
-                                                                                curMocaToken.getStartIndex())),
+                                                                                curMocaTokenStartIdx)),
                                                                 SPACE));
                                                 edits.add(new TextEdit(
-                                                                new Range(Positions.getPosition(
-                                                                                mocaScript,
-                                                                                curMocaToken.getStopIndex()),
+                                                                new Range(Positions.getPosition(mocaScript,
+                                                                                curMocaTokenStopIdx),
                                                                                 Positions.getPosition(mocaScript,
-                                                                                                (nextMocaToken == null
-                                                                                                                ? curMocaToken.getStopIndex()
-                                                                                                                : nextMocaToken.getStartIndex()))),
+                                                                                                nextMocaTokenStartIdx)),
                                                                 SPACE));
                                         } else {
                                                 // Newline + tab + space before.
-                                                edits.add(new TextEdit(new Range(
-                                                                Positions.getPosition(mocaScript,
-                                                                                curMocaTokenBeginWhitespace),
-                                                                Positions.getPosition(mocaScript,
-                                                                                curMocaToken.getStartIndex())),
+                                                edits.add(new TextEdit(
+                                                                new Range(Positions.getPosition(mocaScript,
+                                                                                curMocaTokenBeginWhitespaceIdx),
+                                                                                Positions.getPosition(mocaScript,
+                                                                                                curMocaTokenStartIdx)),
                                                                 NEWLINE + TAB + indentBuilder.toString() + SPACE
                                                                                 + SPACE));
                                         }
@@ -338,30 +361,36 @@ public class DocumentOnTypeFormattingProvider {
                                         break;
                                 case MocaLexer.CATCH:
                                         // Space before and remove whitespace after.
-                                        edits.add(new TextEdit(
-                                                        new Range(Positions.getPosition(mocaScript,
-                                                                        curMocaTokenBeginWhitespace),
-                                                                        Positions.getPosition(mocaScript,
-                                                                                        curMocaToken.getStartIndex())),
+                                        edits.add(new TextEdit(new Range(
+                                                        Positions.getPosition(mocaScript,
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
                                                         SPACE));
 
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.getStopIndex()),
-                                                        Positions.getPosition(mocaScript, (nextMocaToken == null
-                                                                        ? curMocaToken.getStopIndex()
-                                                                        : nextMocaToken.getStartIndex()))),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStopIdx),
+                                                        Positions.getPosition(mocaScript, nextMocaTokenStartIdx)),
                                                         EMPTY));
                                         break;
                                 case MocaLexer.FINALLY:
                                         break;
                                 case MocaLexer.AMPERSAND:
                                         // Space before.
-                                        edits.add(new TextEdit(
-                                                        new Range(Positions.getPosition(mocaScript,
-                                                                        curMocaTokenBeginWhitespace),
-                                                                        Positions.getPosition(mocaScript,
-                                                                                        curMocaToken.getStartIndex())),
-                                                        SPACE));
+
+                                        // Add newline to start only if we are at typedPos.
+                                        // Since we are formatting above typedPos, typedPos's offset will either be <=
+                                        // current moca token offset. Make sure to quit right after!
+                                        // TODO: Just testing this!
+                                        if (typedChar.compareToIgnoreCase(curMocaToken.getText()) == 0
+                                                        && typedPosOffset <= curMocaTokenOffset) {
+                                                edits.add(new TextEdit(new Range(
+                                                                Positions.getPosition(mocaScript,
+                                                                                curMocaTokenBeginWhitespaceIdx),
+                                                                Positions.getPosition(mocaScript,
+                                                                                curMocaTokenStartIdx)),
+                                                                SPACE));
+                                                return;
+                                        }
 
                                         // Add newline to end only if we are at typedPos.
                                         // Since we are formatting above typedPos, typedPos's offset will either be <=
@@ -370,28 +399,24 @@ public class DocumentOnTypeFormattingProvider {
                                                         && typedPosOffset <= curMocaTokenOffset) {
 
                                                 edits.add(new TextEdit(new Range(
+                                                                Positions.getPosition(mocaScript, curMocaTokenStopIdx),
                                                                 Positions.getPosition(mocaScript,
-                                                                                curMocaToken.getStopIndex()),
-                                                                Positions.getPosition(mocaScript,
-                                                                                curMocaToken.getStopIndex())),
+                                                                                nextMocaTokenStartIdx)),
                                                                 NEWLINE + indentBuilder.toString()));
                                                 return;
                                         }
                                         break;
                                 case MocaLexer.COMMA:
                                         // Remove whitespace before and add space after.
-                                        edits.add(new TextEdit(
-                                                        new Range(Positions.getPosition(mocaScript,
-                                                                        curMocaTokenBeginWhitespace),
-                                                                        Positions.getPosition(mocaScript,
-                                                                                        curMocaToken.getStartIndex())),
+                                        edits.add(new TextEdit(new Range(
+                                                        Positions.getPosition(mocaScript,
+                                                                        curMocaTokenBeginWhitespaceIdx),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStartIdx)),
                                                         EMPTY));
 
                                         edits.add(new TextEdit(new Range(
-                                                        Positions.getPosition(mocaScript, curMocaToken.getStopIndex()),
-                                                        Positions.getPosition(mocaScript, (nextMocaToken == null
-                                                                        ? curMocaToken.getStopIndex()
-                                                                        : nextMocaToken.getStartIndex()))),
+                                                        Positions.getPosition(mocaScript, curMocaTokenStopIdx),
+                                                        Positions.getPosition(mocaScript, nextMocaTokenStartIdx)),
                                                         SPACE));
                                         break;
                                 default:

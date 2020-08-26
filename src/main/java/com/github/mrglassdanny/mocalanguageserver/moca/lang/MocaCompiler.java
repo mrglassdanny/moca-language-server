@@ -11,10 +11,12 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.GroovyCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.util.SqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
 
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ConsoleErrorListener;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.Token;
@@ -91,18 +93,22 @@ public class MocaCompiler {
         mocaScript = mocaScript.replace(":i_", "_i_");
         // TODO - handle <<OVERSTACKED_ARGS>>.
 
-        try {
-            MocaLexer mocaLexer = new MocaLexer(CharStreams.fromString(mocaScript));
-            compilationResult.mocaParser = new MocaParser(new CommonTokenStream(mocaLexer));
-            ParseTree parseTree = compilationResult.mocaParser.moca_script();
-            compilationResult.mocaParseTreeListener = new MocaParseTreeListener();
-            new ParseTreeWalker().walk(compilationResult.mocaParseTreeListener, parseTree);
-            // If exception, we stop here.
+        // If error, no exception will be thrown -- we will use the
+        // MocaSyntaxErrorListener.
+        compilationResult.mocaParser = new MocaParser(
+                new CommonTokenStream(new MocaLexer(CharStreams.fromString(mocaScript))));
+        compilationResult.mocaSyntaxErrorListener = new MocaSyntaxErrorListener();
+        compilationResult.mocaParser.addErrorListener(compilationResult.mocaSyntaxErrorListener);
+        // Since we do not want errors printing to the console, remove this
+        // ConsoleErrorListener.
+        compilationResult.mocaParser.removeErrorListener(ConsoleErrorListener.INSTANCE);
+        ParseTree parseTree = compilationResult.mocaParser.moca_script();
+        compilationResult.mocaParseTreeListener = new MocaParseTreeListener();
+        new ParseTreeWalker().walk(compilationResult.mocaParseTreeListener, parseTree);
+
+        // Check if we have any syntax errors.
+        if (!compilationResult.hasMocaErrors()) {
             this.lastSuccessfulCompilationResult = compilationResult;
-        } catch (RecognitionException parseException) {
-            MocaLanguageServer.languageClient.logMessage(new MessageParams(MessageType.Error, "here ERROR"));
-            compilationResult.parseException = parseException;
-            // Do not change lastSuccessfulCompilationResult.
         }
 
         MocaLexer mocaLexer = new MocaLexer(CharStreams.fromString(mocaScript));
@@ -134,6 +140,7 @@ public class MocaCompiler {
             // Remove '[[]]'.
             String groovyScript = Ranges.getText(mocaScript, this.groovyRanges.get(i)).replaceAll("(\\[\\[)|(\\]\\])",
                     "");
+
             this.groovyCompiler.compileScript(i, groovyScript, this, mocaScript);
         }
 
@@ -156,11 +163,13 @@ public class MocaCompiler {
             if (curMocaToken.getType() == MocaLexer.SINGLE_BRACKET_STRING) {
                 if (SqlLanguageUtils.isMocaTokenValueSqlScript(curMocaToken.getText())) {
                     this.sqlRanges.add(new Range(Positions.getPosition(mocaScript, curMocaToken.getStartIndex()),
-                            Positions.getPosition(mocaScript, curMocaToken.getStopIndex())));
+                            Positions.getPosition(mocaScript,
+                                    MocaTokenUtils.getAdjustedMocaTokenStopIndex(curMocaToken.getStopIndex()))));
                 }
             } else if (curMocaToken.getType() == MocaLexer.DOUBLE_BRACKET_STRING) {
                 this.groovyRanges.add(new Range(Positions.getPosition(mocaScript, curMocaToken.getStartIndex()),
-                        Positions.getPosition(mocaScript, curMocaToken.getStopIndex())));
+                        Positions.getPosition(mocaScript,
+                                MocaTokenUtils.getAdjustedMocaTokenStopIndex(curMocaToken.getStopIndex()))));
             }
         }
 
@@ -203,10 +212,12 @@ public class MocaCompiler {
             // Have to manually calculate begin whitespace.
             int beginWhitespace = 0;
             if (i > 0) {
-                beginWhitespace = this.mocaTokens.get(i - 1).getStopIndex() + 1;
+                beginWhitespace = MocaTokenUtils
+                        .getAdjustedMocaTokenStopIndex(this.mocaTokens.get(i - 1).getStopIndex());
             }
 
-            if (beginWhitespace <= posOffset && mocaToken.getStopIndex() >= posOffset) {
+            if (beginWhitespace <= posOffset
+                    && MocaTokenUtils.getAdjustedMocaTokenStopIndex(mocaToken.getStopIndex()) >= posOffset) {
                 return i;
             }
         }
