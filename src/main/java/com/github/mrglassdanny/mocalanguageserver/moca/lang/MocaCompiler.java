@@ -84,10 +84,6 @@ public class MocaCompiler {
             mocaScript = new String(mocaScriptCharArr);
         }
 
-        // Alter mocaScript to handle integration alg syntax(:i_c_wh_id).
-        mocaScript = mocaScript.replace(":i_", "_i_");
-        // TODO - handle <<OVERSTACKED_ARGS>>.
-
         // If error, no exception will be thrown -- we will use the
         // MocaSyntaxErrorListener.
         compilationResult.mocaParser = new MocaParser(
