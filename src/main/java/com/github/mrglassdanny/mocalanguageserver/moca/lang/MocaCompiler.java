@@ -104,9 +104,7 @@ public class MocaCompiler {
 
         // Start with SQL.
         for (int i = 0; i < this.sqlRanges.size(); i++) {
-            // Remove first and last characters('[', ']'). We cannot blindly remove all
-            // instances of these chars like we do in groovy, since it is possible to have
-            // '[]' in sql script.
+            // Remove first and last characters('[', ']').
             String sqlScript = Ranges.getText(mocaScript, this.sqlRanges.get(i));
             sqlScript = sqlScript.substring(1, sqlScript.length() - 1);
             this.sqlCompiler.compileScript(i, sqlScript);
