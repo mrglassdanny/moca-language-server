@@ -24,6 +24,8 @@ import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
 import org.codehaus.groovy.syntax.SyntaxException;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
+import org.eclipse.lsp4j.MessageParams;
+import org.eclipse.lsp4j.MessageType;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.Range;
@@ -143,7 +145,7 @@ public class DiagnosticManager {
             return new ArrayList<>();
         } else {
             ArrayList<Diagnostic> diagnostics = new ArrayList<>();
-
+            MocaLanguageServer.languageClient.logMessage(new MessageParams(MessageType.Error, "HAS ERROR"));
             Range range = MocaLanguageUtils.syntaxExceptionToRange(compilationResult.parseException);
             Diagnostic diagnostic = new Diagnostic();
             diagnostic.setRange(range);

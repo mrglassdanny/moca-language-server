@@ -1,7 +1,7 @@
 grammar Moca;
 
 @header {
-		package com.github.mrglassdanny.mocalanguageserver.moca.lang.parse;
+		package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 }
 
 // UNIMPLEMENTED: Annotations, SQL Hints, Special command arguments

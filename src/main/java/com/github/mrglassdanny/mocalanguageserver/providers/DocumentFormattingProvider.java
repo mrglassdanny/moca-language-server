@@ -6,10 +6,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.util.SqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.parse.MocaLexer;
 
 import org.eclipse.lsp4j.DocumentFormattingParams;
 import org.eclipse.lsp4j.DocumentRangeFormattingParams;

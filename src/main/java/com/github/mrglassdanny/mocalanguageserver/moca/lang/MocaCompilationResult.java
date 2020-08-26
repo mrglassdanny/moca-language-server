@@ -2,9 +2,9 @@ package com.github.mrglassdanny.mocalanguageserver.moca.lang;
 
 import java.util.HashMap;
 
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.parse.MocaParser;
 
 import org.antlr.v4.runtime.RecognitionException;
 

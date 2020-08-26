@@ -1,6 +1,6 @@
 // Generated from Moca.g4 by ANTLR 4.8
 
-		package com.github.mrglassdanny.mocalanguageserver.moca.lang.parse;
+		package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;

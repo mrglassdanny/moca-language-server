@@ -8,7 +8,7 @@ group 'com.github.mrglassdanny.mocalanguageserver'
 version '0.0.1'
 
 generateGrammarSource {
-    outputDirectory = file('src/main/java/com/github/mrglassdanny/mocalanguageserver/moca/lang/parse')
+    outputDirectory = file('src/main/java/com/github/mrglassdanny/mocalanguageserver/moca/lang/antlr')
 }
 
 compileJava {

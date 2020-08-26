@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.GroovyCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.util.SqlLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.parse.MocaLexer;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.parse.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
 
@@ -19,6 +20,8 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.eclipse.lsp4j.MessageParams;
+import org.eclipse.lsp4j.MessageType;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 
@@ -97,6 +100,7 @@ public class MocaCompiler {
             // If exception, we stop here.
             this.lastSuccessfulCompilationResult = compilationResult;
         } catch (RecognitionException parseException) {
+            MocaLanguageServer.languageClient.logMessage(new MessageParams(MessageType.Error, "here ERROR"));
             compilationResult.parseException = parseException;
             // Do not change lastSuccessfulCompilationResult.
         }

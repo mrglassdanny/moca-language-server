@@ -3,9 +3,9 @@ package com.github.mrglassdanny.mocalanguageserver.moca.lang;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.parse.MocaBaseListener;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.parse.MocaLexer;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.parse.MocaParser;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaBaseListener;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Token;
