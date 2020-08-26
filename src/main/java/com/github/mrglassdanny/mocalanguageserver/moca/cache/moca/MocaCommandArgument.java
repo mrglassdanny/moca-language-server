@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.repository.moca;
+package com.github.mrglassdanny.mocalanguageserver.moca.cache.moca;
 
 public class MocaCommandArgument {
     public String cmplvl;

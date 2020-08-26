@@ -6,10 +6,10 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.moca.repository.database.Table;
-import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaCommand;
-import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaCommandArgument;
-import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaTrigger;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommand;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommandArgument;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaTrigger;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.schema.Table;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
@@ -114,14 +114,13 @@ public class HoverProvider {
                     sqlWord = sqlWord.toLowerCase();
 
                     // Check first to see if sql word is table/view in database.
-                    Table table = MocaLanguageServer.currentMocaConnection.repository.databaseSchema.tables
-                            .get(sqlWord);
+                    Table table = MocaLanguageServer.currentMocaConnection.repository.schema.tables.get(sqlWord);
                     if (table != null) {
                         contents.add(Either.forRight(new MarkedString("plaintext", getSqlContent(table, false))));
                         return CompletableFuture.completedFuture(hover);
                     }
 
-                    Table view = MocaLanguageServer.currentMocaConnection.repository.databaseSchema.views.get(sqlWord);
+                    Table view = MocaLanguageServer.currentMocaConnection.repository.schema.views.get(sqlWord);
                     if (view != null) {
                         contents.add(Either.forRight(new MarkedString("plaintext", getSqlContent(view, true))));
                         return CompletableFuture.completedFuture(hover);

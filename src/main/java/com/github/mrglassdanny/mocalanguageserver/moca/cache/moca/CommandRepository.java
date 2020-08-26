@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.repository.moca;
+package com.github.mrglassdanny.mocalanguageserver.moca.cache.moca;
 
 import java.util.ArrayList;
 import java.util.HashMap;

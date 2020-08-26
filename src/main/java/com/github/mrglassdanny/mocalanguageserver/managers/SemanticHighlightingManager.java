@@ -337,9 +337,8 @@ public class SemanticHighlightingManager {
                     String sqlWord = curSqlToken.image.toLowerCase();
 
                     // Check if exists in tables/views before we add to map.
-                    if (MocaLanguageServer.currentMocaConnection.repository.databaseSchema.tables.containsKey(sqlWord)
-                            || MocaLanguageServer.currentMocaConnection.repository.databaseSchema.views
-                                    .containsKey(sqlWord)) {
+                    if (MocaLanguageServer.currentMocaConnection.repository.schema.tables.containsKey(sqlWord)
+                            || MocaLanguageServer.currentMocaConnection.repository.schema.views.containsKey(sqlWord)) {
 
                         // Let's make sure real quick that this is not a '@' var.
                         int offset = Positions.getOffset(mocaScript, pos);

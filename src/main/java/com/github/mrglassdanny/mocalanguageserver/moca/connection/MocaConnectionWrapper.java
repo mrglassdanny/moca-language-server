@@ -1,14 +1,13 @@
 
 package com.github.mrglassdanny.mocalanguageserver.moca.connection;
 
+import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaConnectionResponse;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaResultsResponse;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaRepository;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.UnsupportedConnectionTypeException;
-import com.github.mrglassdanny.mocalanguageserver.moca.repository.MocaRepository;
 
 import java.io.IOException;
-
-import com.github.mrglassdanny.mocalanguageserver.client.response.MocaConnectionResponse;
-import com.github.mrglassdanny.mocalanguageserver.client.response.MocaResultsResponse;
 
 public class MocaConnectionWrapper {
 

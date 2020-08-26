@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.client.request;
+package com.github.mrglassdanny.mocalanguageserver.languageclient.request;
 
 import java.util.ArrayList;
 import java.util.List;

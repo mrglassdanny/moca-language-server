@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.repository.database;
+package com.github.mrglassdanny.mocalanguageserver.moca.cache.schema;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import com.github.mrglassdanny.mocalanguageserver.moca.MocaResults;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
 
-public class DatabaseSchema {
+public class Schema {
 
     private static final String TABLES_SCRIPT = "list user tables description";
     private static final String VIEWS_SCRIPT = "list user views";
@@ -18,7 +18,7 @@ public class DatabaseSchema {
     public HashMap<String, Table> views;
     public HashMap<String, ArrayList<TableColumn>> columns;
 
-    public DatabaseSchema() {
+    public Schema() {
         this.tables = new HashMap<>();
         this.views = new HashMap<>();
         this.columns = new HashMap<>();
@@ -44,7 +44,7 @@ public class DatabaseSchema {
 
         this.tables.clear();
 
-        MocaResults res = conn.executeCommand(DatabaseSchema.TABLES_SCRIPT).results;
+        MocaResults res = conn.executeCommand(Schema.TABLES_SCRIPT).results;
 
         if (res != null) {
             for (int rowIdx = 0; rowIdx < res.values.length; rowIdx++) {
@@ -59,7 +59,7 @@ public class DatabaseSchema {
 
         this.views.clear();
 
-        MocaResults res = conn.executeCommand(DatabaseSchema.VIEWS_SCRIPT).results;
+        MocaResults res = conn.executeCommand(Schema.VIEWS_SCRIPT).results;
 
         if (res != null) {
 
@@ -78,8 +78,8 @@ public class DatabaseSchema {
 
         this.columns.clear();
 
-        MocaResults tableColRes = conn.executeCommand(DatabaseSchema.TABLE_COLUMNS_SCRIPT).results;
-        MocaResults viewColRes = conn.executeCommand(DatabaseSchema.VIEW_COLUMNS_SCRIPT).results;
+        MocaResults tableColRes = conn.executeCommand(Schema.TABLE_COLUMNS_SCRIPT).results;
+        MocaResults viewColRes = conn.executeCommand(Schema.VIEW_COLUMNS_SCRIPT).results;
 
         // Due to how our loop works, we need to save off data here so that we do not
         // leave out the first column of every table(after the first table).

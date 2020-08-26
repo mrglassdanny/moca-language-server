@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.client.response;
+package com.github.mrglassdanny.mocalanguageserver.languageclient.response;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.MocaResults;
 

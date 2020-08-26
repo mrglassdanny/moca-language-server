@@ -248,13 +248,13 @@ public class DiagnosticManager {
 
             boolean foundTable = false;
 
-            if (MocaLanguageServer.currentMocaConnection.repository.databaseSchema.tables
+            if (MocaLanguageServer.currentMocaConnection.repository.schema.tables
                     .containsKey(astTable.getName().toLowerCase())) {
                 foundTable = true;
             }
 
             if (!foundTable) {
-                if (MocaLanguageServer.currentMocaConnection.repository.databaseSchema.views
+                if (MocaLanguageServer.currentMocaConnection.repository.schema.views
                         .containsKey(astTable.getName().toLowerCase())) {
                     foundTable = true;
                 }

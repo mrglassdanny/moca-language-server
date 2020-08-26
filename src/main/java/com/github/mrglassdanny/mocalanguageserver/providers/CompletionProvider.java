@@ -11,11 +11,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.moca.repository.database.Table;
-import com.github.mrglassdanny.mocalanguageserver.moca.repository.database.TableColumn;
-import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaCommand;
-import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaCommandArgument;
-import com.github.mrglassdanny.mocalanguageserver.moca.repository.moca.MocaTrigger;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommand;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommandArgument;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaTrigger;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.schema.Table;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.schema.TableColumn;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
@@ -462,7 +462,7 @@ public class CompletionProvider {
     // Includes views.
     private static void populateSqlTables(List<CompletionItem> items) {
 
-        for (Map.Entry<String, Table> tableEntry : MocaLanguageServer.currentMocaConnection.repository.databaseSchema.tables
+        for (Map.Entry<String, Table> tableEntry : MocaLanguageServer.currentMocaConnection.repository.schema.tables
                 .entrySet()) {
             Table tbl = tableEntry.getValue();
             CompletionItem item = new CompletionItem(tbl.table_name);
@@ -471,7 +471,7 @@ public class CompletionProvider {
             items.add(item);
         }
 
-        for (Map.Entry<String, Table> viewEntry : MocaLanguageServer.currentMocaConnection.repository.databaseSchema.views
+        for (Map.Entry<String, Table> viewEntry : MocaLanguageServer.currentMocaConnection.repository.schema.views
                 .entrySet()) {
             Table view = viewEntry.getValue();
             CompletionItem item = new CompletionItem(view.table_name);
@@ -504,7 +504,7 @@ public class CompletionProvider {
 
     private static void populateSqlColumnsFromTableName(String tableName, String aliasName,
             boolean excludeColPrefixForFirstForAllCols, List<CompletionItem> items) {
-        ArrayList<TableColumn> cols = MocaLanguageServer.currentMocaConnection.repository.databaseSchema
+        ArrayList<TableColumn> cols = MocaLanguageServer.currentMocaConnection.repository.schema
                 .getColumnsForTable(tableName);
 
         // Could be null.
