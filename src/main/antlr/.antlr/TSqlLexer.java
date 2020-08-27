@@ -1,6 +1,6 @@
 // Generated from c:\dev\moca-language-server\src\main\antlr\TSqlLexer.g4 by ANTLR 4.8
 
-		package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;

@@ -37,7 +37,7 @@
 parser grammar TSqlParser;
 
 @header {
-		package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 }
 
 options {

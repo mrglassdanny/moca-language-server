@@ -1,7 +1,7 @@
 grammar Moca;
 
 @header {
-		package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 }
 
 // TODO: Strings are not currently perfectly inline with std MOCA parser UNIMPLEMENTED: Annotations,

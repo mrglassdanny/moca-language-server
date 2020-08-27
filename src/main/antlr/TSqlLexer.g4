@@ -26,7 +26,7 @@ THE SOFTWARE.
 lexer grammar TSqlLexer;
 
 @header {
-		package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 }
 
 // Basic keywords (from https://msdn.microsoft.com/en-us/library/ms189822.aspx)
