@@ -157,7 +157,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         TextDocumentIdentifier textDocument = params.getTextDocument();
         Position position = params.getPosition();
 
-        // Process 'hacks' for each context before we go to provider.
+        // Perform preprocessing for each context before we go to provider.
         // Analyze context id for position.
         MocaLanguageContext ctx = this.mocaCompiler.getMocaLanguageContextFromPosition(position);
         switch (ctx.id) {
@@ -229,7 +229,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         TextDocumentIdentifier textDocument = params.getTextDocument();
         Position position = params.getPosition();
 
-        // Process 'hacks' for each context before we go to provider.
+        // Perform preprocessing for each context before we go to provider.
         // Analyze context id for position.
         MocaLanguageContext ctx = this.mocaCompiler.getMocaLanguageContextFromPosition(position);
         switch (ctx.id) {

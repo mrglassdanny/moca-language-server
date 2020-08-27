@@ -51,8 +51,8 @@ public class GroovyCompiler {
         // with the same name(will cause static type checking issue).
         ArrayList<String> addedMocaRedirectNames = new ArrayList<>();
         int groovyScriptOffset = Positions.getOffset(mocaScript, mocaCompiler.groovyRanges.get(rangeIdx).getStart());
-        if (mocaCompiler.lastSuccessfulCompilationResult != null) {
-            for (Map.Entry<Token, String> entry : mocaCompiler.lastSuccessfulCompilationResult.mocaParseTreeListener.mocaRedirects
+        if (mocaCompiler.currentCompilationResult != null) {
+            for (Map.Entry<Token, String> entry : mocaCompiler.currentCompilationResult.mocaParseTreeListener.mocaRedirects
                     .entrySet()) {
                 if (entry.getKey().getStartIndex() <= groovyScriptOffset) {
                     String curMocaRedirectName = entry.getValue();

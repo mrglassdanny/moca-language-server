@@ -44,9 +44,6 @@ public class DefinitionProvider {
                 // For hover, we need to make sure the moca compiliation result we are
                 // looking at has no errors.
                 MocaCompilationResult mocaCompilationResult = mocaCompiler.currentCompilationResult;
-                if (mocaCompilationResult.hasMocaErrors()) {
-                    mocaCompilationResult = mocaCompiler.lastSuccessfulCompilationResult;
-                }
 
                 if (mocaCompilationResult == null) {
                     return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));

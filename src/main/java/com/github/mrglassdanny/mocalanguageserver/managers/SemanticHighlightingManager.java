@@ -243,9 +243,6 @@ public class SemanticHighlightingManager {
         // For semantic highlighting, we need to make sure the moca compiliation result
         // we are looking at has no errors.
         MocaCompilationResult mocaCompilationResult = mocaCompiler.currentCompilationResult;
-        if (mocaCompilationResult.hasMocaErrors()) {
-            mocaCompilationResult = mocaCompiler.lastSuccessfulCompilationResult;
-        }
 
         // Go ahead and stop now if now compilation result.
         if (mocaCompilationResult != null) {
