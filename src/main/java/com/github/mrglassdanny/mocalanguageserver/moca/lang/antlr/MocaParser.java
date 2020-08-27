@@ -1,6 +1,6 @@
 // Generated from Moca.g4 by ANTLR 4.8
 
-		package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -157,6 +157,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_script(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_script(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Moca_scriptContext moca_script() throws RecognitionException {
@@ -204,6 +209,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitSequence(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitSequence(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -281,6 +291,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitStream(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitStream(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final StreamContext stream() throws RecognitionException {
@@ -343,6 +358,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitGroup(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitGroup(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -429,6 +449,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitStatement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitStatement(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -577,6 +602,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitBlock(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitBlock(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final BlockContext block() throws RecognitionException {
@@ -645,6 +675,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitCommand(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitCommand(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -784,6 +819,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitVerb_noun_clause(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitVerb_noun_clause(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Verb_noun_clauseContext verb_noun_clause() throws RecognitionException {
@@ -880,6 +920,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitVerb_noun_clause_args(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitVerb_noun_clause_args(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Verb_noun_clause_argsContext verb_noun_clause_args() throws RecognitionException {
@@ -963,6 +1008,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitVerb_noun_clause_arg(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitVerb_noun_clause_arg(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1167,6 +1217,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitSub_sequence(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitSub_sequence(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Sub_sequenceContext sub_sequence() throws RecognitionException {
@@ -1233,6 +1288,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitIf_expr(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitIf_expr(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final If_exprContext if_expr() throws RecognitionException {
@@ -1294,6 +1354,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitIf_statement(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitIf_statement(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final If_statementContext if_statement() throws RecognitionException {
@@ -1335,6 +1400,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitElse_if_statement(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitElse_if_statement(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1378,6 +1448,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitElse_statement(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitElse_statement(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Else_statementContext else_statement() throws RecognitionException {
@@ -1419,6 +1494,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitTry_block(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitTry_block(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1476,6 +1556,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitCatch_single_expr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitCatch_single_expr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1599,6 +1684,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitCatch_multi_expr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitCatch_multi_expr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1745,6 +1835,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitCatch_sequence(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitCatch_sequence(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Catch_sequenceContext catch_sequence() throws RecognitionException {
@@ -1793,6 +1888,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitFinally_sequence(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitFinally_sequence(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Finally_sequenceContext finally_sequence() throws RecognitionException {
@@ -1836,6 +1936,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_redirect_expr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_redirect_expr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -1886,6 +1991,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_remote_expr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_remote_expr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2000,6 +2110,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitExpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2409,6 +2524,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitFunction_expr(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitFunction_expr(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Function_exprContext function_expr() throws RecognitionException {
@@ -2479,6 +2599,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitLiteral_value(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitLiteral_value(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2567,6 +2692,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_variable(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_variable(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2664,6 +2794,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_plus_variable(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_plus_variable(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Moca_plus_variableContext moca_plus_variable() throws RecognitionException {
@@ -2729,6 +2864,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_at_variable(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_at_variable(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Moca_at_variableContext moca_at_variable() throws RecognitionException {
@@ -2771,6 +2911,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_environment_variable(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_environment_variable(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2815,6 +2960,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_at_minus_variable(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_at_minus_variable(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Moca_at_minus_variableContext moca_at_minus_variable() throws RecognitionException {
@@ -2857,6 +3007,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_at_plus_variable(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_at_plus_variable(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -2901,6 +3056,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_at_mod_variable(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_at_mod_variable(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Moca_at_mod_variableContext moca_at_mod_variable() throws RecognitionException {
@@ -2943,6 +3103,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_at_star(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_at_star(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Moca_at_starContext moca_at_star() throws RecognitionException {
@@ -2983,6 +3148,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_at_question(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_at_question(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Moca_at_questionContext moca_at_question() throws RecognitionException {
@@ -3022,6 +3192,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_at_bang(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_at_bang(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3066,6 +3241,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_keep_directive(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_keep_directive(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3120,6 +3300,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_at_keep_directive(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_at_keep_directive(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Moca_at_keep_directiveContext moca_at_keep_directive() throws RecognitionException {
@@ -3163,6 +3348,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_at_minus_keep_directive(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_at_minus_keep_directive(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3208,6 +3398,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_at_plus_keep_directive(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_at_plus_keep_directive(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Moca_at_plus_keep_directiveContext moca_at_plus_keep_directive() throws RecognitionException {
@@ -3251,6 +3446,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_at_mod_keep_directive(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_at_mod_keep_directive(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3296,6 +3496,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_onstack_directive(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_onstack_directive(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Moca_onstack_directiveContext moca_onstack_directive() throws RecognitionException {
@@ -3339,6 +3544,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_ignore_directive(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_ignore_directive(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3385,6 +3595,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_oldvar_directive(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_oldvar_directive(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3440,6 +3655,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_at_plus_oldvar_directive(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_at_plus_oldvar_directive(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Moca_at_plus_oldvar_directiveContext moca_at_plus_oldvar_directive() throws RecognitionException {
@@ -3484,6 +3704,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_at_mod_oldvar_directive(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_at_mod_oldvar_directive(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3532,6 +3757,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_type_cast_variable(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_type_cast_variable(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3595,6 +3825,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_database_qualifier_variable(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_database_qualifier_variable(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Moca_database_qualifier_variableContext moca_database_qualifier_variable() throws RecognitionException {
@@ -3637,6 +3872,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_integration_variable(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_integration_variable(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Moca_integration_variableContext moca_integration_variable() throws RecognitionException {
@@ -3677,6 +3917,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitMoca_remote_keyword(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitMoca_remote_keyword(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 
@@ -3742,6 +3987,11 @@ public class MocaParser extends Parser {
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitSql_script(this);
 		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitSql_script(this);
+			else return visitor.visitChildren(this);
+		}
 	}
 
 	public final Sql_scriptContext sql_script() throws RecognitionException {
@@ -3778,6 +4028,11 @@ public class MocaParser extends Parser {
 		@Override
 		public void exitRule(ParseTreeListener listener) {
 			if ( listener instanceof MocaListener ) ((MocaListener)listener).exitGroovy_script(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MocaVisitor ) return ((MocaVisitor<? extends T>)visitor).visitGroovy_script(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 

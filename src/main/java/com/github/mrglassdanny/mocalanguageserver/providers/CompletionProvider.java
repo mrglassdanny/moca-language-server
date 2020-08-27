@@ -20,14 +20,14 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResul
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.GroovyCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util.GroovyASTUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util.GroovyLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.ast.SqlStatementVisitor;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyASTUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
+import org.antlr.v4.runtime.Token;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.FieldNode;
@@ -60,7 +60,6 @@ import io.github.classgraph.ClassGraphException;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.PackageInfo;
 import io.github.classgraph.ScanResult;
-import net.sf.jsqlparser.statement.select.SubSelect;
 
 public class CompletionProvider {
 
@@ -200,10 +199,6 @@ public class CompletionProvider {
                 // looking at has no errors.
                 SqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
                         .get(ctx.rangeIdx);
-                if (sqlCompilationResult.hasErrors()) {
-                    sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlLastSuccessfulCompilationResults
-                            .get(ctx.rangeIdx);
-                }
 
                 // If we do not have one, we need to quit now.
                 if (sqlCompilationResult != null) {
@@ -227,39 +222,16 @@ public class CompletionProvider {
                             if (items.isEmpty()) { // Empty - must be alias or subquery.
 
                                 // Checking if table is aliased.
-                                if (sqlCompilationResult.astVisitor.aliasedTableNames.containsKey(lowerCaseWord)) {
+                                if (sqlCompilationResult.sqlParseTreeListener.aliasedTableNames
+                                        .containsKey(lowerCaseWord)) {
                                     populateSqlColumnsFromTableName(
-                                            sqlCompilationResult.astVisitor.aliasedTableNames.get(lowerCaseWord),
+                                            sqlCompilationResult.sqlParseTreeListener.aliasedTableNames
+                                                    .get(lowerCaseWord),
                                             lowerCaseWord, true, items);
                                 } else {
                                     // Must be a subquery.
                                     // See if match in map.
-                                    if (sqlCompilationResult.astVisitor.subqueries.containsKey(lowerCaseWord)) {
-
-                                        ArrayList<String> subqueryColumnNames = new ArrayList<>();
-                                        SubSelect subquery = sqlCompilationResult.astVisitor.subqueries
-                                                .get(lowerCaseWord);
-
-                                        // Easiest way to get columns from subquery is just analyze the subquery
-                                        // statement like this.
-                                        SqlStatementVisitor subqueryVisitor = new SqlStatementVisitor() {
-
-                                            @Override
-                                            public void visit(net.sf.jsqlparser.schema.Column column) {
-
-                                                String columnName = column.getColumnName();
-                                                // Make sure column name has not already been added!
-                                                if (!subqueryColumnNames.contains(columnName)) {
-                                                    subqueryColumnNames.add(columnName);
-                                                }
-
-                                                super.visit(column);
-                                            }
-                                        };
-                                        subqueryVisitor.visit(subquery);
-                                        populateSqlColumnsFromSubquery(subqueryColumnNames, items);
-
-                                    }
+                                    // TODO: Subquery intellisense.
                                 }
                             }
                         }
@@ -268,11 +240,11 @@ public class CompletionProvider {
 
                         // Let's check how many tables there are in script. If there is just 1, we will
                         // get the columns for it.
-                        if (sqlCompilationResult.astVisitor.tableNames.size() == 1) {
-                            String tableName = sqlCompilationResult.astVisitor.tableNames.get(0);
+                        if (sqlCompilationResult.sqlParseTreeListener.tableTokens.size() == 1) {
+                            String tableName = sqlCompilationResult.sqlParseTreeListener.tableTokens.get(0).getText();
                             // Check if it has been aliased.
-                            if (sqlCompilationResult.astVisitor.aliasedTableNames.containsValue(tableName)) {
-                                for (Map.Entry<String, String> entry : sqlCompilationResult.astVisitor.aliasedTableNames
+                            if (sqlCompilationResult.sqlParseTreeListener.aliasedTableNames.containsValue(tableName)) {
+                                for (Map.Entry<String, String> entry : sqlCompilationResult.sqlParseTreeListener.aliasedTableNames
                                         .entrySet()) {
                                     if (entry.getValue().compareTo(tableName) == 0) {
                                         populateSqlColumnsFromTableName(tableName, entry.getKey(), false, items);
@@ -287,8 +259,8 @@ public class CompletionProvider {
                         // Get tables/views from database.
                         populateSqlTables(items);
                         // Also get any other aliased entities in script.
-                        populateAliasedTableNames(sqlCompilationResult.astVisitor.aliasedTableNames, items);
-                        populateSubqueryNames(sqlCompilationResult.astVisitor.subqueries, items);
+                        populateAliasedTableNames(sqlCompilationResult.sqlParseTreeListener.aliasedTableNames, items);
+                        populateSubqueryNames(sqlCompilationResult.sqlParseTreeListener.subqueries, items);
 
                     }
 
@@ -468,7 +440,7 @@ public class CompletionProvider {
         }
     }
 
-    private static void populateSubqueryNames(HashMap<String, SubSelect> subqueries, List<CompletionItem> items) {
+    private static void populateSubqueryNames(HashMap<String, Token> subqueries, List<CompletionItem> items) {
 
         for (String subqueryName : subqueries.keySet()) {
             CompletionItem item = new CompletionItem(subqueryName);

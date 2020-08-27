@@ -1,11 +1,11 @@
 grammar Moca;
 
 @header {
-		package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 }
 
-// TODO: Strings are not currently perfectly inline with std MOCA parser
-// UNIMPLEMENTED: Annotations, SQL Hints, Special command arguments, @SuppressWarnings/other directives?
+// TODO: Strings are not currently perfectly inline with std MOCA parser UNIMPLEMENTED: Annotations,
+// SQL Hints, Special command arguments, @SuppressWarnings/other directives?
 
 // PARSER --------------------------------------------------------
 
@@ -136,14 +136,18 @@ expr:
 	| moca_at_bang
 	| moca_at_question
 	| moca_at_star
-	| function_expr 
-	| (BANG (literal_value
-	| WORD
-	| moca_variable
-	| moca_at_bang
-	| moca_at_question
-	| moca_at_star
-	| function_expr))
+	| function_expr
+	| (
+		BANG (
+			literal_value
+			| WORD
+			| moca_variable
+			| moca_at_bang
+			| moca_at_question
+			| moca_at_star
+			| function_expr
+		)
+	)
 	| expr DOUBLE_PIPE expr
 	| expr ( STAR | DIV | MOD) expr
 	| expr ( PLUS | MINUS) expr

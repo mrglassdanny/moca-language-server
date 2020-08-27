@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy;
 
 import java.io.File;
 import java.security.CodeSource;
@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util.GroovyLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
 import org.antlr.v4.runtime.Token;

@@ -13,11 +13,11 @@ import com.github.mrglassdanny.mocalanguageserver.moca.cache.schema.Table;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.GroovyCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.ast.GroovyASTNodeVisitor;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util.GroovyASTUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util.GroovyNodeToStringUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.ast.GroovyASTNodeVisitor;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyASTUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyNodeToStringUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
 import org.codehaus.groovy.ast.ASTNode;
@@ -103,10 +103,6 @@ public class HoverProvider {
                 // looking at has no errors.
                 SqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
                         .get(ctx.rangeIdx);
-                if (sqlCompilationResult.hasErrors()) {
-                    sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlLastSuccessfulCompilationResults
-                            .get(ctx.rangeIdx);
-                }
 
                 // Tables, views, aliases, and subqueries - oh my!
                 String sqlWord = Positions.getWordAtPosition(textDocumentContents, position);
@@ -129,16 +125,16 @@ public class HoverProvider {
                     }
 
                     // If not, check aliased tables/views/subqueries.
-                    if (sqlCompilationResult != null && sqlCompilationResult.astVisitor != null
-                            && sqlCompilationResult.astVisitor.aliasedTableNames != null
-                            && sqlCompilationResult.astVisitor.aliasedTableNames.containsKey(sqlWord)) {
-                        contents.add(Either.forRight(new MarkedString("plaintext",
-                                "(alias) " + sqlCompilationResult.astVisitor.aliasedTableNames.get(sqlWord))));
+                    if (sqlCompilationResult != null && sqlCompilationResult.sqlParseTreeListener != null
+                            && sqlCompilationResult.sqlParseTreeListener.aliasedTableNames != null
+                            && sqlCompilationResult.sqlParseTreeListener.aliasedTableNames.containsKey(sqlWord)) {
+                        contents.add(Either.forRight(new MarkedString("plaintext", "(alias) "
+                                + sqlCompilationResult.sqlParseTreeListener.aliasedTableNames.get(sqlWord))));
                         return CompletableFuture.completedFuture(hover);
                     }
-                    if (sqlCompilationResult != null && sqlCompilationResult.astVisitor != null
-                            && sqlCompilationResult.astVisitor.subqueries != null
-                            && sqlCompilationResult.astVisitor.subqueries.containsKey(sqlWord)) {
+                    if (sqlCompilationResult != null && sqlCompilationResult.sqlParseTreeListener != null
+                            && sqlCompilationResult.sqlParseTreeListener.subqueries != null
+                            && sqlCompilationResult.sqlParseTreeListener.subqueries.containsKey(sqlWord)) {
                         contents.add(Either.forRight(new MarkedString("plaintext", "subquery " + sqlWord)));
                         return CompletableFuture.completedFuture(hover);
                     }
