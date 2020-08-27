@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.GroovyCompiler;
@@ -21,8 +20,6 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.eclipse.lsp4j.MessageParams;
-import org.eclipse.lsp4j.MessageType;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 
@@ -51,6 +48,7 @@ public class MocaCompiler {
         this.groovyCompiler = new GroovyCompiler();
     }
 
+    // New thread per script.
     public MocaCompilationResult compileScript(String mocaScript) {
 
         MocaCompilationResult compilationResult = new MocaCompilationResult();
@@ -84,10 +82,13 @@ public class MocaCompiler {
             mocaScript = new String(mocaScriptCharArr);
         }
 
+        // Making final so that we can introduce more threads.
+        final String finalMocaScript = mocaScript;
+
         // If error, no exception will be thrown -- we will use the
         // MocaSyntaxErrorListener.
         compilationResult.mocaParser = new MocaParser(
-                new CommonTokenStream(new MocaLexer(CharStreams.fromString(mocaScript))));
+                new CommonTokenStream(new MocaLexer(CharStreams.fromString(finalMocaScript))));
         compilationResult.mocaSyntaxErrorListener = new MocaSyntaxErrorListener();
         compilationResult.mocaParser.addErrorListener(compilationResult.mocaSyntaxErrorListener);
         // Since we do not want errors printing to the console, remove this
@@ -97,33 +98,110 @@ public class MocaCompiler {
         compilationResult.mocaParseTreeListener = new MocaParseTreeListener();
         new ParseTreeWalker().walk(compilationResult.mocaParseTreeListener, parseTree);
 
-        this.mocaTokens = new MocaLexer(CharStreams.fromString(mocaScript)).getAllTokens();
+        this.mocaTokens = new MocaLexer(CharStreams.fromString(finalMocaScript)).getAllTokens();
 
         // Update embedded lang ranges, then compile them.
-        this.updateEmbeddedLanguageRanges(mocaScript);
+        this.updateEmbeddedLanguageRanges(finalMocaScript);
+
+        // Before setting up infrastructure to compile sql and groovy, make sure there
+        // is something to compile!
+
+        // We are utilizing a very naive threading strategy below. The only way it could
+        // bite us would be if there is a combined ~20000 sql/groovy contexts that need
+        // to be compiled -- I am okay with risking our naive strategy for now!
 
         // Start with SQL.
-        for (int i = 0; i < this.sqlRanges.size(); i++) {
-            // Remove first and last characters('[', ']').
-            String sqlScript = Ranges.getText(mocaScript, this.sqlRanges.get(i));
-            sqlScript = sqlScript.substring(1, sqlScript.length() - 1);
-            this.sqlCompiler.compileScript(i, sqlScript);
-        }
+        Thread mainSqlThread = null;
+        if (!this.sqlRanges.isEmpty()) {
 
-        compilationResult.sqlCompilationResults = this.sqlCompiler.compilationResults;
-        compilationResult.sqlLastSuccessfulCompilationResults = this.sqlCompiler.lastSuccessfulCompilationResults;
+            mainSqlThread = new Thread(() -> {
+                ArrayList<Thread> sqlThreads = new ArrayList<>();
+                for (int i = 0; i < this.sqlRanges.size(); i++) {
+
+                    final int rangeIdx = i;
+
+                    // Compiling sql ranges via another thread.
+                    Thread sqlThread = new Thread(() -> {
+                        // Remove first and last characters('[', ']').
+                        String sqlScript = Ranges.getText(finalMocaScript, this.sqlRanges.get(rangeIdx));
+                        sqlScript = sqlScript.substring(1, sqlScript.length() - 1);
+                        this.sqlCompiler.compileScript(rangeIdx, sqlScript);
+                    });
+
+                    sqlThread.start();
+                    sqlThreads.add(sqlThread);
+
+                }
+
+                // Mark sure all sql threads are done before we leave.
+                try {
+                    for (Thread thread : sqlThreads) {
+                        thread.join();
+                    }
+
+                } catch (InterruptedException InterruptedException) {
+                    // Do nothing...
+                }
+            });
+
+            mainSqlThread.start();
+
+        }
 
         // Now Groovy.
-        for (int i = 0; i < this.groovyRanges.size(); i++) {
-            // Remove '[[]]'.
+        Thread mainGroovyThread = null;
+        if (!this.groovyRanges.isEmpty()) {
 
-            String groovyScript = Ranges.getText(mocaScript, this.groovyRanges.get(i));
-            groovyScript = groovyScript.substring(2, groovyScript.length() - 2);
+            mainGroovyThread = new Thread(() -> {
 
-            this.groovyCompiler.compileScript(i, groovyScript, this, mocaScript);
+                ArrayList<Thread> groovyThreads = new ArrayList<>();
+                for (int i = 0; i < this.groovyRanges.size(); i++) {
+
+                    final int rangeIdx = i;
+
+                    // Compiling groovy ranges via another thread.
+                    Thread groovyThread = new Thread(() -> {
+                        // Remove '[[]]'.
+                        String groovyScript = Ranges.getText(finalMocaScript, this.groovyRanges.get(rangeIdx));
+                        groovyScript = groovyScript.substring(2, groovyScript.length() - 2);
+
+                        this.groovyCompiler.compileScript(rangeIdx, groovyScript, this, finalMocaScript);
+                    });
+
+                    groovyThread.start();
+                    groovyThreads.add(groovyThread);
+
+                }
+
+                // Mark sure all groovy threads are done before we leave.
+                try {
+                    for (Thread thread : groovyThreads) {
+                        thread.join();
+                    }
+                } catch (InterruptedException InterruptedException) {
+                    // Do nothing...
+                }
+            });
+
+            mainGroovyThread.start();
+
         }
 
-        compilationResult.groovyCompilationResults = this.groovyCompiler.compilationResults;
+        // Wait for sql and groovy threads to finish.
+        try {
+            if (mainSqlThread != null) {
+                mainSqlThread.join();
+                compilationResult.sqlCompilationResults = this.sqlCompiler.compilationResults;
+                compilationResult.sqlLastSuccessfulCompilationResults = this.sqlCompiler.lastSuccessfulCompilationResults;
+            }
+            if (mainGroovyThread != null) {
+                mainGroovyThread.join();
+                compilationResult.groovyCompilationResults = this.groovyCompiler.compilationResults;
+            }
+
+        } catch (InterruptedException InterruptedException) {
+            // Do nothing...
+        }
 
         return compilationResult;
     }
