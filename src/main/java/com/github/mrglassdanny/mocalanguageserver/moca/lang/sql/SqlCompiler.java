@@ -3,6 +3,7 @@ package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql;
 import java.util.HashMap;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.TSqlParser;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlrutil.CaseChangingCharStream;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.TSqlLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.SqlLanguageUtils;
 
@@ -24,9 +25,10 @@ public class SqlCompiler {
         SqlCompilationResult compilationResult = new SqlCompilationResult();
 
         script = SqlLanguageUtils.adjustSqlScriptForMoca(script);
-
+        compilationResult.sqlTokens = new TSqlLexer(new CaseChangingCharStream(CharStreams.fromString(script), true))
+                .getAllTokens();
         compilationResult.sqlParser = new TSqlParser(
-                new CommonTokenStream(new TSqlLexer(CharStreams.fromString(script))));
+                new CommonTokenStream(new TSqlLexer(new CaseChangingCharStream(CharStreams.fromString(script), true))));
         compilationResult.sqlSyntaxErrorListener = new SqlSyntaxErrorListener();
         compilationResult.sqlParser.addErrorListener(compilationResult.sqlSyntaxErrorListener);
         // Since we do not want errors printing to the console, remove this

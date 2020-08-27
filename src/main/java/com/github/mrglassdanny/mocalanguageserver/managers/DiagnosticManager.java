@@ -13,12 +13,14 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaSyntaxError;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.SqlStatementVisitor;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlParseTreeListener;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlSyntaxError;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.SqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
 
+import org.antlr.v4.runtime.Token;
 import org.codehaus.groovy.control.messages.ExceptionMessage;
 import org.codehaus.groovy.control.messages.Message;
 import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
@@ -29,9 +31,6 @@ import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.services.LanguageClient;
-
-import net.sf.jsqlparser.parser.Token;
-import net.sf.jsqlparser.schema.Table;
 
 public class DiagnosticManager {
 
@@ -110,8 +109,8 @@ public class DiagnosticManager {
             SqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
                     .get(i);
             Range sqlRange = mocaCompiler.sqlRanges.get(i);
-            diagnostics.addAll(
-                    handleSqlTableMayNotExistWarnings(uriStr, script, sqlCompilationResult.astVisitor, sqlRange));
+            diagnostics.addAll(handleSqlTableMayNotExistWarnings(uriStr, script,
+                    sqlCompilationResult.sqlParseTreeListener, sqlRange));
         }
 
         return diagnostics;
@@ -213,25 +212,27 @@ public class DiagnosticManager {
     // SQL.
     private static ArrayList<Diagnostic> handleSqlSyntaxErrors(String uriStr, SqlCompilationResult compilationResult,
             Range sqlScriptRange) {
-        if (!compilationResult.hasErrors()) {
+        if (!compilationResult.hasSqlErrors()) {
             return new ArrayList<Diagnostic>();
         } else {
             // Set diagnostics.
             ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
-            Range range = SqlLanguageUtils.syntaxExceptionToRange(compilationResult.sqlSyntaxError, sqlScriptRange);
-            Diagnostic diagnostic = new Diagnostic();
-            diagnostic.setRange(range);
-            diagnostic.setSeverity(DiagnosticSeverity.Error);
-            diagnostic.setMessage("SQL: " + compilationResult.sqlSyntaxError.getSyntaxErrorText());
-            diagnostics.add(diagnostic);
+            for (SqlSyntaxError sqlSyntaxError : compilationResult.sqlSyntaxErrorListener.sqlSyntaxErrors) {
+                Range range = SqlLanguageUtils.syntaxExceptionToRange(sqlSyntaxError, sqlScriptRange);
+                Diagnostic diagnostic = new Diagnostic();
+                diagnostic.setRange(range);
+                diagnostic.setSeverity(DiagnosticSeverity.Error);
+                diagnostic.setMessage("SQL: " + sqlSyntaxError.msg);
+                diagnostics.add(diagnostic);
+            }
 
             return diagnostics;
         }
     }
 
     private static ArrayList<Diagnostic> handleSqlTableMayNotExistWarnings(String uriStr, String script,
-            SqlStatementVisitor sqlStatementVisitor, Range sqlScriptRange) {
+            SqlParseTreeListener sqlParseTreeListener, Range sqlScriptRange) {
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
@@ -241,36 +242,35 @@ public class DiagnosticManager {
         // NOTE: can use current compilation results -- it doesnt matter if we have an
         // ast or not since errors take precedence anyways.
 
-        for (Table astTable : sqlStatementVisitor.tables) {
+        for (Token tableToken : sqlParseTreeListener.tableTokens) {
 
             boolean foundTable = false;
 
-            if (MocaLanguageServer.currentMocaConnection.cache.schema.tables
-                    .containsKey(astTable.getName().toLowerCase())) {
+            String tableTokenText = tableToken.getText().toLowerCase();
+
+            if (MocaLanguageServer.currentMocaConnection.cache.schema.tables.containsKey(tableTokenText)) {
                 foundTable = true;
             }
 
             if (!foundTable) {
-                if (MocaLanguageServer.currentMocaConnection.cache.schema.views
-                        .containsKey(astTable.getName().toLowerCase())) {
+                if (MocaLanguageServer.currentMocaConnection.cache.schema.views.containsKey(tableTokenText)) {
                     foundTable = true;
                 }
             }
 
             if (!foundTable) {
 
-                Token firstToken = astTable.getASTNode().jjtGetFirstToken();
-                Position beginPos = SqlLanguageUtils.createMocaPosition(firstToken.beginLine, firstToken.beginColumn,
-                        sqlScriptRange);
-                Position endPos = SqlLanguageUtils.createMocaPosition(firstToken.endLine, firstToken.endColumn,
-                        sqlScriptRange);
+                Position beginPos = SqlLanguageUtils.createMocaPosition(tableToken.getLine(),
+                        tableToken.getCharPositionInLine(), sqlScriptRange);
+                Position endPos = SqlLanguageUtils.createMocaPosition(tableToken.getLine(),
+                        tableToken.getCharPositionInLine(), sqlScriptRange);
 
                 if (beginPos != null && endPos != null) {
                     Range range = new Range(beginPos, endPos);
                     Diagnostic diagnostic = new Diagnostic();
                     diagnostic.setRange(range);
                     diagnostic.setSeverity(DiagnosticSeverity.Warning);
-                    diagnostic.setMessage("SQL: Table/View '" + astTable.getName() + "' may not exist");
+                    diagnostic.setMessage("SQL: Table/View '" + tableTokenText + "' may not exist");
                     diagnostics.add(diagnostic);
                 }
 

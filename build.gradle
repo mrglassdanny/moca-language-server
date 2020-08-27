@@ -20,7 +20,6 @@ dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.5.7'
     compile 'org.reflections:reflections:0.9.+'
     compile 'io.github.classgraph:classgraph:4.8.53'
-    implementation files('lib/jsqlparser-3.1-SNAPSHOT.jar')
     implementation files('lib/sqlite-jdbc-3.23.1.jar')
     implementation 'com.google.code.gson:gson:2.8.6'
 
@@ -30,6 +29,7 @@ dependencies {
 
 generateGrammarSource {
     outputDirectory = file('src/main/java/com/github/mrglassdanny/mocalanguageserver/moca/lang/antlr')
+    arguments += ["-visitor", "-listener"]
 }
 
 tasks.build.dependsOn tasks.shadowJar

@@ -13,10 +13,6 @@ public class MocaCompilationResult {
     public MocaSyntaxErrorListener mocaSyntaxErrorListener;
 
     public HashMap<Integer, SqlCompilationResult> sqlCompilationResults;
-    // Based on how sql/groovy parsers work(no ast data when exception in parse), we
-    // need to
-    // store last successful compilation results.
-    public HashMap<Integer, SqlCompilationResult> sqlLastSuccessfulCompilationResults;
     public HashMap<Integer, GroovyCompilationResult> groovyCompilationResults;
 
     public MocaCompilationResult() {
@@ -26,7 +22,6 @@ public class MocaCompilationResult {
         this.mocaSyntaxErrorListener = null;
 
         this.sqlCompilationResults = null;
-        this.sqlLastSuccessfulCompilationResults = null;
         this.groovyCompilationResults = null;
 
     }

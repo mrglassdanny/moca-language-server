@@ -22,8 +22,6 @@ import org.eclipse.lsp4j.services.LanguageClient;
 import org.eclipse.lsp4j.util.SemanticHighlightingTokens;
 import org.eclipse.lsp4j.util.SemanticHighlightingTokens.Token;
 
-import net.sf.jsqlparser.parser.SimpleNode;
-
 public class SemanticHighlightingManager {
 
     private static final int SQL_RANGE_SCOPES_IDX = 0;
@@ -317,21 +315,16 @@ public class SemanticHighlightingManager {
             // we are looking at has no errors.
             SqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
                     .get(i);
-            if (sqlCompilationResult.hasErrors()) {
-                sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlLastSuccessfulCompilationResults.get(i);
-            }
 
             // Quit now if no compilation result.
             if (sqlCompilationResult != null) {
 
-                SimpleNode curSqlNode = sqlCompilationResult.astVisitor.rootNode;
-                net.sf.jsqlparser.parser.Token curSqlToken = curSqlNode.jjtGetFirstToken();
-                while (curSqlToken != null) {
+                for (org.antlr.v4.runtime.Token tableToken : sqlCompilationResult.sqlParseTreeListener.tableTokens) {
 
-                    Position pos = SqlLanguageUtils.createMocaPosition(curSqlToken.beginLine, curSqlToken.beginColumn,
-                            mocaCompiler.sqlRanges.get(i));
+                    Position pos = SqlLanguageUtils.createMocaPosition(tableToken.getLine(),
+                            tableToken.getCharPositionInLine(), mocaCompiler.sqlRanges.get(i));
 
-                    String sqlWord = curSqlToken.image.toLowerCase();
+                    String sqlWord = tableToken.getText().toLowerCase();
 
                     // Check if exists in tables/views before we add to map.
                     if (MocaLanguageServer.currentMocaConnection.cache.schema.tables.containsKey(sqlWord)
@@ -350,8 +343,6 @@ public class SemanticHighlightingManager {
                             }
                         }
                     }
-
-                    curSqlToken = curSqlToken.next;
                 }
             }
         }

@@ -192,7 +192,6 @@ public class MocaCompiler {
             if (mainSqlThread != null) {
                 mainSqlThread.join();
                 compilationResult.sqlCompilationResults = this.sqlCompiler.compilationResults;
-                compilationResult.sqlLastSuccessfulCompilationResults = this.sqlCompiler.lastSuccessfulCompilationResults;
             }
             if (mainGroovyThread != null) {
                 mainGroovyThread.join();
