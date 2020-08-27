@@ -60,10 +60,8 @@ public class SqlLanguageUtils {
 
     public static Range syntaxExceptionToRange(SqlSyntaxError err, Range sqlScriptRange) {
 
-        Position pos = err.getSyntaxErrorPosition();
-
-        return new Range(createMocaPosition(pos.getLine(), pos.getCharacter(), sqlScriptRange),
-                createMocaPosition(pos.getLine(), pos.getCharacter(), sqlScriptRange));
+        return new Range(createMocaPosition(err.line, err.charPositionInLine, sqlScriptRange),
+                createMocaPosition(err.line, err.charPositionInLine, sqlScriptRange));
     }
 
     public static String adjustSqlScriptForMoca(String script) {

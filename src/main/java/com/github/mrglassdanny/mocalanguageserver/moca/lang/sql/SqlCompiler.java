@@ -2,40 +2,39 @@ package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql;
 
 import java.util.HashMap;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.SqlStatementVisitor;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.TSqlParser;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.TSqlLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.SqlLanguageUtils;
 
-import net.sf.jsqlparser.JSQLParserException;
-import net.sf.jsqlparser.parser.CCJSqlParserUtil;
-import net.sf.jsqlparser.parser.SimpleNode;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ConsoleErrorListener;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class SqlCompiler {
 
     public HashMap<Integer, SqlCompilationResult> compilationResults;
-    // Based on how parser works(no ast data when exception in parse), we need to
-    // store last successful compilation results.
-    public HashMap<Integer, SqlCompilationResult> lastSuccessfulCompilationResults;
 
     public SqlCompiler() {
         this.compilationResults = new HashMap<>();
-        this.lastSuccessfulCompilationResults = new HashMap<>();
     }
 
     public SqlCompilationResult compileScript(int rangeIdx, String script) {
         SqlCompilationResult compilationResult = new SqlCompilationResult();
 
-        try {
-            script = SqlLanguageUtils.adjustSqlScriptForMoca(script);
-            compilationResult.astVisitor = new SqlStatementVisitor();
-            compilationResult.astVisitor.rootNode = (SimpleNode) CCJSqlParserUtil.parseAST(script);
-            compilationResult.astVisitor.visit(CCJSqlParserUtil.parse(script));
+        script = SqlLanguageUtils.adjustSqlScriptForMoca(script);
 
-            // Add to last succesful if we get here.
-            this.lastSuccessfulCompilationResults.put(rangeIdx, compilationResult);
-        } catch (JSQLParserException jpe) {
-            compilationResult.sqlSyntaxError = new SqlSyntaxError(jpe);
-            // Dont touch last successful.
-        }
+        compilationResult.sqlParser = new TSqlParser(
+                new CommonTokenStream(new TSqlLexer(CharStreams.fromString(script))));
+        compilationResult.sqlSyntaxErrorListener = new SqlSyntaxErrorListener();
+        compilationResult.sqlParser.addErrorListener(compilationResult.sqlSyntaxErrorListener);
+        // Since we do not want errors printing to the console, remove this
+        // ConsoleErrorListener.
+        compilationResult.sqlParser.removeErrorListener(ConsoleErrorListener.INSTANCE);
+        ParseTree parseTree = compilationResult.sqlParser.tsql_file();
+        compilationResult.sqlParseTreeListener = new SqlParseTreeListener();
+        new ParseTreeWalker().walk(compilationResult.sqlParseTreeListener, parseTree);
 
         this.compilationResults.put(rangeIdx, compilationResult);
         return compilationResult;
