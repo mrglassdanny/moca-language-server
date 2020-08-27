@@ -11,7 +11,7 @@ import com.github.mrglassdanny.mocalanguageserver.managers.DiagnosticManager;
 import com.github.mrglassdanny.mocalanguageserver.managers.SemanticHighlightingManager;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.GroovyCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.providers.CompletionProvider;
 import com.github.mrglassdanny.mocalanguageserver.providers.DefinitionProvider;
 import com.github.mrglassdanny.mocalanguageserver.providers.DocumentFormattingProvider;

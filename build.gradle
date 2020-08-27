@@ -1,38 +1,18 @@
+
 plugins {
     id 'com.github.johnrengelman.shadow' version '4.0.3'
     id 'java'
     id 'antlr'
 }
 
-group 'com.github.mrglassdanny.mocalanguageserver'
-version '0.0.1'
-
-generateGrammarSource {
-    outputDirectory = file('src/main/java/com/github/mrglassdanny/mocalanguageserver/moca/lang/antlr')
-}
-
-compileJava {
-    sourceCompatibility = '1.8'
-    targetCompatibility = '1.8'
-}
-
-test {
-    useJUnitPlatform()
-}
-
-ext.mainClass = 'com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer'
-
-tasks.build.dependsOn tasks.shadowJar
-
-shadowJar {
-    manifest {
-        attributes 'Main-Class': 'com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer'
-    }
-}
-
 repositories {
     mavenCentral()
 }
+
+group 'com.github.mrglassdanny.mocalanguageserver'
+version '0.0.1'
+
+ext.mainClass = 'com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer'
 
 dependencies {
     compile 'org.eclipse.lsp4j:org.eclipse.lsp4j:0.7.2'
@@ -46,3 +26,22 @@ dependencies {
 
     antlr 'org.antlr:antlr4:4.8'
 }
+
+
+generateGrammarSource {
+    outputDirectory = file('src/main/java/com/github/mrglassdanny/mocalanguageserver/moca/lang/antlr')
+}
+
+tasks.build.dependsOn tasks.shadowJar
+
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+}
+
+shadowJar {
+    manifest {
+        attributes 'Main-Class': 'com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer'
+    }
+}
+

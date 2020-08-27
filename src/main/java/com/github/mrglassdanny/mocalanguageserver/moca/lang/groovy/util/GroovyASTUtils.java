@@ -1,11 +1,11 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.ast.GroovyASTNodeVisitor;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.ast.GroovyASTNodeVisitor;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ClassNode;

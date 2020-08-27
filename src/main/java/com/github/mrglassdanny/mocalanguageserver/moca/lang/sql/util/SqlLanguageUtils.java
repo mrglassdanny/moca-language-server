@@ -1,9 +1,9 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.util;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlSyntaxError;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlSyntaxError;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
 import org.eclipse.lsp4j.Position;

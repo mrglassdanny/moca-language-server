@@ -1,6 +1,6 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.ast.SqlStatementVisitor;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.SqlStatementVisitor;
 
 public class SqlCompilationResult {
 

@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.util;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util;
 
 import java.net.URI;
 

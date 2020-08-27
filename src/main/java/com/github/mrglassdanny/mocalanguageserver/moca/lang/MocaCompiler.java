@@ -7,9 +7,9 @@ import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.GroovyCompiler;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.SqlCompiler;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.util.SqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.SqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;

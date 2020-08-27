@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -22,7 +22,7 @@ import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaRe
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaTraceResponse;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.groovy.GroovyCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
 
 import org.eclipse.lsp4j.ExecuteCommandParams;
 import org.eclipse.lsp4j.MessageParams;

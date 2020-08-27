@@ -1,9 +1,9 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql;
 
 import java.util.HashMap;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.ast.SqlStatementVisitor;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.embedded.sql.util.SqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.SqlStatementVisitor;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.SqlLanguageUtils;
 
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
