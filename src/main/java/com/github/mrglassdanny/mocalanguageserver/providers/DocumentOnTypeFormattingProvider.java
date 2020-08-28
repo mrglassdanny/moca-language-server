@@ -38,7 +38,8 @@ public class DocumentOnTypeFormattingProvider {
 
                 ArrayList<TextEdit> edits = new ArrayList<>();
 
-                formatMoca(edits, mocaCompiler, textDocumentContents, params.getPosition(), params.getCh());
+                // formatMoca(edits, mocaCompiler, textDocumentContents, params.getPosition(),
+                // params.getCh());
 
                 return CompletableFuture.completedFuture(edits);
 

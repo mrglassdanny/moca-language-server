@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class DatabaseMetadata {
 
-    protected static final String DATABASE_NAME = "longbow_moca_language_server.db";
+    protected static final String DATABASE_NAME = "moca_language_server.db";
 
     public static final String TABLE_NAME_EXECUTION_HISTORY = "execution_history";
 
