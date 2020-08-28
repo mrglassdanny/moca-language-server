@@ -67,13 +67,33 @@ verb_noun_clause_arg:
 			| NOT LIKE
 		)
 	) (
-		MINUS NUMERIC_LITERAL
-		| NUMERIC_LITERAL
-		| STRING_LITERAL
-		| WORD
-		| moca_variable
-		| function_expr
+		verb_noun_clause_arg_expr
 	);
+
+verb_noun_clause_arg_expr:
+	literal_value
+	| WORD
+	| moca_variable
+	| moca_at_bang
+	| moca_at_question
+	| function_expr
+	| SINGLE_BRACKET_STRING
+	| (
+		BANG (
+			literal_value
+			| WORD
+			| moca_variable
+			| moca_at_bang
+			| moca_at_question
+			| function_expr
+		)
+	)
+	| verb_noun_clause_arg_expr DOUBLE_PIPE verb_noun_clause_arg_expr
+	| verb_noun_clause_arg_expr ( STAR | DIV | MOD) verb_noun_clause_arg_expr
+	| verb_noun_clause_arg_expr ( PLUS | MINUS) verb_noun_clause_arg_expr
+	| LEFT_PAREN verb_noun_clause_arg_expr RIGHT_PAREN
+	| verb_noun_clause_arg_expr NOT? (LIKE) verb_noun_clause_arg_expr
+	| verb_noun_clause_arg_expr ( IS | NULL | NOT NULL);
 
 sub_sequence:
 	LEFT_BRACE sequence RIGHT_BRACE
@@ -129,6 +149,7 @@ moca_remote_expr:
 		| moca_variable
 	) RIGHT_PAREN;
 
+
 expr:
 	literal_value
 	| WORD
@@ -137,6 +158,7 @@ expr:
 	| moca_at_question
 	| moca_at_star
 	| function_expr
+	| SINGLE_BRACKET_STRING
 	| (
 		BANG (
 			literal_value
