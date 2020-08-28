@@ -301,9 +301,9 @@ STRING_LITERAL: (
 
 BLOCK_COMMENT: '/*' .*? '*/' -> channel(HIDDEN);
 
-WHITESPACE: [ \t]+ -> skip;
+WHITESPACE: [ \t]+ -> channel(HIDDEN);
 
-NEWLINE: ( '\r' '\n'? | '\n') -> skip;
+NEWLINE: ( '\r' '\n'? | '\n') -> channel(HIDDEN);
 
 fragment DIGIT: [0-9];
 

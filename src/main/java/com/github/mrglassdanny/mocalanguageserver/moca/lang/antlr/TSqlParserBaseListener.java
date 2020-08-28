@@ -1,4 +1,4 @@
-// Generated from TSqlParser.g4 by ANTLR 4.8
+// Generated from TSqlParser.g4 by ANTLR 4.5.3
 
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 

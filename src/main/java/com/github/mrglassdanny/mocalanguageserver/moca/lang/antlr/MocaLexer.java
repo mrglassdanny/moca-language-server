@@ -1,4 +1,4 @@
-// Generated from Moca.g4 by ANTLR 4.8
+// Generated from Moca.g4 by ANTLR 4.5.3
 
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 
@@ -13,7 +13,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class MocaLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.5.3", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -29,54 +29,41 @@ public class MocaLexer extends Lexer {
 		CATCH=47, FINALLY=48, REMOTE=49, PARALLEL=50, INPARALLEL=51, WORD=52, 
 		NUMERIC_LITERAL=53, STRING_LITERAL=54, BLOCK_COMMENT=55, WHITESPACE=56, 
 		NEWLINE=57;
-	public static String[] channelNames = {
-		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
-	};
-
 	public static String[] modeNames = {
 		"DEFAULT_MODE"
 	};
 
-	private static String[] makeRuleNames() {
-		return new String[] {
-			"T__0", "T__1", "T__2", "LEFT_PAREN", "RIGHT_PAREN", "LEFT_BRACE", "RIGHT_BRACE", 
-			"LESS", "GREATER", "LESS_EQUAL", "GREATER_EQUAL", "DOUBLE_LESS", "DOUBLE_GREATER", 
-			"PLUS", "MINUS", "STAR", "DIV", "MOD", "BACKSLASH", "AMPERSAND", "CARET", 
-			"BANG", "QUESTION", "COLON", "SEMI_COLON", "COMMA", "PIPE", "DOUBLE_PIPE", 
-			"POUND", "AT", "EQUAL", "NOT_EQUAL", "DOT", "DOUBLE_BRACKET_STRING", 
-			"SINGLE_BRACKET_STRING", "MOCA_INTEGRATOR_OVERSTACKED_ARGS", "WHERE", 
-			"AND", "LIKE", "OR", "IS", "NOT", "NULL", "IF", "ELSE", "TRY", "CATCH", 
-			"FINALLY", "REMOTE", "PARALLEL", "INPARALLEL", "WORD", "NUMERIC_LITERAL", 
-			"STRING_LITERAL", "BLOCK_COMMENT", "WHITESPACE", "NEWLINE", "DIGIT", 
-			"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", 
-			"O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
-		};
-	}
-	public static final String[] ruleNames = makeRuleNames();
+	public static final String[] ruleNames = {
+		"T__0", "T__1", "T__2", "LEFT_PAREN", "RIGHT_PAREN", "LEFT_BRACE", "RIGHT_BRACE", 
+		"LESS", "GREATER", "LESS_EQUAL", "GREATER_EQUAL", "DOUBLE_LESS", "DOUBLE_GREATER", 
+		"PLUS", "MINUS", "STAR", "DIV", "MOD", "BACKSLASH", "AMPERSAND", "CARET", 
+		"BANG", "QUESTION", "COLON", "SEMI_COLON", "COMMA", "PIPE", "DOUBLE_PIPE", 
+		"POUND", "AT", "EQUAL", "NOT_EQUAL", "DOT", "DOUBLE_BRACKET_STRING", "SINGLE_BRACKET_STRING", 
+		"MOCA_INTEGRATOR_OVERSTACKED_ARGS", "WHERE", "AND", "LIKE", "OR", "IS", 
+		"NOT", "NULL", "IF", "ELSE", "TRY", "CATCH", "FINALLY", "REMOTE", "PARALLEL", 
+		"INPARALLEL", "WORD", "NUMERIC_LITERAL", "STRING_LITERAL", "BLOCK_COMMENT", 
+		"WHITESPACE", "NEWLINE", "DIGIT", "A", "B", "C", "D", "E", "F", "G", "H", 
+		"I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", 
+		"W", "X", "Y", "Z"
+	};
 
-	private static String[] makeLiteralNames() {
-		return new String[] {
-			null, "'keep'", "'onstack'", "'ignore'", "'('", "')'", "'{'", "'}'", 
-			"'<'", "'>'", "'<='", "'>='", "'<<'", "'>>'", "'+'", "'-'", "'*'", "'/'", 
-			"'%'", "'\\'", "'&'", "'^'", "'!'", "'?'", "':'", "';'", "','", "'|'", 
-			"'||'", "'#'", "'@'", "'='", null, "'.'", null, null, "'<<OVERSTACKED_ARGS>>'"
-		};
-	}
-	private static final String[] _LITERAL_NAMES = makeLiteralNames();
-	private static String[] makeSymbolicNames() {
-		return new String[] {
-			null, null, null, null, "LEFT_PAREN", "RIGHT_PAREN", "LEFT_BRACE", "RIGHT_BRACE", 
-			"LESS", "GREATER", "LESS_EQUAL", "GREATER_EQUAL", "DOUBLE_LESS", "DOUBLE_GREATER", 
-			"PLUS", "MINUS", "STAR", "DIV", "MOD", "BACKSLASH", "AMPERSAND", "CARET", 
-			"BANG", "QUESTION", "COLON", "SEMI_COLON", "COMMA", "PIPE", "DOUBLE_PIPE", 
-			"POUND", "AT", "EQUAL", "NOT_EQUAL", "DOT", "DOUBLE_BRACKET_STRING", 
-			"SINGLE_BRACKET_STRING", "MOCA_INTEGRATOR_OVERSTACKED_ARGS", "WHERE", 
-			"AND", "LIKE", "OR", "IS", "NOT", "NULL", "IF", "ELSE", "TRY", "CATCH", 
-			"FINALLY", "REMOTE", "PARALLEL", "INPARALLEL", "WORD", "NUMERIC_LITERAL", 
-			"STRING_LITERAL", "BLOCK_COMMENT", "WHITESPACE", "NEWLINE"
-		};
-	}
-	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
+	private static final String[] _LITERAL_NAMES = {
+		null, "'keep'", "'onstack'", "'ignore'", "'('", "')'", "'{'", "'}'", "'<'", 
+		"'>'", "'<='", "'>='", "'<<'", "'>>'", "'+'", "'-'", "'*'", "'/'", "'%'", 
+		"'\\'", "'&'", "'^'", "'!'", "'?'", "':'", "';'", "','", "'|'", "'||'", 
+		"'#'", "'@'", "'='", null, "'.'", null, null, "'<<OVERSTACKED_ARGS>>'"
+	};
+	private static final String[] _SYMBOLIC_NAMES = {
+		null, null, null, null, "LEFT_PAREN", "RIGHT_PAREN", "LEFT_BRACE", "RIGHT_BRACE", 
+		"LESS", "GREATER", "LESS_EQUAL", "GREATER_EQUAL", "DOUBLE_LESS", "DOUBLE_GREATER", 
+		"PLUS", "MINUS", "STAR", "DIV", "MOD", "BACKSLASH", "AMPERSAND", "CARET", 
+		"BANG", "QUESTION", "COLON", "SEMI_COLON", "COMMA", "PIPE", "DOUBLE_PIPE", 
+		"POUND", "AT", "EQUAL", "NOT_EQUAL", "DOT", "DOUBLE_BRACKET_STRING", "SINGLE_BRACKET_STRING", 
+		"MOCA_INTEGRATOR_OVERSTACKED_ARGS", "WHERE", "AND", "LIKE", "OR", "IS", 
+		"NOT", "NULL", "IF", "ELSE", "TRY", "CATCH", "FINALLY", "REMOTE", "PARALLEL", 
+		"INPARALLEL", "WORD", "NUMERIC_LITERAL", "STRING_LITERAL", "BLOCK_COMMENT", 
+		"WHITESPACE", "NEWLINE"
+	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
 	/**
@@ -126,16 +113,13 @@ public class MocaLexer extends Lexer {
 	public String getSerializedATN() { return _serializedATN; }
 
 	@Override
-	public String[] getChannelNames() { return channelNames; }
-
-	@Override
 	public String[] getModeNames() { return modeNames; }
 
 	@Override
 	public ATN getATN() { return _ATN; }
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\2;\u021e\b\1\4\2\t"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\2;\u021e\b\1\4\2\t"+
 		"\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -179,16 +163,16 @@ public class MocaLexer extends Lexer {
 		"\4\2\13\13\"\"\3\2\62;\4\2CCcc\4\2DDdd\4\2EEee\4\2FFff\4\2GGgg\4\2HHh"+
 		"h\4\2IIii\4\2JJjj\4\2KKkk\4\2LLll\4\2MMmm\4\2NNnn\4\2OOoo\4\2PPpp\4\2"+
 		"QQqq\4\2RRrr\4\2SSss\4\2TTtt\4\2UUuu\4\2VVvv\4\2WWww\4\2XXxx\4\2YYyy\4"+
-		"\2ZZzz\4\2[[{{\4\2\\\\||\2\u021a\2\3\3\2\2\2\2\5\3\2\2\2\2\7\3\2\2\2\2"+
-		"\t\3\2\2\2\2\13\3\2\2\2\2\r\3\2\2\2\2\17\3\2\2\2\2\21\3\2\2\2\2\23\3\2"+
-		"\2\2\2\25\3\2\2\2\2\27\3\2\2\2\2\31\3\2\2\2\2\33\3\2\2\2\2\35\3\2\2\2"+
-		"\2\37\3\2\2\2\2!\3\2\2\2\2#\3\2\2\2\2%\3\2\2\2\2\'\3\2\2\2\2)\3\2\2\2"+
-		"\2+\3\2\2\2\2-\3\2\2\2\2/\3\2\2\2\2\61\3\2\2\2\2\63\3\2\2\2\2\65\3\2\2"+
-		"\2\2\67\3\2\2\2\29\3\2\2\2\2;\3\2\2\2\2=\3\2\2\2\2?\3\2\2\2\2A\3\2\2\2"+
-		"\2C\3\2\2\2\2E\3\2\2\2\2G\3\2\2\2\2I\3\2\2\2\2K\3\2\2\2\2M\3\2\2\2\2O"+
-		"\3\2\2\2\2Q\3\2\2\2\2S\3\2\2\2\2U\3\2\2\2\2W\3\2\2\2\2Y\3\2\2\2\2[\3\2"+
-		"\2\2\2]\3\2\2\2\2_\3\2\2\2\2a\3\2\2\2\2c\3\2\2\2\2e\3\2\2\2\2g\3\2\2\2"+
-		"\2i\3\2\2\2\2k\3\2\2\2\2m\3\2\2\2\2o\3\2\2\2\2q\3\2\2\2\2s\3\2\2\2\3\u00ab"+
+		"\2ZZzz\4\2[[{{\4\2\\\\||\u021a\2\3\3\2\2\2\2\5\3\2\2\2\2\7\3\2\2\2\2\t"+
+		"\3\2\2\2\2\13\3\2\2\2\2\r\3\2\2\2\2\17\3\2\2\2\2\21\3\2\2\2\2\23\3\2\2"+
+		"\2\2\25\3\2\2\2\2\27\3\2\2\2\2\31\3\2\2\2\2\33\3\2\2\2\2\35\3\2\2\2\2"+
+		"\37\3\2\2\2\2!\3\2\2\2\2#\3\2\2\2\2%\3\2\2\2\2\'\3\2\2\2\2)\3\2\2\2\2"+
+		"+\3\2\2\2\2-\3\2\2\2\2/\3\2\2\2\2\61\3\2\2\2\2\63\3\2\2\2\2\65\3\2\2\2"+
+		"\2\67\3\2\2\2\29\3\2\2\2\2;\3\2\2\2\2=\3\2\2\2\2?\3\2\2\2\2A\3\2\2\2\2"+
+		"C\3\2\2\2\2E\3\2\2\2\2G\3\2\2\2\2I\3\2\2\2\2K\3\2\2\2\2M\3\2\2\2\2O\3"+
+		"\2\2\2\2Q\3\2\2\2\2S\3\2\2\2\2U\3\2\2\2\2W\3\2\2\2\2Y\3\2\2\2\2[\3\2\2"+
+		"\2\2]\3\2\2\2\2_\3\2\2\2\2a\3\2\2\2\2c\3\2\2\2\2e\3\2\2\2\2g\3\2\2\2\2"+
+		"i\3\2\2\2\2k\3\2\2\2\2m\3\2\2\2\2o\3\2\2\2\2q\3\2\2\2\2s\3\2\2\2\3\u00ab"+
 		"\3\2\2\2\5\u00b0\3\2\2\2\7\u00b8\3\2\2\2\t\u00bf\3\2\2\2\13\u00c1\3\2"+
 		"\2\2\r\u00c3\3\2\2\2\17\u00c5\3\2\2\2\21\u00c7\3\2\2\2\23\u00c9\3\2\2"+
 		"\2\25\u00cb\3\2\2\2\27\u00ce\3\2\2\2\31\u00d1\3\2\2\2\33\u00d4\3\2\2\2"+
@@ -299,10 +283,10 @@ public class MocaLexer extends Lexer {
 		"\2\2\u01d4\u01d5\7\61\2\2\u01d5\u01d6\3\2\2\2\u01d6\u01d7\b8\2\2\u01d7"+
 		"p\3\2\2\2\u01d8\u01da\t\7\2\2\u01d9\u01d8\3\2\2\2\u01da\u01db\3\2\2\2"+
 		"\u01db\u01d9\3\2\2\2\u01db\u01dc\3\2\2\2\u01dc\u01dd\3\2\2\2\u01dd\u01de"+
-		"\b9\3\2\u01der\3\2\2\2\u01df\u01e1\7\17\2\2\u01e0\u01e2\7\f\2\2\u01e1"+
+		"\b9\2\2\u01der\3\2\2\2\u01df\u01e1\7\17\2\2\u01e0\u01e2\7\f\2\2\u01e1"+
 		"\u01e0\3\2\2\2\u01e1\u01e2\3\2\2\2\u01e2\u01e5\3\2\2\2\u01e3\u01e5\7\f"+
 		"\2\2\u01e4\u01df\3\2\2\2\u01e4\u01e3\3\2\2\2\u01e5\u01e6\3\2\2\2\u01e6"+
-		"\u01e7\b:\3\2\u01e7t\3\2\2\2\u01e8\u01e9\t\b\2\2\u01e9v\3\2\2\2\u01ea"+
+		"\u01e7\b:\2\2\u01e7t\3\2\2\2\u01e8\u01e9\t\b\2\2\u01e9v\3\2\2\2\u01ea"+
 		"\u01eb\t\t\2\2\u01ebx\3\2\2\2\u01ec\u01ed\t\n\2\2\u01edz\3\2\2\2\u01ee"+
 		"\u01ef\t\13\2\2\u01ef|\3\2\2\2\u01f0\u01f1\t\f\2\2\u01f1~\3\2\2\2\u01f2"+
 		"\u01f3\t\r\2\2\u01f3\u0080\3\2\2\2\u01f4\u01f5\t\16\2\2\u01f5\u0082\3"+
@@ -319,7 +303,7 @@ public class MocaLexer extends Lexer {
 		" \2\2\u0219\u00a6\3\2\2\2\u021a\u021b\t!\2\2\u021b\u00a8\3\2\2\2\u021c"+
 		"\u021d\t\"\2\2\u021d\u00aa\3\2\2\2\33\2\u0100\u010a\u0114\u0185\u018b"+
 		"\u0191\u0194\u0198\u019d\u019f\u01a5\u01a9\u01ae\u01b0\u01b2\u01b8\u01ba"+
-		"\u01c2\u01c4\u01c8\u01d0\u01db\u01e1\u01e4\4\2\3\2\b\2\2";
+		"\u01c2\u01c4\u01c8\u01d0\u01db\u01e1\u01e4\3\2\3\2";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

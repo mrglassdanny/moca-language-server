@@ -7,7 +7,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlrutil.CaseChangi
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.TSqlLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.SqlLanguageUtils;
 
-import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ConsoleErrorListener;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -25,10 +25,10 @@ public class SqlCompiler {
         SqlCompilationResult compilationResult = new SqlCompilationResult();
 
         script = SqlLanguageUtils.adjustSqlScriptForMoca(script);
-        compilationResult.sqlTokens = new TSqlLexer(new CaseChangingCharStream(CharStreams.fromString(script), true))
+        compilationResult.sqlTokens = new TSqlLexer(new CaseChangingCharStream(new ANTLRInputStream(script), true))
                 .getAllTokens();
         compilationResult.sqlParser = new TSqlParser(
-                new CommonTokenStream(new TSqlLexer(new CaseChangingCharStream(CharStreams.fromString(script), true))));
+                new CommonTokenStream(new TSqlLexer(new CaseChangingCharStream(new ANTLRInputStream(script), true))));
         compilationResult.sqlSyntaxErrorListener = new SqlSyntaxErrorListener();
         compilationResult.sqlParser.addErrorListener(compilationResult.sqlSyntaxErrorListener);
         // Since we do not want errors printing to the console, remove this
