@@ -52,7 +52,7 @@ public class DocumentFormattingProvider {
                 try {
                         org.antlr.codebuff.Tool.format(new LangDescriptor("Moca",
                                         "C:\\Users\\dglass\\OneDrive - Longbow Advantage\\Desktop\\corpus\\moca",
-                                        ".readonly", MocaLexer.class, MocaParser.class, "moca_script", 4,
+                                        ".msql", MocaLexer.class, MocaParser.class, "moca_script", 4,
                                         MocaLexer.BLOCK_COMMENT),
                                         "C:\\Users\\dglass\\OneDrive - Longbow Advantage\\Desktop\\format-a.msql",
                                         "C:\\Users\\dglass\\OneDrive - Longbow Advantage\\Desktop\\format-b.msql");
