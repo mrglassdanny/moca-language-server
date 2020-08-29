@@ -17,7 +17,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompila
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.ast.GroovyASTNodeVisitor;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyASTUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyNodeToStringUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
 import org.codehaus.groovy.ast.ASTNode;
@@ -101,7 +101,7 @@ public class HoverProvider {
 
                 // For hover, we need to make sure the sql compiliation result we are
                 // looking at has no errors.
-                SqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
+                MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
                         .get(ctx.rangeIdx);
 
                 // Tables, views, aliases, and subqueries - oh my!

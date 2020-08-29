@@ -256,8 +256,6 @@ groovy_script: DOUBLE_BRACKET_STRING;
 
 // LEXER ---------------------------------------------------------
 
-//TODO: nested brackets in single brackets & string testing
-
 LEFT_PAREN: '(';
 RIGHT_PAREN: ')';
 LEFT_BRACE: '{';

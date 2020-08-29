@@ -10,8 +10,8 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.SqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.MocaSqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
@@ -148,7 +148,7 @@ public class DocumentFormattingProvider {
                                         // Making sure we are actually dealing with an sql statement before we
                                         // add this
                                         // range.
-                                        if (SqlLanguageUtils.isMocaTokenValueSqlScript(curMocaTokenValue)) {
+                                        if (MocaSqlLanguageUtils.isMocaTokenValueSqlScript(curMocaTokenValue)) {
                                                 isSql = true;
                                                 sqlRangesVisited++;
                                         }

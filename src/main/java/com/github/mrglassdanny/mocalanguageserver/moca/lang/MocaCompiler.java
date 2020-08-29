@@ -8,8 +8,8 @@ import java.util.regex.Pattern;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlCompiler;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.SqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.MocaSqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
@@ -34,7 +34,7 @@ public class MocaCompiler {
     public ArrayList<Range> sqlRanges;
     public ArrayList<Range> groovyRanges;
 
-    private SqlCompiler sqlCompiler;
+    private MocaSqlCompiler sqlCompiler;
     private GroovyCompiler groovyCompiler;
 
     public MocaCompiler() {
@@ -44,7 +44,7 @@ public class MocaCompiler {
         this.sqlRanges = new ArrayList<>();
         this.groovyRanges = new ArrayList<>();
 
-        this.sqlCompiler = new SqlCompiler();
+        this.sqlCompiler = new MocaSqlCompiler();
         this.groovyCompiler = new GroovyCompiler();
     }
 
@@ -219,7 +219,7 @@ public class MocaCompiler {
         // Now just loop through tokens and find scripts.
         for (Token curMocaToken : this.mocaTokens) {
             if (curMocaToken.getType() == MocaLexer.SINGLE_BRACKET_STRING) {
-                if (SqlLanguageUtils.isMocaTokenValueSqlScript(curMocaToken.getText())) {
+                if (MocaSqlLanguageUtils.isMocaTokenValueSqlScript(curMocaToken.getText())) {
                     this.sqlRanges.add(new Range(Positions.getPosition(mocaScript, curMocaToken.getStartIndex()),
                             Positions.getPosition(mocaScript,
                                     MocaTokenUtils.getAdjustedMocaTokenStopIndex(curMocaToken.getStopIndex()))));

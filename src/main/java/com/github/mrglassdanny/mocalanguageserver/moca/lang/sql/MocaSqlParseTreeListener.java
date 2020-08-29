@@ -12,12 +12,12 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Token;
 
-public class SqlParseTreeListener extends MocaSqlParserBaseListener {
+public class MocaSqlParseTreeListener extends MocaSqlParserBaseListener {
     public ArrayList<Token> tableTokens;
     public HashMap<String, String> aliasedTableNames;
     public HashMap<String, Token> subqueries;
 
-    public SqlParseTreeListener() {
+    public MocaSqlParseTreeListener() {
         this.tableTokens = new ArrayList<>();
         this.aliasedTableNames = new HashMap<>();
         this.subqueries = new HashMap<>();

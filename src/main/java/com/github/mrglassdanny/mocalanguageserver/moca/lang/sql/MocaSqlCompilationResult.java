@@ -6,14 +6,14 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser;
 
 import org.antlr.v4.runtime.Token;
 
-public class SqlCompilationResult {
+public class MocaSqlCompilationResult {
 
     public List<? extends Token> sqlTokens; // From lexer.
     public MocaSqlParser sqlParser;
-    public SqlParseTreeListener sqlParseTreeListener;
-    public SqlSyntaxErrorListener sqlSyntaxErrorListener;
+    public MocaSqlParseTreeListener sqlParseTreeListener;
+    public MocaSqlSyntaxErrorListener sqlSyntaxErrorListener;
 
-    public SqlCompilationResult() {
+    public MocaSqlCompilationResult() {
 
         this.sqlTokens = null;
         this.sqlParser = null;

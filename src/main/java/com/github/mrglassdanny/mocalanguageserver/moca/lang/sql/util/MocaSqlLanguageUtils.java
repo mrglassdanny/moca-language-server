@@ -3,13 +3,13 @@ package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlSyntaxError;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlSyntaxError;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 
-public class SqlLanguageUtils {
+public class MocaSqlLanguageUtils {
 
     public static final Pattern SQL_RANGE_START_WORD_PATTERN = Pattern
             .compile("(?i)\\b(select|update|delete|insert|create|alter|drop)\\b");
@@ -58,7 +58,7 @@ public class SqlLanguageUtils {
 
     }
 
-    public static Range syntaxExceptionToRange(SqlSyntaxError err, Range sqlScriptRange) {
+    public static Range syntaxExceptionToRange(MocaSqlSyntaxError err, Range sqlScriptRange) {
 
         return new Range(createMocaPosition(err.line, err.charPositionInLine, sqlScriptRange),
                 createMocaPosition(err.line, err.charPositionInLine, sqlScriptRange));
@@ -79,7 +79,7 @@ public class SqlLanguageUtils {
     }
 
     public static boolean isMocaTokenValueSqlScript(String mocaTokenValue) {
-        Matcher sqlStartWordMatcher = SqlLanguageUtils.SQL_RANGE_START_WORD_PATTERN.matcher(mocaTokenValue);
+        Matcher sqlStartWordMatcher = MocaSqlLanguageUtils.SQL_RANGE_START_WORD_PATTERN.matcher(mocaTokenValue);
         if (sqlStartWordMatcher.find()) {
 
             // Get index of first character in first word to compare to sqlStartWordMatcher

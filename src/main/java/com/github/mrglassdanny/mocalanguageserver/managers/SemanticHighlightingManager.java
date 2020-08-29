@@ -9,8 +9,8 @@ import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.SqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.MocaSqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
 import org.eclipse.lsp4j.Position;
@@ -313,7 +313,7 @@ public class SemanticHighlightingManager {
         for (int i = 0; i < mocaCompiler.sqlRanges.size(); i++) {
             // For semantic highlighting, we need to make sure the sql compiliation result
             // we are looking at has no errors.
-            SqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
+            MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
                     .get(i);
 
             // Quit now if no compilation result.
@@ -321,7 +321,7 @@ public class SemanticHighlightingManager {
 
                 for (org.antlr.v4.runtime.Token tableToken : sqlCompilationResult.sqlParseTreeListener.tableTokens) {
 
-                    Position pos = SqlLanguageUtils.createMocaPosition(tableToken.getLine(),
+                    Position pos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
                             tableToken.getCharPositionInLine(), mocaCompiler.sqlRanges.get(i));
 
                     String sqlWord = tableToken.getText().toLowerCase();
