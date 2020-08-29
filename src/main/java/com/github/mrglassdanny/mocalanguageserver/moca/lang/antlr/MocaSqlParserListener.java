@@ -3660,6 +3660,16 @@ public interface MocaSqlParserListener extends ParseTreeListener {
 	 */
 	void exitMoca_variable(MocaSqlParser.Moca_variableContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MocaSqlParser#moca_anywhere_variable}.
+	 * @param ctx the parse tree
+	 */
+	void enterMoca_anywhere_variable(MocaSqlParser.Moca_anywhere_variableContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MocaSqlParser#moca_anywhere_variable}.
+	 * @param ctx the parse tree
+	 */
+	void exitMoca_anywhere_variable(MocaSqlParser.Moca_anywhere_variableContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MocaSqlParser#moca_plus_variable}.
 	 * @param ctx the parse tree
 	 */

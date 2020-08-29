@@ -3124,8 +3124,13 @@ moca_variable:
 	| moca_type_cast_variable
 	| moca_integration_variable;
 
+moca_anywhere_variable:
+	moca_at_plus_variable
+	| moca_at_plus_variable COLON ID;
+
 moca_plus_variable:
 	moca_at_plus_variable
+	| moca_at_star
 	| moca_at_mod_variable
 	| moca_oldvar_directive
 	| moca_database_qualifier_variable;
@@ -3234,6 +3239,7 @@ predicate:
 	| expression NOT? IN '(' (subquery | expression_list) ')'
 	| expression NOT? LIKE expression (ESCAPE expression)?
 	| expression IS null_notnull
+	| moca_plus_variable
 	| '(' search_condition ')';
 
 // Changed union rule to sql_union to avoid union construct with C++ target.  Issue reported by person who generates into C++.  This individual reports change causes generated code to work

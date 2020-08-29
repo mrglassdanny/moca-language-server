@@ -2203,6 +2203,12 @@ public interface MocaSqlParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMoca_variable(MocaSqlParser.Moca_variableContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_anywhere_variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_anywhere_variable(MocaSqlParser.Moca_anywhere_variableContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MocaSqlParser#moca_plus_variable}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

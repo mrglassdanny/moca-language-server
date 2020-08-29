@@ -4398,6 +4398,18 @@ public class MocaSqlParserBaseListener implements MocaSqlParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMoca_anywhere_variable(MocaSqlParser.Moca_anywhere_variableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMoca_anywhere_variable(MocaSqlParser.Moca_anywhere_variableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterMoca_plus_variable(MocaSqlParser.Moca_plus_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
