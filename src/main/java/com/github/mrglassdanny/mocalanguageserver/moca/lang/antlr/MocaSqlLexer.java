@@ -1,4 +1,4 @@
-// Generated from TSqlLexer.g4 by ANTLR 4.5.3
+// Generated from MocaSqlLexer.g4 by ANTLR 4.5.3
 
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 
@@ -12,7 +12,7 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class TSqlLexer extends Lexer {
+public class MocaSqlLexer extends Lexer {
 	static { RuntimeMetaData.checkVersion("4.5.3", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -670,13 +670,13 @@ public class TSqlLexer extends Lexer {
 	}
 
 
-	public TSqlLexer(CharStream input) {
+	public MocaSqlLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	@Override
-	public String getGrammarFileName() { return "TSqlLexer.g4"; }
+	public String getGrammarFileName() { return "MocaSqlLexer.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

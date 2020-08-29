@@ -1,4 +1,8 @@
 /*
+MocaSqlParser: derived from TSql grammar (see license below) and reworked to support MOCA SQL syntax
+ */
+
+/*
  T-SQL (Transact-SQL, MSSQL) grammar.
  The MIT License (MIT).
  Copyright (c) 2017, Mark Adams
@@ -34,17 +38,17 @@
  THE SOFTWARE.
  */
 
-parser grammar TSqlParser;
+parser grammar MocaSqlParser;
 
 @header {
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 }
 
 options {
-	tokenVocab = TSqlLexer;
+	tokenVocab = MocaSqlLexer;
 }
 
-tsql_file: batch* EOF;
+moca_sql_file: batch* EOF;
 
 batch:
 	execute_body go_statement*

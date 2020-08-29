@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.TSqlParser;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.TSqlParserBaseListener;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.TSqlParser.Derived_tableContext;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.TSqlParser.Table_name_with_hintContext;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParserBaseListener;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Derived_tableContext;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_name_with_hintContext;
 
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Token;
 
-public class SqlParseTreeListener extends TSqlParserBaseListener {
+public class SqlParseTreeListener extends MocaSqlParserBaseListener {
     public ArrayList<Token> tableTokens;
     public HashMap<String, String> aliasedTableNames;
     public HashMap<String, Token> subqueries;
@@ -25,7 +25,7 @@ public class SqlParseTreeListener extends TSqlParserBaseListener {
     }
 
     @Override
-    public void enterTable_source_item(TSqlParser.Table_source_itemContext ctx) {
+    public void enterTable_source_item(MocaSqlParser.Table_source_itemContext ctx) {
 
         String tableName = null;
         String tableAliasName = null;

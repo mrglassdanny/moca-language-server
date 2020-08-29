@@ -8,8 +8,8 @@ import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.TSqlLexer;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.TSqlParser;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlLexer;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.SqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
@@ -52,7 +52,7 @@ public class DocumentFormattingProvider {
                 try {
                         org.antlr.codebuff.Tool.format(new LangDescriptor("Moca",
                                         "C:\\Users\\dglass\\OneDrive - Longbow Advantage\\Desktop\\corpus\\moca",
-                                        ".msql", MocaLexer.class, MocaParser.class, "moca_script", 4,
+                                        ".*\\.msql", MocaLexer.class, MocaParser.class, "moca_script", 4,
                                         MocaLexer.BLOCK_COMMENT),
                                         "C:\\Users\\dglass\\OneDrive - Longbow Advantage\\Desktop\\format-a.msql",
                                         "C:\\Users\\dglass\\OneDrive - Longbow Advantage\\Desktop\\format-b.msql");

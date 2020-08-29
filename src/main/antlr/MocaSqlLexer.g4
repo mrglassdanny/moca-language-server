@@ -1,4 +1,8 @@
 /*
+MocaSqlLexer: derived from TSql grammar (see license below) and reworked to support MOCA SQL syntax
+ */
+
+/*
 T-SQL (Transact-SQL, MSSQL) grammar.
 The MIT License (MIT).
 Copyright (c) 2017, Mark Adams (madams51703@gmail.com)
@@ -23,7 +27,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-lexer grammar TSqlLexer;
+lexer grammar MocaSqlLexer;
 
 @header {
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;

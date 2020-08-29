@@ -2,9 +2,9 @@ package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql;
 
 import java.util.HashMap;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.TSqlParser;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlrutil.CaseChangingCharStream;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.TSqlLexer;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.SqlLanguageUtils;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -25,16 +25,16 @@ public class SqlCompiler {
         SqlCompilationResult compilationResult = new SqlCompilationResult();
 
         script = SqlLanguageUtils.adjustSqlScriptForMoca(script);
-        compilationResult.sqlTokens = new TSqlLexer(new CaseChangingCharStream(new ANTLRInputStream(script), true))
+        compilationResult.sqlTokens = new MocaSqlLexer(new CaseChangingCharStream(new ANTLRInputStream(script), true))
                 .getAllTokens();
-        compilationResult.sqlParser = new TSqlParser(
-                new CommonTokenStream(new TSqlLexer(new CaseChangingCharStream(new ANTLRInputStream(script), true))));
+        compilationResult.sqlParser = new MocaSqlParser(new CommonTokenStream(
+                new MocaSqlLexer(new CaseChangingCharStream(new ANTLRInputStream(script), true))));
         compilationResult.sqlSyntaxErrorListener = new SqlSyntaxErrorListener();
         compilationResult.sqlParser.addErrorListener(compilationResult.sqlSyntaxErrorListener);
         // Since we do not want errors printing to the console, remove this
         // ConsoleErrorListener.
         compilationResult.sqlParser.removeErrorListener(ConsoleErrorListener.INSTANCE);
-        ParseTree parseTree = compilationResult.sqlParser.tsql_file();
+        ParseTree parseTree = compilationResult.sqlParser.moca_sql_file();
         compilationResult.sqlParseTreeListener = new SqlParseTreeListener();
         new ParseTreeWalker().walk(compilationResult.sqlParseTreeListener, parseTree);
 
