@@ -1,6 +1,6 @@
 /*
 MocaSqlParser: derived from TSql grammar (see license below) and reworked to support MOCA SQL syntax
- */
+*/
 
 /*
  T-SQL (Transact-SQL, MSSQL) grammar.
@@ -3110,7 +3110,66 @@ expression:
 	| expression op = ('+' | '-' | '&' | '^' | '|' | '||') expression
 	| expression comparison_operator expression
 	| expression assignment_operator expression
-	| over_clause;
+	| over_clause
+	| moca_variable expression
+	| moca_plus_variable;
+
+moca_variable:
+	moca_at_variable
+	| moca_at_minus_variable
+	| moca_environment_variable
+	| moca_keep_directive
+	| moca_ignore_directive
+	| moca_onstack_directive
+	| moca_type_cast_variable
+	| moca_integration_variable;
+
+moca_plus_variable:
+	moca_at_plus_variable
+	| moca_at_mod_variable
+	| moca_oldvar_directive
+	| moca_database_qualifier_variable;
+
+moca_at_variable: AT ID; // @variable
+moca_environment_variable: AT AT ID; // @@variable
+moca_at_minus_variable: AT MINUS ID; // @-variable
+moca_at_plus_variable: AT PLUS ID; // @+variable
+moca_at_mod_variable: AT MODULE ID; // @%variable
+moca_at_star: AT STAR; // @*
+
+moca_keep_directive:
+	moca_at_keep_directive
+	| moca_at_minus_keep_directive;
+moca_at_keep_directive:
+	moca_at_variable SHARP MOCA_KEEP; // @variable#keep
+moca_at_minus_keep_directive:
+	moca_at_minus_variable SHARP MOCA_KEEP; // @-variable#keep
+moca_at_plus_keep_directive: // DOES NOT SEEM TO BE VALID
+	moca_at_plus_variable SHARP MOCA_KEEP; // @+variable#keep
+moca_at_mod_keep_directive: // DOES NOT SEEM TO BE VALID
+	moca_at_mod_variable SHARP MOCA_KEEP; // @%variable#keep
+
+moca_onstack_directive:
+	moca_at_variable SHARP MOCA_ONSTACK; // @variable#onstack
+moca_ignore_directive:
+	moca_at_variable SHARP MOCA_IGNORE; // @variable#ignore
+
+moca_oldvar_directive:
+	moca_at_plus_oldvar_directive
+	| moca_at_mod_oldvar_directive;
+moca_at_plus_oldvar_directive:
+	moca_at_plus_variable BIT_XOR ID; // @+newvariable^oldvariable
+moca_at_mod_oldvar_directive:
+	moca_at_mod_variable BIT_XOR ID; // @%newvariable^oldvariable
+
+moca_type_cast_variable:
+	moca_at_variable COLON ID
+	| moca_at_plus_variable COLON ID; // @variable:raw
+
+moca_database_qualifier_variable:
+	moca_at_plus_variable DOT ID; // @+tablename.variable
+
+moca_integration_variable: COLON ID;
 
 primitive_expression: DEFAULT | NULL | LOCAL_ID | constant;
 

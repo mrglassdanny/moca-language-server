@@ -430,16 +430,6 @@ public interface MocaListener extends ParseTreeListener {
 	 */
 	void exitMoca_onstack_directive(MocaParser.Moca_onstack_directiveContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MocaParser#moca_ignore_directive}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_ignore_directive(MocaParser.Moca_ignore_directiveContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaParser#moca_ignore_directive}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_ignore_directive(MocaParser.Moca_ignore_directiveContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MocaParser#moca_oldvar_directive}.
 	 * @param ctx the parse tree
 	 */

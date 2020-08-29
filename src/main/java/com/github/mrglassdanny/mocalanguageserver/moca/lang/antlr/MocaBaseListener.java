@@ -522,18 +522,6 @@ public class MocaBaseListener implements MocaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_ignore_directive(MocaParser.Moca_ignore_directiveContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMoca_ignore_directive(MocaParser.Moca_ignore_directiveContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterMoca_oldvar_directive(MocaParser.Moca_oldvar_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}

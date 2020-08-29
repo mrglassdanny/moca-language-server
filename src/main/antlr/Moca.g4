@@ -229,8 +229,6 @@ moca_at_mod_keep_directive: // DOES NOT SEEM TO BE VALID
 
 moca_onstack_directive:
 	moca_at_variable POUND 'onstack'; // @variable#onstack
-moca_ignore_directive: // ONLY VALID IN SQL
-	moca_at_variable POUND 'ignore'; // @variable#ignore
 
 moca_oldvar_directive:
 	moca_at_plus_oldvar_directive

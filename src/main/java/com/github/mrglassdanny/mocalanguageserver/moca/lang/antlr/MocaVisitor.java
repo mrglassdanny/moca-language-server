@@ -265,12 +265,6 @@ public interface MocaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMoca_onstack_directive(MocaParser.Moca_onstack_directiveContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MocaParser#moca_ignore_directive}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMoca_ignore_directive(MocaParser.Moca_ignore_directiveContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MocaParser#moca_oldvar_directive}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

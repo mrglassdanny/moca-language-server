@@ -1,6 +1,6 @@
 /*
 MocaSqlLexer: derived from TSql grammar (see license below) and reworked to support MOCA SQL syntax
- */
+*/
 
 /*
 T-SQL (Transact-SQL, MSSQL) grammar.
@@ -829,6 +829,10 @@ XMLSCHEMA:                             'XMLSCHEMA';
 XSINIL:                                'XSINIL';
 
 DOLLAR_ACTION:                         '$ACTION';
+
+MOCA_KEEP:                              'keep';
+MOCA_ONSTACK:                           'onstack';
+MOCA_IGNORE:                            'ignore';
 
 SPACE:              [ \t\r\n]+    -> channel(HIDDEN);
 // https://docs.microsoft.com/en-us/sql/t-sql/language-elements/slash-star-comment-transact-sql

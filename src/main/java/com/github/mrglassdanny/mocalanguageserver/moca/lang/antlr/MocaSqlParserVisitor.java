@@ -2197,6 +2197,132 @@ public interface MocaSqlParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExpression(MocaSqlParser.ExpressionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_variable(MocaSqlParser.Moca_variableContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_plus_variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_plus_variable(MocaSqlParser.Moca_plus_variableContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_at_variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_at_variable(MocaSqlParser.Moca_at_variableContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_environment_variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_environment_variable(MocaSqlParser.Moca_environment_variableContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_at_minus_variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_at_minus_variable(MocaSqlParser.Moca_at_minus_variableContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_at_plus_variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_at_plus_variable(MocaSqlParser.Moca_at_plus_variableContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_at_mod_variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_at_mod_variable(MocaSqlParser.Moca_at_mod_variableContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_at_star}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_at_star(MocaSqlParser.Moca_at_starContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_keep_directive}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_keep_directive(MocaSqlParser.Moca_keep_directiveContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_at_keep_directive}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_at_keep_directive(MocaSqlParser.Moca_at_keep_directiveContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_at_minus_keep_directive}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_at_minus_keep_directive(MocaSqlParser.Moca_at_minus_keep_directiveContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_at_plus_keep_directive}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_at_plus_keep_directive(MocaSqlParser.Moca_at_plus_keep_directiveContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_at_mod_keep_directive}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_at_mod_keep_directive(MocaSqlParser.Moca_at_mod_keep_directiveContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_onstack_directive}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_onstack_directive(MocaSqlParser.Moca_onstack_directiveContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_ignore_directive}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_ignore_directive(MocaSqlParser.Moca_ignore_directiveContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_oldvar_directive}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_oldvar_directive(MocaSqlParser.Moca_oldvar_directiveContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_at_plus_oldvar_directive}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_at_plus_oldvar_directive(MocaSqlParser.Moca_at_plus_oldvar_directiveContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_at_mod_oldvar_directive}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_at_mod_oldvar_directive(MocaSqlParser.Moca_at_mod_oldvar_directiveContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_type_cast_variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_type_cast_variable(MocaSqlParser.Moca_type_cast_variableContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_database_qualifier_variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_database_qualifier_variable(MocaSqlParser.Moca_database_qualifier_variableContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_integration_variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMoca_integration_variable(MocaSqlParser.Moca_integration_variableContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MocaSqlParser#primitive_expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
