@@ -17,6 +17,14 @@ public class MocaConnectionWrapper {
     private String password;
     public MocaCache cache;
 
+    public MocaConnectionWrapper() {
+        this.mocaConnection = null;
+        this.url = null;
+        this.userId = null;
+        this.password = null;
+        this.cache = new MocaCache();
+    }
+
     public MocaConnectionWrapper(String url, String userId, String password) {
 
         this.mocaConnection = null;

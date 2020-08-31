@@ -29,7 +29,7 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
 
     // Will only ever have 1 at a time. We also want it to be easily accessible to
     // anything that needs it.
-    public static MocaConnectionWrapper currentMocaConnection = null;
+    public static MocaConnectionWrapper currentMocaConnection = new MocaConnectionWrapper();
     // Same as ^.
     public static String globalStoragePath = null;
 
