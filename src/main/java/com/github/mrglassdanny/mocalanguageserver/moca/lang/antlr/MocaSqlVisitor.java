@@ -13,11 +13,11 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface MocaSqlVisitor<T> extends ParseTreeVisitor<T> {
 	/**
-	 * Visit a parse tree produced by {@link MocaSqlParser#moca_sql_file}.
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_sql_script}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMoca_sql_file(MocaSqlParser.Moca_sql_fileContext ctx);
+	T visitMoca_sql_script(MocaSqlParser.Moca_sql_scriptContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MocaSqlParser#batch}.
 	 * @param ctx the parse tree

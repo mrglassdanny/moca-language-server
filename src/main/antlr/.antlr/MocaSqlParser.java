@@ -182,7 +182,7 @@ public class MocaSqlParser extends Parser {
 		STAR=834, DIVIDE=835, MODULE=836, PLUS=837, MINUS=838, BIT_NOT=839, BIT_OR=840, 
 		BIT_AND=841, BIT_XOR=842, IPV4_OCTECT=843;
 	public static final int
-		RULE_moca_sql_file = 0, RULE_batch = 1, RULE_sql_clauses = 2, RULE_sql_clause = 3, 
+		RULE_moca_sql_script = 0, RULE_batch = 1, RULE_sql_clauses = 2, RULE_sql_clause = 3, 
 		RULE_dml_clause = 4, RULE_ddl_clause = 5, RULE_backup_statement = 6, RULE_cfl_statement = 7, 
 		RULE_block_statement = 8, RULE_break_statement = 9, RULE_continue_statement = 10, 
 		RULE_goto_statement = 11, RULE_return_statement = 12, RULE_if_statement = 13, 
@@ -368,7 +368,7 @@ public class MocaSqlParser extends Parser {
 		RULE_file_size = 508;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"moca_sql_file", "batch", "sql_clauses", "sql_clause", "dml_clause", 
+			"moca_sql_script", "batch", "sql_clauses", "sql_clause", "dml_clause", 
 			"ddl_clause", "backup_statement", "cfl_statement", "block_statement", 
 			"break_statement", "continue_statement", "goto_statement", "return_statement", 
 			"if_statement", "throw_statement", "throw_error_number", "throw_message", 
@@ -878,7 +878,7 @@ public class MocaSqlParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
-	public static class Moca_sql_fileContext extends ParserRuleContext {
+	public static class Moca_sql_scriptContext extends ParserRuleContext {
 		public TerminalNode EOF() { return getToken(MocaSqlParser.EOF, 0); }
 		public List<BatchContext> batch() {
 			return getRuleContexts(BatchContext.class);
@@ -886,15 +886,15 @@ public class MocaSqlParser extends Parser {
 		public BatchContext batch(int i) {
 			return getRuleContext(BatchContext.class,i);
 		}
-		public Moca_sql_fileContext(ParserRuleContext parent, int invokingState) {
+		public Moca_sql_scriptContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_moca_sql_file; }
+		@Override public int getRuleIndex() { return RULE_moca_sql_script; }
 	}
 
-	public final Moca_sql_fileContext moca_sql_file() throws RecognitionException {
-		Moca_sql_fileContext _localctx = new Moca_sql_fileContext(_ctx, getState());
-		enterRule(_localctx, 0, RULE_moca_sql_file);
+	public final Moca_sql_scriptContext moca_sql_script() throws RecognitionException {
+		Moca_sql_scriptContext _localctx = new Moca_sql_scriptContext(_ctx, getState());
+		enterRule(_localctx, 0, RULE_moca_sql_script);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);

@@ -10,15 +10,15 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface MocaSqlListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_sql_file}.
+	 * Enter a parse tree produced by {@link MocaSqlParser#moca_sql_script}.
 	 * @param ctx the parse tree
 	 */
-	void enterMoca_sql_file(MocaSqlParser.Moca_sql_fileContext ctx);
+	void enterMoca_sql_script(MocaSqlParser.Moca_sql_scriptContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_sql_file}.
+	 * Exit a parse tree produced by {@link MocaSqlParser#moca_sql_script}.
 	 * @param ctx the parse tree
 	 */
-	void exitMoca_sql_file(MocaSqlParser.Moca_sql_fileContext ctx);
+	void exitMoca_sql_script(MocaSqlParser.Moca_sql_scriptContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MocaSqlParser#batch}.
 	 * @param ctx the parse tree

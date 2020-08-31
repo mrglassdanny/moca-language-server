@@ -182,7 +182,7 @@ public class MocaSqlParser extends Parser {
 		STAR=834, DIVIDE=835, MODULE=836, PLUS=837, MINUS=838, BIT_NOT=839, BIT_OR=840, 
 		BIT_AND=841, BIT_XOR=842, IPV4_OCTECT=843;
 	public static final int
-		RULE_moca_sql_file = 0, RULE_batch = 1, RULE_sql_clauses = 2, RULE_sql_clause = 3, 
+		RULE_moca_sql_script = 0, RULE_batch = 1, RULE_sql_clauses = 2, RULE_sql_clause = 3, 
 		RULE_dml_clause = 4, RULE_ddl_clause = 5, RULE_backup_statement = 6, RULE_cfl_statement = 7, 
 		RULE_block_statement = 8, RULE_break_statement = 9, RULE_continue_statement = 10, 
 		RULE_goto_statement = 11, RULE_return_statement = 12, RULE_if_statement = 13, 
@@ -367,22 +367,23 @@ public class MocaSqlParser extends Parser {
 		RULE_simple_id = 505, RULE_comparison_operator = 506, RULE_assignment_operator = 507, 
 		RULE_file_size = 508;
 	public static final String[] ruleNames = {
-		"moca_sql_file", "batch", "sql_clauses", "sql_clause", "dml_clause", "ddl_clause", 
-		"backup_statement", "cfl_statement", "block_statement", "break_statement", 
-		"continue_statement", "goto_statement", "return_statement", "if_statement", 
-		"throw_statement", "throw_error_number", "throw_message", "throw_state", 
-		"try_catch_statement", "waitfor_statement", "while_statement", "print_statement", 
-		"raiseerror_statement", "empty_statement", "another_statement", "alter_application_role", 
-		"create_application_role", "drop_aggregate", "drop_application_role", 
-		"alter_assembly", "alter_assembly_start", "alter_assembly_clause", "alter_assembly_from_clause", 
-		"alter_assembly_from_clause_start", "alter_assembly_drop_clause", "alter_assembly_drop_multiple_files", 
-		"alter_assembly_drop", "alter_assembly_add_clause", "alter_asssembly_add_clause_start", 
-		"alter_assembly_client_file_clause", "alter_assembly_file_name", "alter_assembly_file_bits", 
-		"alter_assembly_as", "alter_assembly_with_clause", "alter_assembly_with", 
-		"client_assembly_specifier", "assembly_option", "network_file_share", 
-		"network_computer", "network_file_start", "file_path", "file_directory_path_separator", 
-		"local_file", "local_drive", "multiple_local_files", "multiple_local_file_start", 
-		"create_assembly", "drop_assembly", "alter_asymmetric_key", "alter_asymmetric_key_start", 
+		"moca_sql_script", "batch", "sql_clauses", "sql_clause", "dml_clause", 
+		"ddl_clause", "backup_statement", "cfl_statement", "block_statement", 
+		"break_statement", "continue_statement", "goto_statement", "return_statement", 
+		"if_statement", "throw_statement", "throw_error_number", "throw_message", 
+		"throw_state", "try_catch_statement", "waitfor_statement", "while_statement", 
+		"print_statement", "raiseerror_statement", "empty_statement", "another_statement", 
+		"alter_application_role", "create_application_role", "drop_aggregate", 
+		"drop_application_role", "alter_assembly", "alter_assembly_start", "alter_assembly_clause", 
+		"alter_assembly_from_clause", "alter_assembly_from_clause_start", "alter_assembly_drop_clause", 
+		"alter_assembly_drop_multiple_files", "alter_assembly_drop", "alter_assembly_add_clause", 
+		"alter_asssembly_add_clause_start", "alter_assembly_client_file_clause", 
+		"alter_assembly_file_name", "alter_assembly_file_bits", "alter_assembly_as", 
+		"alter_assembly_with_clause", "alter_assembly_with", "client_assembly_specifier", 
+		"assembly_option", "network_file_share", "network_computer", "network_file_start", 
+		"file_path", "file_directory_path_separator", "local_file", "local_drive", 
+		"multiple_local_files", "multiple_local_file_start", "create_assembly", 
+		"drop_assembly", "alter_asymmetric_key", "alter_asymmetric_key_start", 
 		"asymmetric_key_option", "asymmetric_key_option_start", "asymmetric_key_password_change_option", 
 		"create_asymmetric_key", "drop_asymmetric_key", "alter_authorization", 
 		"authorization_grantee", "entity_to", "colon_colon", "alter_authorization_start", 
@@ -863,7 +864,7 @@ public class MocaSqlParser extends Parser {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
-	public static class Moca_sql_fileContext extends ParserRuleContext {
+	public static class Moca_sql_scriptContext extends ParserRuleContext {
 		public TerminalNode EOF() { return getToken(MocaSqlParser.EOF, 0); }
 		public List<BatchContext> batch() {
 			return getRuleContexts(BatchContext.class);
@@ -871,28 +872,28 @@ public class MocaSqlParser extends Parser {
 		public BatchContext batch(int i) {
 			return getRuleContext(BatchContext.class,i);
 		}
-		public Moca_sql_fileContext(ParserRuleContext parent, int invokingState) {
+		public Moca_sql_scriptContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_moca_sql_file; }
+		@Override public int getRuleIndex() { return RULE_moca_sql_script; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MocaSqlListener ) ((MocaSqlListener)listener).enterMoca_sql_file(this);
+			if ( listener instanceof MocaSqlListener ) ((MocaSqlListener)listener).enterMoca_sql_script(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MocaSqlListener ) ((MocaSqlListener)listener).exitMoca_sql_file(this);
+			if ( listener instanceof MocaSqlListener ) ((MocaSqlListener)listener).exitMoca_sql_script(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MocaSqlVisitor ) return ((MocaSqlVisitor<? extends T>)visitor).visitMoca_sql_file(this);
+			if ( visitor instanceof MocaSqlVisitor ) return ((MocaSqlVisitor<? extends T>)visitor).visitMoca_sql_script(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final Moca_sql_fileContext moca_sql_file() throws RecognitionException {
-		Moca_sql_fileContext _localctx = new Moca_sql_fileContext(_ctx, getState());
-		enterRule(_localctx, 0, RULE_moca_sql_file);
+	public final Moca_sql_scriptContext moca_sql_script() throws RecognitionException {
+		Moca_sql_scriptContext _localctx = new Moca_sql_scriptContext(_ctx, getState());
+		enterRule(_localctx, 0, RULE_moca_sql_script);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);

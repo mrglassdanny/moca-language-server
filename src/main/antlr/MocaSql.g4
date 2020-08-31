@@ -46,7 +46,7 @@ grammar MocaSql;
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 }
 
-moca_sql_file: batch* EOF;
+moca_sql_script: batch* EOF;
 
 batch:
 	execute_body go_statement*

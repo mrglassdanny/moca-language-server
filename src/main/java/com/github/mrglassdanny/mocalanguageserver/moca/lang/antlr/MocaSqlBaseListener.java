@@ -18,13 +18,13 @@ public class MocaSqlBaseListener implements MocaSqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_sql_file(MocaSqlParser.Moca_sql_fileContext ctx) { }
+	@Override public void enterMoca_sql_script(MocaSqlParser.Moca_sql_scriptContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_sql_file(MocaSqlParser.Moca_sql_fileContext ctx) { }
+	@Override public void exitMoca_sql_script(MocaSqlParser.Moca_sql_scriptContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

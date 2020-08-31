@@ -34,7 +34,7 @@ public class MocaSqlCompiler {
         // Since we do not want errors printing to the console, remove this
         // ConsoleErrorListener.
         compilationResult.sqlParser.removeErrorListener(ConsoleErrorListener.INSTANCE);
-        ParseTree parseTree = compilationResult.sqlParser.moca_sql_file();
+        ParseTree parseTree = compilationResult.sqlParser.moca_sql_script();
         compilationResult.sqlParseTreeListener = new MocaSqlParseTreeListener();
         new ParseTreeWalker().walk(compilationResult.sqlParseTreeListener, parseTree);
 
