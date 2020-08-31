@@ -10,6 +10,7 @@ import com.github.mrglassdanny.mocalanguageserver.languageclient.request.CancelM
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaCommandLookupRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaConnectionRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaExecutionHistoryRequest;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaLanguageServerActivateRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaMloadRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaResultsRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaTraceRequest;
@@ -17,6 +18,7 @@ import com.github.mrglassdanny.mocalanguageserver.languageclient.response.Cancel
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaCommandLookupResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaConnectionResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaExecutionHistoryResponse;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaLanguageServerActivateResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaMloadResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaResultsResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaTraceResponse;
@@ -31,6 +33,7 @@ import org.eclipse.lsp4j.services.LanguageClient;
 
 public class ExecuteCommandProvider {
 
+    public static final String ACTIVATE = "mocalanguageserver.server.activate";
     public static final String CONNECT = "mocalanguageserver.server.connect";
     public static final String LOAD_REPOSITORY = "mocalanguageserver.server.loadRepository";
     public static final String EXECUTE = "mocalanguageserver.server.execute";
@@ -42,6 +45,7 @@ public class ExecuteCommandProvider {
 
     public static ArrayList<String> mocaLanguageServerCommands = new ArrayList<>();
     static {
+        mocaLanguageServerCommands.add(ACTIVATE);
         mocaLanguageServerCommands.add(CONNECT);
         mocaLanguageServerCommands.add(LOAD_REPOSITORY);
         mocaLanguageServerCommands.add(EXECUTE);
@@ -56,6 +60,23 @@ public class ExecuteCommandProvider {
             LanguageClient languageClient) {
         switch (params.getCommand()) {
 
+            case ACTIVATE:
+
+                try {
+                    List<Object> args = params.getArguments();
+                    if (args == null) {
+                        return CompletableFuture.completedFuture(new Object());
+                    }
+                    MocaLanguageServerActivateRequest mocaLanguageServerActivateRequest = new MocaLanguageServerActivateRequest(
+                            args);
+                    MocaLanguageServer.globalStoragePath = mocaLanguageServerActivateRequest.globalStoragePath;
+                } catch (Exception exception) {
+                    MocaLanguageServerActivateResponse mocaLanguageServerActivateResponse = new MocaLanguageServerActivateResponse(
+                            exception);
+                    return CompletableFuture.completedFuture(mocaLanguageServerActivateResponse);
+                }
+
+                break;
             case CONNECT:
 
                 try {
@@ -78,7 +99,6 @@ public class ExecuteCommandProvider {
 
                     GroovyCompiler.classpathList = mocaConnectionRequest.classpathList;
 
-                    MocaLanguageServer.globalStoragePath = mocaConnectionRequest.globalStoragePath;
                     MocaConnectionResponse mocaConnectionResponse = MocaLanguageServer.currentMocaConnection.connect();
 
                     // Here seems like a good time to run appdata maintenance.
