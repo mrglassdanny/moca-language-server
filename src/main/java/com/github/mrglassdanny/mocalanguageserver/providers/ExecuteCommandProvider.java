@@ -33,14 +33,14 @@ public class ExecuteCommandProvider {
 
     private static final String ERR_NOT_CONNECTED_TO_MOCA_SERVER = "Not connected to MOCA Server";
 
-    public static final String ACTIVATE = "mocalanguageserver.server.activate";
-    public static final String CONNECT = "mocalanguageserver.server.connect";
-    public static final String LOAD_REPOSITORY = "mocalanguageserver.server.loadRepository";
-    public static final String EXECUTE = "mocalanguageserver.server.execute";
-    public static final String TRACE = "mocalanguageserver.server.trace";
-    public static final String COMMAND_LOOKUP = "mocalanguageserver.server.commandLookup";
-    public static final String EXECUTION_HISTORY = "mocalanguageserver.server.executionHistory";
-    public static final String CANCEL_EXECUTION = "mocalanguageserver.server.cancelExecution";
+    public static final String ACTIVATE = "mocalanguageserver.activate";
+    public static final String CONNECT = "mocalanguageserver.connect";
+    public static final String LOAD_REPOSITORY = "mocalanguageserver.loadRepository";
+    public static final String EXECUTE = "mocalanguageserver.execute";
+    public static final String TRACE = "mocalanguageserver.trace";
+    public static final String COMMAND_LOOKUP = "mocalanguageserver.commandLookup";
+    public static final String EXECUTION_HISTORY = "mocalanguageserver.executionHistory";
+    public static final String CANCEL_EXECUTION = "mocalanguageserver.cancelExecution";
 
     public static ArrayList<String> mocaLanguageServerCommands = new ArrayList<>();
     static {
