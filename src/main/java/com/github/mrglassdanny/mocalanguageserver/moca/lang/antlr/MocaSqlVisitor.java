@@ -1,4 +1,4 @@
-// Generated from MocaSqlParser.g4 by ANTLR 4.5.3
+// Generated from MocaSql.g4 by ANTLR 4.5.3
 
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 
@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  * @param <T> The return type of the visit operation. Use {@link Void} for
  * operations with no return type.
  */
-public interface MocaSqlParserVisitor<T> extends ParseTreeVisitor<T> {
+public interface MocaSqlVisitor<T> extends ParseTreeVisitor<T> {
 	/**
 	 * Visit a parse tree produced by {@link MocaSqlParser#moca_sql_file}.
 	 * @param ctx the parse tree

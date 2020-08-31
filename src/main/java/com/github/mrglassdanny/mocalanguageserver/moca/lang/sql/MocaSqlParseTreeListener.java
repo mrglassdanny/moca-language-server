@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParserBaseListener;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlBaseListener;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Derived_tableContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_name_with_hintContext;
 
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Token;
 
-public class MocaSqlParseTreeListener extends MocaSqlParserBaseListener {
+public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     public ArrayList<Token> tableTokens;
     public HashMap<String, String> aliasedTableNames;
     public HashMap<String, Token> subqueries;

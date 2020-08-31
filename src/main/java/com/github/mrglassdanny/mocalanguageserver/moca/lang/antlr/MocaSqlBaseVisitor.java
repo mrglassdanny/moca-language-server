@@ -1,18 +1,18 @@
-// Generated from MocaSqlParser.g4 by ANTLR 4.5.3
+// Generated from MocaSql.g4 by ANTLR 4.5.3
 
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
- * This class provides an empty implementation of {@link MocaSqlParserVisitor},
+ * This class provides an empty implementation of {@link MocaSqlVisitor},
  * which can be extended to create a visitor which only needs to handle a subset
  * of the available methods.
  *
  * @param <T> The return type of the visit operation. Use {@link Void} for
  * operations with no return type.
  */
-public class MocaSqlParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements MocaSqlParserVisitor<T> {
+public class MocaSqlBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements MocaSqlVisitor<T> {
 	/**
 	 * {@inheritDoc}
 	 *

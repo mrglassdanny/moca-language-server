@@ -1,4 +1,4 @@
-// Generated from MocaSqlLexer.g4 by ANTLR 4.5.3
+// Generated from MocaSql.g4 by ANTLR 4.5.3
 
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 
@@ -680,7 +680,7 @@ public class MocaSqlLexer extends Lexer {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "MocaSqlLexer.g4"; }
+	public String getGrammarFileName() { return "MocaSql.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

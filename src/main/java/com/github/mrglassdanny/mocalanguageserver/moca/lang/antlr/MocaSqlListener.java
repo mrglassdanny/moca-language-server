@@ -1,4 +1,4 @@
-// Generated from MocaSqlParser.g4 by ANTLR 4.5.3
+// Generated from MocaSql.g4 by ANTLR 4.5.3
 
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 
@@ -8,7 +8,7 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  * This interface defines a complete listener for a parse tree produced by
  * {@link MocaSqlParser}.
  */
-public interface MocaSqlParserListener extends ParseTreeListener {
+public interface MocaSqlListener extends ParseTreeListener {
 	/**
 	 * Enter a parse tree produced by {@link MocaSqlParser#moca_sql_file}.
 	 * @param ctx the parse tree

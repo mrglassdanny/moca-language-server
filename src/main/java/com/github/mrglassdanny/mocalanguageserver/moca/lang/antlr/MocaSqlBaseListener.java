@@ -1,4 +1,4 @@
-// Generated from MocaSqlParser.g4 by ANTLR 4.5.3
+// Generated from MocaSql.g4 by ANTLR 4.5.3
 
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 
@@ -8,11 +8,11 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
- * This class provides an empty implementation of {@link MocaSqlParserListener},
+ * This class provides an empty implementation of {@link MocaSqlListener},
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
-public class MocaSqlParserBaseListener implements MocaSqlParserListener {
+public class MocaSqlBaseListener implements MocaSqlListener {
 	/**
 	 * {@inheritDoc}
 	 *
