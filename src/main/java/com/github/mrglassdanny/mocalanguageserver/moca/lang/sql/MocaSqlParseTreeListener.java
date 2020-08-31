@@ -2,7 +2,6 @@ package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlBaseListener;
