@@ -11,7 +11,6 @@ import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaCom
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaConnectionRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaExecutionHistoryRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaLanguageServerActivateRequest;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaMloadRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaResultsRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaTraceRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.CancelMocaExecutionResponse;
@@ -19,7 +18,6 @@ import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaCo
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaConnectionResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaExecutionHistoryResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaLanguageServerActivateResponse;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaMloadResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaResultsResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaTraceResponse;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
@@ -33,6 +31,8 @@ import org.eclipse.lsp4j.services.LanguageClient;
 
 public class ExecuteCommandProvider {
 
+    private static final String ERR_NOT_CONNECTED_TO_MOCA_SERVER = "Not connected to MOCA Server";
+
     public static final String ACTIVATE = "mocalanguageserver.server.activate";
     public static final String CONNECT = "mocalanguageserver.server.connect";
     public static final String LOAD_REPOSITORY = "mocalanguageserver.server.loadRepository";
@@ -41,7 +41,6 @@ public class ExecuteCommandProvider {
     public static final String COMMAND_LOOKUP = "mocalanguageserver.server.commandLookup";
     public static final String EXECUTION_HISTORY = "mocalanguageserver.server.executionHistory";
     public static final String CANCEL_EXECUTION = "mocalanguageserver.server.cancelExecution";
-    public static final String MLOAD = "mocalanguageserver.server.mload";
 
     public static ArrayList<String> mocaLanguageServerCommands = new ArrayList<>();
     static {
@@ -53,7 +52,6 @@ public class ExecuteCommandProvider {
         mocaLanguageServerCommands.add(COMMAND_LOOKUP);
         mocaLanguageServerCommands.add(EXECUTION_HISTORY);
         mocaLanguageServerCommands.add(CANCEL_EXECUTION);
-        mocaLanguageServerCommands.add(MLOAD);
     }
 
     public static CompletableFuture<Object> provideCommandExecution(ExecuteCommandParams params,
@@ -70,13 +68,12 @@ public class ExecuteCommandProvider {
                     MocaLanguageServerActivateRequest mocaLanguageServerActivateRequest = new MocaLanguageServerActivateRequest(
                             args);
                     MocaLanguageServer.globalStoragePath = mocaLanguageServerActivateRequest.globalStoragePath;
+                    return CompletableFuture.completedFuture(new Object());
                 } catch (Exception exception) {
                     MocaLanguageServerActivateResponse mocaLanguageServerActivateResponse = new MocaLanguageServerActivateResponse(
                             exception);
                     return CompletableFuture.completedFuture(mocaLanguageServerActivateResponse);
                 }
-
-                break;
             case CONNECT:
 
                 try {
@@ -111,9 +108,23 @@ public class ExecuteCommandProvider {
                 }
 
             case LOAD_REPOSITORY:
+                // Just handle this the same way that EXECUTE command does.
+                if (MocaLanguageServer.currentMocaConnection.url == null) {
+                    MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null,
+                            new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER));
+                    return CompletableFuture.completedFuture(mocaResultsResponse);
+                }
+
                 MocaLanguageServer.currentMocaConnection.loadRepository();
                 return CompletableFuture.completedFuture(new Object());
             case EXECUTE:
+
+                if (MocaLanguageServer.currentMocaConnection.url == null) {
+                    MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null,
+                            new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER));
+                    return CompletableFuture.completedFuture(mocaResultsResponse);
+                }
+
                 try {
                     List<Object> args = params.getArguments();
                     if (args == null) {
@@ -200,6 +211,12 @@ public class ExecuteCommandProvider {
 
             case TRACE:
 
+                if (MocaLanguageServer.currentMocaConnection.url == null) {
+                    MocaTraceResponse mocaTraceResponse = new MocaTraceResponse(
+                            new MocaResultsResponse(null, new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER)));
+                    return CompletableFuture.completedFuture(mocaTraceResponse);
+                }
+
                 try {
                     List<Object> args = params.getArguments();
                     if (args == null) {
@@ -284,23 +301,6 @@ public class ExecuteCommandProvider {
                     return CompletableFuture.completedFuture(new CancelMocaExecutionResponse(false));
                 } catch (Exception exception) {
                     return CompletableFuture.completedFuture(new CancelMocaExecutionResponse(false));
-                }
-
-            case MLOAD:
-
-                try {
-                    List<Object> args = params.getArguments();
-                    if (args == null) {
-                        return CompletableFuture.completedFuture(new Object());
-                    }
-
-                    MocaMloadRequest mloadRequest = new MocaMloadRequest(args);
-
-                    // TODO - do stuff.
-
-                    return CompletableFuture.completedFuture(new MocaMloadResponse());
-                } catch (Exception exception) {
-                    return CompletableFuture.completedFuture(new MocaMloadResponse());
                 }
             default:
                 break;
