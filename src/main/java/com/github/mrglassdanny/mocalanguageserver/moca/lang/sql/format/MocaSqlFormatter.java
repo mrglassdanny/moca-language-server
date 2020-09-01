@@ -8,16 +8,12 @@ public class MocaSqlFormatter {
     private static org.antlr.codebuff.misc.LangDescriptor mocaSqlLangDescriptor = null;
     private static org.antlr.codebuff.Corpus mocaSqlCorpus = null;
 
-    public static void configureAndTrain() {
+    public static void configureAndTrain() throws Exception {
         mocaSqlLangDescriptor = new org.antlr.codebuff.misc.LangDescriptor("MocaSql",
                 "C:\\Users\\dglass\\OneDrive - Longbow Advantage\\Desktop\\formatting-training\\mocasql", ".*\\.sql",
                 MocaSqlLexer.class, MocaSqlParser.class, "moca_sql_script", 4, MocaSqlLexer.LINE_COMMENT);
 
-        try {
-            mocaSqlCorpus = org.antlr.codebuff.Tool.trainCorpusForMocaLanguageServer(mocaSqlLangDescriptor);
-        } catch (Exception e) {
-            // Do nothing..
-        }
+        mocaSqlCorpus = org.antlr.codebuff.Tool.trainCorpusForMocaLanguageServer(mocaSqlLangDescriptor);
     }
 
     public static String format(String src) {
