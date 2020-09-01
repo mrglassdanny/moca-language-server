@@ -1,0 +1,456 @@
+/* Task ID is used to create unique keys for caching to
+ * support multithreading. If task_id is not passed in,
+ * set a default value
+ */
+if (@task_id is null)
+{
+    publish data
+     where task_id = 'DEFAULT'
+}
+|
+/* If Function Id is defaulting to Null then default this value to N */
+if (@func_id = "" or @func_id is null or @func_id = null)
+{
+    publish data
+     where func_id = 'N'
+}
+|
+/* default the wh_id if not passed in */
+validate warehouse id
+ where wh_id_in = nvl(@wh_id, @warehouse_id)
+   and def_wh_flg = 1
+|
+if (@wh_id = "")
+{
+    get mls text
+     where mls_id = 'err20101'
+       and locale_id = nvl(@locale_id, @@LOCALE_ID) catch(@?)
+    |
+    log error message
+     where msg_type = 'E'
+       and msg_number = 20101
+       and NotificationMessage = nvl(@mls_text, 'Invalid Warehouse ID')
+       and msg_args = '^WH_ID^' || @wh_id_in
+       and usr_id = @USR_ID
+       and component_name = 'Process Adjustments'
+       and file_name = 'process_adjustment.mcmd'
+       and wh_id = '----'
+    |
+    publish data
+     where error_flg = 1
+}
+|
+if (@error_flg != 1)
+{
+    /* Convert the start time fields from MMDDYYYYHR24MISS to YYYYMMDDHR24MISS */
+    publish data
+     where adj__start_time = (substr(@ADJSTART_TIME, 5, 4)) || (substr(@ADJSTART_TIME, 1, 4)) || (substr(@ADJSTART_TIME, 9, 6))
+    |
+    /* date validation */
+    publish data
+     where date = date(@adj__start_time) catch(@?)
+    |
+    if (@? != 0)
+    {
+        log error message
+         where msg_type = 'E'
+           and msg_number = 21043
+           and msg_args = '^ADJSTART_TIME^' || @adj__start_time
+           and usr_id = @USR_ID
+           and component_name = 'Process Adjustments'
+           and file_name = 'process_adjustment.mcmd'
+           and wh_id = @wh_id
+        |
+        publish data
+         where error_flg = 1
+    }
+    |
+    /* Convert start time to the server time zone */
+    convert time between time zone
+     where datetime = @adj__start_time
+       and wh_id = @wh_id
+    |
+    publish data
+     where adj__start_time = @datetime
+       and error_flg = @error_flg
+}
+|
+if (@error_flg != 1 and @func_id = 'N')
+{
+    /* Convert the end time fields from MMDDYYYYHR24MISS to YYYYMMDDHR24MISS */
+    publish data
+     where adj__end_time = (substr(@END_TIME, 5, 4)) || (substr(@END_TIME, 1, 4)) || (substr(@END_TIME, 9, 6))
+    |
+    /* date validation */
+    publish data
+     where date = date(@adj__end_time) catch(@?)
+    |
+    if (@? != 0)
+    {
+        log error message
+         where msg_type = 'E'
+           and msg_number = 21043
+           and msg_args = '^END_TIME^' || @adj__end_time
+           and usr_id = @USR_ID
+           and component_name = 'Process Adjustments'
+           and file_name = 'process_adjustment.mcmd'
+           and wh_id = @wh_id
+        |
+        publish data
+         where error_flg = 1
+    }
+    |
+    /* Convert end time to the server time zone */
+    convert time between time zone
+     where datetime = @adj__end_time
+       and wh_id = @wh_id
+    |
+    publish data
+     where adj__end_time = @datetime
+       and error_flg = @error_flg
+}
+|
+if (@error_flg != 1 and @func_id = 'N')
+{
+    /* adjust times for daylight saving if needed */
+    get adjusted daylight saving time
+     where usr_id = @usr_id
+       and base_time = @adj__start_time
+       and dls_code = 0
+       and wh_id = @wh_id
+    |
+    if (@adjust_hours != 0)
+    {
+        [select to_date(@adj__start_time) + @adjust_hours / 24.0 as adj__start_time,
+                to_date(@adj__end_time) + @adjust_hours / 24.0 as adj__end_time
+           from dual]
+    }
+}
+|
+if (@error_flg != 1)
+{
+    /* Verify the validity of the job code */
+    list jobcodes
+     where jobcodeid = @ADJJOBCODEID
+       and wh_id = @wh_id catch(-1403)
+    |
+    if (@? = -1403)
+    {
+        log error message
+         where msg_type = 'E'
+           and msg_number = 21043
+           and msg_args = '^JOBCODEID^' || @ADJJOBCODEID
+           and usr_id = @USR_ID
+           and component_name = 'Process Adjustments'
+           and file_name = 'process_adjustment.mcmd'
+           and wh_id = @wh_id
+        |
+        publish data
+         where error_flg = 1
+    }
+    /* Verify the jobcode is indirect */
+    else if (@jc_ismeasured = 1)
+    {
+        log error message
+         where msg_type = 'E'
+           and msg_number = 21064
+           and msg_args = '^' || @ADJJOBCODEID
+           and usr_id = @USR_ID
+           and component_name = 'Process Adjustments'
+           and file_name = 'process_adjustment.mcmd'
+           and wh_id = @wh_id
+        |
+        publish data
+         where error_flg = 1
+    }
+    |
+    publish data
+     where adj_jobcodeintid = @jobcodeintid
+       and error_flg = @error_flg
+}
+|
+if (@error_flg != 1)
+{
+    /* Verify the validity of the user */
+    list users
+     where usr_id = @USR_ID catch(-1403)
+    |
+    if (@? = -1403)
+    {
+        log error message
+         where msg_type = 'E'
+           and msg_number = 21043
+           and msg_args = '^USR_ID^' || @USR_ID
+           and usr_id = @USR_ID
+           and component_name = 'Process Adjustments'
+           and file_name = 'process_adjustment.mcmd'
+           and wh_id = @wh_id
+        |
+        publish data
+         where error_flg = 1
+    }
+}
+|
+if (@error_flg != 1 and @func_id = 'N')
+{
+    /* Verify the adjustment duration is valid */
+    [select floor((moca_util.date_diff_days(to_date(@adj__start_time), to_date(@adj__end_time)) * 1440) * 60 + 0.5) as adj_seconds
+       from dual]
+    |
+    if (@adj_seconds < 1)
+    {
+        log error message
+         where msg_type = 'E'
+           and msg_number = 21043
+           and msg_args = '^ADJ_DURATION (end time - start time in seconds)^' || @adj_seconds
+           and usr_id = @USR_ID
+           and component_name = 'Process Adjustments'
+           and file_name = 'process_adjustment.mcmd'
+           and wh_id = @wh_id
+        |
+        publish data
+         where error_flg = 1
+    }
+    |
+    publish data
+     where adj_seconds = @adj_seconds
+       and error_flg = @error_flg
+}
+|
+if (@error_flg != 1 and @func_id = 'N')
+{
+    /* All inputs valid - Start of actual work */
+    /* Get the report date from find shift to qualify the adjustment with report date */
+    find shift
+     where usr_id = @USR_ID
+       and datetime = @adj__start_time catch(@?)
+    |
+    /* Verify there is no adjustment that alreay exists for the given user and start time */
+    [select adj.adj_int_id
+       from kvi_summary kvi
+       join kvi_adjustments adj
+         on kvi.kvisummaryintid = adj.kvisummaryintid
+      where kvi.usr_id = @USR_ID
+        and kvi.report_date = to_date(@report_date)
+        and adj.adj_start_time = to_date(@adj__start_time)] catch(@?)
+    |
+    if (@? != -1403)
+    {
+        log error message
+         where msg_type = 'E'
+           and msg_number = 21065
+           and msg_args = '^' || @USR_ID || '^' || @adj__start_time
+           and usr_id = @USR_ID
+           and component_name = 'Process Adjustments'
+           and file_name = 'process_adjustment.mcmd'
+           and wh_id = @wh_id
+        |
+        publish data
+         where error_flg = 1
+    }
+    |
+    publish data
+     where error_flg = @error_flg
+       and report_date = @report_date
+       and sft_int_id = @sft_int_id
+}
+|
+if (@error_flg != 1 and @func_id = 'N')
+{
+    /* Check if there is an incomplete discrete assignment that needs to */
+    /* be cleaned up prior to creating the KVI record. */
+    /* Done to make sure no errors occur due to "out of order" download */
+    /* processing occurs. */
+    cleanup last_discrete_assignment
+     where task_id = @task_id
+    |
+    /* This is to handle scenario where we don't look at past active assignments
+     *  when processing adjustment for the user. Ideally there should never be active 
+     *  assignments on past days. But this is a safeguard against it */
+    if (@sft_int_id > 0)
+    {
+        /* Assignment's sft_int_id depends on when the user has signed on to it,
+         * before (sft_int_id = -1) or after shift start time (sft_int_id > 0). 
+         * The adjustment's sft_int_id (in the stack) need not be the same as the 
+         * assignment's sft_int_id. So, sft_int_id is hidden from stack */
+        hide stack variable
+         where name = 'sft_int_id'
+        |
+        /* Make sure we have an active or complete assignment to apply the adjustment to */
+        list current assignments
+         where usr_id = @USR_ID
+           and active_at = @adj__start_time
+           and report_date = @report_date catch(@?) >> res
+    }
+    else
+    {
+        /* This is to handle scenario where user is not on shift and working past 
+         * midnight with some assignment prior to midnight. In this case his report date 
+         * will prior to midnight as that is when the user started. If we pass in report_date
+         * of after midnight then the command will not find any assignments */
+        hide stack variable
+         where name = 'report_date'
+        |
+        /* Assignment's sft_int_id depends on when the user has signed on to it,
+         * before (sft_int_id = -1) or after shift start time (sft_int_id > 0). 
+         * The adjustment's sft_int_id (in the stack) need not be the same as the 
+         * assignment's sft_int_id. So, sft_int_id is hidden from stack */
+        hide stack variable
+         where name = 'sft_int_id'
+        |
+        list current assignments
+         where usr_id = @USR_ID
+           and active_at = @adj__start_time catch(@?) >> res
+    }
+    |
+    if (@? != 0)
+    {
+        log error message
+         where msg_type = 'E'
+           and msg_number = 21044
+           and msg_args = '^' || @USR_ID || '^' || @adj__start_time
+           and usr_id = @USR_ID
+           and component_name = 'Process Adjustments'
+           and file_name = 'process_adjustment.mcmd'
+           and wh_id = @wh_id
+        |
+        publish data
+         where error_flg = 1
+    }
+    |
+    /* we only want the first assignment found */
+    publish top rows
+     where rows = 1
+       and res = @res
+    |
+    if (@error_flg != 1)
+    {
+        create adjustment
+         where kvisummaryintid = @kvisummaryintid
+           and adj_duration = @adj_seconds
+           and jobcodeid = @ADJJOBCODEID
+           and adj_jobcodeintid = @adj_jobcodeintid
+           and adj_start_time = @adj__start_time catch(@?)
+        |
+        if (@? != 0)
+        {
+            log error message
+             where msg_type = 'E'
+               and msg_number = 21045
+               and msg_args = '^' || @assign_num || ':' || @plan_date || ':' || nvl(@split_indicator, ' ') || '^' || @ADJJOBCODEID
+               and usr_id = @USR_ID
+               and component_name = 'Process Adjustments'
+               and file_name = 'process_adjustment.mcmd'
+               and wh_id = @wh_id
+            |
+            publish data
+             where error_flg = 1
+        }
+        |
+        /* Create Adjustment OK - if assignment is complete, move adjustments away (if needed) */
+        if ((@status = 'C' or @status = 'CP') and @error_flg != 1)
+        {
+            move adjustments catch(@?)
+            |
+            /* Create adjustment failed, log error message */
+            if (@? != 0)
+            {
+                log error message
+                 where msg_type = 'E'
+                   and msg_number = 21046
+                   and msg_args = '^' || @assign_num || ':' || @plan_date || ':' || nvl(@split_indicator, ' ')
+                   and usr_id = @USR_ID
+                   and component_name = 'Process Adjustments'
+                   and file_name = 'process_adjustment.mcmd'
+                   and wh_id = @wh_id
+                |
+                publish data
+                 where error_flg = 1
+            }
+            |
+            if (@error_flg != 1)
+            {
+                /* Move Adjustments OK, re-complete the assignment to recalculate actual time and performance */
+                complete assignment catch(@?)
+                |
+                if (@? != 0)
+                {
+                    log error message
+                     where msg_type = 'E'
+                       and msg_number = 21047
+                       and msg_args = '^' || @assign_num || ':' || @plan_date || ':' || nvl(@split_indicator, ' ')
+                       and usr_id = @USR_ID
+                       and component_name = 'Process Adjustments'
+                       and file_name = 'process_adjustment.mcmd'
+                       and wh_id = @wh_id
+                }
+            }
+        }
+        /* End if Create Adjustment OK*/
+    }
+}
+else if (@error_flg != 1 and @func_id = 'D')
+{
+    /* Verify there is only one adjustment that already exists for the given user and start time */
+    [select adj.adj_int_id
+       from kvi_adjustments adj,
+            kvi_summary kvi,
+            jobcode jc
+      where adj.kvisummaryintid = kvi.kvisummaryintid
+        and adj.jobcodeintid = jc.jobcodeintid
+        and jc.wh_id = kvi.wh_id
+        and kvi.usr_id = @USR_ID
+        and adj.adj_start_time = to_date(@adj__start_time)
+        and jc.jobcodeid = @ADJJOBCODEID
+        and kvi.wh_id = @wh_id] catch(@?) >> res
+    |
+    if (@? != 0)
+        /* No Adjustments found */
+    {
+        log error message
+         where msg_type = 'E'
+           and msg_number = 22342
+           and msg_args = '^' || @USR_ID || '^' || @ADJJOBCODEID || '^' || @adj__start_time
+           and usr_id = @USR_ID
+           and component_name = 'Process Adjustments'
+           and file_name = 'process_adjustment.mcmd'
+           and wh_id = @wh_id
+        |
+        publish data
+         where error_flg = 1
+    }
+    else if (rowcount(@res) > 1)
+        /* More than one Adjustments found */
+    {
+        log error message
+         where msg_type = 'E'
+           and msg_number = 22343
+           and msg_args = '^' || @USR_ID || '^' || @ADJJOBCODEID || '^' || @adj__start_time
+           and usr_id = @USR_ID
+           and component_name = 'Process Adjustments'
+           and file_name = 'process_adjustment.mcmd'
+           and wh_id = @wh_id
+        |
+        publish data
+         where error_flg = 1
+    }
+    else
+        /* One Valid adjustment is found */
+    {
+        publish data combination
+         where result = @res
+        |
+        publish data
+         where adj_int_id = @adj_int_id
+    }
+    |
+    publish data
+     where adj_int_id = @adj_int_id
+       and error_flg = @error_flg
+    |
+    if (@error_flg != 1 and @adj_int_id is not null)
+    {
+        remove adjustment
+         where adj_int_id = @adj_int_id
+    }
+}

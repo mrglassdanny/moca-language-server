@@ -1,0 +1,284 @@
+validate stack variable not null
+ where name = 'wh_id'
+|
+[select wh.adr_id adr_id,
+        wh.adr_id src_adr_id
+   from wh
+  where wh_id = @wh_id]
+|
+/*
+ ** If the lodnum is passed in we are trying to putaway any of the
+ ** following scenarios of asset and inventory combination
+ ** 1. Non Empty asset associated with Inventory
+ **    a.Serialized asset at loadlvl L or S
+ **    b.Non-Serialized asset at loadlvl L or S
+ ** 2. Empty Serialized asset.with/without child assets.
+ ** First lets get all the Asset details for the load and then process it
+ ** for Assets.
+ */
+if (@lodnum)
+{
+    validate key exists
+     where key = 'lodnum'
+       and table = 'invlod'
+    |
+    /*
+     ** Check for empty part and get the actcod for daily transaction
+     ** Get the count as we want to loop through here.
+     */
+    [select count(1) emptyqty
+       from invdtl,
+            invsub,
+            invlod
+      where invdtl.prtnum = 'EMPTYPART'
+        and invdtl.subnum = invsub.subnum
+        and invsub.lodnum = invlod.lodnum
+        and invlod.lodnum = @lodnum] catch(-1403)
+    |
+    if (@emptyqty >= 1)
+    {
+        publish data
+         where actcod = 'EMPASTRCV'
+    }
+    else
+    {
+        publish data
+         where actcod = 'INVASTRCV'
+    }
+    |
+    /*
+     ** Select serialized asset information for the given lodnum 
+     ** Get the asset information from invlod and from invsub
+     ** we will get the distinct asset from invsub as we may have
+     ** multiple usbs associated with a single asset_id.
+     */
+    [(select asset_link.asset_id,
+             invlod.asset_typ
+        from asset_link,
+             invlod
+       where asset_link.asset_num = invlod.lodnum
+         and invlod.lodnum = @lodnum)
+     UNION
+     (select distinct asset_link.asset_id,
+             invsub.asset_typ
+        from asset_link,
+             invsub,
+             invlod
+       where asset_link.asset_num = invsub.subnum
+         and invsub.lodnum = invlod.lodnum
+         and invlod.lodnum = @lodnum)] catch(-1403)
+    |
+    if (@? = 0)
+    {
+        [select rcv_asset.*,
+                wh.adr_id adr_id,
+                wh.adr_id src_adr_id
+           from wh,
+                rcv_asset
+          where wh.wh_id = rcv_asset.wh_id
+            and rcv_asset.asset_id = @asset_id] catch(-1403)
+        |
+        /*
+         ** get the supplier address as fradr_id we will need this 
+         ** for daily transaction 
+         */
+        [select adr_id fradr_id
+           from supmst
+          where supnum = @supnum
+            and client_id = @client_id] catch(-1403)
+        |
+        /* Process serialized asset information */
+        if (@? = 0)
+        {
+            {
+                /* Insert into ser_asset table */
+                [select 1
+                   from ser_asset
+                  where asset_id = @asset_id] catch(-1403)
+                |
+                /* Insert into ser_asset table */
+                if (@? = -1403)
+                {
+                    create serialized asset
+                }
+                else
+                {
+                    change serialized asset
+                     where asset_id = @asset_id
+                       and src_adr_id = @src_adr_id
+                }
+                |
+                /* Update the rcvqty in rcv_asset */
+                change receive asset
+                 where rcvqty = 1
+                   and rcv_asset_key = @rcv_asset_key
+                |
+                if (@rcvqty > 0)
+                {
+                    /*
+                     ** After receiving serialized empty assets, 
+                     ** if the trailer status is still 'OR' (Open 
+                     ** for Receiving) then we need to update the 
+                     ** status to 'R' (Receiving). 
+                     ** Call the moca 'reset trailer status' to update it.
+                     */
+                    [select trlr.trlr_id
+                       from rcvtrk,
+                            trlr,
+                            rcv_asset
+                      where rcvtrk.trlr_id = trlr.trlr_id
+                        and trlr.trlr_stat = 'OR'
+                        and rcv_asset.trknum = rcvtrk.trknum
+                        and rcv_asset.wh_id = rcvtrk.wh_id
+                        and rcv_asset.rcv_asset_key = @rcv_asset_key
+                        and rownum < 2] catch(-1403)
+                    |
+                    if (@? = 0)
+                    {
+                        reset trailer status
+                         where trlr_id = @trlr_id
+                    }
+                }
+                |
+                /*
+                 ** write daily transaction for the received asset 
+                 ** we will pass in the partnum as EMPTYPART
+                 ** so that the trnqty doesn't get replaced with the
+                 ** untqty.This is a log of assets received.
+                 ** We need the asset qty in trnqty here.
+                 ** trnqty will be 1, for each of the asset_id.
+                 */
+                write daily transaction
+                 where actcod = @actcod
+                   and var_nam = 'adr_id'
+                   and fr_value = @fradr_id
+                   and to_value = @adr_id
+                   and asset_id = @asset_id
+                   and asset_typ = @asset_typ
+                   and asset_stat = @asset_stat
+                   and prtnum = 'EMPTYPART'
+                   and trnqty = 1
+                   and client_id = @client_id
+                   and wh_id = @wh_id
+            }
+        }
+    };
+
+    /* start looking for non serialized assets on the load */
+    [select rcvlin.trknum,
+            rcvlin.supnum,
+            rcvlin.invnum,
+            rcvlin.client_id
+       from rcvlin,
+            invdtl,
+            invsub
+      where rcvlin.rcvkey = invdtl.rcvkey
+        and invdtl.subnum = invsub.subnum
+        and invsub.lodnum = @lodnum
+        and rownum < 2] catch(-1403)
+    |
+    if (@? = 0)
+    {
+        /*
+         ** Get the count of non serialized assets on the load.
+         ** we do an union all since each sub will reside on a 
+         ** single non serialized asset.
+         */
+        [select asset_typ,
+                asset_stat,
+                sum(rcvqty) rcvqty
+           from ((select inv_asset.asset_typ,
+                         'ACT' asset_stat,
+                         inv_asset.untqty rcvqty
+                    from asset_typ,
+                         invlod,
+                         inv_asset
+                   where asset_typ.ser_flg = 0
+                     and asset_typ.asset_cat = 'INV'
+                     and asset_typ.asset_typ = inv_asset.asset_typ
+                     and inv_asset.invtid = invlod.lodnum
+                     and invlod.lodnum = @lodnum)
+                 UNION ALL
+                 (select inv_asset.asset_typ,
+                         'ACT' asset_stat,
+                         inv_asset.untqty rcvqty
+                    from asset_typ,
+                         invsub,
+                         invlod,
+                         inv_asset
+                   where asset_typ.ser_flg = 0
+                     and asset_typ.asset_cat = 'INV'
+                     and asset_typ.asset_typ = inv_asset.asset_typ
+                     and inv_asset.invtid = invsub.subnum
+                     and invsub.lodnum = invlod.lodnum
+                     and invlod.lodnum = @lodnum)) non_ser_asset
+          group by asset_typ,
+                asset_stat] catch(-1403)
+        |
+        if (@? = 0)
+        {
+            {
+                [select 'x'
+                   from supmst
+                  where supnum = @supnum
+                    and client_id = @client_id] catch(-1403)
+                |
+                if (@? = 0)
+                {
+                    process non serialized receiving assets
+                }
+                else if (@supnum != 'PROD' and @supnum != 'RET')
+                {
+                    /*
+                     ** For work order supnum is 'PROD' or 'RET', in which
+                     ** case we do not return error as it's a virtual
+                     ** supnum.
+                     */
+                    set return status
+                     where status = @?
+                }
+            }
+        };
+    }
+}
+else
+{
+    /*
+     ** If  we are here we are processing non serialized empty assets
+     ** validate the required parameters and call the moca to process
+     ** non serialized assets
+     */
+    validate stack variable not null
+     where name = 'trknum'
+    |
+    validate stack variable not null
+     where name = 'client_id'
+    |
+    validate stack variable not null
+     where name = 'invnum'
+    |
+    validate key exists
+     where key = 'supnum,client_id'
+       and table = 'supmst'
+    |
+    /*
+     ** Get the adr_id of the supplier we need this to check for
+     ** returned permanent assets.
+     */
+    [select adr_id sup_adr_id
+       from supmst
+      where supnum = @supnum
+        and client_id = @client_id] catch(-1403)
+    |
+    validate key exists
+     where key = 'asset_typ'
+       and table = 'asset_typ'
+    |
+    validate stack variable not null
+     where name = 'rcvqty'
+    |
+    validate stack variable not null
+     where name = 'asset_stat'
+    |
+    process non serialized receiving assets
+}

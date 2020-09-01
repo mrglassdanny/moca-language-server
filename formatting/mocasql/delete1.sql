@@ -1,0 +1,2 @@
+DELETE FROM Car
+WHERE Name = 'Audi'

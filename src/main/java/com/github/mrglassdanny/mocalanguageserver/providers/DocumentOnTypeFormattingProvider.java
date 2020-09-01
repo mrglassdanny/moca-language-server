@@ -59,6 +59,16 @@ public class DocumentOnTypeFormattingProvider {
                                 }
 
                                 if (sqlText != null) {
+                                        // In order for the entire sql script to be indented correctly after formatting,
+                                        // we need to get the char num from the single bracket string token and add that
+                                        // amount spaces/tabs to each newline in formatted sql script.
+                                        String indention = "";
+                                        for (int i = 0; i < mocaToken.getCharPositionInLine(); i++) {
+                                                indention += " ";
+                                        }
+
+                                        sqlText = sqlText.replace("\n", "\n" + indention);
+
                                         nxtSrc = nxtSrc.replace(mocaToken.getText(), "[" + sqlText + "]");
                                 }
 
