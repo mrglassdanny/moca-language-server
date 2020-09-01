@@ -64,20 +64,6 @@ public class MocaSqlLanguageUtils {
                 createMocaPosition(err.line, err.charPositionInLine, sqlScriptRange));
     }
 
-    public static String adjustSqlScriptForMoca(String script) {
-        if (script == null) {
-            return null;
-        }
-        // SQL parser does not handle ':' very well. The main places we will see ':' is
-        // integrator algs(:i_c_wh_id) and moca vars(@where_clause:raw).
-        // Let's go ahead and get rid of any and replace with '_'. Also,
-        // parser does not deal with '@*' well. All we have to do is just insert a
-        // letter at the end of it.
-        script = script.replaceAll(":", "_");
-        script = script.replaceAll("@\\*", "@z");
-        return script;
-    }
-
     public static boolean isMocaTokenValueSqlScript(String mocaTokenValue) {
         Matcher sqlStartWordMatcher = MocaSqlLanguageUtils.SQL_RANGE_START_WORD_PATTERN.matcher(mocaTokenValue);
         if (sqlStartWordMatcher.find()) {

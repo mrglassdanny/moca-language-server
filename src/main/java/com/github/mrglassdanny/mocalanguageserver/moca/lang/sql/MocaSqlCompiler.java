@@ -7,7 +7,6 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlrutil.CaseChangi
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.MocaSqlParseTreeListener;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.MocaSqlSyntaxErrorListener;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.MocaSqlLanguageUtils;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -26,7 +25,6 @@ public class MocaSqlCompiler {
     public MocaSqlCompilationResult compileScript(int rangeIdx, String script) {
         MocaSqlCompilationResult compilationResult = new MocaSqlCompilationResult();
 
-        script = MocaSqlLanguageUtils.adjustSqlScriptForMoca(script);
         compilationResult.sqlTokens = new MocaSqlLexer(new CaseChangingCharStream(new ANTLRInputStream(script), true))
                 .getAllTokens();
         compilationResult.sqlParser = new MocaSqlParser(new CommonTokenStream(
