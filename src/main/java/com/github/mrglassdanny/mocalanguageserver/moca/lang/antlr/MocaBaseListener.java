@@ -1,4 +1,4 @@
-// Generated from Moca.g4 by ANTLR 4.8
+// Generated from Moca.g4 by ANTLR 4.5.3
 
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 
@@ -133,6 +133,18 @@ public class MocaBaseListener implements MocaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVerb_noun_clause_arg(MocaParser.Verb_noun_clause_argContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVerb_noun_clause_arg_expr(MocaParser.Verb_noun_clause_arg_exprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVerb_noun_clause_arg_expr(MocaParser.Verb_noun_clause_arg_exprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -505,18 +517,6 @@ public class MocaBaseListener implements MocaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMoca_onstack_directive(MocaParser.Moca_onstack_directiveContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterMoca_ignore_directive(MocaParser.Moca_ignore_directiveContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMoca_ignore_directive(MocaParser.Moca_ignore_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

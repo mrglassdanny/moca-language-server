@@ -1,4 +1,4 @@
-// Generated from Moca.g4 by ANTLR 4.8
+// Generated from Moca.g4 by ANTLR 4.5.3
 
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 
@@ -83,6 +83,13 @@ public class MocaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements M
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitVerb_noun_clause_arg(MocaParser.Verb_noun_clause_argContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitVerb_noun_clause_arg_expr(MocaParser.Verb_noun_clause_arg_exprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -300,13 +307,6 @@ public class MocaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements M
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitMoca_onstack_directive(MocaParser.Moca_onstack_directiveContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitMoca_ignore_directive(MocaParser.Moca_ignore_directiveContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -1,4 +1,4 @@
-// Generated from Moca.g4 by ANTLR 4.8
+// Generated from Moca.g4 by ANTLR 4.5.3
 
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 
@@ -109,6 +109,16 @@ public interface MocaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVerb_noun_clause_arg(MocaParser.Verb_noun_clause_argContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MocaParser#verb_noun_clause_arg_expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterVerb_noun_clause_arg_expr(MocaParser.Verb_noun_clause_arg_exprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MocaParser#verb_noun_clause_arg_expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitVerb_noun_clause_arg_expr(MocaParser.Verb_noun_clause_arg_exprContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MocaParser#sub_sequence}.
 	 * @param ctx the parse tree
@@ -419,16 +429,6 @@ public interface MocaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMoca_onstack_directive(MocaParser.Moca_onstack_directiveContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MocaParser#moca_ignore_directive}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_ignore_directive(MocaParser.Moca_ignore_directiveContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaParser#moca_ignore_directive}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_ignore_directive(MocaParser.Moca_ignore_directiveContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MocaParser#moca_oldvar_directive}.
 	 * @param ctx the parse tree

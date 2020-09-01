@@ -5,18 +5,20 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaParseTreeListener;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaSyntaxErrorListener;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlCompiler;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.SqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.MocaSqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
 
+import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ConsoleErrorListener;
-import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -34,7 +36,7 @@ public class MocaCompiler {
     public ArrayList<Range> sqlRanges;
     public ArrayList<Range> groovyRanges;
 
-    private SqlCompiler sqlCompiler;
+    private MocaSqlCompiler sqlCompiler;
     private GroovyCompiler groovyCompiler;
 
     public MocaCompiler() {
@@ -44,7 +46,7 @@ public class MocaCompiler {
         this.sqlRanges = new ArrayList<>();
         this.groovyRanges = new ArrayList<>();
 
-        this.sqlCompiler = new SqlCompiler();
+        this.sqlCompiler = new MocaSqlCompiler();
         this.groovyCompiler = new GroovyCompiler();
     }
 
@@ -87,8 +89,10 @@ public class MocaCompiler {
 
         // If error, no exception will be thrown -- we will use the
         // MocaSyntaxErrorListener.
+
         compilationResult.mocaParser = new MocaParser(
-                new CommonTokenStream(new MocaLexer(CharStreams.fromString(finalMocaScript))));
+                new CommonTokenStream(new MocaLexer(new ANTLRInputStream(finalMocaScript))));
+
         compilationResult.mocaSyntaxErrorListener = new MocaSyntaxErrorListener();
         compilationResult.mocaParser.addErrorListener(compilationResult.mocaSyntaxErrorListener);
         // Since we do not want errors printing to the console, remove this
@@ -98,7 +102,7 @@ public class MocaCompiler {
         compilationResult.mocaParseTreeListener = new MocaParseTreeListener();
         new ParseTreeWalker().walk(compilationResult.mocaParseTreeListener, parseTree);
 
-        this.mocaTokens = new MocaLexer(CharStreams.fromString(finalMocaScript)).getAllTokens();
+        this.mocaTokens = new MocaLexer(new ANTLRInputStream(finalMocaScript)).getAllTokens();
 
         // Update embedded lang ranges, then compile them.
         this.updateEmbeddedLanguageRanges(finalMocaScript);
@@ -217,7 +221,7 @@ public class MocaCompiler {
         // Now just loop through tokens and find scripts.
         for (Token curMocaToken : this.mocaTokens) {
             if (curMocaToken.getType() == MocaLexer.SINGLE_BRACKET_STRING) {
-                if (SqlLanguageUtils.isMocaTokenValueSqlScript(curMocaToken.getText())) {
+                if (MocaSqlLanguageUtils.isMocaTokenValueSqlScript(curMocaToken.getText())) {
                     this.sqlRanges.add(new Range(Positions.getPosition(mocaScript, curMocaToken.getStartIndex()),
                             Positions.getPosition(mocaScript,
                                     MocaTokenUtils.getAdjustedMocaTokenStopIndex(curMocaToken.getStopIndex()))));

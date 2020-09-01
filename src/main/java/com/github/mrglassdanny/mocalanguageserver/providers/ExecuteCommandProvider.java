@@ -10,19 +10,23 @@ import com.github.mrglassdanny.mocalanguageserver.languageclient.request.CancelM
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaCommandLookupRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaConnectionRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaExecutionHistoryRequest;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaMloadRequest;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaLanguageServerActivateRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaResultsRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaTraceRequest;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.request.TrainFormattersRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.CancelMocaExecutionResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaCommandLookupResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaConnectionResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaExecutionHistoryResponse;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaMloadResponse;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaLanguageServerActivateResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaResultsResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaTraceResponse;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.response.TrainFormattersResponse;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.format.MocaFormatter;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.format.MocaSqlFormatter;
 
 import org.eclipse.lsp4j.ExecuteCommandParams;
 import org.eclipse.lsp4j.MessageParams;
@@ -31,17 +35,21 @@ import org.eclipse.lsp4j.services.LanguageClient;
 
 public class ExecuteCommandProvider {
 
-    public static final String CONNECT = "mocalanguageserver.server.connect";
-    public static final String LOAD_REPOSITORY = "mocalanguageserver.server.loadRepository";
-    public static final String EXECUTE = "mocalanguageserver.server.execute";
-    public static final String TRACE = "mocalanguageserver.server.trace";
-    public static final String COMMAND_LOOKUP = "mocalanguageserver.server.commandLookup";
-    public static final String EXECUTION_HISTORY = "mocalanguageserver.server.executionHistory";
-    public static final String CANCEL_EXECUTION = "mocalanguageserver.server.cancelExecution";
-    public static final String MLOAD = "mocalanguageserver.server.mload";
+    private static final String ERR_NOT_CONNECTED_TO_MOCA_SERVER = "Not connected to MOCA Server";
+
+    public static final String ACTIVATE = "mocalanguageserver.activate";
+    public static final String CONNECT = "mocalanguageserver.connect";
+    public static final String LOAD_REPOSITORY = "mocalanguageserver.loadRepository";
+    public static final String EXECUTE = "mocalanguageserver.execute";
+    public static final String TRACE = "mocalanguageserver.trace";
+    public static final String COMMAND_LOOKUP = "mocalanguageserver.commandLookup";
+    public static final String EXECUTION_HISTORY = "mocalanguageserver.executionHistory";
+    public static final String CANCEL_EXECUTION = "mocalanguageserver.cancelExecution";
+    public static final String TRAIN_FORMATTERS = "mocalanguageserver.trainFormatters";
 
     public static ArrayList<String> mocaLanguageServerCommands = new ArrayList<>();
     static {
+        mocaLanguageServerCommands.add(ACTIVATE);
         mocaLanguageServerCommands.add(CONNECT);
         mocaLanguageServerCommands.add(LOAD_REPOSITORY);
         mocaLanguageServerCommands.add(EXECUTE);
@@ -49,13 +57,41 @@ public class ExecuteCommandProvider {
         mocaLanguageServerCommands.add(COMMAND_LOOKUP);
         mocaLanguageServerCommands.add(EXECUTION_HISTORY);
         mocaLanguageServerCommands.add(CANCEL_EXECUTION);
-        mocaLanguageServerCommands.add(MLOAD);
+        mocaLanguageServerCommands.add(TRAIN_FORMATTERS);
     }
 
     public static CompletableFuture<Object> provideCommandExecution(ExecuteCommandParams params,
             LanguageClient languageClient) {
         switch (params.getCommand()) {
 
+            case ACTIVATE:
+
+                try {
+                    List<Object> args = params.getArguments();
+                    if (args == null) {
+                        return CompletableFuture.completedFuture(new Object());
+                    }
+                    MocaLanguageServerActivateRequest mocaLanguageServerActivateRequest = new MocaLanguageServerActivateRequest(
+                            args);
+                    MocaLanguageServer.globalStoragePath = mocaLanguageServerActivateRequest.globalStoragePath;
+
+                    // Now that we have a global storage path, lets take this opportunity to do a
+                    // couple of things:
+                    // Make sure format training defaults exist.
+                    MocaFormatter.createDefaults();
+                    MocaSqlFormatter.createDefaults();
+                    // Train our formatters.
+                    MocaFormatter.configureAndTrain(mocaLanguageServerActivateRequest.formatTrainingMocaDirName);
+                    MocaSqlFormatter.configureAndTrain(mocaLanguageServerActivateRequest.formatTrainingMocaSqlDirName);
+                    // Also run appdata maintenance.
+                    AppDataManager.runMaintenance();
+
+                    return CompletableFuture.completedFuture(new Object());
+                } catch (Exception exception) {
+                    MocaLanguageServerActivateResponse mocaLanguageServerActivateResponse = new MocaLanguageServerActivateResponse(
+                            exception);
+                    return CompletableFuture.completedFuture(mocaLanguageServerActivateResponse);
+                }
             case CONNECT:
 
                 try {
@@ -78,11 +114,7 @@ public class ExecuteCommandProvider {
 
                     GroovyCompiler.classpathList = mocaConnectionRequest.classpathList;
 
-                    MocaLanguageServer.globalStoragePath = mocaConnectionRequest.globalStoragePath;
                     MocaConnectionResponse mocaConnectionResponse = MocaLanguageServer.currentMocaConnection.connect();
-
-                    // Here seems like a good time to run appdata maintenance.
-                    AppDataManager.runMaintenance();
 
                     return CompletableFuture.completedFuture(mocaConnectionResponse);
                 } catch (Exception exception) {
@@ -91,9 +123,23 @@ public class ExecuteCommandProvider {
                 }
 
             case LOAD_REPOSITORY:
+                // Just handle this the same way that EXECUTE command does.
+                if (MocaLanguageServer.currentMocaConnection.url == null) {
+                    MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null,
+                            new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER));
+                    return CompletableFuture.completedFuture(mocaResultsResponse);
+                }
+
                 MocaLanguageServer.currentMocaConnection.loadRepository();
                 return CompletableFuture.completedFuture(new Object());
             case EXECUTE:
+
+                if (MocaLanguageServer.currentMocaConnection.url == null) {
+                    MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null,
+                            new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER));
+                    return CompletableFuture.completedFuture(mocaResultsResponse);
+                }
+
                 try {
                     List<Object> args = params.getArguments();
                     if (args == null) {
@@ -180,6 +226,12 @@ public class ExecuteCommandProvider {
 
             case TRACE:
 
+                if (MocaLanguageServer.currentMocaConnection.url == null) {
+                    MocaTraceResponse mocaTraceResponse = new MocaTraceResponse(
+                            new MocaResultsResponse(null, new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER)));
+                    return CompletableFuture.completedFuture(mocaTraceResponse);
+                }
+
                 try {
                     List<Object> args = params.getArguments();
                     if (args == null) {
@@ -265,22 +317,23 @@ public class ExecuteCommandProvider {
                 } catch (Exception exception) {
                     return CompletableFuture.completedFuture(new CancelMocaExecutionResponse(false));
                 }
-
-            case MLOAD:
-
+            case TRAIN_FORMATTERS:
                 try {
+
                     List<Object> args = params.getArguments();
                     if (args == null) {
                         return CompletableFuture.completedFuture(new Object());
                     }
 
-                    MocaMloadRequest mloadRequest = new MocaMloadRequest(args);
+                    TrainFormattersRequest trainFormattersRequest = new TrainFormattersRequest(args);
 
-                    // TODO - do stuff.
+                    MocaFormatter.configureAndTrain(trainFormattersRequest.mocaDirName);
+                    MocaSqlFormatter.configureAndTrain(trainFormattersRequest.mocaSqlDirName);
 
-                    return CompletableFuture.completedFuture(new MocaMloadResponse());
+                    return CompletableFuture.completedFuture(new Object());
                 } catch (Exception exception) {
-                    return CompletableFuture.completedFuture(new MocaMloadResponse());
+                    TrainFormattersResponse trainFormattersResponse = new TrainFormattersResponse(exception);
+                    return CompletableFuture.completedFuture(trainFormattersResponse);
                 }
             default:
                 break;

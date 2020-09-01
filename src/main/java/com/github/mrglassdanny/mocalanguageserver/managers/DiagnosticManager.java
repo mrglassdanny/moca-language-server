@@ -9,13 +9,13 @@ import java.util.regex.Pattern;
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaSyntaxError;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaSyntaxError;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlParseTreeListener;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.SqlSyntaxError;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.SqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.MocaSqlParseTreeListener;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.MocaSqlSyntaxError;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.MocaSqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
@@ -106,7 +106,7 @@ public class DiagnosticManager {
 
         // SQL.
         for (int i = 0; i < mocaCompiler.sqlRanges.size(); i++) {
-            SqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
+            MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
                     .get(i);
             Range sqlRange = mocaCompiler.sqlRanges.get(i);
             diagnostics.addAll(handleSqlTableMayNotExistWarnings(uriStr, script,
@@ -210,16 +210,16 @@ public class DiagnosticManager {
     }
 
     // SQL.
-    private static ArrayList<Diagnostic> handleSqlSyntaxErrors(String uriStr, SqlCompilationResult compilationResult,
-            Range sqlScriptRange) {
+    private static ArrayList<Diagnostic> handleSqlSyntaxErrors(String uriStr,
+            MocaSqlCompilationResult compilationResult, Range sqlScriptRange) {
         if (!compilationResult.hasSqlErrors()) {
             return new ArrayList<Diagnostic>();
         } else {
             // Set diagnostics.
             ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
-            for (SqlSyntaxError sqlSyntaxError : compilationResult.sqlSyntaxErrorListener.sqlSyntaxErrors) {
-                Range range = SqlLanguageUtils.syntaxExceptionToRange(sqlSyntaxError, sqlScriptRange);
+            for (MocaSqlSyntaxError sqlSyntaxError : compilationResult.sqlSyntaxErrorListener.sqlSyntaxErrors) {
+                Range range = MocaSqlLanguageUtils.syntaxExceptionToRange(sqlSyntaxError, sqlScriptRange);
                 Diagnostic diagnostic = new Diagnostic();
                 diagnostic.setRange(range);
                 diagnostic.setSeverity(DiagnosticSeverity.Error);
@@ -232,7 +232,7 @@ public class DiagnosticManager {
     }
 
     private static ArrayList<Diagnostic> handleSqlTableMayNotExistWarnings(String uriStr, String script,
-            SqlParseTreeListener sqlParseTreeListener, Range sqlScriptRange) {
+            MocaSqlParseTreeListener sqlParseTreeListener, Range sqlScriptRange) {
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
@@ -260,9 +260,9 @@ public class DiagnosticManager {
 
             if (!foundTable) {
 
-                Position beginPos = SqlLanguageUtils.createMocaPosition(tableToken.getLine(),
+                Position beginPos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
                         tableToken.getCharPositionInLine(), sqlScriptRange);
-                Position endPos = SqlLanguageUtils.createMocaPosition(tableToken.getLine(),
+                Position endPos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
                         tableToken.getCharPositionInLine(), sqlScriptRange);
 
                 if (beginPos != null && endPos != null) {

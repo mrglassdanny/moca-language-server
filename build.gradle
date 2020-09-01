@@ -20,10 +20,17 @@ dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.5.7'
     compile 'org.reflections:reflections:0.9.+'
     compile 'io.github.classgraph:classgraph:4.8.53'
-    implementation files('lib/sqlite-jdbc-3.23.1.jar')
-    implementation 'com.google.code.gson:gson:2.8.6'
+    compile 'com.google.code.gson:gson:2.8.6'
 
-    antlr 'org.antlr:antlr4:4.8'
+    compile files('lib/sqlite-jdbc-3.23.1.jar')
+    compile files('lib/codebuff-1.5.1.mrglassdanny.jar')
+    
+    
+
+    antlr 'org.antlr:antlr4:4.5.3'
+
+    
+
 }
 
 

@@ -15,8 +15,6 @@ public class MocaConnectionRequest {
 
     public boolean useExistingRepository;
 
-    public String globalStoragePath;
-
     public MocaConnectionRequest(List<Object> args) throws Exception {
         JsonArray jsonArr = (JsonArray) args.get(0);
         this.url = jsonArr.get(1).getAsString();
@@ -30,8 +28,6 @@ public class MocaConnectionRequest {
         }
 
         this.useExistingRepository = ((JsonElement) args.get(1)).getAsBoolean();
-
-        this.globalStoragePath = ((JsonElement) args.get(2)).getAsString();
     }
 
 }
