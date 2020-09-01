@@ -78,8 +78,8 @@ public class ExecuteCommandProvider {
                     // Now that we have a global storage path, lets take this opportunity to do a
                     // couple of things.
                     // First, lets configure and train our codebuff formatters.
-                    MocaFormatter.configureAndTrain();
-                    MocaSqlFormatter.configureAndTrain();
+                    MocaFormatter.configureAndTrain(mocaLanguageServerActivateRequest.formatTrainingMocaDirName);
+                    MocaSqlFormatter.configureAndTrain(mocaLanguageServerActivateRequest.formatTrainingMocaSqlDirName);
 
                     return CompletableFuture.completedFuture(new Object());
                 } catch (Exception exception) {
@@ -318,10 +318,15 @@ public class ExecuteCommandProvider {
             case TRAIN_FORMATTERS:
                 try {
 
-                    TrainFormattersRequest trainFormattersRequest = new TrainFormattersRequest();
+                    List<Object> args = params.getArguments();
+                    if (args == null) {
+                        return CompletableFuture.completedFuture(new Object());
+                    }
 
-                    MocaFormatter.configureAndTrain();
-                    MocaSqlFormatter.configureAndTrain();
+                    TrainFormattersRequest trainFormattersRequest = new TrainFormattersRequest(args);
+
+                    MocaFormatter.configureAndTrain(trainFormattersRequest.mocaDirName);
+                    MocaSqlFormatter.configureAndTrain(trainFormattersRequest.mocaSqlDirName);
 
                     return CompletableFuture.completedFuture(new Object());
                 } catch (Exception exception) {

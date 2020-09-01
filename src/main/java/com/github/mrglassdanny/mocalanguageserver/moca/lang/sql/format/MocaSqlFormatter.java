@@ -8,7 +8,7 @@ public class MocaSqlFormatter {
     private static org.antlr.codebuff.misc.LangDescriptor mocaSqlLangDescriptor = null;
     private static org.antlr.codebuff.Corpus mocaSqlCorpus = null;
 
-    public static void configureAndTrain() throws Exception {
+    public static void configureAndTrain(String corpusDir) throws Exception {
         mocaSqlLangDescriptor = new org.antlr.codebuff.misc.LangDescriptor("MocaSql",
                 "C:\\Users\\dglass\\OneDrive - Longbow Advantage\\Desktop\\formatting-training\\mocasql", ".*\\.sql",
                 MocaSqlLexer.class, MocaSqlParser.class, "moca_sql_script", 4, MocaSqlLexer.LINE_COMMENT);
