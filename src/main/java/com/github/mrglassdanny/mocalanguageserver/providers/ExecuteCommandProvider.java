@@ -315,12 +315,8 @@ public class ExecuteCommandProvider {
                     return CompletableFuture.completedFuture(new CancelMocaExecutionResponse(false));
                 }
             case TRAIN_FORMATTERS:
-
                 try {
-                    List<Object> args = params.getArguments();
-                    if (args == null) {
-                        return CompletableFuture.completedFuture(new Object());
-                    }
+
                     TrainFormattersRequest trainFormattersRequest = new TrainFormattersRequest();
 
                     MocaFormatter.configureAndTrain();
