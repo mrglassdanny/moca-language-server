@@ -57,6 +57,7 @@ public class ExecuteCommandProvider {
         mocaLanguageServerCommands.add(COMMAND_LOOKUP);
         mocaLanguageServerCommands.add(EXECUTION_HISTORY);
         mocaLanguageServerCommands.add(CANCEL_EXECUTION);
+        mocaLanguageServerCommands.add(TRAIN_FORMATTERS);
     }
 
     public static CompletableFuture<Object> provideCommandExecution(ExecuteCommandParams params,
