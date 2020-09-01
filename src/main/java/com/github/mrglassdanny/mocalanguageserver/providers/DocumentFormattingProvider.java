@@ -74,19 +74,13 @@ public class DocumentFormattingProvider {
                                         // Remove brackets for formatting.
                                         String sqlScript = tokenText.substring(1, tokenText.length() - 1);
 
-                                        try {
+                                        String formattedSqlScript = MocaSqlFormatter.format(sqlScript);
 
-                                                String formattedSqlScript = org.antlr.codebuff.Tool
-                                                                .formatForMocaLanguageServer(
-                                                                                MocaSqlFormatter.mocaSqlLangDescriptor,
-                                                                                sqlScript,
-                                                                                MocaSqlFormatter.mocaSqlCorpus);
-
-                                                // In order for the entire sql script to be indented correctly after
-                                                // formatting,
-                                                // we need to get the char num from the single bracket string token and
-                                                // add that
-                                                // amount spaces/tabs to each newline in formatted sql script.
+                                        if (formattedSqlScript != null) {
+                                                // In order for the entire sql script to be indented correctly
+                                                // after formatting, we need to get the char num from the single bracket
+                                                // string token and add that amount spaces/tabs to each newline in
+                                                // formatted sql script.
                                                 StringBuilder indentBuf = new StringBuilder(
                                                                 mocaToken.getCharPositionInLine());
                                                 for (int i = 0; i < mocaToken.getCharPositionInLine(); i++) {
@@ -99,9 +93,6 @@ public class DocumentFormattingProvider {
                                                 // Dont forget to add brackets back!
                                                 formattedTextDocumentContents = formattedTextDocumentContents.replace(
                                                                 mocaToken.getText(), "[" + formattedSqlScript + "]");
-
-                                        } catch (Exception e) {
-                                                // Do nothing...
                                         }
                                 }
 
@@ -110,19 +101,12 @@ public class DocumentFormattingProvider {
                         }
                 }
 
-                try {
+                String formattedMocaScript = MocaFormatter.format(formattedTextDocumentContents);
 
-                        String formattedMocaScript = org.antlr.codebuff.Tool.formatForMocaLanguageServer(
-                                        MocaFormatter.mocaLangDescriptor, formattedTextDocumentContents,
-                                        MocaFormatter.mocaCorpus);
-
+                if (formattedMocaScript != null) {
                         // If successful, replace formatted text doc with formatted moca script.
+                        // Otherwise, we still want previous sql/groovy edits to go through.
                         formattedTextDocumentContents = formattedMocaScript;
-
-                        // If not successful, formatted text doc will not be changed.
-
-                } catch (Exception e) {
-                        // Formatted text doc remains unchanged.
                 }
 
                 // Add to text doc edits and return!
