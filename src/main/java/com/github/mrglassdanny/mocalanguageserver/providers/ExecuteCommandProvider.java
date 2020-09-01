@@ -80,6 +80,8 @@ public class ExecuteCommandProvider {
                     // First, lets configure and train our codebuff formatters.
                     MocaFormatter.configureAndTrain(mocaLanguageServerActivateRequest.formatTrainingMocaDirName);
                     MocaSqlFormatter.configureAndTrain(mocaLanguageServerActivateRequest.formatTrainingMocaSqlDirName);
+                    // Also run appdata maintenance.
+                    AppDataManager.runMaintenance();
 
                     return CompletableFuture.completedFuture(new Object());
                 } catch (Exception exception) {
@@ -110,9 +112,6 @@ public class ExecuteCommandProvider {
                     GroovyCompiler.classpathList = mocaConnectionRequest.classpathList;
 
                     MocaConnectionResponse mocaConnectionResponse = MocaLanguageServer.currentMocaConnection.connect();
-
-                    // Here seems like a good time to run appdata maintenance.
-                    AppDataManager.runMaintenance();
 
                     return CompletableFuture.completedFuture(mocaConnectionResponse);
                 } catch (Exception exception) {

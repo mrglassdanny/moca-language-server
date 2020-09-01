@@ -30,7 +30,11 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
     // Will only ever have 1 at a time. We also want it to be easily accessible to
     // anything that needs it.
     public static MocaConnectionWrapper currentMocaConnection = new MocaConnectionWrapper();
-    // Same as ^.
+
+    // Callers will likely crash if this is null. That being said, we want callers
+    // to crash if value is null -- it is important that the moca language server's
+    // ACTIVATE command is called on startup and that a global storage path is
+    // passed in.
     public static String globalStoragePath = null;
 
     // TODO: Remove
@@ -40,6 +44,7 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
         MocaLanguageServer server = new MocaLanguageServer();
         Launcher<LanguageClient> launcher = Launcher.createLauncher(server, LanguageClient.class, System.in,
                 System.out);
+
         server.connect(launcher.getRemoteProxy());
         launcher.startListening();
     }
