@@ -13,6 +13,7 @@ import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaExe
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaLanguageServerActivateRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaResultsRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaTraceRequest;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.request.TrainFormattersRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.CancelMocaExecutionResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaCommandLookupResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaConnectionResponse;
@@ -20,9 +21,12 @@ import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaEx
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaLanguageServerActivateResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaResultsResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaTraceResponse;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.response.TrainFormattersResponse;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.format.MocaFormatter;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.format.MocaSqlFormatter;
 
 import org.eclipse.lsp4j.ExecuteCommandParams;
 import org.eclipse.lsp4j.MessageParams;
@@ -41,6 +45,7 @@ public class ExecuteCommandProvider {
     public static final String COMMAND_LOOKUP = "mocalanguageserver.commandLookup";
     public static final String EXECUTION_HISTORY = "mocalanguageserver.executionHistory";
     public static final String CANCEL_EXECUTION = "mocalanguageserver.cancelExecution";
+    public static final String TRAIN_FORMATTERS = "mocalanguageserver.trainFormatters";
 
     public static ArrayList<String> mocaLanguageServerCommands = new ArrayList<>();
     static {
@@ -68,6 +73,13 @@ public class ExecuteCommandProvider {
                     MocaLanguageServerActivateRequest mocaLanguageServerActivateRequest = new MocaLanguageServerActivateRequest(
                             args);
                     MocaLanguageServer.globalStoragePath = mocaLanguageServerActivateRequest.globalStoragePath;
+
+                    // Now that we have a global storage path, lets take this opportunity to do a
+                    // couple of things.
+                    // First, lets configure and train our codebuff formatters.
+                    MocaFormatter.configureAndTrain();
+                    MocaSqlFormatter.configureAndTrain();
+
                     return CompletableFuture.completedFuture(new Object());
                 } catch (Exception exception) {
                     MocaLanguageServerActivateResponse mocaLanguageServerActivateResponse = new MocaLanguageServerActivateResponse(
@@ -301,6 +313,23 @@ public class ExecuteCommandProvider {
                     return CompletableFuture.completedFuture(new CancelMocaExecutionResponse(false));
                 } catch (Exception exception) {
                     return CompletableFuture.completedFuture(new CancelMocaExecutionResponse(false));
+                }
+            case TRAIN_FORMATTERS:
+
+                try {
+                    List<Object> args = params.getArguments();
+                    if (args == null) {
+                        return CompletableFuture.completedFuture(new Object());
+                    }
+                    TrainFormattersRequest trainFormattersRequest = new TrainFormattersRequest();
+
+                    MocaFormatter.configureAndTrain();
+                    MocaSqlFormatter.configureAndTrain();
+
+                    return CompletableFuture.completedFuture(new Object());
+                } catch (Exception exception) {
+                    TrainFormattersResponse trainFormattersResponse = new TrainFormattersResponse(exception);
+                    return CompletableFuture.completedFuture(trainFormattersResponse);
                 }
             default:
                 break;
