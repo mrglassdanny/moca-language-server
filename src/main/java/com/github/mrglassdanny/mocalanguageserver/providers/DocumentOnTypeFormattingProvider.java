@@ -31,8 +31,12 @@ public class DocumentOnTypeFormattingProvider {
                         return CompletableFuture.completedFuture(new ArrayList<>());
                 }
 
-                return CompletableFuture.completedFuture(processFormatting(textDocumentContents, mocaCompiler));
-
+                // If we are typing new line whitespace, do not attempt to format.
+                if (params.getCh().contains("\n")) {
+                        return CompletableFuture.completedFuture(new ArrayList<>());
+                } else {
+                        return CompletableFuture.completedFuture(processFormatting(textDocumentContents, mocaCompiler));
+                }
         }
 
         public static ArrayList<TextEdit> processFormatting(String src, MocaCompiler mocaCompiler) {

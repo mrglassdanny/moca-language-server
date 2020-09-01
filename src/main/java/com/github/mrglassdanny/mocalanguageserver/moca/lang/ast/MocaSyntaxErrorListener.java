@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.lang;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.ast;
 
 import java.util.ArrayList;
 

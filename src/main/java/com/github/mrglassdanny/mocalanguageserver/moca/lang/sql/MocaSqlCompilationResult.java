@@ -3,6 +3,8 @@ package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql;
 import java.util.List;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.MocaSqlParseTreeListener;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.MocaSqlSyntaxErrorListener;
 
 import org.antlr.v4.runtime.Token;
 

@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.lang;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.ast;
 
 public class MocaSyntaxError {
     public int line;
