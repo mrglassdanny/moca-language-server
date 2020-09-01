@@ -76,8 +76,11 @@ public class ExecuteCommandProvider {
                     MocaLanguageServer.globalStoragePath = mocaLanguageServerActivateRequest.globalStoragePath;
 
                     // Now that we have a global storage path, lets take this opportunity to do a
-                    // couple of things.
-                    // First, lets configure and train our codebuff formatters.
+                    // couple of things:
+                    // Make sure format training defaults exist.
+                    MocaFormatter.createDefaults();
+                    MocaSqlFormatter.createDefaults();
+                    // Train our formatters.
                     MocaFormatter.configureAndTrain(mocaLanguageServerActivateRequest.formatTrainingMocaDirName);
                     MocaSqlFormatter.configureAndTrain(mocaLanguageServerActivateRequest.formatTrainingMocaSqlDirName);
                     // Also run appdata maintenance.
