@@ -45,8 +45,7 @@ public class MocaFormatter {
 
             Files.createDirectories(Paths.get(defaultPath));
 
-            Files.write(Paths.get(defaultPath + "\\file.msql"), "hello world where a = @abc".getBytes(),
-                    StandardOpenOption.CREATE);
+            Files.write(Paths.get(defaultPath + "\\file.msql"), "hello world where a = @abc".getBytes());
         }
 
     }

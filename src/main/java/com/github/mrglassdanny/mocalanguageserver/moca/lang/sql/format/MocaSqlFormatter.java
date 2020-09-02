@@ -45,8 +45,7 @@ public class MocaSqlFormatter {
 
             Files.createDirectories(Paths.get(defaultPath));
 
-            Files.write(Paths.get(defaultPath + "\\file.sql"), "select * from locmst".getBytes(),
-                    StandardOpenOption.CREATE);
+            Files.write(Paths.get(defaultPath + "\\file.sql"), "select * from locmst".getBytes());
         }
 
     }
