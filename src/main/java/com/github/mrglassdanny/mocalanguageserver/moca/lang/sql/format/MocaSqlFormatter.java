@@ -3,7 +3,6 @@ package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.format;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlLexer;
