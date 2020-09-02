@@ -23,7 +23,7 @@ statement: (
 		| try_block catch_sequence* finally_sequence? moca_redirect_expr?
 	);
 
-block: command | moca_remote_expr? sub_sequence;
+block: moca_remote_expr? command | moca_remote_expr? sub_sequence;
 
 command: sql_script | groovy_script | verb_noun_clause;
 
@@ -51,6 +51,7 @@ verb_noun_clause_args:
 
 verb_noun_clause_arg:
 	SINGLE_BRACKET_STRING
+	| DOUBLE_BRACKET_STRING
 	| MOCA_INTEGRATOR_OVERSTACKED_ARGS
 	| ( moca_at_star | moca_plus_variable)
 	| expr;
@@ -66,48 +67,17 @@ else_statement: ELSE statement;
 
 try_block: TRY block;
 catch_single_expr:
-	CATCH LEFT_PAREN (
-		(
-			literal_value
-			| moca_at_question
-			| moca_at_bang
-			| WORD
-			| moca_variable
-			| function_expr
-		)
-	) RIGHT_PAREN;
+	CATCH LEFT_PAREN expr RIGHT_PAREN;
 catch_multi_expr:
-	CATCH LEFT_PAREN (
-		(
-			literal_value
-			| moca_at_question
-			| moca_at_bang
-			| WORD
-			| moca_variable
-			| function_expr
-		) (
-			COMMA (
-				literal_value
-				| moca_at_question
-				| moca_at_bang
-				| WORD
-				| moca_variable
-				| function_expr
-			)
-		)*
-	) RIGHT_PAREN;
+	CATCH LEFT_PAREN expr (COMMA expr)* RIGHT_PAREN;
 catch_sequence:
-	catch_single_expr LEFT_BRACE sequence RIGHT_BRACE;
+	catch_single_expr LEFT_BRACE sequence? RIGHT_BRACE;
 finally_sequence: FINALLY LEFT_BRACE sequence RIGHT_BRACE;
 
 moca_redirect_expr: DOUBLE_GREATER WORD;
 
 moca_remote_expr:
-	moca_remote_keyword LEFT_PAREN (
-		literal_value
-		| WORD
-		| moca_variable
-	) RIGHT_PAREN;
+	moca_remote_keyword LEFT_PAREN expr RIGHT_PAREN;
 
 
 expr:
@@ -269,16 +239,18 @@ REMOTE: R E M O T E;
 PARALLEL: P A R A L L E L;
 INPARALLEL: I N P A R A L L E L;
 
-WORD: [a-zA-Z_0-9.]*;
 
 NUMERIC_LITERAL:
 	DIGIT+ ('.' DIGIT*)? (E [-+]? DIGIT+)?
 	| '.' DIGIT+ ( E [-+]? DIGIT+)?;
 
+
 STRING_LITERAL: (
 		'\'' ( ~'\'' | '\'\'')* '\''
 		| '"' ( ~'"' | '""')* '"'
 	);
+
+WORD: [a-zA-Z_0-9.]+;
 
 BLOCK_COMMENT: '/*' .*? '*/' -> channel(HIDDEN);
 
