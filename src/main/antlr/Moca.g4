@@ -53,47 +53,7 @@ verb_noun_clause_arg:
 	SINGLE_BRACKET_STRING
 	| MOCA_INTEGRATOR_OVERSTACKED_ARGS
 	| ( moca_at_star | moca_plus_variable)
-	| (
-		WORD (
-			IS NULL
-			| IS NOT NULL
-			| EQUAL
-			| NOT_EQUAL
-			| LESS
-			| GREATER
-			| LESS_EQUAL
-			| GREATER_EQUAL
-			| LIKE
-			| NOT LIKE
-		)
-	) (
-		verb_noun_clause_arg_expr
-	);
-
-verb_noun_clause_arg_expr:
-	literal_value
-	| WORD
-	| moca_variable
-	| moca_at_bang
-	| moca_at_question
-	| function_expr
-	| SINGLE_BRACKET_STRING
-	| (
-		BANG (
-			literal_value
-			| WORD
-			| moca_variable
-			| moca_at_bang
-			| moca_at_question
-			| function_expr
-		)
-	)
-	| verb_noun_clause_arg_expr DOUBLE_PIPE verb_noun_clause_arg_expr
-	| verb_noun_clause_arg_expr ( STAR | DIV | MOD) verb_noun_clause_arg_expr
-	| verb_noun_clause_arg_expr ( PLUS | MINUS) verb_noun_clause_arg_expr
-	| LEFT_PAREN verb_noun_clause_arg_expr RIGHT_PAREN
-	| verb_noun_clause_arg_expr NOT? (LIKE) verb_noun_clause_arg_expr
-	| verb_noun_clause_arg_expr ( IS | NULL | NOT NULL);
+	| expr;
 
 sub_sequence:
 	LEFT_BRACE sequence RIGHT_BRACE
@@ -159,6 +119,7 @@ expr:
 	| moca_at_star
 	| function_expr
 	| SINGLE_BRACKET_STRING
+	| DOUBLE_BRACKET_STRING
 	| (
 		BANG (
 			literal_value
@@ -168,6 +129,7 @@ expr:
 			| moca_at_question
 			| moca_at_star
 			| function_expr
+			| expr
 		)
 	)
 	| expr DOUBLE_PIPE expr
@@ -228,7 +190,8 @@ moca_at_mod_keep_directive: // DOES NOT SEEM TO BE VALID
 	moca_at_mod_variable POUND 'keep'; // @%variable#keep
 
 moca_onstack_directive:
-	moca_at_variable POUND 'onstack'; // @variable#onstack
+	moca_at_variable POUND 'onstack'
+	| moca_at_minus_variable POUND 'onstack'; // @variable#onstack
 
 moca_oldvar_directive:
 	moca_at_plus_oldvar_directive
@@ -306,7 +269,7 @@ REMOTE: R E M O T E;
 PARALLEL: P A R A L L E L;
 INPARALLEL: I N P A R A L L E L;
 
-WORD: [a-zA-Z_] [a-zA-Z_0-9]*;
+WORD: [a-zA-Z_0-9.]*;
 
 NUMERIC_LITERAL:
 	DIGIT+ ('.' DIGIT*)? (E [-+]? DIGIT+)?
