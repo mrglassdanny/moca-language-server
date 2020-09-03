@@ -708,6 +708,8 @@ public class MocaParser extends Parser {
 			case REMOTE:
 			case PARALLEL:
 			case INPARALLEL:
+			case ONSTACK:
+			case KEEP:
 			case WORD:
 				enterOuterAlt(_localctx, 3);
 				{
@@ -796,6 +798,14 @@ public class MocaParser extends Parser {
 		public TerminalNode INPARALLEL(int i) {
 			return getToken(MocaParser.INPARALLEL, i);
 		}
+		public List<TerminalNode> KEEP() { return getTokens(MocaParser.KEEP); }
+		public TerminalNode KEEP(int i) {
+			return getToken(MocaParser.KEEP, i);
+		}
+		public List<TerminalNode> ONSTACK() { return getTokens(MocaParser.ONSTACK); }
+		public TerminalNode ONSTACK(int i) {
+			return getToken(MocaParser.ONSTACK, i);
+		}
 		public Verb_noun_clauseContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -842,7 +852,7 @@ public class MocaParser extends Parser {
 					{
 					setState(180);
 					_la = _input.LA(1);
-					if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << AND) | (1L << LIKE) | (1L << OR) | (1L << IS) | (1L << NOT) | (1L << NULL) | (1L << IF) | (1L << ELSE) | (1L << TRY) | (1L << CATCH) | (1L << FINALLY) | (1L << REMOTE) | (1L << PARALLEL) | (1L << INPARALLEL) | (1L << WORD))) != 0)) ) {
+					if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << AND) | (1L << LIKE) | (1L << OR) | (1L << IS) | (1L << NOT) | (1L << NULL) | (1L << IF) | (1L << ELSE) | (1L << TRY) | (1L << CATCH) | (1L << FINALLY) | (1L << REMOTE) | (1L << PARALLEL) | (1L << INPARALLEL) | (1L << ONSTACK) | (1L << KEEP) | (1L << WORD))) != 0)) ) {
 					_errHandler.recoverInline(this);
 					} else {
 						consume();
@@ -1534,7 +1544,7 @@ public class MocaParser extends Parser {
 			match(LEFT_BRACE);
 			setState(257);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DOUBLE_BRACKET_STRING) | (1L << SINGLE_BRACKET_STRING) | (1L << LEFT_PAREN) | (1L << LEFT_BRACE) | (1L << CARET) | (1L << AND) | (1L << LIKE) | (1L << OR) | (1L << IS) | (1L << NOT) | (1L << NULL) | (1L << IF) | (1L << ELSE) | (1L << TRY) | (1L << CATCH) | (1L << FINALLY) | (1L << REMOTE) | (1L << PARALLEL) | (1L << INPARALLEL) | (1L << WORD))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DOUBLE_BRACKET_STRING) | (1L << SINGLE_BRACKET_STRING) | (1L << LEFT_PAREN) | (1L << LEFT_BRACE) | (1L << CARET) | (1L << AND) | (1L << LIKE) | (1L << OR) | (1L << IS) | (1L << NOT) | (1L << NULL) | (1L << IF) | (1L << ELSE) | (1L << TRY) | (1L << CATCH) | (1L << FINALLY) | (1L << REMOTE) | (1L << PARALLEL) | (1L << INPARALLEL) | (1L << ONSTACK) | (1L << KEEP) | (1L << WORD))) != 0)) {
 				{
 				setState(256);
 				sequence();
@@ -3788,7 +3798,7 @@ public class MocaParser extends Parser {
 		".\3.\3.\3.\5.\u01d8\n.\3/\3/\3/\3/\3\60\3\60\3\60\3\61\3\61\3\61\3\61"+
 		"\5\61\u01e5\n\61\3\62\3\62\3\63\3\63\3\63\2\3.\64\2\4\6\b\n\f\16\20\22"+
 		"\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>@BDFHJLNPRTVXZ\\^`bd\2\6\4"+
-		"\2\'\6499\3\2\23\25\3\2\21\22\3\2\13\16\u020f\2f\3\2\2\2\4i\3\2\2\2\6"+
+		"\2\'\6699\3\2\23\25\3\2\21\22\3\2\13\16\u020f\2f\3\2\2\2\4i\3\2\2\2\6"+
 		"t\3\2\2\2\b|\3\2\2\2\n\u00a2\3\2\2\2\f\u00ac\3\2\2\2\16\u00b1\3\2\2\2"+
 		"\20\u00b4\3\2\2\2\22\u00bf\3\2\2\2\24\u00cd\3\2\2\2\26\u00d7\3\2\2\2\30"+
 		"\u00d9\3\2\2\2\32\u00e3\3\2\2\2\34\u00e6\3\2\2\2\36\u00e9\3\2\2\2 \u00ec"+

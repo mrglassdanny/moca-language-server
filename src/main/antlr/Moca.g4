@@ -44,6 +44,8 @@ verb_noun_clause:
 		| REMOTE
 		| PARALLEL
 		| INPARALLEL
+		| KEEP
+		| ONSTACK
 	)+ (WHERE verb_noun_clause_args)?;
 
 verb_noun_clause_args:
