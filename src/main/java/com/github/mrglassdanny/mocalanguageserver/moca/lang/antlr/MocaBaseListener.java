@@ -258,25 +258,25 @@ public class MocaBaseListener implements MocaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_redirect_expr(MocaParser.Moca_redirect_exprContext ctx) { }
+	@Override public void enterRedirect_expr(MocaParser.Redirect_exprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_redirect_expr(MocaParser.Moca_redirect_exprContext ctx) { }
+	@Override public void exitRedirect_expr(MocaParser.Redirect_exprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_remote_expr(MocaParser.Moca_remote_exprContext ctx) { }
+	@Override public void enterRemote_expr(MocaParser.Remote_exprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_remote_expr(MocaParser.Moca_remote_exprContext ctx) { }
+	@Override public void exitRemote_expr(MocaParser.Remote_exprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -318,289 +318,277 @@ public class MocaBaseListener implements MocaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_variable(MocaParser.Moca_variableContext ctx) { }
+	@Override public void enterVariable(MocaParser.VariableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_variable(MocaParser.Moca_variableContext ctx) { }
+	@Override public void exitVariable(MocaParser.VariableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_plus_variable(MocaParser.Moca_plus_variableContext ctx) { }
+	@Override public void enterPlus_variable(MocaParser.Plus_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_plus_variable(MocaParser.Moca_plus_variableContext ctx) { }
+	@Override public void exitPlus_variable(MocaParser.Plus_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_at_variable(MocaParser.Moca_at_variableContext ctx) { }
+	@Override public void enterAt_variable(MocaParser.At_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_at_variable(MocaParser.Moca_at_variableContext ctx) { }
+	@Override public void exitAt_variable(MocaParser.At_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_environment_variable(MocaParser.Moca_environment_variableContext ctx) { }
+	@Override public void enterEnvironment_variable(MocaParser.Environment_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_environment_variable(MocaParser.Moca_environment_variableContext ctx) { }
+	@Override public void exitEnvironment_variable(MocaParser.Environment_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_at_minus_variable(MocaParser.Moca_at_minus_variableContext ctx) { }
+	@Override public void enterAt_minus_variable(MocaParser.At_minus_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_at_minus_variable(MocaParser.Moca_at_minus_variableContext ctx) { }
+	@Override public void exitAt_minus_variable(MocaParser.At_minus_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_at_plus_variable(MocaParser.Moca_at_plus_variableContext ctx) { }
+	@Override public void enterAt_plus_variable(MocaParser.At_plus_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_at_plus_variable(MocaParser.Moca_at_plus_variableContext ctx) { }
+	@Override public void exitAt_plus_variable(MocaParser.At_plus_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_at_mod_variable(MocaParser.Moca_at_mod_variableContext ctx) { }
+	@Override public void enterAt_mod_variable(MocaParser.At_mod_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_at_mod_variable(MocaParser.Moca_at_mod_variableContext ctx) { }
+	@Override public void exitAt_mod_variable(MocaParser.At_mod_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_at_star(MocaParser.Moca_at_starContext ctx) { }
+	@Override public void enterAt_star(MocaParser.At_starContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_at_star(MocaParser.Moca_at_starContext ctx) { }
+	@Override public void exitAt_star(MocaParser.At_starContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_at_question(MocaParser.Moca_at_questionContext ctx) { }
+	@Override public void enterAt_question(MocaParser.At_questionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_at_question(MocaParser.Moca_at_questionContext ctx) { }
+	@Override public void exitAt_question(MocaParser.At_questionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_at_bang(MocaParser.Moca_at_bangContext ctx) { }
+	@Override public void enterAt_bang(MocaParser.At_bangContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_at_bang(MocaParser.Moca_at_bangContext ctx) { }
+	@Override public void exitAt_bang(MocaParser.At_bangContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_keep_directive(MocaParser.Moca_keep_directiveContext ctx) { }
+	@Override public void enterKeep_directive(MocaParser.Keep_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_keep_directive(MocaParser.Moca_keep_directiveContext ctx) { }
+	@Override public void exitKeep_directive(MocaParser.Keep_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_at_keep_directive(MocaParser.Moca_at_keep_directiveContext ctx) { }
+	@Override public void enterAt_keep_directive(MocaParser.At_keep_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_at_keep_directive(MocaParser.Moca_at_keep_directiveContext ctx) { }
+	@Override public void exitAt_keep_directive(MocaParser.At_keep_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_at_minus_keep_directive(MocaParser.Moca_at_minus_keep_directiveContext ctx) { }
+	@Override public void enterAt_minus_keep_directive(MocaParser.At_minus_keep_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_at_minus_keep_directive(MocaParser.Moca_at_minus_keep_directiveContext ctx) { }
+	@Override public void exitAt_minus_keep_directive(MocaParser.At_minus_keep_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_at_plus_keep_directive(MocaParser.Moca_at_plus_keep_directiveContext ctx) { }
+	@Override public void enterAt_plus_keep_directive(MocaParser.At_plus_keep_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_at_plus_keep_directive(MocaParser.Moca_at_plus_keep_directiveContext ctx) { }
+	@Override public void exitAt_plus_keep_directive(MocaParser.At_plus_keep_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_at_mod_keep_directive(MocaParser.Moca_at_mod_keep_directiveContext ctx) { }
+	@Override public void enterAt_mod_keep_directive(MocaParser.At_mod_keep_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_at_mod_keep_directive(MocaParser.Moca_at_mod_keep_directiveContext ctx) { }
+	@Override public void exitAt_mod_keep_directive(MocaParser.At_mod_keep_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_onstack_directive(MocaParser.Moca_onstack_directiveContext ctx) { }
+	@Override public void enterOnstack_directive(MocaParser.Onstack_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_onstack_directive(MocaParser.Moca_onstack_directiveContext ctx) { }
+	@Override public void exitOnstack_directive(MocaParser.Onstack_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_oldvar_directive(MocaParser.Moca_oldvar_directiveContext ctx) { }
+	@Override public void enterOldvar_directive(MocaParser.Oldvar_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_oldvar_directive(MocaParser.Moca_oldvar_directiveContext ctx) { }
+	@Override public void exitOldvar_directive(MocaParser.Oldvar_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_at_plus_oldvar_directive(MocaParser.Moca_at_plus_oldvar_directiveContext ctx) { }
+	@Override public void enterAt_plus_oldvar_directive(MocaParser.At_plus_oldvar_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_at_plus_oldvar_directive(MocaParser.Moca_at_plus_oldvar_directiveContext ctx) { }
+	@Override public void exitAt_plus_oldvar_directive(MocaParser.At_plus_oldvar_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_at_mod_oldvar_directive(MocaParser.Moca_at_mod_oldvar_directiveContext ctx) { }
+	@Override public void enterAt_mod_oldvar_directive(MocaParser.At_mod_oldvar_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_at_mod_oldvar_directive(MocaParser.Moca_at_mod_oldvar_directiveContext ctx) { }
+	@Override public void exitAt_mod_oldvar_directive(MocaParser.At_mod_oldvar_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_type_cast_variable(MocaParser.Moca_type_cast_variableContext ctx) { }
+	@Override public void enterType_cast_variable(MocaParser.Type_cast_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_type_cast_variable(MocaParser.Moca_type_cast_variableContext ctx) { }
+	@Override public void exitType_cast_variable(MocaParser.Type_cast_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_database_qualifier_variable(MocaParser.Moca_database_qualifier_variableContext ctx) { }
+	@Override public void enterDatabase_qualifier_variable(MocaParser.Database_qualifier_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_database_qualifier_variable(MocaParser.Moca_database_qualifier_variableContext ctx) { }
+	@Override public void exitDatabase_qualifier_variable(MocaParser.Database_qualifier_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_integration_variable(MocaParser.Moca_integration_variableContext ctx) { }
+	@Override public void enterIntegration_variable(MocaParser.Integration_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_integration_variable(MocaParser.Moca_integration_variableContext ctx) { }
+	@Override public void exitIntegration_variable(MocaParser.Integration_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_remote_keyword(MocaParser.Moca_remote_keywordContext ctx) { }
+	@Override public void enterRemote_keyword(MocaParser.Remote_keywordContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_remote_keyword(MocaParser.Moca_remote_keywordContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterSql_script(MocaParser.Sql_scriptContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSql_script(MocaParser.Sql_scriptContext ctx) { }
+	@Override public void exitRemote_keyword(MocaParser.Remote_keywordContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -613,6 +601,18 @@ public class MocaBaseListener implements MocaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitGroovy_script(MocaParser.Groovy_scriptContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSql_script(MocaParser.Sql_scriptContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSql_script(MocaParser.Sql_scriptContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

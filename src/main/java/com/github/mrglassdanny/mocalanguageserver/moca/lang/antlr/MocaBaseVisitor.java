@@ -159,14 +159,14 @@ public class MocaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements M
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_redirect_expr(MocaParser.Moca_redirect_exprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitRedirect_expr(MocaParser.Redirect_exprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_remote_expr(MocaParser.Moca_remote_exprContext ctx) { return visitChildren(ctx); }
+	@Override public T visitRemote_expr(MocaParser.Remote_exprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -194,168 +194,161 @@ public class MocaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements M
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_variable(MocaParser.Moca_variableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitVariable(MocaParser.VariableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_plus_variable(MocaParser.Moca_plus_variableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPlus_variable(MocaParser.Plus_variableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_at_variable(MocaParser.Moca_at_variableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_variable(MocaParser.At_variableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_environment_variable(MocaParser.Moca_environment_variableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitEnvironment_variable(MocaParser.Environment_variableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_at_minus_variable(MocaParser.Moca_at_minus_variableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_minus_variable(MocaParser.At_minus_variableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_at_plus_variable(MocaParser.Moca_at_plus_variableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_plus_variable(MocaParser.At_plus_variableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_at_mod_variable(MocaParser.Moca_at_mod_variableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_mod_variable(MocaParser.At_mod_variableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_at_star(MocaParser.Moca_at_starContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_star(MocaParser.At_starContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_at_question(MocaParser.Moca_at_questionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_question(MocaParser.At_questionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_at_bang(MocaParser.Moca_at_bangContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_bang(MocaParser.At_bangContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_keep_directive(MocaParser.Moca_keep_directiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitKeep_directive(MocaParser.Keep_directiveContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_at_keep_directive(MocaParser.Moca_at_keep_directiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_keep_directive(MocaParser.At_keep_directiveContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_at_minus_keep_directive(MocaParser.Moca_at_minus_keep_directiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_minus_keep_directive(MocaParser.At_minus_keep_directiveContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_at_plus_keep_directive(MocaParser.Moca_at_plus_keep_directiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_plus_keep_directive(MocaParser.At_plus_keep_directiveContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_at_mod_keep_directive(MocaParser.Moca_at_mod_keep_directiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_mod_keep_directive(MocaParser.At_mod_keep_directiveContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_onstack_directive(MocaParser.Moca_onstack_directiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitOnstack_directive(MocaParser.Onstack_directiveContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_oldvar_directive(MocaParser.Moca_oldvar_directiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitOldvar_directive(MocaParser.Oldvar_directiveContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_at_plus_oldvar_directive(MocaParser.Moca_at_plus_oldvar_directiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_plus_oldvar_directive(MocaParser.At_plus_oldvar_directiveContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_at_mod_oldvar_directive(MocaParser.Moca_at_mod_oldvar_directiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_mod_oldvar_directive(MocaParser.At_mod_oldvar_directiveContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_type_cast_variable(MocaParser.Moca_type_cast_variableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitType_cast_variable(MocaParser.Type_cast_variableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_database_qualifier_variable(MocaParser.Moca_database_qualifier_variableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDatabase_qualifier_variable(MocaParser.Database_qualifier_variableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_integration_variable(MocaParser.Moca_integration_variableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIntegration_variable(MocaParser.Integration_variableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_remote_keyword(MocaParser.Moca_remote_keywordContext ctx) { return visitChildren(ctx); }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.</p>
-	 */
-	@Override public T visitSql_script(MocaParser.Sql_scriptContext ctx) { return visitChildren(ctx); }
+	@Override public T visitRemote_keyword(MocaParser.Remote_keywordContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -363,4 +356,11 @@ public class MocaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements M
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitGroovy_script(MocaParser.Groovy_scriptContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitSql_script(MocaParser.Sql_scriptContext ctx) { return visitChildren(ctx); }
 }

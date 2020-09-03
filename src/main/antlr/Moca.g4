@@ -18,14 +18,14 @@ stream: group (PIPE group)*;
 group: statement (AMPERSAND statement)*;
 
 statement: (
-		block catch_multi_expr? moca_redirect_expr?
+		block catch_multi_expr? redirect_expr?
 		| if_statement else_if_statement* else_statement?
-		| try_block catch_sequence* finally_sequence? moca_redirect_expr?
+		| try_block catch_sequence* finally_sequence? redirect_expr?
 	);
 
-block: moca_remote_expr? command | moca_remote_expr? sub_sequence;
+block: remote_expr? command | remote_expr? sub_sequence;
 
-command: sql_script | groovy_script | verb_noun_clause;
+command: groovy_script | sql_script | verb_noun_clause;
 
 verb_noun_clause:
 	CARET? (
@@ -50,10 +50,8 @@ verb_noun_clause_args:
 	verb_noun_clause_arg (AND verb_noun_clause_arg)*;
 
 verb_noun_clause_arg:
-	SINGLE_BRACKET_STRING
-	| DOUBLE_BRACKET_STRING
-	| MOCA_INTEGRATOR_OVERSTACKED_ARGS
-	| ( moca_at_star | moca_plus_variable)
+	OVERSTACKED_ARGS
+	| (at_star | plus_variable)
 	| expr;
 
 sub_sequence:
@@ -74,30 +72,30 @@ catch_sequence:
 	catch_single_expr LEFT_BRACE sequence? RIGHT_BRACE;
 finally_sequence: FINALLY LEFT_BRACE sequence RIGHT_BRACE;
 
-moca_redirect_expr: DOUBLE_GREATER WORD;
+redirect_expr: DOUBLE_GREATER WORD;
 
-moca_remote_expr:
-	moca_remote_keyword LEFT_PAREN expr RIGHT_PAREN;
+remote_expr:
+	remote_keyword LEFT_PAREN expr RIGHT_PAREN;
 
 
 expr:
 	literal_value
 	| WORD
-	| moca_variable
-	| moca_at_bang
-	| moca_at_question
-	| moca_at_star
+	| variable
+	| at_bang
+	| at_question
+	| at_star
 	| function_expr
-	| SINGLE_BRACKET_STRING
-	| DOUBLE_BRACKET_STRING
+	| groovy_script
+    | SINGLE_BRACKET_STRING
 	| (
 		BANG (
 			literal_value
 			| WORD
-			| moca_variable
-			| moca_at_bang
-			| moca_at_question
-			| moca_at_star
+			| variable
+			| at_bang
+			| at_question
+			| at_star
 			| function_expr
 			| expr
 		)
@@ -123,74 +121,83 @@ literal_value:
 	| STRING_LITERAL
 	| NULL;
 
-moca_variable:
-	moca_at_variable
-	| moca_at_minus_variable
-	| moca_environment_variable
-	| moca_keep_directive
-	| moca_onstack_directive
-	| moca_type_cast_variable
-	| moca_integration_variable;
+variable:
+	at_variable
+	| at_minus_variable
+	| environment_variable
+	| keep_directive
+	| onstack_directive
+	| type_cast_variable
+	| integration_variable;
 
-moca_plus_variable:
-	moca_at_plus_variable
-	| moca_at_mod_variable
-	| moca_oldvar_directive
-	| moca_database_qualifier_variable;
+plus_variable:
+	at_plus_variable
+	| at_mod_variable
+	| at_plus_keep_directive
+	| at_mod_keep_directive
+	| oldvar_directive
+	| database_qualifier_variable;
 
-moca_at_variable: AT WORD; // @variable
-moca_environment_variable: AT AT WORD; // @@variable
-moca_at_minus_variable: AT MINUS WORD; // @-variable
-moca_at_plus_variable: AT PLUS WORD; // @+variable
-moca_at_mod_variable: AT MOD WORD; // @%variable
-moca_at_star: AT STAR; // @*
-moca_at_question: AT QUESTION; // @?
-moca_at_bang: AT BANG; //@!
+at_variable: AT WORD; // @variable
+environment_variable: AT AT WORD; // @@variable
+at_minus_variable: AT MINUS WORD; // @-variable
+at_plus_variable: AT PLUS WORD; // @+variable
+at_mod_variable: AT MOD WORD; // @%variable
+at_star: AT STAR; // @*
+at_question: AT QUESTION; // @?
+at_bang: AT BANG; //@!
 
-moca_keep_directive:
-	moca_at_keep_directive
-	| moca_at_minus_keep_directive;
-moca_at_keep_directive:
-	moca_at_variable POUND KEEP; // @variable#keep
-moca_at_minus_keep_directive:
-	moca_at_minus_variable POUND KEEP; // @-variable#keep
-moca_at_plus_keep_directive: // DOES NOT SEEM TO BE VALID
-	moca_at_plus_variable POUND KEEP; // @+variable#keep
-moca_at_mod_keep_directive: // DOES NOT SEEM TO BE VALID
-	moca_at_mod_variable POUND KEEP; // @%variable#keep
+keep_directive:
+	at_keep_directive
+	| at_minus_keep_directive;
+at_keep_directive:
+	at_variable POUND KEEP; // @variable#keep
+at_minus_keep_directive:
+	at_minus_variable POUND KEEP; // @-variable#keep
+at_plus_keep_directive:
+	at_plus_variable POUND KEEP; // @+variable#keep
+at_mod_keep_directive:
+	at_mod_variable POUND KEEP; // @%variable#keep
 
-moca_onstack_directive:
-	moca_at_variable POUND ONSTACK
-	| moca_at_minus_variable POUND ONSTACK; // @variable#onstack
+onstack_directive:
+	at_variable POUND ONSTACK
+	| at_minus_variable POUND ONSTACK; // @variable#onstack
 
-moca_oldvar_directive:
-	moca_at_plus_oldvar_directive
-	| moca_at_mod_oldvar_directive;
-moca_at_plus_oldvar_directive:
-	moca_at_plus_variable CARET WORD; // @+newvariable^oldvariable
-moca_at_mod_oldvar_directive:
-	moca_at_mod_variable CARET WORD; // @%newvariable^oldvariable
+oldvar_directive:
+	at_plus_oldvar_directive
+	| at_mod_oldvar_directive;
+at_plus_oldvar_directive:
+	at_plus_variable CARET WORD; // @+newvariable^oldvariable
+at_mod_oldvar_directive:
+	at_mod_variable CARET WORD; // @%newvariable^oldvariable
 
-moca_type_cast_variable:
-	moca_at_variable COLON WORD
-	| moca_at_plus_variable COLON WORD; // @variable:raw
+type_cast_variable:
+	at_variable COLON WORD
+	| at_plus_variable COLON WORD; // @variable:raw
 
-moca_database_qualifier_variable:
-	moca_at_plus_variable DOT WORD; // @+tablename.variable
+database_qualifier_variable:
+	at_plus_variable DOT WORD; // @+tablename.variable
 
-moca_integration_variable: COLON WORD;
+integration_variable: COLON WORD;
 
-moca_remote_keyword: | REMOTE | PARALLEL | INPARALLEL;
+remote_keyword: | REMOTE | PARALLEL | INPARALLEL;
 
-sql_script: SINGLE_BRACKET_STRING;
+
 groovy_script: DOUBLE_BRACKET_STRING;
+sql_script: SINGLE_BRACKET_STRING;
+
 
 // LEXER ---------------------------------------------------------
+
+DOUBLE_BRACKET_STRING: LEFT_BRACKET LEFT_BRACKET .* RIGHT_BRACKET RIGHT_BRACKET;
+SINGLE_BRACKET_STRING: LEFT_BRACKET .* RIGHT_BRACKET;
 
 LEFT_PAREN: '(';
 RIGHT_PAREN: ')';
 LEFT_BRACE: '{';
 RIGHT_BRACE: '}';
+LEFT_BRACKET: '[';
+RIGHT_BRACKET: ']';
 LESS: '<';
 GREATER: '>';
 LESS_EQUAL: '<=';
@@ -218,10 +225,7 @@ EQUAL: '=';
 NOT_EQUAL: '!=' | '<>';
 DOT: '.';
 
-DOUBLE_BRACKET_STRING: '[[' .*? ']]';
-SINGLE_BRACKET_STRING: '[' .*? ']';
-
-MOCA_INTEGRATOR_OVERSTACKED_ARGS: '<<OVERSTACKED_ARGS>>';
+OVERSTACKED_ARGS: '<<OVERSTACKED_ARGS>>';
 
 WHERE: W H E R E;
 AND: A N D;

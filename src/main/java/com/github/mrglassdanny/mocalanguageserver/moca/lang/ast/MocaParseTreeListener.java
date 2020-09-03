@@ -12,11 +12,11 @@ import org.antlr.v4.runtime.Token;
 
 public class MocaParseTreeListener extends MocaBaseListener {
 
-    public HashMap<Token, String> mocaRedirects;
+    public HashMap<Token, String> redirects;
     public HashMap<String, ArrayList<Token>> verbNounClauses;
 
     public MocaParseTreeListener() {
-        this.mocaRedirects = new HashMap<>();
+        this.redirects = new HashMap<>();
         this.verbNounClauses = new HashMap<>();
     }
 
@@ -52,12 +52,12 @@ public class MocaParseTreeListener extends MocaBaseListener {
     }
 
     @Override
-    public void enterMoca_redirect_expr(MocaParser.Moca_redirect_exprContext ctx) {
+    public void enterRedirect_expr(MocaParser.Redirect_exprContext ctx) {
         // Redirects are setup as DOUBLE_GREATER then WORD.
         // Therefore, we can just get the stop token and use it's
         // data to fill hashmap.
         Token mocaRedirectWord = ctx.getStop();
-        this.mocaRedirects.put(mocaRedirectWord, mocaRedirectWord.getText());
+        this.redirects.put(mocaRedirectWord, mocaRedirectWord.getText());
 
     }
 }
