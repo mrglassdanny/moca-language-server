@@ -56,8 +56,8 @@ public class MocaParseTreeListener extends MocaBaseListener {
         // Redirects are setup as DOUBLE_GREATER then WORD.
         // Therefore, we can just get the stop token and use it's
         // data to fill hashmap.
-        Token mocaRedirectWord = ctx.getStop();
-        this.redirects.put(mocaRedirectWord, mocaRedirectWord.getText());
+        Token redirectWord = ctx.getStop();
+        this.redirects.put(redirectWord, redirectWord.getText());
 
     }
 }
