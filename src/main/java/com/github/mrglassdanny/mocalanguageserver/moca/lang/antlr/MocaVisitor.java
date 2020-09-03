@@ -283,11 +283,17 @@ public interface MocaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitType_cast_variable(MocaParser.Type_cast_variableContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MocaParser#database_qualifier_variable}.
+	 * Visit a parse tree produced by {@link MocaParser#database_plus_qualifier_variable}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDatabase_qualifier_variable(MocaParser.Database_qualifier_variableContext ctx);
+	T visitDatabase_plus_qualifier_variable(MocaParser.Database_plus_qualifier_variableContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaParser#database_mod_qualifier_variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDatabase_mod_qualifier_variable(MocaParser.Database_mod_qualifier_variableContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MocaParser#integration_variable}.
 	 * @param ctx the parse tree

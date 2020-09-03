@@ -334,7 +334,14 @@ public class MocaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements M
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDatabase_qualifier_variable(MocaParser.Database_qualifier_variableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDatabase_plus_qualifier_variable(MocaParser.Database_plus_qualifier_variableContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitDatabase_mod_qualifier_variable(MocaParser.Database_mod_qualifier_variableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

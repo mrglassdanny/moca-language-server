@@ -558,13 +558,25 @@ public class MocaBaseListener implements MocaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDatabase_qualifier_variable(MocaParser.Database_qualifier_variableContext ctx) { }
+	@Override public void enterDatabase_plus_qualifier_variable(MocaParser.Database_plus_qualifier_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDatabase_qualifier_variable(MocaParser.Database_qualifier_variableContext ctx) { }
+	@Override public void exitDatabase_plus_qualifier_variable(MocaParser.Database_plus_qualifier_variableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDatabase_mod_qualifier_variable(MocaParser.Database_mod_qualifier_variableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDatabase_mod_qualifier_variable(MocaParser.Database_mod_qualifier_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

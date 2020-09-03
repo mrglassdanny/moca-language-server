@@ -460,15 +460,25 @@ public interface MocaListener extends ParseTreeListener {
 	 */
 	void exitType_cast_variable(MocaParser.Type_cast_variableContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MocaParser#database_qualifier_variable}.
+	 * Enter a parse tree produced by {@link MocaParser#database_plus_qualifier_variable}.
 	 * @param ctx the parse tree
 	 */
-	void enterDatabase_qualifier_variable(MocaParser.Database_qualifier_variableContext ctx);
+	void enterDatabase_plus_qualifier_variable(MocaParser.Database_plus_qualifier_variableContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MocaParser#database_qualifier_variable}.
+	 * Exit a parse tree produced by {@link MocaParser#database_plus_qualifier_variable}.
 	 * @param ctx the parse tree
 	 */
-	void exitDatabase_qualifier_variable(MocaParser.Database_qualifier_variableContext ctx);
+	void exitDatabase_plus_qualifier_variable(MocaParser.Database_plus_qualifier_variableContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MocaParser#database_mod_qualifier_variable}.
+	 * @param ctx the parse tree
+	 */
+	void enterDatabase_mod_qualifier_variable(MocaParser.Database_mod_qualifier_variableContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MocaParser#database_mod_qualifier_variable}.
+	 * @param ctx the parse tree
+	 */
+	void exitDatabase_mod_qualifier_variable(MocaParser.Database_mod_qualifier_variableContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MocaParser#integration_variable}.
 	 * @param ctx the parse tree

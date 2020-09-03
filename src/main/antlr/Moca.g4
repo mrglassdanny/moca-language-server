@@ -53,7 +53,7 @@ verb_noun_clause_args:
 
 verb_noun_clause_arg:
 	OVERSTACKED_ARGS
-	| (at_star | plus_variable)
+	| (at_star | at_plus_variables)
 	| expr;
 
 sub_sequence:
@@ -83,7 +83,7 @@ remote_expr:
 expr:
 	literal_value
 	| WORD
-	| variable
+	| at_variables
 	| at_bang
 	| at_question
 	| at_star
@@ -94,7 +94,7 @@ expr:
 		BANG (
 			literal_value
 			| WORD
-			| variable
+			| at_variables
 			| at_bang
 			| at_question
 			| at_star
@@ -123,22 +123,31 @@ literal_value:
 	| STRING_LITERAL
 	| NULL;
 
-variable:
+/*
+Variable clarification:
+	When I group variables together under 1 parse rule, I am considering '@' & '@-' as at variables/directives
+		and '@+' & '@%' as at_plus variables/directives. Grouped variable parse rules will also have an 's' at
+		the end to make it clear that it applies to more than 1 variable/directive.
+ */
+
+at_variables:
 	at_variable
 	| at_minus_variable
 	| environment_variable
-	| keep_directive
-	| onstack_directive
-	| type_cast_variable
+	| at_keep_directives
+	| at_onstack_directive
+	| at_type_cast_variable
 	| integration_variable;
 
-plus_variable:
+at_plus_variables:
 	at_plus_variable
 	| at_mod_variable
 	| at_plus_keep_directive
 	| at_mod_keep_directive
-	| oldvar_directive
-	| database_qualifier_variable;
+	| at_plus_oldvar_directives
+	| at_plus_type_cast_variable
+	| at_plus_database_qualifier_variable
+	| at_mod_database_qualifier_variable;
 
 at_variable: AT WORD; // @variable
 environment_variable: AT AT WORD; // @@variable
@@ -149,7 +158,7 @@ at_star: AT STAR; // @*
 at_question: AT QUESTION; // @?
 at_bang: AT BANG; //@!
 
-keep_directive:
+at_keep_directives:
 	at_keep_directive
 	| at_minus_keep_directive;
 at_keep_directive:
@@ -161,11 +170,11 @@ at_plus_keep_directive:
 at_mod_keep_directive:
 	at_mod_variable POUND KEEP; // @%variable#keep
 
-onstack_directive:
+at_onstack_directive:
 	at_variable POUND ONSTACK
 	| at_minus_variable POUND ONSTACK; // @variable#onstack
 
-oldvar_directive:
+at_plus_oldvar_directives:
 	at_plus_oldvar_directive
 	| at_mod_oldvar_directive;
 at_plus_oldvar_directive:
@@ -173,12 +182,16 @@ at_plus_oldvar_directive:
 at_mod_oldvar_directive:
 	at_mod_variable CARET WORD; // @%newvariable^oldvariable
 
-type_cast_variable:
-	at_variable COLON WORD
-	| at_plus_variable COLON WORD; // @variable:raw
+at_type_cast_variable:
+	at_variable COLON WORD; // @variable:raw
 
-database_qualifier_variable:
+at_plus_type_cast_variable:
+    at_plus_variable COLON WORD; //@+variable:raw
+
+at_plus_database_qualifier_variable:
 	at_plus_variable DOT WORD; // @+tablename.variable
+at_mod_database_qualifier_variable:
+	at_mod_variable DOT ID; // @%tablename.variable
 
 integration_variable: COLON WORD;
 

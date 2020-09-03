@@ -1,6 +1,8 @@
 /*
  MocaSqlParser: derived from TSql grammar (see license below) and reworked to support MOCA SQL
  syntax
+
+ CTRL+F "moca" to see tweaks!
  */
 
 /*
@@ -3106,29 +3108,37 @@ expression:
 	| expression comparison_operator expression
 	| expression assignment_operator expression
 	| over_clause
-	| moca_variable expression
-	| moca_plus_variable;
+	| moca_at_variables expression
+	| moca_at_plus_variables;
 
-moca_variable:
+
+/*
+MOCA variable clarification:
+	When I group moca variables together under 1 parse rule, I am considering '@' & '@-' as moca_at variables/directives 
+		and '@+' & '@%' as moca_at_plus variables/directives. Grouped moca variable parse rules will also have an 's' at 
+		the end to make it clear that it applies to more than 1 variable/directive.
+ */
+
+moca_at_variables:
 	moca_at_variable
 	| moca_at_minus_variable
 	| moca_environment_variable
-	| moca_keep_directive
-	| moca_ignore_directive
-	| moca_onstack_directive
-	| moca_type_cast_variable
+	| moca_at_keep_directives
+	| moca_at_ignore_directive
+	| moca_at_onstack_directive
+	| moca_at_type_cast_variable
 	| moca_integration_variable;
 
-moca_anywhere_variable:
-	moca_at_plus_variable
-	| moca_at_plus_variable COLON ID;
-
-moca_plus_variable:
+moca_at_plus_variables:
 	moca_at_plus_variable
 	| moca_at_star
 	| moca_at_mod_variable
-	| moca_oldvar_directive
-	| moca_database_qualifier_variable;
+	| moca_at_plus_keep_directive
+	| moca_at_mod_keep_directive
+	| moca_at_plus_oldvar_directives
+	| moca_at_plus_type_cast_variable
+	| moca_at_plus_database_qualifier_variable
+	| moca_at_mod_database_qualifier_variable;
 
 moca_at_variable: AT ID; // @variable
 moca_environment_variable: AT AT ID; // @@variable
@@ -3137,24 +3147,24 @@ moca_at_plus_variable: AT PLUS ID; // @+variable
 moca_at_mod_variable: AT MODULE ID; // @%variable
 moca_at_star: AT STAR; // @*
 
-moca_keep_directive:
+moca_at_keep_directives:
 	moca_at_keep_directive
 	| moca_at_minus_keep_directive;
 moca_at_keep_directive:
 	moca_at_variable SHARP MOCA_KEEP; // @variable#keep
 moca_at_minus_keep_directive:
 	moca_at_minus_variable SHARP MOCA_KEEP; // @-variable#keep
-moca_at_plus_keep_directive: // DOES NOT SEEM TO BE VALID
+moca_at_plus_keep_directive:
 	moca_at_plus_variable SHARP MOCA_KEEP; // @+variable#keep
-moca_at_mod_keep_directive: // DOES NOT SEEM TO BE VALID
+moca_at_mod_keep_directive:
 	moca_at_mod_variable SHARP MOCA_KEEP; // @%variable#keep
 
-moca_onstack_directive:
+moca_at_onstack_directive:
 	moca_at_variable SHARP MOCA_ONSTACK; // @variable#onstack
-moca_ignore_directive:
+moca_at_ignore_directive:
 	moca_at_variable SHARP MOCA_IGNORE; // @variable#ignore
 
-moca_oldvar_directive:
+moca_at_plus_oldvar_directives:
 	moca_at_plus_oldvar_directive
 	| moca_at_mod_oldvar_directive;
 moca_at_plus_oldvar_directive:
@@ -3162,12 +3172,15 @@ moca_at_plus_oldvar_directive:
 moca_at_mod_oldvar_directive:
 	moca_at_mod_variable BIT_XOR ID; // @%newvariable^oldvariable
 
-moca_type_cast_variable:
-	moca_at_variable COLON ID
-	| moca_at_plus_variable COLON ID; // @variable:raw
+moca_at_type_cast_variable:
+	moca_at_variable COLON ID; //@variable:raw
+moca_at_plus_type_cast_variable:
+	moca_at_plus_variable COLON ID; //@+variable:raw
 
-moca_database_qualifier_variable:
+moca_at_plus_database_qualifier_variable:
 	moca_at_plus_variable DOT ID; // @+tablename.variable
+moca_at_mod_database_qualifier_variable:
+	moca_at_mod_variable DOT ID; // @%tablename.variable
 
 moca_integration_variable: COLON ID;
 
@@ -3234,7 +3247,7 @@ predicate:
 	| expression NOT? IN '(' (subquery | expression_list) ')'
 	| expression NOT? LIKE expression (ESCAPE expression)?
 	| expression IS null_notnull
-	| moca_plus_variable
+	| moca_at_plus_variables
 	| '(' search_condition ')';
 
 // Changed union rule to sql_union to avoid union construct with C++ target.  Issue reported by person who generates into C++.  This individual reports change causes generated code to work

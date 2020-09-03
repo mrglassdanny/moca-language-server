@@ -4386,37 +4386,25 @@ public class MocaSqlBaseListener implements MocaSqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_variable(MocaSqlParser.Moca_variableContext ctx) { }
+	@Override public void enterMoca_at_variables(MocaSqlParser.Moca_at_variablesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_variable(MocaSqlParser.Moca_variableContext ctx) { }
+	@Override public void exitMoca_at_variables(MocaSqlParser.Moca_at_variablesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_anywhere_variable(MocaSqlParser.Moca_anywhere_variableContext ctx) { }
+	@Override public void enterMoca_at_plus_variables(MocaSqlParser.Moca_at_plus_variablesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_anywhere_variable(MocaSqlParser.Moca_anywhere_variableContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterMoca_plus_variable(MocaSqlParser.Moca_plus_variableContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMoca_plus_variable(MocaSqlParser.Moca_plus_variableContext ctx) { }
+	@Override public void exitMoca_at_plus_variables(MocaSqlParser.Moca_at_plus_variablesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -4494,13 +4482,13 @@ public class MocaSqlBaseListener implements MocaSqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_keep_directive(MocaSqlParser.Moca_keep_directiveContext ctx) { }
+	@Override public void enterMoca_at_keep_directives(MocaSqlParser.Moca_at_keep_directivesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_keep_directive(MocaSqlParser.Moca_keep_directiveContext ctx) { }
+	@Override public void exitMoca_at_keep_directives(MocaSqlParser.Moca_at_keep_directivesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -4554,37 +4542,37 @@ public class MocaSqlBaseListener implements MocaSqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_onstack_directive(MocaSqlParser.Moca_onstack_directiveContext ctx) { }
+	@Override public void enterMoca_at_onstack_directive(MocaSqlParser.Moca_at_onstack_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_onstack_directive(MocaSqlParser.Moca_onstack_directiveContext ctx) { }
+	@Override public void exitMoca_at_onstack_directive(MocaSqlParser.Moca_at_onstack_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_ignore_directive(MocaSqlParser.Moca_ignore_directiveContext ctx) { }
+	@Override public void enterMoca_at_ignore_directive(MocaSqlParser.Moca_at_ignore_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_ignore_directive(MocaSqlParser.Moca_ignore_directiveContext ctx) { }
+	@Override public void exitMoca_at_ignore_directive(MocaSqlParser.Moca_at_ignore_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_oldvar_directive(MocaSqlParser.Moca_oldvar_directiveContext ctx) { }
+	@Override public void enterMoca_at_oldvar_directives(MocaSqlParser.Moca_at_oldvar_directivesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_oldvar_directive(MocaSqlParser.Moca_oldvar_directiveContext ctx) { }
+	@Override public void exitMoca_at_oldvar_directives(MocaSqlParser.Moca_at_oldvar_directivesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -4614,25 +4602,49 @@ public class MocaSqlBaseListener implements MocaSqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_type_cast_variable(MocaSqlParser.Moca_type_cast_variableContext ctx) { }
+	@Override public void enterMoca_at_type_cast_variable(MocaSqlParser.Moca_at_type_cast_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_type_cast_variable(MocaSqlParser.Moca_type_cast_variableContext ctx) { }
+	@Override public void exitMoca_at_type_cast_variable(MocaSqlParser.Moca_at_type_cast_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_database_qualifier_variable(MocaSqlParser.Moca_database_qualifier_variableContext ctx) { }
+	@Override public void enterMoca_at_plus_type_cast_variable(MocaSqlParser.Moca_at_plus_type_cast_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_database_qualifier_variable(MocaSqlParser.Moca_database_qualifier_variableContext ctx) { }
+	@Override public void exitMoca_at_plus_type_cast_variable(MocaSqlParser.Moca_at_plus_type_cast_variableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMoca_at_plus_database_qualifier_variable(MocaSqlParser.Moca_at_plus_database_qualifier_variableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMoca_at_plus_database_qualifier_variable(MocaSqlParser.Moca_at_plus_database_qualifier_variableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMoca_at_mod_database_qualifier_variable(MocaSqlParser.Moca_at_mod_database_qualifier_variableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMoca_at_mod_database_qualifier_variable(MocaSqlParser.Moca_at_mod_database_qualifier_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
