@@ -61,17 +61,17 @@ public interface MocaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVerb_noun_clause(MocaParser.Verb_noun_clauseContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MocaParser#verb_noun_clause_args}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVerb_noun_clause_args(MocaParser.Verb_noun_clause_argsContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MocaParser#verb_noun_clause_arg}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitVerb_noun_clause_arg(MocaParser.Verb_noun_clause_argContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaParser#verb_noun_clause_arg_expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVerb_noun_clause_arg_expr(MocaParser.Verb_noun_clause_arg_exprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MocaParser#sub_sequence}.
 	 * @param ctx the parse tree

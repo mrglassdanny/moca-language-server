@@ -75,14 +75,14 @@ public class MocaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements M
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitVerb_noun_clause_args(MocaParser.Verb_noun_clause_argsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitVerb_noun_clause_arg(MocaParser.Verb_noun_clause_argContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitVerb_noun_clause_arg(MocaParser.Verb_noun_clause_argContext ctx) { return visitChildren(ctx); }
+	@Override public T visitVerb_noun_clause_arg_expr(MocaParser.Verb_noun_clause_arg_exprContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

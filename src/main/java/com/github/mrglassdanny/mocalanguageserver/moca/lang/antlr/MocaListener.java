@@ -90,16 +90,6 @@ public interface MocaListener extends ParseTreeListener {
 	 */
 	void exitVerb_noun_clause(MocaParser.Verb_noun_clauseContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MocaParser#verb_noun_clause_args}.
-	 * @param ctx the parse tree
-	 */
-	void enterVerb_noun_clause_args(MocaParser.Verb_noun_clause_argsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaParser#verb_noun_clause_args}.
-	 * @param ctx the parse tree
-	 */
-	void exitVerb_noun_clause_args(MocaParser.Verb_noun_clause_argsContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MocaParser#verb_noun_clause_arg}.
 	 * @param ctx the parse tree
 	 */
@@ -109,6 +99,16 @@ public interface MocaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVerb_noun_clause_arg(MocaParser.Verb_noun_clause_argContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MocaParser#verb_noun_clause_arg_expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterVerb_noun_clause_arg_expr(MocaParser.Verb_noun_clause_arg_exprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MocaParser#verb_noun_clause_arg_expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitVerb_noun_clause_arg_expr(MocaParser.Verb_noun_clause_arg_exprContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MocaParser#sub_sequence}.
 	 * @param ctx the parse tree
