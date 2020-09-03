@@ -151,17 +151,17 @@ moca_keep_directive:
 	moca_at_keep_directive
 	| moca_at_minus_keep_directive;
 moca_at_keep_directive:
-	moca_at_variable POUND 'keep'; // @variable#keep
+	moca_at_variable POUND KEEP; // @variable#keep
 moca_at_minus_keep_directive:
-	moca_at_minus_variable POUND 'keep'; // @-variable#keep
+	moca_at_minus_variable POUND KEEP; // @-variable#keep
 moca_at_plus_keep_directive: // DOES NOT SEEM TO BE VALID
-	moca_at_plus_variable POUND 'keep'; // @+variable#keep
+	moca_at_plus_variable POUND KEEP; // @+variable#keep
 moca_at_mod_keep_directive: // DOES NOT SEEM TO BE VALID
-	moca_at_mod_variable POUND 'keep'; // @%variable#keep
+	moca_at_mod_variable POUND KEEP; // @%variable#keep
 
 moca_onstack_directive:
-	moca_at_variable POUND 'onstack'
-	| moca_at_minus_variable POUND 'onstack'; // @variable#onstack
+	moca_at_variable POUND ONSTACK
+	| moca_at_minus_variable POUND ONSTACK; // @variable#onstack
 
 moca_oldvar_directive:
 	moca_at_plus_oldvar_directive
@@ -239,6 +239,8 @@ REMOTE: R E M O T E;
 PARALLEL: P A R A L L E L;
 INPARALLEL: I N P A R A L L E L;
 
+ONSTACK: O N S T A C K;
+KEEP: K E E P;
 
 NUMERIC_LITERAL:
 	DIGIT+ ('.' DIGIT*)? (E [-+]? DIGIT+)?
