@@ -2672,7 +2672,7 @@ public class MocaSqlBaseVisitor<T> extends AbstractParseTreeVisitor<T> implement
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitMoca_at_oldvar_directives(MocaSqlParser.Moca_at_oldvar_directivesContext ctx) { return visitChildren(ctx); }
+	@Override public T visitMoca_at_plus_oldvar_directives(MocaSqlParser.Moca_at_plus_oldvar_directivesContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

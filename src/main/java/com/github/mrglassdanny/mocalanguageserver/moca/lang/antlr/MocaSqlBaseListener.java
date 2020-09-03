@@ -4566,13 +4566,13 @@ public class MocaSqlBaseListener implements MocaSqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterMoca_at_oldvar_directives(MocaSqlParser.Moca_at_oldvar_directivesContext ctx) { }
+	@Override public void enterMoca_at_plus_oldvar_directives(MocaSqlParser.Moca_at_plus_oldvar_directivesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitMoca_at_oldvar_directives(MocaSqlParser.Moca_at_oldvar_directivesContext ctx) { }
+	@Override public void exitMoca_at_plus_oldvar_directives(MocaSqlParser.Moca_at_plus_oldvar_directivesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

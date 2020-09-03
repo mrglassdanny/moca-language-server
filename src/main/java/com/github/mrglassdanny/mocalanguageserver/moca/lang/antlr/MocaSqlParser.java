@@ -321,7 +321,7 @@ public class MocaSqlParser extends Parser {
 		RULE_moca_at_keep_directives = 372, RULE_moca_at_keep_directive = 373, 
 		RULE_moca_at_minus_keep_directive = 374, RULE_moca_at_plus_keep_directive = 375, 
 		RULE_moca_at_mod_keep_directive = 376, RULE_moca_at_onstack_directive = 377, 
-		RULE_moca_at_ignore_directive = 378, RULE_moca_at_oldvar_directives = 379, 
+		RULE_moca_at_ignore_directive = 378, RULE_moca_at_plus_oldvar_directives = 379, 
 		RULE_moca_at_plus_oldvar_directive = 380, RULE_moca_at_mod_oldvar_directive = 381, 
 		RULE_moca_at_type_cast_variable = 382, RULE_moca_at_plus_type_cast_variable = 383, 
 		RULE_moca_at_plus_database_qualifier_variable = 384, RULE_moca_at_mod_database_qualifier_variable = 385, 
@@ -475,7 +475,7 @@ public class MocaSqlParser extends Parser {
 		"moca_at_minus_variable", "moca_at_plus_variable", "moca_at_mod_variable", 
 		"moca_at_star", "moca_at_keep_directives", "moca_at_keep_directive", "moca_at_minus_keep_directive", 
 		"moca_at_plus_keep_directive", "moca_at_mod_keep_directive", "moca_at_onstack_directive", 
-		"moca_at_ignore_directive", "moca_at_oldvar_directives", "moca_at_plus_oldvar_directive", 
+		"moca_at_ignore_directive", "moca_at_plus_oldvar_directives", "moca_at_plus_oldvar_directive", 
 		"moca_at_mod_oldvar_directive", "moca_at_type_cast_variable", "moca_at_plus_type_cast_variable", 
 		"moca_at_plus_database_qualifier_variable", "moca_at_mod_database_qualifier_variable", 
 		"moca_integration_variable", "primitive_expression", "case_expression", 
@@ -73375,8 +73375,8 @@ public class MocaSqlParser extends Parser {
 		public Moca_at_mod_keep_directiveContext moca_at_mod_keep_directive() {
 			return getRuleContext(Moca_at_mod_keep_directiveContext.class,0);
 		}
-		public Moca_at_oldvar_directivesContext moca_at_oldvar_directives() {
-			return getRuleContext(Moca_at_oldvar_directivesContext.class,0);
+		public Moca_at_plus_oldvar_directivesContext moca_at_plus_oldvar_directives() {
+			return getRuleContext(Moca_at_plus_oldvar_directivesContext.class,0);
 		}
 		public Moca_at_plus_type_cast_variableContext moca_at_plus_type_cast_variable() {
 			return getRuleContext(Moca_at_plus_type_cast_variableContext.class,0);
@@ -73452,7 +73452,7 @@ public class MocaSqlParser extends Parser {
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(8957);
-				moca_at_oldvar_directives();
+				moca_at_plus_oldvar_directives();
 				}
 				break;
 			case 7:
@@ -74133,35 +74133,35 @@ public class MocaSqlParser extends Parser {
 		return _localctx;
 	}
 
-	public static class Moca_at_oldvar_directivesContext extends ParserRuleContext {
+	public static class Moca_at_plus_oldvar_directivesContext extends ParserRuleContext {
 		public Moca_at_plus_oldvar_directiveContext moca_at_plus_oldvar_directive() {
 			return getRuleContext(Moca_at_plus_oldvar_directiveContext.class,0);
 		}
 		public Moca_at_mod_oldvar_directiveContext moca_at_mod_oldvar_directive() {
 			return getRuleContext(Moca_at_mod_oldvar_directiveContext.class,0);
 		}
-		public Moca_at_oldvar_directivesContext(ParserRuleContext parent, int invokingState) {
+		public Moca_at_plus_oldvar_directivesContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_moca_at_oldvar_directives; }
+		@Override public int getRuleIndex() { return RULE_moca_at_plus_oldvar_directives; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MocaSqlListener ) ((MocaSqlListener)listener).enterMoca_at_oldvar_directives(this);
+			if ( listener instanceof MocaSqlListener ) ((MocaSqlListener)listener).enterMoca_at_plus_oldvar_directives(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MocaSqlListener ) ((MocaSqlListener)listener).exitMoca_at_oldvar_directives(this);
+			if ( listener instanceof MocaSqlListener ) ((MocaSqlListener)listener).exitMoca_at_plus_oldvar_directives(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MocaSqlVisitor ) return ((MocaSqlVisitor<? extends T>)visitor).visitMoca_at_oldvar_directives(this);
+			if ( visitor instanceof MocaSqlVisitor ) return ((MocaSqlVisitor<? extends T>)visitor).visitMoca_at_plus_oldvar_directives(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final Moca_at_oldvar_directivesContext moca_at_oldvar_directives() throws RecognitionException {
-		Moca_at_oldvar_directivesContext _localctx = new Moca_at_oldvar_directivesContext(_ctx, getState());
-		enterRule(_localctx, 758, RULE_moca_at_oldvar_directives);
+	public final Moca_at_plus_oldvar_directivesContext moca_at_plus_oldvar_directives() throws RecognitionException {
+		Moca_at_plus_oldvar_directivesContext _localctx = new Moca_at_plus_oldvar_directivesContext(_ctx, getState());
+		enterRule(_localctx, 758, RULE_moca_at_plus_oldvar_directives);
 		try {
 			setState(9015);
 			_errHandler.sync(this);

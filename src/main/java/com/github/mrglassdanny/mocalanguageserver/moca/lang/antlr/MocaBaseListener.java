@@ -318,25 +318,25 @@ public class MocaBaseListener implements MocaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVariable(MocaParser.VariableContext ctx) { }
+	@Override public void enterAt_variables(MocaParser.At_variablesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVariable(MocaParser.VariableContext ctx) { }
+	@Override public void exitAt_variables(MocaParser.At_variablesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPlus_variable(MocaParser.Plus_variableContext ctx) { }
+	@Override public void enterAt_plus_variables(MocaParser.At_plus_variablesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPlus_variable(MocaParser.Plus_variableContext ctx) { }
+	@Override public void exitAt_plus_variables(MocaParser.At_plus_variablesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -438,13 +438,13 @@ public class MocaBaseListener implements MocaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterKeep_directive(MocaParser.Keep_directiveContext ctx) { }
+	@Override public void enterAt_keep_directives(MocaParser.At_keep_directivesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitKeep_directive(MocaParser.Keep_directiveContext ctx) { }
+	@Override public void exitAt_keep_directives(MocaParser.At_keep_directivesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -498,25 +498,25 @@ public class MocaBaseListener implements MocaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOnstack_directive(MocaParser.Onstack_directiveContext ctx) { }
+	@Override public void enterAt_onstack_directive(MocaParser.At_onstack_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOnstack_directive(MocaParser.Onstack_directiveContext ctx) { }
+	@Override public void exitAt_onstack_directive(MocaParser.At_onstack_directiveContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOldvar_directive(MocaParser.Oldvar_directiveContext ctx) { }
+	@Override public void enterAt_plus_oldvar_directives(MocaParser.At_plus_oldvar_directivesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOldvar_directive(MocaParser.Oldvar_directiveContext ctx) { }
+	@Override public void exitAt_plus_oldvar_directives(MocaParser.At_plus_oldvar_directivesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -546,37 +546,49 @@ public class MocaBaseListener implements MocaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterType_cast_variable(MocaParser.Type_cast_variableContext ctx) { }
+	@Override public void enterAt_type_cast_variable(MocaParser.At_type_cast_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitType_cast_variable(MocaParser.Type_cast_variableContext ctx) { }
+	@Override public void exitAt_type_cast_variable(MocaParser.At_type_cast_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDatabase_plus_qualifier_variable(MocaParser.Database_plus_qualifier_variableContext ctx) { }
+	@Override public void enterAt_plus_type_cast_variable(MocaParser.At_plus_type_cast_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDatabase_plus_qualifier_variable(MocaParser.Database_plus_qualifier_variableContext ctx) { }
+	@Override public void exitAt_plus_type_cast_variable(MocaParser.At_plus_type_cast_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDatabase_mod_qualifier_variable(MocaParser.Database_mod_qualifier_variableContext ctx) { }
+	@Override public void enterAt_plus_database_qualifier_variable(MocaParser.At_plus_database_qualifier_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDatabase_mod_qualifier_variable(MocaParser.Database_mod_qualifier_variableContext ctx) { }
+	@Override public void exitAt_plus_database_qualifier_variable(MocaParser.At_plus_database_qualifier_variableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAt_mod_database_qualifier_variable(MocaParser.At_mod_database_qualifier_variableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAt_mod_database_qualifier_variable(MocaParser.At_mod_database_qualifier_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

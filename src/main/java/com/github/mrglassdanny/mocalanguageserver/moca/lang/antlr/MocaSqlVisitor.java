@@ -2287,11 +2287,11 @@ public interface MocaSqlVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMoca_at_ignore_directive(MocaSqlParser.Moca_at_ignore_directiveContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MocaSqlParser#moca_at_oldvar_directives}.
+	 * Visit a parse tree produced by {@link MocaSqlParser#moca_at_plus_oldvar_directives}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitMoca_at_oldvar_directives(MocaSqlParser.Moca_at_oldvar_directivesContext ctx);
+	T visitMoca_at_plus_oldvar_directives(MocaSqlParser.Moca_at_plus_oldvar_directivesContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MocaSqlParser#moca_at_plus_oldvar_directive}.
 	 * @param ctx the parse tree

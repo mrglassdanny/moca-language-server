@@ -163,17 +163,17 @@ public interface MocaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLiteral_value(MocaParser.Literal_valueContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MocaParser#variable}.
+	 * Visit a parse tree produced by {@link MocaParser#at_variables}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVariable(MocaParser.VariableContext ctx);
+	T visitAt_variables(MocaParser.At_variablesContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MocaParser#plus_variable}.
+	 * Visit a parse tree produced by {@link MocaParser#at_plus_variables}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPlus_variable(MocaParser.Plus_variableContext ctx);
+	T visitAt_plus_variables(MocaParser.At_plus_variablesContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MocaParser#at_variable}.
 	 * @param ctx the parse tree
@@ -223,11 +223,11 @@ public interface MocaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAt_bang(MocaParser.At_bangContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MocaParser#keep_directive}.
+	 * Visit a parse tree produced by {@link MocaParser#at_keep_directives}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitKeep_directive(MocaParser.Keep_directiveContext ctx);
+	T visitAt_keep_directives(MocaParser.At_keep_directivesContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MocaParser#at_keep_directive}.
 	 * @param ctx the parse tree
@@ -253,17 +253,17 @@ public interface MocaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAt_mod_keep_directive(MocaParser.At_mod_keep_directiveContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MocaParser#onstack_directive}.
+	 * Visit a parse tree produced by {@link MocaParser#at_onstack_directive}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitOnstack_directive(MocaParser.Onstack_directiveContext ctx);
+	T visitAt_onstack_directive(MocaParser.At_onstack_directiveContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MocaParser#oldvar_directive}.
+	 * Visit a parse tree produced by {@link MocaParser#at_plus_oldvar_directives}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitOldvar_directive(MocaParser.Oldvar_directiveContext ctx);
+	T visitAt_plus_oldvar_directives(MocaParser.At_plus_oldvar_directivesContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MocaParser#at_plus_oldvar_directive}.
 	 * @param ctx the parse tree
@@ -277,23 +277,29 @@ public interface MocaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAt_mod_oldvar_directive(MocaParser.At_mod_oldvar_directiveContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MocaParser#type_cast_variable}.
+	 * Visit a parse tree produced by {@link MocaParser#at_type_cast_variable}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitType_cast_variable(MocaParser.Type_cast_variableContext ctx);
+	T visitAt_type_cast_variable(MocaParser.At_type_cast_variableContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MocaParser#database_plus_qualifier_variable}.
+	 * Visit a parse tree produced by {@link MocaParser#at_plus_type_cast_variable}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDatabase_plus_qualifier_variable(MocaParser.Database_plus_qualifier_variableContext ctx);
+	T visitAt_plus_type_cast_variable(MocaParser.At_plus_type_cast_variableContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MocaParser#database_mod_qualifier_variable}.
+	 * Visit a parse tree produced by {@link MocaParser#at_plus_database_qualifier_variable}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDatabase_mod_qualifier_variable(MocaParser.Database_mod_qualifier_variableContext ctx);
+	T visitAt_plus_database_qualifier_variable(MocaParser.At_plus_database_qualifier_variableContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MocaParser#at_mod_database_qualifier_variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAt_mod_database_qualifier_variable(MocaParser.At_mod_database_qualifier_variableContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MocaParser#integration_variable}.
 	 * @param ctx the parse tree

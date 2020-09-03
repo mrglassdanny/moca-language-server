@@ -194,14 +194,14 @@ public class MocaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements M
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitVariable(MocaParser.VariableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_variables(MocaParser.At_variablesContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPlus_variable(MocaParser.Plus_variableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_plus_variables(MocaParser.At_plus_variablesContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -264,7 +264,7 @@ public class MocaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements M
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitKeep_directive(MocaParser.Keep_directiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_keep_directives(MocaParser.At_keep_directivesContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -299,14 +299,14 @@ public class MocaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements M
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitOnstack_directive(MocaParser.Onstack_directiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_onstack_directive(MocaParser.At_onstack_directiveContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitOldvar_directive(MocaParser.Oldvar_directiveContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_plus_oldvar_directives(MocaParser.At_plus_oldvar_directivesContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -327,21 +327,28 @@ public class MocaBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements M
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitType_cast_variable(MocaParser.Type_cast_variableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_type_cast_variable(MocaParser.At_type_cast_variableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDatabase_plus_qualifier_variable(MocaParser.Database_plus_qualifier_variableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_plus_type_cast_variable(MocaParser.At_plus_type_cast_variableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDatabase_mod_qualifier_variable(MocaParser.Database_mod_qualifier_variableContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAt_plus_database_qualifier_variable(MocaParser.At_plus_database_qualifier_variableContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitAt_mod_database_qualifier_variable(MocaParser.At_mod_database_qualifier_variableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

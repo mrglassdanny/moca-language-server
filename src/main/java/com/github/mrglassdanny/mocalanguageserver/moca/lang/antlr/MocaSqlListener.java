@@ -3800,15 +3800,15 @@ public interface MocaSqlListener extends ParseTreeListener {
 	 */
 	void exitMoca_at_ignore_directive(MocaSqlParser.Moca_at_ignore_directiveContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_oldvar_directives}.
+	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_plus_oldvar_directives}.
 	 * @param ctx the parse tree
 	 */
-	void enterMoca_at_oldvar_directives(MocaSqlParser.Moca_at_oldvar_directivesContext ctx);
+	void enterMoca_at_plus_oldvar_directives(MocaSqlParser.Moca_at_plus_oldvar_directivesContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_oldvar_directives}.
+	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_plus_oldvar_directives}.
 	 * @param ctx the parse tree
 	 */
-	void exitMoca_at_oldvar_directives(MocaSqlParser.Moca_at_oldvar_directivesContext ctx);
+	void exitMoca_at_plus_oldvar_directives(MocaSqlParser.Moca_at_plus_oldvar_directivesContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_plus_oldvar_directive}.
 	 * @param ctx the parse tree
