@@ -282,6 +282,18 @@ public class MocaBaseListener implements MocaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterSuppress_warnings_expr(MocaParser.Suppress_warnings_exprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSuppress_warnings_expr(MocaParser.Suppress_warnings_exprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterExpr(MocaParser.ExprContext ctx) { }
 	/**
 	 * {@inheritDoc}

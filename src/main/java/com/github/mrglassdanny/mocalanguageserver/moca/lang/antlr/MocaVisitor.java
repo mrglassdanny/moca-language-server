@@ -145,6 +145,12 @@ public interface MocaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitRemote_expr(MocaParser.Remote_exprContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MocaParser#suppress_warnings_expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSuppress_warnings_expr(MocaParser.Suppress_warnings_exprContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MocaParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

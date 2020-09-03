@@ -230,6 +230,16 @@ public interface MocaListener extends ParseTreeListener {
 	 */
 	void exitRemote_expr(MocaParser.Remote_exprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MocaParser#suppress_warnings_expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterSuppress_warnings_expr(MocaParser.Suppress_warnings_exprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MocaParser#suppress_warnings_expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitSuppress_warnings_expr(MocaParser.Suppress_warnings_exprContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MocaParser#expr}.
 	 * @param ctx the parse tree
 	 */

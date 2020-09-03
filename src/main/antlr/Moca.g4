@@ -4,8 +4,8 @@ grammar Moca;
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 }
 
-// TODO: Strings are not currently perfectly inline with std MOCA parser UNIMPLEMENTED: Annotations,
-// SQL Hints, Special command arguments, @SuppressWarnings/other directives?
+// UNIMPLEMENTED: Annotations,
+// SQL Hints, Special command arguments
 
 // PARSER --------------------------------------------------------
 
@@ -23,7 +23,7 @@ statement: (
 		| try_block catch_sequence* finally_sequence? redirect_expr?
 	);
 
-block: remote_expr? command | remote_expr? sub_sequence;
+block: (remote_expr? | suppress_warnings_expr?) command | (remote_expr? | suppress_warnings_expr?) sub_sequence;
 
 command: groovy_script | sql_script | verb_noun_clause;
 
@@ -50,6 +50,8 @@ verb_noun_clause:
 
 verb_noun_clause_arg:
 	OVERSTACKED_ARGS
+	| SPECIAL_COMMAND_ARG_NO_ROWS
+	| SPECIAL_COMMAND_ARG_DUMMY_ARG
 	| groovy_script
 	| SINGLE_BRACKET_STRING
 	| (at_star | at_plus_variables)
@@ -115,6 +117,8 @@ redirect_expr: DOUBLE_GREATER WORD;
 remote_expr:
 	remote_keyword LEFT_PAREN expr RIGHT_PAREN;
 
+suppress_warnings_expr:
+	SUPPRESS_WARNINGS LEFT_PAREN expr RIGHT_PAREN;
 
 expr:
 	literal_value
@@ -242,8 +246,13 @@ sql_script: SINGLE_BRACKET_STRING;
 
 // LEXER ---------------------------------------------------------
 
-DOUBLE_BRACKET_STRING: LEFT_BRACKET LEFT_BRACKET .*? RIGHT_BRACKET RIGHT_BRACKET;
-SINGLE_BRACKET_STRING: LEFT_BRACKET .*? RIGHT_BRACKET;
+DOUBLE_BRACKET_STRING: LEFT_BRACKET FRAGMENT_SINGLE_BRACKET_STRING RIGHT_BRACKET;
+SINGLE_BRACKET_STRING: FRAGMENT_SINGLE_BRACKET_STRING;
+
+// IMPORTANT: the only thing not accounted for here is a single '[' or ']' in comments or string.
+fragment FRAGMENT_SINGLE_BRACKET_STRING
+  :  LEFT_BRACKET ( ~('[' | ']') | FRAGMENT_SINGLE_BRACKET_STRING )* RIGHT_BRACKET
+  ;
 
 LEFT_PAREN: '(';
 RIGHT_PAREN: ')';
@@ -279,6 +288,9 @@ NOT_EQUAL: '!=' | '<>';
 DOT: '.';
 
 OVERSTACKED_ARGS: '<<OVERSTACKED_ARGS>>';
+SPECIAL_COMMAND_ARG_NO_ROWS: '#NO_ROWS';
+SPECIAL_COMMAND_ARG_DUMMY_ARG: '#DUMMY_ARG';
+SUPPRESS_WARNINGS: '@SuppressWarnings';
 
 WHERE: W H E R E;
 AND: A N D;
