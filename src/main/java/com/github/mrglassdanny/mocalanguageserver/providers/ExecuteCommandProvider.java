@@ -113,25 +113,26 @@ public class ExecuteCommandProvider {
                 }
 
             case LOAD_CACHE:
-                
-                // No need to do anything special with request; we are not expecting any arguments.
+
+                // No need to do anything special with request; we are not expecting any
+                // arguments.
 
                 // Make sure connection has url.
                 if (MocaLanguageServer.currentMocaConnection.url == null) {
-                    LoadCacheResponse loadCacheResponse = new LoadCacheResponse(new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER));
+                    LoadCacheResponse loadCacheResponse = new LoadCacheResponse(
+                            new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER));
                     return CompletableFuture.completedFuture(loadCacheResponse);
                 }
 
-
-                // We want the caller to know when the cache is done loading. 
+                // We want the caller to know when the cache is done loading.
                 // The longest function is the moca command loader, so we
                 // will just return when it is complete. The rest of functions
                 // will be run async.
-        
+
                 CompletableFuture.runAsync(() -> {
                     MocaLanguageServer.currentMocaConnection.cache.mocaCache.loadCommandArguments();
                 });
-        
+
                 CompletableFuture.runAsync(() -> {
                     MocaLanguageServer.currentMocaConnection.cache.mocaCache.loadTriggers();
                 });
@@ -139,11 +140,11 @@ public class ExecuteCommandProvider {
                 CompletableFuture.runAsync(() -> {
                     MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.loadTables();
                 });
-        
+
                 CompletableFuture.runAsync(() -> {
                     MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.loadViews();
                 });
-        
+
                 CompletableFuture.runAsync(() -> {
                     MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.loadColumns();
                 });
@@ -266,8 +267,8 @@ public class ExecuteCommandProvider {
                     MocaCommandLookupResponse mocaCommandLookupResponse;
                     if (mocaCommandLookupRequest.requestedMocaCommand == null) {
                         mocaCommandLookupResponse = new MocaCommandLookupResponse(
-                                MocaLanguageServer.currentMocaConnection.cache.mocaCache.distinctCommands, null,
-                                null, null);
+                                MocaLanguageServer.currentMocaConnection.cache.mocaCache.distinctCommands, null, null,
+                                null);
                     } else {
                         mocaCommandLookupResponse = new MocaCommandLookupResponse(null,
                                 MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
