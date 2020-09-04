@@ -9,7 +9,7 @@ import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommand;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommandArgument;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaTrigger;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.schema.Table;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.Table;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
@@ -82,7 +82,7 @@ public class HoverProvider {
 
                                 verbNounClause = entry.getKey();
 
-                                ArrayList<MocaCommand> mcmds = MocaLanguageServer.currentMocaConnection.cache.commandRepository.commands
+                                ArrayList<MocaCommand> mcmds = MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
                                         .get(verbNounClause);
                                 if (mcmds != null) {
                                     String content = getMocaContent(verbNounClause, mcmds);
@@ -112,13 +112,13 @@ public class HoverProvider {
                     sqlWord = sqlWord.toLowerCase();
 
                     // Check first to see if sql word is table/view in database.
-                    Table table = MocaLanguageServer.currentMocaConnection.cache.schema.tables.get(sqlWord);
+                    Table table = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.get(sqlWord);
                     if (table != null) {
                         contents.add(Either.forRight(new MarkedString("plaintext", getSqlContent(table, false))));
                         return CompletableFuture.completedFuture(hover);
                     }
 
-                    Table view = MocaLanguageServer.currentMocaConnection.cache.schema.views.get(sqlWord);
+                    Table view = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.get(sqlWord);
                     if (view != null) {
                         contents.add(Either.forRight(new MarkedString("plaintext", getSqlContent(view, true))));
                         return CompletableFuture.completedFuture(hover);
@@ -187,7 +187,7 @@ public class HoverProvider {
 
         // Add required args to documentation if there are any.
         contents += "\n\nRequired Arguments:\n";
-        ArrayList<MocaCommandArgument> args = MocaLanguageServer.currentMocaConnection.cache.commandRepository.commandArguments
+        ArrayList<MocaCommandArgument> args = MocaLanguageServer.currentMocaConnection.cache.mocaCache.commandArguments
                 .get(mcmds.get(0).command);
         if (args != null) {
             for (MocaCommandArgument arg : args) {
@@ -202,7 +202,7 @@ public class HoverProvider {
         }
         // Go ahead and add triggers to documentation if there are any.
         contents += "\nTriggers:\n";
-        ArrayList<MocaTrigger> triggers = MocaLanguageServer.currentMocaConnection.cache.commandRepository.triggers
+        ArrayList<MocaTrigger> triggers = MocaLanguageServer.currentMocaConnection.cache.mocaCache.triggers
                 .get(mcmds.get(0).command);
         if (triggers != null) {
             for (MocaTrigger trg : triggers) {

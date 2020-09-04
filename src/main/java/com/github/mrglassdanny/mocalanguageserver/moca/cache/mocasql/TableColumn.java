@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.cache.schema;
+package com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql;
 
 public class TableColumn {
     public String table_name;

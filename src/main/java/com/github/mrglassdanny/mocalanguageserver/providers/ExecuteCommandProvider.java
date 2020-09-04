@@ -11,6 +11,7 @@ import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaLan
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaResultsRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaTraceRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.TrainFormattersRequest;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.response.LoadCacheResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaCommandLookupResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaConnectionResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaLanguageServerActivateResponse;
@@ -34,7 +35,7 @@ public class ExecuteCommandProvider {
 
     public static final String ACTIVATE = "mocalanguageserver.activate";
     public static final String CONNECT = "mocalanguageserver.connect";
-    public static final String LOAD_REPOSITORY = "mocalanguageserver.loadRepository";
+    public static final String LOAD_CACHE = "mocalanguageserver.loadCache";
     public static final String EXECUTE = "mocalanguageserver.execute";
     public static final String TRACE = "mocalanguageserver.trace";
     public static final String COMMAND_LOOKUP = "mocalanguageserver.commandLookup";
@@ -44,7 +45,7 @@ public class ExecuteCommandProvider {
     static {
         mocaLanguageServerCommands.add(ACTIVATE);
         mocaLanguageServerCommands.add(CONNECT);
-        mocaLanguageServerCommands.add(LOAD_REPOSITORY);
+        mocaLanguageServerCommands.add(LOAD_CACHE);
         mocaLanguageServerCommands.add(EXECUTE);
         mocaLanguageServerCommands.add(TRACE);
         mocaLanguageServerCommands.add(COMMAND_LOOKUP);
@@ -111,16 +112,45 @@ public class ExecuteCommandProvider {
                     return CompletableFuture.completedFuture(mocaConnectionResponse);
                 }
 
-            case LOAD_REPOSITORY:
-                // Just handle this the same way that EXECUTE command does.
+            case LOAD_CACHE:
+                
+                // No need to do anything special with request; we are not expecting any arguments.
+
+                // Make sure connection has url.
                 if (MocaLanguageServer.currentMocaConnection.url == null) {
-                    MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null,
-                            new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER));
-                    return CompletableFuture.completedFuture(mocaResultsResponse);
+                    LoadCacheResponse loadCacheResponse = new LoadCacheResponse(new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER));
+                    return CompletableFuture.completedFuture(loadCacheResponse);
                 }
 
-                MocaLanguageServer.currentMocaConnection.loadRepository();
-                return CompletableFuture.completedFuture(new Object());
+
+                // We want the caller to know when the cache is done loading. 
+                // The longest function is the moca command loader, so we
+                // will just return when it is complete. The rest of functions
+                // will be run async.
+        
+                CompletableFuture.runAsync(() -> {
+                    MocaLanguageServer.currentMocaConnection.cache.mocaCache.loadCommandArguments();
+                });
+        
+                CompletableFuture.runAsync(() -> {
+                    MocaLanguageServer.currentMocaConnection.cache.mocaCache.loadTriggers();
+                });
+
+                CompletableFuture.runAsync(() -> {
+                    MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.loadTables();
+                });
+        
+                CompletableFuture.runAsync(() -> {
+                    MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.loadViews();
+                });
+        
+                CompletableFuture.runAsync(() -> {
+                    MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.loadColumns();
+                });
+
+                MocaLanguageServer.currentMocaConnection.cache.mocaCache.loadCommands();
+
+                return CompletableFuture.completedFuture(new LoadCacheResponse(null));
             case EXECUTE:
 
                 if (MocaLanguageServer.currentMocaConnection.url == null) {
@@ -236,13 +266,13 @@ public class ExecuteCommandProvider {
                     MocaCommandLookupResponse mocaCommandLookupResponse;
                     if (mocaCommandLookupRequest.requestedMocaCommand == null) {
                         mocaCommandLookupResponse = new MocaCommandLookupResponse(
-                                MocaLanguageServer.currentMocaConnection.cache.commandRepository.distinctCommands, null,
+                                MocaLanguageServer.currentMocaConnection.cache.mocaCache.distinctCommands, null,
                                 null, null);
                     } else {
                         mocaCommandLookupResponse = new MocaCommandLookupResponse(null,
-                                MocaLanguageServer.currentMocaConnection.cache.commandRepository.commands
+                                MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
                                         .get(mocaCommandLookupRequest.requestedMocaCommand),
-                                MocaLanguageServer.currentMocaConnection.cache.commandRepository.triggers
+                                MocaLanguageServer.currentMocaConnection.cache.mocaCache.triggers
                                         .get(mocaCommandLookupRequest.requestedMocaCommand),
                                 null);
                     }

@@ -1,13 +1,13 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.cache.schema;
+package com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
+import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
 
-public class Schema {
+public class MocaSqlCache {
 
     private static final String TABLES_SCRIPT = "list user tables description\n" +
                                                 "|\n" +
@@ -90,33 +90,19 @@ public class Schema {
     public HashMap<String, Table> views;
     public HashMap<String, ArrayList<TableColumn>> columns;
 
-    public Schema() {
+    public MocaSqlCache() {
         this.tables = new HashMap<>();
         this.views = new HashMap<>();
         this.columns = new HashMap<>();
     }
 
-    public void loadAsync(MocaConnectionWrapper conn) {
+    public void loadTables() {
 
-        CompletableFuture.runAsync(() -> {
-            this.loadTables(conn);
-        });
-
-        CompletableFuture.runAsync(() -> {
-            this.loadViews(conn);
-        });
-
-        CompletableFuture.runAsync(() -> {
-            this.loadColumns(conn);
-        });
-
-    }
-
-    public void loadTables(MocaConnectionWrapper conn) {
+        MocaConnectionWrapper conn = MocaLanguageServer.currentMocaConnection;
 
         this.tables.clear();
 
-        MocaResults res = conn.executeCommand(Schema.TABLES_SCRIPT).results;
+        MocaResults res = conn.executeCommand(MocaSqlCache.TABLES_SCRIPT).results;
 
         if (res != null) {
             for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
@@ -132,11 +118,13 @@ public class Schema {
         }
     }
 
-    public void loadViews(MocaConnectionWrapper conn) {
+    public void loadViews() {
+
+        MocaConnectionWrapper conn = MocaLanguageServer.currentMocaConnection;
 
         this.views.clear();
 
-        MocaResults res = conn.executeCommand(Schema.VIEWS_SCRIPT).results;
+        MocaResults res = conn.executeCommand(MocaSqlCache.VIEWS_SCRIPT).results;
 
         if (res != null) {
 
@@ -151,11 +139,13 @@ public class Schema {
 
     }
 
-    public void loadColumns(MocaConnectionWrapper conn) {
+    public void loadColumns() {
+
+        MocaConnectionWrapper conn = MocaLanguageServer.currentMocaConnection;
 
         this.columns.clear();
 
-        MocaResults colRes = conn.executeCommand(Schema.COLUMNS_SCRIPT).results;
+        MocaResults colRes = conn.executeCommand(MocaSqlCache.COLUMNS_SCRIPT).results;
 
         // Due to how our loop works, we need to save off data here so that we do not
         // leave out the first column of every table(after the first table).
