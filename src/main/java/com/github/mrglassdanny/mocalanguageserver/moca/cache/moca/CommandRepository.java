@@ -6,7 +6,7 @@ import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.MocaResults;
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
 
 public class CommandRepository {
 
