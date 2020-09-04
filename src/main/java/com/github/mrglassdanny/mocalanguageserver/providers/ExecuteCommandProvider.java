@@ -5,19 +5,14 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.appdata.AppDataManager;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.request.CancelMocaExecutionRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaCommandLookupRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaConnectionRequest;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaExecutionHistoryRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaLanguageServerActivateRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaResultsRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaTraceRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.TrainFormattersRequest;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.response.CancelMocaExecutionResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaCommandLookupResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaConnectionResponse;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaExecutionHistoryResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaLanguageServerActivateResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaResultsResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaTraceResponse;
@@ -43,8 +38,6 @@ public class ExecuteCommandProvider {
     public static final String EXECUTE = "mocalanguageserver.execute";
     public static final String TRACE = "mocalanguageserver.trace";
     public static final String COMMAND_LOOKUP = "mocalanguageserver.commandLookup";
-    public static final String EXECUTION_HISTORY = "mocalanguageserver.executionHistory";
-    public static final String CANCEL_EXECUTION = "mocalanguageserver.cancelExecution";
     public static final String TRAIN_FORMATTERS = "mocalanguageserver.trainFormatters";
 
     public static ArrayList<String> mocaLanguageServerCommands = new ArrayList<>();
@@ -55,8 +48,6 @@ public class ExecuteCommandProvider {
         mocaLanguageServerCommands.add(EXECUTE);
         mocaLanguageServerCommands.add(TRACE);
         mocaLanguageServerCommands.add(COMMAND_LOOKUP);
-        mocaLanguageServerCommands.add(EXECUTION_HISTORY);
-        mocaLanguageServerCommands.add(CANCEL_EXECUTION);
         mocaLanguageServerCommands.add(TRAIN_FORMATTERS);
     }
 
@@ -83,8 +74,6 @@ public class ExecuteCommandProvider {
                     // Train our formatters.
                     MocaFormatter.configureAndTrain(mocaLanguageServerActivateRequest.formatTrainingMocaDirName);
                     MocaSqlFormatter.configureAndTrain(mocaLanguageServerActivateRequest.formatTrainingMocaSqlDirName);
-                    // Also run appdata maintenance.
-                    AppDataManager.runMaintenance();
 
                     return CompletableFuture.completedFuture(new Object());
                 } catch (Exception exception) {
@@ -195,29 +184,6 @@ public class ExecuteCommandProvider {
                     languageClient.logMessage(new MessageParams(MessageType.Info, mocaResultsRequest.fileName
                             + ": Returned " + rowCount + " rows in " + elapsedTime + " seconds"));
 
-                    // Add history entry to appdata.
-                    try {
-                        int status = 0;
-                        String message = "";
-                        if (mocaResultsResponse.exception != null) {
-                            if (mocaResultsResponse.exception instanceof MocaException) {
-                                MocaException mocaException = (MocaException) mocaResultsResponse.exception;
-                                status = mocaException.getStatus();
-                                message = mocaException.getMessage();
-                            } else {
-                                status = 0;
-                                message = mocaResultsResponse.exception.getMessage();
-                            }
-                        }
-                        AppDataManager.createExecutionHistory(status, message, rowCount, elapsedTime,
-                                mocaResultsRequest.script.replace("\"", "\"\""), mocaResultsResponse.results,
-                                MocaLanguageServer.currentMocaConnection.url);
-                    } catch (Exception ex) {
-                        // Log error message for now.
-                        languageClient.logMessage(
-                                new MessageParams(MessageType.Error, "Could not create history: " + ex.getMessage()));
-                    }
-
                     return CompletableFuture.completedFuture(mocaResultsResponse);
                 } catch (Exception exception) {
                     MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null, exception);
@@ -285,37 +251,6 @@ public class ExecuteCommandProvider {
                 } catch (Exception exception) {
                     return CompletableFuture
                             .completedFuture(new MocaCommandLookupResponse(null, null, null, exception));
-                }
-
-            case EXECUTION_HISTORY:
-                try {
-                    List<Object> args = params.getArguments();
-                    if (args == null) {
-                        return CompletableFuture.completedFuture(new Object());
-                    }
-
-                    MocaExecutionHistoryRequest executionHistoryRequest = new MocaExecutionHistoryRequest(args);
-
-                    return CompletableFuture.completedFuture(new MocaExecutionHistoryResponse(
-                            new MocaResultsResponse(AppDataManager.getExecutionHistory(), null)));
-                } catch (Exception exception) {
-                    return CompletableFuture.completedFuture(new MocaExecutionHistoryResponse(null));
-                }
-
-            case CANCEL_EXECUTION:
-                try {
-                    List<Object> args = params.getArguments();
-                    if (args == null) {
-                        return CompletableFuture.completedFuture(new CancelMocaExecutionResponse(false));
-                    }
-
-                    CancelMocaExecutionRequest cancelExecutionRequest = new CancelMocaExecutionRequest(args);
-
-                    // TODO - Find thread id and interrupt it.
-
-                    return CompletableFuture.completedFuture(new CancelMocaExecutionResponse(false));
-                } catch (Exception exception) {
-                    return CompletableFuture.completedFuture(new CancelMocaExecutionResponse(false));
                 }
             case TRAIN_FORMATTERS:
                 try {
