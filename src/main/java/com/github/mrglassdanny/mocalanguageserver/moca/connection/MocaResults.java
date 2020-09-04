@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca;
+package com.github.mrglassdanny.mocalanguageserver.moca.connection;
 
 public class MocaResults {
 

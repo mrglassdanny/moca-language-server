@@ -332,6 +332,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         // Check if we need to run async.
         switch (params.getCommand()) {
             case ExecuteCommandProvider.CONNECT:
+            case ExecuteCommandProvider.LOAD_CACHE:
             case ExecuteCommandProvider.EXECUTE:
                 return CompletableFuture.supplyAsync(() -> {
                     return ExecuteCommandProvider.provideCommandExecution(params, this.languageClient).join();

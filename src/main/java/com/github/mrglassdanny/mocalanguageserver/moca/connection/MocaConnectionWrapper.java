@@ -3,7 +3,7 @@ package com.github.mrglassdanny.mocalanguageserver.moca.connection;
 
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaConnectionResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaResultsResponse;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.Cache;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.UnsupportedConnectionTypeException;
 
@@ -15,14 +15,14 @@ public class MocaConnectionWrapper {
     public String url;
     public String userId;
     private String password;
-    public MocaCache cache;
+    public Cache cache;
 
     public MocaConnectionWrapper() {
         this.mocaConnection = null;
         this.url = null;
         this.userId = null;
         this.password = null;
-        this.cache = new MocaCache();
+        this.cache = new Cache();
     }
 
     public MocaConnectionWrapper(String url, String userId, String password) {
@@ -32,17 +32,17 @@ public class MocaConnectionWrapper {
         this.userId = userId;
         this.password = password;
 
-        this.cache = new MocaCache();
+        this.cache = new Cache();
     }
 
-    public MocaConnectionWrapper(String url, String userId, String password, MocaCache existingMocaRepo) {
+    public MocaConnectionWrapper(String url, String userId, String password, Cache existingMocaCache) {
 
         this.mocaConnection = null;
         this.url = url;
         this.userId = userId;
         this.password = password;
 
-        this.cache = existingMocaRepo;
+        this.cache = existingMocaCache;
     }
 
     public MocaConnectionResponse connect() {
@@ -86,10 +86,6 @@ public class MocaConnectionWrapper {
         } catch (Exception e) {
             return new MocaResultsResponse(null, e);
         }
-    }
-
-    public void loadRepository() {
-        this.cache.loadAsync(this);
     }
 
 }

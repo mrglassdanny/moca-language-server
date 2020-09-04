@@ -5,19 +5,15 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.appdata.AppDataManager;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.request.CancelMocaExecutionRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaCommandLookupRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaConnectionRequest;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaExecutionHistoryRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaLanguageServerActivateRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaResultsRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaTraceRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.TrainFormattersRequest;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.response.CancelMocaExecutionResponse;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.response.LoadCacheResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaCommandLookupResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaConnectionResponse;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaExecutionHistoryResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaLanguageServerActivateResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaResultsResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaTraceResponse;
@@ -39,24 +35,20 @@ public class ExecuteCommandProvider {
 
     public static final String ACTIVATE = "mocalanguageserver.activate";
     public static final String CONNECT = "mocalanguageserver.connect";
-    public static final String LOAD_REPOSITORY = "mocalanguageserver.loadRepository";
+    public static final String LOAD_CACHE = "mocalanguageserver.loadCache";
     public static final String EXECUTE = "mocalanguageserver.execute";
     public static final String TRACE = "mocalanguageserver.trace";
     public static final String COMMAND_LOOKUP = "mocalanguageserver.commandLookup";
-    public static final String EXECUTION_HISTORY = "mocalanguageserver.executionHistory";
-    public static final String CANCEL_EXECUTION = "mocalanguageserver.cancelExecution";
     public static final String TRAIN_FORMATTERS = "mocalanguageserver.trainFormatters";
 
     public static ArrayList<String> mocaLanguageServerCommands = new ArrayList<>();
     static {
         mocaLanguageServerCommands.add(ACTIVATE);
         mocaLanguageServerCommands.add(CONNECT);
-        mocaLanguageServerCommands.add(LOAD_REPOSITORY);
+        mocaLanguageServerCommands.add(LOAD_CACHE);
         mocaLanguageServerCommands.add(EXECUTE);
         mocaLanguageServerCommands.add(TRACE);
         mocaLanguageServerCommands.add(COMMAND_LOOKUP);
-        mocaLanguageServerCommands.add(EXECUTION_HISTORY);
-        mocaLanguageServerCommands.add(CANCEL_EXECUTION);
         mocaLanguageServerCommands.add(TRAIN_FORMATTERS);
     }
 
@@ -83,8 +75,6 @@ public class ExecuteCommandProvider {
                     // Train our formatters.
                     MocaFormatter.configureAndTrain(mocaLanguageServerActivateRequest.formatTrainingMocaDirName);
                     MocaSqlFormatter.configureAndTrain(mocaLanguageServerActivateRequest.formatTrainingMocaSqlDirName);
-                    // Also run appdata maintenance.
-                    AppDataManager.runMaintenance();
 
                     return CompletableFuture.completedFuture(new Object());
                 } catch (Exception exception) {
@@ -122,16 +112,45 @@ public class ExecuteCommandProvider {
                     return CompletableFuture.completedFuture(mocaConnectionResponse);
                 }
 
-            case LOAD_REPOSITORY:
-                // Just handle this the same way that EXECUTE command does.
+            case LOAD_CACHE:
+                
+                // No need to do anything special with request; we are not expecting any arguments.
+
+                // Make sure connection has url.
                 if (MocaLanguageServer.currentMocaConnection.url == null) {
-                    MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null,
-                            new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER));
-                    return CompletableFuture.completedFuture(mocaResultsResponse);
+                    LoadCacheResponse loadCacheResponse = new LoadCacheResponse(new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER));
+                    return CompletableFuture.completedFuture(loadCacheResponse);
                 }
 
-                MocaLanguageServer.currentMocaConnection.loadRepository();
-                return CompletableFuture.completedFuture(new Object());
+
+                // We want the caller to know when the cache is done loading. 
+                // The longest function is the moca command loader, so we
+                // will just return when it is complete. The rest of functions
+                // will be run async.
+        
+                CompletableFuture.runAsync(() -> {
+                    MocaLanguageServer.currentMocaConnection.cache.mocaCache.loadCommandArguments();
+                });
+        
+                CompletableFuture.runAsync(() -> {
+                    MocaLanguageServer.currentMocaConnection.cache.mocaCache.loadTriggers();
+                });
+
+                CompletableFuture.runAsync(() -> {
+                    MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.loadTables();
+                });
+        
+                CompletableFuture.runAsync(() -> {
+                    MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.loadViews();
+                });
+        
+                CompletableFuture.runAsync(() -> {
+                    MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.loadColumns();
+                });
+
+                MocaLanguageServer.currentMocaConnection.cache.mocaCache.loadCommands();
+
+                return CompletableFuture.completedFuture(new LoadCacheResponse(null));
             case EXECUTE:
 
                 if (MocaLanguageServer.currentMocaConnection.url == null) {
@@ -195,29 +214,6 @@ public class ExecuteCommandProvider {
                     languageClient.logMessage(new MessageParams(MessageType.Info, mocaResultsRequest.fileName
                             + ": Returned " + rowCount + " rows in " + elapsedTime + " seconds"));
 
-                    // Add history entry to appdata.
-                    try {
-                        int status = 0;
-                        String message = "";
-                        if (mocaResultsResponse.exception != null) {
-                            if (mocaResultsResponse.exception instanceof MocaException) {
-                                MocaException mocaException = (MocaException) mocaResultsResponse.exception;
-                                status = mocaException.getStatus();
-                                message = mocaException.getMessage();
-                            } else {
-                                status = 0;
-                                message = mocaResultsResponse.exception.getMessage();
-                            }
-                        }
-                        AppDataManager.createExecutionHistory(status, message, rowCount, elapsedTime,
-                                mocaResultsRequest.script.replace("\"", "\"\""), mocaResultsResponse.results,
-                                MocaLanguageServer.currentMocaConnection.url);
-                    } catch (Exception ex) {
-                        // Log error message for now.
-                        languageClient.logMessage(
-                                new MessageParams(MessageType.Error, "Could not create history: " + ex.getMessage()));
-                    }
-
                     return CompletableFuture.completedFuture(mocaResultsResponse);
                 } catch (Exception exception) {
                     MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null, exception);
@@ -270,13 +266,13 @@ public class ExecuteCommandProvider {
                     MocaCommandLookupResponse mocaCommandLookupResponse;
                     if (mocaCommandLookupRequest.requestedMocaCommand == null) {
                         mocaCommandLookupResponse = new MocaCommandLookupResponse(
-                                MocaLanguageServer.currentMocaConnection.cache.commandRepository.distinctCommands, null,
+                                MocaLanguageServer.currentMocaConnection.cache.mocaCache.distinctCommands, null,
                                 null, null);
                     } else {
                         mocaCommandLookupResponse = new MocaCommandLookupResponse(null,
-                                MocaLanguageServer.currentMocaConnection.cache.commandRepository.commands
+                                MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
                                         .get(mocaCommandLookupRequest.requestedMocaCommand),
-                                MocaLanguageServer.currentMocaConnection.cache.commandRepository.triggers
+                                MocaLanguageServer.currentMocaConnection.cache.mocaCache.triggers
                                         .get(mocaCommandLookupRequest.requestedMocaCommand),
                                 null);
                     }
@@ -285,37 +281,6 @@ public class ExecuteCommandProvider {
                 } catch (Exception exception) {
                     return CompletableFuture
                             .completedFuture(new MocaCommandLookupResponse(null, null, null, exception));
-                }
-
-            case EXECUTION_HISTORY:
-                try {
-                    List<Object> args = params.getArguments();
-                    if (args == null) {
-                        return CompletableFuture.completedFuture(new Object());
-                    }
-
-                    MocaExecutionHistoryRequest executionHistoryRequest = new MocaExecutionHistoryRequest(args);
-
-                    return CompletableFuture.completedFuture(new MocaExecutionHistoryResponse(
-                            new MocaResultsResponse(AppDataManager.getExecutionHistory(), null)));
-                } catch (Exception exception) {
-                    return CompletableFuture.completedFuture(new MocaExecutionHistoryResponse(null));
-                }
-
-            case CANCEL_EXECUTION:
-                try {
-                    List<Object> args = params.getArguments();
-                    if (args == null) {
-                        return CompletableFuture.completedFuture(new CancelMocaExecutionResponse(false));
-                    }
-
-                    CancelMocaExecutionRequest cancelExecutionRequest = new CancelMocaExecutionRequest(args);
-
-                    // TODO - Find thread id and interrupt it.
-
-                    return CompletableFuture.completedFuture(new CancelMocaExecutionResponse(false));
-                } catch (Exception exception) {
-                    return CompletableFuture.completedFuture(new CancelMocaExecutionResponse(false));
                 }
             case TRAIN_FORMATTERS:
                 try {

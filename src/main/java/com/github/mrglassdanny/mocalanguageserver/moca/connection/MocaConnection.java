@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.MocaResults;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.google.gson.Gson;
 

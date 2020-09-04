@@ -2,13 +2,13 @@ package com.github.mrglassdanny.mocalanguageserver.moca.cache.moca;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.CompletableFuture;
 
+import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.MocaResults;
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
 
-public class CommandRepository {
+public class MocaCache {
 
     private static final String COMMANDS_SCRIPT = "list active commands";
     private static final String COMMAND_ARGUMENTS_SCRIPT = "list active command arguments";
@@ -19,7 +19,7 @@ public class CommandRepository {
     public HashMap<String, ArrayList<MocaCommandArgument>> commandArguments;
     public HashMap<String, ArrayList<MocaTrigger>> triggers;
 
-    public CommandRepository() {
+    public MocaCache() {
         this.distinctCommands = new ArrayList<>();
         this.commands = new HashMap<>();
         this.commandArguments = new HashMap<>();
@@ -27,27 +27,15 @@ public class CommandRepository {
 
     }
 
-    public void loadAsync(MocaConnectionWrapper conn) {
 
-        CompletableFuture.runAsync(() -> {
-            this.loadCommands(conn);
-        });
+    public void loadCommands() {
 
-        CompletableFuture.runAsync(() -> {
-            this.loadCommandArguments(conn);
-        });
-
-        CompletableFuture.runAsync(() -> {
-            this.loadTriggers(conn);
-        });
-    }
-
-    public void loadCommands(MocaConnectionWrapper conn) {
+        MocaConnectionWrapper conn = MocaLanguageServer.currentMocaConnection;
 
         this.distinctCommands.clear();
         this.commands.clear();
 
-        MocaResults res = conn.executeCommand(CommandRepository.COMMANDS_SCRIPT).results;
+        MocaResults res = conn.executeCommand(MocaCache.COMMANDS_SCRIPT).results;
         if (res != null) {
 
             for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
@@ -108,11 +96,13 @@ public class CommandRepository {
 
     }
 
-    public void loadCommandArguments(MocaConnectionWrapper conn) {
+    public void loadCommandArguments() {
+
+        MocaConnectionWrapper conn = MocaLanguageServer.currentMocaConnection;
 
         this.commandArguments.clear();
 
-        MocaResults res = conn.executeCommand(CommandRepository.COMMAND_ARGUMENTS_SCRIPT).results;
+        MocaResults res = conn.executeCommand(MocaCache.COMMAND_ARGUMENTS_SCRIPT).results;
 
         if (res != null) {
 
@@ -140,10 +130,13 @@ public class CommandRepository {
         }
     }
 
-    public void loadTriggers(MocaConnectionWrapper conn) {
+    public void loadTriggers() {
+
+        MocaConnectionWrapper conn = MocaLanguageServer.currentMocaConnection;
+
         this.triggers.clear();
 
-        MocaResults res = conn.executeCommand(CommandRepository.TRIGGERS_SCRIPT).results;
+        MocaResults res = conn.executeCommand(MocaCache.TRIGGERS_SCRIPT).results;
 
         if (res != null) {
 

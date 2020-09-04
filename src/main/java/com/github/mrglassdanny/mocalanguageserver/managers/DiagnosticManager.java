@@ -182,7 +182,7 @@ public class DiagnosticManager {
             // Need the struct so that we can look at the verbNounClause.
             String verbNounClause = entry.getKey();
 
-            if (!MocaLanguageServer.currentMocaConnection.cache.commandRepository.distinctCommands
+            if (!MocaLanguageServer.currentMocaConnection.cache.mocaCache.distinctCommands
                     .contains(verbNounClause)) {
 
                 ArrayList<org.antlr.v4.runtime.Token> mocaTokens = entry.getValue();
@@ -248,12 +248,12 @@ public class DiagnosticManager {
 
             String tableTokenText = tableToken.getText().toLowerCase();
 
-            if (MocaLanguageServer.currentMocaConnection.cache.schema.tables.containsKey(tableTokenText)) {
+            if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.containsKey(tableTokenText)) {
                 foundTable = true;
             }
 
             if (!foundTable) {
-                if (MocaLanguageServer.currentMocaConnection.cache.schema.views.containsKey(tableTokenText)) {
+                if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.containsKey(tableTokenText)) {
                     foundTable = true;
                 }
             }

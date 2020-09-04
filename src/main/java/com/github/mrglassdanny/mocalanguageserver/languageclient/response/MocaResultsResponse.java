@@ -1,6 +1,6 @@
 package com.github.mrglassdanny.mocalanguageserver.languageclient.response;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.MocaResults;
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
 
 public class MocaResultsResponse {
 
