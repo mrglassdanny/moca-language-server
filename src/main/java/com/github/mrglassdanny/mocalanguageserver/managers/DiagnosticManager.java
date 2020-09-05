@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaSyntaxError;
@@ -111,6 +112,8 @@ public class DiagnosticManager {
             Range sqlRange = mocaCompiler.sqlRanges.get(i);
             diagnostics.addAll(handleSqlTableMayNotExistWarnings(uriStr, script,
                     sqlCompilationResult.sqlParseTreeListener, sqlRange));
+            diagnostics.addAll(handleSqlColumnsMayNotExistInTableWarnings(uriStr, script,
+                    sqlCompilationResult.sqlParseTreeListener, sqlRange));
         }
 
         return diagnostics;
@@ -174,7 +177,7 @@ public class DiagnosticManager {
         }
 
         // Loop through all verb noun clauses and see if we have any verbNounClauses
-        // that do not exist in repository. If so, we will get the range, build the
+        // that do not exist in cache. If so, we will get the range, build the
         // diagnosic, and add it to the list.
         for (Map.Entry<StringBuilder, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                 .entrySet()) {
@@ -235,11 +238,8 @@ public class DiagnosticManager {
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
-        // Basically we are going to check all tables in the ast against our repository
+        // Basically we are going to check all tables in the ast against our cache
         // and see if there are an discrepancies.
-
-        // NOTE: can use current compilation results -- it doesnt matter if we have an
-        // ast or not since errors take precedence anyways.
 
         for (Token tableToken : sqlParseTreeListener.tableTokens) {
 
@@ -253,6 +253,15 @@ public class DiagnosticManager {
 
             if (!foundTable) {
                 if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.containsKey(tableTokenText)) {
+                    foundTable = true;
+                }
+            }
+
+            // Check to see if is alias for table name.
+            // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree -- a
+            // risk I am willing to take!
+            if (!foundTable) {
+                if (sqlParseTreeListener.aliasedTableNames.containsKey(tableTokenText)) {
                     foundTable = true;
                 }
             }
@@ -284,47 +293,87 @@ public class DiagnosticManager {
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
-        // Basically we are going to check all tables in the ast against our repository
-        // and see if there are an discrepancies.
+        for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : sqlParseTreeListener.columnTokens
+                .entrySet()) {
 
-        // NOTE: can use current compilation results -- it doesnt matter if we have an
-        // ast or not since errors take precedence anyways.
+            // Key(table name) could be null if no table name was specified on column.
+            String tableName = entry.getKey();
 
-        for (Token tableToken : sqlParseTreeListener.tableTokens) {
-
-            boolean foundTable = false;
-
-            String tableTokenText = tableToken.getText().toLowerCase();
-
-            if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.containsKey(tableTokenText)) {
-                foundTable = true;
+            // Before we continue, we need to check if this is an alias for another table.
+            if (sqlParseTreeListener.aliasedTableNames.containsKey(tableName)) {
+                // Switch to actual name.
+                // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree -- a
+                // risk I am willing to take!
+                tableName = sqlParseTreeListener.aliasedTableNames.get(tableName);
             }
 
-            if (!foundTable) {
-                if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.containsKey(tableTokenText)) {
-                    foundTable = true;
-                }
-            }
+            if (tableName == null) {
+                // Nothing for now...
+            } else {
+                // Basically we are going to validate table/column pair exists in cache.
 
-            if (!foundTable) {
+                // Make sure to check the multiple tables condition.
+                if (tableName.compareTo("__MULTIPLE_TABLES") == 0) {
 
-                Position beginPos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
-                        tableToken.getCharPositionInLine(), sqlScriptRange);
-                Position endPos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
-                        tableToken.getCharPositionInLine(), sqlScriptRange);
+                    for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
+                        Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                columnToken.getCharPositionInLine(), sqlScriptRange);
+                        Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                columnToken.getCharPositionInLine(), sqlScriptRange);
 
-                if (beginPos != null && endPos != null) {
-                    Range range = new Range(beginPos, endPos);
-                    Diagnostic diagnostic = new Diagnostic();
-                    diagnostic.setRange(range);
-                    diagnostic.setSeverity(DiagnosticSeverity.Warning);
-                    diagnostic.setMessage("SQL: Table/View '" + tableTokenText + "' may not exist");
-                    diagnostics.add(diagnostic);
+                        if (beginPos != null && endPos != null) {
+                            Range range = new Range(beginPos, endPos);
+                            Diagnostic diagnostic = new Diagnostic();
+                            diagnostic.setRange(range);
+                            diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                            diagnostic.setMessage(
+                                    String.format("SQL: Multiple tables detected; please specify table for column %s",
+                                            columnToken.getText()));
+                            diagnostics.add(diagnostic);
+                        }
+
+                    }
+
+                } else {
+                    tableName = tableName.toLowerCase();
+                    for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
+
+                        ArrayList<TableColumn> columnsInTable = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
+                                .getColumnsForTable(tableName);
+
+                        boolean foundColumn = false;
+                        if (columnsInTable != null) {
+                            for (TableColumn tableColumn : columnsInTable) {
+                                if (tableColumn.column_name.compareToIgnoreCase(columnToken.getText()) == 0) {
+                                    foundColumn = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!foundColumn) {
+
+                            Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                    columnToken.getCharPositionInLine(), sqlScriptRange);
+                            Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                    columnToken.getCharPositionInLine(), sqlScriptRange);
+
+                            if (beginPos != null && endPos != null) {
+                                Range range = new Range(beginPos, endPos);
+                                Diagnostic diagnostic = new Diagnostic();
+                                diagnostic.setRange(range);
+                                diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                                diagnostic.setMessage(String.format("SQL: Column %s may not exist on Table %s",
+                                        columnToken.getText(), tableName));
+                                diagnostics.add(diagnostic);
+                            }
+
+                        }
+                    }
                 }
 
             }
         }
-
         return diagnostics;
     }
 
