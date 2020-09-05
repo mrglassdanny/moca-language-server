@@ -238,11 +238,9 @@ public class SemanticHighlightingManager {
         // object.
         HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
 
-        // For semantic highlighting, we need to make sure the moca compiliation result
-        // we are looking at has no errors.
         MocaCompilationResult mocaCompilationResult = mocaCompiler.currentCompilationResult;
 
-        // Go ahead and stop now if now compilation result.
+        // Go ahead and stop now if null compilation result.
         if (mocaCompilationResult != null) {
             for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                     .entrySet()) {
@@ -252,8 +250,7 @@ public class SemanticHighlightingManager {
                 if (verbNounClause != null) {
 
                     // Make sure command exists before we color it.
-                    if (MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
-                            .containsKey(verbNounClause)) {
+                    if (MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands.containsKey(verbNounClause)) {
                         Position pos = Positions.getPosition(mocaScript, mocaTokens.get(0).getStartIndex());
 
                         if (pos != null) {
@@ -268,10 +265,8 @@ public class SemanticHighlightingManager {
                             }
                         }
                     }
-
                 }
             }
-
         }
 
         return preInfos;
@@ -311,8 +306,7 @@ public class SemanticHighlightingManager {
         HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
 
         for (int i = 0; i < mocaCompiler.sqlRanges.size(); i++) {
-            // For semantic highlighting, we need to make sure the sql compiliation result
-            // we are looking at has no errors.
+
             MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
                     .get(i);
 
@@ -321,8 +315,9 @@ public class SemanticHighlightingManager {
 
                 for (org.antlr.v4.runtime.Token tableToken : sqlCompilationResult.sqlParseTreeListener.tableTokens) {
 
+                    // Need to +1 to char position in line due to sql token start position.
                     Position pos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
-                            tableToken.getCharPositionInLine(), mocaCompiler.sqlRanges.get(i));
+                            tableToken.getCharPositionInLine() + 1, mocaCompiler.sqlRanges.get(i));
 
                     String sqlWord = tableToken.getText().toLowerCase();
 
