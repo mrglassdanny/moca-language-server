@@ -67,9 +67,9 @@ public class HoverProvider {
                         return CompletableFuture.completedFuture(hover);
                     }
 
-                    // Get command unit current moca token is in.
-                    String verbNounClause = null;
-                    for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
+                    // Get verb noun clause current moca token is in.
+                    StringBuilder verbNounClause = null;
+                    for (Map.Entry<StringBuilder, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                             .entrySet()) {
 
                         // Checking for begin/end match since token objects parsed and lexed will not be
@@ -83,9 +83,9 @@ public class HoverProvider {
                                 verbNounClause = entry.getKey();
 
                                 ArrayList<MocaCommand> mcmds = MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
-                                        .get(verbNounClause);
+                                        .get(verbNounClause.toString());
                                 if (mcmds != null) {
-                                    String content = getMocaContent(verbNounClause, mcmds);
+                                    String content = getMocaContent(verbNounClause.toString(), mcmds);
 
                                     contents.add(Either.forRight(new MarkedString("plaintext", content)));
                                     return CompletableFuture.completedFuture(hover);

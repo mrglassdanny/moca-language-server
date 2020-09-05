@@ -242,15 +242,16 @@ public class SemanticHighlightingManager {
 
         // Go ahead and stop now if null compilation result.
         if (mocaCompilationResult != null) {
-            for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
+            for (Map.Entry<StringBuilder, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                     .entrySet()) {
 
-                String verbNounClause = entry.getKey();
+                StringBuilder verbNounClause = entry.getKey();
                 ArrayList<org.antlr.v4.runtime.Token> mocaTokens = entry.getValue();
                 if (verbNounClause != null) {
 
                     // Make sure command exists before we color it.
-                    if (MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands.containsKey(verbNounClause)) {
+                    if (MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
+                            .containsKey(verbNounClause.toString())) {
                         Position pos = Positions.getPosition(mocaScript, mocaTokens.get(0).getStartIndex());
 
                         if (pos != null) {

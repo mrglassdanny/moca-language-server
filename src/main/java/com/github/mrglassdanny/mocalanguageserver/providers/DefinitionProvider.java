@@ -58,9 +58,9 @@ public class DefinitionProvider {
                     org.antlr.v4.runtime.Token curMocaToken = mocaCompiler.getMocaTokenAtPosition(textDocumentContents,
                             position);
 
-                    // Get command unit current moca token is in.
-                    String verbNounClause = null;
-                    for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
+                    // Get verb noun clause current moca token is in.
+                    StringBuilder verbNounClause = null;
+                    for (Map.Entry<StringBuilder, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                             .entrySet()) {
 
                         // Checking for begin/end match since token objects parsed and lexed will not be
@@ -74,7 +74,7 @@ public class DefinitionProvider {
                                 verbNounClause = entry.getKey();
 
                                 ArrayList<MocaCommand> mcmds = MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
-                                        .get(verbNounClause);
+                                        .get(verbNounClause.toString());
                                 if (mcmds != null) {
 
                                     ArrayList<Location> locations = new ArrayList<>();

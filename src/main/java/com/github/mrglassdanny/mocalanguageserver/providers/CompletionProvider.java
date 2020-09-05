@@ -124,10 +124,10 @@ public class CompletionProvider {
                         case MocaLexer.WHERE:
                             // Do not look for AND -- we know that we want args here.
 
-                            // Get command unit current moca token is in.
-                            String verbNounClause = null;
+                            // Get verb noun clause current moca token is in.
+                            StringBuilder verbNounClause = null;
                             boolean foundTokenMatch = false;
-                            for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
+                            for (Map.Entry<StringBuilder, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                                     .entrySet()) {
 
                                 // We have a WHERE token match, therefore we know that the token prior to our
@@ -156,16 +156,16 @@ public class CompletionProvider {
                                     break;
                                 }
                             }
-                            // Now we can get the command unit's data from our distinct commands list!
+                            // Now we can get the verb noun clause's data from our distinct commands list!
                             if (verbNounClause != null) {
                                 if (MocaLanguageServer.currentMocaConnection.cache.mocaCache.distinctCommands
-                                        .contains(verbNounClause)) {
+                                        .contains(verbNounClause.toString())) {
 
                                     // HACK - getting the first letter typed for command arg population; see
                                     // function for more info.
                                     char firstTypedLetter = Positions.getCharacterAtPosition(textDocumentContents,
                                             new Position(position.getLine(), position.getCharacter() - 1));
-                                    populateMocaCommandArguments(verbNounClause, items, firstTypedLetter);
+                                    populateMocaCommandArguments(verbNounClause.toString(), items, firstTypedLetter);
                                     return CompletableFuture.completedFuture(Either.forLeft(items));
                                 }
                             }
