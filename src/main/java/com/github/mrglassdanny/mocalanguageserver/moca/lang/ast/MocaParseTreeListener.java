@@ -13,7 +13,9 @@ import org.antlr.v4.runtime.Token;
 public class MocaParseTreeListener extends MocaBaseListener {
 
     public HashMap<Token, String> redirects;
-    public HashMap<String, ArrayList<Token>> verbNounClauses;
+    // verbNounClauses HashMap needs to have StringBuilder as key instead of String,
+    // that way duplicate verb noun clauses will not get put on top of each other.
+    public HashMap<StringBuilder, ArrayList<Token>> verbNounClauses;
 
     public MocaParseTreeListener() {
         this.redirects = new HashMap<>();
@@ -23,7 +25,7 @@ public class MocaParseTreeListener extends MocaBaseListener {
     @Override
     public void enterVerb_noun_clause(MocaParser.Verb_noun_clauseContext ctx) {
 
-        StringBuilder verbNounClauseBuf = new StringBuilder();
+        StringBuilder verbNounClause = new StringBuilder();
         ArrayList<Token> tokens = new ArrayList<>();
         for (int i = 0; i < ctx.children.size(); i++) {
             Object child = ctx.children.get(i).getPayload();
@@ -35,8 +37,8 @@ public class MocaParseTreeListener extends MocaBaseListener {
                 // Token could be a CARET if override; let's ignore it.
                 // Let's also ignore WHERE token.
                 if (commonToken.getType() != MocaLexer.CARET && commonToken.getType() != MocaLexer.WHERE) {
-                    verbNounClauseBuf.append(commonToken.getText() + " "); // Need to put a space since we skip
-                                                                           // whitespace in parser!
+                    verbNounClause.append(commonToken.getText() + " "); // Need to put a space since we skip
+                                                                        // whitespace in parser!
                     tokens.add(commonToken);
                 }
             } else {
@@ -44,8 +46,8 @@ public class MocaParseTreeListener extends MocaBaseListener {
             }
         }
 
-        String verbNounClause = verbNounClauseBuf.toString().trim(); // Need to make sure string is trimmed, especially
-                                                                     // since we added spaces above.
+        // Remove the last space we added to verb noun clause.
+        verbNounClause.deleteCharAt(verbNounClause.length() - 1);
 
         this.verbNounClauses.put(verbNounClause, tokens);
 

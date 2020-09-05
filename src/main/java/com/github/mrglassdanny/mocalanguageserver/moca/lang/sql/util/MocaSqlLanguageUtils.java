@@ -24,6 +24,10 @@ public class MocaSqlLanguageUtils {
             lspColumn--;
         }
 
+        // +1 to column due to antlr lexer starting the column an index too early.
+        // We are doing something similar in MocaTokenUtils class.
+        lspColumn++;
+
         // If the line is 0, we need to keep the char offset in mind.
         if (lspLine == 0) {
             return new Position(lspLine + sqlScriptRange.getStart().getLine(),
@@ -49,6 +53,10 @@ public class MocaSqlLanguageUtils {
             lspColumn--;
         }
 
+        // +1 to column due to antlr lexer starting the column an index too early.
+        // We are doing something similar in MocaTokenUtils class.
+        lspColumn++;
+
         if (lspLine == 0) {
             return new Position(lspLine + sqlScriptRange.getStart().getLine(),
                     lspColumn + sqlScriptRange.getStart().getCharacter());
@@ -67,26 +75,7 @@ public class MocaSqlLanguageUtils {
     public static boolean isMocaTokenValueSqlScript(String mocaTokenValue) {
         Matcher sqlStartWordMatcher = MocaSqlLanguageUtils.SQL_RANGE_START_WORD_PATTERN.matcher(mocaTokenValue);
         if (sqlStartWordMatcher.find()) {
-
-            // Get index of first character in first word to compare to sqlStartWordMatcher
-            // start.
-            char[] mocaTokenValueCharArr = mocaTokenValue.toCharArray();
-            // Start at 1 because of '['.
-            int beginningOfFirstWordIdx = 1;
-            while (mocaTokenValueCharArr[beginningOfFirstWordIdx] == ' '
-                    || mocaTokenValueCharArr[beginningOfFirstWordIdx] == '\t'
-                    || mocaTokenValueCharArr[beginningOfFirstWordIdx] == '\n'
-                    || mocaTokenValueCharArr[beginningOfFirstWordIdx] == '\r') {
-                beginningOfFirstWordIdx++;
-            }
-
-            // Only add if match at first word.
-            if (sqlStartWordMatcher.start() == beginningOfFirstWordIdx) {
-                return true;
-            } else {
-                return false;
-            }
-
+            return true;
         } else {
             return false;
         }

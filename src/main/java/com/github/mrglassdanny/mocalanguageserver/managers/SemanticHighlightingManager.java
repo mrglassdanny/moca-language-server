@@ -238,22 +238,20 @@ public class SemanticHighlightingManager {
         // object.
         HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
 
-        // For semantic highlighting, we need to make sure the moca compiliation result
-        // we are looking at has no errors.
         MocaCompilationResult mocaCompilationResult = mocaCompiler.currentCompilationResult;
 
-        // Go ahead and stop now if now compilation result.
+        // Go ahead and stop now if null compilation result.
         if (mocaCompilationResult != null) {
-            for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
+            for (Map.Entry<StringBuilder, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                     .entrySet()) {
 
-                String verbNounClause = entry.getKey();
+                StringBuilder verbNounClause = entry.getKey();
                 ArrayList<org.antlr.v4.runtime.Token> mocaTokens = entry.getValue();
                 if (verbNounClause != null) {
 
                     // Make sure command exists before we color it.
                     if (MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
-                            .containsKey(verbNounClause)) {
+                            .containsKey(verbNounClause.toString())) {
                         Position pos = Positions.getPosition(mocaScript, mocaTokens.get(0).getStartIndex());
 
                         if (pos != null) {
@@ -268,10 +266,8 @@ public class SemanticHighlightingManager {
                             }
                         }
                     }
-
                 }
             }
-
         }
 
         return preInfos;
@@ -311,8 +307,7 @@ public class SemanticHighlightingManager {
         HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
 
         for (int i = 0; i < mocaCompiler.sqlRanges.size(); i++) {
-            // For semantic highlighting, we need to make sure the sql compiliation result
-            // we are looking at has no errors.
+
             MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
                     .get(i);
 

@@ -173,17 +173,16 @@ public class DiagnosticManager {
             return diagnostics;
         }
 
-        // Loop through all command units and see if we have any verbNounClauses that do
-        // not exist in repository. If so, we will get the range, build the diagnosic,
-        // and add it to the list.
-        for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
+        // Loop through all verb noun clauses and see if we have any verbNounClauses
+        // that do not exist in repository. If so, we will get the range, build the
+        // diagnosic, and add it to the list.
+        for (Map.Entry<StringBuilder, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                 .entrySet()) {
 
-            // Need the struct so that we can look at the verbNounClause.
-            String verbNounClause = entry.getKey();
+            StringBuilder verbNounClause = entry.getKey();
 
             if (!MocaLanguageServer.currentMocaConnection.cache.mocaCache.distinctCommands
-                    .contains(verbNounClause)) {
+                    .contains(verbNounClause.toString())) {
 
                 ArrayList<org.antlr.v4.runtime.Token> mocaTokens = entry.getValue();
                 // No need to validate size -- we can assume that we have
