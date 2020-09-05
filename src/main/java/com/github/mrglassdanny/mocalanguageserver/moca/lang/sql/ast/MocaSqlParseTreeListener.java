@@ -58,4 +58,28 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
 
     }
 
+    @Override
+    public void enterFull_table_name(MocaSqlParser.Full_table_nameContext ctx) {
+
+        // Table name we care about will be the last token, since it could be fully
+        // qualified table name.
+        if (ctx.stop instanceof CommonToken) {
+            CommonToken token = (CommonToken) ctx.stop;
+            // Can add to list from here.
+            this.tableTokens.add(token);
+        }
+    }
+
+    @Override
+    public void enterTable_name(MocaSqlParser.Table_nameContext ctx) {
+
+        // Table name we care about will be the last token, since it could be fully
+        // qualified table name.
+        if (ctx.stop instanceof CommonToken) {
+            CommonToken token = (CommonToken) ctx.stop;
+            // Can add to list from here.
+            this.tableTokens.add(token);
+        }
+    }
+
 }

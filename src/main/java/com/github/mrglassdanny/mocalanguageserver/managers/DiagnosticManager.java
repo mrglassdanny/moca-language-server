@@ -279,6 +279,55 @@ public class DiagnosticManager {
         return diagnostics;
     }
 
+    private static ArrayList<Diagnostic> handleSqlColumnsMayNotExistInTableWarnings(String uriStr, String script,
+            MocaSqlParseTreeListener sqlParseTreeListener, Range sqlScriptRange) {
+
+        ArrayList<Diagnostic> diagnostics = new ArrayList<>();
+
+        // Basically we are going to check all tables in the ast against our repository
+        // and see if there are an discrepancies.
+
+        // NOTE: can use current compilation results -- it doesnt matter if we have an
+        // ast or not since errors take precedence anyways.
+
+        for (Token tableToken : sqlParseTreeListener.tableTokens) {
+
+            boolean foundTable = false;
+
+            String tableTokenText = tableToken.getText().toLowerCase();
+
+            if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.containsKey(tableTokenText)) {
+                foundTable = true;
+            }
+
+            if (!foundTable) {
+                if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.containsKey(tableTokenText)) {
+                    foundTable = true;
+                }
+            }
+
+            if (!foundTable) {
+
+                Position beginPos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
+                        tableToken.getCharPositionInLine(), sqlScriptRange);
+                Position endPos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
+                        tableToken.getCharPositionInLine(), sqlScriptRange);
+
+                if (beginPos != null && endPos != null) {
+                    Range range = new Range(beginPos, endPos);
+                    Diagnostic diagnostic = new Diagnostic();
+                    diagnostic.setRange(range);
+                    diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                    diagnostic.setMessage("SQL: Table/View '" + tableTokenText + "' may not exist");
+                    diagnostics.add(diagnostic);
+                }
+
+            }
+        }
+
+        return diagnostics;
+    }
+
     // GROOVY.
     private static ArrayList<Diagnostic> handleGroovyAll(String uriStr, GroovyCompilationResult compilationResult,
             Range groovyScriptRange, LanguageClient client) {
