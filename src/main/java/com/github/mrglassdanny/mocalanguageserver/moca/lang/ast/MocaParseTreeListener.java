@@ -13,8 +13,8 @@ import org.antlr.v4.runtime.Token;
 public class MocaParseTreeListener extends MocaBaseListener {
 
     public HashMap<Token, String> redirects;
-    // Needs to be StringBuilder instead of String, that way duplicate verb noun
-    // clauses will not get put on top of each other.
+    // verbNounClauses HashMap needs to have StringBuilder as key instead of String,
+    // that way duplicate verb noun clauses will not get put on top of each other.
     public HashMap<StringBuilder, ArrayList<Token>> verbNounClauses;
 
     public MocaParseTreeListener() {

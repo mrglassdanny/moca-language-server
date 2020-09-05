@@ -173,9 +173,9 @@ public class DiagnosticManager {
             return diagnostics;
         }
 
-        // Loop through all command units and see if we have any verbNounClauses that do
-        // not exist in repository. If so, we will get the range, build the diagnosic,
-        // and add it to the list.
+        // Loop through all verb noun clauses and see if we have any verbNounClauses
+        // that do not exist in repository. If so, we will get the range, build the
+        // diagnosic, and add it to the list.
         for (Map.Entry<StringBuilder, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                 .entrySet()) {
 
