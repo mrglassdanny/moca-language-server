@@ -316,9 +316,8 @@ public class SemanticHighlightingManager {
 
                 for (org.antlr.v4.runtime.Token tableToken : sqlCompilationResult.sqlParseTreeListener.tableTokens) {
 
-                    // Need to +1 to char position in line due to sql token start position.
                     Position pos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
-                            tableToken.getCharPositionInLine() + 1, mocaCompiler.sqlRanges.get(i));
+                            tableToken.getCharPositionInLine(), mocaCompiler.sqlRanges.get(i));
 
                     String sqlWord = tableToken.getText().toLowerCase();
 
