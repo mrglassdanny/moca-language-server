@@ -4,21 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser;
-import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlBaseListener;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlLexer;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Ddl_objectContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Derived_tableContext;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Dml_clauseContext;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.IdContext;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Insert_statementContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Query_specificationContext;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Select_listContext;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Select_list_elemContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_name_with_hintContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_sourcesContext;
 
-import org.antlr.v4.runtime.CommonToken;
+import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Token;
-import org.eclipse.lsp4j.MessageParams;
-import org.eclipse.lsp4j.MessageType;
 
 public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
 
@@ -33,6 +29,20 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         this.subqueries = new HashMap<>();
         this.columnTokens = new HashMap<>();
 
+    }
+
+    private static RuleContext getParentRuleContext(RuleContext ctx, Class<?> parentRuleContextClass) {
+
+        RuleContext p = ctx;
+        while (p.parent != null) {
+            if (p.parent.getClass() == parentRuleContextClass) {
+                return p.parent;
+            } else {
+                p = p.parent;
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -100,12 +110,12 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
 
         } else {
             // If table name is null, we can get the tables via going up through parents.
-            // Parent should be select_list_elem, then select_list, then
-            // query_specification.
-            if (ctx.parent instanceof Select_list_elemContext && ctx.parent.parent instanceof Select_listContext
-                    && ctx.parent.parent.parent instanceof Query_specificationContext) {
+            // Parent we want is query_specification.
+            Query_specificationContext querySpecCtx = (Query_specificationContext) getParentRuleContext(ctx,
+                    Query_specificationContext.class);
+
+            if (querySpecCtx != null) {
                 // We should be able to access table_sources and downward to get what we need.
-                Query_specificationContext querySpecCtx = (Query_specificationContext) ctx.parent.parent.parent;
                 if (querySpecCtx.table_sources() != null) {
                     Table_sourcesContext tblSrcCtx = querySpecCtx.table_sources();
                     if (tblSrcCtx.table_source().size() > 1) {
@@ -113,9 +123,32 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                         // the table name.
                         tableName = "__MULTIPLE_TABLES";
                     } else {
-                        tableName = tblSrcCtx.table_source().get(0).getStop().getText();
+                        // Now check if we are joinin in here -- if so, note multiple tables.
+                        if (tblSrcCtx.table_source().get(0).table_source_item_joined().join_part().size() >= 1) {
+                            tableName = "__MULTIPLE_TABLES";
+                        } else {
+                            tableName = tblSrcCtx.table_source().get(0).getStop().getText();
+                        }
                     }
                 }
+            } else {
+                // If query spec ctx is null, that means we need to look for a different parent.
+                // Let's try DML clause.
+                Dml_clauseContext dmlClauseCtx = (Dml_clauseContext) getParentRuleContext(ctx, Dml_clauseContext.class);
+
+                if (dmlClauseCtx != null) {
+                    // Process update and delete -- we already of select covered above and have
+                    // insert covered in another function.
+
+                    if (dmlClauseCtx.update_statement() != null) {
+                        tableName = dmlClauseCtx.update_statement().ddl_object().full_table_name().getStop().getText();
+                    } else if (dmlClauseCtx.delete_statement() != null) {
+                        // Assume we have a table here.
+                        tableName = dmlClauseCtx.delete_statement().delete_statement_from().ddl_object()
+                                .full_table_name().getStop().getText();
+                    }
+                }
+
             }
         }
 
@@ -127,7 +160,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             ArrayList<Token> columnTokenList = new ArrayList<>();
             columnTokenList.add(columnToken);
             this.columnTokens.put(tableName, columnTokenList);
-
         }
     }
 
@@ -139,12 +171,54 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         String tableName = null;
 
         if (ctx.table_name() != null) {
-            /// Table token we care about will be the last token, since it could be fully
+            // Table token we care about will be the last token, since it could be fully
             // qualified table name.
             tableName = ctx.table_name().getStop().getText();
 
         } else {
+            // If table name is null, we can get the tables via going up through parents.
+            // Parent we want is query_specification.
+            Query_specificationContext querySpecCtx = (Query_specificationContext) getParentRuleContext(ctx,
+                    Query_specificationContext.class);
 
+            if (querySpecCtx != null) {
+                // We should be able to access table_sources and downward to get what we need.
+                if (querySpecCtx.table_sources() != null) {
+                    Table_sourcesContext tblSrcCtx = querySpecCtx.table_sources();
+
+                    if (tblSrcCtx.table_source().size() > 1) {
+                        // If greater than 1, we know there are multiple tables. Let's indicate this via
+                        // the table name.
+                        tableName = "__MULTIPLE_TABLES";
+                    } else {
+
+                        // Now check if we are joinin in here -- if so, note multiple tables.
+                        if (tblSrcCtx.table_source().get(0).table_source_item_joined().join_part().size() >= 1) {
+                            tableName = "__MULTIPLE_TABLES";
+                        } else {
+                            tableName = tblSrcCtx.table_source().get(0).getStop().getText();
+                        }
+
+                    }
+                }
+            } else {
+                // If query spec ctx is null, that means we need to look for a different parent.
+                // Let's try DML clause.
+                Dml_clauseContext dmlClauseCtx = (Dml_clauseContext) getParentRuleContext(ctx, Dml_clauseContext.class);
+
+                if (dmlClauseCtx != null) {
+                    // Process update and delete -- we already of select covered above and have
+                    // insert covered in another function.
+
+                    if (dmlClauseCtx.update_statement() != null) {
+                        tableName = dmlClauseCtx.update_statement().ddl_object().full_table_name().getStop().getText();
+                    } else if (dmlClauseCtx.delete_statement() != null) {
+                        // Assume we have a table here.
+                        tableName = dmlClauseCtx.delete_statement().delete_statement_from().ddl_object()
+                                .full_table_name().getStop().getText();
+                    }
+                }
+            }
         }
 
         // Now add current table token and column to map.
@@ -165,25 +239,25 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         // Column tokens will be delimited by commas -- let's go ahead and put them in a
         // list.
         ArrayList<Token> columnTokenList = new ArrayList<>();
+
         for (int i = 0; i < ctx.children.size(); i++) {
             Object child = ctx.children.get(i).getPayload();
-            if (child instanceof CommonToken) {
-                CommonToken commonToken = (CommonToken) child;
-
-                if (commonToken.getType() == MocaSqlLexer.ID) {
-                    columnTokenList.add((Token) commonToken);
-                }
+            if (child instanceof IdContext) {
+                IdContext idCtx = (IdContext) child;
+                columnTokenList.add(idCtx.getStop());
             }
         }
 
         String tableName = null;
-        // We can get table name by getting parent and accessing it's ddl_object.
-        if (ctx.parent instanceof Ddl_objectContext) {
-            Ddl_objectContext ddlCtx = (Ddl_objectContext) ctx.parent;
-            if (ddlCtx.full_table_name() != null) {
+        // We can get table name by getting parent(insert statement) and accessing it's
+        // ddl_object.
+        if (ctx.parent instanceof Insert_statementContext) {
+            Insert_statementContext insertStatementCtx = (Insert_statementContext) ctx.parent;
+
+            if (insertStatementCtx.ddl_object().full_table_name() != null) {
                 // Table token we care about will be the last token, since it could be fully
                 // qualified table name.
-                tableName = ddlCtx.full_table_name().getStop().getText();
+                tableName = insertStatementCtx.ddl_object().full_table_name().getStop().getText();
             }
         }
 
