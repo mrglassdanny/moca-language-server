@@ -128,14 +128,15 @@ public class HoverProvider {
                     if (sqlCompilationResult != null && sqlCompilationResult.sqlParseTreeListener != null
                             && sqlCompilationResult.sqlParseTreeListener.aliasedTableNames != null
                             && sqlCompilationResult.sqlParseTreeListener.aliasedTableNames.containsKey(sqlWord)) {
-                        contents.add(Either.forRight(new MarkedString("plaintext", "(alias) "
-                                + sqlCompilationResult.sqlParseTreeListener.aliasedTableNames.get(sqlWord))));
+                        contents.add(Either.forRight(new MarkedString("plaintext", String.format("(alias) '%s'",
+                                sqlCompilationResult.sqlParseTreeListener.aliasedTableNames.get(sqlWord)))));
                         return CompletableFuture.completedFuture(hover);
                     }
                     if (sqlCompilationResult != null && sqlCompilationResult.sqlParseTreeListener != null
                             && sqlCompilationResult.sqlParseTreeListener.subqueries != null
                             && sqlCompilationResult.sqlParseTreeListener.subqueries.containsKey(sqlWord)) {
-                        contents.add(Either.forRight(new MarkedString("plaintext", "subquery " + sqlWord)));
+                        contents.add(Either
+                                .forRight(new MarkedString("plaintext", String.format("subquery '%s'", sqlWord))));
                         return CompletableFuture.completedFuture(hover);
                     }
 
@@ -177,7 +178,7 @@ public class HoverProvider {
     // MOCA.
     private static String getMocaContent(String commandName, ArrayList<MocaCommand> mcmds) {
 
-        String contents = "command " + commandName + "\n";
+        String contents = "command '" + commandName + "'\n";
         for (MocaCommand mcmd : mcmds) {
             contents += mcmd.cmplvl + " - " + mcmd.type + "\n";
         }
@@ -218,9 +219,9 @@ public class HoverProvider {
     private static String getSqlContent(Table table, boolean isView) {
 
         if (isView) {
-            return "view " + table.table_name + "\n" + (table.description == null ? "" : table.description);
+            return "view '" + table.table_name + "'\n" + (table.description == null ? "" : table.description);
         } else {
-            return "table " + table.table_name + "\n" + (table.description == null ? "" : table.description);
+            return "table '" + table.table_name + "'\n" + (table.description == null ? "" : table.description);
         }
     }
 

@@ -28,8 +28,6 @@ import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
 import org.codehaus.groovy.syntax.SyntaxException;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
-import org.eclipse.lsp4j.MessageParams;
-import org.eclipse.lsp4j.MessageType;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.Range;
@@ -315,7 +313,7 @@ public class DiagnosticManager {
                 // Basically we are going to validate table/column pair exists in cache.
 
                 // Make sure to check the multiple tables condition.
-                if (tableName.compareTo("__MULTIPLE_TABLES") == 0) {
+                if (tableName.compareTo(MocaSqlParseTreeListener.MULTIPLE_TABLES_DETECTED_FOR_COLUMN) == 0) {
 
                     for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
                         Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
@@ -329,7 +327,7 @@ public class DiagnosticManager {
                             diagnostic.setRange(range);
                             diagnostic.setSeverity(DiagnosticSeverity.Warning);
                             diagnostic.setMessage(
-                                    String.format("SQL: Multiple tables detected; please specify table for column %s",
+                                    String.format("SQL: Multiple tables detected; please specify table for column '%s'",
                                             columnToken.getText()));
                             diagnostics.add(diagnostic);
                         }
@@ -365,7 +363,7 @@ public class DiagnosticManager {
                                 Diagnostic diagnostic = new Diagnostic();
                                 diagnostic.setRange(range);
                                 diagnostic.setSeverity(DiagnosticSeverity.Warning);
-                                diagnostic.setMessage(String.format("SQL: Column %s may not exist on Table %s",
+                                diagnostic.setMessage(String.format("SQL: Column '%s' may not exist on Table '%s'",
                                         columnToken.getText(), tableName));
                                 diagnostics.add(diagnostic);
                             }

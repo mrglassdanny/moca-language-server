@@ -18,6 +18,8 @@ import org.antlr.v4.runtime.Token;
 
 public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
 
+    public static final String MULTIPLE_TABLES_DETECTED_FOR_COLUMN = "__MULTIPLE_TABLES";
+
     public ArrayList<Token> tableTokens;
     public HashMap<String, String> aliasedTableNames;
     public HashMap<String, Token> subqueries;
@@ -121,11 +123,13 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                     if (tblSrcCtx.table_source().size() > 1) {
                         // If greater than 1, we know there are multiple tables. Let's indicate this via
                         // the table name.
-                        tableName = "__MULTIPLE_TABLES";
+                        tableName = MULTIPLE_TABLES_DETECTED_FOR_COLUMN;
                     } else {
                         // Now check if we are joinin in here -- if so, note multiple tables.
-                        if (tblSrcCtx.table_source().get(0).table_source_item_joined().join_part().size() >= 1) {
-                            tableName = "__MULTIPLE_TABLES";
+                        if (tblSrcCtx.table_source().get(0).table_source_item_joined() != null
+                                && tblSrcCtx.table_source().get(0).table_source_item_joined().join_part() != null
+                                && tblSrcCtx.table_source().get(0).table_source_item_joined().join_part().size() >= 1) {
+                            tableName = MULTIPLE_TABLES_DETECTED_FOR_COLUMN;
                         } else {
                             tableName = tblSrcCtx.table_source().get(0).getStop().getText();
                         }
@@ -189,12 +193,14 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                     if (tblSrcCtx.table_source().size() > 1) {
                         // If greater than 1, we know there are multiple tables. Let's indicate this via
                         // the table name.
-                        tableName = "__MULTIPLE_TABLES";
+                        tableName = MULTIPLE_TABLES_DETECTED_FOR_COLUMN;
                     } else {
 
                         // Now check if we are joinin in here -- if so, note multiple tables.
-                        if (tblSrcCtx.table_source().get(0).table_source_item_joined().join_part().size() >= 1) {
-                            tableName = "__MULTIPLE_TABLES";
+                        if (tblSrcCtx.table_source().get(0).table_source_item_joined() != null
+                                && tblSrcCtx.table_source().get(0).table_source_item_joined().join_part() != null
+                                && tblSrcCtx.table_source().get(0).table_source_item_joined().join_part().size() >= 1) {
+                            tableName = MULTIPLE_TABLES_DETECTED_FOR_COLUMN;
                         } else {
                             tableName = tblSrcCtx.table_source().get(0).getStop().getText();
                         }
