@@ -20,6 +20,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResul
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.SubqueryContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyASTUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
@@ -229,7 +230,14 @@ public class CompletionProvider {
                                 } else {
                                     // Must be a subquery.
                                     // See if match in map.
-                                    // TODO: Subquery intellisense.
+                                    if (sqlCompilationResult.sqlParseTreeListener.subqueries
+                                            .containsKey(lowerCaseWord)) {
+                                        populateSqlColumnsFromSubquery(
+                                                sqlCompilationResult.sqlParseTreeListener.subqueryColumns
+                                                        .get(sqlCompilationResult.sqlParseTreeListener.subqueries
+                                                                .get(lowerCaseWord)),
+                                                items);
+                                    }
                                 }
                             }
                         }
@@ -438,7 +446,7 @@ public class CompletionProvider {
         }
     }
 
-    private static void populateSubqueryNames(HashMap<String, Token> subqueries, List<CompletionItem> items) {
+    private static void populateSubqueryNames(HashMap<String, SubqueryContext> subqueries, List<CompletionItem> items) {
 
         for (String subqueryName : subqueries.keySet()) {
             CompletionItem item = new CompletionItem(subqueryName);
@@ -486,8 +494,10 @@ public class CompletionProvider {
         }
     }
 
-    private static void populateSqlColumnsFromSubquery(ArrayList<String> columnNames, List<CompletionItem> items) {
-        for (String columnName : columnNames) {
+    private static void populateSqlColumnsFromSubquery(ArrayList<org.antlr.v4.runtime.Token> columnTokens,
+            List<CompletionItem> items) {
+        for (org.antlr.v4.runtime.Token columnToken : columnTokens) {
+            String columnName = columnToken.getText();
             CompletionItem item = new CompletionItem(columnName);
             item.setDocumentation("from subquery");
             item.setKind(CompletionItemKind.Field);

@@ -28,6 +28,8 @@ import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
 import org.codehaus.groovy.syntax.SyntaxException;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
+import org.eclipse.lsp4j.MessageParams;
+import org.eclipse.lsp4j.MessageType;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.Range;
@@ -266,6 +268,13 @@ public class DiagnosticManager {
                 }
             }
 
+            // Try subqueries.
+            if (!foundTable) {
+                if (sqlParseTreeListener.subqueries.containsKey(tableTokenText)) {
+                    foundTable = true;
+                }
+            }
+
             if (!foundTable) {
 
                 Position beginPos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
@@ -334,42 +343,125 @@ public class DiagnosticManager {
 
                     }
 
-                } else {
-                    tableName = tableName.toLowerCase();
-                    for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
+                } else if (tableName.compareTo(MocaSqlParseTreeListener.NAMELESS_SUBQUERY) == 0) {
+                    // Check columns in here.
+                    // NOTE: could see goofy stuff if multiple nameless subqueries, but that is a
+                    // risk I am willing to take!
+                    ArrayList<org.antlr.v4.runtime.Token> subqueryColumnTokens = sqlParseTreeListener.subqueryColumns
+                            .get(sqlParseTreeListener.subqueries.get(MocaSqlParseTreeListener.NAMELESS_SUBQUERY));
 
-                        ArrayList<TableColumn> columnsInTable = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
-                                .getColumnsForTable(tableName);
+                    if (subqueryColumnTokens != null) {
+                        for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
 
-                        boolean foundColumn = false;
-                        if (columnsInTable != null) {
-                            for (TableColumn tableColumn : columnsInTable) {
-                                if (tableColumn.column_name.compareToIgnoreCase(columnToken.getText()) == 0) {
+                            // Check if column token exists in subquery column token list.
+                            boolean foundColumn = false;
+                            for (org.antlr.v4.runtime.Token subqueryColumnToken : subqueryColumnTokens) {
+                                if (columnToken.getText().compareToIgnoreCase(subqueryColumnToken.getText()) == 0) {
                                     foundColumn = true;
                                     break;
                                 }
                             }
-                        }
 
-                        if (!foundColumn) {
+                            if (!foundColumn) {
+                                Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                        columnToken.getCharPositionInLine(), sqlScriptRange);
+                                Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                        columnToken.getCharPositionInLine(), sqlScriptRange);
 
-                            Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                    columnToken.getCharPositionInLine(), sqlScriptRange);
-                            Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                    columnToken.getCharPositionInLine(), sqlScriptRange);
-
-                            if (beginPos != null && endPos != null) {
-                                Range range = new Range(beginPos, endPos);
-                                Diagnostic diagnostic = new Diagnostic();
-                                diagnostic.setRange(range);
-                                diagnostic.setSeverity(DiagnosticSeverity.Warning);
-                                diagnostic.setMessage(String.format("SQL: Column '%s' may not exist on Table '%s'",
-                                        columnToken.getText(), tableName));
-                                diagnostics.add(diagnostic);
+                                if (beginPos != null && endPos != null) {
+                                    Range range = new Range(beginPos, endPos);
+                                    Diagnostic diagnostic = new Diagnostic();
+                                    diagnostic.setRange(range);
+                                    diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                                    diagnostic.setMessage(String.format("SQL: Column '%s' may not exist in Subquery",
+                                            columnToken.getText(), tableName));
+                                    diagnostics.add(diagnostic);
+                                }
                             }
-
                         }
                     }
+                } else {
+
+                    // Let's see if this table is a subquery.
+                    if (sqlParseTreeListener.subqueries.containsKey(tableName)) {
+
+                        // Check columns in here.
+                        // NOTE: could see goofy stuff if multiple subqueries of the same name, but that
+                        // is a risk I am willing to take!
+                        ArrayList<org.antlr.v4.runtime.Token> subqueryColumnTokens = sqlParseTreeListener.subqueryColumns
+                                .get(sqlParseTreeListener.subqueries.get(tableName));
+
+                        for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
+
+                            // Check if column token exists in subquery column token list.
+                            boolean foundColumn = false;
+                            for (org.antlr.v4.runtime.Token subqueryColumnToken : subqueryColumnTokens) {
+                                if (columnToken.getText().compareToIgnoreCase(subqueryColumnToken.getText()) == 0) {
+                                    foundColumn = true;
+                                    break;
+                                }
+                            }
+
+                            if (!foundColumn) {
+                                Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                        columnToken.getCharPositionInLine(), sqlScriptRange);
+                                Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                        columnToken.getCharPositionInLine(), sqlScriptRange);
+
+                                if (beginPos != null && endPos != null) {
+                                    Range range = new Range(beginPos, endPos);
+                                    Diagnostic diagnostic = new Diagnostic();
+                                    diagnostic.setRange(range);
+                                    diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                                    diagnostic
+                                            .setMessage(String.format("SQL: Column '%s' may not exist on Subquery '%s'",
+                                                    columnToken.getText(), tableName));
+                                    diagnostics.add(diagnostic);
+                                }
+                            }
+                        }
+
+                    } else {
+
+                        tableName = tableName.toLowerCase();
+
+                        // Not a subquery -- handle like normal table!
+                        for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
+
+                            ArrayList<TableColumn> columnsInTable = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
+                                    .getColumnsForTable(tableName);
+
+                            boolean foundColumn = false;
+                            if (columnsInTable != null) {
+                                for (TableColumn tableColumn : columnsInTable) {
+                                    if (tableColumn.column_name.compareToIgnoreCase(columnToken.getText()) == 0) {
+                                        foundColumn = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (!foundColumn) {
+
+                                Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                        columnToken.getCharPositionInLine(), sqlScriptRange);
+                                Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                        columnToken.getCharPositionInLine(), sqlScriptRange);
+
+                                if (beginPos != null && endPos != null) {
+                                    Range range = new Range(beginPos, endPos);
+                                    Diagnostic diagnostic = new Diagnostic();
+                                    diagnostic.setRange(range);
+                                    diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                                    diagnostic.setMessage(String.format("SQL: Column '%s' may not exist on Table '%s'",
+                                            columnToken.getText(), tableName));
+                                    diagnostics.add(diagnostic);
+                                }
+
+                            }
+                        }
+                    }
+
                 }
 
             }
