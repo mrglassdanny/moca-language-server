@@ -328,9 +328,10 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     public void enterAsterisk(MocaSqlParser.AsteriskContext ctx) {
         // MocaSqlParser does not consider '*' a column element, though we want to treat
         // it like one. Instead of just adding it like a regular column elem, we
-        // will get all of the columns in the mocasql cache for the table that it refers
-        // to and add them to the column list. If there are no columns, we will not
-        // worry about adding anything -- including the asterisk.
+        // will get all of the columns in the mocasql cache/subquery for the
+        // table/subquery that it refers to and add them to the column list. If there
+        // are no columns, we will not worry about adding anything -- including the
+        // asterisk.
 
         Token asteriskToken = ctx.getStop();
         ArrayList<Token> columnTokensForAsterisk = new ArrayList<>();
@@ -342,17 +343,60 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             // qualified table name.
             tableName = ctx.table_name().getStop().getText();
 
-            // Get all columns for table from cache since we are dealing with an asterisk.
-            ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
-                    .getColumnsForTable(tableName);
+            // Before we try to get all columns that asterisk is referring to, we need to
+            // see what the table is.
+            boolean processedAsteriskColumns = false;
+            // Check aliases first.
+            if (this.aliasedTableNames.containsKey(tableName)) {
+                processedAsteriskColumns = true;
 
-            if (tableColumnsForAsterisk != null) {
-                for (TableColumn tableColumn : tableColumnsForAsterisk) {
-                    // Should be able to just use all the details for the asterisk token and just
-                    // change the text.
-                    CommonToken commonToken = new CommonToken(asteriskToken);
-                    commonToken.setText(tableColumn.column_name);
-                    columnTokensForAsterisk.add((Token) commonToken);
+                // Get all columns from cache for aliased table.
+                ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
+                        .getColumnsForTable(this.aliasedTableNames.get(tableName));
+
+                if (tableColumnsForAsterisk != null) {
+                    for (TableColumn tableColumn : tableColumnsForAsterisk) {
+                        // Should be able to just use all the details for the asterisk token and just
+                        // change the text.
+                        CommonToken commonToken = new CommonToken(asteriskToken);
+                        commonToken.setText(tableColumn.column_name);
+                        columnTokensForAsterisk.add((Token) commonToken);
+                    }
+                }
+            }
+
+            // Now check table tokens.
+            if (!processedAsteriskColumns && this.tableTokens.contains(ctx.table_name().getStop())) {
+                processedAsteriskColumns = true;
+
+                // Get all columns from cache for table.
+                ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
+                        .getColumnsForTable(tableName);
+
+                if (tableColumnsForAsterisk != null) {
+                    for (TableColumn tableColumn : tableColumnsForAsterisk) {
+                        // Should be able to just use all the details for the asterisk token and just
+                        // change the text.
+                        CommonToken commonToken = new CommonToken(asteriskToken);
+                        commonToken.setText(tableColumn.column_name);
+                        columnTokensForAsterisk.add((Token) commonToken);
+                    }
+                }
+            }
+
+            // Finally, check subqueries.
+            if (!processedAsteriskColumns && this.subqueries.containsKey(tableName)) {
+                processedAsteriskColumns = true;
+
+                ArrayList<Token> subqueryColumnTokens = this.subqueryColumns.get(this.subqueries.get(tableName));
+                if (subqueryColumnTokens != null) {
+                    for (Token subqueryColumnToken : subqueryColumnTokens) {
+                        // Should be able to just use all the details for the asterisk token and just
+                        // change the text.
+                        CommonToken commonToken = new CommonToken(asteriskToken);
+                        commonToken.setText(subqueryColumnToken.getText());
+                        columnTokensForAsterisk.add((Token) commonToken);
+                    }
                 }
             }
 
@@ -393,19 +437,61 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                     }
                 }
 
-                // Get all columns for table from cache since we are dealing with an asterisk.
-                ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
-                        .getColumnsForTable(tableName);
+                // Before we try to get all columns that asterisk is referring to, we need to
+                // see what the table is.
+                boolean processedAsteriskColumns = false;
+                // Check aliases first.
+                if (this.aliasedTableNames.containsKey(tableName)) {
+                    processedAsteriskColumns = true;
 
-                if (tableColumnsForAsterisk != null) {
-                    for (TableColumn tableColumn : tableColumnsForAsterisk) {
-                        // Should be able to just use all the details for the asterisk token and just
-                        // change the text.
-                        CommonToken commonToken = new CommonToken(asteriskToken);
-                        commonToken.setText(tableColumn.column_name);
-                        columnTokensForAsterisk.add((Token) commonToken);
+                    // Get all columns from cache for aliased table.
+                    ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
+                            .getColumnsForTable(this.aliasedTableNames.get(tableName));
+
+                    if (tableColumnsForAsterisk != null) {
+                        for (TableColumn tableColumn : tableColumnsForAsterisk) {
+                            // Should be able to just use all the details for the asterisk token and just
+                            // change the text.
+                            CommonToken commonToken = new CommonToken(asteriskToken);
+                            commonToken.setText(tableColumn.column_name);
+                            columnTokensForAsterisk.add((Token) commonToken);
+                        }
                     }
+                }
 
+                // Now check table tokens.
+                if (!processedAsteriskColumns && this.tableTokens.contains(ctx.table_name().getStop())) {
+                    processedAsteriskColumns = true;
+
+                    // Get all columns from cache for table.
+                    ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
+                            .getColumnsForTable(tableName);
+
+                    if (tableColumnsForAsterisk != null) {
+                        for (TableColumn tableColumn : tableColumnsForAsterisk) {
+                            // Should be able to just use all the details for the asterisk token and just
+                            // change the text.
+                            CommonToken commonToken = new CommonToken(asteriskToken);
+                            commonToken.setText(tableColumn.column_name);
+                            columnTokensForAsterisk.add((Token) commonToken);
+                        }
+                    }
+                }
+
+                // Finally, check subqueries.
+                if (!processedAsteriskColumns && this.subqueries.containsKey(tableName)) {
+                    processedAsteriskColumns = true;
+
+                    ArrayList<Token> subqueryColumnTokens = this.subqueryColumns.get(this.subqueries.get(tableName));
+                    if (subqueryColumnTokens != null) {
+                        for (Token subqueryColumnToken : subqueryColumnTokens) {
+                            // Should be able to just use all the details for the asterisk token and just
+                            // change the text.
+                            CommonToken commonToken = new CommonToken(asteriskToken);
+                            commonToken.setText(subqueryColumnToken.getText());
+                            columnTokensForAsterisk.add((Token) commonToken);
+                        }
+                    }
                 }
 
                 // Now the goal is to see if this column elem is inside of a subquery.
