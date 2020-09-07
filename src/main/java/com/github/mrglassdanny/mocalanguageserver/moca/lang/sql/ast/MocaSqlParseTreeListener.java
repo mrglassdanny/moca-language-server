@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser;
+import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlBaseListener;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Derived_tableContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Dml_clauseContext;
@@ -14,6 +16,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_source_item_joinedContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_sourcesContext;
 
+import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Token;
 
@@ -324,10 +327,13 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterAsterisk(MocaSqlParser.AsteriskContext ctx) {
         // MocaSqlParser does not consider '*' a column element, though we want to treat
-        // it the same way. Therefore, we are going to do the same thing here that we
-        // are doing for column elems.
+        // it like one. Instead of just adding it like a regular column elem, we
+        // will get all of the columns in the mocasql cache for the table that it refers
+        // to and add them to the column list. If there are no columns, we will not
+        // worry about adding anything -- including the asterisk.
 
         Token asteriskToken = ctx.getStop();
+        ArrayList<Token> columnTokensForAsterisk = new ArrayList<>();
 
         String tableName = null;
 
@@ -335,6 +341,20 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             /// Table token we care about will be the last token, since it could be fully
             // qualified table name.
             tableName = ctx.table_name().getStop().getText();
+
+            // Get all columns for table from cache since we are dealing with an asterisk.
+            ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
+                    .getColumnsForTable(tableName);
+
+            if (tableColumnsForAsterisk != null) {
+                for (TableColumn tableColumn : tableColumnsForAsterisk) {
+                    // Should be able to just use all the details for the asterisk token and just
+                    // change the text.
+                    CommonToken commonToken = new CommonToken(asteriskToken);
+                    commonToken.setText(tableColumn.column_name);
+                    columnTokensForAsterisk.add((Token) commonToken);
+                }
+            }
 
         } else {
             // If table name is null, we can get the tables via going up through parents.
@@ -373,6 +393,21 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                     }
                 }
 
+                // Get all columns for table from cache since we are dealing with an asterisk.
+                ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
+                        .getColumnsForTable(tableName);
+
+                if (tableColumnsForAsterisk != null) {
+                    for (TableColumn tableColumn : tableColumnsForAsterisk) {
+                        // Should be able to just use all the details for the asterisk token and just
+                        // change the text.
+                        CommonToken commonToken = new CommonToken(asteriskToken);
+                        commonToken.setText(tableColumn.column_name);
+                        columnTokensForAsterisk.add((Token) commonToken);
+                    }
+
+                }
+
                 // Now the goal is to see if this column elem is inside of a subquery.
                 // Let's try to find a subquery context parent and go from there.
                 SubqueryContext subqueryCtx = (SubqueryContext) getParentRuleContext(ctx, SubqueryContext.class);
@@ -380,13 +415,13 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
 
                     // Check subquery columns map first.
                     if (this.subqueryColumns.containsKey(subqueryCtx)) {
-                        this.subqueryColumns.get(subqueryCtx).add(asteriskToken);
+                        this.subqueryColumns.get(subqueryCtx).addAll(columnTokensForAsterisk);
                     } else {
                         // Let's see if we have an value in the subquery map that matches.
                         if (this.subqueries.values().contains(subqueryCtx)) {
                             // We need to put in a new sub query column map entry.
                             ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
-                            subqueryColumnTokens.add(asteriskToken);
+                            subqueryColumnTokens.addAll(columnTokensForAsterisk);
                             this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
                         }
                     }
@@ -397,10 +432,10 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         // Now add current table token and column to map.
         if (this.columnTokens.containsKey(tableName)) {
             ArrayList<Token> columnTokenList = this.columnTokens.get(tableName);
-            columnTokenList.add(asteriskToken);
+            columnTokenList.addAll(columnTokensForAsterisk);
         } else {
             ArrayList<Token> columnTokenList = new ArrayList<>();
-            columnTokenList.add(asteriskToken);
+            columnTokenList.addAll(columnTokensForAsterisk);
             this.columnTokens.put(tableName, columnTokenList);
         }
     }

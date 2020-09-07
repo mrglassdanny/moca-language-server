@@ -249,14 +249,10 @@ public class DiagnosticManager {
 
             String tableTokenText = tableToken.getText().toLowerCase();
 
-            if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.containsKey(tableTokenText)) {
+            // Check tables and views.
+            if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.containsKey(tableTokenText)
+                    || MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.containsKey(tableTokenText)) {
                 foundTable = true;
-            }
-
-            if (!foundTable) {
-                if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.containsKey(tableTokenText)) {
-                    foundTable = true;
-                }
             }
 
             // Check to see if is alias for table name.
@@ -305,24 +301,24 @@ public class DiagnosticManager {
         for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : sqlParseTreeListener.columnTokens
                 .entrySet()) {
 
-            // Key(table name) could be null if no table name was specified on column.
             String tableName = entry.getKey();
 
             // Before we continue, we need to check if this is an alias for another table.
             if (sqlParseTreeListener.aliasedTableNames.containsKey(tableName)) {
-                // Switch to actual name.
+                // Switch to actual table name.
                 // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree -- a
                 // risk I am willing to take!
                 tableName = sqlParseTreeListener.aliasedTableNames.get(tableName);
             }
 
             if (tableName == null) {
-                // Nothing for now...
+                // Should not be null..
             } else {
-                // Basically we are going to validate table/column pair exists in cache.
+                // Analyze table name and see if column(s) exist for it.
 
-                // Make sure to check the multiple tables condition.
                 if (tableName.compareTo(MocaSqlParseTreeListener.MULTIPLE_TABLES_DETECTED_FOR_COLUMN) == 0) {
+
+                    // This is bad practice -- return warning to user.
 
                     for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
                         Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
@@ -343,17 +339,19 @@ public class DiagnosticManager {
 
                     }
 
-                } else if (tableName.compareTo(MocaSqlParseTreeListener.NAMELESS_SUBQUERY) == 0) {
-                    // Check columns in here.
-                    // NOTE: could see goofy stuff if multiple nameless subqueries, but that is a
+                } else if (tableName.compareTo(MocaSqlParseTreeListener.ANONYMOUS_SUBQUERY) == 0) {
+
+                    // Dealing with anon subquery -- check columns in map for anon subquery key.
+                    // NOTE: could see goofy stuff if multiple anonymous subqueries, but that is a
                     // risk I am willing to take!
                     ArrayList<org.antlr.v4.runtime.Token> subqueryColumnTokens = sqlParseTreeListener.subqueryColumns
-                            .get(sqlParseTreeListener.subqueries.get(MocaSqlParseTreeListener.NAMELESS_SUBQUERY));
+                            .get(sqlParseTreeListener.subqueries.get(MocaSqlParseTreeListener.ANONYMOUS_SUBQUERY));
 
                     if (subqueryColumnTokens != null) {
                         for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
 
                             // Check if column token exists in subquery column token list.
+                            // Need to compare token text since objects are likely different instances.
                             boolean foundColumn = false;
                             for (org.antlr.v4.runtime.Token subqueryColumnToken : subqueryColumnTokens) {
                                 if (columnToken.getText().compareToIgnoreCase(subqueryColumnToken.getText()) == 0) {
@@ -394,6 +392,7 @@ public class DiagnosticManager {
                         for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
 
                             // Check if column token exists in subquery column token list.
+                            // Need to compare token text since objects are likely different instances.
                             boolean foundColumn = false;
                             for (org.antlr.v4.runtime.Token subqueryColumnToken : subqueryColumnTokens) {
                                 if (columnToken.getText().compareToIgnoreCase(subqueryColumnToken.getText()) == 0) {
@@ -423,9 +422,11 @@ public class DiagnosticManager {
 
                     } else {
 
+                        // Do not worry about checking aliases -- we did so above and table name has
+                        // been adjusted accordingly.
+
                         tableName = tableName.toLowerCase();
 
-                        // Not a subquery -- handle like normal table!
                         for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
 
                             ArrayList<TableColumn> columnsInTable = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
