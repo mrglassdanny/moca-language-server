@@ -4,10 +4,8 @@ grammar Moca;
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 }
 
-// UNIMPLEMENTED: Annotations,
-// SQL Hints, Special command arguments
+// UNIMPLEMENTED: Annotations, SQL Hints, Special command arguments
 
-// PARSER --------------------------------------------------------
 
 moca_script: sequence EOF;
 
@@ -244,7 +242,6 @@ groovy_script: DOUBLE_BRACKET_STRING;
 sql_script: SINGLE_BRACKET_STRING;
 
 
-// LEXER ---------------------------------------------------------
 
 DOUBLE_BRACKET_STRING: LEFT_BRACKET FRAGMENT_SINGLE_BRACKET_STRING RIGHT_BRACKET;
 SINGLE_BRACKET_STRING: FRAGMENT_SINGLE_BRACKET_STRING;
