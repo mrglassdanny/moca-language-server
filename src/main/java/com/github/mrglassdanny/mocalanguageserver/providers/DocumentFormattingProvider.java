@@ -97,7 +97,7 @@ public class DocumentFormattingProvider {
                                 }
 
                         } else if (mocaToken.getType() == MocaLexer.DOUBLE_BRACKET_STRING) {
-                                // TODO: format groovy!
+                                // Format groovy!
                         }
                 }
 

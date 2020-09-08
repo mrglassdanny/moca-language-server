@@ -35,7 +35,7 @@ public class SignatureHelpProvider {
 
         switch (ctx.id) {
             case Moca:
-                // TODO - maybe for moca commands and their required args?
+                // Maybe for moca commands and their required args?
                 break;
             case MocaSql:
                 // Only thing we could do here would be functions...
