@@ -13,10 +13,10 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaSyntaxError;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.MocaSqlParseTreeListener;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.MocaSqlSyntaxError;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.MocaSqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlParseTreeListener;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlSyntaxError;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
@@ -82,9 +82,10 @@ public class DiagnosticManager {
         diagnostics.addAll(handleMocaSyntaxErrors(uriStr, mocaCompiler.currentCompilationResult));
 
         // SQL.
-        for (int i = 0; i < mocaCompiler.sqlRanges.size(); i++) {
-            diagnostics.addAll(handleSqlSyntaxErrors(uriStr,
-                    mocaCompiler.currentCompilationResult.sqlCompilationResults.get(i), mocaCompiler.sqlRanges.get(i)));
+        for (int i = 0; i < mocaCompiler.mocaSqlRanges.size(); i++) {
+            diagnostics.addAll(handleMocaSqlSyntaxErrors(uriStr,
+                    mocaCompiler.currentCompilationResult.mocaSqlCompilationResults.get(i),
+                    mocaCompiler.mocaSqlRanges.get(i)));
         }
 
         // GROOVY.
@@ -108,14 +109,14 @@ public class DiagnosticManager {
         diagnostics.addAll(handleMocaCommandMayNotExistWarnings(uriStr, script, mocaCompiler));
 
         // SQL.
-        for (int i = 0; i < mocaCompiler.sqlRanges.size(); i++) {
-            MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
+        for (int i = 0; i < mocaCompiler.mocaSqlRanges.size(); i++) {
+            MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
                     .get(i);
-            Range sqlRange = mocaCompiler.sqlRanges.get(i);
-            diagnostics.addAll(handleSqlTableMayNotExistWarnings(uriStr, script,
-                    sqlCompilationResult.sqlParseTreeListener, sqlRange));
-            diagnostics.addAll(handleSqlColumnsMayNotExistInTableWarnings(uriStr, script,
-                    sqlCompilationResult.sqlParseTreeListener, sqlRange));
+            Range sqlRange = mocaCompiler.mocaSqlRanges.get(i);
+            diagnostics.addAll(handleMocaSqlTableMayNotExistWarnings(uriStr, script,
+                    sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
+            diagnostics.addAll(handleMocaSqlColumnsMayNotExistInTableWarnings(uriStr, script,
+                    sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
         }
 
         return diagnostics;
@@ -214,7 +215,7 @@ public class DiagnosticManager {
     }
 
     // SQL.
-    private static ArrayList<Diagnostic> handleSqlSyntaxErrors(String uriStr,
+    private static ArrayList<Diagnostic> handleMocaSqlSyntaxErrors(String uriStr,
             MocaSqlCompilationResult compilationResult, Range sqlScriptRange) {
         if (!compilationResult.hasSqlErrors()) {
             return new ArrayList<Diagnostic>();
@@ -222,7 +223,7 @@ public class DiagnosticManager {
             // Set diagnostics.
             ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
-            for (MocaSqlSyntaxError sqlSyntaxError : compilationResult.sqlSyntaxErrorListener.sqlSyntaxErrors) {
+            for (MocaSqlSyntaxError sqlSyntaxError : compilationResult.mocaSqlSyntaxErrorListener.sqlSyntaxErrors) {
                 Range range = MocaSqlLanguageUtils.syntaxExceptionToRange(sqlSyntaxError, sqlScriptRange);
                 Diagnostic diagnostic = new Diagnostic();
                 diagnostic.setRange(range);
@@ -235,7 +236,7 @@ public class DiagnosticManager {
         }
     }
 
-    private static ArrayList<Diagnostic> handleSqlTableMayNotExistWarnings(String uriStr, String script,
+    private static ArrayList<Diagnostic> handleMocaSqlTableMayNotExistWarnings(String uriStr, String script,
             MocaSqlParseTreeListener sqlParseTreeListener, Range sqlScriptRange) {
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
@@ -293,7 +294,7 @@ public class DiagnosticManager {
         return diagnostics;
     }
 
-    private static ArrayList<Diagnostic> handleSqlColumnsMayNotExistInTableWarnings(String uriStr, String script,
+    private static ArrayList<Diagnostic> handleMocaSqlColumnsMayNotExistInTableWarnings(String uriStr, String script,
             MocaSqlParseTreeListener sqlParseTreeListener, Range sqlScriptRange) {
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
@@ -541,7 +542,7 @@ public class DiagnosticManager {
             // Now let's check if todo is in sql or groovy range.
             boolean inSqlRange = false;
             boolean inGroovyRange = false;
-            for (Range sqlRange : mocaCompiler.sqlRanges) {
+            for (Range sqlRange : mocaCompiler.mocaSqlRanges) {
                 if (Ranges.contains(sqlRange, range)) {
                     inSqlRange = true;
                     break;

@@ -9,8 +9,8 @@ import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.MocaSqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
 import org.eclipse.lsp4j.Position;
@@ -24,23 +24,23 @@ import org.eclipse.lsp4j.util.SemanticHighlightingTokens.Token;
 
 public class SemanticHighlightingManager {
 
-    private static final int SQL_RANGE_SCOPES_IDX = 0;
-    private static final int SQL_RANGE_LAST_LINE_SCOPES_IDX = 1;
+    private static final int MOCASQL_RANGE_SCOPES_IDX = 0;
+    private static final int MOCASQL_RANGE_LAST_LINE_SCOPES_IDX = 1;
     private static final int GROOVY_RANGE_SCOPES_IDX = 2;
     private static final int GROOVY_RANGE_LAST_LINE_SCOPES_IDX = 3;
     private static final int MOCA_COMMAND_SCOPES_IDX = 4;
     private static final int MOCA_COMMAND_STREAM_END_SCOPES_IDX = 5;
-    private static final int SQL_TABLE_SCOPES_IDX = 6;
+    private static final int MOCASQL_TABLE_SCOPES_IDX = 6;
 
     public static List<List<String>> textmateScopes = new ArrayList<>();
 
     public static void setTextmateScopes() {
 
-        List<String> sqlRangeScopes = new ArrayList<>();
-        sqlRangeScopes.add("moca.sql");
+        List<String> mocaSqlRangeScopes = new ArrayList<>();
+        mocaSqlRangeScopes.add("moca.sql");
 
-        List<String> sqlRangeLastLineScopes = new ArrayList<>();
-        sqlRangeLastLineScopes.add("moca.sql.lastline");
+        List<String> mocaSqlRangeLastLineScopes = new ArrayList<>();
+        mocaSqlRangeLastLineScopes.add("moca.sql.lastline");
 
         List<String> groovyRangeScopes = new ArrayList<>();
         groovyRangeScopes.add("moca.groovy");
@@ -54,16 +54,16 @@ public class SemanticHighlightingManager {
         List<String> mocaCommandStreamEndScopes = new ArrayList<>();
         mocaCommandStreamEndScopes.add("moca.commandstream.end");
 
-        List<String> sqlTableScopes = new ArrayList<>();
-        sqlTableScopes.add("entity.name.type.class");
+        List<String> mocaSqlTableScopes = new ArrayList<>();
+        mocaSqlTableScopes.add("entity.name.type.class");
 
-        textmateScopes.add(sqlRangeScopes);
-        textmateScopes.add(sqlRangeLastLineScopes);
+        textmateScopes.add(mocaSqlRangeScopes);
+        textmateScopes.add(mocaSqlRangeLastLineScopes);
         textmateScopes.add(groovyRangeScopes);
         textmateScopes.add(groovyRangeLastLineScopes);
         textmateScopes.add(mocaCommandScopes);
         textmateScopes.add(mocaCommandStreamEndScopes);
-        textmateScopes.add(sqlTableScopes);
+        textmateScopes.add(mocaSqlTableScopes);
     }
 
     public static void streamAll(LanguageClient client, String uriStr, String mocaScript, MocaCompiler mocaCompiler) {
@@ -79,9 +79,9 @@ public class SemanticHighlightingManager {
         HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
 
         // Get semantic highlights.
-        HashMap<Integer, ArrayList<Token>> sqlRangePreInfos = getSqlRangeSemanticHighlightings(lines, mocaScript,
-                mocaCompiler, client);
-        for (Map.Entry<Integer, ArrayList<Token>> entry : sqlRangePreInfos.entrySet()) {
+        HashMap<Integer, ArrayList<Token>> mocaSqlRangePreInfos = getMocaSqlRangeSemanticHighlightings(lines,
+                mocaScript, mocaCompiler, client);
+        for (Map.Entry<Integer, ArrayList<Token>> entry : mocaSqlRangePreInfos.entrySet()) {
 
             int lineNum = entry.getKey();
             if (preInfos.containsKey(lineNum)) {
@@ -131,9 +131,9 @@ public class SemanticHighlightingManager {
                 preInfos.put(lineNum, arr);
             }
         }
-        HashMap<Integer, ArrayList<Token>> sqlTablePreInfos = getSqlTableSemanticHighlightings(lines, mocaScript,
-                mocaCompiler, client);
-        for (Map.Entry<Integer, ArrayList<Token>> entry : sqlTablePreInfos.entrySet()) {
+        HashMap<Integer, ArrayList<Token>> mocaSqlTablePreInfos = getMocaSqlTableSemanticHighlightings(lines,
+                mocaScript, mocaCompiler, client);
+        for (Map.Entry<Integer, ArrayList<Token>> entry : mocaSqlTablePreInfos.entrySet()) {
 
             int lineNum = entry.getKey();
             if (preInfos.containsKey(lineNum)) {
@@ -157,7 +157,7 @@ public class SemanticHighlightingManager {
         client.semanticHighlighting(params);
     }
 
-    public static HashMap<Integer, ArrayList<Token>> getSqlRangeSemanticHighlightings(
+    public static HashMap<Integer, ArrayList<Token>> getMocaSqlRangeSemanticHighlightings(
             List<SemanticHighlightingInformation> lines, String mocaScript, MocaCompiler mocaCompiler,
             LanguageClient client) {
 
@@ -165,16 +165,16 @@ public class SemanticHighlightingManager {
         // object.
         HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
 
-        for (Range sqlRange : mocaCompiler.sqlRanges) {
-            int firstLine = sqlRange.getStart().getLine();
-            int lastLine = sqlRange.getEnd().getLine();
+        for (Range mocaSqlRange : mocaCompiler.mocaSqlRanges) {
+            int firstLine = mocaSqlRange.getStart().getLine();
+            int lastLine = mocaSqlRange.getEnd().getLine();
 
             for (int i = firstLine; i < lastLine; i++) {
                 if (preInfos.containsKey(i)) {
-                    preInfos.get(i).add(new Token(0, 5, SQL_RANGE_SCOPES_IDX));
+                    preInfos.get(i).add(new Token(0, 5, MOCASQL_RANGE_SCOPES_IDX));
                 } else {
                     ArrayList<Token> tokensArr = new ArrayList<>();
-                    tokensArr.add(new Token(0, 5, SQL_RANGE_SCOPES_IDX));
+                    tokensArr.add(new Token(0, 5, MOCASQL_RANGE_SCOPES_IDX));
                     preInfos.put(i, tokensArr);
                 }
             }
@@ -182,10 +182,10 @@ public class SemanticHighlightingManager {
             // Add last line now.
             if (preInfos.containsKey(lastLine)) {
                 preInfos.get(lastLine)
-                        .add(new Token(0, sqlRange.getEnd().getCharacter(), SQL_RANGE_LAST_LINE_SCOPES_IDX));
+                        .add(new Token(0, mocaSqlRange.getEnd().getCharacter(), MOCASQL_RANGE_LAST_LINE_SCOPES_IDX));
             } else {
                 ArrayList<Token> tokensArr = new ArrayList<>();
-                tokensArr.add(new Token(0, sqlRange.getEnd().getCharacter(), SQL_RANGE_LAST_LINE_SCOPES_IDX));
+                tokensArr.add(new Token(0, mocaSqlRange.getEnd().getCharacter(), MOCASQL_RANGE_LAST_LINE_SCOPES_IDX));
                 preInfos.put(lastLine, tokensArr);
             }
 
@@ -298,7 +298,7 @@ public class SemanticHighlightingManager {
         return preInfos;
     }
 
-    public static HashMap<Integer, ArrayList<Token>> getSqlTableSemanticHighlightings(
+    public static HashMap<Integer, ArrayList<Token>> getMocaSqlTableSemanticHighlightings(
             List<SemanticHighlightingInformation> lines, String mocaScript, MocaCompiler mocaCompiler,
             LanguageClient client) {
 
@@ -306,34 +306,34 @@ public class SemanticHighlightingManager {
         // object.
         HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
 
-        for (int i = 0; i < mocaCompiler.sqlRanges.size(); i++) {
+        for (int i = 0; i < mocaCompiler.mocaSqlRanges.size(); i++) {
 
-            MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
+            MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
                     .get(i);
 
             // Quit now if no compilation result.
-            if (sqlCompilationResult != null) {
+            if (mocaSqlCompilationResult != null) {
 
-                for (org.antlr.v4.runtime.Token tableToken : sqlCompilationResult.sqlParseTreeListener.tableTokens) {
+                for (org.antlr.v4.runtime.Token tableToken : mocaSqlCompilationResult.mocaSqlParseTreeListener.tableTokens) {
 
                     Position pos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
-                            tableToken.getCharPositionInLine(), mocaCompiler.sqlRanges.get(i));
+                            tableToken.getCharPositionInLine(), mocaCompiler.mocaSqlRanges.get(i));
 
-                    String sqlWord = tableToken.getText().toLowerCase();
+                    String word = tableToken.getText().toLowerCase();
 
                     // Check if exists in tables/views before we add to map.
-                    if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.containsKey(sqlWord)
-                            || MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.containsKey(sqlWord)) {
+                    if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.containsKey(word)
+                            || MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.containsKey(word)) {
 
                         // Let's make sure real quick that this is not a '@' var.
                         int offset = Positions.getOffset(mocaScript, pos);
                         if (offset > 0 && (offset - 1) < mocaScript.length() && mocaScript.charAt(offset - 1) != '@') {
                             if (preInfos.containsKey(pos.getLine())) {
                                 preInfos.get(pos.getLine())
-                                        .add(new Token(pos.getCharacter(), sqlWord.length(), SQL_TABLE_SCOPES_IDX));
+                                        .add(new Token(pos.getCharacter(), word.length(), MOCASQL_TABLE_SCOPES_IDX));
                             } else {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
-                                tokensArr.add(new Token(pos.getCharacter(), sqlWord.length(), SQL_TABLE_SCOPES_IDX));
+                                tokensArr.add(new Token(pos.getCharacter(), word.length(), MOCASQL_TABLE_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }
                         }

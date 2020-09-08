@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast;
 
 import java.util.ArrayList;
 import java.util.HashMap;

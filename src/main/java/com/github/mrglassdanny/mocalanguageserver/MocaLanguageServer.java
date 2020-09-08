@@ -7,8 +7,8 @@ import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.managers.SemanticHighlightingManager;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompiler;
 import com.github.mrglassdanny.mocalanguageserver.providers.ExecuteCommandProvider;
 
 import org.eclipse.lsp4j.CompletionOptions;

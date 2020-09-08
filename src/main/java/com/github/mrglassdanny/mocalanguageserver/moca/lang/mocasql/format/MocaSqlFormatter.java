@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.format;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.format;
 
 import java.io.IOException;
 import java.nio.file.Files;

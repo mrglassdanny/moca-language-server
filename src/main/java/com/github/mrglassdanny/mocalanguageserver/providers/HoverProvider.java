@@ -17,7 +17,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompila
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.ast.GroovyASTNodeVisitor;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyASTUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyNodeToStringUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
 import org.codehaus.groovy.ast.ASTNode;
@@ -97,11 +97,11 @@ public class HoverProvider {
                 }
 
                 break;
-            case Sql:
+            case MocaSql:
 
                 // For hover, we need to make sure the sql compiliation result we are
                 // looking at has no errors.
-                MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
+                MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
                         .get(ctx.rangeIdx);
 
                 // Tables, views, aliases, and subqueries - oh my!
@@ -125,16 +125,16 @@ public class HoverProvider {
                     }
 
                     // If not, check aliased tables/views/subqueries.
-                    if (sqlCompilationResult != null && sqlCompilationResult.sqlParseTreeListener != null
-                            && sqlCompilationResult.sqlParseTreeListener.aliasedTableNames != null
-                            && sqlCompilationResult.sqlParseTreeListener.aliasedTableNames.containsKey(sqlWord)) {
+                    if (sqlCompilationResult != null && sqlCompilationResult.mocaSqlParseTreeListener != null
+                            && sqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames != null
+                            && sqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames.containsKey(sqlWord)) {
                         contents.add(Either.forRight(new MarkedString("plaintext", String.format("(alias) '%s'",
-                                sqlCompilationResult.sqlParseTreeListener.aliasedTableNames.get(sqlWord)))));
+                                sqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames.get(sqlWord)))));
                         return CompletableFuture.completedFuture(hover);
                     }
-                    if (sqlCompilationResult != null && sqlCompilationResult.sqlParseTreeListener != null
-                            && sqlCompilationResult.sqlParseTreeListener.subqueries != null
-                            && sqlCompilationResult.sqlParseTreeListener.subqueries.containsKey(sqlWord)) {
+                    if (sqlCompilationResult != null && sqlCompilationResult.mocaSqlParseTreeListener != null
+                            && sqlCompilationResult.mocaSqlParseTreeListener.subqueries != null
+                            && sqlCompilationResult.mocaSqlParseTreeListener.subqueries.containsKey(sqlWord)) {
                         contents.add(Either
                                 .forRight(new MarkedString("plaintext", String.format("subquery '%s'", sqlWord))));
                         return CompletableFuture.completedFuture(hover);

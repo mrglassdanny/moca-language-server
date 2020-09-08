@@ -165,7 +165,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                 return CompletionProvider.provideCompletion(params.getTextDocument(), params.getPosition(),
                         this.fileManager.getContents(URI.create(params.getTextDocument().getUri())),
                         params.getContext(), this.mocaCompiler);
-            case Sql:
+            case MocaSql:
                 return CompletionProvider.provideCompletion(params.getTextDocument(), params.getPosition(),
                         this.fileManager.getContents(URI.create(params.getTextDocument().getUri())),
                         params.getContext(), this.mocaCompiler);
@@ -235,7 +235,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         switch (ctx.id) {
             case Moca:
                 break;
-            case Sql:
+            case MocaSql:
                 break;
             case Groovy:
                 String originalSource = null;

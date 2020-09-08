@@ -37,7 +37,7 @@ public class SignatureHelpProvider {
             case Moca:
                 // TODO - maybe for moca commands and their required args?
                 break;
-            case Sql:
+            case MocaSql:
                 // Only thing we could do here would be functions...
                 break;
             case Groovy:

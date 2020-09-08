@@ -6,7 +6,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaParseTreeLis
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaSyntaxErrorListener;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
 
 public class MocaCompilationResult {
 
@@ -14,7 +14,7 @@ public class MocaCompilationResult {
     public MocaParseTreeListener mocaParseTreeListener;
     public MocaSyntaxErrorListener mocaSyntaxErrorListener;
 
-    public HashMap<Integer, MocaSqlCompilationResult> sqlCompilationResults;
+    public HashMap<Integer, MocaSqlCompilationResult> mocaSqlCompilationResults;
     public HashMap<Integer, GroovyCompilationResult> groovyCompilationResults;
 
     public MocaCompilationResult() {
@@ -23,7 +23,7 @@ public class MocaCompilationResult {
         this.mocaParseTreeListener = null;
         this.mocaSyntaxErrorListener = null;
 
-        this.sqlCompilationResults = null;
+        this.mocaSqlCompilationResults = null;
         this.groovyCompilationResults = null;
 
     }

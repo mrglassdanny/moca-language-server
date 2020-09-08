@@ -116,7 +116,7 @@ public class DefinitionProvider {
                     }
                 }
                 return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
-            case Sql:
+            case MocaSql:
                 return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
             case Groovy:
 

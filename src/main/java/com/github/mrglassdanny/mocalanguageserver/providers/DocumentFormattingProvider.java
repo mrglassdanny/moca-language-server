@@ -8,9 +8,8 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.format.MocaFormatter;
-
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.format.MocaSqlFormatter;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.MocaSqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.format.MocaSqlFormatter;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
 import org.antlr.v4.runtime.Token;
@@ -70,7 +69,7 @@ public class DocumentFormattingProvider {
 
                                 // Make sure we are dealing with actual sql string.
                                 String tokenText = mocaToken.getText();
-                                if (MocaSqlLanguageUtils.isMocaTokenValueSqlScript(tokenText)) {
+                                if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(tokenText)) {
                                         // Remove brackets for formatting.
                                         String sqlScript = tokenText.substring(1, tokenText.length() - 1);
 
