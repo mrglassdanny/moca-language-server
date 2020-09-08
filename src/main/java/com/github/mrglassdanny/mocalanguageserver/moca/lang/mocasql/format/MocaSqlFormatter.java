@@ -44,39 +44,49 @@ public class MocaSqlFormatter {
 
             Files.createDirectories(Paths.get(defaultPath));
 
-            String exampleFormattedMocaSqlScript = "SELECT a, \n" + "       b, \n" + "       c, \n" + "       d, \n"
-                    + "       e \n" + "FROM   l \n" + "WHERE  l.a = '' \n" + "       AND l.b = 'asdf' \n"
-                    + "       AND c = 'asdf' \n" + "       AND d = 10\n" + "\t   \n" + "SELECT DISTINCT a, \n"
-                    + "                b, \n" + "                c, \n" + "                d, \n"
-                    + "                e \n" + "FROM   l \n" + "       JOIN z \n" + "         ON l.a = z.a \n"
-                    + "            AND l.b = z.b \n" + "       LEFT JOIN oo \n" + "              ON z.a = o.a \n"
-                    + "       RIGHT JOIN zz \n" + "               ON z.z = zz.z \n" + "WHERE  l.a = '' \n"
-                    + "       AND l.b = 'asdf' \n" + "       AND c = 'asdf' \n" + "       AND d = 10 \n"
-                    + "GROUP  BY a, \n" + "          b, \n" + "          c \n" + "ORDER  BY a, \n" + "          b, \n"
-                    + "          c \n" + "\n" + "INSERT INTO l \n" + "            (a, \n" + "             b, \n"
-                    + "             c, \n" + "             d) \n" + "VALUES      ('asdf', \n" + "             asdf, \n"
-                    + "             'asdf', \n" + "             654) \n" + "\t\t\t \n" + "UPDATE abc \n"
-                    + "SET    a = '', \n" + "       b = 10, \n" + "       c = asdf \n" + "WHERE  a = '' \n"
-                    + "       AND abc.b = 10 \n" + "       AND abc.c = asdf \n" + "\t   \n" + "DELETE FROM abc \n"
-                    + "WHERE  a = 10 \n" + "       AND b = 'asdf' \n" + "       AND abc.d = foo \n"
-                    + "       AND abc.e = bar \n" + "\t   \n" + "SELECT a, \n" + "       b, \n" + "       c, \n"
-                    + "       d, \n" + "       e \n" + "FROM   l \n" + "WHERE  l.a = '' \n"
-                    + "       AND l.b = 'asdf' \n" + "       AND c = 'asdf' \n" + "       AND d = 10\n" + "\t   \n"
-                    + "SELECT DISTINCT a, \n" + "                b, \n" + "                c, \n"
-                    + "                d, \n" + "                e \n" + "FROM   l \n" + "       JOIN z \n"
-                    + "         ON l.a = z.a \n" + "            AND l.b = z.b \n" + "       LEFT JOIN oo \n"
-                    + "              ON z.a = o.a \n" + "       RIGHT JOIN zz \n" + "               ON z.z = zz.z \n"
-                    + "WHERE  l.a = '' \n" + "       AND l.b = @asdlkfj:raw\n" + "       AND @+asdf\n"
-                    + "       AND @* \n" + "GROUP  BY a, \n" + "          b, \n" + "          c \n" + "ORDER  BY a, \n"
-                    + "          b, \n" + "          c \n" + "\n" + "INSERT INTO l \n" + "            (a, \n"
-                    + "             b, \n" + "             c, \n" + "             d) \n" + "VALUES      ('asdf', \n"
-                    + "             asdf, \n" + "             'asdf', \n" + "             654) \n" + "\t\t\t \n"
-                    + "UPDATE abc \n" + "SET    a = '', \n" + "       b = 10, \n" + "       c = asdf \n"
-                    + "WHERE  a = '' \n" + "       AND abc.b = 10 \n" + "       AND abc.c = nvl(asdf, @asdlfkj) \n"
-                    + "\t   \n" + "DELETE FROM abc \n" + "WHERE  a = 10 \n" + "       AND b = 'asdf' \n"
-                    + "       AND abc.d = @@foo \n" + "       AND abc.e = @bar ";
+            String exampleSelect1 = "select a, \n" + "       b, \n" + "       c, \n" + "       d, \n" + "       e \n"
+                    + "from   l \n" + "where  l.a = '' \n" + "       and l.b = 'asdf' \n" + "       and c = 'asdf' \n"
+                    + "       and d = 10";
 
-            Files.write(Paths.get(defaultPath + "\\file.mocasql"), exampleFormattedMocaSqlScript.getBytes());
+            String exampleSelect2 = "select distinct a, \n" + "                b, \n" + "                c, \n"
+                    + "                d, \n" + "                e \n" + "from   l \n" + "       join z \n"
+                    + "         on l.a = z.a \n" + "            and l.b = z.b \n" + "       left join oo \n"
+                    + "              on z.a = o.a \n" + "       right join zz \n" + "               on z.z = zz.z \n"
+                    + "where  l.a = '' \n" + "       and l.b = 'asdf' \n" + "       and c = 'asdf' \n"
+                    + "       and d = 10 \n" + "group  by a, \n" + "          b, \n" + "          c \n"
+                    + "order  by a, \n" + "          b, \n" + "          c ";
+
+            String exampleInsert1 = "insert into l \n" + "            (a, \n" + "             b, \n"
+                    + "             c, \n" + "             d) \n" + "values      ('asdf', \n" + "             asdf, \n"
+                    + "             'asdf', \n" + "             654) ";
+
+            String exampleUpdate1 = "update abc \n" + "set    a = '', \n" + "       b = 10, \n" + "       c = asdf \n"
+                    + "where  a = '' \n" + "       and abc.b = 10 \n" + "       and abc.c = asdf ";
+
+            String exampleDelete1 = "delete from abc \n" + "where  a = 10 \n" + "       and b = 'asdf' \n"
+                    + "       and abc.d = foo \n" + "       and abc.e = bar ";
+
+            String exampleSelect3 = "select distinct a, \n" + "                b, \n" + "                c, \n"
+                    + "                d, \n" + "                e \n" + "from   l \n" + "       join z \n"
+                    + "         on l.a = z.a \n" + "            and l.b = z.b \n" + "       left join oo \n"
+                    + "              on z.a = o.a \n" + "       right join zz \n" + "               on z.z = zz.z \n"
+                    + "where  l.a = '' \n" + "       and l.b = @asdlkfj:raw\n" + "       and @+asdf\n"
+                    + "       and @* \n" + "group  by a, \n" + "          b, \n" + "          c \n" + "order  by a, \n"
+                    + "          b, \n" + "          c ";
+
+            String exampleUpdate2 = "update abc \n" + "set    a = '', \n" + "       b = 10, \n" + "       c = asdf \n"
+                    + "where  a = '' \n" + "       and abc.b = 10 \n" + "       and abc.c = nvl(asdf, @asdlfkj)";
+            String exampleDelete2 = "delete from abc \n" + "where  a = 10 \n" + "       and b = 'asdf' \n"
+                    + "       and abc.d = @@foo \n" + "       and abc.e = @bar ";
+
+            Files.write(Paths.get(defaultPath + "\\select1.mocasql"), exampleSelect1.getBytes());
+            Files.write(Paths.get(defaultPath + "\\select2.mocasql"), exampleSelect2.getBytes());
+            Files.write(Paths.get(defaultPath + "\\insert1.mocasql"), exampleInsert1.getBytes());
+            Files.write(Paths.get(defaultPath + "\\update1.mocasql"), exampleUpdate1.getBytes());
+            Files.write(Paths.get(defaultPath + "\\delete1.mocasql"), exampleDelete1.getBytes());
+            Files.write(Paths.get(defaultPath + "\\select3.mocasql"), exampleSelect3.getBytes());
+            Files.write(Paths.get(defaultPath + "\\update2.mocasql"), exampleUpdate2.getBytes());
+            Files.write(Paths.get(defaultPath + "\\delete2.mocasql"), exampleDelete2.getBytes());
         }
 
     }

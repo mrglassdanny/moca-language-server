@@ -44,13 +44,13 @@ public class MocaFormatter {
 
             Files.createDirectories(Paths.get(defaultPath));
 
-            String exampleFormattedMocaScript = "example moca command\n" + " where var_a = 'string'\n"
-                    + "   and var_b = @var\n" + "   and var_c = @@env_var\n" + "   and var_d = @var:date\n"
-                    + "   and var_e = @var#onstack\n" + "   and @+var\n" + "   and @%var\n" + "   and @*\n" + "|\n"
-                    + "another example command\n" + " where var_a = nvl(@func, @@func)\n"
-                    + "   and var_b = 'string again';\n" + "another example command\n" + " where var_a = 'adfadsf'\n"
-                    + "   and var_b = @@abc &\n" + "so many commands >> res;\n" + "test abc catch(510, -1403, @?)\n"
-                    + "|\n" + "say hello to my little friend\n" + " where friend = 'machine gun' catch(@?)\n" + "|\n"
+            String example1 = "example moca command\n" + " where var_a = 'string'\n" + "   and var_b = @var\n"
+                    + "   and var_c = @@env_var\n" + "   and var_d = @var:date\n" + "   and var_e = @var#onstack\n"
+                    + "   and @+var\n" + "   and @%var\n" + "   and @*\n" + "|\n" + "another example command\n"
+                    + " where var_a = nvl(@func, @@func)\n" + "   and var_b = 'string again';\n"
+                    + "another example command\n" + " where var_a = 'adfadsf'\n" + "   and var_b = @@abc &\n"
+                    + "so many commands >> res;\n" + "test abc catch(510, -1403, @?)\n" + "|\n"
+                    + "say hello to my little friend\n" + " where friend = 'machine gun' catch(@?)\n" + "|\n"
                     + "if (@? = 0)\n" + "{\n" + "    publish data\n" + "     where status = @?\n"
                     + "       and msg = @! >> res\n" + "    |\n"
                     + "    if (@a = @b and @c = @b or @something = 'something')\n" + "    {\n" + "        do stuff\n"
@@ -83,7 +83,7 @@ public class MocaFormatter {
                     + "       and blah = @blah\n" + "}";
             ;
 
-            Files.write(Paths.get(defaultPath + "\\file.moca"), exampleFormattedMocaScript.getBytes());
+            Files.write(Paths.get(defaultPath + "\\example1.moca"), example1.getBytes());
         }
 
     }
