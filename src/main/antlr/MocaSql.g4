@@ -4284,7 +4284,23 @@ simple_id:
 	| WORK
 	| WORKLOAD
 	| XML
-	| XMLNAMESPACES;
+	| XMLNAMESPACES
+	// moca - keyword additions (see a few lines down for details)
+	| EXPIREDATE
+	| KEY
+	| POLICY
+	| PRECISION
+	| R
+	| RAW
+	| ROLE
+	| RULE
+	| STOP
+	| TRAN
+	| URL
+	| USER;
+
+
+
 
 // https://msdn.microsoft.com/en-us/library/ms188074.aspx Spaces are allowed for comparison
 // operators.
@@ -4312,6 +4328,7 @@ assignment_operator:
 file_size: DECIMAL ( KB | MB | GB | TB | '%')?;
 
 // Basic keywords (from https://msdn.microsoft.com/en-us/library/ms189822.aspx)
+// moca - commenting about keywords that are conflicting with mocasql cache/common variable names and adding them to simple_id parse rule.
 ABSENT: 'ABSENT';
 ADD: 'ADD';
 AES: 'AES';
@@ -4429,7 +4446,7 @@ EXCEPT: 'EXCEPT';
 EXECUTABLE_FILE: 'EXECUTABLE_FILE';
 EXECUTE: 'EXEC' 'UTE'?;
 EXISTS: 'EXISTS';
-EXPIREDATE: 'EXPIREDATE';
+EXPIREDATE: 'EXPIREDATE'; // moca - Could be id
 EXIT: 'EXIT';
 EXTENSION: 'EXTENSION';
 EXTERNAL: 'EXTERNAL';
@@ -4486,7 +4503,7 @@ IS: 'IS';
 ISNULL: 'ISNULL';
 JOIN: 'JOIN';
 KERBEROS: 'KERBEROS';
-KEY: 'KEY';
+KEY: 'KEY'; // moca - Could be id
 KEY_PATH: 'KEY_PATH';
 KEY_STORE_PROVIDER_NAME: 'KEY_STORE_PROVIDER_NAME';
 KILL: 'KILL';
@@ -4567,8 +4584,8 @@ PER_NODE: 'PER_NODE';
 PIVOT: 'PIVOT';
 PLAN: 'PLAN';
 PLATFORM: 'PLATFORM';
-POLICY: 'POLICY';
-PRECISION: 'PRECISION';
+POLICY: 'POLICY'; // moca - Could be id
+PRECISION: 'PRECISION'; // moca - Could be id
 PREDICATE: 'PREDICATE';
 PRIMARY: 'PRIMARY';
 PRINT: 'PRINT';
@@ -4576,10 +4593,10 @@ PROC: 'PROC';
 PROCEDURE: 'PROCEDURE';
 PROCESS: 'PROCESS';
 PUBLIC: 'PUBLIC';
-PYTHON: 'PYTHON';
-R: 'R';
+PYTHON: 'PYTHON'; // moca - Could be id
+R: 'R'; // moca - Could be id
 RAISERROR: 'RAISERROR';
-RAW: 'RAW';
+RAW: 'RAW'; // moca - Could be id
 READ: 'READ';
 READTEXT: 'READTEXT';
 READ_WRITE_FILEGROUPS: 'READ_WRITE_FILEGROUPS';
@@ -4603,7 +4620,7 @@ REVOKE: 'REVOKE';
 REWIND: 'REWIND';
 RIGHT: 'RIGHT';
 ROLLBACK: 'ROLLBACK';
-ROLE: 'ROLE';
+ROLE: 'ROLE'; // moca - Could be id
 ROWCOUNT: 'ROWCOUNT';
 ROWGUIDCOL: 'ROWGUIDCOL';
 RSA_512: 'RSA_512';
@@ -4612,7 +4629,7 @@ RSA_2048: 'RSA_2048';
 RSA_3072: 'RSA_3072';
 RSA_4096: 'RSA_4096';
 SAFETY: 'SAFETY';
-RULE: 'RULE';
+RULE: 'RULE'; // moca - Could be id
 SAFE: 'SAFE';
 SAVE: 'SAVE';
 SCHEDULER: 'SCHEDULER';
@@ -4649,7 +4666,7 @@ STATS: 'STATS';
 START: 'START';
 STARTED: 'STARTED';
 STARTUP_STATE: 'STARTUP_STATE';
-STOP: 'STOP';
+STOP: 'STOP'; // moca - Could be id
 STOPPED: 'STOPPED';
 STOP_ON_ERROR: 'STOP_ON_ERROR';
 SUPPORTED: 'SUPPORTED';
@@ -4664,7 +4681,7 @@ THEN: 'THEN';
 TO: 'TO';
 TOP: 'TOP';
 TRACK_CAUSALITY: 'TRACK_CAUSALITY';
-TRAN: 'TRAN';
+TRAN: 'TRAN'; // moca - Could be id
 TRANSACTION: 'TRANSACTION';
 TRANSFER: 'TRANSFER';
 TRIGGER: 'TRIGGER';
@@ -4678,10 +4695,10 @@ UNPIVOT: 'UNPIVOT';
 UNSAFE: 'UNSAFE';
 UPDATE: 'UPDATE';
 UPDATETEXT: 'UPDATETEXT';
-URL: 'URL';
+RL: 'URL'; // moca - Could be id
 USE: 'USE';
 USED: 'USED';
-USER: 'USER';
+USER: 'USER'; // moca - Could be id
 VALUES: 'VALUES';
 VARYING: 'VARYING';
 VERBOSELOGGING: 'VERBOSELOGGING';

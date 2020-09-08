@@ -85,7 +85,7 @@ public class MocaSqlParser extends Parser {
 		TARGET=340, TCP=341, TEXTSIZE=342, THEN=343, TO=344, TOP=345, TRACK_CAUSALITY=346, 
 		TRAN=347, TRANSACTION=348, TRANSFER=349, TRIGGER=350, TRUNCATE=351, TSEQUAL=352, 
 		UNCHECKED=353, UNION=354, UNIQUE=355, UNLOCK=356, UNPIVOT=357, UNSAFE=358, 
-		UPDATE=359, UPDATETEXT=360, URL=361, USE=362, USED=363, USER=364, VALUES=365, 
+		UPDATE=359, UPDATETEXT=360, RL=361, USE=362, USED=363, USER=364, VALUES=365, 
 		VARYING=366, VERBOSELOGGING=367, VIEW=368, VISIBILITY=369, WAITFOR=370, 
 		WHEN=371, WHERE=372, WHILE=373, WINDOWS=374, WITH=375, WITHIN=376, WITHOUT=377, 
 		WITNESS=378, WRITETEXT=379, ABSOLUTE=380, ACCENT_SENSITIVITY=381, ACTION=382, 
@@ -180,7 +180,7 @@ public class MocaSqlParser extends Parser {
 		OR_ASSIGN=822, DOUBLE_BAR=823, DOT=824, UNDERLINE=825, AT=826, SHARP=827, 
 		DOLLAR=828, LR_BRACKET=829, RR_BRACKET=830, COMMA=831, SEMI=832, COLON=833, 
 		STAR=834, DIVIDE=835, MODULE=836, PLUS=837, MINUS=838, BIT_NOT=839, BIT_OR=840, 
-		BIT_AND=841, BIT_XOR=842, IPV4_OCTECT=843;
+		BIT_AND=841, BIT_XOR=842, IPV4_OCTECT=843, URL=844;
 	public static final int
 		RULE_moca_sql_script = 0, RULE_batch = 1, RULE_sql_clauses = 2, RULE_sql_clause = 3, 
 		RULE_dml_clause = 4, RULE_ddl_clause = 5, RULE_backup_statement = 6, RULE_cfl_statement = 7, 
@@ -731,7 +731,7 @@ public class MocaSqlParser extends Parser {
 		"SYSTEM_USER", "TABLE", "TABLESAMPLE", "TAPE", "TARGET", "TCP", "TEXTSIZE", 
 		"THEN", "TO", "TOP", "TRACK_CAUSALITY", "TRAN", "TRANSACTION", "TRANSFER", 
 		"TRIGGER", "TRUNCATE", "TSEQUAL", "UNCHECKED", "UNION", "UNIQUE", "UNLOCK", 
-		"UNPIVOT", "UNSAFE", "UPDATE", "UPDATETEXT", "URL", "USE", "USED", "USER", 
+		"UNPIVOT", "UNSAFE", "UPDATE", "UPDATETEXT", "RL", "USE", "USED", "USER", 
 		"VALUES", "VARYING", "VERBOSELOGGING", "VIEW", "VISIBILITY", "WAITFOR", 
 		"WHEN", "WHERE", "WHILE", "WINDOWS", "WITH", "WITHIN", "WITHOUT", "WITNESS", 
 		"WRITETEXT", "ABSOLUTE", "ACCENT_SENSITIVITY", "ACTION", "ACTIVATION", 
@@ -816,7 +816,7 @@ public class MocaSqlParser extends Parser {
 		"OR_ASSIGN", "DOUBLE_BAR", "DOT", "UNDERLINE", "AT", "SHARP", "DOLLAR", 
 		"LR_BRACKET", "RR_BRACKET", "COMMA", "SEMI", "COLON", "STAR", "DIVIDE", 
 		"MODULE", "PLUS", "MINUS", "BIT_NOT", "BIT_OR", "BIT_AND", "BIT_XOR", 
-		"IPV4_OCTECT"
+		"IPV4_OCTECT", "URL"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -904,7 +904,7 @@ public class MocaSqlParser extends Parser {
 			setState(1023);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (((((_la - 8)) & ~0x3f) == 0 && ((1L << (_la - 8)) & ((1L << (ALTER - 8)) | (1L << (BACKUP - 8)) | (1L << (BEGIN - 8)) | (1L << (BLOCKING_HIERARCHY - 8)) | (1L << (BREAK - 8)) | (1L << (CALLED - 8)) | (1L << (CASE - 8)) | (1L << (CLOSE - 8)) | (1L << (COALESCE - 8)) | (1L << (COMMIT - 8)) | (1L << (CONTINUE - 8)) | (1L << (CONVERT - 8)) | (1L << (CREATE - 8)))) != 0) || ((((_la - 76)) & ~0x3f) == 0 && ((1L << (_la - 76)) & ((1L << (CURRENT_TIMESTAMP - 76)) | (1L << (CURRENT_USER - 76)) | (1L << (DATA_COMPRESSION - 76)) | (1L << (DBCC - 76)) | (1L << (DEALLOCATE - 76)) | (1L << (DECLARE - 76)) | (1L << (DEFAULT - 76)) | (1L << (DELETE - 76)) | (1L << (DROP - 76)) | (1L << (END - 76)) | (1L << (EVENTDATA - 76)) | (1L << (EXECUTE - 76)) | (1L << (FETCH - 76)) | (1L << (FILENAME - 76)) | (1L << (FILLFACTOR - 76)) | (1L << (FORCESEEK - 76)))) != 0) || ((((_la - 140)) & ~0x3f) == 0 && ((1L << (_la - 140)) & ((1L << (GET - 140)) | (1L << (GOTO - 140)) | (1L << (GRANT - 140)) | (1L << (IDENTITY - 140)) | (1L << (IF - 140)) | (1L << (IIF - 140)) | (1L << (INIT - 140)) | (1L << (INSERT - 140)) | (1L << (ISNULL - 140)) | (1L << (KEY - 140)) | (1L << (KILL - 140)) | (1L << (LEFT - 140)) | (1L << (MASTER - 140)) | (1L << (MAX_MEMORY - 140)) | (1L << (MERGE - 140)))) != 0) || ((((_la - 221)) & ~0x3f) == 0 && ((1L << (_la - 221)) & ((1L << (NULL - 221)) | (1L << (NULLIF - 221)) | (1L << (OFFSETS - 221)) | (1L << (OPEN - 221)) | (1L << (OVER - 221)) | (1L << (PAGE - 221)) | (1L << (PRINT - 221)) | (1L << (PUBLIC - 221)) | (1L << (R - 221)) | (1L << (RAISERROR - 221)) | (1L << (RAW - 221)) | (1L << (RECONFIGURE - 221)) | (1L << (RETURN - 221)) | (1L << (RETURNS - 221)) | (1L << (REVERT - 221)))) != 0) || ((((_la - 285)) & ~0x3f) == 0 && ((1L << (_la - 285)) & ((1L << (RIGHT - 285)) | (1L << (ROLLBACK - 285)) | (1L << (ROWCOUNT - 285)) | (1L << (SAFETY - 285)) | (1L << (SAVE - 285)) | (1L << (SELECT - 285)) | (1L << (SERVER - 285)) | (1L << (SESSION_USER - 285)) | (1L << (SET - 285)) | (1L << (SETUSER - 285)) | (1L << (SHUTDOWN - 285)) | (1L << (SID - 285)) | (1L << (SOURCE - 285)) | (1L << (SPLIT - 285)) | (1L << (STATE - 285)) | (1L << (START - 285)) | (1L << (SYSTEM_USER - 285)) | (1L << (TARGET - 285)))) != 0) || ((((_la - 351)) & ~0x3f) == 0 && ((1L << (_la - 351)) & ((1L << (TRUNCATE - 351)) | (1L << (UPDATE - 351)) | (1L << (USE - 351)) | (1L << (WAITFOR - 351)) | (1L << (WHILE - 351)) | (1L << (WITH - 351)) | (1L << (ABSOLUTE - 351)) | (1L << (ACCENT_SENSITIVITY - 351)) | (1L << (ACTION - 351)) | (1L << (ACTIVATION - 351)) | (1L << (ACTIVE - 351)) | (1L << (ADDRESS - 351)) | (1L << (AES_128 - 351)) | (1L << (AES_192 - 351)) | (1L << (AES_256 - 351)) | (1L << (AFFINITY - 351)) | (1L << (AFTER - 351)) | (1L << (AGGREGATE - 351)) | (1L << (ALGORITHM - 351)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 351)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 351)) | (1L << (ALLOWED - 351)) | (1L << (ANSI_NULL_DEFAULT - 351)) | (1L << (ANSI_NULLS - 351)) | (1L << (ANSI_PADDING - 351)) | (1L << (ANSI_WARNINGS - 351)) | (1L << (APPLICATION_LOG - 351)) | (1L << (APPLY - 351)) | (1L << (ARITHABORT - 351)) | (1L << (ASSEMBLY - 351)) | (1L << (AUDIT - 351)) | (1L << (AUDIT_GUID - 351)) | (1L << (AUTO - 351)) | (1L << (AUTO_CLEANUP - 351)) | (1L << (AUTO_CLOSE - 351)) | (1L << (AUTO_CREATE_STATISTICS - 351)) | (1L << (AUTO_SHRINK - 351)) | (1L << (AUTO_UPDATE_STATISTICS - 351)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 351)) | (1L << (AVAILABILITY - 351)) | (1L << (AVG - 351)))) != 0) || ((((_la - 415)) & ~0x3f) == 0 && ((1L << (_la - 415)) & ((1L << (BACKUP_PRIORITY - 415)) | (1L << (BEGIN_DIALOG - 415)) | (1L << (BIGINT - 415)) | (1L << (BINARY_BASE64 - 415)) | (1L << (BINARY_CHECKSUM - 415)) | (1L << (BINDING - 415)) | (1L << (BLOB_STORAGE - 415)) | (1L << (BROKER - 415)) | (1L << (BROKER_INSTANCE - 415)) | (1L << (BULK_LOGGED - 415)) | (1L << (CALLER - 415)) | (1L << (CAP_CPU_PERCENT - 415)) | (1L << (CAST - 415)) | (1L << (CATALOG - 415)) | (1L << (CATCH - 415)) | (1L << (CHANGE_RETENTION - 415)) | (1L << (CHANGE_TRACKING - 415)) | (1L << (CHECKSUM - 415)) | (1L << (CHECKSUM_AGG - 415)) | (1L << (CLEANUP - 415)) | (1L << (COLLECTION - 415)) | (1L << (COLUMN_MASTER_KEY - 415)) | (1L << (COMMITTED - 415)) | (1L << (COMPATIBILITY_LEVEL - 415)) | (1L << (CONCAT - 415)) | (1L << (CONCAT_NULL_YIELDS_NULL - 415)) | (1L << (CONTENT - 415)) | (1L << (CONTROL - 415)) | (1L << (COOKIE - 415)) | (1L << (COUNT - 415)) | (1L << (COUNT_BIG - 415)) | (1L << (COUNTER - 415)) | (1L << (CPU - 415)) | (1L << (CREATE_NEW - 415)) | (1L << (CREATION_DISPOSITION - 415)) | (1L << (CREDENTIAL - 415)) | (1L << (CRYPTOGRAPHIC - 415)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 415)) | (1L << (CURSOR_DEFAULT - 415)) | (1L << (DATA - 415)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 415)) | (1L << (DATEADD - 415)) | (1L << (DATEDIFF - 415)) | (1L << (DATENAME - 415)) | (1L << (DATEPART - 415)) | (1L << (DAYS - 415)) | (1L << (DB_CHAINING - 415)) | (1L << (DB_FAILOVER - 415)) | (1L << (DECRYPTION - 415)) | (1L << (DEFAULT_DOUBLE_QUOTE - 415)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 415)) | (1L << (DEFAULT_LANGUAGE - 415)) | (1L << (DELAY - 415)) | (1L << (DELAYED_DURABILITY - 415)) | (1L << (DELETED - 415)) | (1L << (DENSE_RANK - 415)) | (1L << (DEPENDENTS - 415)) | (1L << (DES - 415)) | (1L << (DESCRIPTION - 415)) | (1L << (DESX - 415)) | (1L << (DHCP - 415)) | (1L << (DIALOG - 415)) | (1L << (DIRECTORY_NAME - 415)) | (1L << (DISABLE - 415)))) != 0) || ((((_la - 479)) & ~0x3f) == 0 && ((1L << (_la - 479)) & ((1L << (DISABLE_BROKER - 479)) | (1L << (DISABLED - 479)) | (1L << (DISK_DRIVE - 479)) | (1L << (DOCUMENT - 479)) | (1L << (DYNAMIC - 479)) | (1L << (EMERGENCY - 479)) | (1L << (EMPTY - 479)) | (1L << (ENABLE - 479)) | (1L << (ENABLE_BROKER - 479)) | (1L << (ENCRYPTED_VALUE - 479)) | (1L << (ENCRYPTION - 479)) | (1L << (ENDPOINT_URL - 479)) | (1L << (ERROR_BROKER_CONVERSATIONS - 479)) | (1L << (EXCLUSIVE - 479)) | (1L << (EXECUTABLE - 479)) | (1L << (EXIST - 479)) | (1L << (EXPAND - 479)) | (1L << (EXPIRY_DATE - 479)) | (1L << (EXPLICIT - 479)) | (1L << (FAIL_OPERATION - 479)) | (1L << (FAILOVER_MODE - 479)) | (1L << (FAILURE - 479)) | (1L << (FAILURE_CONDITION_LEVEL - 479)) | (1L << (FAST - 479)) | (1L << (FAST_FORWARD - 479)) | (1L << (FILEGROUP - 479)) | (1L << (FILEGROWTH - 479)) | (1L << (FILEPATH - 479)) | (1L << (FILESTREAM - 479)) | (1L << (FILTER - 479)) | (1L << (FIRST - 479)) | (1L << (FIRST_VALUE - 479)) | (1L << (FOLLOWING - 479)) | (1L << (FORCE - 479)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 479)) | (1L << (FORCED - 479)) | (1L << (FORMAT - 479)) | (1L << (FORWARD_ONLY - 479)) | (1L << (FULLSCAN - 479)) | (1L << (FULLTEXT - 479)) | (1L << (GB - 479)) | (1L << (GETDATE - 479)) | (1L << (GETUTCDATE - 479)) | (1L << (GLOBAL - 479)) | (1L << (GO - 479)) | (1L << (GROUP_MAX_REQUESTS - 479)) | (1L << (GROUPING - 479)) | (1L << (GROUPING_ID - 479)) | (1L << (HADR - 479)) | (1L << (HASH - 479)) | (1L << (HEALTH_CHECK_TIMEOUT - 479)) | (1L << (HIGH - 479)) | (1L << (HONOR_BROKER_PRIORITY - 479)) | (1L << (HOURS - 479)) | (1L << (IDENTITY_VALUE - 479)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 479)) | (1L << (IMMEDIATE - 479)) | (1L << (IMPERSONATE - 479)) | (1L << (IMPORTANCE - 479)) | (1L << (INCREMENTAL - 479)) | (1L << (INITIATOR - 479)) | (1L << (INPUT - 479)))) != 0) || ((((_la - 543)) & ~0x3f) == 0 && ((1L << (_la - 543)) & ((1L << (INSENSITIVE - 543)) | (1L << (INSERTED - 543)) | (1L << (INT - 543)) | (1L << (IP - 543)) | (1L << (ISOLATION - 543)) | (1L << (KB - 543)) | (1L << (KEEP - 543)) | (1L << (KEEPFIXED - 543)) | (1L << (KEY_SOURCE - 543)) | (1L << (KEYS - 543)) | (1L << (KEYSET - 543)) | (1L << (LAG - 543)) | (1L << (LAST - 543)) | (1L << (LAST_VALUE - 543)) | (1L << (LEAD - 543)) | (1L << (LEVEL - 543)) | (1L << (LIST - 543)) | (1L << (LISTENER - 543)) | (1L << (LISTENER_URL - 543)) | (1L << (LOB_COMPACTION - 543)) | (1L << (LOCAL - 543)) | (1L << (LOCATION - 543)) | (1L << (LOCK - 543)) | (1L << (LOCK_ESCALATION - 543)) | (1L << (LOGIN - 543)) | (1L << (LOOP - 543)) | (1L << (LOW - 543)) | (1L << (MANUAL - 543)) | (1L << (MARK - 543)) | (1L << (MATERIALIZED - 543)) | (1L << (MAX - 543)) | (1L << (MAX_CPU_PERCENT - 543)) | (1L << (MAX_DOP - 543)) | (1L << (MAX_FILES - 543)) | (1L << (MAX_IOPS_PER_VOLUME - 543)) | (1L << (MAX_MEMORY_PERCENT - 543)) | (1L << (MAX_PROCESSES - 543)) | (1L << (MAX_QUEUE_READERS - 543)) | (1L << (MAX_ROLLOVER_FILES - 543)) | (1L << (MAXDOP - 543)) | (1L << (MAXRECURSION - 543)) | (1L << (MAXSIZE - 543)) | (1L << (MB - 543)) | (1L << (MEDIUM - 543)) | (1L << (MEMORY_OPTIMIZED_DATA - 543)) | (1L << (MESSAGE - 543)) | (1L << (MIN - 543)) | (1L << (MIN_ACTIVE_ROWVERSION - 543)) | (1L << (MIN_CPU_PERCENT - 543)) | (1L << (MIN_IOPS_PER_VOLUME - 543)) | (1L << (MIN_MEMORY_PERCENT - 543)) | (1L << (MINUTES - 543)) | (1L << (MIRROR_ADDRESS - 543)) | (1L << (MIXED_PAGE_ALLOCATION - 543)) | (1L << (MODE - 543)) | (1L << (MODIFY - 543)) | (1L << (MOVE - 543)) | (1L << (MULTI_USER - 543)) | (1L << (NAME - 543)) | (1L << (NESTED_TRIGGERS - 543)) | (1L << (NEW_ACCOUNT - 543)) | (1L << (NEW_BROKER - 543)))) != 0) || ((((_la - 607)) & ~0x3f) == 0 && ((1L << (_la - 607)) & ((1L << (NEW_PASSWORD - 607)) | (1L << (NEXT - 607)) | (1L << (NO - 607)) | (1L << (NO_TRUNCATE - 607)) | (1L << (NO_WAIT - 607)) | (1L << (NOCOUNT - 607)) | (1L << (NODES - 607)) | (1L << (NOEXPAND - 607)) | (1L << (NON_TRANSACTED_ACCESS - 607)) | (1L << (NORECOMPUTE - 607)) | (1L << (NORECOVERY - 607)) | (1L << (NOWAIT - 607)) | (1L << (NTILE - 607)) | (1L << (NUMANODE - 607)) | (1L << (NUMBER - 607)) | (1L << (NUMERIC_ROUNDABORT - 607)) | (1L << (OBJECT - 607)) | (1L << (OFFLINE - 607)) | (1L << (OFFSET - 607)) | (1L << (OLD_ACCOUNT - 607)) | (1L << (ONLINE - 607)) | (1L << (ONLY - 607)) | (1L << (OPEN_EXISTING - 607)) | (1L << (OPTIMISTIC - 607)) | (1L << (OPTIMIZE - 607)) | (1L << (OUT - 607)) | (1L << (OUTPUT - 607)) | (1L << (OWNER - 607)) | (1L << (PAGE_VERIFY - 607)) | (1L << (PARAMETERIZATION - 607)) | (1L << (PARTITION - 607)) | (1L << (PARTITIONS - 607)) | (1L << (PARTNER - 607)) | (1L << (PATH - 607)) | (1L << (POISON_MESSAGE_HANDLING - 607)) | (1L << (POOL - 607)) | (1L << (PORT - 607)) | (1L << (PRECEDING - 607)) | (1L << (PRIMARY_ROLE - 607)) | (1L << (PRIOR - 607)) | (1L << (PRIORITY - 607)) | (1L << (PRIORITY_LEVEL - 607)) | (1L << (PRIVATE - 607)) | (1L << (PRIVATE_KEY - 607)) | (1L << (PRIVILEGES - 607)) | (1L << (PROCEDURE_NAME - 607)) | (1L << (PROPERTY - 607)) | (1L << (PROVIDER - 607)) | (1L << (PROVIDER_KEY_NAME - 607)) | (1L << (QUERY - 607)) | (1L << (QUEUE - 607)) | (1L << (QUEUE_DELAY - 607)) | (1L << (QUOTED_IDENTIFIER - 607)) | (1L << (RANGE - 607)) | (1L << (RANK - 607)) | (1L << (RC2 - 607)) | (1L << (RC4 - 607)) | (1L << (RC4_128 - 607)) | (1L << (READ_COMMITTED_SNAPSHOT - 607)) | (1L << (READ_ONLY - 607)) | (1L << (READ_ONLY_ROUTING_LIST - 607)) | (1L << (READ_WRITE - 607)) | (1L << (READONLY - 607)))) != 0) || ((((_la - 671)) & ~0x3f) == 0 && ((1L << (_la - 671)) & ((1L << (REBUILD - 671)) | (1L << (RECEIVE - 671)) | (1L << (RECOMPILE - 671)) | (1L << (RECOVERY - 671)) | (1L << (RECURSIVE_TRIGGERS - 671)) | (1L << (RELATIVE - 671)) | (1L << (REMOTE - 671)) | (1L << (REMOTE_SERVICE_NAME - 671)) | (1L << (REMOVE - 671)) | (1L << (REORGANIZE - 671)) | (1L << (REPEATABLE - 671)) | (1L << (REPLICA - 671)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 671)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 671)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 671)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 671)) | (1L << (RESERVE_DISK_SPACE - 671)) | (1L << (RESOURCE - 671)) | (1L << (RESOURCE_MANAGER_LOCATION - 671)) | (1L << (RESTRICTED_USER - 671)) | (1L << (RETENTION - 671)) | (1L << (ROBUST - 671)) | (1L << (ROOT - 671)) | (1L << (ROUTE - 671)) | (1L << (ROW - 671)) | (1L << (ROW_NUMBER - 671)) | (1L << (ROWGUID - 671)) | (1L << (ROWS - 671)) | (1L << (SAMPLE - 671)) | (1L << (SCHEMABINDING - 671)) | (1L << (SCOPED - 671)) | (1L << (SCROLL - 671)) | (1L << (SCROLL_LOCKS - 671)) | (1L << (SEARCH - 671)) | (1L << (SECONDARY - 671)) | (1L << (SECONDARY_ONLY - 671)) | (1L << (SECONDARY_ROLE - 671)) | (1L << (SECONDS - 671)) | (1L << (SECRET - 671)) | (1L << (SECURITY - 671)) | (1L << (SECURITY_LOG - 671)) | (1L << (SEEDING_MODE - 671)) | (1L << (SELF - 671)) | (1L << (SEMI_SENSITIVE - 671)) | (1L << (SEND - 671)) | (1L << (SENT - 671)) | (1L << (SEQUENCE - 671)) | (1L << (SERIALIZABLE - 671)) | (1L << (SESSION_TIMEOUT - 671)) | (1L << (SETERROR - 671)) | (1L << (SHARE - 671)) | (1L << (SHOWPLAN - 671)) | (1L << (SIGNATURE - 671)) | (1L << (SIMPLE - 671)) | (1L << (SINGLE_USER - 671)) | (1L << (SIZE - 671)) | (1L << (SMALLINT - 671)) | (1L << (SNAPSHOT - 671)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 671)) | (1L << (STANDBY - 671)) | (1L << (START_DATE - 671)) | (1L << (STATIC - 671)) | (1L << (STATS_STREAM - 671)) | (1L << (STATUS - 671)))) != 0) || ((((_la - 736)) & ~0x3f) == 0 && ((1L << (_la - 736)) & ((1L << (STDEV - 736)) | (1L << (STDEVP - 736)) | (1L << (STOPLIST - 736)) | (1L << (STRING_AGG - 736)) | (1L << (STUFF - 736)) | (1L << (SUBJECT - 736)) | (1L << (SUM - 736)) | (1L << (SUSPEND - 736)) | (1L << (SYMMETRIC - 736)) | (1L << (SYNCHRONOUS_COMMIT - 736)) | (1L << (SYNONYM - 736)) | (1L << (SYSTEM - 736)) | (1L << (TAKE - 736)) | (1L << (TARGET_RECOVERY_TIME - 736)) | (1L << (TB - 736)) | (1L << (TEXTIMAGE_ON - 736)) | (1L << (THROW - 736)) | (1L << (TIES - 736)) | (1L << (TIME - 736)) | (1L << (TIMEOUT - 736)) | (1L << (TIMER - 736)) | (1L << (TINYINT - 736)) | (1L << (TORN_PAGE_DETECTION - 736)) | (1L << (TRANSFORM_NOISE_WORDS - 736)) | (1L << (TRIPLE_DES - 736)) | (1L << (TRIPLE_DES_3KEY - 736)) | (1L << (TRUSTWORTHY - 736)) | (1L << (TRY - 736)) | (1L << (TSQL - 736)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 736)) | (1L << (TYPE - 736)) | (1L << (TYPE_WARNING - 736)) | (1L << (UNBOUNDED - 736)) | (1L << (UNCOMMITTED - 736)) | (1L << (UNKNOWN - 736)) | (1L << (UNLIMITED - 736)) | (1L << (USING - 736)) | (1L << (VALID_XML - 736)) | (1L << (VALIDATION - 736)) | (1L << (VALUE - 736)) | (1L << (VAR - 736)) | (1L << (VARP - 736)) | (1L << (VIEW_METADATA - 736)) | (1L << (VIEWS - 736)) | (1L << (WAIT - 736)) | (1L << (WELL_FORMED_XML - 736)) | (1L << (WORK - 736)) | (1L << (WORKLOAD - 736)) | (1L << (XML - 736)) | (1L << (XMLNAMESPACES - 736)) | (1L << (DOUBLE_QUOTE_ID - 736)))) != 0) || ((((_la - 801)) & ~0x3f) == 0 && ((1L << (_la - 801)) & ((1L << (SQUARE_BRACKET_ID - 801)) | (1L << (LOCAL_ID - 801)) | (1L << (DECIMAL - 801)) | (1L << (ID - 801)) | (1L << (STRING - 801)) | (1L << (BINARY - 801)) | (1L << (FLOAT - 801)) | (1L << (REAL - 801)) | (1L << (AT - 801)) | (1L << (DOLLAR - 801)) | (1L << (LR_BRACKET - 801)) | (1L << (SEMI - 801)) | (1L << (COLON - 801)) | (1L << (PLUS - 801)) | (1L << (MINUS - 801)) | (1L << (BIT_NOT - 801)))) != 0)) {
+			while (((((_la - 8)) & ~0x3f) == 0 && ((1L << (_la - 8)) & ((1L << (ALTER - 8)) | (1L << (BACKUP - 8)) | (1L << (BEGIN - 8)) | (1L << (BLOCKING_HIERARCHY - 8)) | (1L << (BREAK - 8)) | (1L << (CALLED - 8)) | (1L << (CASE - 8)) | (1L << (CLOSE - 8)) | (1L << (COALESCE - 8)) | (1L << (COMMIT - 8)) | (1L << (CONTINUE - 8)) | (1L << (CONVERT - 8)) | (1L << (CREATE - 8)))) != 0) || ((((_la - 76)) & ~0x3f) == 0 && ((1L << (_la - 76)) & ((1L << (CURRENT_TIMESTAMP - 76)) | (1L << (CURRENT_USER - 76)) | (1L << (DATA_COMPRESSION - 76)) | (1L << (DBCC - 76)) | (1L << (DEALLOCATE - 76)) | (1L << (DECLARE - 76)) | (1L << (DEFAULT - 76)) | (1L << (DELETE - 76)) | (1L << (DROP - 76)) | (1L << (END - 76)) | (1L << (EVENTDATA - 76)) | (1L << (EXECUTE - 76)) | (1L << (EXPIREDATE - 76)) | (1L << (FETCH - 76)) | (1L << (FILENAME - 76)) | (1L << (FILLFACTOR - 76)) | (1L << (FORCESEEK - 76)))) != 0) || ((((_la - 140)) & ~0x3f) == 0 && ((1L << (_la - 140)) & ((1L << (GET - 140)) | (1L << (GOTO - 140)) | (1L << (GRANT - 140)) | (1L << (IDENTITY - 140)) | (1L << (IF - 140)) | (1L << (IIF - 140)) | (1L << (INIT - 140)) | (1L << (INSERT - 140)) | (1L << (ISNULL - 140)) | (1L << (KEY - 140)) | (1L << (KILL - 140)) | (1L << (LEFT - 140)) | (1L << (MASTER - 140)) | (1L << (MAX_MEMORY - 140)) | (1L << (MERGE - 140)))) != 0) || ((((_la - 221)) & ~0x3f) == 0 && ((1L << (_la - 221)) & ((1L << (NULL - 221)) | (1L << (NULLIF - 221)) | (1L << (OFFSETS - 221)) | (1L << (OPEN - 221)) | (1L << (OVER - 221)) | (1L << (PAGE - 221)) | (1L << (POLICY - 221)) | (1L << (PRECISION - 221)) | (1L << (PRINT - 221)) | (1L << (PUBLIC - 221)) | (1L << (R - 221)) | (1L << (RAISERROR - 221)) | (1L << (RAW - 221)) | (1L << (RECONFIGURE - 221)) | (1L << (RETURN - 221)) | (1L << (RETURNS - 221)) | (1L << (REVERT - 221)))) != 0) || ((((_la - 285)) & ~0x3f) == 0 && ((1L << (_la - 285)) & ((1L << (RIGHT - 285)) | (1L << (ROLLBACK - 285)) | (1L << (ROLE - 285)) | (1L << (ROWCOUNT - 285)) | (1L << (SAFETY - 285)) | (1L << (RULE - 285)) | (1L << (SAVE - 285)) | (1L << (SELECT - 285)) | (1L << (SERVER - 285)) | (1L << (SESSION_USER - 285)) | (1L << (SET - 285)) | (1L << (SETUSER - 285)) | (1L << (SHUTDOWN - 285)) | (1L << (SID - 285)) | (1L << (SOURCE - 285)) | (1L << (SPLIT - 285)) | (1L << (STATE - 285)) | (1L << (START - 285)) | (1L << (STOP - 285)) | (1L << (SYSTEM_USER - 285)) | (1L << (TARGET - 285)) | (1L << (TRAN - 285)))) != 0) || ((((_la - 351)) & ~0x3f) == 0 && ((1L << (_la - 351)) & ((1L << (TRUNCATE - 351)) | (1L << (UPDATE - 351)) | (1L << (USE - 351)) | (1L << (USER - 351)) | (1L << (WAITFOR - 351)) | (1L << (WHILE - 351)) | (1L << (WITH - 351)) | (1L << (ABSOLUTE - 351)) | (1L << (ACCENT_SENSITIVITY - 351)) | (1L << (ACTION - 351)) | (1L << (ACTIVATION - 351)) | (1L << (ACTIVE - 351)) | (1L << (ADDRESS - 351)) | (1L << (AES_128 - 351)) | (1L << (AES_192 - 351)) | (1L << (AES_256 - 351)) | (1L << (AFFINITY - 351)) | (1L << (AFTER - 351)) | (1L << (AGGREGATE - 351)) | (1L << (ALGORITHM - 351)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 351)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 351)) | (1L << (ALLOWED - 351)) | (1L << (ANSI_NULL_DEFAULT - 351)) | (1L << (ANSI_NULLS - 351)) | (1L << (ANSI_PADDING - 351)) | (1L << (ANSI_WARNINGS - 351)) | (1L << (APPLICATION_LOG - 351)) | (1L << (APPLY - 351)) | (1L << (ARITHABORT - 351)) | (1L << (ASSEMBLY - 351)) | (1L << (AUDIT - 351)) | (1L << (AUDIT_GUID - 351)) | (1L << (AUTO - 351)) | (1L << (AUTO_CLEANUP - 351)) | (1L << (AUTO_CLOSE - 351)) | (1L << (AUTO_CREATE_STATISTICS - 351)) | (1L << (AUTO_SHRINK - 351)) | (1L << (AUTO_UPDATE_STATISTICS - 351)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 351)) | (1L << (AVAILABILITY - 351)) | (1L << (AVG - 351)))) != 0) || ((((_la - 415)) & ~0x3f) == 0 && ((1L << (_la - 415)) & ((1L << (BACKUP_PRIORITY - 415)) | (1L << (BEGIN_DIALOG - 415)) | (1L << (BIGINT - 415)) | (1L << (BINARY_BASE64 - 415)) | (1L << (BINARY_CHECKSUM - 415)) | (1L << (BINDING - 415)) | (1L << (BLOB_STORAGE - 415)) | (1L << (BROKER - 415)) | (1L << (BROKER_INSTANCE - 415)) | (1L << (BULK_LOGGED - 415)) | (1L << (CALLER - 415)) | (1L << (CAP_CPU_PERCENT - 415)) | (1L << (CAST - 415)) | (1L << (CATALOG - 415)) | (1L << (CATCH - 415)) | (1L << (CHANGE_RETENTION - 415)) | (1L << (CHANGE_TRACKING - 415)) | (1L << (CHECKSUM - 415)) | (1L << (CHECKSUM_AGG - 415)) | (1L << (CLEANUP - 415)) | (1L << (COLLECTION - 415)) | (1L << (COLUMN_MASTER_KEY - 415)) | (1L << (COMMITTED - 415)) | (1L << (COMPATIBILITY_LEVEL - 415)) | (1L << (CONCAT - 415)) | (1L << (CONCAT_NULL_YIELDS_NULL - 415)) | (1L << (CONTENT - 415)) | (1L << (CONTROL - 415)) | (1L << (COOKIE - 415)) | (1L << (COUNT - 415)) | (1L << (COUNT_BIG - 415)) | (1L << (COUNTER - 415)) | (1L << (CPU - 415)) | (1L << (CREATE_NEW - 415)) | (1L << (CREATION_DISPOSITION - 415)) | (1L << (CREDENTIAL - 415)) | (1L << (CRYPTOGRAPHIC - 415)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 415)) | (1L << (CURSOR_DEFAULT - 415)) | (1L << (DATA - 415)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 415)) | (1L << (DATEADD - 415)) | (1L << (DATEDIFF - 415)) | (1L << (DATENAME - 415)) | (1L << (DATEPART - 415)) | (1L << (DAYS - 415)) | (1L << (DB_CHAINING - 415)) | (1L << (DB_FAILOVER - 415)) | (1L << (DECRYPTION - 415)) | (1L << (DEFAULT_DOUBLE_QUOTE - 415)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 415)) | (1L << (DEFAULT_LANGUAGE - 415)) | (1L << (DELAY - 415)) | (1L << (DELAYED_DURABILITY - 415)) | (1L << (DELETED - 415)) | (1L << (DENSE_RANK - 415)) | (1L << (DEPENDENTS - 415)) | (1L << (DES - 415)) | (1L << (DESCRIPTION - 415)) | (1L << (DESX - 415)) | (1L << (DHCP - 415)) | (1L << (DIALOG - 415)) | (1L << (DIRECTORY_NAME - 415)) | (1L << (DISABLE - 415)))) != 0) || ((((_la - 479)) & ~0x3f) == 0 && ((1L << (_la - 479)) & ((1L << (DISABLE_BROKER - 479)) | (1L << (DISABLED - 479)) | (1L << (DISK_DRIVE - 479)) | (1L << (DOCUMENT - 479)) | (1L << (DYNAMIC - 479)) | (1L << (EMERGENCY - 479)) | (1L << (EMPTY - 479)) | (1L << (ENABLE - 479)) | (1L << (ENABLE_BROKER - 479)) | (1L << (ENCRYPTED_VALUE - 479)) | (1L << (ENCRYPTION - 479)) | (1L << (ENDPOINT_URL - 479)) | (1L << (ERROR_BROKER_CONVERSATIONS - 479)) | (1L << (EXCLUSIVE - 479)) | (1L << (EXECUTABLE - 479)) | (1L << (EXIST - 479)) | (1L << (EXPAND - 479)) | (1L << (EXPIRY_DATE - 479)) | (1L << (EXPLICIT - 479)) | (1L << (FAIL_OPERATION - 479)) | (1L << (FAILOVER_MODE - 479)) | (1L << (FAILURE - 479)) | (1L << (FAILURE_CONDITION_LEVEL - 479)) | (1L << (FAST - 479)) | (1L << (FAST_FORWARD - 479)) | (1L << (FILEGROUP - 479)) | (1L << (FILEGROWTH - 479)) | (1L << (FILEPATH - 479)) | (1L << (FILESTREAM - 479)) | (1L << (FILTER - 479)) | (1L << (FIRST - 479)) | (1L << (FIRST_VALUE - 479)) | (1L << (FOLLOWING - 479)) | (1L << (FORCE - 479)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 479)) | (1L << (FORCED - 479)) | (1L << (FORMAT - 479)) | (1L << (FORWARD_ONLY - 479)) | (1L << (FULLSCAN - 479)) | (1L << (FULLTEXT - 479)) | (1L << (GB - 479)) | (1L << (GETDATE - 479)) | (1L << (GETUTCDATE - 479)) | (1L << (GLOBAL - 479)) | (1L << (GO - 479)) | (1L << (GROUP_MAX_REQUESTS - 479)) | (1L << (GROUPING - 479)) | (1L << (GROUPING_ID - 479)) | (1L << (HADR - 479)) | (1L << (HASH - 479)) | (1L << (HEALTH_CHECK_TIMEOUT - 479)) | (1L << (HIGH - 479)) | (1L << (HONOR_BROKER_PRIORITY - 479)) | (1L << (HOURS - 479)) | (1L << (IDENTITY_VALUE - 479)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 479)) | (1L << (IMMEDIATE - 479)) | (1L << (IMPERSONATE - 479)) | (1L << (IMPORTANCE - 479)) | (1L << (INCREMENTAL - 479)) | (1L << (INITIATOR - 479)) | (1L << (INPUT - 479)))) != 0) || ((((_la - 543)) & ~0x3f) == 0 && ((1L << (_la - 543)) & ((1L << (INSENSITIVE - 543)) | (1L << (INSERTED - 543)) | (1L << (INT - 543)) | (1L << (IP - 543)) | (1L << (ISOLATION - 543)) | (1L << (KB - 543)) | (1L << (KEEP - 543)) | (1L << (KEEPFIXED - 543)) | (1L << (KEY_SOURCE - 543)) | (1L << (KEYS - 543)) | (1L << (KEYSET - 543)) | (1L << (LAG - 543)) | (1L << (LAST - 543)) | (1L << (LAST_VALUE - 543)) | (1L << (LEAD - 543)) | (1L << (LEVEL - 543)) | (1L << (LIST - 543)) | (1L << (LISTENER - 543)) | (1L << (LISTENER_URL - 543)) | (1L << (LOB_COMPACTION - 543)) | (1L << (LOCAL - 543)) | (1L << (LOCATION - 543)) | (1L << (LOCK - 543)) | (1L << (LOCK_ESCALATION - 543)) | (1L << (LOGIN - 543)) | (1L << (LOOP - 543)) | (1L << (LOW - 543)) | (1L << (MANUAL - 543)) | (1L << (MARK - 543)) | (1L << (MATERIALIZED - 543)) | (1L << (MAX - 543)) | (1L << (MAX_CPU_PERCENT - 543)) | (1L << (MAX_DOP - 543)) | (1L << (MAX_FILES - 543)) | (1L << (MAX_IOPS_PER_VOLUME - 543)) | (1L << (MAX_MEMORY_PERCENT - 543)) | (1L << (MAX_PROCESSES - 543)) | (1L << (MAX_QUEUE_READERS - 543)) | (1L << (MAX_ROLLOVER_FILES - 543)) | (1L << (MAXDOP - 543)) | (1L << (MAXRECURSION - 543)) | (1L << (MAXSIZE - 543)) | (1L << (MB - 543)) | (1L << (MEDIUM - 543)) | (1L << (MEMORY_OPTIMIZED_DATA - 543)) | (1L << (MESSAGE - 543)) | (1L << (MIN - 543)) | (1L << (MIN_ACTIVE_ROWVERSION - 543)) | (1L << (MIN_CPU_PERCENT - 543)) | (1L << (MIN_IOPS_PER_VOLUME - 543)) | (1L << (MIN_MEMORY_PERCENT - 543)) | (1L << (MINUTES - 543)) | (1L << (MIRROR_ADDRESS - 543)) | (1L << (MIXED_PAGE_ALLOCATION - 543)) | (1L << (MODE - 543)) | (1L << (MODIFY - 543)) | (1L << (MOVE - 543)) | (1L << (MULTI_USER - 543)) | (1L << (NAME - 543)) | (1L << (NESTED_TRIGGERS - 543)) | (1L << (NEW_ACCOUNT - 543)) | (1L << (NEW_BROKER - 543)))) != 0) || ((((_la - 607)) & ~0x3f) == 0 && ((1L << (_la - 607)) & ((1L << (NEW_PASSWORD - 607)) | (1L << (NEXT - 607)) | (1L << (NO - 607)) | (1L << (NO_TRUNCATE - 607)) | (1L << (NO_WAIT - 607)) | (1L << (NOCOUNT - 607)) | (1L << (NODES - 607)) | (1L << (NOEXPAND - 607)) | (1L << (NON_TRANSACTED_ACCESS - 607)) | (1L << (NORECOMPUTE - 607)) | (1L << (NORECOVERY - 607)) | (1L << (NOWAIT - 607)) | (1L << (NTILE - 607)) | (1L << (NUMANODE - 607)) | (1L << (NUMBER - 607)) | (1L << (NUMERIC_ROUNDABORT - 607)) | (1L << (OBJECT - 607)) | (1L << (OFFLINE - 607)) | (1L << (OFFSET - 607)) | (1L << (OLD_ACCOUNT - 607)) | (1L << (ONLINE - 607)) | (1L << (ONLY - 607)) | (1L << (OPEN_EXISTING - 607)) | (1L << (OPTIMISTIC - 607)) | (1L << (OPTIMIZE - 607)) | (1L << (OUT - 607)) | (1L << (OUTPUT - 607)) | (1L << (OWNER - 607)) | (1L << (PAGE_VERIFY - 607)) | (1L << (PARAMETERIZATION - 607)) | (1L << (PARTITION - 607)) | (1L << (PARTITIONS - 607)) | (1L << (PARTNER - 607)) | (1L << (PATH - 607)) | (1L << (POISON_MESSAGE_HANDLING - 607)) | (1L << (POOL - 607)) | (1L << (PORT - 607)) | (1L << (PRECEDING - 607)) | (1L << (PRIMARY_ROLE - 607)) | (1L << (PRIOR - 607)) | (1L << (PRIORITY - 607)) | (1L << (PRIORITY_LEVEL - 607)) | (1L << (PRIVATE - 607)) | (1L << (PRIVATE_KEY - 607)) | (1L << (PRIVILEGES - 607)) | (1L << (PROCEDURE_NAME - 607)) | (1L << (PROPERTY - 607)) | (1L << (PROVIDER - 607)) | (1L << (PROVIDER_KEY_NAME - 607)) | (1L << (QUERY - 607)) | (1L << (QUEUE - 607)) | (1L << (QUEUE_DELAY - 607)) | (1L << (QUOTED_IDENTIFIER - 607)) | (1L << (RANGE - 607)) | (1L << (RANK - 607)) | (1L << (RC2 - 607)) | (1L << (RC4 - 607)) | (1L << (RC4_128 - 607)) | (1L << (READ_COMMITTED_SNAPSHOT - 607)) | (1L << (READ_ONLY - 607)) | (1L << (READ_ONLY_ROUTING_LIST - 607)) | (1L << (READ_WRITE - 607)) | (1L << (READONLY - 607)))) != 0) || ((((_la - 671)) & ~0x3f) == 0 && ((1L << (_la - 671)) & ((1L << (REBUILD - 671)) | (1L << (RECEIVE - 671)) | (1L << (RECOMPILE - 671)) | (1L << (RECOVERY - 671)) | (1L << (RECURSIVE_TRIGGERS - 671)) | (1L << (RELATIVE - 671)) | (1L << (REMOTE - 671)) | (1L << (REMOTE_SERVICE_NAME - 671)) | (1L << (REMOVE - 671)) | (1L << (REORGANIZE - 671)) | (1L << (REPEATABLE - 671)) | (1L << (REPLICA - 671)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 671)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 671)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 671)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 671)) | (1L << (RESERVE_DISK_SPACE - 671)) | (1L << (RESOURCE - 671)) | (1L << (RESOURCE_MANAGER_LOCATION - 671)) | (1L << (RESTRICTED_USER - 671)) | (1L << (RETENTION - 671)) | (1L << (ROBUST - 671)) | (1L << (ROOT - 671)) | (1L << (ROUTE - 671)) | (1L << (ROW - 671)) | (1L << (ROW_NUMBER - 671)) | (1L << (ROWGUID - 671)) | (1L << (ROWS - 671)) | (1L << (SAMPLE - 671)) | (1L << (SCHEMABINDING - 671)) | (1L << (SCOPED - 671)) | (1L << (SCROLL - 671)) | (1L << (SCROLL_LOCKS - 671)) | (1L << (SEARCH - 671)) | (1L << (SECONDARY - 671)) | (1L << (SECONDARY_ONLY - 671)) | (1L << (SECONDARY_ROLE - 671)) | (1L << (SECONDS - 671)) | (1L << (SECRET - 671)) | (1L << (SECURITY - 671)) | (1L << (SECURITY_LOG - 671)) | (1L << (SEEDING_MODE - 671)) | (1L << (SELF - 671)) | (1L << (SEMI_SENSITIVE - 671)) | (1L << (SEND - 671)) | (1L << (SENT - 671)) | (1L << (SEQUENCE - 671)) | (1L << (SERIALIZABLE - 671)) | (1L << (SESSION_TIMEOUT - 671)) | (1L << (SETERROR - 671)) | (1L << (SHARE - 671)) | (1L << (SHOWPLAN - 671)) | (1L << (SIGNATURE - 671)) | (1L << (SIMPLE - 671)) | (1L << (SINGLE_USER - 671)) | (1L << (SIZE - 671)) | (1L << (SMALLINT - 671)) | (1L << (SNAPSHOT - 671)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 671)) | (1L << (STANDBY - 671)) | (1L << (START_DATE - 671)) | (1L << (STATIC - 671)) | (1L << (STATS_STREAM - 671)) | (1L << (STATUS - 671)))) != 0) || ((((_la - 736)) & ~0x3f) == 0 && ((1L << (_la - 736)) & ((1L << (STDEV - 736)) | (1L << (STDEVP - 736)) | (1L << (STOPLIST - 736)) | (1L << (STRING_AGG - 736)) | (1L << (STUFF - 736)) | (1L << (SUBJECT - 736)) | (1L << (SUM - 736)) | (1L << (SUSPEND - 736)) | (1L << (SYMMETRIC - 736)) | (1L << (SYNCHRONOUS_COMMIT - 736)) | (1L << (SYNONYM - 736)) | (1L << (SYSTEM - 736)) | (1L << (TAKE - 736)) | (1L << (TARGET_RECOVERY_TIME - 736)) | (1L << (TB - 736)) | (1L << (TEXTIMAGE_ON - 736)) | (1L << (THROW - 736)) | (1L << (TIES - 736)) | (1L << (TIME - 736)) | (1L << (TIMEOUT - 736)) | (1L << (TIMER - 736)) | (1L << (TINYINT - 736)) | (1L << (TORN_PAGE_DETECTION - 736)) | (1L << (TRANSFORM_NOISE_WORDS - 736)) | (1L << (TRIPLE_DES - 736)) | (1L << (TRIPLE_DES_3KEY - 736)) | (1L << (TRUSTWORTHY - 736)) | (1L << (TRY - 736)) | (1L << (TSQL - 736)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 736)) | (1L << (TYPE - 736)) | (1L << (TYPE_WARNING - 736)) | (1L << (UNBOUNDED - 736)) | (1L << (UNCOMMITTED - 736)) | (1L << (UNKNOWN - 736)) | (1L << (UNLIMITED - 736)) | (1L << (USING - 736)) | (1L << (VALID_XML - 736)) | (1L << (VALIDATION - 736)) | (1L << (VALUE - 736)) | (1L << (VAR - 736)) | (1L << (VARP - 736)) | (1L << (VIEW_METADATA - 736)) | (1L << (VIEWS - 736)) | (1L << (WAIT - 736)) | (1L << (WELL_FORMED_XML - 736)) | (1L << (WORK - 736)) | (1L << (WORKLOAD - 736)) | (1L << (XML - 736)) | (1L << (XMLNAMESPACES - 736)) | (1L << (DOUBLE_QUOTE_ID - 736)))) != 0) || ((((_la - 801)) & ~0x3f) == 0 && ((1L << (_la - 801)) & ((1L << (SQUARE_BRACKET_ID - 801)) | (1L << (LOCAL_ID - 801)) | (1L << (DECIMAL - 801)) | (1L << (ID - 801)) | (1L << (STRING - 801)) | (1L << (BINARY - 801)) | (1L << (FLOAT - 801)) | (1L << (REAL - 801)) | (1L << (AT - 801)) | (1L << (DOLLAR - 801)) | (1L << (LR_BRACKET - 801)) | (1L << (SEMI - 801)) | (1L << (COLON - 801)) | (1L << (PLUS - 801)) | (1L << (MINUS - 801)) | (1L << (BIT_NOT - 801)) | (1L << (URL - 801)))) != 0)) {
 				{
 				{
 				setState(1020);
@@ -3433,6 +3433,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -3442,20 +3443,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -3859,6 +3867,7 @@ public class MocaSqlParser extends Parser {
 			case DOUBLE_QUOTE_ID:
 			case SQUARE_BRACKET_ID:
 			case ID:
+			case URL:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(1277);
@@ -6737,6 +6746,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -6746,20 +6756,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -7163,6 +7180,7 @@ public class MocaSqlParser extends Parser {
 			case DOUBLE_QUOTE_ID:
 			case SQUARE_BRACKET_ID:
 			case ID:
+			case URL:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(1606);
@@ -8421,6 +8439,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -8430,20 +8449,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -8847,6 +8873,7 @@ public class MocaSqlParser extends Parser {
 			case DOUBLE_QUOTE_ID:
 			case SQUARE_BRACKET_ID:
 			case ID:
+			case URL:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(1767);
@@ -11362,6 +11389,7 @@ public class MocaSqlParser extends Parser {
 				case CALLED:
 				case DATA_COMPRESSION:
 				case EVENTDATA:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -11371,20 +11399,27 @@ public class MocaSqlParser extends Parser {
 				case MAX_MEMORY:
 				case OFFSETS:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SID:
 				case SOURCE:
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -11788,6 +11823,7 @@ public class MocaSqlParser extends Parser {
 				case DOUBLE_QUOTE_ID:
 				case SQUARE_BRACKET_ID:
 				case ID:
+				case URL:
 					{
 					{
 					setState(2249);
@@ -11830,6 +11866,7 @@ public class MocaSqlParser extends Parser {
 				case DATA_COMPRESSION:
 				case DOUBLE_FORWARD_SLASH:
 				case EVENTDATA:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -11839,20 +11876,27 @@ public class MocaSqlParser extends Parser {
 				case MAX_MEMORY:
 				case OFFSETS:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SID:
 				case SOURCE:
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -12256,6 +12300,7 @@ public class MocaSqlParser extends Parser {
 				case DOUBLE_QUOTE_ID:
 				case SQUARE_BRACKET_ID:
 				case ID:
+				case URL:
 					{
 					setState(2261);
 					_la = _input.LA(1);
@@ -14023,7 +14068,7 @@ public class MocaSqlParser extends Parser {
 				setState(2520); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( _la==CALLED || _la==DATA_COMPRESSION || ((((_la - 112)) & ~0x3f) == 0 && ((1L << (_la - 112)) & ((1L << (EVENTDATA - 112)) | (1L << (FILENAME - 112)) | (1L << (FILLFACTOR - 112)) | (1L << (FORCESEEK - 112)) | (1L << (INIT - 112)) | (1L << (KEY - 112)))) != 0) || ((((_la - 187)) & ~0x3f) == 0 && ((1L << (_la - 187)) & ((1L << (MASTER - 187)) | (1L << (MAX_MEMORY - 187)) | (1L << (OFFSETS - 187)) | (1L << (PAGE - 187)))) != 0) || ((((_la - 259)) & ~0x3f) == 0 && ((1L << (_la - 259)) & ((1L << (PUBLIC - 259)) | (1L << (R - 259)) | (1L << (RAW - 259)) | (1L << (RETURN - 259)) | (1L << (RETURNS - 259)) | (1L << (ROWCOUNT - 259)) | (1L << (SAFETY - 259)) | (1L << (SERVER - 259)) | (1L << (SID - 259)) | (1L << (SOURCE - 259)) | (1L << (SPLIT - 259)))) != 0) || ((((_la - 327)) & ~0x3f) == 0 && ((1L << (_la - 327)) & ((1L << (STATE - 327)) | (1L << (START - 327)) | (1L << (TARGET - 327)) | (1L << (ABSOLUTE - 327)) | (1L << (ACCENT_SENSITIVITY - 327)) | (1L << (ACTION - 327)) | (1L << (ACTIVATION - 327)) | (1L << (ACTIVE - 327)) | (1L << (ADDRESS - 327)) | (1L << (AES_128 - 327)) | (1L << (AES_192 - 327)) | (1L << (AES_256 - 327)) | (1L << (AFFINITY - 327)) | (1L << (AFTER - 327)))) != 0) || ((((_la - 391)) & ~0x3f) == 0 && ((1L << (_la - 391)) & ((1L << (AGGREGATE - 391)) | (1L << (ALGORITHM - 391)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 391)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 391)) | (1L << (ALLOWED - 391)) | (1L << (ANSI_NULL_DEFAULT - 391)) | (1L << (ANSI_NULLS - 391)) | (1L << (ANSI_PADDING - 391)) | (1L << (ANSI_WARNINGS - 391)) | (1L << (APPLICATION_LOG - 391)) | (1L << (APPLY - 391)) | (1L << (ARITHABORT - 391)) | (1L << (ASSEMBLY - 391)) | (1L << (AUDIT - 391)) | (1L << (AUDIT_GUID - 391)) | (1L << (AUTO - 391)) | (1L << (AUTO_CLEANUP - 391)) | (1L << (AUTO_CLOSE - 391)) | (1L << (AUTO_CREATE_STATISTICS - 391)) | (1L << (AUTO_SHRINK - 391)) | (1L << (AUTO_UPDATE_STATISTICS - 391)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 391)) | (1L << (AVAILABILITY - 391)) | (1L << (AVG - 391)) | (1L << (BACKUP_PRIORITY - 391)) | (1L << (BEGIN_DIALOG - 391)) | (1L << (BIGINT - 391)) | (1L << (BINARY_BASE64 - 391)) | (1L << (BINARY_CHECKSUM - 391)) | (1L << (BINDING - 391)) | (1L << (BLOB_STORAGE - 391)) | (1L << (BROKER - 391)) | (1L << (BROKER_INSTANCE - 391)) | (1L << (BULK_LOGGED - 391)) | (1L << (CALLER - 391)) | (1L << (CAP_CPU_PERCENT - 391)) | (1L << (CAST - 391)) | (1L << (CATALOG - 391)) | (1L << (CATCH - 391)) | (1L << (CHANGE_RETENTION - 391)) | (1L << (CHANGE_TRACKING - 391)) | (1L << (CHECKSUM - 391)) | (1L << (CHECKSUM_AGG - 391)) | (1L << (CLEANUP - 391)) | (1L << (COLLECTION - 391)) | (1L << (COLUMN_MASTER_KEY - 391)) | (1L << (COMMITTED - 391)) | (1L << (COMPATIBILITY_LEVEL - 391)) | (1L << (CONCAT - 391)) | (1L << (CONCAT_NULL_YIELDS_NULL - 391)) | (1L << (CONTENT - 391)) | (1L << (CONTROL - 391)) | (1L << (COOKIE - 391)) | (1L << (COUNT - 391)) | (1L << (COUNT_BIG - 391)) | (1L << (COUNTER - 391)) | (1L << (CPU - 391)) | (1L << (CREATE_NEW - 391)) | (1L << (CREATION_DISPOSITION - 391)) | (1L << (CREDENTIAL - 391)) | (1L << (CRYPTOGRAPHIC - 391)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 391)) | (1L << (CURSOR_DEFAULT - 391)) | (1L << (DATA - 391)))) != 0) || ((((_la - 455)) & ~0x3f) == 0 && ((1L << (_la - 455)) & ((1L << (DATE_CORRELATION_OPTIMIZATION - 455)) | (1L << (DATEADD - 455)) | (1L << (DATEDIFF - 455)) | (1L << (DATENAME - 455)) | (1L << (DATEPART - 455)) | (1L << (DAYS - 455)) | (1L << (DB_CHAINING - 455)) | (1L << (DB_FAILOVER - 455)) | (1L << (DECRYPTION - 455)) | (1L << (DEFAULT_DOUBLE_QUOTE - 455)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 455)) | (1L << (DEFAULT_LANGUAGE - 455)) | (1L << (DELAY - 455)) | (1L << (DELAYED_DURABILITY - 455)) | (1L << (DELETED - 455)) | (1L << (DENSE_RANK - 455)) | (1L << (DEPENDENTS - 455)) | (1L << (DES - 455)) | (1L << (DESCRIPTION - 455)) | (1L << (DESX - 455)) | (1L << (DHCP - 455)) | (1L << (DIALOG - 455)) | (1L << (DIRECTORY_NAME - 455)) | (1L << (DISABLE - 455)) | (1L << (DISABLE_BROKER - 455)) | (1L << (DISABLED - 455)) | (1L << (DISK_DRIVE - 455)) | (1L << (DOCUMENT - 455)) | (1L << (DYNAMIC - 455)) | (1L << (EMERGENCY - 455)) | (1L << (EMPTY - 455)) | (1L << (ENABLE - 455)) | (1L << (ENABLE_BROKER - 455)) | (1L << (ENCRYPTED_VALUE - 455)) | (1L << (ENCRYPTION - 455)) | (1L << (ENDPOINT_URL - 455)) | (1L << (ERROR_BROKER_CONVERSATIONS - 455)) | (1L << (EXCLUSIVE - 455)) | (1L << (EXECUTABLE - 455)) | (1L << (EXIST - 455)) | (1L << (EXPAND - 455)) | (1L << (EXPIRY_DATE - 455)) | (1L << (EXPLICIT - 455)) | (1L << (FAIL_OPERATION - 455)) | (1L << (FAILOVER_MODE - 455)) | (1L << (FAILURE - 455)) | (1L << (FAILURE_CONDITION_LEVEL - 455)) | (1L << (FAST - 455)) | (1L << (FAST_FORWARD - 455)) | (1L << (FILEGROUP - 455)) | (1L << (FILEGROWTH - 455)) | (1L << (FILEPATH - 455)) | (1L << (FILESTREAM - 455)) | (1L << (FILTER - 455)) | (1L << (FIRST - 455)) | (1L << (FIRST_VALUE - 455)) | (1L << (FOLLOWING - 455)) | (1L << (FORCE - 455)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 455)) | (1L << (FORCED - 455)) | (1L << (FORMAT - 455)) | (1L << (FORWARD_ONLY - 455)) | (1L << (FULLSCAN - 455)))) != 0) || ((((_la - 519)) & ~0x3f) == 0 && ((1L << (_la - 519)) & ((1L << (FULLTEXT - 519)) | (1L << (GB - 519)) | (1L << (GETDATE - 519)) | (1L << (GETUTCDATE - 519)) | (1L << (GLOBAL - 519)) | (1L << (GO - 519)) | (1L << (GROUP_MAX_REQUESTS - 519)) | (1L << (GROUPING - 519)) | (1L << (GROUPING_ID - 519)) | (1L << (HADR - 519)) | (1L << (HASH - 519)) | (1L << (HEALTH_CHECK_TIMEOUT - 519)) | (1L << (HIGH - 519)) | (1L << (HONOR_BROKER_PRIORITY - 519)) | (1L << (HOURS - 519)) | (1L << (IDENTITY_VALUE - 519)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 519)) | (1L << (IMMEDIATE - 519)) | (1L << (IMPERSONATE - 519)) | (1L << (IMPORTANCE - 519)) | (1L << (INCREMENTAL - 519)) | (1L << (INITIATOR - 519)) | (1L << (INPUT - 519)) | (1L << (INSENSITIVE - 519)) | (1L << (INSERTED - 519)) | (1L << (INT - 519)) | (1L << (IP - 519)) | (1L << (ISOLATION - 519)) | (1L << (KB - 519)) | (1L << (KEEP - 519)) | (1L << (KEEPFIXED - 519)) | (1L << (KEY_SOURCE - 519)) | (1L << (KEYS - 519)) | (1L << (KEYSET - 519)) | (1L << (LAG - 519)) | (1L << (LAST - 519)) | (1L << (LAST_VALUE - 519)) | (1L << (LEAD - 519)) | (1L << (LEVEL - 519)) | (1L << (LIST - 519)) | (1L << (LISTENER - 519)) | (1L << (LISTENER_URL - 519)) | (1L << (LOB_COMPACTION - 519)) | (1L << (LOCAL - 519)) | (1L << (LOCATION - 519)) | (1L << (LOCK - 519)) | (1L << (LOCK_ESCALATION - 519)) | (1L << (LOGIN - 519)) | (1L << (LOOP - 519)) | (1L << (LOW - 519)) | (1L << (MANUAL - 519)) | (1L << (MARK - 519)) | (1L << (MATERIALIZED - 519)) | (1L << (MAX - 519)) | (1L << (MAX_CPU_PERCENT - 519)) | (1L << (MAX_DOP - 519)) | (1L << (MAX_FILES - 519)) | (1L << (MAX_IOPS_PER_VOLUME - 519)) | (1L << (MAX_MEMORY_PERCENT - 519)) | (1L << (MAX_PROCESSES - 519)) | (1L << (MAX_QUEUE_READERS - 519)))) != 0) || ((((_la - 583)) & ~0x3f) == 0 && ((1L << (_la - 583)) & ((1L << (MAX_ROLLOVER_FILES - 583)) | (1L << (MAXDOP - 583)) | (1L << (MAXRECURSION - 583)) | (1L << (MAXSIZE - 583)) | (1L << (MB - 583)) | (1L << (MEDIUM - 583)) | (1L << (MEMORY_OPTIMIZED_DATA - 583)) | (1L << (MESSAGE - 583)) | (1L << (MIN - 583)) | (1L << (MIN_ACTIVE_ROWVERSION - 583)) | (1L << (MIN_CPU_PERCENT - 583)) | (1L << (MIN_IOPS_PER_VOLUME - 583)) | (1L << (MIN_MEMORY_PERCENT - 583)) | (1L << (MINUTES - 583)) | (1L << (MIRROR_ADDRESS - 583)) | (1L << (MIXED_PAGE_ALLOCATION - 583)) | (1L << (MODE - 583)) | (1L << (MODIFY - 583)) | (1L << (MOVE - 583)) | (1L << (MULTI_USER - 583)) | (1L << (NAME - 583)) | (1L << (NESTED_TRIGGERS - 583)) | (1L << (NEW_ACCOUNT - 583)) | (1L << (NEW_BROKER - 583)) | (1L << (NEW_PASSWORD - 583)) | (1L << (NEXT - 583)) | (1L << (NO - 583)) | (1L << (NO_TRUNCATE - 583)) | (1L << (NO_WAIT - 583)) | (1L << (NOCOUNT - 583)) | (1L << (NODES - 583)) | (1L << (NOEXPAND - 583)) | (1L << (NON_TRANSACTED_ACCESS - 583)) | (1L << (NORECOMPUTE - 583)) | (1L << (NORECOVERY - 583)) | (1L << (NOWAIT - 583)) | (1L << (NTILE - 583)) | (1L << (NUMANODE - 583)) | (1L << (NUMBER - 583)) | (1L << (NUMERIC_ROUNDABORT - 583)) | (1L << (OBJECT - 583)) | (1L << (OFFLINE - 583)) | (1L << (OFFSET - 583)) | (1L << (OLD_ACCOUNT - 583)) | (1L << (ONLINE - 583)) | (1L << (ONLY - 583)) | (1L << (OPEN_EXISTING - 583)) | (1L << (OPTIMISTIC - 583)) | (1L << (OPTIMIZE - 583)) | (1L << (OUT - 583)) | (1L << (OUTPUT - 583)) | (1L << (OWNER - 583)) | (1L << (PAGE_VERIFY - 583)) | (1L << (PARAMETERIZATION - 583)) | (1L << (PARTITION - 583)) | (1L << (PARTITIONS - 583)) | (1L << (PARTNER - 583)) | (1L << (PATH - 583)) | (1L << (POISON_MESSAGE_HANDLING - 583)) | (1L << (POOL - 583)) | (1L << (PORT - 583)) | (1L << (PRECEDING - 583)) | (1L << (PRIMARY_ROLE - 583)))) != 0) || ((((_la - 647)) & ~0x3f) == 0 && ((1L << (_la - 647)) & ((1L << (PRIOR - 647)) | (1L << (PRIORITY - 647)) | (1L << (PRIORITY_LEVEL - 647)) | (1L << (PRIVATE - 647)) | (1L << (PRIVATE_KEY - 647)) | (1L << (PRIVILEGES - 647)) | (1L << (PROCEDURE_NAME - 647)) | (1L << (PROPERTY - 647)) | (1L << (PROVIDER - 647)) | (1L << (PROVIDER_KEY_NAME - 647)) | (1L << (QUERY - 647)) | (1L << (QUEUE - 647)) | (1L << (QUEUE_DELAY - 647)) | (1L << (QUOTED_IDENTIFIER - 647)) | (1L << (RANGE - 647)) | (1L << (RANK - 647)) | (1L << (RC2 - 647)) | (1L << (RC4 - 647)) | (1L << (RC4_128 - 647)) | (1L << (READ_COMMITTED_SNAPSHOT - 647)) | (1L << (READ_ONLY - 647)) | (1L << (READ_ONLY_ROUTING_LIST - 647)) | (1L << (READ_WRITE - 647)) | (1L << (READONLY - 647)) | (1L << (REBUILD - 647)) | (1L << (RECEIVE - 647)) | (1L << (RECOMPILE - 647)) | (1L << (RECOVERY - 647)) | (1L << (RECURSIVE_TRIGGERS - 647)) | (1L << (RELATIVE - 647)) | (1L << (REMOTE - 647)) | (1L << (REMOTE_SERVICE_NAME - 647)) | (1L << (REMOVE - 647)) | (1L << (REORGANIZE - 647)) | (1L << (REPEATABLE - 647)) | (1L << (REPLICA - 647)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 647)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 647)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 647)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 647)) | (1L << (RESERVE_DISK_SPACE - 647)) | (1L << (RESOURCE - 647)) | (1L << (RESOURCE_MANAGER_LOCATION - 647)) | (1L << (RESTRICTED_USER - 647)) | (1L << (RETENTION - 647)) | (1L << (ROBUST - 647)) | (1L << (ROOT - 647)) | (1L << (ROUTE - 647)) | (1L << (ROW - 647)) | (1L << (ROW_NUMBER - 647)) | (1L << (ROWGUID - 647)) | (1L << (ROWS - 647)) | (1L << (SAMPLE - 647)) | (1L << (SCHEMABINDING - 647)) | (1L << (SCOPED - 647)) | (1L << (SCROLL - 647)) | (1L << (SCROLL_LOCKS - 647)) | (1L << (SEARCH - 647)) | (1L << (SECONDARY - 647)) | (1L << (SECONDARY_ONLY - 647)) | (1L << (SECONDARY_ROLE - 647)) | (1L << (SECONDS - 647)) | (1L << (SECRET - 647)) | (1L << (SECURITY - 647)))) != 0) || ((((_la - 711)) & ~0x3f) == 0 && ((1L << (_la - 711)) & ((1L << (SECURITY_LOG - 711)) | (1L << (SEEDING_MODE - 711)) | (1L << (SELF - 711)) | (1L << (SEMI_SENSITIVE - 711)) | (1L << (SEND - 711)) | (1L << (SENT - 711)) | (1L << (SEQUENCE - 711)) | (1L << (SERIALIZABLE - 711)) | (1L << (SESSION_TIMEOUT - 711)) | (1L << (SETERROR - 711)) | (1L << (SHARE - 711)) | (1L << (SHOWPLAN - 711)) | (1L << (SIGNATURE - 711)) | (1L << (SIMPLE - 711)) | (1L << (SINGLE_USER - 711)) | (1L << (SIZE - 711)) | (1L << (SMALLINT - 711)) | (1L << (SNAPSHOT - 711)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 711)) | (1L << (STANDBY - 711)) | (1L << (START_DATE - 711)) | (1L << (STATIC - 711)) | (1L << (STATS_STREAM - 711)) | (1L << (STATUS - 711)) | (1L << (STDEV - 711)) | (1L << (STDEVP - 711)) | (1L << (STOPLIST - 711)) | (1L << (STRING_AGG - 711)) | (1L << (STUFF - 711)) | (1L << (SUBJECT - 711)) | (1L << (SUM - 711)) | (1L << (SUSPEND - 711)) | (1L << (SYMMETRIC - 711)) | (1L << (SYNCHRONOUS_COMMIT - 711)) | (1L << (SYNONYM - 711)) | (1L << (SYSTEM - 711)) | (1L << (TAKE - 711)) | (1L << (TARGET_RECOVERY_TIME - 711)) | (1L << (TB - 711)) | (1L << (TEXTIMAGE_ON - 711)) | (1L << (THROW - 711)) | (1L << (TIES - 711)) | (1L << (TIME - 711)) | (1L << (TIMEOUT - 711)) | (1L << (TIMER - 711)) | (1L << (TINYINT - 711)) | (1L << (TORN_PAGE_DETECTION - 711)) | (1L << (TRANSFORM_NOISE_WORDS - 711)) | (1L << (TRIPLE_DES - 711)) | (1L << (TRIPLE_DES_3KEY - 711)) | (1L << (TRUSTWORTHY - 711)) | (1L << (TRY - 711)) | (1L << (TSQL - 711)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 711)) | (1L << (TYPE - 711)) | (1L << (TYPE_WARNING - 711)) | (1L << (UNBOUNDED - 711)) | (1L << (UNCOMMITTED - 711)) | (1L << (UNKNOWN - 711)) | (1L << (UNLIMITED - 711)) | (1L << (USING - 711)))) != 0) || ((((_la - 775)) & ~0x3f) == 0 && ((1L << (_la - 775)) & ((1L << (VALID_XML - 775)) | (1L << (VALIDATION - 775)) | (1L << (VALUE - 775)) | (1L << (VAR - 775)) | (1L << (VARP - 775)) | (1L << (VIEW_METADATA - 775)) | (1L << (VIEWS - 775)) | (1L << (WAIT - 775)) | (1L << (WELL_FORMED_XML - 775)) | (1L << (WORK - 775)) | (1L << (WORKLOAD - 775)) | (1L << (XML - 775)) | (1L << (XMLNAMESPACES - 775)) | (1L << (DOUBLE_QUOTE_ID - 775)) | (1L << (SQUARE_BRACKET_ID - 775)) | (1L << (ID - 775)) | (1L << (COMMA - 775)))) != 0) );
+			} while ( _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==COMMA || _la==URL );
 			setState(2522);
 			match(ON);
 			setState(2527);
@@ -16159,6 +16204,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -16168,20 +16214,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -16586,6 +16639,7 @@ public class MocaSqlParser extends Parser {
 			case SQUARE_BRACKET_ID:
 			case ID:
 			case COMMA:
+			case URL:
 				{
 				setState(2800); 
 				_errHandler.sync(this);
@@ -16621,7 +16675,7 @@ public class MocaSqlParser extends Parser {
 					setState(2802); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( _la==CALLED || _la==DATA_COMPRESSION || ((((_la - 112)) & ~0x3f) == 0 && ((1L << (_la - 112)) & ((1L << (EVENTDATA - 112)) | (1L << (FILENAME - 112)) | (1L << (FILLFACTOR - 112)) | (1L << (FORCESEEK - 112)) | (1L << (INIT - 112)) | (1L << (KEY - 112)))) != 0) || ((((_la - 187)) & ~0x3f) == 0 && ((1L << (_la - 187)) & ((1L << (MASTER - 187)) | (1L << (MAX_MEMORY - 187)) | (1L << (OFFSETS - 187)) | (1L << (PAGE - 187)))) != 0) || ((((_la - 259)) & ~0x3f) == 0 && ((1L << (_la - 259)) & ((1L << (PUBLIC - 259)) | (1L << (R - 259)) | (1L << (RAW - 259)) | (1L << (RETURN - 259)) | (1L << (RETURNS - 259)) | (1L << (ROWCOUNT - 259)) | (1L << (SAFETY - 259)) | (1L << (SERVER - 259)) | (1L << (SID - 259)) | (1L << (SOURCE - 259)) | (1L << (SPLIT - 259)))) != 0) || ((((_la - 327)) & ~0x3f) == 0 && ((1L << (_la - 327)) & ((1L << (STATE - 327)) | (1L << (START - 327)) | (1L << (TARGET - 327)) | (1L << (ABSOLUTE - 327)) | (1L << (ACCENT_SENSITIVITY - 327)) | (1L << (ACTION - 327)) | (1L << (ACTIVATION - 327)) | (1L << (ACTIVE - 327)) | (1L << (ADDRESS - 327)) | (1L << (AES_128 - 327)) | (1L << (AES_192 - 327)) | (1L << (AES_256 - 327)) | (1L << (AFFINITY - 327)) | (1L << (AFTER - 327)))) != 0) || ((((_la - 391)) & ~0x3f) == 0 && ((1L << (_la - 391)) & ((1L << (AGGREGATE - 391)) | (1L << (ALGORITHM - 391)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 391)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 391)) | (1L << (ALLOWED - 391)) | (1L << (ANSI_NULL_DEFAULT - 391)) | (1L << (ANSI_NULLS - 391)) | (1L << (ANSI_PADDING - 391)) | (1L << (ANSI_WARNINGS - 391)) | (1L << (APPLICATION_LOG - 391)) | (1L << (APPLY - 391)) | (1L << (ARITHABORT - 391)) | (1L << (ASSEMBLY - 391)) | (1L << (AUDIT - 391)) | (1L << (AUDIT_GUID - 391)) | (1L << (AUTO - 391)) | (1L << (AUTO_CLEANUP - 391)) | (1L << (AUTO_CLOSE - 391)) | (1L << (AUTO_CREATE_STATISTICS - 391)) | (1L << (AUTO_SHRINK - 391)) | (1L << (AUTO_UPDATE_STATISTICS - 391)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 391)) | (1L << (AVAILABILITY - 391)) | (1L << (AVG - 391)) | (1L << (BACKUP_PRIORITY - 391)) | (1L << (BEGIN_DIALOG - 391)) | (1L << (BIGINT - 391)) | (1L << (BINARY_BASE64 - 391)) | (1L << (BINARY_CHECKSUM - 391)) | (1L << (BINDING - 391)) | (1L << (BLOB_STORAGE - 391)) | (1L << (BROKER - 391)) | (1L << (BROKER_INSTANCE - 391)) | (1L << (BULK_LOGGED - 391)) | (1L << (CALLER - 391)) | (1L << (CAP_CPU_PERCENT - 391)) | (1L << (CAST - 391)) | (1L << (CATALOG - 391)) | (1L << (CATCH - 391)) | (1L << (CHANGE_RETENTION - 391)) | (1L << (CHANGE_TRACKING - 391)) | (1L << (CHECKSUM - 391)) | (1L << (CHECKSUM_AGG - 391)) | (1L << (CLEANUP - 391)) | (1L << (COLLECTION - 391)) | (1L << (COLUMN_MASTER_KEY - 391)) | (1L << (COMMITTED - 391)) | (1L << (COMPATIBILITY_LEVEL - 391)) | (1L << (CONCAT - 391)) | (1L << (CONCAT_NULL_YIELDS_NULL - 391)) | (1L << (CONTENT - 391)) | (1L << (CONTROL - 391)) | (1L << (COOKIE - 391)) | (1L << (COUNT - 391)) | (1L << (COUNT_BIG - 391)) | (1L << (COUNTER - 391)) | (1L << (CPU - 391)) | (1L << (CREATE_NEW - 391)) | (1L << (CREATION_DISPOSITION - 391)) | (1L << (CREDENTIAL - 391)) | (1L << (CRYPTOGRAPHIC - 391)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 391)) | (1L << (CURSOR_DEFAULT - 391)) | (1L << (DATA - 391)))) != 0) || ((((_la - 455)) & ~0x3f) == 0 && ((1L << (_la - 455)) & ((1L << (DATE_CORRELATION_OPTIMIZATION - 455)) | (1L << (DATEADD - 455)) | (1L << (DATEDIFF - 455)) | (1L << (DATENAME - 455)) | (1L << (DATEPART - 455)) | (1L << (DAYS - 455)) | (1L << (DB_CHAINING - 455)) | (1L << (DB_FAILOVER - 455)) | (1L << (DECRYPTION - 455)) | (1L << (DEFAULT_DOUBLE_QUOTE - 455)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 455)) | (1L << (DEFAULT_LANGUAGE - 455)) | (1L << (DELAY - 455)) | (1L << (DELAYED_DURABILITY - 455)) | (1L << (DELETED - 455)) | (1L << (DENSE_RANK - 455)) | (1L << (DEPENDENTS - 455)) | (1L << (DES - 455)) | (1L << (DESCRIPTION - 455)) | (1L << (DESX - 455)) | (1L << (DHCP - 455)) | (1L << (DIALOG - 455)) | (1L << (DIRECTORY_NAME - 455)) | (1L << (DISABLE - 455)) | (1L << (DISABLE_BROKER - 455)) | (1L << (DISABLED - 455)) | (1L << (DISK_DRIVE - 455)) | (1L << (DOCUMENT - 455)) | (1L << (DYNAMIC - 455)) | (1L << (EMERGENCY - 455)) | (1L << (EMPTY - 455)) | (1L << (ENABLE - 455)) | (1L << (ENABLE_BROKER - 455)) | (1L << (ENCRYPTED_VALUE - 455)) | (1L << (ENCRYPTION - 455)) | (1L << (ENDPOINT_URL - 455)) | (1L << (ERROR_BROKER_CONVERSATIONS - 455)) | (1L << (EXCLUSIVE - 455)) | (1L << (EXECUTABLE - 455)) | (1L << (EXIST - 455)) | (1L << (EXPAND - 455)) | (1L << (EXPIRY_DATE - 455)) | (1L << (EXPLICIT - 455)) | (1L << (FAIL_OPERATION - 455)) | (1L << (FAILOVER_MODE - 455)) | (1L << (FAILURE - 455)) | (1L << (FAILURE_CONDITION_LEVEL - 455)) | (1L << (FAST - 455)) | (1L << (FAST_FORWARD - 455)) | (1L << (FILEGROUP - 455)) | (1L << (FILEGROWTH - 455)) | (1L << (FILEPATH - 455)) | (1L << (FILESTREAM - 455)) | (1L << (FILTER - 455)) | (1L << (FIRST - 455)) | (1L << (FIRST_VALUE - 455)) | (1L << (FOLLOWING - 455)) | (1L << (FORCE - 455)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 455)) | (1L << (FORCED - 455)) | (1L << (FORMAT - 455)) | (1L << (FORWARD_ONLY - 455)) | (1L << (FULLSCAN - 455)))) != 0) || ((((_la - 519)) & ~0x3f) == 0 && ((1L << (_la - 519)) & ((1L << (FULLTEXT - 519)) | (1L << (GB - 519)) | (1L << (GETDATE - 519)) | (1L << (GETUTCDATE - 519)) | (1L << (GLOBAL - 519)) | (1L << (GO - 519)) | (1L << (GROUP_MAX_REQUESTS - 519)) | (1L << (GROUPING - 519)) | (1L << (GROUPING_ID - 519)) | (1L << (HADR - 519)) | (1L << (HASH - 519)) | (1L << (HEALTH_CHECK_TIMEOUT - 519)) | (1L << (HIGH - 519)) | (1L << (HONOR_BROKER_PRIORITY - 519)) | (1L << (HOURS - 519)) | (1L << (IDENTITY_VALUE - 519)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 519)) | (1L << (IMMEDIATE - 519)) | (1L << (IMPERSONATE - 519)) | (1L << (IMPORTANCE - 519)) | (1L << (INCREMENTAL - 519)) | (1L << (INITIATOR - 519)) | (1L << (INPUT - 519)) | (1L << (INSENSITIVE - 519)) | (1L << (INSERTED - 519)) | (1L << (INT - 519)) | (1L << (IP - 519)) | (1L << (ISOLATION - 519)) | (1L << (KB - 519)) | (1L << (KEEP - 519)) | (1L << (KEEPFIXED - 519)) | (1L << (KEY_SOURCE - 519)) | (1L << (KEYS - 519)) | (1L << (KEYSET - 519)) | (1L << (LAG - 519)) | (1L << (LAST - 519)) | (1L << (LAST_VALUE - 519)) | (1L << (LEAD - 519)) | (1L << (LEVEL - 519)) | (1L << (LIST - 519)) | (1L << (LISTENER - 519)) | (1L << (LISTENER_URL - 519)) | (1L << (LOB_COMPACTION - 519)) | (1L << (LOCAL - 519)) | (1L << (LOCATION - 519)) | (1L << (LOCK - 519)) | (1L << (LOCK_ESCALATION - 519)) | (1L << (LOGIN - 519)) | (1L << (LOOP - 519)) | (1L << (LOW - 519)) | (1L << (MANUAL - 519)) | (1L << (MARK - 519)) | (1L << (MATERIALIZED - 519)) | (1L << (MAX - 519)) | (1L << (MAX_CPU_PERCENT - 519)) | (1L << (MAX_DOP - 519)) | (1L << (MAX_FILES - 519)) | (1L << (MAX_IOPS_PER_VOLUME - 519)) | (1L << (MAX_MEMORY_PERCENT - 519)) | (1L << (MAX_PROCESSES - 519)) | (1L << (MAX_QUEUE_READERS - 519)))) != 0) || ((((_la - 583)) & ~0x3f) == 0 && ((1L << (_la - 583)) & ((1L << (MAX_ROLLOVER_FILES - 583)) | (1L << (MAXDOP - 583)) | (1L << (MAXRECURSION - 583)) | (1L << (MAXSIZE - 583)) | (1L << (MB - 583)) | (1L << (MEDIUM - 583)) | (1L << (MEMORY_OPTIMIZED_DATA - 583)) | (1L << (MESSAGE - 583)) | (1L << (MIN - 583)) | (1L << (MIN_ACTIVE_ROWVERSION - 583)) | (1L << (MIN_CPU_PERCENT - 583)) | (1L << (MIN_IOPS_PER_VOLUME - 583)) | (1L << (MIN_MEMORY_PERCENT - 583)) | (1L << (MINUTES - 583)) | (1L << (MIRROR_ADDRESS - 583)) | (1L << (MIXED_PAGE_ALLOCATION - 583)) | (1L << (MODE - 583)) | (1L << (MODIFY - 583)) | (1L << (MOVE - 583)) | (1L << (MULTI_USER - 583)) | (1L << (NAME - 583)) | (1L << (NESTED_TRIGGERS - 583)) | (1L << (NEW_ACCOUNT - 583)) | (1L << (NEW_BROKER - 583)) | (1L << (NEW_PASSWORD - 583)) | (1L << (NEXT - 583)) | (1L << (NO - 583)) | (1L << (NO_TRUNCATE - 583)) | (1L << (NO_WAIT - 583)) | (1L << (NOCOUNT - 583)) | (1L << (NODES - 583)) | (1L << (NOEXPAND - 583)) | (1L << (NON_TRANSACTED_ACCESS - 583)) | (1L << (NORECOMPUTE - 583)) | (1L << (NORECOVERY - 583)) | (1L << (NOWAIT - 583)) | (1L << (NTILE - 583)) | (1L << (NUMANODE - 583)) | (1L << (NUMBER - 583)) | (1L << (NUMERIC_ROUNDABORT - 583)) | (1L << (OBJECT - 583)) | (1L << (OFFLINE - 583)) | (1L << (OFFSET - 583)) | (1L << (OLD_ACCOUNT - 583)) | (1L << (ONLINE - 583)) | (1L << (ONLY - 583)) | (1L << (OPEN_EXISTING - 583)) | (1L << (OPTIMISTIC - 583)) | (1L << (OPTIMIZE - 583)) | (1L << (OUT - 583)) | (1L << (OUTPUT - 583)) | (1L << (OWNER - 583)) | (1L << (PAGE_VERIFY - 583)) | (1L << (PARAMETERIZATION - 583)) | (1L << (PARTITION - 583)) | (1L << (PARTITIONS - 583)) | (1L << (PARTNER - 583)) | (1L << (PATH - 583)) | (1L << (POISON_MESSAGE_HANDLING - 583)) | (1L << (POOL - 583)) | (1L << (PORT - 583)) | (1L << (PRECEDING - 583)) | (1L << (PRIMARY_ROLE - 583)))) != 0) || ((((_la - 647)) & ~0x3f) == 0 && ((1L << (_la - 647)) & ((1L << (PRIOR - 647)) | (1L << (PRIORITY - 647)) | (1L << (PRIORITY_LEVEL - 647)) | (1L << (PRIVATE - 647)) | (1L << (PRIVATE_KEY - 647)) | (1L << (PRIVILEGES - 647)) | (1L << (PROCEDURE_NAME - 647)) | (1L << (PROPERTY - 647)) | (1L << (PROVIDER - 647)) | (1L << (PROVIDER_KEY_NAME - 647)) | (1L << (QUERY - 647)) | (1L << (QUEUE - 647)) | (1L << (QUEUE_DELAY - 647)) | (1L << (QUOTED_IDENTIFIER - 647)) | (1L << (RANGE - 647)) | (1L << (RANK - 647)) | (1L << (RC2 - 647)) | (1L << (RC4 - 647)) | (1L << (RC4_128 - 647)) | (1L << (READ_COMMITTED_SNAPSHOT - 647)) | (1L << (READ_ONLY - 647)) | (1L << (READ_ONLY_ROUTING_LIST - 647)) | (1L << (READ_WRITE - 647)) | (1L << (READONLY - 647)) | (1L << (REBUILD - 647)) | (1L << (RECEIVE - 647)) | (1L << (RECOMPILE - 647)) | (1L << (RECOVERY - 647)) | (1L << (RECURSIVE_TRIGGERS - 647)) | (1L << (RELATIVE - 647)) | (1L << (REMOTE - 647)) | (1L << (REMOTE_SERVICE_NAME - 647)) | (1L << (REMOVE - 647)) | (1L << (REORGANIZE - 647)) | (1L << (REPEATABLE - 647)) | (1L << (REPLICA - 647)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 647)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 647)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 647)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 647)) | (1L << (RESERVE_DISK_SPACE - 647)) | (1L << (RESOURCE - 647)) | (1L << (RESOURCE_MANAGER_LOCATION - 647)) | (1L << (RESTRICTED_USER - 647)) | (1L << (RETENTION - 647)) | (1L << (ROBUST - 647)) | (1L << (ROOT - 647)) | (1L << (ROUTE - 647)) | (1L << (ROW - 647)) | (1L << (ROW_NUMBER - 647)) | (1L << (ROWGUID - 647)) | (1L << (ROWS - 647)) | (1L << (SAMPLE - 647)) | (1L << (SCHEMABINDING - 647)) | (1L << (SCOPED - 647)) | (1L << (SCROLL - 647)) | (1L << (SCROLL_LOCKS - 647)) | (1L << (SEARCH - 647)) | (1L << (SECONDARY - 647)) | (1L << (SECONDARY_ONLY - 647)) | (1L << (SECONDARY_ROLE - 647)) | (1L << (SECONDS - 647)) | (1L << (SECRET - 647)) | (1L << (SECURITY - 647)))) != 0) || ((((_la - 711)) & ~0x3f) == 0 && ((1L << (_la - 711)) & ((1L << (SECURITY_LOG - 711)) | (1L << (SEEDING_MODE - 711)) | (1L << (SELF - 711)) | (1L << (SEMI_SENSITIVE - 711)) | (1L << (SEND - 711)) | (1L << (SENT - 711)) | (1L << (SEQUENCE - 711)) | (1L << (SERIALIZABLE - 711)) | (1L << (SESSION_TIMEOUT - 711)) | (1L << (SETERROR - 711)) | (1L << (SHARE - 711)) | (1L << (SHOWPLAN - 711)) | (1L << (SIGNATURE - 711)) | (1L << (SIMPLE - 711)) | (1L << (SINGLE_USER - 711)) | (1L << (SIZE - 711)) | (1L << (SMALLINT - 711)) | (1L << (SNAPSHOT - 711)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 711)) | (1L << (STANDBY - 711)) | (1L << (START_DATE - 711)) | (1L << (STATIC - 711)) | (1L << (STATS_STREAM - 711)) | (1L << (STATUS - 711)) | (1L << (STDEV - 711)) | (1L << (STDEVP - 711)) | (1L << (STOPLIST - 711)) | (1L << (STRING_AGG - 711)) | (1L << (STUFF - 711)) | (1L << (SUBJECT - 711)) | (1L << (SUM - 711)) | (1L << (SUSPEND - 711)) | (1L << (SYMMETRIC - 711)) | (1L << (SYNCHRONOUS_COMMIT - 711)) | (1L << (SYNONYM - 711)) | (1L << (SYSTEM - 711)) | (1L << (TAKE - 711)) | (1L << (TARGET_RECOVERY_TIME - 711)) | (1L << (TB - 711)) | (1L << (TEXTIMAGE_ON - 711)) | (1L << (THROW - 711)) | (1L << (TIES - 711)) | (1L << (TIME - 711)) | (1L << (TIMEOUT - 711)) | (1L << (TIMER - 711)) | (1L << (TINYINT - 711)) | (1L << (TORN_PAGE_DETECTION - 711)) | (1L << (TRANSFORM_NOISE_WORDS - 711)) | (1L << (TRIPLE_DES - 711)) | (1L << (TRIPLE_DES_3KEY - 711)) | (1L << (TRUSTWORTHY - 711)) | (1L << (TRY - 711)) | (1L << (TSQL - 711)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 711)) | (1L << (TYPE - 711)) | (1L << (TYPE_WARNING - 711)) | (1L << (UNBOUNDED - 711)) | (1L << (UNCOMMITTED - 711)) | (1L << (UNKNOWN - 711)) | (1L << (UNLIMITED - 711)) | (1L << (USING - 711)))) != 0) || ((((_la - 775)) & ~0x3f) == 0 && ((1L << (_la - 775)) & ((1L << (VALID_XML - 775)) | (1L << (VALIDATION - 775)) | (1L << (VALUE - 775)) | (1L << (VAR - 775)) | (1L << (VARP - 775)) | (1L << (VIEW_METADATA - 775)) | (1L << (VIEWS - 775)) | (1L << (WAIT - 775)) | (1L << (WELL_FORMED_XML - 775)) | (1L << (WORK - 775)) | (1L << (WORKLOAD - 775)) | (1L << (XML - 775)) | (1L << (XMLNAMESPACES - 775)) | (1L << (DOUBLE_QUOTE_ID - 775)) | (1L << (SQUARE_BRACKET_ID - 775)) | (1L << (ID - 775)) | (1L << (COMMA - 775)))) != 0) );
+				} while ( _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==COMMA || _la==URL );
 				}
 				break;
 			case ALL:
@@ -16640,6 +16694,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -16649,20 +16704,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -17066,6 +17128,7 @@ public class MocaSqlParser extends Parser {
 			case DOUBLE_QUOTE_ID:
 			case SQUARE_BRACKET_ID:
 			case ID:
+			case URL:
 				{
 				setState(2811);
 				_errHandler.sync(this);
@@ -17176,6 +17239,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -17185,20 +17249,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -17603,6 +17674,7 @@ public class MocaSqlParser extends Parser {
 			case SQUARE_BRACKET_ID:
 			case ID:
 			case COMMA:
+			case URL:
 				{
 				setState(2830); 
 				_errHandler.sync(this);
@@ -17638,7 +17710,7 @@ public class MocaSqlParser extends Parser {
 					setState(2832); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( _la==CALLED || _la==DATA_COMPRESSION || ((((_la - 112)) & ~0x3f) == 0 && ((1L << (_la - 112)) & ((1L << (EVENTDATA - 112)) | (1L << (FILENAME - 112)) | (1L << (FILLFACTOR - 112)) | (1L << (FORCESEEK - 112)) | (1L << (INIT - 112)) | (1L << (KEY - 112)))) != 0) || ((((_la - 187)) & ~0x3f) == 0 && ((1L << (_la - 187)) & ((1L << (MASTER - 187)) | (1L << (MAX_MEMORY - 187)) | (1L << (OFFSETS - 187)) | (1L << (PAGE - 187)))) != 0) || ((((_la - 259)) & ~0x3f) == 0 && ((1L << (_la - 259)) & ((1L << (PUBLIC - 259)) | (1L << (R - 259)) | (1L << (RAW - 259)) | (1L << (RETURN - 259)) | (1L << (RETURNS - 259)) | (1L << (ROWCOUNT - 259)) | (1L << (SAFETY - 259)) | (1L << (SERVER - 259)) | (1L << (SID - 259)) | (1L << (SOURCE - 259)) | (1L << (SPLIT - 259)))) != 0) || ((((_la - 327)) & ~0x3f) == 0 && ((1L << (_la - 327)) & ((1L << (STATE - 327)) | (1L << (START - 327)) | (1L << (TARGET - 327)) | (1L << (ABSOLUTE - 327)) | (1L << (ACCENT_SENSITIVITY - 327)) | (1L << (ACTION - 327)) | (1L << (ACTIVATION - 327)) | (1L << (ACTIVE - 327)) | (1L << (ADDRESS - 327)) | (1L << (AES_128 - 327)) | (1L << (AES_192 - 327)) | (1L << (AES_256 - 327)) | (1L << (AFFINITY - 327)) | (1L << (AFTER - 327)))) != 0) || ((((_la - 391)) & ~0x3f) == 0 && ((1L << (_la - 391)) & ((1L << (AGGREGATE - 391)) | (1L << (ALGORITHM - 391)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 391)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 391)) | (1L << (ALLOWED - 391)) | (1L << (ANSI_NULL_DEFAULT - 391)) | (1L << (ANSI_NULLS - 391)) | (1L << (ANSI_PADDING - 391)) | (1L << (ANSI_WARNINGS - 391)) | (1L << (APPLICATION_LOG - 391)) | (1L << (APPLY - 391)) | (1L << (ARITHABORT - 391)) | (1L << (ASSEMBLY - 391)) | (1L << (AUDIT - 391)) | (1L << (AUDIT_GUID - 391)) | (1L << (AUTO - 391)) | (1L << (AUTO_CLEANUP - 391)) | (1L << (AUTO_CLOSE - 391)) | (1L << (AUTO_CREATE_STATISTICS - 391)) | (1L << (AUTO_SHRINK - 391)) | (1L << (AUTO_UPDATE_STATISTICS - 391)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 391)) | (1L << (AVAILABILITY - 391)) | (1L << (AVG - 391)) | (1L << (BACKUP_PRIORITY - 391)) | (1L << (BEGIN_DIALOG - 391)) | (1L << (BIGINT - 391)) | (1L << (BINARY_BASE64 - 391)) | (1L << (BINARY_CHECKSUM - 391)) | (1L << (BINDING - 391)) | (1L << (BLOB_STORAGE - 391)) | (1L << (BROKER - 391)) | (1L << (BROKER_INSTANCE - 391)) | (1L << (BULK_LOGGED - 391)) | (1L << (CALLER - 391)) | (1L << (CAP_CPU_PERCENT - 391)) | (1L << (CAST - 391)) | (1L << (CATALOG - 391)) | (1L << (CATCH - 391)) | (1L << (CHANGE_RETENTION - 391)) | (1L << (CHANGE_TRACKING - 391)) | (1L << (CHECKSUM - 391)) | (1L << (CHECKSUM_AGG - 391)) | (1L << (CLEANUP - 391)) | (1L << (COLLECTION - 391)) | (1L << (COLUMN_MASTER_KEY - 391)) | (1L << (COMMITTED - 391)) | (1L << (COMPATIBILITY_LEVEL - 391)) | (1L << (CONCAT - 391)) | (1L << (CONCAT_NULL_YIELDS_NULL - 391)) | (1L << (CONTENT - 391)) | (1L << (CONTROL - 391)) | (1L << (COOKIE - 391)) | (1L << (COUNT - 391)) | (1L << (COUNT_BIG - 391)) | (1L << (COUNTER - 391)) | (1L << (CPU - 391)) | (1L << (CREATE_NEW - 391)) | (1L << (CREATION_DISPOSITION - 391)) | (1L << (CREDENTIAL - 391)) | (1L << (CRYPTOGRAPHIC - 391)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 391)) | (1L << (CURSOR_DEFAULT - 391)) | (1L << (DATA - 391)))) != 0) || ((((_la - 455)) & ~0x3f) == 0 && ((1L << (_la - 455)) & ((1L << (DATE_CORRELATION_OPTIMIZATION - 455)) | (1L << (DATEADD - 455)) | (1L << (DATEDIFF - 455)) | (1L << (DATENAME - 455)) | (1L << (DATEPART - 455)) | (1L << (DAYS - 455)) | (1L << (DB_CHAINING - 455)) | (1L << (DB_FAILOVER - 455)) | (1L << (DECRYPTION - 455)) | (1L << (DEFAULT_DOUBLE_QUOTE - 455)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 455)) | (1L << (DEFAULT_LANGUAGE - 455)) | (1L << (DELAY - 455)) | (1L << (DELAYED_DURABILITY - 455)) | (1L << (DELETED - 455)) | (1L << (DENSE_RANK - 455)) | (1L << (DEPENDENTS - 455)) | (1L << (DES - 455)) | (1L << (DESCRIPTION - 455)) | (1L << (DESX - 455)) | (1L << (DHCP - 455)) | (1L << (DIALOG - 455)) | (1L << (DIRECTORY_NAME - 455)) | (1L << (DISABLE - 455)) | (1L << (DISABLE_BROKER - 455)) | (1L << (DISABLED - 455)) | (1L << (DISK_DRIVE - 455)) | (1L << (DOCUMENT - 455)) | (1L << (DYNAMIC - 455)) | (1L << (EMERGENCY - 455)) | (1L << (EMPTY - 455)) | (1L << (ENABLE - 455)) | (1L << (ENABLE_BROKER - 455)) | (1L << (ENCRYPTED_VALUE - 455)) | (1L << (ENCRYPTION - 455)) | (1L << (ENDPOINT_URL - 455)) | (1L << (ERROR_BROKER_CONVERSATIONS - 455)) | (1L << (EXCLUSIVE - 455)) | (1L << (EXECUTABLE - 455)) | (1L << (EXIST - 455)) | (1L << (EXPAND - 455)) | (1L << (EXPIRY_DATE - 455)) | (1L << (EXPLICIT - 455)) | (1L << (FAIL_OPERATION - 455)) | (1L << (FAILOVER_MODE - 455)) | (1L << (FAILURE - 455)) | (1L << (FAILURE_CONDITION_LEVEL - 455)) | (1L << (FAST - 455)) | (1L << (FAST_FORWARD - 455)) | (1L << (FILEGROUP - 455)) | (1L << (FILEGROWTH - 455)) | (1L << (FILEPATH - 455)) | (1L << (FILESTREAM - 455)) | (1L << (FILTER - 455)) | (1L << (FIRST - 455)) | (1L << (FIRST_VALUE - 455)) | (1L << (FOLLOWING - 455)) | (1L << (FORCE - 455)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 455)) | (1L << (FORCED - 455)) | (1L << (FORMAT - 455)) | (1L << (FORWARD_ONLY - 455)) | (1L << (FULLSCAN - 455)))) != 0) || ((((_la - 519)) & ~0x3f) == 0 && ((1L << (_la - 519)) & ((1L << (FULLTEXT - 519)) | (1L << (GB - 519)) | (1L << (GETDATE - 519)) | (1L << (GETUTCDATE - 519)) | (1L << (GLOBAL - 519)) | (1L << (GO - 519)) | (1L << (GROUP_MAX_REQUESTS - 519)) | (1L << (GROUPING - 519)) | (1L << (GROUPING_ID - 519)) | (1L << (HADR - 519)) | (1L << (HASH - 519)) | (1L << (HEALTH_CHECK_TIMEOUT - 519)) | (1L << (HIGH - 519)) | (1L << (HONOR_BROKER_PRIORITY - 519)) | (1L << (HOURS - 519)) | (1L << (IDENTITY_VALUE - 519)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 519)) | (1L << (IMMEDIATE - 519)) | (1L << (IMPERSONATE - 519)) | (1L << (IMPORTANCE - 519)) | (1L << (INCREMENTAL - 519)) | (1L << (INITIATOR - 519)) | (1L << (INPUT - 519)) | (1L << (INSENSITIVE - 519)) | (1L << (INSERTED - 519)) | (1L << (INT - 519)) | (1L << (IP - 519)) | (1L << (ISOLATION - 519)) | (1L << (KB - 519)) | (1L << (KEEP - 519)) | (1L << (KEEPFIXED - 519)) | (1L << (KEY_SOURCE - 519)) | (1L << (KEYS - 519)) | (1L << (KEYSET - 519)) | (1L << (LAG - 519)) | (1L << (LAST - 519)) | (1L << (LAST_VALUE - 519)) | (1L << (LEAD - 519)) | (1L << (LEVEL - 519)) | (1L << (LIST - 519)) | (1L << (LISTENER - 519)) | (1L << (LISTENER_URL - 519)) | (1L << (LOB_COMPACTION - 519)) | (1L << (LOCAL - 519)) | (1L << (LOCATION - 519)) | (1L << (LOCK - 519)) | (1L << (LOCK_ESCALATION - 519)) | (1L << (LOGIN - 519)) | (1L << (LOOP - 519)) | (1L << (LOW - 519)) | (1L << (MANUAL - 519)) | (1L << (MARK - 519)) | (1L << (MATERIALIZED - 519)) | (1L << (MAX - 519)) | (1L << (MAX_CPU_PERCENT - 519)) | (1L << (MAX_DOP - 519)) | (1L << (MAX_FILES - 519)) | (1L << (MAX_IOPS_PER_VOLUME - 519)) | (1L << (MAX_MEMORY_PERCENT - 519)) | (1L << (MAX_PROCESSES - 519)) | (1L << (MAX_QUEUE_READERS - 519)))) != 0) || ((((_la - 583)) & ~0x3f) == 0 && ((1L << (_la - 583)) & ((1L << (MAX_ROLLOVER_FILES - 583)) | (1L << (MAXDOP - 583)) | (1L << (MAXRECURSION - 583)) | (1L << (MAXSIZE - 583)) | (1L << (MB - 583)) | (1L << (MEDIUM - 583)) | (1L << (MEMORY_OPTIMIZED_DATA - 583)) | (1L << (MESSAGE - 583)) | (1L << (MIN - 583)) | (1L << (MIN_ACTIVE_ROWVERSION - 583)) | (1L << (MIN_CPU_PERCENT - 583)) | (1L << (MIN_IOPS_PER_VOLUME - 583)) | (1L << (MIN_MEMORY_PERCENT - 583)) | (1L << (MINUTES - 583)) | (1L << (MIRROR_ADDRESS - 583)) | (1L << (MIXED_PAGE_ALLOCATION - 583)) | (1L << (MODE - 583)) | (1L << (MODIFY - 583)) | (1L << (MOVE - 583)) | (1L << (MULTI_USER - 583)) | (1L << (NAME - 583)) | (1L << (NESTED_TRIGGERS - 583)) | (1L << (NEW_ACCOUNT - 583)) | (1L << (NEW_BROKER - 583)) | (1L << (NEW_PASSWORD - 583)) | (1L << (NEXT - 583)) | (1L << (NO - 583)) | (1L << (NO_TRUNCATE - 583)) | (1L << (NO_WAIT - 583)) | (1L << (NOCOUNT - 583)) | (1L << (NODES - 583)) | (1L << (NOEXPAND - 583)) | (1L << (NON_TRANSACTED_ACCESS - 583)) | (1L << (NORECOMPUTE - 583)) | (1L << (NORECOVERY - 583)) | (1L << (NOWAIT - 583)) | (1L << (NTILE - 583)) | (1L << (NUMANODE - 583)) | (1L << (NUMBER - 583)) | (1L << (NUMERIC_ROUNDABORT - 583)) | (1L << (OBJECT - 583)) | (1L << (OFFLINE - 583)) | (1L << (OFFSET - 583)) | (1L << (OLD_ACCOUNT - 583)) | (1L << (ONLINE - 583)) | (1L << (ONLY - 583)) | (1L << (OPEN_EXISTING - 583)) | (1L << (OPTIMISTIC - 583)) | (1L << (OPTIMIZE - 583)) | (1L << (OUT - 583)) | (1L << (OUTPUT - 583)) | (1L << (OWNER - 583)) | (1L << (PAGE_VERIFY - 583)) | (1L << (PARAMETERIZATION - 583)) | (1L << (PARTITION - 583)) | (1L << (PARTITIONS - 583)) | (1L << (PARTNER - 583)) | (1L << (PATH - 583)) | (1L << (POISON_MESSAGE_HANDLING - 583)) | (1L << (POOL - 583)) | (1L << (PORT - 583)) | (1L << (PRECEDING - 583)) | (1L << (PRIMARY_ROLE - 583)))) != 0) || ((((_la - 647)) & ~0x3f) == 0 && ((1L << (_la - 647)) & ((1L << (PRIOR - 647)) | (1L << (PRIORITY - 647)) | (1L << (PRIORITY_LEVEL - 647)) | (1L << (PRIVATE - 647)) | (1L << (PRIVATE_KEY - 647)) | (1L << (PRIVILEGES - 647)) | (1L << (PROCEDURE_NAME - 647)) | (1L << (PROPERTY - 647)) | (1L << (PROVIDER - 647)) | (1L << (PROVIDER_KEY_NAME - 647)) | (1L << (QUERY - 647)) | (1L << (QUEUE - 647)) | (1L << (QUEUE_DELAY - 647)) | (1L << (QUOTED_IDENTIFIER - 647)) | (1L << (RANGE - 647)) | (1L << (RANK - 647)) | (1L << (RC2 - 647)) | (1L << (RC4 - 647)) | (1L << (RC4_128 - 647)) | (1L << (READ_COMMITTED_SNAPSHOT - 647)) | (1L << (READ_ONLY - 647)) | (1L << (READ_ONLY_ROUTING_LIST - 647)) | (1L << (READ_WRITE - 647)) | (1L << (READONLY - 647)) | (1L << (REBUILD - 647)) | (1L << (RECEIVE - 647)) | (1L << (RECOMPILE - 647)) | (1L << (RECOVERY - 647)) | (1L << (RECURSIVE_TRIGGERS - 647)) | (1L << (RELATIVE - 647)) | (1L << (REMOTE - 647)) | (1L << (REMOTE_SERVICE_NAME - 647)) | (1L << (REMOVE - 647)) | (1L << (REORGANIZE - 647)) | (1L << (REPEATABLE - 647)) | (1L << (REPLICA - 647)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 647)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 647)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 647)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 647)) | (1L << (RESERVE_DISK_SPACE - 647)) | (1L << (RESOURCE - 647)) | (1L << (RESOURCE_MANAGER_LOCATION - 647)) | (1L << (RESTRICTED_USER - 647)) | (1L << (RETENTION - 647)) | (1L << (ROBUST - 647)) | (1L << (ROOT - 647)) | (1L << (ROUTE - 647)) | (1L << (ROW - 647)) | (1L << (ROW_NUMBER - 647)) | (1L << (ROWGUID - 647)) | (1L << (ROWS - 647)) | (1L << (SAMPLE - 647)) | (1L << (SCHEMABINDING - 647)) | (1L << (SCOPED - 647)) | (1L << (SCROLL - 647)) | (1L << (SCROLL_LOCKS - 647)) | (1L << (SEARCH - 647)) | (1L << (SECONDARY - 647)) | (1L << (SECONDARY_ONLY - 647)) | (1L << (SECONDARY_ROLE - 647)) | (1L << (SECONDS - 647)) | (1L << (SECRET - 647)) | (1L << (SECURITY - 647)))) != 0) || ((((_la - 711)) & ~0x3f) == 0 && ((1L << (_la - 711)) & ((1L << (SECURITY_LOG - 711)) | (1L << (SEEDING_MODE - 711)) | (1L << (SELF - 711)) | (1L << (SEMI_SENSITIVE - 711)) | (1L << (SEND - 711)) | (1L << (SENT - 711)) | (1L << (SEQUENCE - 711)) | (1L << (SERIALIZABLE - 711)) | (1L << (SESSION_TIMEOUT - 711)) | (1L << (SETERROR - 711)) | (1L << (SHARE - 711)) | (1L << (SHOWPLAN - 711)) | (1L << (SIGNATURE - 711)) | (1L << (SIMPLE - 711)) | (1L << (SINGLE_USER - 711)) | (1L << (SIZE - 711)) | (1L << (SMALLINT - 711)) | (1L << (SNAPSHOT - 711)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 711)) | (1L << (STANDBY - 711)) | (1L << (START_DATE - 711)) | (1L << (STATIC - 711)) | (1L << (STATS_STREAM - 711)) | (1L << (STATUS - 711)) | (1L << (STDEV - 711)) | (1L << (STDEVP - 711)) | (1L << (STOPLIST - 711)) | (1L << (STRING_AGG - 711)) | (1L << (STUFF - 711)) | (1L << (SUBJECT - 711)) | (1L << (SUM - 711)) | (1L << (SUSPEND - 711)) | (1L << (SYMMETRIC - 711)) | (1L << (SYNCHRONOUS_COMMIT - 711)) | (1L << (SYNONYM - 711)) | (1L << (SYSTEM - 711)) | (1L << (TAKE - 711)) | (1L << (TARGET_RECOVERY_TIME - 711)) | (1L << (TB - 711)) | (1L << (TEXTIMAGE_ON - 711)) | (1L << (THROW - 711)) | (1L << (TIES - 711)) | (1L << (TIME - 711)) | (1L << (TIMEOUT - 711)) | (1L << (TIMER - 711)) | (1L << (TINYINT - 711)) | (1L << (TORN_PAGE_DETECTION - 711)) | (1L << (TRANSFORM_NOISE_WORDS - 711)) | (1L << (TRIPLE_DES - 711)) | (1L << (TRIPLE_DES_3KEY - 711)) | (1L << (TRUSTWORTHY - 711)) | (1L << (TRY - 711)) | (1L << (TSQL - 711)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 711)) | (1L << (TYPE - 711)) | (1L << (TYPE_WARNING - 711)) | (1L << (UNBOUNDED - 711)) | (1L << (UNCOMMITTED - 711)) | (1L << (UNKNOWN - 711)) | (1L << (UNLIMITED - 711)) | (1L << (USING - 711)))) != 0) || ((((_la - 775)) & ~0x3f) == 0 && ((1L << (_la - 775)) & ((1L << (VALID_XML - 775)) | (1L << (VALIDATION - 775)) | (1L << (VALUE - 775)) | (1L << (VAR - 775)) | (1L << (VARP - 775)) | (1L << (VIEW_METADATA - 775)) | (1L << (VIEWS - 775)) | (1L << (WAIT - 775)) | (1L << (WELL_FORMED_XML - 775)) | (1L << (WORK - 775)) | (1L << (WORKLOAD - 775)) | (1L << (XML - 775)) | (1L << (XMLNAMESPACES - 775)) | (1L << (DOUBLE_QUOTE_ID - 775)) | (1L << (SQUARE_BRACKET_ID - 775)) | (1L << (ID - 775)) | (1L << (COMMA - 775)))) != 0) );
+				} while ( _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==COMMA || _la==URL );
 				}
 				break;
 			case ALL:
@@ -17657,6 +17729,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -17666,20 +17739,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -18083,6 +18163,7 @@ public class MocaSqlParser extends Parser {
 			case DOUBLE_QUOTE_ID:
 			case SQUARE_BRACKET_ID:
 			case ID:
+			case URL:
 				{
 				setState(2841);
 				_errHandler.sync(this);
@@ -18942,7 +19023,7 @@ public class MocaSqlParser extends Parser {
 				setState(2979); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( _la==CALLED || _la==DATA_COMPRESSION || ((((_la - 112)) & ~0x3f) == 0 && ((1L << (_la - 112)) & ((1L << (EVENTDATA - 112)) | (1L << (FILENAME - 112)) | (1L << (FILLFACTOR - 112)) | (1L << (FORCESEEK - 112)) | (1L << (INIT - 112)) | (1L << (KEY - 112)))) != 0) || ((((_la - 187)) & ~0x3f) == 0 && ((1L << (_la - 187)) & ((1L << (MASTER - 187)) | (1L << (MAX_MEMORY - 187)) | (1L << (OFFSETS - 187)) | (1L << (PAGE - 187)))) != 0) || ((((_la - 259)) & ~0x3f) == 0 && ((1L << (_la - 259)) & ((1L << (PUBLIC - 259)) | (1L << (R - 259)) | (1L << (RAW - 259)) | (1L << (RETURN - 259)) | (1L << (RETURNS - 259)) | (1L << (ROWCOUNT - 259)) | (1L << (SAFETY - 259)) | (1L << (SERVER - 259)) | (1L << (SID - 259)) | (1L << (SOURCE - 259)) | (1L << (SPLIT - 259)))) != 0) || ((((_la - 327)) & ~0x3f) == 0 && ((1L << (_la - 327)) & ((1L << (STATE - 327)) | (1L << (START - 327)) | (1L << (TARGET - 327)) | (1L << (ABSOLUTE - 327)) | (1L << (ACCENT_SENSITIVITY - 327)) | (1L << (ACTION - 327)) | (1L << (ACTIVATION - 327)) | (1L << (ACTIVE - 327)) | (1L << (ADDRESS - 327)) | (1L << (AES_128 - 327)) | (1L << (AES_192 - 327)) | (1L << (AES_256 - 327)) | (1L << (AFFINITY - 327)) | (1L << (AFTER - 327)))) != 0) || ((((_la - 391)) & ~0x3f) == 0 && ((1L << (_la - 391)) & ((1L << (AGGREGATE - 391)) | (1L << (ALGORITHM - 391)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 391)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 391)) | (1L << (ALLOWED - 391)) | (1L << (ANSI_NULL_DEFAULT - 391)) | (1L << (ANSI_NULLS - 391)) | (1L << (ANSI_PADDING - 391)) | (1L << (ANSI_WARNINGS - 391)) | (1L << (APPLICATION_LOG - 391)) | (1L << (APPLY - 391)) | (1L << (ARITHABORT - 391)) | (1L << (ASSEMBLY - 391)) | (1L << (AUDIT - 391)) | (1L << (AUDIT_GUID - 391)) | (1L << (AUTO - 391)) | (1L << (AUTO_CLEANUP - 391)) | (1L << (AUTO_CLOSE - 391)) | (1L << (AUTO_CREATE_STATISTICS - 391)) | (1L << (AUTO_SHRINK - 391)) | (1L << (AUTO_UPDATE_STATISTICS - 391)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 391)) | (1L << (AVAILABILITY - 391)) | (1L << (AVG - 391)) | (1L << (BACKUP_PRIORITY - 391)) | (1L << (BEGIN_DIALOG - 391)) | (1L << (BIGINT - 391)) | (1L << (BINARY_BASE64 - 391)) | (1L << (BINARY_CHECKSUM - 391)) | (1L << (BINDING - 391)) | (1L << (BLOB_STORAGE - 391)) | (1L << (BROKER - 391)) | (1L << (BROKER_INSTANCE - 391)) | (1L << (BULK_LOGGED - 391)) | (1L << (CALLER - 391)) | (1L << (CAP_CPU_PERCENT - 391)) | (1L << (CAST - 391)) | (1L << (CATALOG - 391)) | (1L << (CATCH - 391)) | (1L << (CHANGE_RETENTION - 391)) | (1L << (CHANGE_TRACKING - 391)) | (1L << (CHECKSUM - 391)) | (1L << (CHECKSUM_AGG - 391)) | (1L << (CLEANUP - 391)) | (1L << (COLLECTION - 391)) | (1L << (COLUMN_MASTER_KEY - 391)) | (1L << (COMMITTED - 391)) | (1L << (COMPATIBILITY_LEVEL - 391)) | (1L << (CONCAT - 391)) | (1L << (CONCAT_NULL_YIELDS_NULL - 391)) | (1L << (CONTENT - 391)) | (1L << (CONTROL - 391)) | (1L << (COOKIE - 391)) | (1L << (COUNT - 391)) | (1L << (COUNT_BIG - 391)) | (1L << (COUNTER - 391)) | (1L << (CPU - 391)) | (1L << (CREATE_NEW - 391)) | (1L << (CREATION_DISPOSITION - 391)) | (1L << (CREDENTIAL - 391)) | (1L << (CRYPTOGRAPHIC - 391)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 391)) | (1L << (CURSOR_DEFAULT - 391)) | (1L << (DATA - 391)))) != 0) || ((((_la - 455)) & ~0x3f) == 0 && ((1L << (_la - 455)) & ((1L << (DATE_CORRELATION_OPTIMIZATION - 455)) | (1L << (DATEADD - 455)) | (1L << (DATEDIFF - 455)) | (1L << (DATENAME - 455)) | (1L << (DATEPART - 455)) | (1L << (DAYS - 455)) | (1L << (DB_CHAINING - 455)) | (1L << (DB_FAILOVER - 455)) | (1L << (DECRYPTION - 455)) | (1L << (DEFAULT_DOUBLE_QUOTE - 455)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 455)) | (1L << (DEFAULT_LANGUAGE - 455)) | (1L << (DELAY - 455)) | (1L << (DELAYED_DURABILITY - 455)) | (1L << (DELETED - 455)) | (1L << (DENSE_RANK - 455)) | (1L << (DEPENDENTS - 455)) | (1L << (DES - 455)) | (1L << (DESCRIPTION - 455)) | (1L << (DESX - 455)) | (1L << (DHCP - 455)) | (1L << (DIALOG - 455)) | (1L << (DIRECTORY_NAME - 455)) | (1L << (DISABLE - 455)) | (1L << (DISABLE_BROKER - 455)) | (1L << (DISABLED - 455)) | (1L << (DISK_DRIVE - 455)) | (1L << (DOCUMENT - 455)) | (1L << (DYNAMIC - 455)) | (1L << (EMERGENCY - 455)) | (1L << (EMPTY - 455)) | (1L << (ENABLE - 455)) | (1L << (ENABLE_BROKER - 455)) | (1L << (ENCRYPTED_VALUE - 455)) | (1L << (ENCRYPTION - 455)) | (1L << (ENDPOINT_URL - 455)) | (1L << (ERROR_BROKER_CONVERSATIONS - 455)) | (1L << (EXCLUSIVE - 455)) | (1L << (EXECUTABLE - 455)) | (1L << (EXIST - 455)) | (1L << (EXPAND - 455)) | (1L << (EXPIRY_DATE - 455)) | (1L << (EXPLICIT - 455)) | (1L << (FAIL_OPERATION - 455)) | (1L << (FAILOVER_MODE - 455)) | (1L << (FAILURE - 455)) | (1L << (FAILURE_CONDITION_LEVEL - 455)) | (1L << (FAST - 455)) | (1L << (FAST_FORWARD - 455)) | (1L << (FILEGROUP - 455)) | (1L << (FILEGROWTH - 455)) | (1L << (FILEPATH - 455)) | (1L << (FILESTREAM - 455)) | (1L << (FILTER - 455)) | (1L << (FIRST - 455)) | (1L << (FIRST_VALUE - 455)) | (1L << (FOLLOWING - 455)) | (1L << (FORCE - 455)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 455)) | (1L << (FORCED - 455)) | (1L << (FORMAT - 455)) | (1L << (FORWARD_ONLY - 455)) | (1L << (FULLSCAN - 455)))) != 0) || ((((_la - 519)) & ~0x3f) == 0 && ((1L << (_la - 519)) & ((1L << (FULLTEXT - 519)) | (1L << (GB - 519)) | (1L << (GETDATE - 519)) | (1L << (GETUTCDATE - 519)) | (1L << (GLOBAL - 519)) | (1L << (GO - 519)) | (1L << (GROUP_MAX_REQUESTS - 519)) | (1L << (GROUPING - 519)) | (1L << (GROUPING_ID - 519)) | (1L << (HADR - 519)) | (1L << (HASH - 519)) | (1L << (HEALTH_CHECK_TIMEOUT - 519)) | (1L << (HIGH - 519)) | (1L << (HONOR_BROKER_PRIORITY - 519)) | (1L << (HOURS - 519)) | (1L << (IDENTITY_VALUE - 519)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 519)) | (1L << (IMMEDIATE - 519)) | (1L << (IMPERSONATE - 519)) | (1L << (IMPORTANCE - 519)) | (1L << (INCREMENTAL - 519)) | (1L << (INITIATOR - 519)) | (1L << (INPUT - 519)) | (1L << (INSENSITIVE - 519)) | (1L << (INSERTED - 519)) | (1L << (INT - 519)) | (1L << (IP - 519)) | (1L << (ISOLATION - 519)) | (1L << (KB - 519)) | (1L << (KEEP - 519)) | (1L << (KEEPFIXED - 519)) | (1L << (KEY_SOURCE - 519)) | (1L << (KEYS - 519)) | (1L << (KEYSET - 519)) | (1L << (LAG - 519)) | (1L << (LAST - 519)) | (1L << (LAST_VALUE - 519)) | (1L << (LEAD - 519)) | (1L << (LEVEL - 519)) | (1L << (LIST - 519)) | (1L << (LISTENER - 519)) | (1L << (LISTENER_URL - 519)) | (1L << (LOB_COMPACTION - 519)) | (1L << (LOCAL - 519)) | (1L << (LOCATION - 519)) | (1L << (LOCK - 519)) | (1L << (LOCK_ESCALATION - 519)) | (1L << (LOGIN - 519)) | (1L << (LOOP - 519)) | (1L << (LOW - 519)) | (1L << (MANUAL - 519)) | (1L << (MARK - 519)) | (1L << (MATERIALIZED - 519)) | (1L << (MAX - 519)) | (1L << (MAX_CPU_PERCENT - 519)) | (1L << (MAX_DOP - 519)) | (1L << (MAX_FILES - 519)) | (1L << (MAX_IOPS_PER_VOLUME - 519)) | (1L << (MAX_MEMORY_PERCENT - 519)) | (1L << (MAX_PROCESSES - 519)) | (1L << (MAX_QUEUE_READERS - 519)))) != 0) || ((((_la - 583)) & ~0x3f) == 0 && ((1L << (_la - 583)) & ((1L << (MAX_ROLLOVER_FILES - 583)) | (1L << (MAXDOP - 583)) | (1L << (MAXRECURSION - 583)) | (1L << (MAXSIZE - 583)) | (1L << (MB - 583)) | (1L << (MEDIUM - 583)) | (1L << (MEMORY_OPTIMIZED_DATA - 583)) | (1L << (MESSAGE - 583)) | (1L << (MIN - 583)) | (1L << (MIN_ACTIVE_ROWVERSION - 583)) | (1L << (MIN_CPU_PERCENT - 583)) | (1L << (MIN_IOPS_PER_VOLUME - 583)) | (1L << (MIN_MEMORY_PERCENT - 583)) | (1L << (MINUTES - 583)) | (1L << (MIRROR_ADDRESS - 583)) | (1L << (MIXED_PAGE_ALLOCATION - 583)) | (1L << (MODE - 583)) | (1L << (MODIFY - 583)) | (1L << (MOVE - 583)) | (1L << (MULTI_USER - 583)) | (1L << (NAME - 583)) | (1L << (NESTED_TRIGGERS - 583)) | (1L << (NEW_ACCOUNT - 583)) | (1L << (NEW_BROKER - 583)) | (1L << (NEW_PASSWORD - 583)) | (1L << (NEXT - 583)) | (1L << (NO - 583)) | (1L << (NO_TRUNCATE - 583)) | (1L << (NO_WAIT - 583)) | (1L << (NOCOUNT - 583)) | (1L << (NODES - 583)) | (1L << (NOEXPAND - 583)) | (1L << (NON_TRANSACTED_ACCESS - 583)) | (1L << (NORECOMPUTE - 583)) | (1L << (NORECOVERY - 583)) | (1L << (NOWAIT - 583)) | (1L << (NTILE - 583)) | (1L << (NUMANODE - 583)) | (1L << (NUMBER - 583)) | (1L << (NUMERIC_ROUNDABORT - 583)) | (1L << (OBJECT - 583)) | (1L << (OFFLINE - 583)) | (1L << (OFFSET - 583)) | (1L << (OLD_ACCOUNT - 583)) | (1L << (ONLINE - 583)) | (1L << (ONLY - 583)) | (1L << (OPEN_EXISTING - 583)) | (1L << (OPTIMISTIC - 583)) | (1L << (OPTIMIZE - 583)) | (1L << (OUT - 583)) | (1L << (OUTPUT - 583)) | (1L << (OWNER - 583)) | (1L << (PAGE_VERIFY - 583)) | (1L << (PARAMETERIZATION - 583)) | (1L << (PARTITION - 583)) | (1L << (PARTITIONS - 583)) | (1L << (PARTNER - 583)) | (1L << (PATH - 583)) | (1L << (POISON_MESSAGE_HANDLING - 583)) | (1L << (POOL - 583)) | (1L << (PORT - 583)) | (1L << (PRECEDING - 583)) | (1L << (PRIMARY_ROLE - 583)))) != 0) || ((((_la - 647)) & ~0x3f) == 0 && ((1L << (_la - 647)) & ((1L << (PRIOR - 647)) | (1L << (PRIORITY - 647)) | (1L << (PRIORITY_LEVEL - 647)) | (1L << (PRIVATE - 647)) | (1L << (PRIVATE_KEY - 647)) | (1L << (PRIVILEGES - 647)) | (1L << (PROCEDURE_NAME - 647)) | (1L << (PROPERTY - 647)) | (1L << (PROVIDER - 647)) | (1L << (PROVIDER_KEY_NAME - 647)) | (1L << (QUERY - 647)) | (1L << (QUEUE - 647)) | (1L << (QUEUE_DELAY - 647)) | (1L << (QUOTED_IDENTIFIER - 647)) | (1L << (RANGE - 647)) | (1L << (RANK - 647)) | (1L << (RC2 - 647)) | (1L << (RC4 - 647)) | (1L << (RC4_128 - 647)) | (1L << (READ_COMMITTED_SNAPSHOT - 647)) | (1L << (READ_ONLY - 647)) | (1L << (READ_ONLY_ROUTING_LIST - 647)) | (1L << (READ_WRITE - 647)) | (1L << (READONLY - 647)) | (1L << (REBUILD - 647)) | (1L << (RECEIVE - 647)) | (1L << (RECOMPILE - 647)) | (1L << (RECOVERY - 647)) | (1L << (RECURSIVE_TRIGGERS - 647)) | (1L << (RELATIVE - 647)) | (1L << (REMOTE - 647)) | (1L << (REMOTE_SERVICE_NAME - 647)) | (1L << (REMOVE - 647)) | (1L << (REORGANIZE - 647)) | (1L << (REPEATABLE - 647)) | (1L << (REPLICA - 647)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 647)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 647)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 647)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 647)) | (1L << (RESERVE_DISK_SPACE - 647)) | (1L << (RESOURCE - 647)) | (1L << (RESOURCE_MANAGER_LOCATION - 647)) | (1L << (RESTRICTED_USER - 647)) | (1L << (RETENTION - 647)) | (1L << (ROBUST - 647)) | (1L << (ROOT - 647)) | (1L << (ROUTE - 647)) | (1L << (ROW - 647)) | (1L << (ROW_NUMBER - 647)) | (1L << (ROWGUID - 647)) | (1L << (ROWS - 647)) | (1L << (SAMPLE - 647)) | (1L << (SCHEMABINDING - 647)) | (1L << (SCOPED - 647)) | (1L << (SCROLL - 647)) | (1L << (SCROLL_LOCKS - 647)) | (1L << (SEARCH - 647)) | (1L << (SECONDARY - 647)) | (1L << (SECONDARY_ONLY - 647)) | (1L << (SECONDARY_ROLE - 647)) | (1L << (SECONDS - 647)) | (1L << (SECRET - 647)) | (1L << (SECURITY - 647)))) != 0) || ((((_la - 711)) & ~0x3f) == 0 && ((1L << (_la - 711)) & ((1L << (SECURITY_LOG - 711)) | (1L << (SEEDING_MODE - 711)) | (1L << (SELF - 711)) | (1L << (SEMI_SENSITIVE - 711)) | (1L << (SEND - 711)) | (1L << (SENT - 711)) | (1L << (SEQUENCE - 711)) | (1L << (SERIALIZABLE - 711)) | (1L << (SESSION_TIMEOUT - 711)) | (1L << (SETERROR - 711)) | (1L << (SHARE - 711)) | (1L << (SHOWPLAN - 711)) | (1L << (SIGNATURE - 711)) | (1L << (SIMPLE - 711)) | (1L << (SINGLE_USER - 711)) | (1L << (SIZE - 711)) | (1L << (SMALLINT - 711)) | (1L << (SNAPSHOT - 711)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 711)) | (1L << (STANDBY - 711)) | (1L << (START_DATE - 711)) | (1L << (STATIC - 711)) | (1L << (STATS_STREAM - 711)) | (1L << (STATUS - 711)) | (1L << (STDEV - 711)) | (1L << (STDEVP - 711)) | (1L << (STOPLIST - 711)) | (1L << (STRING_AGG - 711)) | (1L << (STUFF - 711)) | (1L << (SUBJECT - 711)) | (1L << (SUM - 711)) | (1L << (SUSPEND - 711)) | (1L << (SYMMETRIC - 711)) | (1L << (SYNCHRONOUS_COMMIT - 711)) | (1L << (SYNONYM - 711)) | (1L << (SYSTEM - 711)) | (1L << (TAKE - 711)) | (1L << (TARGET_RECOVERY_TIME - 711)) | (1L << (TB - 711)) | (1L << (TEXTIMAGE_ON - 711)) | (1L << (THROW - 711)) | (1L << (TIES - 711)) | (1L << (TIME - 711)) | (1L << (TIMEOUT - 711)) | (1L << (TIMER - 711)) | (1L << (TINYINT - 711)) | (1L << (TORN_PAGE_DETECTION - 711)) | (1L << (TRANSFORM_NOISE_WORDS - 711)) | (1L << (TRIPLE_DES - 711)) | (1L << (TRIPLE_DES_3KEY - 711)) | (1L << (TRUSTWORTHY - 711)) | (1L << (TRY - 711)) | (1L << (TSQL - 711)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 711)) | (1L << (TYPE - 711)) | (1L << (TYPE_WARNING - 711)) | (1L << (UNBOUNDED - 711)) | (1L << (UNCOMMITTED - 711)) | (1L << (UNKNOWN - 711)) | (1L << (UNLIMITED - 711)) | (1L << (USING - 711)))) != 0) || ((((_la - 775)) & ~0x3f) == 0 && ((1L << (_la - 775)) & ((1L << (VALID_XML - 775)) | (1L << (VALIDATION - 775)) | (1L << (VALUE - 775)) | (1L << (VAR - 775)) | (1L << (VARP - 775)) | (1L << (VIEW_METADATA - 775)) | (1L << (VIEWS - 775)) | (1L << (WAIT - 775)) | (1L << (WELL_FORMED_XML - 775)) | (1L << (WORK - 775)) | (1L << (WORKLOAD - 775)) | (1L << (XML - 775)) | (1L << (XMLNAMESPACES - 775)) | (1L << (DOUBLE_QUOTE_ID - 775)) | (1L << (SQUARE_BRACKET_ID - 775)) | (1L << (ID - 775)) | (1L << (COMMA - 775)))) != 0) );
+			} while ( _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==COMMA || _la==URL );
 			setState(2981);
 			match(TO);
 			setState(2982);
@@ -19269,7 +19350,7 @@ public class MocaSqlParser extends Parser {
 									setState(3039); 
 									_errHandler.sync(this);
 									_la = _input.LA(1);
-								} while ( _la==CALLED || _la==DATA_COMPRESSION || ((((_la - 112)) & ~0x3f) == 0 && ((1L << (_la - 112)) & ((1L << (EVENTDATA - 112)) | (1L << (FILENAME - 112)) | (1L << (FILLFACTOR - 112)) | (1L << (FORCESEEK - 112)) | (1L << (INIT - 112)) | (1L << (KEY - 112)))) != 0) || ((((_la - 187)) & ~0x3f) == 0 && ((1L << (_la - 187)) & ((1L << (MASTER - 187)) | (1L << (MAX_MEMORY - 187)) | (1L << (OFFSETS - 187)) | (1L << (PAGE - 187)))) != 0) || ((((_la - 259)) & ~0x3f) == 0 && ((1L << (_la - 259)) & ((1L << (PUBLIC - 259)) | (1L << (R - 259)) | (1L << (RAW - 259)) | (1L << (RETURN - 259)) | (1L << (RETURNS - 259)) | (1L << (ROWCOUNT - 259)) | (1L << (SAFETY - 259)) | (1L << (SERVER - 259)) | (1L << (SID - 259)) | (1L << (SOURCE - 259)) | (1L << (SPLIT - 259)))) != 0) || ((((_la - 327)) & ~0x3f) == 0 && ((1L << (_la - 327)) & ((1L << (STATE - 327)) | (1L << (START - 327)) | (1L << (TARGET - 327)) | (1L << (ABSOLUTE - 327)) | (1L << (ACCENT_SENSITIVITY - 327)) | (1L << (ACTION - 327)) | (1L << (ACTIVATION - 327)) | (1L << (ACTIVE - 327)) | (1L << (ADDRESS - 327)) | (1L << (AES_128 - 327)) | (1L << (AES_192 - 327)) | (1L << (AES_256 - 327)) | (1L << (AFFINITY - 327)) | (1L << (AFTER - 327)))) != 0) || ((((_la - 391)) & ~0x3f) == 0 && ((1L << (_la - 391)) & ((1L << (AGGREGATE - 391)) | (1L << (ALGORITHM - 391)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 391)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 391)) | (1L << (ALLOWED - 391)) | (1L << (ANSI_NULL_DEFAULT - 391)) | (1L << (ANSI_NULLS - 391)) | (1L << (ANSI_PADDING - 391)) | (1L << (ANSI_WARNINGS - 391)) | (1L << (APPLICATION_LOG - 391)) | (1L << (APPLY - 391)) | (1L << (ARITHABORT - 391)) | (1L << (ASSEMBLY - 391)) | (1L << (AUDIT - 391)) | (1L << (AUDIT_GUID - 391)) | (1L << (AUTO - 391)) | (1L << (AUTO_CLEANUP - 391)) | (1L << (AUTO_CLOSE - 391)) | (1L << (AUTO_CREATE_STATISTICS - 391)) | (1L << (AUTO_SHRINK - 391)) | (1L << (AUTO_UPDATE_STATISTICS - 391)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 391)) | (1L << (AVAILABILITY - 391)) | (1L << (AVG - 391)) | (1L << (BACKUP_PRIORITY - 391)) | (1L << (BEGIN_DIALOG - 391)) | (1L << (BIGINT - 391)) | (1L << (BINARY_BASE64 - 391)) | (1L << (BINARY_CHECKSUM - 391)) | (1L << (BINDING - 391)) | (1L << (BLOB_STORAGE - 391)) | (1L << (BROKER - 391)) | (1L << (BROKER_INSTANCE - 391)) | (1L << (BULK_LOGGED - 391)) | (1L << (CALLER - 391)) | (1L << (CAP_CPU_PERCENT - 391)) | (1L << (CAST - 391)) | (1L << (CATALOG - 391)) | (1L << (CATCH - 391)) | (1L << (CHANGE_RETENTION - 391)) | (1L << (CHANGE_TRACKING - 391)) | (1L << (CHECKSUM - 391)) | (1L << (CHECKSUM_AGG - 391)) | (1L << (CLEANUP - 391)) | (1L << (COLLECTION - 391)) | (1L << (COLUMN_MASTER_KEY - 391)) | (1L << (COMMITTED - 391)) | (1L << (COMPATIBILITY_LEVEL - 391)) | (1L << (CONCAT - 391)) | (1L << (CONCAT_NULL_YIELDS_NULL - 391)) | (1L << (CONTENT - 391)) | (1L << (CONTROL - 391)) | (1L << (COOKIE - 391)) | (1L << (COUNT - 391)) | (1L << (COUNT_BIG - 391)) | (1L << (COUNTER - 391)) | (1L << (CPU - 391)) | (1L << (CREATE_NEW - 391)) | (1L << (CREATION_DISPOSITION - 391)) | (1L << (CREDENTIAL - 391)) | (1L << (CRYPTOGRAPHIC - 391)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 391)) | (1L << (CURSOR_DEFAULT - 391)) | (1L << (DATA - 391)))) != 0) || ((((_la - 455)) & ~0x3f) == 0 && ((1L << (_la - 455)) & ((1L << (DATE_CORRELATION_OPTIMIZATION - 455)) | (1L << (DATEADD - 455)) | (1L << (DATEDIFF - 455)) | (1L << (DATENAME - 455)) | (1L << (DATEPART - 455)) | (1L << (DAYS - 455)) | (1L << (DB_CHAINING - 455)) | (1L << (DB_FAILOVER - 455)) | (1L << (DECRYPTION - 455)) | (1L << (DEFAULT_DOUBLE_QUOTE - 455)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 455)) | (1L << (DEFAULT_LANGUAGE - 455)) | (1L << (DELAY - 455)) | (1L << (DELAYED_DURABILITY - 455)) | (1L << (DELETED - 455)) | (1L << (DENSE_RANK - 455)) | (1L << (DEPENDENTS - 455)) | (1L << (DES - 455)) | (1L << (DESCRIPTION - 455)) | (1L << (DESX - 455)) | (1L << (DHCP - 455)) | (1L << (DIALOG - 455)) | (1L << (DIRECTORY_NAME - 455)) | (1L << (DISABLE - 455)) | (1L << (DISABLE_BROKER - 455)) | (1L << (DISABLED - 455)) | (1L << (DISK_DRIVE - 455)) | (1L << (DOCUMENT - 455)) | (1L << (DYNAMIC - 455)) | (1L << (EMERGENCY - 455)) | (1L << (EMPTY - 455)) | (1L << (ENABLE - 455)) | (1L << (ENABLE_BROKER - 455)) | (1L << (ENCRYPTED_VALUE - 455)) | (1L << (ENCRYPTION - 455)) | (1L << (ENDPOINT_URL - 455)) | (1L << (ERROR_BROKER_CONVERSATIONS - 455)) | (1L << (EXCLUSIVE - 455)) | (1L << (EXECUTABLE - 455)) | (1L << (EXIST - 455)) | (1L << (EXPAND - 455)) | (1L << (EXPIRY_DATE - 455)) | (1L << (EXPLICIT - 455)) | (1L << (FAIL_OPERATION - 455)) | (1L << (FAILOVER_MODE - 455)) | (1L << (FAILURE - 455)) | (1L << (FAILURE_CONDITION_LEVEL - 455)) | (1L << (FAST - 455)) | (1L << (FAST_FORWARD - 455)) | (1L << (FILEGROUP - 455)) | (1L << (FILEGROWTH - 455)) | (1L << (FILEPATH - 455)) | (1L << (FILESTREAM - 455)) | (1L << (FILTER - 455)) | (1L << (FIRST - 455)) | (1L << (FIRST_VALUE - 455)) | (1L << (FOLLOWING - 455)) | (1L << (FORCE - 455)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 455)) | (1L << (FORCED - 455)) | (1L << (FORMAT - 455)) | (1L << (FORWARD_ONLY - 455)) | (1L << (FULLSCAN - 455)))) != 0) || ((((_la - 519)) & ~0x3f) == 0 && ((1L << (_la - 519)) & ((1L << (FULLTEXT - 519)) | (1L << (GB - 519)) | (1L << (GETDATE - 519)) | (1L << (GETUTCDATE - 519)) | (1L << (GLOBAL - 519)) | (1L << (GO - 519)) | (1L << (GROUP_MAX_REQUESTS - 519)) | (1L << (GROUPING - 519)) | (1L << (GROUPING_ID - 519)) | (1L << (HADR - 519)) | (1L << (HASH - 519)) | (1L << (HEALTH_CHECK_TIMEOUT - 519)) | (1L << (HIGH - 519)) | (1L << (HONOR_BROKER_PRIORITY - 519)) | (1L << (HOURS - 519)) | (1L << (IDENTITY_VALUE - 519)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 519)) | (1L << (IMMEDIATE - 519)) | (1L << (IMPERSONATE - 519)) | (1L << (IMPORTANCE - 519)) | (1L << (INCREMENTAL - 519)) | (1L << (INITIATOR - 519)) | (1L << (INPUT - 519)) | (1L << (INSENSITIVE - 519)) | (1L << (INSERTED - 519)) | (1L << (INT - 519)) | (1L << (IP - 519)) | (1L << (ISOLATION - 519)) | (1L << (KB - 519)) | (1L << (KEEP - 519)) | (1L << (KEEPFIXED - 519)) | (1L << (KEY_SOURCE - 519)) | (1L << (KEYS - 519)) | (1L << (KEYSET - 519)) | (1L << (LAG - 519)) | (1L << (LAST - 519)) | (1L << (LAST_VALUE - 519)) | (1L << (LEAD - 519)) | (1L << (LEVEL - 519)) | (1L << (LIST - 519)) | (1L << (LISTENER - 519)) | (1L << (LISTENER_URL - 519)) | (1L << (LOB_COMPACTION - 519)) | (1L << (LOCAL - 519)) | (1L << (LOCATION - 519)) | (1L << (LOCK - 519)) | (1L << (LOCK_ESCALATION - 519)) | (1L << (LOGIN - 519)) | (1L << (LOOP - 519)) | (1L << (LOW - 519)) | (1L << (MANUAL - 519)) | (1L << (MARK - 519)) | (1L << (MATERIALIZED - 519)) | (1L << (MAX - 519)) | (1L << (MAX_CPU_PERCENT - 519)) | (1L << (MAX_DOP - 519)) | (1L << (MAX_FILES - 519)) | (1L << (MAX_IOPS_PER_VOLUME - 519)) | (1L << (MAX_MEMORY_PERCENT - 519)) | (1L << (MAX_PROCESSES - 519)) | (1L << (MAX_QUEUE_READERS - 519)))) != 0) || ((((_la - 583)) & ~0x3f) == 0 && ((1L << (_la - 583)) & ((1L << (MAX_ROLLOVER_FILES - 583)) | (1L << (MAXDOP - 583)) | (1L << (MAXRECURSION - 583)) | (1L << (MAXSIZE - 583)) | (1L << (MB - 583)) | (1L << (MEDIUM - 583)) | (1L << (MEMORY_OPTIMIZED_DATA - 583)) | (1L << (MESSAGE - 583)) | (1L << (MIN - 583)) | (1L << (MIN_ACTIVE_ROWVERSION - 583)) | (1L << (MIN_CPU_PERCENT - 583)) | (1L << (MIN_IOPS_PER_VOLUME - 583)) | (1L << (MIN_MEMORY_PERCENT - 583)) | (1L << (MINUTES - 583)) | (1L << (MIRROR_ADDRESS - 583)) | (1L << (MIXED_PAGE_ALLOCATION - 583)) | (1L << (MODE - 583)) | (1L << (MODIFY - 583)) | (1L << (MOVE - 583)) | (1L << (MULTI_USER - 583)) | (1L << (NAME - 583)) | (1L << (NESTED_TRIGGERS - 583)) | (1L << (NEW_ACCOUNT - 583)) | (1L << (NEW_BROKER - 583)) | (1L << (NEW_PASSWORD - 583)) | (1L << (NEXT - 583)) | (1L << (NO - 583)) | (1L << (NO_TRUNCATE - 583)) | (1L << (NO_WAIT - 583)) | (1L << (NOCOUNT - 583)) | (1L << (NODES - 583)) | (1L << (NOEXPAND - 583)) | (1L << (NON_TRANSACTED_ACCESS - 583)) | (1L << (NORECOMPUTE - 583)) | (1L << (NORECOVERY - 583)) | (1L << (NOWAIT - 583)) | (1L << (NTILE - 583)) | (1L << (NUMANODE - 583)) | (1L << (NUMBER - 583)) | (1L << (NUMERIC_ROUNDABORT - 583)) | (1L << (OBJECT - 583)) | (1L << (OFFLINE - 583)) | (1L << (OFFSET - 583)) | (1L << (OLD_ACCOUNT - 583)) | (1L << (ONLINE - 583)) | (1L << (ONLY - 583)) | (1L << (OPEN_EXISTING - 583)) | (1L << (OPTIMISTIC - 583)) | (1L << (OPTIMIZE - 583)) | (1L << (OUT - 583)) | (1L << (OUTPUT - 583)) | (1L << (OWNER - 583)) | (1L << (PAGE_VERIFY - 583)) | (1L << (PARAMETERIZATION - 583)) | (1L << (PARTITION - 583)) | (1L << (PARTITIONS - 583)) | (1L << (PARTNER - 583)) | (1L << (PATH - 583)) | (1L << (POISON_MESSAGE_HANDLING - 583)) | (1L << (POOL - 583)) | (1L << (PORT - 583)) | (1L << (PRECEDING - 583)) | (1L << (PRIMARY_ROLE - 583)))) != 0) || ((((_la - 647)) & ~0x3f) == 0 && ((1L << (_la - 647)) & ((1L << (PRIOR - 647)) | (1L << (PRIORITY - 647)) | (1L << (PRIORITY_LEVEL - 647)) | (1L << (PRIVATE - 647)) | (1L << (PRIVATE_KEY - 647)) | (1L << (PRIVILEGES - 647)) | (1L << (PROCEDURE_NAME - 647)) | (1L << (PROPERTY - 647)) | (1L << (PROVIDER - 647)) | (1L << (PROVIDER_KEY_NAME - 647)) | (1L << (QUERY - 647)) | (1L << (QUEUE - 647)) | (1L << (QUEUE_DELAY - 647)) | (1L << (QUOTED_IDENTIFIER - 647)) | (1L << (RANGE - 647)) | (1L << (RANK - 647)) | (1L << (RC2 - 647)) | (1L << (RC4 - 647)) | (1L << (RC4_128 - 647)) | (1L << (READ_COMMITTED_SNAPSHOT - 647)) | (1L << (READ_ONLY - 647)) | (1L << (READ_ONLY_ROUTING_LIST - 647)) | (1L << (READ_WRITE - 647)) | (1L << (READONLY - 647)) | (1L << (REBUILD - 647)) | (1L << (RECEIVE - 647)) | (1L << (RECOMPILE - 647)) | (1L << (RECOVERY - 647)) | (1L << (RECURSIVE_TRIGGERS - 647)) | (1L << (RELATIVE - 647)) | (1L << (REMOTE - 647)) | (1L << (REMOTE_SERVICE_NAME - 647)) | (1L << (REMOVE - 647)) | (1L << (REORGANIZE - 647)) | (1L << (REPEATABLE - 647)) | (1L << (REPLICA - 647)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 647)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 647)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 647)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 647)) | (1L << (RESERVE_DISK_SPACE - 647)) | (1L << (RESOURCE - 647)) | (1L << (RESOURCE_MANAGER_LOCATION - 647)) | (1L << (RESTRICTED_USER - 647)) | (1L << (RETENTION - 647)) | (1L << (ROBUST - 647)) | (1L << (ROOT - 647)) | (1L << (ROUTE - 647)) | (1L << (ROW - 647)) | (1L << (ROW_NUMBER - 647)) | (1L << (ROWGUID - 647)) | (1L << (ROWS - 647)) | (1L << (SAMPLE - 647)) | (1L << (SCHEMABINDING - 647)) | (1L << (SCOPED - 647)) | (1L << (SCROLL - 647)) | (1L << (SCROLL_LOCKS - 647)) | (1L << (SEARCH - 647)) | (1L << (SECONDARY - 647)) | (1L << (SECONDARY_ONLY - 647)) | (1L << (SECONDARY_ROLE - 647)) | (1L << (SECONDS - 647)) | (1L << (SECRET - 647)) | (1L << (SECURITY - 647)))) != 0) || ((((_la - 711)) & ~0x3f) == 0 && ((1L << (_la - 711)) & ((1L << (SECURITY_LOG - 711)) | (1L << (SEEDING_MODE - 711)) | (1L << (SELF - 711)) | (1L << (SEMI_SENSITIVE - 711)) | (1L << (SEND - 711)) | (1L << (SENT - 711)) | (1L << (SEQUENCE - 711)) | (1L << (SERIALIZABLE - 711)) | (1L << (SESSION_TIMEOUT - 711)) | (1L << (SETERROR - 711)) | (1L << (SHARE - 711)) | (1L << (SHOWPLAN - 711)) | (1L << (SIGNATURE - 711)) | (1L << (SIMPLE - 711)) | (1L << (SINGLE_USER - 711)) | (1L << (SIZE - 711)) | (1L << (SMALLINT - 711)) | (1L << (SNAPSHOT - 711)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 711)) | (1L << (STANDBY - 711)) | (1L << (START_DATE - 711)) | (1L << (STATIC - 711)) | (1L << (STATS_STREAM - 711)) | (1L << (STATUS - 711)) | (1L << (STDEV - 711)) | (1L << (STDEVP - 711)) | (1L << (STOPLIST - 711)) | (1L << (STRING_AGG - 711)) | (1L << (STUFF - 711)) | (1L << (SUBJECT - 711)) | (1L << (SUM - 711)) | (1L << (SUSPEND - 711)) | (1L << (SYMMETRIC - 711)) | (1L << (SYNCHRONOUS_COMMIT - 711)) | (1L << (SYNONYM - 711)) | (1L << (SYSTEM - 711)) | (1L << (TAKE - 711)) | (1L << (TARGET_RECOVERY_TIME - 711)) | (1L << (TB - 711)) | (1L << (TEXTIMAGE_ON - 711)) | (1L << (THROW - 711)) | (1L << (TIES - 711)) | (1L << (TIME - 711)) | (1L << (TIMEOUT - 711)) | (1L << (TIMER - 711)) | (1L << (TINYINT - 711)) | (1L << (TORN_PAGE_DETECTION - 711)) | (1L << (TRANSFORM_NOISE_WORDS - 711)) | (1L << (TRIPLE_DES - 711)) | (1L << (TRIPLE_DES_3KEY - 711)) | (1L << (TRUSTWORTHY - 711)) | (1L << (TRY - 711)) | (1L << (TSQL - 711)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 711)) | (1L << (TYPE - 711)) | (1L << (TYPE_WARNING - 711)) | (1L << (UNBOUNDED - 711)) | (1L << (UNCOMMITTED - 711)) | (1L << (UNKNOWN - 711)) | (1L << (UNLIMITED - 711)) | (1L << (USING - 711)))) != 0) || ((((_la - 775)) & ~0x3f) == 0 && ((1L << (_la - 775)) & ((1L << (VALID_XML - 775)) | (1L << (VALIDATION - 775)) | (1L << (VALUE - 775)) | (1L << (VAR - 775)) | (1L << (VARP - 775)) | (1L << (VIEW_METADATA - 775)) | (1L << (VIEWS - 775)) | (1L << (WAIT - 775)) | (1L << (WELL_FORMED_XML - 775)) | (1L << (WORK - 775)) | (1L << (WORKLOAD - 775)) | (1L << (XML - 775)) | (1L << (XMLNAMESPACES - 775)) | (1L << (DOUBLE_QUOTE_ID - 775)) | (1L << (SQUARE_BRACKET_ID - 775)) | (1L << (ID - 775)) | (1L << (COMMA - 775)))) != 0) );
+								} while ( _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==COMMA || _la==URL );
 								setState(3041);
 								match(RR_BRACKET);
 								}
@@ -19452,7 +19533,7 @@ public class MocaSqlParser extends Parser {
 							setState(3112); 
 							_errHandler.sync(this);
 							_la = _input.LA(1);
-						} while ( _la==CALLED || _la==DATA_COMPRESSION || ((((_la - 112)) & ~0x3f) == 0 && ((1L << (_la - 112)) & ((1L << (EVENTDATA - 112)) | (1L << (FILENAME - 112)) | (1L << (FILLFACTOR - 112)) | (1L << (FORCESEEK - 112)) | (1L << (INIT - 112)) | (1L << (KEY - 112)))) != 0) || ((((_la - 187)) & ~0x3f) == 0 && ((1L << (_la - 187)) & ((1L << (MASTER - 187)) | (1L << (MAX_MEMORY - 187)) | (1L << (OFFSETS - 187)) | (1L << (PAGE - 187)))) != 0) || ((((_la - 259)) & ~0x3f) == 0 && ((1L << (_la - 259)) & ((1L << (PUBLIC - 259)) | (1L << (R - 259)) | (1L << (RAW - 259)) | (1L << (RETURN - 259)) | (1L << (RETURNS - 259)) | (1L << (ROWCOUNT - 259)) | (1L << (SAFETY - 259)) | (1L << (SERVER - 259)) | (1L << (SID - 259)) | (1L << (SOURCE - 259)) | (1L << (SPLIT - 259)))) != 0) || ((((_la - 327)) & ~0x3f) == 0 && ((1L << (_la - 327)) & ((1L << (STATE - 327)) | (1L << (START - 327)) | (1L << (TARGET - 327)) | (1L << (ABSOLUTE - 327)) | (1L << (ACCENT_SENSITIVITY - 327)) | (1L << (ACTION - 327)) | (1L << (ACTIVATION - 327)) | (1L << (ACTIVE - 327)) | (1L << (ADDRESS - 327)) | (1L << (AES_128 - 327)) | (1L << (AES_192 - 327)) | (1L << (AES_256 - 327)) | (1L << (AFFINITY - 327)) | (1L << (AFTER - 327)))) != 0) || ((((_la - 391)) & ~0x3f) == 0 && ((1L << (_la - 391)) & ((1L << (AGGREGATE - 391)) | (1L << (ALGORITHM - 391)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 391)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 391)) | (1L << (ALLOWED - 391)) | (1L << (ANSI_NULL_DEFAULT - 391)) | (1L << (ANSI_NULLS - 391)) | (1L << (ANSI_PADDING - 391)) | (1L << (ANSI_WARNINGS - 391)) | (1L << (APPLICATION_LOG - 391)) | (1L << (APPLY - 391)) | (1L << (ARITHABORT - 391)) | (1L << (ASSEMBLY - 391)) | (1L << (AUDIT - 391)) | (1L << (AUDIT_GUID - 391)) | (1L << (AUTO - 391)) | (1L << (AUTO_CLEANUP - 391)) | (1L << (AUTO_CLOSE - 391)) | (1L << (AUTO_CREATE_STATISTICS - 391)) | (1L << (AUTO_SHRINK - 391)) | (1L << (AUTO_UPDATE_STATISTICS - 391)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 391)) | (1L << (AVAILABILITY - 391)) | (1L << (AVG - 391)) | (1L << (BACKUP_PRIORITY - 391)) | (1L << (BEGIN_DIALOG - 391)) | (1L << (BIGINT - 391)) | (1L << (BINARY_BASE64 - 391)) | (1L << (BINARY_CHECKSUM - 391)) | (1L << (BINDING - 391)) | (1L << (BLOB_STORAGE - 391)) | (1L << (BROKER - 391)) | (1L << (BROKER_INSTANCE - 391)) | (1L << (BULK_LOGGED - 391)) | (1L << (CALLER - 391)) | (1L << (CAP_CPU_PERCENT - 391)) | (1L << (CAST - 391)) | (1L << (CATALOG - 391)) | (1L << (CATCH - 391)) | (1L << (CHANGE_RETENTION - 391)) | (1L << (CHANGE_TRACKING - 391)) | (1L << (CHECKSUM - 391)) | (1L << (CHECKSUM_AGG - 391)) | (1L << (CLEANUP - 391)) | (1L << (COLLECTION - 391)) | (1L << (COLUMN_MASTER_KEY - 391)) | (1L << (COMMITTED - 391)) | (1L << (COMPATIBILITY_LEVEL - 391)) | (1L << (CONCAT - 391)) | (1L << (CONCAT_NULL_YIELDS_NULL - 391)) | (1L << (CONTENT - 391)) | (1L << (CONTROL - 391)) | (1L << (COOKIE - 391)) | (1L << (COUNT - 391)) | (1L << (COUNT_BIG - 391)) | (1L << (COUNTER - 391)) | (1L << (CPU - 391)) | (1L << (CREATE_NEW - 391)) | (1L << (CREATION_DISPOSITION - 391)) | (1L << (CREDENTIAL - 391)) | (1L << (CRYPTOGRAPHIC - 391)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 391)) | (1L << (CURSOR_DEFAULT - 391)) | (1L << (DATA - 391)))) != 0) || ((((_la - 455)) & ~0x3f) == 0 && ((1L << (_la - 455)) & ((1L << (DATE_CORRELATION_OPTIMIZATION - 455)) | (1L << (DATEADD - 455)) | (1L << (DATEDIFF - 455)) | (1L << (DATENAME - 455)) | (1L << (DATEPART - 455)) | (1L << (DAYS - 455)) | (1L << (DB_CHAINING - 455)) | (1L << (DB_FAILOVER - 455)) | (1L << (DECRYPTION - 455)) | (1L << (DEFAULT_DOUBLE_QUOTE - 455)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 455)) | (1L << (DEFAULT_LANGUAGE - 455)) | (1L << (DELAY - 455)) | (1L << (DELAYED_DURABILITY - 455)) | (1L << (DELETED - 455)) | (1L << (DENSE_RANK - 455)) | (1L << (DEPENDENTS - 455)) | (1L << (DES - 455)) | (1L << (DESCRIPTION - 455)) | (1L << (DESX - 455)) | (1L << (DHCP - 455)) | (1L << (DIALOG - 455)) | (1L << (DIRECTORY_NAME - 455)) | (1L << (DISABLE - 455)) | (1L << (DISABLE_BROKER - 455)) | (1L << (DISABLED - 455)) | (1L << (DISK_DRIVE - 455)) | (1L << (DOCUMENT - 455)) | (1L << (DYNAMIC - 455)) | (1L << (EMERGENCY - 455)) | (1L << (EMPTY - 455)) | (1L << (ENABLE - 455)) | (1L << (ENABLE_BROKER - 455)) | (1L << (ENCRYPTED_VALUE - 455)) | (1L << (ENCRYPTION - 455)) | (1L << (ENDPOINT_URL - 455)) | (1L << (ERROR_BROKER_CONVERSATIONS - 455)) | (1L << (EXCLUSIVE - 455)) | (1L << (EXECUTABLE - 455)) | (1L << (EXIST - 455)) | (1L << (EXPAND - 455)) | (1L << (EXPIRY_DATE - 455)) | (1L << (EXPLICIT - 455)) | (1L << (FAIL_OPERATION - 455)) | (1L << (FAILOVER_MODE - 455)) | (1L << (FAILURE - 455)) | (1L << (FAILURE_CONDITION_LEVEL - 455)) | (1L << (FAST - 455)) | (1L << (FAST_FORWARD - 455)) | (1L << (FILEGROUP - 455)) | (1L << (FILEGROWTH - 455)) | (1L << (FILEPATH - 455)) | (1L << (FILESTREAM - 455)) | (1L << (FILTER - 455)) | (1L << (FIRST - 455)) | (1L << (FIRST_VALUE - 455)) | (1L << (FOLLOWING - 455)) | (1L << (FORCE - 455)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 455)) | (1L << (FORCED - 455)) | (1L << (FORMAT - 455)) | (1L << (FORWARD_ONLY - 455)) | (1L << (FULLSCAN - 455)))) != 0) || ((((_la - 519)) & ~0x3f) == 0 && ((1L << (_la - 519)) & ((1L << (FULLTEXT - 519)) | (1L << (GB - 519)) | (1L << (GETDATE - 519)) | (1L << (GETUTCDATE - 519)) | (1L << (GLOBAL - 519)) | (1L << (GO - 519)) | (1L << (GROUP_MAX_REQUESTS - 519)) | (1L << (GROUPING - 519)) | (1L << (GROUPING_ID - 519)) | (1L << (HADR - 519)) | (1L << (HASH - 519)) | (1L << (HEALTH_CHECK_TIMEOUT - 519)) | (1L << (HIGH - 519)) | (1L << (HONOR_BROKER_PRIORITY - 519)) | (1L << (HOURS - 519)) | (1L << (IDENTITY_VALUE - 519)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 519)) | (1L << (IMMEDIATE - 519)) | (1L << (IMPERSONATE - 519)) | (1L << (IMPORTANCE - 519)) | (1L << (INCREMENTAL - 519)) | (1L << (INITIATOR - 519)) | (1L << (INPUT - 519)) | (1L << (INSENSITIVE - 519)) | (1L << (INSERTED - 519)) | (1L << (INT - 519)) | (1L << (IP - 519)) | (1L << (ISOLATION - 519)) | (1L << (KB - 519)) | (1L << (KEEP - 519)) | (1L << (KEEPFIXED - 519)) | (1L << (KEY_SOURCE - 519)) | (1L << (KEYS - 519)) | (1L << (KEYSET - 519)) | (1L << (LAG - 519)) | (1L << (LAST - 519)) | (1L << (LAST_VALUE - 519)) | (1L << (LEAD - 519)) | (1L << (LEVEL - 519)) | (1L << (LIST - 519)) | (1L << (LISTENER - 519)) | (1L << (LISTENER_URL - 519)) | (1L << (LOB_COMPACTION - 519)) | (1L << (LOCAL - 519)) | (1L << (LOCATION - 519)) | (1L << (LOCK - 519)) | (1L << (LOCK_ESCALATION - 519)) | (1L << (LOGIN - 519)) | (1L << (LOOP - 519)) | (1L << (LOW - 519)) | (1L << (MANUAL - 519)) | (1L << (MARK - 519)) | (1L << (MATERIALIZED - 519)) | (1L << (MAX - 519)) | (1L << (MAX_CPU_PERCENT - 519)) | (1L << (MAX_DOP - 519)) | (1L << (MAX_FILES - 519)) | (1L << (MAX_IOPS_PER_VOLUME - 519)) | (1L << (MAX_MEMORY_PERCENT - 519)) | (1L << (MAX_PROCESSES - 519)) | (1L << (MAX_QUEUE_READERS - 519)))) != 0) || ((((_la - 583)) & ~0x3f) == 0 && ((1L << (_la - 583)) & ((1L << (MAX_ROLLOVER_FILES - 583)) | (1L << (MAXDOP - 583)) | (1L << (MAXRECURSION - 583)) | (1L << (MAXSIZE - 583)) | (1L << (MB - 583)) | (1L << (MEDIUM - 583)) | (1L << (MEMORY_OPTIMIZED_DATA - 583)) | (1L << (MESSAGE - 583)) | (1L << (MIN - 583)) | (1L << (MIN_ACTIVE_ROWVERSION - 583)) | (1L << (MIN_CPU_PERCENT - 583)) | (1L << (MIN_IOPS_PER_VOLUME - 583)) | (1L << (MIN_MEMORY_PERCENT - 583)) | (1L << (MINUTES - 583)) | (1L << (MIRROR_ADDRESS - 583)) | (1L << (MIXED_PAGE_ALLOCATION - 583)) | (1L << (MODE - 583)) | (1L << (MODIFY - 583)) | (1L << (MOVE - 583)) | (1L << (MULTI_USER - 583)) | (1L << (NAME - 583)) | (1L << (NESTED_TRIGGERS - 583)) | (1L << (NEW_ACCOUNT - 583)) | (1L << (NEW_BROKER - 583)) | (1L << (NEW_PASSWORD - 583)) | (1L << (NEXT - 583)) | (1L << (NO - 583)) | (1L << (NO_TRUNCATE - 583)) | (1L << (NO_WAIT - 583)) | (1L << (NOCOUNT - 583)) | (1L << (NODES - 583)) | (1L << (NOEXPAND - 583)) | (1L << (NON_TRANSACTED_ACCESS - 583)) | (1L << (NORECOMPUTE - 583)) | (1L << (NORECOVERY - 583)) | (1L << (NOWAIT - 583)) | (1L << (NTILE - 583)) | (1L << (NUMANODE - 583)) | (1L << (NUMBER - 583)) | (1L << (NUMERIC_ROUNDABORT - 583)) | (1L << (OBJECT - 583)) | (1L << (OFFLINE - 583)) | (1L << (OFFSET - 583)) | (1L << (OLD_ACCOUNT - 583)) | (1L << (ONLINE - 583)) | (1L << (ONLY - 583)) | (1L << (OPEN_EXISTING - 583)) | (1L << (OPTIMISTIC - 583)) | (1L << (OPTIMIZE - 583)) | (1L << (OUT - 583)) | (1L << (OUTPUT - 583)) | (1L << (OWNER - 583)) | (1L << (PAGE_VERIFY - 583)) | (1L << (PARAMETERIZATION - 583)) | (1L << (PARTITION - 583)) | (1L << (PARTITIONS - 583)) | (1L << (PARTNER - 583)) | (1L << (PATH - 583)) | (1L << (POISON_MESSAGE_HANDLING - 583)) | (1L << (POOL - 583)) | (1L << (PORT - 583)) | (1L << (PRECEDING - 583)) | (1L << (PRIMARY_ROLE - 583)))) != 0) || ((((_la - 647)) & ~0x3f) == 0 && ((1L << (_la - 647)) & ((1L << (PRIOR - 647)) | (1L << (PRIORITY - 647)) | (1L << (PRIORITY_LEVEL - 647)) | (1L << (PRIVATE - 647)) | (1L << (PRIVATE_KEY - 647)) | (1L << (PRIVILEGES - 647)) | (1L << (PROCEDURE_NAME - 647)) | (1L << (PROPERTY - 647)) | (1L << (PROVIDER - 647)) | (1L << (PROVIDER_KEY_NAME - 647)) | (1L << (QUERY - 647)) | (1L << (QUEUE - 647)) | (1L << (QUEUE_DELAY - 647)) | (1L << (QUOTED_IDENTIFIER - 647)) | (1L << (RANGE - 647)) | (1L << (RANK - 647)) | (1L << (RC2 - 647)) | (1L << (RC4 - 647)) | (1L << (RC4_128 - 647)) | (1L << (READ_COMMITTED_SNAPSHOT - 647)) | (1L << (READ_ONLY - 647)) | (1L << (READ_ONLY_ROUTING_LIST - 647)) | (1L << (READ_WRITE - 647)) | (1L << (READONLY - 647)) | (1L << (REBUILD - 647)) | (1L << (RECEIVE - 647)) | (1L << (RECOMPILE - 647)) | (1L << (RECOVERY - 647)) | (1L << (RECURSIVE_TRIGGERS - 647)) | (1L << (RELATIVE - 647)) | (1L << (REMOTE - 647)) | (1L << (REMOTE_SERVICE_NAME - 647)) | (1L << (REMOVE - 647)) | (1L << (REORGANIZE - 647)) | (1L << (REPEATABLE - 647)) | (1L << (REPLICA - 647)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 647)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 647)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 647)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 647)) | (1L << (RESERVE_DISK_SPACE - 647)) | (1L << (RESOURCE - 647)) | (1L << (RESOURCE_MANAGER_LOCATION - 647)) | (1L << (RESTRICTED_USER - 647)) | (1L << (RETENTION - 647)) | (1L << (ROBUST - 647)) | (1L << (ROOT - 647)) | (1L << (ROUTE - 647)) | (1L << (ROW - 647)) | (1L << (ROW_NUMBER - 647)) | (1L << (ROWGUID - 647)) | (1L << (ROWS - 647)) | (1L << (SAMPLE - 647)) | (1L << (SCHEMABINDING - 647)) | (1L << (SCOPED - 647)) | (1L << (SCROLL - 647)) | (1L << (SCROLL_LOCKS - 647)) | (1L << (SEARCH - 647)) | (1L << (SECONDARY - 647)) | (1L << (SECONDARY_ONLY - 647)) | (1L << (SECONDARY_ROLE - 647)) | (1L << (SECONDS - 647)) | (1L << (SECRET - 647)) | (1L << (SECURITY - 647)))) != 0) || ((((_la - 711)) & ~0x3f) == 0 && ((1L << (_la - 711)) & ((1L << (SECURITY_LOG - 711)) | (1L << (SEEDING_MODE - 711)) | (1L << (SELF - 711)) | (1L << (SEMI_SENSITIVE - 711)) | (1L << (SEND - 711)) | (1L << (SENT - 711)) | (1L << (SEQUENCE - 711)) | (1L << (SERIALIZABLE - 711)) | (1L << (SESSION_TIMEOUT - 711)) | (1L << (SETERROR - 711)) | (1L << (SHARE - 711)) | (1L << (SHOWPLAN - 711)) | (1L << (SIGNATURE - 711)) | (1L << (SIMPLE - 711)) | (1L << (SINGLE_USER - 711)) | (1L << (SIZE - 711)) | (1L << (SMALLINT - 711)) | (1L << (SNAPSHOT - 711)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 711)) | (1L << (STANDBY - 711)) | (1L << (START_DATE - 711)) | (1L << (STATIC - 711)) | (1L << (STATS_STREAM - 711)) | (1L << (STATUS - 711)) | (1L << (STDEV - 711)) | (1L << (STDEVP - 711)) | (1L << (STOPLIST - 711)) | (1L << (STRING_AGG - 711)) | (1L << (STUFF - 711)) | (1L << (SUBJECT - 711)) | (1L << (SUM - 711)) | (1L << (SUSPEND - 711)) | (1L << (SYMMETRIC - 711)) | (1L << (SYNCHRONOUS_COMMIT - 711)) | (1L << (SYNONYM - 711)) | (1L << (SYSTEM - 711)) | (1L << (TAKE - 711)) | (1L << (TARGET_RECOVERY_TIME - 711)) | (1L << (TB - 711)) | (1L << (TEXTIMAGE_ON - 711)) | (1L << (THROW - 711)) | (1L << (TIES - 711)) | (1L << (TIME - 711)) | (1L << (TIMEOUT - 711)) | (1L << (TIMER - 711)) | (1L << (TINYINT - 711)) | (1L << (TORN_PAGE_DETECTION - 711)) | (1L << (TRANSFORM_NOISE_WORDS - 711)) | (1L << (TRIPLE_DES - 711)) | (1L << (TRIPLE_DES_3KEY - 711)) | (1L << (TRUSTWORTHY - 711)) | (1L << (TRY - 711)) | (1L << (TSQL - 711)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 711)) | (1L << (TYPE - 711)) | (1L << (TYPE_WARNING - 711)) | (1L << (UNBOUNDED - 711)) | (1L << (UNCOMMITTED - 711)) | (1L << (UNKNOWN - 711)) | (1L << (UNLIMITED - 711)) | (1L << (USING - 711)))) != 0) || ((((_la - 775)) & ~0x3f) == 0 && ((1L << (_la - 775)) & ((1L << (VALID_XML - 775)) | (1L << (VALIDATION - 775)) | (1L << (VALUE - 775)) | (1L << (VAR - 775)) | (1L << (VARP - 775)) | (1L << (VIEW_METADATA - 775)) | (1L << (VIEWS - 775)) | (1L << (WAIT - 775)) | (1L << (WELL_FORMED_XML - 775)) | (1L << (WORK - 775)) | (1L << (WORKLOAD - 775)) | (1L << (XML - 775)) | (1L << (XMLNAMESPACES - 775)) | (1L << (DOUBLE_QUOTE_ID - 775)) | (1L << (SQUARE_BRACKET_ID - 775)) | (1L << (ID - 775)) | (1L << (COMMA - 775)))) != 0) );
+						} while ( _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==COMMA || _la==URL );
 						setState(3114);
 						match(RR_BRACKET);
 						}
@@ -19887,7 +19968,7 @@ public class MocaSqlParser extends Parser {
 				setState(3232); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( _la==AND || _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)) | (1L << (NOT - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (OR - 225)) | (1L << (PAGE - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (TARGET - 295)))) != 0) || ((((_la - 380)) & ~0x3f) == 0 && ((1L << (_la - 380)) & ((1L << (ABSOLUTE - 380)) | (1L << (ACCENT_SENSITIVITY - 380)) | (1L << (ACTION - 380)) | (1L << (ACTIVATION - 380)) | (1L << (ACTIVE - 380)) | (1L << (ADDRESS - 380)) | (1L << (AES_128 - 380)) | (1L << (AES_192 - 380)) | (1L << (AES_256 - 380)) | (1L << (AFFINITY - 380)) | (1L << (AFTER - 380)) | (1L << (AGGREGATE - 380)) | (1L << (ALGORITHM - 380)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 380)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 380)) | (1L << (ALLOWED - 380)) | (1L << (ANSI_NULL_DEFAULT - 380)) | (1L << (ANSI_NULLS - 380)) | (1L << (ANSI_PADDING - 380)) | (1L << (ANSI_WARNINGS - 380)) | (1L << (APPLICATION_LOG - 380)) | (1L << (APPLY - 380)) | (1L << (ARITHABORT - 380)) | (1L << (ASSEMBLY - 380)) | (1L << (AUDIT - 380)) | (1L << (AUDIT_GUID - 380)) | (1L << (AUTO - 380)) | (1L << (AUTO_CLEANUP - 380)) | (1L << (AUTO_CLOSE - 380)) | (1L << (AUTO_CREATE_STATISTICS - 380)) | (1L << (AUTO_SHRINK - 380)) | (1L << (AUTO_UPDATE_STATISTICS - 380)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 380)) | (1L << (AVAILABILITY - 380)) | (1L << (AVG - 380)) | (1L << (BACKUP_PRIORITY - 380)) | (1L << (BEGIN_DIALOG - 380)) | (1L << (BIGINT - 380)) | (1L << (BINARY_BASE64 - 380)) | (1L << (BINARY_CHECKSUM - 380)) | (1L << (BINDING - 380)) | (1L << (BLOB_STORAGE - 380)) | (1L << (BROKER - 380)) | (1L << (BROKER_INSTANCE - 380)) | (1L << (BULK_LOGGED - 380)) | (1L << (CALLER - 380)) | (1L << (CAP_CPU_PERCENT - 380)) | (1L << (CAST - 380)) | (1L << (CATALOG - 380)) | (1L << (CATCH - 380)) | (1L << (CHANGE_RETENTION - 380)) | (1L << (CHANGE_TRACKING - 380)) | (1L << (CHECKSUM - 380)) | (1L << (CHECKSUM_AGG - 380)) | (1L << (CLEANUP - 380)) | (1L << (COLLECTION - 380)) | (1L << (COLUMN_MASTER_KEY - 380)) | (1L << (COMMITTED - 380)) | (1L << (COMPATIBILITY_LEVEL - 380)) | (1L << (CONCAT - 380)) | (1L << (CONCAT_NULL_YIELDS_NULL - 380)) | (1L << (CONTENT - 380)) | (1L << (CONTROL - 380)) | (1L << (COOKIE - 380)))) != 0) || ((((_la - 444)) & ~0x3f) == 0 && ((1L << (_la - 444)) & ((1L << (COUNT - 444)) | (1L << (COUNT_BIG - 444)) | (1L << (COUNTER - 444)) | (1L << (CPU - 444)) | (1L << (CREATE_NEW - 444)) | (1L << (CREATION_DISPOSITION - 444)) | (1L << (CREDENTIAL - 444)) | (1L << (CRYPTOGRAPHIC - 444)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 444)) | (1L << (CURSOR_DEFAULT - 444)) | (1L << (DATA - 444)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 444)) | (1L << (DATEADD - 444)) | (1L << (DATEDIFF - 444)) | (1L << (DATENAME - 444)) | (1L << (DATEPART - 444)) | (1L << (DAYS - 444)) | (1L << (DB_CHAINING - 444)) | (1L << (DB_FAILOVER - 444)) | (1L << (DECRYPTION - 444)) | (1L << (DEFAULT_DOUBLE_QUOTE - 444)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 444)) | (1L << (DEFAULT_LANGUAGE - 444)) | (1L << (DELAY - 444)) | (1L << (DELAYED_DURABILITY - 444)) | (1L << (DELETED - 444)) | (1L << (DENSE_RANK - 444)) | (1L << (DEPENDENTS - 444)) | (1L << (DES - 444)) | (1L << (DESCRIPTION - 444)) | (1L << (DESX - 444)) | (1L << (DHCP - 444)) | (1L << (DIALOG - 444)) | (1L << (DIRECTORY_NAME - 444)) | (1L << (DISABLE - 444)) | (1L << (DISABLE_BROKER - 444)) | (1L << (DISABLED - 444)) | (1L << (DISK_DRIVE - 444)) | (1L << (DOCUMENT - 444)) | (1L << (DYNAMIC - 444)) | (1L << (EMERGENCY - 444)) | (1L << (EMPTY - 444)) | (1L << (ENABLE - 444)) | (1L << (ENABLE_BROKER - 444)) | (1L << (ENCRYPTED_VALUE - 444)) | (1L << (ENCRYPTION - 444)) | (1L << (ENDPOINT_URL - 444)) | (1L << (ERROR_BROKER_CONVERSATIONS - 444)) | (1L << (EXCLUSIVE - 444)) | (1L << (EXECUTABLE - 444)) | (1L << (EXIST - 444)) | (1L << (EXPAND - 444)) | (1L << (EXPIRY_DATE - 444)) | (1L << (EXPLICIT - 444)) | (1L << (FAIL_OPERATION - 444)) | (1L << (FAILOVER_MODE - 444)) | (1L << (FAILURE - 444)) | (1L << (FAILURE_CONDITION_LEVEL - 444)) | (1L << (FAST - 444)) | (1L << (FAST_FORWARD - 444)) | (1L << (FILEGROUP - 444)) | (1L << (FILEGROWTH - 444)) | (1L << (FILEPATH - 444)))) != 0) || ((((_la - 508)) & ~0x3f) == 0 && ((1L << (_la - 508)) & ((1L << (FILESTREAM - 508)) | (1L << (FILTER - 508)) | (1L << (FIRST - 508)) | (1L << (FIRST_VALUE - 508)) | (1L << (FOLLOWING - 508)) | (1L << (FORCE - 508)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 508)) | (1L << (FORCED - 508)) | (1L << (FORMAT - 508)) | (1L << (FORWARD_ONLY - 508)) | (1L << (FULLSCAN - 508)) | (1L << (FULLTEXT - 508)) | (1L << (GB - 508)) | (1L << (GETDATE - 508)) | (1L << (GETUTCDATE - 508)) | (1L << (GLOBAL - 508)) | (1L << (GO - 508)) | (1L << (GROUP_MAX_REQUESTS - 508)) | (1L << (GROUPING - 508)) | (1L << (GROUPING_ID - 508)) | (1L << (HADR - 508)) | (1L << (HASH - 508)) | (1L << (HEALTH_CHECK_TIMEOUT - 508)) | (1L << (HIGH - 508)) | (1L << (HONOR_BROKER_PRIORITY - 508)) | (1L << (HOURS - 508)) | (1L << (IDENTITY_VALUE - 508)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 508)) | (1L << (IMMEDIATE - 508)) | (1L << (IMPERSONATE - 508)) | (1L << (IMPORTANCE - 508)) | (1L << (INCREMENTAL - 508)) | (1L << (INITIATOR - 508)) | (1L << (INPUT - 508)) | (1L << (INSENSITIVE - 508)) | (1L << (INSERTED - 508)) | (1L << (INT - 508)) | (1L << (IP - 508)) | (1L << (ISOLATION - 508)) | (1L << (KB - 508)) | (1L << (KEEP - 508)) | (1L << (KEEPFIXED - 508)) | (1L << (KEY_SOURCE - 508)) | (1L << (KEYS - 508)) | (1L << (KEYSET - 508)) | (1L << (LAG - 508)) | (1L << (LAST - 508)) | (1L << (LAST_VALUE - 508)) | (1L << (LEAD - 508)) | (1L << (LEVEL - 508)) | (1L << (LIST - 508)) | (1L << (LISTENER - 508)) | (1L << (LISTENER_URL - 508)) | (1L << (LOB_COMPACTION - 508)) | (1L << (LOCAL - 508)) | (1L << (LOCATION - 508)) | (1L << (LOCK - 508)) | (1L << (LOCK_ESCALATION - 508)) | (1L << (LOGIN - 508)) | (1L << (LOOP - 508)) | (1L << (LOW - 508)))) != 0) || ((((_la - 572)) & ~0x3f) == 0 && ((1L << (_la - 572)) & ((1L << (MANUAL - 572)) | (1L << (MARK - 572)) | (1L << (MATERIALIZED - 572)) | (1L << (MAX - 572)) | (1L << (MAX_CPU_PERCENT - 572)) | (1L << (MAX_DOP - 572)) | (1L << (MAX_FILES - 572)) | (1L << (MAX_IOPS_PER_VOLUME - 572)) | (1L << (MAX_MEMORY_PERCENT - 572)) | (1L << (MAX_PROCESSES - 572)) | (1L << (MAX_QUEUE_READERS - 572)) | (1L << (MAX_ROLLOVER_FILES - 572)) | (1L << (MAXDOP - 572)) | (1L << (MAXRECURSION - 572)) | (1L << (MAXSIZE - 572)) | (1L << (MB - 572)) | (1L << (MEDIUM - 572)) | (1L << (MEMORY_OPTIMIZED_DATA - 572)) | (1L << (MESSAGE - 572)) | (1L << (MIN - 572)) | (1L << (MIN_ACTIVE_ROWVERSION - 572)) | (1L << (MIN_CPU_PERCENT - 572)) | (1L << (MIN_IOPS_PER_VOLUME - 572)) | (1L << (MIN_MEMORY_PERCENT - 572)) | (1L << (MINUTES - 572)) | (1L << (MIRROR_ADDRESS - 572)) | (1L << (MIXED_PAGE_ALLOCATION - 572)) | (1L << (MODE - 572)) | (1L << (MODIFY - 572)) | (1L << (MOVE - 572)) | (1L << (MULTI_USER - 572)) | (1L << (NAME - 572)) | (1L << (NESTED_TRIGGERS - 572)) | (1L << (NEW_ACCOUNT - 572)) | (1L << (NEW_BROKER - 572)) | (1L << (NEW_PASSWORD - 572)) | (1L << (NEXT - 572)) | (1L << (NO - 572)) | (1L << (NO_TRUNCATE - 572)) | (1L << (NO_WAIT - 572)) | (1L << (NOCOUNT - 572)) | (1L << (NODES - 572)) | (1L << (NOEXPAND - 572)) | (1L << (NON_TRANSACTED_ACCESS - 572)) | (1L << (NORECOMPUTE - 572)) | (1L << (NORECOVERY - 572)) | (1L << (NOWAIT - 572)) | (1L << (NTILE - 572)) | (1L << (NUMANODE - 572)) | (1L << (NUMBER - 572)) | (1L << (NUMERIC_ROUNDABORT - 572)) | (1L << (OBJECT - 572)) | (1L << (OFFLINE - 572)) | (1L << (OFFSET - 572)) | (1L << (OLD_ACCOUNT - 572)) | (1L << (ONLINE - 572)) | (1L << (ONLY - 572)) | (1L << (OPEN_EXISTING - 572)) | (1L << (OPTIMISTIC - 572)) | (1L << (OPTIMIZE - 572)) | (1L << (OUT - 572)) | (1L << (OUTPUT - 572)) | (1L << (OWNER - 572)))) != 0) || ((((_la - 636)) & ~0x3f) == 0 && ((1L << (_la - 636)) & ((1L << (PAGE_VERIFY - 636)) | (1L << (PARAMETERIZATION - 636)) | (1L << (PARTITION - 636)) | (1L << (PARTITIONS - 636)) | (1L << (PARTNER - 636)) | (1L << (PATH - 636)) | (1L << (POISON_MESSAGE_HANDLING - 636)) | (1L << (POOL - 636)) | (1L << (PORT - 636)) | (1L << (PRECEDING - 636)) | (1L << (PRIMARY_ROLE - 636)) | (1L << (PRIOR - 636)) | (1L << (PRIORITY - 636)) | (1L << (PRIORITY_LEVEL - 636)) | (1L << (PRIVATE - 636)) | (1L << (PRIVATE_KEY - 636)) | (1L << (PRIVILEGES - 636)) | (1L << (PROCEDURE_NAME - 636)) | (1L << (PROPERTY - 636)) | (1L << (PROVIDER - 636)) | (1L << (PROVIDER_KEY_NAME - 636)) | (1L << (QUERY - 636)) | (1L << (QUEUE - 636)) | (1L << (QUEUE_DELAY - 636)) | (1L << (QUOTED_IDENTIFIER - 636)) | (1L << (RANGE - 636)) | (1L << (RANK - 636)) | (1L << (RC2 - 636)) | (1L << (RC4 - 636)) | (1L << (RC4_128 - 636)) | (1L << (READ_COMMITTED_SNAPSHOT - 636)) | (1L << (READ_ONLY - 636)) | (1L << (READ_ONLY_ROUTING_LIST - 636)) | (1L << (READ_WRITE - 636)) | (1L << (READONLY - 636)) | (1L << (REBUILD - 636)) | (1L << (RECEIVE - 636)) | (1L << (RECOMPILE - 636)) | (1L << (RECOVERY - 636)) | (1L << (RECURSIVE_TRIGGERS - 636)) | (1L << (RELATIVE - 636)) | (1L << (REMOTE - 636)) | (1L << (REMOTE_SERVICE_NAME - 636)) | (1L << (REMOVE - 636)) | (1L << (REORGANIZE - 636)) | (1L << (REPEATABLE - 636)) | (1L << (REPLICA - 636)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 636)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 636)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 636)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 636)) | (1L << (RESERVE_DISK_SPACE - 636)) | (1L << (RESOURCE - 636)) | (1L << (RESOURCE_MANAGER_LOCATION - 636)) | (1L << (RESTRICTED_USER - 636)) | (1L << (RETENTION - 636)) | (1L << (ROBUST - 636)) | (1L << (ROOT - 636)) | (1L << (ROUTE - 636)) | (1L << (ROW - 636)) | (1L << (ROW_NUMBER - 636)) | (1L << (ROWGUID - 636)) | (1L << (ROWS - 636)) | (1L << (SAMPLE - 636)))) != 0) || ((((_la - 700)) & ~0x3f) == 0 && ((1L << (_la - 700)) & ((1L << (SCHEMABINDING - 700)) | (1L << (SCOPED - 700)) | (1L << (SCROLL - 700)) | (1L << (SCROLL_LOCKS - 700)) | (1L << (SEARCH - 700)) | (1L << (SECONDARY - 700)) | (1L << (SECONDARY_ONLY - 700)) | (1L << (SECONDARY_ROLE - 700)) | (1L << (SECONDS - 700)) | (1L << (SECRET - 700)) | (1L << (SECURITY - 700)) | (1L << (SECURITY_LOG - 700)) | (1L << (SEEDING_MODE - 700)) | (1L << (SELF - 700)) | (1L << (SEMI_SENSITIVE - 700)) | (1L << (SEND - 700)) | (1L << (SENT - 700)) | (1L << (SEQUENCE - 700)) | (1L << (SERIALIZABLE - 700)) | (1L << (SESSION_TIMEOUT - 700)) | (1L << (SETERROR - 700)) | (1L << (SHARE - 700)) | (1L << (SHOWPLAN - 700)) | (1L << (SIGNATURE - 700)) | (1L << (SIMPLE - 700)) | (1L << (SINGLE_USER - 700)) | (1L << (SIZE - 700)) | (1L << (SMALLINT - 700)) | (1L << (SNAPSHOT - 700)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 700)) | (1L << (STANDBY - 700)) | (1L << (START_DATE - 700)) | (1L << (STATIC - 700)) | (1L << (STATS_STREAM - 700)) | (1L << (STATUS - 700)) | (1L << (STDEV - 700)) | (1L << (STDEVP - 700)) | (1L << (STOPLIST - 700)) | (1L << (STRING_AGG - 700)) | (1L << (STUFF - 700)) | (1L << (SUBJECT - 700)) | (1L << (SUM - 700)) | (1L << (SUSPEND - 700)) | (1L << (SYMMETRIC - 700)) | (1L << (SYNCHRONOUS_COMMIT - 700)) | (1L << (SYNONYM - 700)) | (1L << (SYSTEM - 700)) | (1L << (TAKE - 700)) | (1L << (TARGET_RECOVERY_TIME - 700)) | (1L << (TB - 700)) | (1L << (TEXTIMAGE_ON - 700)) | (1L << (THROW - 700)) | (1L << (TIES - 700)) | (1L << (TIME - 700)) | (1L << (TIMEOUT - 700)) | (1L << (TIMER - 700)) | (1L << (TINYINT - 700)) | (1L << (TORN_PAGE_DETECTION - 700)) | (1L << (TRANSFORM_NOISE_WORDS - 700)) | (1L << (TRIPLE_DES - 700)) | (1L << (TRIPLE_DES_3KEY - 700)) | (1L << (TRUSTWORTHY - 700)))) != 0) || ((((_la - 764)) & ~0x3f) == 0 && ((1L << (_la - 764)) & ((1L << (TRY - 764)) | (1L << (TSQL - 764)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 764)) | (1L << (TYPE - 764)) | (1L << (TYPE_WARNING - 764)) | (1L << (UNBOUNDED - 764)) | (1L << (UNCOMMITTED - 764)) | (1L << (UNKNOWN - 764)) | (1L << (UNLIMITED - 764)) | (1L << (USING - 764)) | (1L << (VALID_XML - 764)) | (1L << (VALIDATION - 764)) | (1L << (VALUE - 764)) | (1L << (VAR - 764)) | (1L << (VARP - 764)) | (1L << (VIEW_METADATA - 764)) | (1L << (VIEWS - 764)) | (1L << (WAIT - 764)) | (1L << (WELL_FORMED_XML - 764)) | (1L << (WORK - 764)) | (1L << (WORKLOAD - 764)) | (1L << (XML - 764)) | (1L << (XMLNAMESPACES - 764)) | (1L << (DOUBLE_QUOTE_ID - 764)) | (1L << (SQUARE_BRACKET_ID - 764)) | (1L << (ID - 764)))) != 0) || _la==LR_BRACKET || _la==COMMA );
+			} while ( _la==AND || _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)) | (1L << (NOT - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (OR - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || ((((_la - 829)) & ~0x3f) == 0 && ((1L << (_la - 829)) & ((1L << (LR_BRACKET - 829)) | (1L << (COMMA - 829)) | (1L << (URL - 829)))) != 0) );
 			}
 		}
 		catch (RecognitionException re) {
@@ -19938,6 +20019,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -19947,20 +20029,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -20364,6 +20453,7 @@ public class MocaSqlParser extends Parser {
 			case DOUBLE_QUOTE_ID:
 			case SQUARE_BRACKET_ID:
 			case ID:
+			case URL:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(3234);
@@ -24497,8 +24587,9 @@ public class MocaSqlParser extends Parser {
 			setState(4029);
 			match(WITH);
 			setState(4033);
-			_la = _input.LA(1);
-			if (_la==USER) {
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,410,_ctx) ) {
+			case 1:
 				{
 				setState(4030);
 				match(USER);
@@ -24507,8 +24598,8 @@ public class MocaSqlParser extends Parser {
 				setState(4032);
 				((Alter_remote_service_bindingContext)_localctx).user_name = id();
 				}
+				break;
 			}
-
 			setState(4039);
 			_la = _input.LA(1);
 			if (_la==COMMA) {
@@ -24629,8 +24720,9 @@ public class MocaSqlParser extends Parser {
 			setState(4053);
 			match(WITH);
 			setState(4057);
-			_la = _input.LA(1);
-			if (_la==USER) {
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,413,_ctx) ) {
+			case 1:
 				{
 				setState(4054);
 				match(USER);
@@ -24639,8 +24731,8 @@ public class MocaSqlParser extends Parser {
 				setState(4056);
 				((Create_remote_service_bindingContext)_localctx).user_name = id();
 				}
+				break;
 			}
-
 			setState(4063);
 			_la = _input.LA(1);
 			if (_la==COMMA) {
@@ -25162,6 +25254,7 @@ public class MocaSqlParser extends Parser {
 				case CALLED:
 				case DATA_COMPRESSION:
 				case EVENTDATA:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -25171,20 +25264,27 @@ public class MocaSqlParser extends Parser {
 				case MAX_MEMORY:
 				case OFFSETS:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SID:
 				case SOURCE:
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -25588,6 +25688,7 @@ public class MocaSqlParser extends Parser {
 				case DOUBLE_QUOTE_ID:
 				case SQUARE_BRACKET_ID:
 				case ID:
+				case URL:
 					{
 					setState(4181);
 					((Alter_resource_governorContext)_localctx).schema_name = id();
@@ -26914,7 +27015,7 @@ public class MocaSqlParser extends Parser {
 					setState(4401); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( _la==CALLED || _la==DATA_COMPRESSION || ((((_la - 112)) & ~0x3f) == 0 && ((1L << (_la - 112)) & ((1L << (EVENTDATA - 112)) | (1L << (FILENAME - 112)) | (1L << (FILLFACTOR - 112)) | (1L << (FORCESEEK - 112)) | (1L << (INIT - 112)) | (1L << (KEY - 112)))) != 0) || ((((_la - 187)) & ~0x3f) == 0 && ((1L << (_la - 187)) & ((1L << (MASTER - 187)) | (1L << (MAX_MEMORY - 187)) | (1L << (OFFSETS - 187)) | (1L << (PAGE - 187)))) != 0) || ((((_la - 259)) & ~0x3f) == 0 && ((1L << (_la - 259)) & ((1L << (PUBLIC - 259)) | (1L << (R - 259)) | (1L << (RAW - 259)) | (1L << (RETURN - 259)) | (1L << (RETURNS - 259)) | (1L << (ROWCOUNT - 259)) | (1L << (SAFETY - 259)) | (1L << (SERVER - 259)) | (1L << (SID - 259)) | (1L << (SOURCE - 259)) | (1L << (SPLIT - 259)))) != 0) || ((((_la - 327)) & ~0x3f) == 0 && ((1L << (_la - 327)) & ((1L << (STATE - 327)) | (1L << (START - 327)) | (1L << (TARGET - 327)) | (1L << (ABSOLUTE - 327)) | (1L << (ACCENT_SENSITIVITY - 327)) | (1L << (ACTION - 327)) | (1L << (ACTIVATION - 327)) | (1L << (ACTIVE - 327)) | (1L << (ADDRESS - 327)) | (1L << (AES_128 - 327)) | (1L << (AES_192 - 327)) | (1L << (AES_256 - 327)) | (1L << (AFFINITY - 327)) | (1L << (AFTER - 327)))) != 0) || ((((_la - 391)) & ~0x3f) == 0 && ((1L << (_la - 391)) & ((1L << (AGGREGATE - 391)) | (1L << (ALGORITHM - 391)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 391)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 391)) | (1L << (ALLOWED - 391)) | (1L << (ANSI_NULL_DEFAULT - 391)) | (1L << (ANSI_NULLS - 391)) | (1L << (ANSI_PADDING - 391)) | (1L << (ANSI_WARNINGS - 391)) | (1L << (APPLICATION_LOG - 391)) | (1L << (APPLY - 391)) | (1L << (ARITHABORT - 391)) | (1L << (ASSEMBLY - 391)) | (1L << (AUDIT - 391)) | (1L << (AUDIT_GUID - 391)) | (1L << (AUTO - 391)) | (1L << (AUTO_CLEANUP - 391)) | (1L << (AUTO_CLOSE - 391)) | (1L << (AUTO_CREATE_STATISTICS - 391)) | (1L << (AUTO_SHRINK - 391)) | (1L << (AUTO_UPDATE_STATISTICS - 391)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 391)) | (1L << (AVAILABILITY - 391)) | (1L << (AVG - 391)) | (1L << (BACKUP_PRIORITY - 391)) | (1L << (BEGIN_DIALOG - 391)) | (1L << (BIGINT - 391)) | (1L << (BINARY_BASE64 - 391)) | (1L << (BINARY_CHECKSUM - 391)) | (1L << (BINDING - 391)) | (1L << (BLOB_STORAGE - 391)) | (1L << (BROKER - 391)) | (1L << (BROKER_INSTANCE - 391)) | (1L << (BULK_LOGGED - 391)) | (1L << (CALLER - 391)) | (1L << (CAP_CPU_PERCENT - 391)) | (1L << (CAST - 391)) | (1L << (CATALOG - 391)) | (1L << (CATCH - 391)) | (1L << (CHANGE_RETENTION - 391)) | (1L << (CHANGE_TRACKING - 391)) | (1L << (CHECKSUM - 391)) | (1L << (CHECKSUM_AGG - 391)) | (1L << (CLEANUP - 391)) | (1L << (COLLECTION - 391)) | (1L << (COLUMN_MASTER_KEY - 391)) | (1L << (COMMITTED - 391)) | (1L << (COMPATIBILITY_LEVEL - 391)) | (1L << (CONCAT - 391)) | (1L << (CONCAT_NULL_YIELDS_NULL - 391)) | (1L << (CONTENT - 391)) | (1L << (CONTROL - 391)) | (1L << (COOKIE - 391)) | (1L << (COUNT - 391)) | (1L << (COUNT_BIG - 391)) | (1L << (COUNTER - 391)) | (1L << (CPU - 391)) | (1L << (CREATE_NEW - 391)) | (1L << (CREATION_DISPOSITION - 391)) | (1L << (CREDENTIAL - 391)) | (1L << (CRYPTOGRAPHIC - 391)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 391)) | (1L << (CURSOR_DEFAULT - 391)) | (1L << (DATA - 391)))) != 0) || ((((_la - 455)) & ~0x3f) == 0 && ((1L << (_la - 455)) & ((1L << (DATE_CORRELATION_OPTIMIZATION - 455)) | (1L << (DATEADD - 455)) | (1L << (DATEDIFF - 455)) | (1L << (DATENAME - 455)) | (1L << (DATEPART - 455)) | (1L << (DAYS - 455)) | (1L << (DB_CHAINING - 455)) | (1L << (DB_FAILOVER - 455)) | (1L << (DECRYPTION - 455)) | (1L << (DEFAULT_DOUBLE_QUOTE - 455)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 455)) | (1L << (DEFAULT_LANGUAGE - 455)) | (1L << (DELAY - 455)) | (1L << (DELAYED_DURABILITY - 455)) | (1L << (DELETED - 455)) | (1L << (DENSE_RANK - 455)) | (1L << (DEPENDENTS - 455)) | (1L << (DES - 455)) | (1L << (DESCRIPTION - 455)) | (1L << (DESX - 455)) | (1L << (DHCP - 455)) | (1L << (DIALOG - 455)) | (1L << (DIRECTORY_NAME - 455)) | (1L << (DISABLE - 455)) | (1L << (DISABLE_BROKER - 455)) | (1L << (DISABLED - 455)) | (1L << (DISK_DRIVE - 455)) | (1L << (DOCUMENT - 455)) | (1L << (DYNAMIC - 455)) | (1L << (EMERGENCY - 455)) | (1L << (EMPTY - 455)) | (1L << (ENABLE - 455)) | (1L << (ENABLE_BROKER - 455)) | (1L << (ENCRYPTED_VALUE - 455)) | (1L << (ENCRYPTION - 455)) | (1L << (ENDPOINT_URL - 455)) | (1L << (ERROR_BROKER_CONVERSATIONS - 455)) | (1L << (EXCLUSIVE - 455)) | (1L << (EXECUTABLE - 455)) | (1L << (EXIST - 455)) | (1L << (EXPAND - 455)) | (1L << (EXPIRY_DATE - 455)) | (1L << (EXPLICIT - 455)) | (1L << (FAIL_OPERATION - 455)) | (1L << (FAILOVER_MODE - 455)) | (1L << (FAILURE - 455)) | (1L << (FAILURE_CONDITION_LEVEL - 455)) | (1L << (FAST - 455)) | (1L << (FAST_FORWARD - 455)) | (1L << (FILEGROUP - 455)) | (1L << (FILEGROWTH - 455)) | (1L << (FILEPATH - 455)) | (1L << (FILESTREAM - 455)) | (1L << (FILTER - 455)) | (1L << (FIRST - 455)) | (1L << (FIRST_VALUE - 455)) | (1L << (FOLLOWING - 455)) | (1L << (FORCE - 455)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 455)) | (1L << (FORCED - 455)) | (1L << (FORMAT - 455)) | (1L << (FORWARD_ONLY - 455)) | (1L << (FULLSCAN - 455)))) != 0) || ((((_la - 519)) & ~0x3f) == 0 && ((1L << (_la - 519)) & ((1L << (FULLTEXT - 519)) | (1L << (GB - 519)) | (1L << (GETDATE - 519)) | (1L << (GETUTCDATE - 519)) | (1L << (GLOBAL - 519)) | (1L << (GO - 519)) | (1L << (GROUP_MAX_REQUESTS - 519)) | (1L << (GROUPING - 519)) | (1L << (GROUPING_ID - 519)) | (1L << (HADR - 519)) | (1L << (HASH - 519)) | (1L << (HEALTH_CHECK_TIMEOUT - 519)) | (1L << (HIGH - 519)) | (1L << (HONOR_BROKER_PRIORITY - 519)) | (1L << (HOURS - 519)) | (1L << (IDENTITY_VALUE - 519)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 519)) | (1L << (IMMEDIATE - 519)) | (1L << (IMPERSONATE - 519)) | (1L << (IMPORTANCE - 519)) | (1L << (INCREMENTAL - 519)) | (1L << (INITIATOR - 519)) | (1L << (INPUT - 519)) | (1L << (INSENSITIVE - 519)) | (1L << (INSERTED - 519)) | (1L << (INT - 519)) | (1L << (IP - 519)) | (1L << (ISOLATION - 519)) | (1L << (KB - 519)) | (1L << (KEEP - 519)) | (1L << (KEEPFIXED - 519)) | (1L << (KEY_SOURCE - 519)) | (1L << (KEYS - 519)) | (1L << (KEYSET - 519)) | (1L << (LAG - 519)) | (1L << (LAST - 519)) | (1L << (LAST_VALUE - 519)) | (1L << (LEAD - 519)) | (1L << (LEVEL - 519)) | (1L << (LIST - 519)) | (1L << (LISTENER - 519)) | (1L << (LISTENER_URL - 519)) | (1L << (LOB_COMPACTION - 519)) | (1L << (LOCAL - 519)) | (1L << (LOCATION - 519)) | (1L << (LOCK - 519)) | (1L << (LOCK_ESCALATION - 519)) | (1L << (LOGIN - 519)) | (1L << (LOOP - 519)) | (1L << (LOW - 519)) | (1L << (MANUAL - 519)) | (1L << (MARK - 519)) | (1L << (MATERIALIZED - 519)) | (1L << (MAX - 519)) | (1L << (MAX_CPU_PERCENT - 519)) | (1L << (MAX_DOP - 519)) | (1L << (MAX_FILES - 519)) | (1L << (MAX_IOPS_PER_VOLUME - 519)) | (1L << (MAX_MEMORY_PERCENT - 519)) | (1L << (MAX_PROCESSES - 519)) | (1L << (MAX_QUEUE_READERS - 519)))) != 0) || ((((_la - 583)) & ~0x3f) == 0 && ((1L << (_la - 583)) & ((1L << (MAX_ROLLOVER_FILES - 583)) | (1L << (MAXDOP - 583)) | (1L << (MAXRECURSION - 583)) | (1L << (MAXSIZE - 583)) | (1L << (MB - 583)) | (1L << (MEDIUM - 583)) | (1L << (MEMORY_OPTIMIZED_DATA - 583)) | (1L << (MESSAGE - 583)) | (1L << (MIN - 583)) | (1L << (MIN_ACTIVE_ROWVERSION - 583)) | (1L << (MIN_CPU_PERCENT - 583)) | (1L << (MIN_IOPS_PER_VOLUME - 583)) | (1L << (MIN_MEMORY_PERCENT - 583)) | (1L << (MINUTES - 583)) | (1L << (MIRROR_ADDRESS - 583)) | (1L << (MIXED_PAGE_ALLOCATION - 583)) | (1L << (MODE - 583)) | (1L << (MODIFY - 583)) | (1L << (MOVE - 583)) | (1L << (MULTI_USER - 583)) | (1L << (NAME - 583)) | (1L << (NESTED_TRIGGERS - 583)) | (1L << (NEW_ACCOUNT - 583)) | (1L << (NEW_BROKER - 583)) | (1L << (NEW_PASSWORD - 583)) | (1L << (NEXT - 583)) | (1L << (NO - 583)) | (1L << (NO_TRUNCATE - 583)) | (1L << (NO_WAIT - 583)) | (1L << (NOCOUNT - 583)) | (1L << (NODES - 583)) | (1L << (NOEXPAND - 583)) | (1L << (NON_TRANSACTED_ACCESS - 583)) | (1L << (NORECOMPUTE - 583)) | (1L << (NORECOVERY - 583)) | (1L << (NOWAIT - 583)) | (1L << (NTILE - 583)) | (1L << (NUMANODE - 583)) | (1L << (NUMBER - 583)) | (1L << (NUMERIC_ROUNDABORT - 583)) | (1L << (OBJECT - 583)) | (1L << (OFFLINE - 583)) | (1L << (OFFSET - 583)) | (1L << (OLD_ACCOUNT - 583)) | (1L << (ONLINE - 583)) | (1L << (ONLY - 583)) | (1L << (OPEN_EXISTING - 583)) | (1L << (OPTIMISTIC - 583)) | (1L << (OPTIMIZE - 583)) | (1L << (OUT - 583)) | (1L << (OUTPUT - 583)) | (1L << (OWNER - 583)) | (1L << (PAGE_VERIFY - 583)) | (1L << (PARAMETERIZATION - 583)) | (1L << (PARTITION - 583)) | (1L << (PARTITIONS - 583)) | (1L << (PARTNER - 583)) | (1L << (PATH - 583)) | (1L << (POISON_MESSAGE_HANDLING - 583)) | (1L << (POOL - 583)) | (1L << (PORT - 583)) | (1L << (PRECEDING - 583)) | (1L << (PRIMARY_ROLE - 583)))) != 0) || ((((_la - 647)) & ~0x3f) == 0 && ((1L << (_la - 647)) & ((1L << (PRIOR - 647)) | (1L << (PRIORITY - 647)) | (1L << (PRIORITY_LEVEL - 647)) | (1L << (PRIVATE - 647)) | (1L << (PRIVATE_KEY - 647)) | (1L << (PRIVILEGES - 647)) | (1L << (PROCEDURE_NAME - 647)) | (1L << (PROPERTY - 647)) | (1L << (PROVIDER - 647)) | (1L << (PROVIDER_KEY_NAME - 647)) | (1L << (QUERY - 647)) | (1L << (QUEUE - 647)) | (1L << (QUEUE_DELAY - 647)) | (1L << (QUOTED_IDENTIFIER - 647)) | (1L << (RANGE - 647)) | (1L << (RANK - 647)) | (1L << (RC2 - 647)) | (1L << (RC4 - 647)) | (1L << (RC4_128 - 647)) | (1L << (READ_COMMITTED_SNAPSHOT - 647)) | (1L << (READ_ONLY - 647)) | (1L << (READ_ONLY_ROUTING_LIST - 647)) | (1L << (READ_WRITE - 647)) | (1L << (READONLY - 647)) | (1L << (REBUILD - 647)) | (1L << (RECEIVE - 647)) | (1L << (RECOMPILE - 647)) | (1L << (RECOVERY - 647)) | (1L << (RECURSIVE_TRIGGERS - 647)) | (1L << (RELATIVE - 647)) | (1L << (REMOTE - 647)) | (1L << (REMOTE_SERVICE_NAME - 647)) | (1L << (REMOVE - 647)) | (1L << (REORGANIZE - 647)) | (1L << (REPEATABLE - 647)) | (1L << (REPLICA - 647)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 647)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 647)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 647)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 647)) | (1L << (RESERVE_DISK_SPACE - 647)) | (1L << (RESOURCE - 647)) | (1L << (RESOURCE_MANAGER_LOCATION - 647)) | (1L << (RESTRICTED_USER - 647)) | (1L << (RETENTION - 647)) | (1L << (ROBUST - 647)) | (1L << (ROOT - 647)) | (1L << (ROUTE - 647)) | (1L << (ROW - 647)) | (1L << (ROW_NUMBER - 647)) | (1L << (ROWGUID - 647)) | (1L << (ROWS - 647)) | (1L << (SAMPLE - 647)) | (1L << (SCHEMABINDING - 647)) | (1L << (SCOPED - 647)) | (1L << (SCROLL - 647)) | (1L << (SCROLL_LOCKS - 647)) | (1L << (SEARCH - 647)) | (1L << (SECONDARY - 647)) | (1L << (SECONDARY_ONLY - 647)) | (1L << (SECONDARY_ROLE - 647)) | (1L << (SECONDS - 647)) | (1L << (SECRET - 647)) | (1L << (SECURITY - 647)))) != 0) || ((((_la - 711)) & ~0x3f) == 0 && ((1L << (_la - 711)) & ((1L << (SECURITY_LOG - 711)) | (1L << (SEEDING_MODE - 711)) | (1L << (SELF - 711)) | (1L << (SEMI_SENSITIVE - 711)) | (1L << (SEND - 711)) | (1L << (SENT - 711)) | (1L << (SEQUENCE - 711)) | (1L << (SERIALIZABLE - 711)) | (1L << (SESSION_TIMEOUT - 711)) | (1L << (SETERROR - 711)) | (1L << (SHARE - 711)) | (1L << (SHOWPLAN - 711)) | (1L << (SIGNATURE - 711)) | (1L << (SIMPLE - 711)) | (1L << (SINGLE_USER - 711)) | (1L << (SIZE - 711)) | (1L << (SMALLINT - 711)) | (1L << (SNAPSHOT - 711)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 711)) | (1L << (STANDBY - 711)) | (1L << (START_DATE - 711)) | (1L << (STATIC - 711)) | (1L << (STATS_STREAM - 711)) | (1L << (STATUS - 711)) | (1L << (STDEV - 711)) | (1L << (STDEVP - 711)) | (1L << (STOPLIST - 711)) | (1L << (STRING_AGG - 711)) | (1L << (STUFF - 711)) | (1L << (SUBJECT - 711)) | (1L << (SUM - 711)) | (1L << (SUSPEND - 711)) | (1L << (SYMMETRIC - 711)) | (1L << (SYNCHRONOUS_COMMIT - 711)) | (1L << (SYNONYM - 711)) | (1L << (SYSTEM - 711)) | (1L << (TAKE - 711)) | (1L << (TARGET_RECOVERY_TIME - 711)) | (1L << (TB - 711)) | (1L << (TEXTIMAGE_ON - 711)) | (1L << (THROW - 711)) | (1L << (TIES - 711)) | (1L << (TIME - 711)) | (1L << (TIMEOUT - 711)) | (1L << (TIMER - 711)) | (1L << (TINYINT - 711)) | (1L << (TORN_PAGE_DETECTION - 711)) | (1L << (TRANSFORM_NOISE_WORDS - 711)) | (1L << (TRIPLE_DES - 711)) | (1L << (TRIPLE_DES_3KEY - 711)) | (1L << (TRUSTWORTHY - 711)) | (1L << (TRY - 711)) | (1L << (TSQL - 711)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 711)) | (1L << (TYPE - 711)) | (1L << (TYPE_WARNING - 711)) | (1L << (UNBOUNDED - 711)) | (1L << (UNCOMMITTED - 711)) | (1L << (UNKNOWN - 711)) | (1L << (UNLIMITED - 711)) | (1L << (USING - 711)))) != 0) || ((((_la - 775)) & ~0x3f) == 0 && ((1L << (_la - 775)) & ((1L << (VALID_XML - 775)) | (1L << (VALIDATION - 775)) | (1L << (VALUE - 775)) | (1L << (VAR - 775)) | (1L << (VARP - 775)) | (1L << (VIEW_METADATA - 775)) | (1L << (VIEWS - 775)) | (1L << (WAIT - 775)) | (1L << (WELL_FORMED_XML - 775)) | (1L << (WORK - 775)) | (1L << (WORKLOAD - 775)) | (1L << (XML - 775)) | (1L << (XMLNAMESPACES - 775)) | (1L << (DOUBLE_QUOTE_ID - 775)) | (1L << (SQUARE_BRACKET_ID - 775)) | (1L << (ID - 775)) | (1L << (COMMA - 775)))) != 0) );
+				} while ( _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==COMMA || _la==URL );
 				setState(4403);
 				match(RR_BRACKET);
 				setState(4404);
@@ -30200,6 +30301,7 @@ public class MocaSqlParser extends Parser {
 					case CALLED:
 					case DATA_COMPRESSION:
 					case EVENTDATA:
+					case EXPIREDATE:
 					case FILENAME:
 					case FILLFACTOR:
 					case FORCESEEK:
@@ -30209,20 +30311,27 @@ public class MocaSqlParser extends Parser {
 					case MAX_MEMORY:
 					case OFFSETS:
 					case PAGE:
+					case POLICY:
+					case PRECISION:
 					case PUBLIC:
 					case R:
 					case RAW:
 					case RETURN:
 					case RETURNS:
+					case ROLE:
 					case ROWCOUNT:
 					case SAFETY:
+					case RULE:
 					case SERVER:
 					case SID:
 					case SOURCE:
 					case SPLIT:
 					case STATE:
 					case START:
+					case STOP:
 					case TARGET:
+					case TRAN:
+					case USER:
 					case ABSOLUTE:
 					case ACCENT_SENSITIVITY:
 					case ACTION:
@@ -30626,6 +30735,7 @@ public class MocaSqlParser extends Parser {
 					case DOUBLE_QUOTE_ID:
 					case SQUARE_BRACKET_ID:
 					case ID:
+					case URL:
 						{
 						setState(5060);
 						id();
@@ -30645,7 +30755,7 @@ public class MocaSqlParser extends Parser {
 					setState(5066); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( ((((_la - 38)) & ~0x3f) == 0 && ((1L << (_la - 38)) & ((1L << (CALLED - 38)) | (1L << (DATA_COMPRESSION - 38)) | (1L << (DEFAULT - 38)))) != 0) || ((((_la - 112)) & ~0x3f) == 0 && ((1L << (_la - 112)) & ((1L << (EVENTDATA - 112)) | (1L << (FILENAME - 112)) | (1L << (FILLFACTOR - 112)) | (1L << (FORCESEEK - 112)) | (1L << (INIT - 112)) | (1L << (KEY - 112)))) != 0) || ((((_la - 187)) & ~0x3f) == 0 && ((1L << (_la - 187)) & ((1L << (MASTER - 187)) | (1L << (MAX_MEMORY - 187)) | (1L << (OFFSETS - 187)) | (1L << (PAGE - 187)))) != 0) || ((((_la - 259)) & ~0x3f) == 0 && ((1L << (_la - 259)) & ((1L << (PUBLIC - 259)) | (1L << (R - 259)) | (1L << (RAW - 259)) | (1L << (RETURN - 259)) | (1L << (RETURNS - 259)) | (1L << (ROWCOUNT - 259)) | (1L << (SAFETY - 259)) | (1L << (SERVER - 259)) | (1L << (SID - 259)) | (1L << (SOURCE - 259)) | (1L << (SPLIT - 259)))) != 0) || ((((_la - 327)) & ~0x3f) == 0 && ((1L << (_la - 327)) & ((1L << (STATE - 327)) | (1L << (START - 327)) | (1L << (TARGET - 327)) | (1L << (ABSOLUTE - 327)) | (1L << (ACCENT_SENSITIVITY - 327)) | (1L << (ACTION - 327)) | (1L << (ACTIVATION - 327)) | (1L << (ACTIVE - 327)) | (1L << (ADDRESS - 327)) | (1L << (AES_128 - 327)) | (1L << (AES_192 - 327)) | (1L << (AES_256 - 327)) | (1L << (AFFINITY - 327)) | (1L << (AFTER - 327)))) != 0) || ((((_la - 391)) & ~0x3f) == 0 && ((1L << (_la - 391)) & ((1L << (AGGREGATE - 391)) | (1L << (ALGORITHM - 391)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 391)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 391)) | (1L << (ALLOWED - 391)) | (1L << (ANSI_NULL_DEFAULT - 391)) | (1L << (ANSI_NULLS - 391)) | (1L << (ANSI_PADDING - 391)) | (1L << (ANSI_WARNINGS - 391)) | (1L << (APPLICATION_LOG - 391)) | (1L << (APPLY - 391)) | (1L << (ARITHABORT - 391)) | (1L << (ASSEMBLY - 391)) | (1L << (AUDIT - 391)) | (1L << (AUDIT_GUID - 391)) | (1L << (AUTO - 391)) | (1L << (AUTO_CLEANUP - 391)) | (1L << (AUTO_CLOSE - 391)) | (1L << (AUTO_CREATE_STATISTICS - 391)) | (1L << (AUTO_SHRINK - 391)) | (1L << (AUTO_UPDATE_STATISTICS - 391)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 391)) | (1L << (AVAILABILITY - 391)) | (1L << (AVG - 391)) | (1L << (BACKUP_PRIORITY - 391)) | (1L << (BEGIN_DIALOG - 391)) | (1L << (BIGINT - 391)) | (1L << (BINARY_BASE64 - 391)) | (1L << (BINARY_CHECKSUM - 391)) | (1L << (BINDING - 391)) | (1L << (BLOB_STORAGE - 391)) | (1L << (BROKER - 391)) | (1L << (BROKER_INSTANCE - 391)) | (1L << (BULK_LOGGED - 391)) | (1L << (CALLER - 391)) | (1L << (CAP_CPU_PERCENT - 391)) | (1L << (CAST - 391)) | (1L << (CATALOG - 391)) | (1L << (CATCH - 391)) | (1L << (CHANGE_RETENTION - 391)) | (1L << (CHANGE_TRACKING - 391)) | (1L << (CHECKSUM - 391)) | (1L << (CHECKSUM_AGG - 391)) | (1L << (CLEANUP - 391)) | (1L << (COLLECTION - 391)) | (1L << (COLUMN_MASTER_KEY - 391)) | (1L << (COMMITTED - 391)) | (1L << (COMPATIBILITY_LEVEL - 391)) | (1L << (CONCAT - 391)) | (1L << (CONCAT_NULL_YIELDS_NULL - 391)) | (1L << (CONTENT - 391)) | (1L << (CONTROL - 391)) | (1L << (COOKIE - 391)) | (1L << (COUNT - 391)) | (1L << (COUNT_BIG - 391)) | (1L << (COUNTER - 391)) | (1L << (CPU - 391)) | (1L << (CREATE_NEW - 391)) | (1L << (CREATION_DISPOSITION - 391)) | (1L << (CREDENTIAL - 391)) | (1L << (CRYPTOGRAPHIC - 391)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 391)) | (1L << (CURSOR_DEFAULT - 391)) | (1L << (DATA - 391)))) != 0) || ((((_la - 455)) & ~0x3f) == 0 && ((1L << (_la - 455)) & ((1L << (DATE_CORRELATION_OPTIMIZATION - 455)) | (1L << (DATEADD - 455)) | (1L << (DATEDIFF - 455)) | (1L << (DATENAME - 455)) | (1L << (DATEPART - 455)) | (1L << (DAYS - 455)) | (1L << (DB_CHAINING - 455)) | (1L << (DB_FAILOVER - 455)) | (1L << (DECRYPTION - 455)) | (1L << (DEFAULT_DOUBLE_QUOTE - 455)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 455)) | (1L << (DEFAULT_LANGUAGE - 455)) | (1L << (DELAY - 455)) | (1L << (DELAYED_DURABILITY - 455)) | (1L << (DELETED - 455)) | (1L << (DENSE_RANK - 455)) | (1L << (DEPENDENTS - 455)) | (1L << (DES - 455)) | (1L << (DESCRIPTION - 455)) | (1L << (DESX - 455)) | (1L << (DHCP - 455)) | (1L << (DIALOG - 455)) | (1L << (DIRECTORY_NAME - 455)) | (1L << (DISABLE - 455)) | (1L << (DISABLE_BROKER - 455)) | (1L << (DISABLED - 455)) | (1L << (DISK_DRIVE - 455)) | (1L << (DOCUMENT - 455)) | (1L << (DYNAMIC - 455)) | (1L << (EMERGENCY - 455)) | (1L << (EMPTY - 455)) | (1L << (ENABLE - 455)) | (1L << (ENABLE_BROKER - 455)) | (1L << (ENCRYPTED_VALUE - 455)) | (1L << (ENCRYPTION - 455)) | (1L << (ENDPOINT_URL - 455)) | (1L << (ERROR_BROKER_CONVERSATIONS - 455)) | (1L << (EXCLUSIVE - 455)) | (1L << (EXECUTABLE - 455)) | (1L << (EXIST - 455)) | (1L << (EXPAND - 455)) | (1L << (EXPIRY_DATE - 455)) | (1L << (EXPLICIT - 455)) | (1L << (FAIL_OPERATION - 455)) | (1L << (FAILOVER_MODE - 455)) | (1L << (FAILURE - 455)) | (1L << (FAILURE_CONDITION_LEVEL - 455)) | (1L << (FAST - 455)) | (1L << (FAST_FORWARD - 455)) | (1L << (FILEGROUP - 455)) | (1L << (FILEGROWTH - 455)) | (1L << (FILEPATH - 455)) | (1L << (FILESTREAM - 455)) | (1L << (FILTER - 455)) | (1L << (FIRST - 455)) | (1L << (FIRST_VALUE - 455)) | (1L << (FOLLOWING - 455)) | (1L << (FORCE - 455)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 455)) | (1L << (FORCED - 455)) | (1L << (FORMAT - 455)) | (1L << (FORWARD_ONLY - 455)) | (1L << (FULLSCAN - 455)))) != 0) || ((((_la - 519)) & ~0x3f) == 0 && ((1L << (_la - 519)) & ((1L << (FULLTEXT - 519)) | (1L << (GB - 519)) | (1L << (GETDATE - 519)) | (1L << (GETUTCDATE - 519)) | (1L << (GLOBAL - 519)) | (1L << (GO - 519)) | (1L << (GROUP_MAX_REQUESTS - 519)) | (1L << (GROUPING - 519)) | (1L << (GROUPING_ID - 519)) | (1L << (HADR - 519)) | (1L << (HASH - 519)) | (1L << (HEALTH_CHECK_TIMEOUT - 519)) | (1L << (HIGH - 519)) | (1L << (HONOR_BROKER_PRIORITY - 519)) | (1L << (HOURS - 519)) | (1L << (IDENTITY_VALUE - 519)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 519)) | (1L << (IMMEDIATE - 519)) | (1L << (IMPERSONATE - 519)) | (1L << (IMPORTANCE - 519)) | (1L << (INCREMENTAL - 519)) | (1L << (INITIATOR - 519)) | (1L << (INPUT - 519)) | (1L << (INSENSITIVE - 519)) | (1L << (INSERTED - 519)) | (1L << (INT - 519)) | (1L << (IP - 519)) | (1L << (ISOLATION - 519)) | (1L << (KB - 519)) | (1L << (KEEP - 519)) | (1L << (KEEPFIXED - 519)) | (1L << (KEY_SOURCE - 519)) | (1L << (KEYS - 519)) | (1L << (KEYSET - 519)) | (1L << (LAG - 519)) | (1L << (LAST - 519)) | (1L << (LAST_VALUE - 519)) | (1L << (LEAD - 519)) | (1L << (LEVEL - 519)) | (1L << (LIST - 519)) | (1L << (LISTENER - 519)) | (1L << (LISTENER_URL - 519)) | (1L << (LOB_COMPACTION - 519)) | (1L << (LOCAL - 519)) | (1L << (LOCATION - 519)) | (1L << (LOCK - 519)) | (1L << (LOCK_ESCALATION - 519)) | (1L << (LOGIN - 519)) | (1L << (LOOP - 519)) | (1L << (LOW - 519)) | (1L << (MANUAL - 519)) | (1L << (MARK - 519)) | (1L << (MATERIALIZED - 519)) | (1L << (MAX - 519)) | (1L << (MAX_CPU_PERCENT - 519)) | (1L << (MAX_DOP - 519)) | (1L << (MAX_FILES - 519)) | (1L << (MAX_IOPS_PER_VOLUME - 519)) | (1L << (MAX_MEMORY_PERCENT - 519)) | (1L << (MAX_PROCESSES - 519)) | (1L << (MAX_QUEUE_READERS - 519)))) != 0) || ((((_la - 583)) & ~0x3f) == 0 && ((1L << (_la - 583)) & ((1L << (MAX_ROLLOVER_FILES - 583)) | (1L << (MAXDOP - 583)) | (1L << (MAXRECURSION - 583)) | (1L << (MAXSIZE - 583)) | (1L << (MB - 583)) | (1L << (MEDIUM - 583)) | (1L << (MEMORY_OPTIMIZED_DATA - 583)) | (1L << (MESSAGE - 583)) | (1L << (MIN - 583)) | (1L << (MIN_ACTIVE_ROWVERSION - 583)) | (1L << (MIN_CPU_PERCENT - 583)) | (1L << (MIN_IOPS_PER_VOLUME - 583)) | (1L << (MIN_MEMORY_PERCENT - 583)) | (1L << (MINUTES - 583)) | (1L << (MIRROR_ADDRESS - 583)) | (1L << (MIXED_PAGE_ALLOCATION - 583)) | (1L << (MODE - 583)) | (1L << (MODIFY - 583)) | (1L << (MOVE - 583)) | (1L << (MULTI_USER - 583)) | (1L << (NAME - 583)) | (1L << (NESTED_TRIGGERS - 583)) | (1L << (NEW_ACCOUNT - 583)) | (1L << (NEW_BROKER - 583)) | (1L << (NEW_PASSWORD - 583)) | (1L << (NEXT - 583)) | (1L << (NO - 583)) | (1L << (NO_TRUNCATE - 583)) | (1L << (NO_WAIT - 583)) | (1L << (NOCOUNT - 583)) | (1L << (NODES - 583)) | (1L << (NOEXPAND - 583)) | (1L << (NON_TRANSACTED_ACCESS - 583)) | (1L << (NORECOMPUTE - 583)) | (1L << (NORECOVERY - 583)) | (1L << (NOWAIT - 583)) | (1L << (NTILE - 583)) | (1L << (NUMANODE - 583)) | (1L << (NUMBER - 583)) | (1L << (NUMERIC_ROUNDABORT - 583)) | (1L << (OBJECT - 583)) | (1L << (OFFLINE - 583)) | (1L << (OFFSET - 583)) | (1L << (OLD_ACCOUNT - 583)) | (1L << (ONLINE - 583)) | (1L << (ONLY - 583)) | (1L << (OPEN_EXISTING - 583)) | (1L << (OPTIMISTIC - 583)) | (1L << (OPTIMIZE - 583)) | (1L << (OUT - 583)) | (1L << (OUTPUT - 583)) | (1L << (OWNER - 583)) | (1L << (PAGE_VERIFY - 583)) | (1L << (PARAMETERIZATION - 583)) | (1L << (PARTITION - 583)) | (1L << (PARTITIONS - 583)) | (1L << (PARTNER - 583)) | (1L << (PATH - 583)) | (1L << (POISON_MESSAGE_HANDLING - 583)) | (1L << (POOL - 583)) | (1L << (PORT - 583)) | (1L << (PRECEDING - 583)) | (1L << (PRIMARY_ROLE - 583)))) != 0) || ((((_la - 647)) & ~0x3f) == 0 && ((1L << (_la - 647)) & ((1L << (PRIOR - 647)) | (1L << (PRIORITY - 647)) | (1L << (PRIORITY_LEVEL - 647)) | (1L << (PRIVATE - 647)) | (1L << (PRIVATE_KEY - 647)) | (1L << (PRIVILEGES - 647)) | (1L << (PROCEDURE_NAME - 647)) | (1L << (PROPERTY - 647)) | (1L << (PROVIDER - 647)) | (1L << (PROVIDER_KEY_NAME - 647)) | (1L << (QUERY - 647)) | (1L << (QUEUE - 647)) | (1L << (QUEUE_DELAY - 647)) | (1L << (QUOTED_IDENTIFIER - 647)) | (1L << (RANGE - 647)) | (1L << (RANK - 647)) | (1L << (RC2 - 647)) | (1L << (RC4 - 647)) | (1L << (RC4_128 - 647)) | (1L << (READ_COMMITTED_SNAPSHOT - 647)) | (1L << (READ_ONLY - 647)) | (1L << (READ_ONLY_ROUTING_LIST - 647)) | (1L << (READ_WRITE - 647)) | (1L << (READONLY - 647)) | (1L << (REBUILD - 647)) | (1L << (RECEIVE - 647)) | (1L << (RECOMPILE - 647)) | (1L << (RECOVERY - 647)) | (1L << (RECURSIVE_TRIGGERS - 647)) | (1L << (RELATIVE - 647)) | (1L << (REMOTE - 647)) | (1L << (REMOTE_SERVICE_NAME - 647)) | (1L << (REMOVE - 647)) | (1L << (REORGANIZE - 647)) | (1L << (REPEATABLE - 647)) | (1L << (REPLICA - 647)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 647)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 647)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 647)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 647)) | (1L << (RESERVE_DISK_SPACE - 647)) | (1L << (RESOURCE - 647)) | (1L << (RESOURCE_MANAGER_LOCATION - 647)) | (1L << (RESTRICTED_USER - 647)) | (1L << (RETENTION - 647)) | (1L << (ROBUST - 647)) | (1L << (ROOT - 647)) | (1L << (ROUTE - 647)) | (1L << (ROW - 647)) | (1L << (ROW_NUMBER - 647)) | (1L << (ROWGUID - 647)) | (1L << (ROWS - 647)) | (1L << (SAMPLE - 647)) | (1L << (SCHEMABINDING - 647)) | (1L << (SCOPED - 647)) | (1L << (SCROLL - 647)) | (1L << (SCROLL_LOCKS - 647)) | (1L << (SEARCH - 647)) | (1L << (SECONDARY - 647)) | (1L << (SECONDARY_ONLY - 647)) | (1L << (SECONDARY_ROLE - 647)) | (1L << (SECONDS - 647)) | (1L << (SECRET - 647)) | (1L << (SECURITY - 647)))) != 0) || ((((_la - 711)) & ~0x3f) == 0 && ((1L << (_la - 711)) & ((1L << (SECURITY_LOG - 711)) | (1L << (SEEDING_MODE - 711)) | (1L << (SELF - 711)) | (1L << (SEMI_SENSITIVE - 711)) | (1L << (SEND - 711)) | (1L << (SENT - 711)) | (1L << (SEQUENCE - 711)) | (1L << (SERIALIZABLE - 711)) | (1L << (SESSION_TIMEOUT - 711)) | (1L << (SETERROR - 711)) | (1L << (SHARE - 711)) | (1L << (SHOWPLAN - 711)) | (1L << (SIGNATURE - 711)) | (1L << (SIMPLE - 711)) | (1L << (SINGLE_USER - 711)) | (1L << (SIZE - 711)) | (1L << (SMALLINT - 711)) | (1L << (SNAPSHOT - 711)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 711)) | (1L << (STANDBY - 711)) | (1L << (START_DATE - 711)) | (1L << (STATIC - 711)) | (1L << (STATS_STREAM - 711)) | (1L << (STATUS - 711)) | (1L << (STDEV - 711)) | (1L << (STDEVP - 711)) | (1L << (STOPLIST - 711)) | (1L << (STRING_AGG - 711)) | (1L << (STUFF - 711)) | (1L << (SUBJECT - 711)) | (1L << (SUM - 711)) | (1L << (SUSPEND - 711)) | (1L << (SYMMETRIC - 711)) | (1L << (SYNCHRONOUS_COMMIT - 711)) | (1L << (SYNONYM - 711)) | (1L << (SYSTEM - 711)) | (1L << (TAKE - 711)) | (1L << (TARGET_RECOVERY_TIME - 711)) | (1L << (TB - 711)) | (1L << (TEXTIMAGE_ON - 711)) | (1L << (THROW - 711)) | (1L << (TIES - 711)) | (1L << (TIME - 711)) | (1L << (TIMEOUT - 711)) | (1L << (TIMER - 711)) | (1L << (TINYINT - 711)) | (1L << (TORN_PAGE_DETECTION - 711)) | (1L << (TRANSFORM_NOISE_WORDS - 711)) | (1L << (TRIPLE_DES - 711)) | (1L << (TRIPLE_DES_3KEY - 711)) | (1L << (TRUSTWORTHY - 711)) | (1L << (TRY - 711)) | (1L << (TSQL - 711)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 711)) | (1L << (TYPE - 711)) | (1L << (TYPE_WARNING - 711)) | (1L << (UNBOUNDED - 711)) | (1L << (UNCOMMITTED - 711)) | (1L << (UNKNOWN - 711)) | (1L << (UNLIMITED - 711)) | (1L << (USING - 711)))) != 0) || ((((_la - 775)) & ~0x3f) == 0 && ((1L << (_la - 775)) & ((1L << (VALID_XML - 775)) | (1L << (VALIDATION - 775)) | (1L << (VALUE - 775)) | (1L << (VAR - 775)) | (1L << (VARP - 775)) | (1L << (VIEW_METADATA - 775)) | (1L << (VIEWS - 775)) | (1L << (WAIT - 775)) | (1L << (WELL_FORMED_XML - 775)) | (1L << (WORK - 775)) | (1L << (WORKLOAD - 775)) | (1L << (XML - 775)) | (1L << (XMLNAMESPACES - 775)) | (1L << (DOUBLE_QUOTE_ID - 775)) | (1L << (SQUARE_BRACKET_ID - 775)) | (1L << (ID - 775)) | (1L << (COMMA - 775)))) != 0) );
+				} while ( _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (DEFAULT - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==COMMA || _la==URL );
 				setState(5068);
 				match(RR_BRACKET);
 				}
@@ -31510,6 +31620,7 @@ public class MocaSqlParser extends Parser {
 						case CALLED:
 						case DATA_COMPRESSION:
 						case EVENTDATA:
+						case EXPIREDATE:
 						case FILENAME:
 						case FILLFACTOR:
 						case FORCESEEK:
@@ -31519,20 +31630,27 @@ public class MocaSqlParser extends Parser {
 						case MAX_MEMORY:
 						case OFFSETS:
 						case PAGE:
+						case POLICY:
+						case PRECISION:
 						case PUBLIC:
 						case R:
 						case RAW:
 						case RETURN:
 						case RETURNS:
+						case ROLE:
 						case ROWCOUNT:
 						case SAFETY:
+						case RULE:
 						case SERVER:
 						case SID:
 						case SOURCE:
 						case SPLIT:
 						case STATE:
 						case START:
+						case STOP:
 						case TARGET:
+						case TRAN:
+						case USER:
 						case ABSOLUTE:
 						case ACCENT_SENSITIVITY:
 						case ACTION:
@@ -31936,6 +32054,7 @@ public class MocaSqlParser extends Parser {
 						case DOUBLE_QUOTE_ID:
 						case SQUARE_BRACKET_ID:
 						case ID:
+						case URL:
 							{
 							setState(5218);
 							((Alter_userContext)_localctx).schema_name = id();
@@ -32040,6 +32159,7 @@ public class MocaSqlParser extends Parser {
 						case CALLED:
 						case DATA_COMPRESSION:
 						case EVENTDATA:
+						case EXPIREDATE:
 						case FILENAME:
 						case FILLFACTOR:
 						case FORCESEEK:
@@ -32049,20 +32169,27 @@ public class MocaSqlParser extends Parser {
 						case MAX_MEMORY:
 						case OFFSETS:
 						case PAGE:
+						case POLICY:
+						case PRECISION:
 						case PUBLIC:
 						case R:
 						case RAW:
 						case RETURN:
 						case RETURNS:
+						case ROLE:
 						case ROWCOUNT:
 						case SAFETY:
+						case RULE:
 						case SERVER:
 						case SID:
 						case SOURCE:
 						case SPLIT:
 						case STATE:
 						case START:
+						case STOP:
 						case TARGET:
+						case TRAN:
+						case USER:
 						case ABSOLUTE:
 						case ACCENT_SENSITIVITY:
 						case ACTION:
@@ -32466,6 +32593,7 @@ public class MocaSqlParser extends Parser {
 						case DOUBLE_QUOTE_ID:
 						case SQUARE_BRACKET_ID:
 						case ID:
+						case URL:
 							{
 							setState(5248);
 							((Alter_userContext)_localctx).language_name_or_alias = id();
@@ -32804,6 +32932,7 @@ public class MocaSqlParser extends Parser {
 									case CALLED:
 									case DATA_COMPRESSION:
 									case EVENTDATA:
+									case EXPIREDATE:
 									case FILENAME:
 									case FILLFACTOR:
 									case FORCESEEK:
@@ -32813,20 +32942,27 @@ public class MocaSqlParser extends Parser {
 									case MAX_MEMORY:
 									case OFFSETS:
 									case PAGE:
+									case POLICY:
+									case PRECISION:
 									case PUBLIC:
 									case R:
 									case RAW:
 									case RETURN:
 									case RETURNS:
+									case ROLE:
 									case ROWCOUNT:
 									case SAFETY:
+									case RULE:
 									case SERVER:
 									case SID:
 									case SOURCE:
 									case SPLIT:
 									case STATE:
 									case START:
+									case STOP:
 									case TARGET:
+									case TRAN:
+									case USER:
 									case ABSOLUTE:
 									case ACCENT_SENSITIVITY:
 									case ACTION:
@@ -33230,6 +33366,7 @@ public class MocaSqlParser extends Parser {
 									case DOUBLE_QUOTE_ID:
 									case SQUARE_BRACKET_ID:
 									case ID:
+									case URL:
 										{
 										setState(5306);
 										((Create_userContext)_localctx).language_name_or_alias = id();
@@ -33367,6 +33504,7 @@ public class MocaSqlParser extends Parser {
 								case CALLED:
 								case DATA_COMPRESSION:
 								case EVENTDATA:
+								case EXPIREDATE:
 								case FILENAME:
 								case FILLFACTOR:
 								case FORCESEEK:
@@ -33376,20 +33514,27 @@ public class MocaSqlParser extends Parser {
 								case MAX_MEMORY:
 								case OFFSETS:
 								case PAGE:
+								case POLICY:
+								case PRECISION:
 								case PUBLIC:
 								case R:
 								case RAW:
 								case RETURN:
 								case RETURNS:
+								case ROLE:
 								case ROWCOUNT:
 								case SAFETY:
+								case RULE:
 								case SERVER:
 								case SID:
 								case SOURCE:
 								case SPLIT:
 								case STATE:
 								case START:
+								case STOP:
 								case TARGET:
+								case TRAN:
+								case USER:
 								case ABSOLUTE:
 								case ACCENT_SENSITIVITY:
 								case ACTION:
@@ -33793,6 +33938,7 @@ public class MocaSqlParser extends Parser {
 								case DOUBLE_QUOTE_ID:
 								case SQUARE_BRACKET_ID:
 								case ID:
+								case URL:
 									{
 									setState(5346);
 									((Create_userContext)_localctx).language_name_or_alias = id();
@@ -34119,6 +34265,7 @@ public class MocaSqlParser extends Parser {
 				case END:
 				case EVENTDATA:
 				case EXECUTE:
+				case EXPIREDATE:
 				case FETCH:
 				case FILENAME:
 				case FILLFACTOR:
@@ -34144,6 +34291,8 @@ public class MocaSqlParser extends Parser {
 				case OPEN:
 				case OVER:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PRINT:
 				case PUBLIC:
 				case R:
@@ -34155,8 +34304,10 @@ public class MocaSqlParser extends Parser {
 				case REVERT:
 				case RIGHT:
 				case ROLLBACK:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SAVE:
 				case SELECT:
 				case SERVER:
@@ -34169,11 +34320,14 @@ public class MocaSqlParser extends Parser {
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case SYSTEM_USER:
 				case TARGET:
+				case TRAN:
 				case TRUNCATE:
 				case UPDATE:
 				case USE:
+				case USER:
 				case WAITFOR:
 				case WHILE:
 				case WITH:
@@ -34594,6 +34748,7 @@ public class MocaSqlParser extends Parser {
 				case PLUS:
 				case MINUS:
 				case BIT_NOT:
+				case URL:
 					break;
 				default:
 					throw new NoViableAltException(this);
@@ -35491,6 +35646,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -35500,20 +35656,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -35917,6 +36080,7 @@ public class MocaSqlParser extends Parser {
 			case DOUBLE_QUOTE_ID:
 			case SQUARE_BRACKET_ID:
 			case ID:
+			case URL:
 				{
 				setState(5582);
 				id();
@@ -36579,6 +36743,7 @@ public class MocaSqlParser extends Parser {
 				case CALLED:
 				case DATA_COMPRESSION:
 				case EVENTDATA:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -36588,20 +36753,27 @@ public class MocaSqlParser extends Parser {
 				case MAX_MEMORY:
 				case OFFSETS:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SID:
 				case SOURCE:
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -37005,6 +37177,7 @@ public class MocaSqlParser extends Parser {
 				case DOUBLE_QUOTE_ID:
 				case SQUARE_BRACKET_ID:
 				case ID:
+				case URL:
 					{
 					setState(5700);
 					id();
@@ -37185,6 +37358,7 @@ public class MocaSqlParser extends Parser {
 				case CALLED:
 				case DATA_COMPRESSION:
 				case EVENTDATA:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -37194,20 +37368,27 @@ public class MocaSqlParser extends Parser {
 				case MAX_MEMORY:
 				case OFFSETS:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SID:
 				case SOURCE:
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -37611,6 +37792,7 @@ public class MocaSqlParser extends Parser {
 				case DOUBLE_QUOTE_ID:
 				case SQUARE_BRACKET_ID:
 				case ID:
+				case URL:
 					{
 					setState(5718);
 					((Create_contractContext)_localctx).message_type_name = id();
@@ -37650,7 +37832,7 @@ public class MocaSqlParser extends Parser {
 				setState(5730); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (DEFAULT - 80)) | (1L << (EVENTDATA - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (TARGET - 295)))) != 0) || ((((_la - 380)) & ~0x3f) == 0 && ((1L << (_la - 380)) & ((1L << (ABSOLUTE - 380)) | (1L << (ACCENT_SENSITIVITY - 380)) | (1L << (ACTION - 380)) | (1L << (ACTIVATION - 380)) | (1L << (ACTIVE - 380)) | (1L << (ADDRESS - 380)) | (1L << (AES_128 - 380)) | (1L << (AES_192 - 380)) | (1L << (AES_256 - 380)) | (1L << (AFFINITY - 380)) | (1L << (AFTER - 380)) | (1L << (AGGREGATE - 380)) | (1L << (ALGORITHM - 380)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 380)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 380)) | (1L << (ALLOWED - 380)) | (1L << (ANSI_NULL_DEFAULT - 380)) | (1L << (ANSI_NULLS - 380)) | (1L << (ANSI_PADDING - 380)) | (1L << (ANSI_WARNINGS - 380)) | (1L << (APPLICATION_LOG - 380)) | (1L << (APPLY - 380)) | (1L << (ARITHABORT - 380)) | (1L << (ASSEMBLY - 380)) | (1L << (AUDIT - 380)) | (1L << (AUDIT_GUID - 380)) | (1L << (AUTO - 380)) | (1L << (AUTO_CLEANUP - 380)) | (1L << (AUTO_CLOSE - 380)) | (1L << (AUTO_CREATE_STATISTICS - 380)) | (1L << (AUTO_SHRINK - 380)) | (1L << (AUTO_UPDATE_STATISTICS - 380)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 380)) | (1L << (AVAILABILITY - 380)) | (1L << (AVG - 380)) | (1L << (BACKUP_PRIORITY - 380)) | (1L << (BEGIN_DIALOG - 380)) | (1L << (BIGINT - 380)) | (1L << (BINARY_BASE64 - 380)) | (1L << (BINARY_CHECKSUM - 380)) | (1L << (BINDING - 380)) | (1L << (BLOB_STORAGE - 380)) | (1L << (BROKER - 380)) | (1L << (BROKER_INSTANCE - 380)) | (1L << (BULK_LOGGED - 380)) | (1L << (CALLER - 380)) | (1L << (CAP_CPU_PERCENT - 380)) | (1L << (CAST - 380)) | (1L << (CATALOG - 380)) | (1L << (CATCH - 380)) | (1L << (CHANGE_RETENTION - 380)) | (1L << (CHANGE_TRACKING - 380)) | (1L << (CHECKSUM - 380)) | (1L << (CHECKSUM_AGG - 380)) | (1L << (CLEANUP - 380)) | (1L << (COLLECTION - 380)) | (1L << (COLUMN_MASTER_KEY - 380)) | (1L << (COMMITTED - 380)) | (1L << (COMPATIBILITY_LEVEL - 380)) | (1L << (CONCAT - 380)) | (1L << (CONCAT_NULL_YIELDS_NULL - 380)) | (1L << (CONTENT - 380)) | (1L << (CONTROL - 380)) | (1L << (COOKIE - 380)))) != 0) || ((((_la - 444)) & ~0x3f) == 0 && ((1L << (_la - 444)) & ((1L << (COUNT - 444)) | (1L << (COUNT_BIG - 444)) | (1L << (COUNTER - 444)) | (1L << (CPU - 444)) | (1L << (CREATE_NEW - 444)) | (1L << (CREATION_DISPOSITION - 444)) | (1L << (CREDENTIAL - 444)) | (1L << (CRYPTOGRAPHIC - 444)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 444)) | (1L << (CURSOR_DEFAULT - 444)) | (1L << (DATA - 444)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 444)) | (1L << (DATEADD - 444)) | (1L << (DATEDIFF - 444)) | (1L << (DATENAME - 444)) | (1L << (DATEPART - 444)) | (1L << (DAYS - 444)) | (1L << (DB_CHAINING - 444)) | (1L << (DB_FAILOVER - 444)) | (1L << (DECRYPTION - 444)) | (1L << (DEFAULT_DOUBLE_QUOTE - 444)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 444)) | (1L << (DEFAULT_LANGUAGE - 444)) | (1L << (DELAY - 444)) | (1L << (DELAYED_DURABILITY - 444)) | (1L << (DELETED - 444)) | (1L << (DENSE_RANK - 444)) | (1L << (DEPENDENTS - 444)) | (1L << (DES - 444)) | (1L << (DESCRIPTION - 444)) | (1L << (DESX - 444)) | (1L << (DHCP - 444)) | (1L << (DIALOG - 444)) | (1L << (DIRECTORY_NAME - 444)) | (1L << (DISABLE - 444)) | (1L << (DISABLE_BROKER - 444)) | (1L << (DISABLED - 444)) | (1L << (DISK_DRIVE - 444)) | (1L << (DOCUMENT - 444)) | (1L << (DYNAMIC - 444)) | (1L << (EMERGENCY - 444)) | (1L << (EMPTY - 444)) | (1L << (ENABLE - 444)) | (1L << (ENABLE_BROKER - 444)) | (1L << (ENCRYPTED_VALUE - 444)) | (1L << (ENCRYPTION - 444)) | (1L << (ENDPOINT_URL - 444)) | (1L << (ERROR_BROKER_CONVERSATIONS - 444)) | (1L << (EXCLUSIVE - 444)) | (1L << (EXECUTABLE - 444)) | (1L << (EXIST - 444)) | (1L << (EXPAND - 444)) | (1L << (EXPIRY_DATE - 444)) | (1L << (EXPLICIT - 444)) | (1L << (FAIL_OPERATION - 444)) | (1L << (FAILOVER_MODE - 444)) | (1L << (FAILURE - 444)) | (1L << (FAILURE_CONDITION_LEVEL - 444)) | (1L << (FAST - 444)) | (1L << (FAST_FORWARD - 444)) | (1L << (FILEGROUP - 444)) | (1L << (FILEGROWTH - 444)) | (1L << (FILEPATH - 444)))) != 0) || ((((_la - 508)) & ~0x3f) == 0 && ((1L << (_la - 508)) & ((1L << (FILESTREAM - 508)) | (1L << (FILTER - 508)) | (1L << (FIRST - 508)) | (1L << (FIRST_VALUE - 508)) | (1L << (FOLLOWING - 508)) | (1L << (FORCE - 508)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 508)) | (1L << (FORCED - 508)) | (1L << (FORMAT - 508)) | (1L << (FORWARD_ONLY - 508)) | (1L << (FULLSCAN - 508)) | (1L << (FULLTEXT - 508)) | (1L << (GB - 508)) | (1L << (GETDATE - 508)) | (1L << (GETUTCDATE - 508)) | (1L << (GLOBAL - 508)) | (1L << (GO - 508)) | (1L << (GROUP_MAX_REQUESTS - 508)) | (1L << (GROUPING - 508)) | (1L << (GROUPING_ID - 508)) | (1L << (HADR - 508)) | (1L << (HASH - 508)) | (1L << (HEALTH_CHECK_TIMEOUT - 508)) | (1L << (HIGH - 508)) | (1L << (HONOR_BROKER_PRIORITY - 508)) | (1L << (HOURS - 508)) | (1L << (IDENTITY_VALUE - 508)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 508)) | (1L << (IMMEDIATE - 508)) | (1L << (IMPERSONATE - 508)) | (1L << (IMPORTANCE - 508)) | (1L << (INCREMENTAL - 508)) | (1L << (INITIATOR - 508)) | (1L << (INPUT - 508)) | (1L << (INSENSITIVE - 508)) | (1L << (INSERTED - 508)) | (1L << (INT - 508)) | (1L << (IP - 508)) | (1L << (ISOLATION - 508)) | (1L << (KB - 508)) | (1L << (KEEP - 508)) | (1L << (KEEPFIXED - 508)) | (1L << (KEY_SOURCE - 508)) | (1L << (KEYS - 508)) | (1L << (KEYSET - 508)) | (1L << (LAG - 508)) | (1L << (LAST - 508)) | (1L << (LAST_VALUE - 508)) | (1L << (LEAD - 508)) | (1L << (LEVEL - 508)) | (1L << (LIST - 508)) | (1L << (LISTENER - 508)) | (1L << (LISTENER_URL - 508)) | (1L << (LOB_COMPACTION - 508)) | (1L << (LOCAL - 508)) | (1L << (LOCATION - 508)) | (1L << (LOCK - 508)) | (1L << (LOCK_ESCALATION - 508)) | (1L << (LOGIN - 508)) | (1L << (LOOP - 508)) | (1L << (LOW - 508)))) != 0) || ((((_la - 572)) & ~0x3f) == 0 && ((1L << (_la - 572)) & ((1L << (MANUAL - 572)) | (1L << (MARK - 572)) | (1L << (MATERIALIZED - 572)) | (1L << (MAX - 572)) | (1L << (MAX_CPU_PERCENT - 572)) | (1L << (MAX_DOP - 572)) | (1L << (MAX_FILES - 572)) | (1L << (MAX_IOPS_PER_VOLUME - 572)) | (1L << (MAX_MEMORY_PERCENT - 572)) | (1L << (MAX_PROCESSES - 572)) | (1L << (MAX_QUEUE_READERS - 572)) | (1L << (MAX_ROLLOVER_FILES - 572)) | (1L << (MAXDOP - 572)) | (1L << (MAXRECURSION - 572)) | (1L << (MAXSIZE - 572)) | (1L << (MB - 572)) | (1L << (MEDIUM - 572)) | (1L << (MEMORY_OPTIMIZED_DATA - 572)) | (1L << (MESSAGE - 572)) | (1L << (MIN - 572)) | (1L << (MIN_ACTIVE_ROWVERSION - 572)) | (1L << (MIN_CPU_PERCENT - 572)) | (1L << (MIN_IOPS_PER_VOLUME - 572)) | (1L << (MIN_MEMORY_PERCENT - 572)) | (1L << (MINUTES - 572)) | (1L << (MIRROR_ADDRESS - 572)) | (1L << (MIXED_PAGE_ALLOCATION - 572)) | (1L << (MODE - 572)) | (1L << (MODIFY - 572)) | (1L << (MOVE - 572)) | (1L << (MULTI_USER - 572)) | (1L << (NAME - 572)) | (1L << (NESTED_TRIGGERS - 572)) | (1L << (NEW_ACCOUNT - 572)) | (1L << (NEW_BROKER - 572)) | (1L << (NEW_PASSWORD - 572)) | (1L << (NEXT - 572)) | (1L << (NO - 572)) | (1L << (NO_TRUNCATE - 572)) | (1L << (NO_WAIT - 572)) | (1L << (NOCOUNT - 572)) | (1L << (NODES - 572)) | (1L << (NOEXPAND - 572)) | (1L << (NON_TRANSACTED_ACCESS - 572)) | (1L << (NORECOMPUTE - 572)) | (1L << (NORECOVERY - 572)) | (1L << (NOWAIT - 572)) | (1L << (NTILE - 572)) | (1L << (NUMANODE - 572)) | (1L << (NUMBER - 572)) | (1L << (NUMERIC_ROUNDABORT - 572)) | (1L << (OBJECT - 572)) | (1L << (OFFLINE - 572)) | (1L << (OFFSET - 572)) | (1L << (OLD_ACCOUNT - 572)) | (1L << (ONLINE - 572)) | (1L << (ONLY - 572)) | (1L << (OPEN_EXISTING - 572)) | (1L << (OPTIMISTIC - 572)) | (1L << (OPTIMIZE - 572)) | (1L << (OUT - 572)) | (1L << (OUTPUT - 572)) | (1L << (OWNER - 572)))) != 0) || ((((_la - 636)) & ~0x3f) == 0 && ((1L << (_la - 636)) & ((1L << (PAGE_VERIFY - 636)) | (1L << (PARAMETERIZATION - 636)) | (1L << (PARTITION - 636)) | (1L << (PARTITIONS - 636)) | (1L << (PARTNER - 636)) | (1L << (PATH - 636)) | (1L << (POISON_MESSAGE_HANDLING - 636)) | (1L << (POOL - 636)) | (1L << (PORT - 636)) | (1L << (PRECEDING - 636)) | (1L << (PRIMARY_ROLE - 636)) | (1L << (PRIOR - 636)) | (1L << (PRIORITY - 636)) | (1L << (PRIORITY_LEVEL - 636)) | (1L << (PRIVATE - 636)) | (1L << (PRIVATE_KEY - 636)) | (1L << (PRIVILEGES - 636)) | (1L << (PROCEDURE_NAME - 636)) | (1L << (PROPERTY - 636)) | (1L << (PROVIDER - 636)) | (1L << (PROVIDER_KEY_NAME - 636)) | (1L << (QUERY - 636)) | (1L << (QUEUE - 636)) | (1L << (QUEUE_DELAY - 636)) | (1L << (QUOTED_IDENTIFIER - 636)) | (1L << (RANGE - 636)) | (1L << (RANK - 636)) | (1L << (RC2 - 636)) | (1L << (RC4 - 636)) | (1L << (RC4_128 - 636)) | (1L << (READ_COMMITTED_SNAPSHOT - 636)) | (1L << (READ_ONLY - 636)) | (1L << (READ_ONLY_ROUTING_LIST - 636)) | (1L << (READ_WRITE - 636)) | (1L << (READONLY - 636)) | (1L << (REBUILD - 636)) | (1L << (RECEIVE - 636)) | (1L << (RECOMPILE - 636)) | (1L << (RECOVERY - 636)) | (1L << (RECURSIVE_TRIGGERS - 636)) | (1L << (RELATIVE - 636)) | (1L << (REMOTE - 636)) | (1L << (REMOTE_SERVICE_NAME - 636)) | (1L << (REMOVE - 636)) | (1L << (REORGANIZE - 636)) | (1L << (REPEATABLE - 636)) | (1L << (REPLICA - 636)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 636)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 636)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 636)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 636)) | (1L << (RESERVE_DISK_SPACE - 636)) | (1L << (RESOURCE - 636)) | (1L << (RESOURCE_MANAGER_LOCATION - 636)) | (1L << (RESTRICTED_USER - 636)) | (1L << (RETENTION - 636)) | (1L << (ROBUST - 636)) | (1L << (ROOT - 636)) | (1L << (ROUTE - 636)) | (1L << (ROW - 636)) | (1L << (ROW_NUMBER - 636)) | (1L << (ROWGUID - 636)) | (1L << (ROWS - 636)) | (1L << (SAMPLE - 636)))) != 0) || ((((_la - 700)) & ~0x3f) == 0 && ((1L << (_la - 700)) & ((1L << (SCHEMABINDING - 700)) | (1L << (SCOPED - 700)) | (1L << (SCROLL - 700)) | (1L << (SCROLL_LOCKS - 700)) | (1L << (SEARCH - 700)) | (1L << (SECONDARY - 700)) | (1L << (SECONDARY_ONLY - 700)) | (1L << (SECONDARY_ROLE - 700)) | (1L << (SECONDS - 700)) | (1L << (SECRET - 700)) | (1L << (SECURITY - 700)) | (1L << (SECURITY_LOG - 700)) | (1L << (SEEDING_MODE - 700)) | (1L << (SELF - 700)) | (1L << (SEMI_SENSITIVE - 700)) | (1L << (SEND - 700)) | (1L << (SENT - 700)) | (1L << (SEQUENCE - 700)) | (1L << (SERIALIZABLE - 700)) | (1L << (SESSION_TIMEOUT - 700)) | (1L << (SETERROR - 700)) | (1L << (SHARE - 700)) | (1L << (SHOWPLAN - 700)) | (1L << (SIGNATURE - 700)) | (1L << (SIMPLE - 700)) | (1L << (SINGLE_USER - 700)) | (1L << (SIZE - 700)) | (1L << (SMALLINT - 700)) | (1L << (SNAPSHOT - 700)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 700)) | (1L << (STANDBY - 700)) | (1L << (START_DATE - 700)) | (1L << (STATIC - 700)) | (1L << (STATS_STREAM - 700)) | (1L << (STATUS - 700)) | (1L << (STDEV - 700)) | (1L << (STDEVP - 700)) | (1L << (STOPLIST - 700)) | (1L << (STRING_AGG - 700)) | (1L << (STUFF - 700)) | (1L << (SUBJECT - 700)) | (1L << (SUM - 700)) | (1L << (SUSPEND - 700)) | (1L << (SYMMETRIC - 700)) | (1L << (SYNCHRONOUS_COMMIT - 700)) | (1L << (SYNONYM - 700)) | (1L << (SYSTEM - 700)) | (1L << (TAKE - 700)) | (1L << (TARGET_RECOVERY_TIME - 700)) | (1L << (TB - 700)) | (1L << (TEXTIMAGE_ON - 700)) | (1L << (THROW - 700)) | (1L << (TIES - 700)) | (1L << (TIME - 700)) | (1L << (TIMEOUT - 700)) | (1L << (TIMER - 700)) | (1L << (TINYINT - 700)) | (1L << (TORN_PAGE_DETECTION - 700)) | (1L << (TRANSFORM_NOISE_WORDS - 700)) | (1L << (TRIPLE_DES - 700)) | (1L << (TRIPLE_DES_3KEY - 700)) | (1L << (TRUSTWORTHY - 700)))) != 0) || ((((_la - 764)) & ~0x3f) == 0 && ((1L << (_la - 764)) & ((1L << (TRY - 764)) | (1L << (TSQL - 764)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 764)) | (1L << (TYPE - 764)) | (1L << (TYPE_WARNING - 764)) | (1L << (UNBOUNDED - 764)) | (1L << (UNCOMMITTED - 764)) | (1L << (UNKNOWN - 764)) | (1L << (UNLIMITED - 764)) | (1L << (USING - 764)) | (1L << (VALID_XML - 764)) | (1L << (VALIDATION - 764)) | (1L << (VALUE - 764)) | (1L << (VAR - 764)) | (1L << (VARP - 764)) | (1L << (VIEW_METADATA - 764)) | (1L << (VIEWS - 764)) | (1L << (WAIT - 764)) | (1L << (WELL_FORMED_XML - 764)) | (1L << (WORK - 764)) | (1L << (WORKLOAD - 764)) | (1L << (XML - 764)) | (1L << (XMLNAMESPACES - 764)) | (1L << (DOUBLE_QUOTE_ID - 764)) | (1L << (SQUARE_BRACKET_ID - 764)) | (1L << (ID - 764)))) != 0) );
+			} while ( _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (DEFAULT - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==URL );
 			setState(5732);
 			match(RR_BRACKET);
 			}
@@ -38552,6 +38734,7 @@ public class MocaSqlParser extends Parser {
 				case DEFAULT:
 				case EVENTDATA:
 				case EXISTS:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -38569,14 +38752,18 @@ public class MocaSqlParser extends Parser {
 				case OFFSETS:
 				case OVER:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
 				case RIGHT:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SESSION_USER:
 				case SID:
@@ -38584,8 +38771,11 @@ public class MocaSqlParser extends Parser {
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case SYSTEM_USER:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -39002,6 +39192,7 @@ public class MocaSqlParser extends Parser {
 				case PLUS:
 				case MINUS:
 				case BIT_NOT:
+				case URL:
 					{
 					setState(5896);
 					search_condition();
@@ -39277,6 +39468,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -39286,20 +39478,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -39704,6 +39903,7 @@ public class MocaSqlParser extends Parser {
 			case SQUARE_BRACKET_ID:
 			case LOCAL_ID:
 			case ID:
+			case URL:
 				{
 				setState(5941);
 				ddl_object();
@@ -40333,6 +40533,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -40342,20 +40543,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -40760,6 +40968,7 @@ public class MocaSqlParser extends Parser {
 			case SQUARE_BRACKET_ID:
 			case LOCAL_ID:
 			case ID:
+			case URL:
 				{
 				setState(6040);
 				ddl_object();
@@ -40844,6 +41053,7 @@ public class MocaSqlParser extends Parser {
 				case DEFAULT:
 				case EVENTDATA:
 				case EXISTS:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -40861,14 +41071,18 @@ public class MocaSqlParser extends Parser {
 				case OFFSETS:
 				case OVER:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
 				case RIGHT:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SESSION_USER:
 				case SID:
@@ -40876,8 +41090,11 @@ public class MocaSqlParser extends Parser {
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case SYSTEM_USER:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -41294,6 +41511,7 @@ public class MocaSqlParser extends Parser {
 				case PLUS:
 				case MINUS:
 				case BIT_NOT:
+				case URL:
 					{
 					setState(6064);
 					search_condition_list();
@@ -41460,6 +41678,7 @@ public class MocaSqlParser extends Parser {
 				case CALLED:
 				case DATA_COMPRESSION:
 				case EVENTDATA:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -41469,20 +41688,27 @@ public class MocaSqlParser extends Parser {
 				case MAX_MEMORY:
 				case OFFSETS:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SID:
 				case SOURCE:
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -41886,6 +42112,7 @@ public class MocaSqlParser extends Parser {
 				case DOUBLE_QUOTE_ID:
 				case SQUARE_BRACKET_ID:
 				case ID:
+				case URL:
 					{
 					setState(6098);
 					table_name();
@@ -42037,6 +42264,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -42046,20 +42274,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -42463,6 +42698,7 @@ public class MocaSqlParser extends Parser {
 			case DOUBLE_QUOTE_ID:
 			case SQUARE_BRACKET_ID:
 			case ID:
+			case URL:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(6119);
@@ -42500,6 +42736,7 @@ public class MocaSqlParser extends Parser {
 				case CALLED:
 				case DATA_COMPRESSION:
 				case EVENTDATA:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -42509,20 +42746,27 @@ public class MocaSqlParser extends Parser {
 				case MAX_MEMORY:
 				case OFFSETS:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SID:
 				case SOURCE:
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -42926,6 +43170,7 @@ public class MocaSqlParser extends Parser {
 				case DOUBLE_QUOTE_ID:
 				case SQUARE_BRACKET_ID:
 				case ID:
+				case URL:
 					{
 					setState(6123);
 					id();
@@ -45489,6 +45734,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -45498,20 +45744,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -45913,6 +46166,7 @@ public class MocaSqlParser extends Parser {
 			case XML:
 			case XMLNAMESPACES:
 			case ID:
+			case URL:
 				{
 				setState(6608);
 				index_option();
@@ -46441,6 +46695,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -46450,20 +46705,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -46867,6 +47129,7 @@ public class MocaSqlParser extends Parser {
 			case DOUBLE_QUOTE_ID:
 			case SQUARE_BRACKET_ID:
 			case ID:
+			case URL:
 				{
 				setState(6703);
 				((Alter_databaseContext)_localctx).database = id();
@@ -49358,6 +49621,7 @@ public class MocaSqlParser extends Parser {
 				case CALLED:
 				case DATA_COMPRESSION:
 				case EVENTDATA:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -49367,20 +49631,27 @@ public class MocaSqlParser extends Parser {
 				case MAX_MEMORY:
 				case OFFSETS:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SID:
 				case SOURCE:
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -49784,6 +50055,7 @@ public class MocaSqlParser extends Parser {
 				case DOUBLE_QUOTE_ID:
 				case SQUARE_BRACKET_ID:
 				case ID:
+				case URL:
 					{
 					setState(7030);
 					id();
@@ -49812,6 +50084,7 @@ public class MocaSqlParser extends Parser {
 				case CALLED:
 				case DATA_COMPRESSION:
 				case EVENTDATA:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -49821,20 +50094,27 @@ public class MocaSqlParser extends Parser {
 				case MAX_MEMORY:
 				case OFFSETS:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SID:
 				case SOURCE:
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -50238,6 +50518,7 @@ public class MocaSqlParser extends Parser {
 				case DOUBLE_QUOTE_ID:
 				case SQUARE_BRACKET_ID:
 				case ID:
+				case URL:
 					{
 					setState(7036);
 					id();
@@ -51853,7 +52134,7 @@ public class MocaSqlParser extends Parser {
 				setState(7258); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( ((((_la - 30)) & ~0x3f) == 0 && ((1L << (_la - 30)) & ((1L << (BLOCKING_HIERARCHY - 30)) | (1L << (CALLED - 30)) | (1L << (DATA_COMPRESSION - 30)))) != 0) || ((((_la - 112)) & ~0x3f) == 0 && ((1L << (_la - 112)) & ((1L << (EVENTDATA - 112)) | (1L << (FILENAME - 112)) | (1L << (FILLFACTOR - 112)) | (1L << (FORCESEEK - 112)) | (1L << (INIT - 112)) | (1L << (KEY - 112)))) != 0) || ((((_la - 187)) & ~0x3f) == 0 && ((1L << (_la - 187)) & ((1L << (MASTER - 187)) | (1L << (MAX_MEMORY - 187)) | (1L << (OFFSETS - 187)) | (1L << (PAGE - 187)))) != 0) || ((((_la - 259)) & ~0x3f) == 0 && ((1L << (_la - 259)) & ((1L << (PUBLIC - 259)) | (1L << (R - 259)) | (1L << (RAW - 259)) | (1L << (RETURN - 259)) | (1L << (RETURNS - 259)) | (1L << (ROWCOUNT - 259)) | (1L << (SAFETY - 259)) | (1L << (SERVER - 259)) | (1L << (SID - 259)) | (1L << (SOURCE - 259)) | (1L << (SPLIT - 259)))) != 0) || ((((_la - 327)) & ~0x3f) == 0 && ((1L << (_la - 327)) & ((1L << (STATE - 327)) | (1L << (START - 327)) | (1L << (TARGET - 327)) | (1L << (ABSOLUTE - 327)) | (1L << (ACCENT_SENSITIVITY - 327)) | (1L << (ACTION - 327)) | (1L << (ACTIVATION - 327)) | (1L << (ACTIVE - 327)) | (1L << (ADDRESS - 327)) | (1L << (AES_128 - 327)) | (1L << (AES_192 - 327)) | (1L << (AES_256 - 327)) | (1L << (AFFINITY - 327)) | (1L << (AFTER - 327)))) != 0) || ((((_la - 391)) & ~0x3f) == 0 && ((1L << (_la - 391)) & ((1L << (AGGREGATE - 391)) | (1L << (ALGORITHM - 391)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 391)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 391)) | (1L << (ALLOWED - 391)) | (1L << (ANSI_NULL_DEFAULT - 391)) | (1L << (ANSI_NULLS - 391)) | (1L << (ANSI_PADDING - 391)) | (1L << (ANSI_WARNINGS - 391)) | (1L << (APPLICATION_LOG - 391)) | (1L << (APPLY - 391)) | (1L << (ARITHABORT - 391)) | (1L << (ASSEMBLY - 391)) | (1L << (AUDIT - 391)) | (1L << (AUDIT_GUID - 391)) | (1L << (AUTO - 391)) | (1L << (AUTO_CLEANUP - 391)) | (1L << (AUTO_CLOSE - 391)) | (1L << (AUTO_CREATE_STATISTICS - 391)) | (1L << (AUTO_SHRINK - 391)) | (1L << (AUTO_UPDATE_STATISTICS - 391)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 391)) | (1L << (AVAILABILITY - 391)) | (1L << (AVG - 391)) | (1L << (BACKUP_PRIORITY - 391)) | (1L << (BEGIN_DIALOG - 391)) | (1L << (BIGINT - 391)) | (1L << (BINARY_BASE64 - 391)) | (1L << (BINARY_CHECKSUM - 391)) | (1L << (BINDING - 391)) | (1L << (BLOB_STORAGE - 391)) | (1L << (BROKER - 391)) | (1L << (BROKER_INSTANCE - 391)) | (1L << (BULK_LOGGED - 391)) | (1L << (CALLER - 391)) | (1L << (CAP_CPU_PERCENT - 391)) | (1L << (CAST - 391)) | (1L << (CATALOG - 391)) | (1L << (CATCH - 391)) | (1L << (CHANGE_RETENTION - 391)) | (1L << (CHANGE_TRACKING - 391)) | (1L << (CHECKSUM - 391)) | (1L << (CHECKSUM_AGG - 391)) | (1L << (CLEANUP - 391)) | (1L << (COLLECTION - 391)) | (1L << (COLUMN_MASTER_KEY - 391)) | (1L << (COMMITTED - 391)) | (1L << (COMPATIBILITY_LEVEL - 391)) | (1L << (CONCAT - 391)) | (1L << (CONCAT_NULL_YIELDS_NULL - 391)) | (1L << (CONTENT - 391)) | (1L << (CONTROL - 391)) | (1L << (COOKIE - 391)) | (1L << (COUNT - 391)) | (1L << (COUNT_BIG - 391)) | (1L << (COUNTER - 391)) | (1L << (CPU - 391)) | (1L << (CREATE_NEW - 391)) | (1L << (CREATION_DISPOSITION - 391)) | (1L << (CREDENTIAL - 391)) | (1L << (CRYPTOGRAPHIC - 391)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 391)) | (1L << (CURSOR_DEFAULT - 391)) | (1L << (DATA - 391)))) != 0) || ((((_la - 455)) & ~0x3f) == 0 && ((1L << (_la - 455)) & ((1L << (DATE_CORRELATION_OPTIMIZATION - 455)) | (1L << (DATEADD - 455)) | (1L << (DATEDIFF - 455)) | (1L << (DATENAME - 455)) | (1L << (DATEPART - 455)) | (1L << (DAYS - 455)) | (1L << (DB_CHAINING - 455)) | (1L << (DB_FAILOVER - 455)) | (1L << (DECRYPTION - 455)) | (1L << (DEFAULT_DOUBLE_QUOTE - 455)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 455)) | (1L << (DEFAULT_LANGUAGE - 455)) | (1L << (DELAY - 455)) | (1L << (DELAYED_DURABILITY - 455)) | (1L << (DELETED - 455)) | (1L << (DENSE_RANK - 455)) | (1L << (DEPENDENTS - 455)) | (1L << (DES - 455)) | (1L << (DESCRIPTION - 455)) | (1L << (DESX - 455)) | (1L << (DHCP - 455)) | (1L << (DIALOG - 455)) | (1L << (DIRECTORY_NAME - 455)) | (1L << (DISABLE - 455)) | (1L << (DISABLE_BROKER - 455)) | (1L << (DISABLED - 455)) | (1L << (DISK_DRIVE - 455)) | (1L << (DOCUMENT - 455)) | (1L << (DYNAMIC - 455)) | (1L << (EMERGENCY - 455)) | (1L << (EMPTY - 455)) | (1L << (ENABLE - 455)) | (1L << (ENABLE_BROKER - 455)) | (1L << (ENCRYPTED_VALUE - 455)) | (1L << (ENCRYPTION - 455)) | (1L << (ENDPOINT_URL - 455)) | (1L << (ERROR_BROKER_CONVERSATIONS - 455)) | (1L << (EXCLUSIVE - 455)) | (1L << (EXECUTABLE - 455)) | (1L << (EXIST - 455)) | (1L << (EXPAND - 455)) | (1L << (EXPIRY_DATE - 455)) | (1L << (EXPLICIT - 455)) | (1L << (FAIL_OPERATION - 455)) | (1L << (FAILOVER_MODE - 455)) | (1L << (FAILURE - 455)) | (1L << (FAILURE_CONDITION_LEVEL - 455)) | (1L << (FAST - 455)) | (1L << (FAST_FORWARD - 455)) | (1L << (FILEGROUP - 455)) | (1L << (FILEGROWTH - 455)) | (1L << (FILEPATH - 455)) | (1L << (FILESTREAM - 455)) | (1L << (FILTER - 455)) | (1L << (FIRST - 455)) | (1L << (FIRST_VALUE - 455)) | (1L << (FOLLOWING - 455)) | (1L << (FORCE - 455)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 455)) | (1L << (FORCED - 455)) | (1L << (FORMAT - 455)) | (1L << (FORWARD_ONLY - 455)) | (1L << (FULLSCAN - 455)))) != 0) || ((((_la - 519)) & ~0x3f) == 0 && ((1L << (_la - 519)) & ((1L << (FULLTEXT - 519)) | (1L << (GB - 519)) | (1L << (GETDATE - 519)) | (1L << (GETUTCDATE - 519)) | (1L << (GLOBAL - 519)) | (1L << (GO - 519)) | (1L << (GROUP_MAX_REQUESTS - 519)) | (1L << (GROUPING - 519)) | (1L << (GROUPING_ID - 519)) | (1L << (HADR - 519)) | (1L << (HASH - 519)) | (1L << (HEALTH_CHECK_TIMEOUT - 519)) | (1L << (HIGH - 519)) | (1L << (HONOR_BROKER_PRIORITY - 519)) | (1L << (HOURS - 519)) | (1L << (IDENTITY_VALUE - 519)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 519)) | (1L << (IMMEDIATE - 519)) | (1L << (IMPERSONATE - 519)) | (1L << (IMPORTANCE - 519)) | (1L << (INCREMENTAL - 519)) | (1L << (INITIATOR - 519)) | (1L << (INPUT - 519)) | (1L << (INSENSITIVE - 519)) | (1L << (INSERTED - 519)) | (1L << (INT - 519)) | (1L << (IP - 519)) | (1L << (ISOLATION - 519)) | (1L << (KB - 519)) | (1L << (KEEP - 519)) | (1L << (KEEPFIXED - 519)) | (1L << (KEY_SOURCE - 519)) | (1L << (KEYS - 519)) | (1L << (KEYSET - 519)) | (1L << (LAG - 519)) | (1L << (LAST - 519)) | (1L << (LAST_VALUE - 519)) | (1L << (LEAD - 519)) | (1L << (LEVEL - 519)) | (1L << (LIST - 519)) | (1L << (LISTENER - 519)) | (1L << (LISTENER_URL - 519)) | (1L << (LOB_COMPACTION - 519)) | (1L << (LOCAL - 519)) | (1L << (LOCATION - 519)) | (1L << (LOCK - 519)) | (1L << (LOCK_ESCALATION - 519)) | (1L << (LOGIN - 519)) | (1L << (LOOP - 519)) | (1L << (LOW - 519)) | (1L << (MANUAL - 519)) | (1L << (MARK - 519)) | (1L << (MATERIALIZED - 519)) | (1L << (MAX - 519)) | (1L << (MAX_CPU_PERCENT - 519)) | (1L << (MAX_DOP - 519)) | (1L << (MAX_FILES - 519)) | (1L << (MAX_IOPS_PER_VOLUME - 519)) | (1L << (MAX_MEMORY_PERCENT - 519)) | (1L << (MAX_PROCESSES - 519)) | (1L << (MAX_QUEUE_READERS - 519)))) != 0) || ((((_la - 583)) & ~0x3f) == 0 && ((1L << (_la - 583)) & ((1L << (MAX_ROLLOVER_FILES - 583)) | (1L << (MAXDOP - 583)) | (1L << (MAXRECURSION - 583)) | (1L << (MAXSIZE - 583)) | (1L << (MB - 583)) | (1L << (MEDIUM - 583)) | (1L << (MEMORY_OPTIMIZED_DATA - 583)) | (1L << (MESSAGE - 583)) | (1L << (MIN - 583)) | (1L << (MIN_ACTIVE_ROWVERSION - 583)) | (1L << (MIN_CPU_PERCENT - 583)) | (1L << (MIN_IOPS_PER_VOLUME - 583)) | (1L << (MIN_MEMORY_PERCENT - 583)) | (1L << (MINUTES - 583)) | (1L << (MIRROR_ADDRESS - 583)) | (1L << (MIXED_PAGE_ALLOCATION - 583)) | (1L << (MODE - 583)) | (1L << (MODIFY - 583)) | (1L << (MOVE - 583)) | (1L << (MULTI_USER - 583)) | (1L << (NAME - 583)) | (1L << (NESTED_TRIGGERS - 583)) | (1L << (NEW_ACCOUNT - 583)) | (1L << (NEW_BROKER - 583)) | (1L << (NEW_PASSWORD - 583)) | (1L << (NEXT - 583)) | (1L << (NO - 583)) | (1L << (NO_TRUNCATE - 583)) | (1L << (NO_WAIT - 583)) | (1L << (NOCOUNT - 583)) | (1L << (NODES - 583)) | (1L << (NOEXPAND - 583)) | (1L << (NON_TRANSACTED_ACCESS - 583)) | (1L << (NORECOMPUTE - 583)) | (1L << (NORECOVERY - 583)) | (1L << (NOWAIT - 583)) | (1L << (NTILE - 583)) | (1L << (NUMANODE - 583)) | (1L << (NUMBER - 583)) | (1L << (NUMERIC_ROUNDABORT - 583)) | (1L << (OBJECT - 583)) | (1L << (OFFLINE - 583)) | (1L << (OFFSET - 583)) | (1L << (OLD_ACCOUNT - 583)) | (1L << (ONLINE - 583)) | (1L << (ONLY - 583)) | (1L << (OPEN_EXISTING - 583)) | (1L << (OPTIMISTIC - 583)) | (1L << (OPTIMIZE - 583)) | (1L << (OUT - 583)) | (1L << (OUTPUT - 583)) | (1L << (OWNER - 583)) | (1L << (PAGE_VERIFY - 583)) | (1L << (PARAMETERIZATION - 583)) | (1L << (PARTITION - 583)) | (1L << (PARTITIONS - 583)) | (1L << (PARTNER - 583)) | (1L << (PATH - 583)) | (1L << (POISON_MESSAGE_HANDLING - 583)) | (1L << (POOL - 583)) | (1L << (PORT - 583)) | (1L << (PRECEDING - 583)) | (1L << (PRIMARY_ROLE - 583)))) != 0) || ((((_la - 647)) & ~0x3f) == 0 && ((1L << (_la - 647)) & ((1L << (PRIOR - 647)) | (1L << (PRIORITY - 647)) | (1L << (PRIORITY_LEVEL - 647)) | (1L << (PRIVATE - 647)) | (1L << (PRIVATE_KEY - 647)) | (1L << (PRIVILEGES - 647)) | (1L << (PROCEDURE_NAME - 647)) | (1L << (PROPERTY - 647)) | (1L << (PROVIDER - 647)) | (1L << (PROVIDER_KEY_NAME - 647)) | (1L << (QUERY - 647)) | (1L << (QUEUE - 647)) | (1L << (QUEUE_DELAY - 647)) | (1L << (QUOTED_IDENTIFIER - 647)) | (1L << (RANGE - 647)) | (1L << (RANK - 647)) | (1L << (RC2 - 647)) | (1L << (RC4 - 647)) | (1L << (RC4_128 - 647)) | (1L << (READ_COMMITTED_SNAPSHOT - 647)) | (1L << (READ_ONLY - 647)) | (1L << (READ_ONLY_ROUTING_LIST - 647)) | (1L << (READ_WRITE - 647)) | (1L << (READONLY - 647)) | (1L << (REBUILD - 647)) | (1L << (RECEIVE - 647)) | (1L << (RECOMPILE - 647)) | (1L << (RECOVERY - 647)) | (1L << (RECURSIVE_TRIGGERS - 647)) | (1L << (RELATIVE - 647)) | (1L << (REMOTE - 647)) | (1L << (REMOTE_SERVICE_NAME - 647)) | (1L << (REMOVE - 647)) | (1L << (REORGANIZE - 647)) | (1L << (REPEATABLE - 647)) | (1L << (REPLICA - 647)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 647)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 647)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 647)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 647)) | (1L << (RESERVE_DISK_SPACE - 647)) | (1L << (RESOURCE - 647)) | (1L << (RESOURCE_MANAGER_LOCATION - 647)) | (1L << (RESTRICTED_USER - 647)) | (1L << (RETENTION - 647)) | (1L << (ROBUST - 647)) | (1L << (ROOT - 647)) | (1L << (ROUTE - 647)) | (1L << (ROW - 647)) | (1L << (ROW_NUMBER - 647)) | (1L << (ROWGUID - 647)) | (1L << (ROWS - 647)) | (1L << (SAMPLE - 647)) | (1L << (SCHEMABINDING - 647)) | (1L << (SCOPED - 647)) | (1L << (SCROLL - 647)) | (1L << (SCROLL_LOCKS - 647)) | (1L << (SEARCH - 647)) | (1L << (SECONDARY - 647)) | (1L << (SECONDARY_ONLY - 647)) | (1L << (SECONDARY_ROLE - 647)) | (1L << (SECONDS - 647)) | (1L << (SECRET - 647)) | (1L << (SECURITY - 647)))) != 0) || ((((_la - 711)) & ~0x3f) == 0 && ((1L << (_la - 711)) & ((1L << (SECURITY_LOG - 711)) | (1L << (SEEDING_MODE - 711)) | (1L << (SELF - 711)) | (1L << (SEMI_SENSITIVE - 711)) | (1L << (SEND - 711)) | (1L << (SENT - 711)) | (1L << (SEQUENCE - 711)) | (1L << (SERIALIZABLE - 711)) | (1L << (SESSION_TIMEOUT - 711)) | (1L << (SETERROR - 711)) | (1L << (SHARE - 711)) | (1L << (SHOWPLAN - 711)) | (1L << (SIGNATURE - 711)) | (1L << (SIMPLE - 711)) | (1L << (SINGLE_USER - 711)) | (1L << (SIZE - 711)) | (1L << (SMALLINT - 711)) | (1L << (SNAPSHOT - 711)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 711)) | (1L << (STANDBY - 711)) | (1L << (START_DATE - 711)) | (1L << (STATIC - 711)) | (1L << (STATS_STREAM - 711)) | (1L << (STATUS - 711)) | (1L << (STDEV - 711)) | (1L << (STDEVP - 711)) | (1L << (STOPLIST - 711)) | (1L << (STRING_AGG - 711)) | (1L << (STUFF - 711)) | (1L << (SUBJECT - 711)) | (1L << (SUM - 711)) | (1L << (SUSPEND - 711)) | (1L << (SYMMETRIC - 711)) | (1L << (SYNCHRONOUS_COMMIT - 711)) | (1L << (SYNONYM - 711)) | (1L << (SYSTEM - 711)) | (1L << (TAKE - 711)) | (1L << (TARGET_RECOVERY_TIME - 711)) | (1L << (TB - 711)) | (1L << (TEXTIMAGE_ON - 711)) | (1L << (THROW - 711)) | (1L << (TIES - 711)) | (1L << (TIME - 711)) | (1L << (TIMEOUT - 711)) | (1L << (TIMER - 711)) | (1L << (TINYINT - 711)) | (1L << (TORN_PAGE_DETECTION - 711)) | (1L << (TRANSFORM_NOISE_WORDS - 711)) | (1L << (TRIPLE_DES - 711)) | (1L << (TRIPLE_DES_3KEY - 711)) | (1L << (TRUSTWORTHY - 711)) | (1L << (TRY - 711)) | (1L << (TSQL - 711)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 711)) | (1L << (TYPE - 711)) | (1L << (TYPE_WARNING - 711)) | (1L << (UNBOUNDED - 711)) | (1L << (UNCOMMITTED - 711)) | (1L << (UNKNOWN - 711)) | (1L << (UNLIMITED - 711)) | (1L << (USING - 711)))) != 0) || ((((_la - 775)) & ~0x3f) == 0 && ((1L << (_la - 775)) & ((1L << (VALID_XML - 775)) | (1L << (VALIDATION - 775)) | (1L << (VALUE - 775)) | (1L << (VAR - 775)) | (1L << (VARP - 775)) | (1L << (VIEW_METADATA - 775)) | (1L << (VIEWS - 775)) | (1L << (WAIT - 775)) | (1L << (WELL_FORMED_XML - 775)) | (1L << (WORK - 775)) | (1L << (WORKLOAD - 775)) | (1L << (XML - 775)) | (1L << (XMLNAMESPACES - 775)) | (1L << (DOUBLE_QUOTE_ID - 775)) | (1L << (SQUARE_BRACKET_ID - 775)) | (1L << (ID - 775)) | (1L << (COMMA - 775)))) != 0) );
+			} while ( _la==BLOCKING_HIERARCHY || _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==COMMA || _la==URL );
 			setState(7260);
 			match(SEMI);
 			}
@@ -52375,7 +52656,7 @@ public class MocaSqlParser extends Parser {
 			match(DOT);
 			setState(7333);
 			_la = _input.LA(1);
-			if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (TARGET - 295)))) != 0) || ((((_la - 380)) & ~0x3f) == 0 && ((1L << (_la - 380)) & ((1L << (ABSOLUTE - 380)) | (1L << (ACCENT_SENSITIVITY - 380)) | (1L << (ACTION - 380)) | (1L << (ACTIVATION - 380)) | (1L << (ACTIVE - 380)) | (1L << (ADDRESS - 380)) | (1L << (AES_128 - 380)) | (1L << (AES_192 - 380)) | (1L << (AES_256 - 380)) | (1L << (AFFINITY - 380)) | (1L << (AFTER - 380)) | (1L << (AGGREGATE - 380)) | (1L << (ALGORITHM - 380)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 380)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 380)) | (1L << (ALLOWED - 380)) | (1L << (ANSI_NULL_DEFAULT - 380)) | (1L << (ANSI_NULLS - 380)) | (1L << (ANSI_PADDING - 380)) | (1L << (ANSI_WARNINGS - 380)) | (1L << (APPLICATION_LOG - 380)) | (1L << (APPLY - 380)) | (1L << (ARITHABORT - 380)) | (1L << (ASSEMBLY - 380)) | (1L << (AUDIT - 380)) | (1L << (AUDIT_GUID - 380)) | (1L << (AUTO - 380)) | (1L << (AUTO_CLEANUP - 380)) | (1L << (AUTO_CLOSE - 380)) | (1L << (AUTO_CREATE_STATISTICS - 380)) | (1L << (AUTO_SHRINK - 380)) | (1L << (AUTO_UPDATE_STATISTICS - 380)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 380)) | (1L << (AVAILABILITY - 380)) | (1L << (AVG - 380)) | (1L << (BACKUP_PRIORITY - 380)) | (1L << (BEGIN_DIALOG - 380)) | (1L << (BIGINT - 380)) | (1L << (BINARY_BASE64 - 380)) | (1L << (BINARY_CHECKSUM - 380)) | (1L << (BINDING - 380)) | (1L << (BLOB_STORAGE - 380)) | (1L << (BROKER - 380)) | (1L << (BROKER_INSTANCE - 380)) | (1L << (BULK_LOGGED - 380)) | (1L << (CALLER - 380)) | (1L << (CAP_CPU_PERCENT - 380)) | (1L << (CAST - 380)) | (1L << (CATALOG - 380)) | (1L << (CATCH - 380)) | (1L << (CHANGE_RETENTION - 380)) | (1L << (CHANGE_TRACKING - 380)) | (1L << (CHECKSUM - 380)) | (1L << (CHECKSUM_AGG - 380)) | (1L << (CLEANUP - 380)) | (1L << (COLLECTION - 380)) | (1L << (COLUMN_MASTER_KEY - 380)) | (1L << (COMMITTED - 380)) | (1L << (COMPATIBILITY_LEVEL - 380)) | (1L << (CONCAT - 380)) | (1L << (CONCAT_NULL_YIELDS_NULL - 380)) | (1L << (CONTENT - 380)) | (1L << (CONTROL - 380)) | (1L << (COOKIE - 380)))) != 0) || ((((_la - 444)) & ~0x3f) == 0 && ((1L << (_la - 444)) & ((1L << (COUNT - 444)) | (1L << (COUNT_BIG - 444)) | (1L << (COUNTER - 444)) | (1L << (CPU - 444)) | (1L << (CREATE_NEW - 444)) | (1L << (CREATION_DISPOSITION - 444)) | (1L << (CREDENTIAL - 444)) | (1L << (CRYPTOGRAPHIC - 444)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 444)) | (1L << (CURSOR_DEFAULT - 444)) | (1L << (DATA - 444)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 444)) | (1L << (DATEADD - 444)) | (1L << (DATEDIFF - 444)) | (1L << (DATENAME - 444)) | (1L << (DATEPART - 444)) | (1L << (DAYS - 444)) | (1L << (DB_CHAINING - 444)) | (1L << (DB_FAILOVER - 444)) | (1L << (DECRYPTION - 444)) | (1L << (DEFAULT_DOUBLE_QUOTE - 444)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 444)) | (1L << (DEFAULT_LANGUAGE - 444)) | (1L << (DELAY - 444)) | (1L << (DELAYED_DURABILITY - 444)) | (1L << (DELETED - 444)) | (1L << (DENSE_RANK - 444)) | (1L << (DEPENDENTS - 444)) | (1L << (DES - 444)) | (1L << (DESCRIPTION - 444)) | (1L << (DESX - 444)) | (1L << (DHCP - 444)) | (1L << (DIALOG - 444)) | (1L << (DIRECTORY_NAME - 444)) | (1L << (DISABLE - 444)) | (1L << (DISABLE_BROKER - 444)) | (1L << (DISABLED - 444)) | (1L << (DISK_DRIVE - 444)) | (1L << (DOCUMENT - 444)) | (1L << (DYNAMIC - 444)) | (1L << (EMERGENCY - 444)) | (1L << (EMPTY - 444)) | (1L << (ENABLE - 444)) | (1L << (ENABLE_BROKER - 444)) | (1L << (ENCRYPTED_VALUE - 444)) | (1L << (ENCRYPTION - 444)) | (1L << (ENDPOINT_URL - 444)) | (1L << (ERROR_BROKER_CONVERSATIONS - 444)) | (1L << (EXCLUSIVE - 444)) | (1L << (EXECUTABLE - 444)) | (1L << (EXIST - 444)) | (1L << (EXPAND - 444)) | (1L << (EXPIRY_DATE - 444)) | (1L << (EXPLICIT - 444)) | (1L << (FAIL_OPERATION - 444)) | (1L << (FAILOVER_MODE - 444)) | (1L << (FAILURE - 444)) | (1L << (FAILURE_CONDITION_LEVEL - 444)) | (1L << (FAST - 444)) | (1L << (FAST_FORWARD - 444)) | (1L << (FILEGROUP - 444)) | (1L << (FILEGROWTH - 444)) | (1L << (FILEPATH - 444)))) != 0) || ((((_la - 508)) & ~0x3f) == 0 && ((1L << (_la - 508)) & ((1L << (FILESTREAM - 508)) | (1L << (FILTER - 508)) | (1L << (FIRST - 508)) | (1L << (FIRST_VALUE - 508)) | (1L << (FOLLOWING - 508)) | (1L << (FORCE - 508)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 508)) | (1L << (FORCED - 508)) | (1L << (FORMAT - 508)) | (1L << (FORWARD_ONLY - 508)) | (1L << (FULLSCAN - 508)) | (1L << (FULLTEXT - 508)) | (1L << (GB - 508)) | (1L << (GETDATE - 508)) | (1L << (GETUTCDATE - 508)) | (1L << (GLOBAL - 508)) | (1L << (GO - 508)) | (1L << (GROUP_MAX_REQUESTS - 508)) | (1L << (GROUPING - 508)) | (1L << (GROUPING_ID - 508)) | (1L << (HADR - 508)) | (1L << (HASH - 508)) | (1L << (HEALTH_CHECK_TIMEOUT - 508)) | (1L << (HIGH - 508)) | (1L << (HONOR_BROKER_PRIORITY - 508)) | (1L << (HOURS - 508)) | (1L << (IDENTITY_VALUE - 508)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 508)) | (1L << (IMMEDIATE - 508)) | (1L << (IMPERSONATE - 508)) | (1L << (IMPORTANCE - 508)) | (1L << (INCREMENTAL - 508)) | (1L << (INITIATOR - 508)) | (1L << (INPUT - 508)) | (1L << (INSENSITIVE - 508)) | (1L << (INSERTED - 508)) | (1L << (INT - 508)) | (1L << (IP - 508)) | (1L << (ISOLATION - 508)) | (1L << (KB - 508)) | (1L << (KEEP - 508)) | (1L << (KEEPFIXED - 508)) | (1L << (KEY_SOURCE - 508)) | (1L << (KEYS - 508)) | (1L << (KEYSET - 508)) | (1L << (LAG - 508)) | (1L << (LAST - 508)) | (1L << (LAST_VALUE - 508)) | (1L << (LEAD - 508)) | (1L << (LEVEL - 508)) | (1L << (LIST - 508)) | (1L << (LISTENER - 508)) | (1L << (LISTENER_URL - 508)) | (1L << (LOB_COMPACTION - 508)) | (1L << (LOCAL - 508)) | (1L << (LOCATION - 508)) | (1L << (LOCK - 508)) | (1L << (LOCK_ESCALATION - 508)) | (1L << (LOGIN - 508)) | (1L << (LOOP - 508)) | (1L << (LOW - 508)))) != 0) || ((((_la - 572)) & ~0x3f) == 0 && ((1L << (_la - 572)) & ((1L << (MANUAL - 572)) | (1L << (MARK - 572)) | (1L << (MATERIALIZED - 572)) | (1L << (MAX - 572)) | (1L << (MAX_CPU_PERCENT - 572)) | (1L << (MAX_DOP - 572)) | (1L << (MAX_FILES - 572)) | (1L << (MAX_IOPS_PER_VOLUME - 572)) | (1L << (MAX_MEMORY_PERCENT - 572)) | (1L << (MAX_PROCESSES - 572)) | (1L << (MAX_QUEUE_READERS - 572)) | (1L << (MAX_ROLLOVER_FILES - 572)) | (1L << (MAXDOP - 572)) | (1L << (MAXRECURSION - 572)) | (1L << (MAXSIZE - 572)) | (1L << (MB - 572)) | (1L << (MEDIUM - 572)) | (1L << (MEMORY_OPTIMIZED_DATA - 572)) | (1L << (MESSAGE - 572)) | (1L << (MIN - 572)) | (1L << (MIN_ACTIVE_ROWVERSION - 572)) | (1L << (MIN_CPU_PERCENT - 572)) | (1L << (MIN_IOPS_PER_VOLUME - 572)) | (1L << (MIN_MEMORY_PERCENT - 572)) | (1L << (MINUTES - 572)) | (1L << (MIRROR_ADDRESS - 572)) | (1L << (MIXED_PAGE_ALLOCATION - 572)) | (1L << (MODE - 572)) | (1L << (MODIFY - 572)) | (1L << (MOVE - 572)) | (1L << (MULTI_USER - 572)) | (1L << (NAME - 572)) | (1L << (NESTED_TRIGGERS - 572)) | (1L << (NEW_ACCOUNT - 572)) | (1L << (NEW_BROKER - 572)) | (1L << (NEW_PASSWORD - 572)) | (1L << (NEXT - 572)) | (1L << (NO - 572)) | (1L << (NO_TRUNCATE - 572)) | (1L << (NO_WAIT - 572)) | (1L << (NOCOUNT - 572)) | (1L << (NODES - 572)) | (1L << (NOEXPAND - 572)) | (1L << (NON_TRANSACTED_ACCESS - 572)) | (1L << (NORECOMPUTE - 572)) | (1L << (NORECOVERY - 572)) | (1L << (NOWAIT - 572)) | (1L << (NTILE - 572)) | (1L << (NUMANODE - 572)) | (1L << (NUMBER - 572)) | (1L << (NUMERIC_ROUNDABORT - 572)) | (1L << (OBJECT - 572)) | (1L << (OFFLINE - 572)) | (1L << (OFFSET - 572)) | (1L << (OLD_ACCOUNT - 572)) | (1L << (ONLINE - 572)) | (1L << (ONLY - 572)) | (1L << (OPEN_EXISTING - 572)) | (1L << (OPTIMISTIC - 572)) | (1L << (OPTIMIZE - 572)) | (1L << (OUT - 572)) | (1L << (OUTPUT - 572)) | (1L << (OWNER - 572)))) != 0) || ((((_la - 636)) & ~0x3f) == 0 && ((1L << (_la - 636)) & ((1L << (PAGE_VERIFY - 636)) | (1L << (PARAMETERIZATION - 636)) | (1L << (PARTITION - 636)) | (1L << (PARTITIONS - 636)) | (1L << (PARTNER - 636)) | (1L << (PATH - 636)) | (1L << (POISON_MESSAGE_HANDLING - 636)) | (1L << (POOL - 636)) | (1L << (PORT - 636)) | (1L << (PRECEDING - 636)) | (1L << (PRIMARY_ROLE - 636)) | (1L << (PRIOR - 636)) | (1L << (PRIORITY - 636)) | (1L << (PRIORITY_LEVEL - 636)) | (1L << (PRIVATE - 636)) | (1L << (PRIVATE_KEY - 636)) | (1L << (PRIVILEGES - 636)) | (1L << (PROCEDURE_NAME - 636)) | (1L << (PROPERTY - 636)) | (1L << (PROVIDER - 636)) | (1L << (PROVIDER_KEY_NAME - 636)) | (1L << (QUERY - 636)) | (1L << (QUEUE - 636)) | (1L << (QUEUE_DELAY - 636)) | (1L << (QUOTED_IDENTIFIER - 636)) | (1L << (RANGE - 636)) | (1L << (RANK - 636)) | (1L << (RC2 - 636)) | (1L << (RC4 - 636)) | (1L << (RC4_128 - 636)) | (1L << (READ_COMMITTED_SNAPSHOT - 636)) | (1L << (READ_ONLY - 636)) | (1L << (READ_ONLY_ROUTING_LIST - 636)) | (1L << (READ_WRITE - 636)) | (1L << (READONLY - 636)) | (1L << (REBUILD - 636)) | (1L << (RECEIVE - 636)) | (1L << (RECOMPILE - 636)) | (1L << (RECOVERY - 636)) | (1L << (RECURSIVE_TRIGGERS - 636)) | (1L << (RELATIVE - 636)) | (1L << (REMOTE - 636)) | (1L << (REMOTE_SERVICE_NAME - 636)) | (1L << (REMOVE - 636)) | (1L << (REORGANIZE - 636)) | (1L << (REPEATABLE - 636)) | (1L << (REPLICA - 636)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 636)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 636)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 636)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 636)) | (1L << (RESERVE_DISK_SPACE - 636)) | (1L << (RESOURCE - 636)) | (1L << (RESOURCE_MANAGER_LOCATION - 636)) | (1L << (RESTRICTED_USER - 636)) | (1L << (RETENTION - 636)) | (1L << (ROBUST - 636)) | (1L << (ROOT - 636)) | (1L << (ROUTE - 636)) | (1L << (ROW - 636)) | (1L << (ROW_NUMBER - 636)) | (1L << (ROWGUID - 636)) | (1L << (ROWS - 636)) | (1L << (SAMPLE - 636)))) != 0) || ((((_la - 700)) & ~0x3f) == 0 && ((1L << (_la - 700)) & ((1L << (SCHEMABINDING - 700)) | (1L << (SCOPED - 700)) | (1L << (SCROLL - 700)) | (1L << (SCROLL_LOCKS - 700)) | (1L << (SEARCH - 700)) | (1L << (SECONDARY - 700)) | (1L << (SECONDARY_ONLY - 700)) | (1L << (SECONDARY_ROLE - 700)) | (1L << (SECONDS - 700)) | (1L << (SECRET - 700)) | (1L << (SECURITY - 700)) | (1L << (SECURITY_LOG - 700)) | (1L << (SEEDING_MODE - 700)) | (1L << (SELF - 700)) | (1L << (SEMI_SENSITIVE - 700)) | (1L << (SEND - 700)) | (1L << (SENT - 700)) | (1L << (SEQUENCE - 700)) | (1L << (SERIALIZABLE - 700)) | (1L << (SESSION_TIMEOUT - 700)) | (1L << (SETERROR - 700)) | (1L << (SHARE - 700)) | (1L << (SHOWPLAN - 700)) | (1L << (SIGNATURE - 700)) | (1L << (SIMPLE - 700)) | (1L << (SINGLE_USER - 700)) | (1L << (SIZE - 700)) | (1L << (SMALLINT - 700)) | (1L << (SNAPSHOT - 700)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 700)) | (1L << (STANDBY - 700)) | (1L << (START_DATE - 700)) | (1L << (STATIC - 700)) | (1L << (STATS_STREAM - 700)) | (1L << (STATUS - 700)) | (1L << (STDEV - 700)) | (1L << (STDEVP - 700)) | (1L << (STOPLIST - 700)) | (1L << (STRING_AGG - 700)) | (1L << (STUFF - 700)) | (1L << (SUBJECT - 700)) | (1L << (SUM - 700)) | (1L << (SUSPEND - 700)) | (1L << (SYMMETRIC - 700)) | (1L << (SYNCHRONOUS_COMMIT - 700)) | (1L << (SYNONYM - 700)) | (1L << (SYSTEM - 700)) | (1L << (TAKE - 700)) | (1L << (TARGET_RECOVERY_TIME - 700)) | (1L << (TB - 700)) | (1L << (TEXTIMAGE_ON - 700)) | (1L << (THROW - 700)) | (1L << (TIES - 700)) | (1L << (TIME - 700)) | (1L << (TIMEOUT - 700)) | (1L << (TIMER - 700)) | (1L << (TINYINT - 700)) | (1L << (TORN_PAGE_DETECTION - 700)) | (1L << (TRANSFORM_NOISE_WORDS - 700)) | (1L << (TRIPLE_DES - 700)) | (1L << (TRIPLE_DES_3KEY - 700)) | (1L << (TRUSTWORTHY - 700)))) != 0) || ((((_la - 764)) & ~0x3f) == 0 && ((1L << (_la - 764)) & ((1L << (TRY - 764)) | (1L << (TSQL - 764)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 764)) | (1L << (TYPE - 764)) | (1L << (TYPE_WARNING - 764)) | (1L << (UNBOUNDED - 764)) | (1L << (UNCOMMITTED - 764)) | (1L << (UNKNOWN - 764)) | (1L << (UNLIMITED - 764)) | (1L << (USING - 764)) | (1L << (VALID_XML - 764)) | (1L << (VALIDATION - 764)) | (1L << (VALUE - 764)) | (1L << (VAR - 764)) | (1L << (VARP - 764)) | (1L << (VIEW_METADATA - 764)) | (1L << (VIEWS - 764)) | (1L << (WAIT - 764)) | (1L << (WELL_FORMED_XML - 764)) | (1L << (WORK - 764)) | (1L << (WORKLOAD - 764)) | (1L << (XML - 764)) | (1L << (XMLNAMESPACES - 764)) | (1L << (DOUBLE_QUOTE_ID - 764)) | (1L << (SQUARE_BRACKET_ID - 764)) | (1L << (ID - 764)))) != 0)) {
+			if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==URL) {
 				{
 				setState(7332);
 				((OpendatasourceContext)_localctx).database = id();
@@ -52386,7 +52667,7 @@ public class MocaSqlParser extends Parser {
 			match(DOT);
 			setState(7337);
 			_la = _input.LA(1);
-			if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (TARGET - 295)))) != 0) || ((((_la - 380)) & ~0x3f) == 0 && ((1L << (_la - 380)) & ((1L << (ABSOLUTE - 380)) | (1L << (ACCENT_SENSITIVITY - 380)) | (1L << (ACTION - 380)) | (1L << (ACTIVATION - 380)) | (1L << (ACTIVE - 380)) | (1L << (ADDRESS - 380)) | (1L << (AES_128 - 380)) | (1L << (AES_192 - 380)) | (1L << (AES_256 - 380)) | (1L << (AFFINITY - 380)) | (1L << (AFTER - 380)) | (1L << (AGGREGATE - 380)) | (1L << (ALGORITHM - 380)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 380)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 380)) | (1L << (ALLOWED - 380)) | (1L << (ANSI_NULL_DEFAULT - 380)) | (1L << (ANSI_NULLS - 380)) | (1L << (ANSI_PADDING - 380)) | (1L << (ANSI_WARNINGS - 380)) | (1L << (APPLICATION_LOG - 380)) | (1L << (APPLY - 380)) | (1L << (ARITHABORT - 380)) | (1L << (ASSEMBLY - 380)) | (1L << (AUDIT - 380)) | (1L << (AUDIT_GUID - 380)) | (1L << (AUTO - 380)) | (1L << (AUTO_CLEANUP - 380)) | (1L << (AUTO_CLOSE - 380)) | (1L << (AUTO_CREATE_STATISTICS - 380)) | (1L << (AUTO_SHRINK - 380)) | (1L << (AUTO_UPDATE_STATISTICS - 380)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 380)) | (1L << (AVAILABILITY - 380)) | (1L << (AVG - 380)) | (1L << (BACKUP_PRIORITY - 380)) | (1L << (BEGIN_DIALOG - 380)) | (1L << (BIGINT - 380)) | (1L << (BINARY_BASE64 - 380)) | (1L << (BINARY_CHECKSUM - 380)) | (1L << (BINDING - 380)) | (1L << (BLOB_STORAGE - 380)) | (1L << (BROKER - 380)) | (1L << (BROKER_INSTANCE - 380)) | (1L << (BULK_LOGGED - 380)) | (1L << (CALLER - 380)) | (1L << (CAP_CPU_PERCENT - 380)) | (1L << (CAST - 380)) | (1L << (CATALOG - 380)) | (1L << (CATCH - 380)) | (1L << (CHANGE_RETENTION - 380)) | (1L << (CHANGE_TRACKING - 380)) | (1L << (CHECKSUM - 380)) | (1L << (CHECKSUM_AGG - 380)) | (1L << (CLEANUP - 380)) | (1L << (COLLECTION - 380)) | (1L << (COLUMN_MASTER_KEY - 380)) | (1L << (COMMITTED - 380)) | (1L << (COMPATIBILITY_LEVEL - 380)) | (1L << (CONCAT - 380)) | (1L << (CONCAT_NULL_YIELDS_NULL - 380)) | (1L << (CONTENT - 380)) | (1L << (CONTROL - 380)) | (1L << (COOKIE - 380)))) != 0) || ((((_la - 444)) & ~0x3f) == 0 && ((1L << (_la - 444)) & ((1L << (COUNT - 444)) | (1L << (COUNT_BIG - 444)) | (1L << (COUNTER - 444)) | (1L << (CPU - 444)) | (1L << (CREATE_NEW - 444)) | (1L << (CREATION_DISPOSITION - 444)) | (1L << (CREDENTIAL - 444)) | (1L << (CRYPTOGRAPHIC - 444)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 444)) | (1L << (CURSOR_DEFAULT - 444)) | (1L << (DATA - 444)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 444)) | (1L << (DATEADD - 444)) | (1L << (DATEDIFF - 444)) | (1L << (DATENAME - 444)) | (1L << (DATEPART - 444)) | (1L << (DAYS - 444)) | (1L << (DB_CHAINING - 444)) | (1L << (DB_FAILOVER - 444)) | (1L << (DECRYPTION - 444)) | (1L << (DEFAULT_DOUBLE_QUOTE - 444)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 444)) | (1L << (DEFAULT_LANGUAGE - 444)) | (1L << (DELAY - 444)) | (1L << (DELAYED_DURABILITY - 444)) | (1L << (DELETED - 444)) | (1L << (DENSE_RANK - 444)) | (1L << (DEPENDENTS - 444)) | (1L << (DES - 444)) | (1L << (DESCRIPTION - 444)) | (1L << (DESX - 444)) | (1L << (DHCP - 444)) | (1L << (DIALOG - 444)) | (1L << (DIRECTORY_NAME - 444)) | (1L << (DISABLE - 444)) | (1L << (DISABLE_BROKER - 444)) | (1L << (DISABLED - 444)) | (1L << (DISK_DRIVE - 444)) | (1L << (DOCUMENT - 444)) | (1L << (DYNAMIC - 444)) | (1L << (EMERGENCY - 444)) | (1L << (EMPTY - 444)) | (1L << (ENABLE - 444)) | (1L << (ENABLE_BROKER - 444)) | (1L << (ENCRYPTED_VALUE - 444)) | (1L << (ENCRYPTION - 444)) | (1L << (ENDPOINT_URL - 444)) | (1L << (ERROR_BROKER_CONVERSATIONS - 444)) | (1L << (EXCLUSIVE - 444)) | (1L << (EXECUTABLE - 444)) | (1L << (EXIST - 444)) | (1L << (EXPAND - 444)) | (1L << (EXPIRY_DATE - 444)) | (1L << (EXPLICIT - 444)) | (1L << (FAIL_OPERATION - 444)) | (1L << (FAILOVER_MODE - 444)) | (1L << (FAILURE - 444)) | (1L << (FAILURE_CONDITION_LEVEL - 444)) | (1L << (FAST - 444)) | (1L << (FAST_FORWARD - 444)) | (1L << (FILEGROUP - 444)) | (1L << (FILEGROWTH - 444)) | (1L << (FILEPATH - 444)))) != 0) || ((((_la - 508)) & ~0x3f) == 0 && ((1L << (_la - 508)) & ((1L << (FILESTREAM - 508)) | (1L << (FILTER - 508)) | (1L << (FIRST - 508)) | (1L << (FIRST_VALUE - 508)) | (1L << (FOLLOWING - 508)) | (1L << (FORCE - 508)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 508)) | (1L << (FORCED - 508)) | (1L << (FORMAT - 508)) | (1L << (FORWARD_ONLY - 508)) | (1L << (FULLSCAN - 508)) | (1L << (FULLTEXT - 508)) | (1L << (GB - 508)) | (1L << (GETDATE - 508)) | (1L << (GETUTCDATE - 508)) | (1L << (GLOBAL - 508)) | (1L << (GO - 508)) | (1L << (GROUP_MAX_REQUESTS - 508)) | (1L << (GROUPING - 508)) | (1L << (GROUPING_ID - 508)) | (1L << (HADR - 508)) | (1L << (HASH - 508)) | (1L << (HEALTH_CHECK_TIMEOUT - 508)) | (1L << (HIGH - 508)) | (1L << (HONOR_BROKER_PRIORITY - 508)) | (1L << (HOURS - 508)) | (1L << (IDENTITY_VALUE - 508)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 508)) | (1L << (IMMEDIATE - 508)) | (1L << (IMPERSONATE - 508)) | (1L << (IMPORTANCE - 508)) | (1L << (INCREMENTAL - 508)) | (1L << (INITIATOR - 508)) | (1L << (INPUT - 508)) | (1L << (INSENSITIVE - 508)) | (1L << (INSERTED - 508)) | (1L << (INT - 508)) | (1L << (IP - 508)) | (1L << (ISOLATION - 508)) | (1L << (KB - 508)) | (1L << (KEEP - 508)) | (1L << (KEEPFIXED - 508)) | (1L << (KEY_SOURCE - 508)) | (1L << (KEYS - 508)) | (1L << (KEYSET - 508)) | (1L << (LAG - 508)) | (1L << (LAST - 508)) | (1L << (LAST_VALUE - 508)) | (1L << (LEAD - 508)) | (1L << (LEVEL - 508)) | (1L << (LIST - 508)) | (1L << (LISTENER - 508)) | (1L << (LISTENER_URL - 508)) | (1L << (LOB_COMPACTION - 508)) | (1L << (LOCAL - 508)) | (1L << (LOCATION - 508)) | (1L << (LOCK - 508)) | (1L << (LOCK_ESCALATION - 508)) | (1L << (LOGIN - 508)) | (1L << (LOOP - 508)) | (1L << (LOW - 508)))) != 0) || ((((_la - 572)) & ~0x3f) == 0 && ((1L << (_la - 572)) & ((1L << (MANUAL - 572)) | (1L << (MARK - 572)) | (1L << (MATERIALIZED - 572)) | (1L << (MAX - 572)) | (1L << (MAX_CPU_PERCENT - 572)) | (1L << (MAX_DOP - 572)) | (1L << (MAX_FILES - 572)) | (1L << (MAX_IOPS_PER_VOLUME - 572)) | (1L << (MAX_MEMORY_PERCENT - 572)) | (1L << (MAX_PROCESSES - 572)) | (1L << (MAX_QUEUE_READERS - 572)) | (1L << (MAX_ROLLOVER_FILES - 572)) | (1L << (MAXDOP - 572)) | (1L << (MAXRECURSION - 572)) | (1L << (MAXSIZE - 572)) | (1L << (MB - 572)) | (1L << (MEDIUM - 572)) | (1L << (MEMORY_OPTIMIZED_DATA - 572)) | (1L << (MESSAGE - 572)) | (1L << (MIN - 572)) | (1L << (MIN_ACTIVE_ROWVERSION - 572)) | (1L << (MIN_CPU_PERCENT - 572)) | (1L << (MIN_IOPS_PER_VOLUME - 572)) | (1L << (MIN_MEMORY_PERCENT - 572)) | (1L << (MINUTES - 572)) | (1L << (MIRROR_ADDRESS - 572)) | (1L << (MIXED_PAGE_ALLOCATION - 572)) | (1L << (MODE - 572)) | (1L << (MODIFY - 572)) | (1L << (MOVE - 572)) | (1L << (MULTI_USER - 572)) | (1L << (NAME - 572)) | (1L << (NESTED_TRIGGERS - 572)) | (1L << (NEW_ACCOUNT - 572)) | (1L << (NEW_BROKER - 572)) | (1L << (NEW_PASSWORD - 572)) | (1L << (NEXT - 572)) | (1L << (NO - 572)) | (1L << (NO_TRUNCATE - 572)) | (1L << (NO_WAIT - 572)) | (1L << (NOCOUNT - 572)) | (1L << (NODES - 572)) | (1L << (NOEXPAND - 572)) | (1L << (NON_TRANSACTED_ACCESS - 572)) | (1L << (NORECOMPUTE - 572)) | (1L << (NORECOVERY - 572)) | (1L << (NOWAIT - 572)) | (1L << (NTILE - 572)) | (1L << (NUMANODE - 572)) | (1L << (NUMBER - 572)) | (1L << (NUMERIC_ROUNDABORT - 572)) | (1L << (OBJECT - 572)) | (1L << (OFFLINE - 572)) | (1L << (OFFSET - 572)) | (1L << (OLD_ACCOUNT - 572)) | (1L << (ONLINE - 572)) | (1L << (ONLY - 572)) | (1L << (OPEN_EXISTING - 572)) | (1L << (OPTIMISTIC - 572)) | (1L << (OPTIMIZE - 572)) | (1L << (OUT - 572)) | (1L << (OUTPUT - 572)) | (1L << (OWNER - 572)))) != 0) || ((((_la - 636)) & ~0x3f) == 0 && ((1L << (_la - 636)) & ((1L << (PAGE_VERIFY - 636)) | (1L << (PARAMETERIZATION - 636)) | (1L << (PARTITION - 636)) | (1L << (PARTITIONS - 636)) | (1L << (PARTNER - 636)) | (1L << (PATH - 636)) | (1L << (POISON_MESSAGE_HANDLING - 636)) | (1L << (POOL - 636)) | (1L << (PORT - 636)) | (1L << (PRECEDING - 636)) | (1L << (PRIMARY_ROLE - 636)) | (1L << (PRIOR - 636)) | (1L << (PRIORITY - 636)) | (1L << (PRIORITY_LEVEL - 636)) | (1L << (PRIVATE - 636)) | (1L << (PRIVATE_KEY - 636)) | (1L << (PRIVILEGES - 636)) | (1L << (PROCEDURE_NAME - 636)) | (1L << (PROPERTY - 636)) | (1L << (PROVIDER - 636)) | (1L << (PROVIDER_KEY_NAME - 636)) | (1L << (QUERY - 636)) | (1L << (QUEUE - 636)) | (1L << (QUEUE_DELAY - 636)) | (1L << (QUOTED_IDENTIFIER - 636)) | (1L << (RANGE - 636)) | (1L << (RANK - 636)) | (1L << (RC2 - 636)) | (1L << (RC4 - 636)) | (1L << (RC4_128 - 636)) | (1L << (READ_COMMITTED_SNAPSHOT - 636)) | (1L << (READ_ONLY - 636)) | (1L << (READ_ONLY_ROUTING_LIST - 636)) | (1L << (READ_WRITE - 636)) | (1L << (READONLY - 636)) | (1L << (REBUILD - 636)) | (1L << (RECEIVE - 636)) | (1L << (RECOMPILE - 636)) | (1L << (RECOVERY - 636)) | (1L << (RECURSIVE_TRIGGERS - 636)) | (1L << (RELATIVE - 636)) | (1L << (REMOTE - 636)) | (1L << (REMOTE_SERVICE_NAME - 636)) | (1L << (REMOVE - 636)) | (1L << (REORGANIZE - 636)) | (1L << (REPEATABLE - 636)) | (1L << (REPLICA - 636)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 636)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 636)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 636)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 636)) | (1L << (RESERVE_DISK_SPACE - 636)) | (1L << (RESOURCE - 636)) | (1L << (RESOURCE_MANAGER_LOCATION - 636)) | (1L << (RESTRICTED_USER - 636)) | (1L << (RETENTION - 636)) | (1L << (ROBUST - 636)) | (1L << (ROOT - 636)) | (1L << (ROUTE - 636)) | (1L << (ROW - 636)) | (1L << (ROW_NUMBER - 636)) | (1L << (ROWGUID - 636)) | (1L << (ROWS - 636)) | (1L << (SAMPLE - 636)))) != 0) || ((((_la - 700)) & ~0x3f) == 0 && ((1L << (_la - 700)) & ((1L << (SCHEMABINDING - 700)) | (1L << (SCOPED - 700)) | (1L << (SCROLL - 700)) | (1L << (SCROLL_LOCKS - 700)) | (1L << (SEARCH - 700)) | (1L << (SECONDARY - 700)) | (1L << (SECONDARY_ONLY - 700)) | (1L << (SECONDARY_ROLE - 700)) | (1L << (SECONDS - 700)) | (1L << (SECRET - 700)) | (1L << (SECURITY - 700)) | (1L << (SECURITY_LOG - 700)) | (1L << (SEEDING_MODE - 700)) | (1L << (SELF - 700)) | (1L << (SEMI_SENSITIVE - 700)) | (1L << (SEND - 700)) | (1L << (SENT - 700)) | (1L << (SEQUENCE - 700)) | (1L << (SERIALIZABLE - 700)) | (1L << (SESSION_TIMEOUT - 700)) | (1L << (SETERROR - 700)) | (1L << (SHARE - 700)) | (1L << (SHOWPLAN - 700)) | (1L << (SIGNATURE - 700)) | (1L << (SIMPLE - 700)) | (1L << (SINGLE_USER - 700)) | (1L << (SIZE - 700)) | (1L << (SMALLINT - 700)) | (1L << (SNAPSHOT - 700)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 700)) | (1L << (STANDBY - 700)) | (1L << (START_DATE - 700)) | (1L << (STATIC - 700)) | (1L << (STATS_STREAM - 700)) | (1L << (STATUS - 700)) | (1L << (STDEV - 700)) | (1L << (STDEVP - 700)) | (1L << (STOPLIST - 700)) | (1L << (STRING_AGG - 700)) | (1L << (STUFF - 700)) | (1L << (SUBJECT - 700)) | (1L << (SUM - 700)) | (1L << (SUSPEND - 700)) | (1L << (SYMMETRIC - 700)) | (1L << (SYNCHRONOUS_COMMIT - 700)) | (1L << (SYNONYM - 700)) | (1L << (SYSTEM - 700)) | (1L << (TAKE - 700)) | (1L << (TARGET_RECOVERY_TIME - 700)) | (1L << (TB - 700)) | (1L << (TEXTIMAGE_ON - 700)) | (1L << (THROW - 700)) | (1L << (TIES - 700)) | (1L << (TIME - 700)) | (1L << (TIMEOUT - 700)) | (1L << (TIMER - 700)) | (1L << (TINYINT - 700)) | (1L << (TORN_PAGE_DETECTION - 700)) | (1L << (TRANSFORM_NOISE_WORDS - 700)) | (1L << (TRIPLE_DES - 700)) | (1L << (TRIPLE_DES_3KEY - 700)) | (1L << (TRUSTWORTHY - 700)))) != 0) || ((((_la - 764)) & ~0x3f) == 0 && ((1L << (_la - 764)) & ((1L << (TRY - 764)) | (1L << (TSQL - 764)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 764)) | (1L << (TYPE - 764)) | (1L << (TYPE_WARNING - 764)) | (1L << (UNBOUNDED - 764)) | (1L << (UNCOMMITTED - 764)) | (1L << (UNKNOWN - 764)) | (1L << (UNLIMITED - 764)) | (1L << (USING - 764)) | (1L << (VALID_XML - 764)) | (1L << (VALIDATION - 764)) | (1L << (VALUE - 764)) | (1L << (VAR - 764)) | (1L << (VARP - 764)) | (1L << (VIEW_METADATA - 764)) | (1L << (VIEWS - 764)) | (1L << (WAIT - 764)) | (1L << (WELL_FORMED_XML - 764)) | (1L << (WORK - 764)) | (1L << (WORKLOAD - 764)) | (1L << (XML - 764)) | (1L << (XMLNAMESPACES - 764)) | (1L << (DOUBLE_QUOTE_ID - 764)) | (1L << (SQUARE_BRACKET_ID - 764)) | (1L << (ID - 764)))) != 0)) {
+			if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==URL) {
 				{
 				setState(7336);
 				((OpendatasourceContext)_localctx).scheme = id();
@@ -53158,581 +53439,42 @@ public class MocaSqlParser extends Parser {
 				match(TO);
 				setState(7465); 
 				_errHandler.sync(this);
-				_la = _input.LA(1);
+				_alt = 1;
 				do {
-					{
-					{
-					setState(7457);
-					_la = _input.LA(1);
-					if (_la==COMMA) {
-						{
-						setState(7456);
-						match(COMMA);
-						}
-					}
-
-					setState(7459);
-					_la = _input.LA(1);
-					if ( !(_la==DISK || _la==TAPE || _la==URL) ) {
-					_errHandler.recoverInline(this);
-					} else {
-						consume();
-					}
-					setState(7460);
-					match(EQUAL);
-					setState(7463);
-					switch (_input.LA(1)) {
-					case STRING:
-						{
-						setState(7461);
-						match(STRING);
-						}
-						break;
-					case CALLED:
-					case DATA_COMPRESSION:
-					case EVENTDATA:
-					case FILENAME:
-					case FILLFACTOR:
-					case FORCESEEK:
-					case INIT:
-					case KEY:
-					case MASTER:
-					case MAX_MEMORY:
-					case OFFSETS:
-					case PAGE:
-					case PUBLIC:
-					case R:
-					case RAW:
-					case RETURN:
-					case RETURNS:
-					case ROWCOUNT:
-					case SAFETY:
-					case SERVER:
-					case SID:
-					case SOURCE:
-					case SPLIT:
-					case STATE:
-					case START:
-					case TARGET:
-					case ABSOLUTE:
-					case ACCENT_SENSITIVITY:
-					case ACTION:
-					case ACTIVATION:
-					case ACTIVE:
-					case ADDRESS:
-					case AES_128:
-					case AES_192:
-					case AES_256:
-					case AFFINITY:
-					case AFTER:
-					case AGGREGATE:
-					case ALGORITHM:
-					case ALLOW_ENCRYPTED_VALUE_MODIFICATIONS:
-					case ALLOW_SNAPSHOT_ISOLATION:
-					case ALLOWED:
-					case ANSI_NULL_DEFAULT:
-					case ANSI_NULLS:
-					case ANSI_PADDING:
-					case ANSI_WARNINGS:
-					case APPLICATION_LOG:
-					case APPLY:
-					case ARITHABORT:
-					case ASSEMBLY:
-					case AUDIT:
-					case AUDIT_GUID:
-					case AUTO:
-					case AUTO_CLEANUP:
-					case AUTO_CLOSE:
-					case AUTO_CREATE_STATISTICS:
-					case AUTO_SHRINK:
-					case AUTO_UPDATE_STATISTICS:
-					case AUTO_UPDATE_STATISTICS_ASYNC:
-					case AVAILABILITY:
-					case AVG:
-					case BACKUP_PRIORITY:
-					case BEGIN_DIALOG:
-					case BIGINT:
-					case BINARY_BASE64:
-					case BINARY_CHECKSUM:
-					case BINDING:
-					case BLOB_STORAGE:
-					case BROKER:
-					case BROKER_INSTANCE:
-					case BULK_LOGGED:
-					case CALLER:
-					case CAP_CPU_PERCENT:
-					case CAST:
-					case CATALOG:
-					case CATCH:
-					case CHANGE_RETENTION:
-					case CHANGE_TRACKING:
-					case CHECKSUM:
-					case CHECKSUM_AGG:
-					case CLEANUP:
-					case COLLECTION:
-					case COLUMN_MASTER_KEY:
-					case COMMITTED:
-					case COMPATIBILITY_LEVEL:
-					case CONCAT:
-					case CONCAT_NULL_YIELDS_NULL:
-					case CONTENT:
-					case CONTROL:
-					case COOKIE:
-					case COUNT:
-					case COUNT_BIG:
-					case COUNTER:
-					case CPU:
-					case CREATE_NEW:
-					case CREATION_DISPOSITION:
-					case CREDENTIAL:
-					case CRYPTOGRAPHIC:
-					case CURSOR_CLOSE_ON_COMMIT:
-					case CURSOR_DEFAULT:
-					case DATA:
-					case DATE_CORRELATION_OPTIMIZATION:
-					case DATEADD:
-					case DATEDIFF:
-					case DATENAME:
-					case DATEPART:
-					case DAYS:
-					case DB_CHAINING:
-					case DB_FAILOVER:
-					case DECRYPTION:
-					case DEFAULT_DOUBLE_QUOTE:
-					case DEFAULT_FULLTEXT_LANGUAGE:
-					case DEFAULT_LANGUAGE:
-					case DELAY:
-					case DELAYED_DURABILITY:
-					case DELETED:
-					case DENSE_RANK:
-					case DEPENDENTS:
-					case DES:
-					case DESCRIPTION:
-					case DESX:
-					case DHCP:
-					case DIALOG:
-					case DIRECTORY_NAME:
-					case DISABLE:
-					case DISABLE_BROKER:
-					case DISABLED:
-					case DISK_DRIVE:
-					case DOCUMENT:
-					case DYNAMIC:
-					case EMERGENCY:
-					case EMPTY:
-					case ENABLE:
-					case ENABLE_BROKER:
-					case ENCRYPTED_VALUE:
-					case ENCRYPTION:
-					case ENDPOINT_URL:
-					case ERROR_BROKER_CONVERSATIONS:
-					case EXCLUSIVE:
-					case EXECUTABLE:
-					case EXIST:
-					case EXPAND:
-					case EXPIRY_DATE:
-					case EXPLICIT:
-					case FAIL_OPERATION:
-					case FAILOVER_MODE:
-					case FAILURE:
-					case FAILURE_CONDITION_LEVEL:
-					case FAST:
-					case FAST_FORWARD:
-					case FILEGROUP:
-					case FILEGROWTH:
-					case FILEPATH:
-					case FILESTREAM:
-					case FILTER:
-					case FIRST:
-					case FIRST_VALUE:
-					case FOLLOWING:
-					case FORCE:
-					case FORCE_FAILOVER_ALLOW_DATA_LOSS:
-					case FORCED:
-					case FORMAT:
-					case FORWARD_ONLY:
-					case FULLSCAN:
-					case FULLTEXT:
-					case GB:
-					case GETDATE:
-					case GETUTCDATE:
-					case GLOBAL:
-					case GO:
-					case GROUP_MAX_REQUESTS:
-					case GROUPING:
-					case GROUPING_ID:
-					case HADR:
-					case HASH:
-					case HEALTH_CHECK_TIMEOUT:
-					case HIGH:
-					case HONOR_BROKER_PRIORITY:
-					case HOURS:
-					case IDENTITY_VALUE:
-					case IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX:
-					case IMMEDIATE:
-					case IMPERSONATE:
-					case IMPORTANCE:
-					case INCREMENTAL:
-					case INITIATOR:
-					case INPUT:
-					case INSENSITIVE:
-					case INSERTED:
-					case INT:
-					case IP:
-					case ISOLATION:
-					case KB:
-					case KEEP:
-					case KEEPFIXED:
-					case KEY_SOURCE:
-					case KEYS:
-					case KEYSET:
-					case LAG:
-					case LAST:
-					case LAST_VALUE:
-					case LEAD:
-					case LEVEL:
-					case LIST:
-					case LISTENER:
-					case LISTENER_URL:
-					case LOB_COMPACTION:
-					case LOCAL:
-					case LOCATION:
-					case LOCK:
-					case LOCK_ESCALATION:
-					case LOGIN:
-					case LOOP:
-					case LOW:
-					case MANUAL:
-					case MARK:
-					case MATERIALIZED:
-					case MAX:
-					case MAX_CPU_PERCENT:
-					case MAX_DOP:
-					case MAX_FILES:
-					case MAX_IOPS_PER_VOLUME:
-					case MAX_MEMORY_PERCENT:
-					case MAX_PROCESSES:
-					case MAX_QUEUE_READERS:
-					case MAX_ROLLOVER_FILES:
-					case MAXDOP:
-					case MAXRECURSION:
-					case MAXSIZE:
-					case MB:
-					case MEDIUM:
-					case MEMORY_OPTIMIZED_DATA:
-					case MESSAGE:
-					case MIN:
-					case MIN_ACTIVE_ROWVERSION:
-					case MIN_CPU_PERCENT:
-					case MIN_IOPS_PER_VOLUME:
-					case MIN_MEMORY_PERCENT:
-					case MINUTES:
-					case MIRROR_ADDRESS:
-					case MIXED_PAGE_ALLOCATION:
-					case MODE:
-					case MODIFY:
-					case MOVE:
-					case MULTI_USER:
-					case NAME:
-					case NESTED_TRIGGERS:
-					case NEW_ACCOUNT:
-					case NEW_BROKER:
-					case NEW_PASSWORD:
-					case NEXT:
-					case NO:
-					case NO_TRUNCATE:
-					case NO_WAIT:
-					case NOCOUNT:
-					case NODES:
-					case NOEXPAND:
-					case NON_TRANSACTED_ACCESS:
-					case NORECOMPUTE:
-					case NORECOVERY:
-					case NOWAIT:
-					case NTILE:
-					case NUMANODE:
-					case NUMBER:
-					case NUMERIC_ROUNDABORT:
-					case OBJECT:
-					case OFFLINE:
-					case OFFSET:
-					case OLD_ACCOUNT:
-					case ONLINE:
-					case ONLY:
-					case OPEN_EXISTING:
-					case OPTIMISTIC:
-					case OPTIMIZE:
-					case OUT:
-					case OUTPUT:
-					case OWNER:
-					case PAGE_VERIFY:
-					case PARAMETERIZATION:
-					case PARTITION:
-					case PARTITIONS:
-					case PARTNER:
-					case PATH:
-					case POISON_MESSAGE_HANDLING:
-					case POOL:
-					case PORT:
-					case PRECEDING:
-					case PRIMARY_ROLE:
-					case PRIOR:
-					case PRIORITY:
-					case PRIORITY_LEVEL:
-					case PRIVATE:
-					case PRIVATE_KEY:
-					case PRIVILEGES:
-					case PROCEDURE_NAME:
-					case PROPERTY:
-					case PROVIDER:
-					case PROVIDER_KEY_NAME:
-					case QUERY:
-					case QUEUE:
-					case QUEUE_DELAY:
-					case QUOTED_IDENTIFIER:
-					case RANGE:
-					case RANK:
-					case RC2:
-					case RC4:
-					case RC4_128:
-					case READ_COMMITTED_SNAPSHOT:
-					case READ_ONLY:
-					case READ_ONLY_ROUTING_LIST:
-					case READ_WRITE:
-					case READONLY:
-					case REBUILD:
-					case RECEIVE:
-					case RECOMPILE:
-					case RECOVERY:
-					case RECURSIVE_TRIGGERS:
-					case RELATIVE:
-					case REMOTE:
-					case REMOTE_SERVICE_NAME:
-					case REMOVE:
-					case REORGANIZE:
-					case REPEATABLE:
-					case REPLICA:
-					case REQUEST_MAX_CPU_TIME_SEC:
-					case REQUEST_MAX_MEMORY_GRANT_PERCENT:
-					case REQUEST_MEMORY_GRANT_TIMEOUT_SEC:
-					case REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT:
-					case RESERVE_DISK_SPACE:
-					case RESOURCE:
-					case RESOURCE_MANAGER_LOCATION:
-					case RESTRICTED_USER:
-					case RETENTION:
-					case ROBUST:
-					case ROOT:
-					case ROUTE:
-					case ROW:
-					case ROW_NUMBER:
-					case ROWGUID:
-					case ROWS:
-					case SAMPLE:
-					case SCHEMABINDING:
-					case SCOPED:
-					case SCROLL:
-					case SCROLL_LOCKS:
-					case SEARCH:
-					case SECONDARY:
-					case SECONDARY_ONLY:
-					case SECONDARY_ROLE:
-					case SECONDS:
-					case SECRET:
-					case SECURITY:
-					case SECURITY_LOG:
-					case SEEDING_MODE:
-					case SELF:
-					case SEMI_SENSITIVE:
-					case SEND:
-					case SENT:
-					case SEQUENCE:
-					case SERIALIZABLE:
-					case SESSION_TIMEOUT:
-					case SETERROR:
-					case SHARE:
-					case SHOWPLAN:
-					case SIGNATURE:
-					case SIMPLE:
-					case SINGLE_USER:
-					case SIZE:
-					case SMALLINT:
-					case SNAPSHOT:
-					case SPATIAL_WINDOW_MAX_CELLS:
-					case STANDBY:
-					case START_DATE:
-					case STATIC:
-					case STATS_STREAM:
-					case STATUS:
-					case STDEV:
-					case STDEVP:
-					case STOPLIST:
-					case STRING_AGG:
-					case STUFF:
-					case SUBJECT:
-					case SUM:
-					case SUSPEND:
-					case SYMMETRIC:
-					case SYNCHRONOUS_COMMIT:
-					case SYNONYM:
-					case SYSTEM:
-					case TAKE:
-					case TARGET_RECOVERY_TIME:
-					case TB:
-					case TEXTIMAGE_ON:
-					case THROW:
-					case TIES:
-					case TIME:
-					case TIMEOUT:
-					case TIMER:
-					case TINYINT:
-					case TORN_PAGE_DETECTION:
-					case TRANSFORM_NOISE_WORDS:
-					case TRIPLE_DES:
-					case TRIPLE_DES_3KEY:
-					case TRUSTWORTHY:
-					case TRY:
-					case TSQL:
-					case TWO_DIGIT_YEAR_CUTOFF:
-					case TYPE:
-					case TYPE_WARNING:
-					case UNBOUNDED:
-					case UNCOMMITTED:
-					case UNKNOWN:
-					case UNLIMITED:
-					case USING:
-					case VALID_XML:
-					case VALIDATION:
-					case VALUE:
-					case VAR:
-					case VARP:
-					case VIEW_METADATA:
-					case VIEWS:
-					case WAIT:
-					case WELL_FORMED_XML:
-					case WORK:
-					case WORKLOAD:
-					case XML:
-					case XMLNAMESPACES:
-					case DOUBLE_QUOTE_ID:
-					case SQUARE_BRACKET_ID:
-					case ID:
-						{
-						setState(7462);
-						id();
-						}
-						break;
-					default:
-						throw new NoViableAltException(this);
-					}
-					}
-					}
-					setState(7467); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				} while ( _la==DISK || _la==TAPE || _la==URL || _la==COMMA );
-				}
-				break;
-			}
-			setState(7504);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,1001,_ctx) ) {
-			case 1:
-				{
-				setState(7481); 
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				do {
-					{
-					{
-					setState(7471);
-					match(MIRROR);
-					setState(7472);
-					match(TO);
-					setState(7477); 
-					_errHandler.sync(this);
-					_alt = 1;
-					do {
-						switch (_alt) {
-						case 1:
-							{
-							{
-							setState(7474);
-							_la = _input.LA(1);
-							if (_la==COMMA) {
-								{
-								setState(7473);
-								match(COMMA);
-								}
-							}
-
-							setState(7476);
-							((Backup_databaseContext)_localctx).logical_device_name = id();
-							}
-							}
-							break;
-						default:
-							throw new NoViableAltException(this);
-						}
-						setState(7479); 
-						_errHandler.sync(this);
-						_alt = getInterpreter().adaptivePredict(_input,995,_ctx);
-					} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-					}
-					}
-					setState(7483); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				} while ( _la==MIRROR );
-				}
-				break;
-			case 2:
-				{
-				setState(7500); 
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				do {
-					{
-					{
-					setState(7485);
-					match(MIRROR);
-					setState(7486);
-					match(TO);
-					setState(7496); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					do {
+					switch (_alt) {
+					case 1:
 						{
 						{
-						setState(7488);
+						setState(7457);
 						_la = _input.LA(1);
 						if (_la==COMMA) {
 							{
-							setState(7487);
+							setState(7456);
 							match(COMMA);
 							}
 						}
 
-						setState(7490);
+						setState(7459);
 						_la = _input.LA(1);
 						if ( !(_la==DISK || _la==TAPE || _la==URL) ) {
 						_errHandler.recoverInline(this);
 						} else {
 							consume();
 						}
-						setState(7491);
+						setState(7460);
 						match(EQUAL);
-						setState(7494);
+						setState(7463);
 						switch (_input.LA(1)) {
 						case STRING:
 							{
-							setState(7492);
+							setState(7461);
 							match(STRING);
 							}
 							break;
 						case CALLED:
 						case DATA_COMPRESSION:
 						case EVENTDATA:
+						case EXPIREDATE:
 						case FILENAME:
 						case FILLFACTOR:
 						case FORCESEEK:
@@ -53742,20 +53484,27 @@ public class MocaSqlParser extends Parser {
 						case MAX_MEMORY:
 						case OFFSETS:
 						case PAGE:
+						case POLICY:
+						case PRECISION:
 						case PUBLIC:
 						case R:
 						case RAW:
 						case RETURN:
 						case RETURNS:
+						case ROLE:
 						case ROWCOUNT:
 						case SAFETY:
+						case RULE:
 						case SERVER:
 						case SID:
 						case SOURCE:
 						case SPLIT:
 						case STATE:
 						case START:
+						case STOP:
 						case TARGET:
+						case TRAN:
+						case USER:
 						case ABSOLUTE:
 						case ACCENT_SENSITIVITY:
 						case ACTION:
@@ -54159,8 +53908,9 @@ public class MocaSqlParser extends Parser {
 						case DOUBLE_QUOTE_ID:
 						case SQUARE_BRACKET_ID:
 						case ID:
+						case URL:
 							{
-							setState(7493);
+							setState(7462);
 							id();
 							}
 							break;
@@ -54169,10 +53919,571 @@ public class MocaSqlParser extends Parser {
 						}
 						}
 						}
+						break;
+					default:
+						throw new NoViableAltException(this);
+					}
+					setState(7467); 
+					_errHandler.sync(this);
+					_alt = getInterpreter().adaptivePredict(_input,992,_ctx);
+				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+				}
+				break;
+			}
+			setState(7504);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,1001,_ctx) ) {
+			case 1:
+				{
+				setState(7481); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				do {
+					{
+					{
+					setState(7471);
+					match(MIRROR);
+					setState(7472);
+					match(TO);
+					setState(7477); 
+					_errHandler.sync(this);
+					_alt = 1;
+					do {
+						switch (_alt) {
+						case 1:
+							{
+							{
+							setState(7474);
+							_la = _input.LA(1);
+							if (_la==COMMA) {
+								{
+								setState(7473);
+								match(COMMA);
+								}
+							}
+
+							setState(7476);
+							((Backup_databaseContext)_localctx).logical_device_name = id();
+							}
+							}
+							break;
+						default:
+							throw new NoViableAltException(this);
+						}
+						setState(7479); 
+						_errHandler.sync(this);
+						_alt = getInterpreter().adaptivePredict(_input,995,_ctx);
+					} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+					}
+					}
+					setState(7483); 
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				} while ( _la==MIRROR );
+				}
+				break;
+			case 2:
+				{
+				setState(7500); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				do {
+					{
+					{
+					setState(7485);
+					match(MIRROR);
+					setState(7486);
+					match(TO);
+					setState(7496); 
+					_errHandler.sync(this);
+					_alt = 1;
+					do {
+						switch (_alt) {
+						case 1:
+							{
+							{
+							setState(7488);
+							_la = _input.LA(1);
+							if (_la==COMMA) {
+								{
+								setState(7487);
+								match(COMMA);
+								}
+							}
+
+							setState(7490);
+							_la = _input.LA(1);
+							if ( !(_la==DISK || _la==TAPE || _la==URL) ) {
+							_errHandler.recoverInline(this);
+							} else {
+								consume();
+							}
+							setState(7491);
+							match(EQUAL);
+							setState(7494);
+							switch (_input.LA(1)) {
+							case STRING:
+								{
+								setState(7492);
+								match(STRING);
+								}
+								break;
+							case CALLED:
+							case DATA_COMPRESSION:
+							case EVENTDATA:
+							case EXPIREDATE:
+							case FILENAME:
+							case FILLFACTOR:
+							case FORCESEEK:
+							case INIT:
+							case KEY:
+							case MASTER:
+							case MAX_MEMORY:
+							case OFFSETS:
+							case PAGE:
+							case POLICY:
+							case PRECISION:
+							case PUBLIC:
+							case R:
+							case RAW:
+							case RETURN:
+							case RETURNS:
+							case ROLE:
+							case ROWCOUNT:
+							case SAFETY:
+							case RULE:
+							case SERVER:
+							case SID:
+							case SOURCE:
+							case SPLIT:
+							case STATE:
+							case START:
+							case STOP:
+							case TARGET:
+							case TRAN:
+							case USER:
+							case ABSOLUTE:
+							case ACCENT_SENSITIVITY:
+							case ACTION:
+							case ACTIVATION:
+							case ACTIVE:
+							case ADDRESS:
+							case AES_128:
+							case AES_192:
+							case AES_256:
+							case AFFINITY:
+							case AFTER:
+							case AGGREGATE:
+							case ALGORITHM:
+							case ALLOW_ENCRYPTED_VALUE_MODIFICATIONS:
+							case ALLOW_SNAPSHOT_ISOLATION:
+							case ALLOWED:
+							case ANSI_NULL_DEFAULT:
+							case ANSI_NULLS:
+							case ANSI_PADDING:
+							case ANSI_WARNINGS:
+							case APPLICATION_LOG:
+							case APPLY:
+							case ARITHABORT:
+							case ASSEMBLY:
+							case AUDIT:
+							case AUDIT_GUID:
+							case AUTO:
+							case AUTO_CLEANUP:
+							case AUTO_CLOSE:
+							case AUTO_CREATE_STATISTICS:
+							case AUTO_SHRINK:
+							case AUTO_UPDATE_STATISTICS:
+							case AUTO_UPDATE_STATISTICS_ASYNC:
+							case AVAILABILITY:
+							case AVG:
+							case BACKUP_PRIORITY:
+							case BEGIN_DIALOG:
+							case BIGINT:
+							case BINARY_BASE64:
+							case BINARY_CHECKSUM:
+							case BINDING:
+							case BLOB_STORAGE:
+							case BROKER:
+							case BROKER_INSTANCE:
+							case BULK_LOGGED:
+							case CALLER:
+							case CAP_CPU_PERCENT:
+							case CAST:
+							case CATALOG:
+							case CATCH:
+							case CHANGE_RETENTION:
+							case CHANGE_TRACKING:
+							case CHECKSUM:
+							case CHECKSUM_AGG:
+							case CLEANUP:
+							case COLLECTION:
+							case COLUMN_MASTER_KEY:
+							case COMMITTED:
+							case COMPATIBILITY_LEVEL:
+							case CONCAT:
+							case CONCAT_NULL_YIELDS_NULL:
+							case CONTENT:
+							case CONTROL:
+							case COOKIE:
+							case COUNT:
+							case COUNT_BIG:
+							case COUNTER:
+							case CPU:
+							case CREATE_NEW:
+							case CREATION_DISPOSITION:
+							case CREDENTIAL:
+							case CRYPTOGRAPHIC:
+							case CURSOR_CLOSE_ON_COMMIT:
+							case CURSOR_DEFAULT:
+							case DATA:
+							case DATE_CORRELATION_OPTIMIZATION:
+							case DATEADD:
+							case DATEDIFF:
+							case DATENAME:
+							case DATEPART:
+							case DAYS:
+							case DB_CHAINING:
+							case DB_FAILOVER:
+							case DECRYPTION:
+							case DEFAULT_DOUBLE_QUOTE:
+							case DEFAULT_FULLTEXT_LANGUAGE:
+							case DEFAULT_LANGUAGE:
+							case DELAY:
+							case DELAYED_DURABILITY:
+							case DELETED:
+							case DENSE_RANK:
+							case DEPENDENTS:
+							case DES:
+							case DESCRIPTION:
+							case DESX:
+							case DHCP:
+							case DIALOG:
+							case DIRECTORY_NAME:
+							case DISABLE:
+							case DISABLE_BROKER:
+							case DISABLED:
+							case DISK_DRIVE:
+							case DOCUMENT:
+							case DYNAMIC:
+							case EMERGENCY:
+							case EMPTY:
+							case ENABLE:
+							case ENABLE_BROKER:
+							case ENCRYPTED_VALUE:
+							case ENCRYPTION:
+							case ENDPOINT_URL:
+							case ERROR_BROKER_CONVERSATIONS:
+							case EXCLUSIVE:
+							case EXECUTABLE:
+							case EXIST:
+							case EXPAND:
+							case EXPIRY_DATE:
+							case EXPLICIT:
+							case FAIL_OPERATION:
+							case FAILOVER_MODE:
+							case FAILURE:
+							case FAILURE_CONDITION_LEVEL:
+							case FAST:
+							case FAST_FORWARD:
+							case FILEGROUP:
+							case FILEGROWTH:
+							case FILEPATH:
+							case FILESTREAM:
+							case FILTER:
+							case FIRST:
+							case FIRST_VALUE:
+							case FOLLOWING:
+							case FORCE:
+							case FORCE_FAILOVER_ALLOW_DATA_LOSS:
+							case FORCED:
+							case FORMAT:
+							case FORWARD_ONLY:
+							case FULLSCAN:
+							case FULLTEXT:
+							case GB:
+							case GETDATE:
+							case GETUTCDATE:
+							case GLOBAL:
+							case GO:
+							case GROUP_MAX_REQUESTS:
+							case GROUPING:
+							case GROUPING_ID:
+							case HADR:
+							case HASH:
+							case HEALTH_CHECK_TIMEOUT:
+							case HIGH:
+							case HONOR_BROKER_PRIORITY:
+							case HOURS:
+							case IDENTITY_VALUE:
+							case IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX:
+							case IMMEDIATE:
+							case IMPERSONATE:
+							case IMPORTANCE:
+							case INCREMENTAL:
+							case INITIATOR:
+							case INPUT:
+							case INSENSITIVE:
+							case INSERTED:
+							case INT:
+							case IP:
+							case ISOLATION:
+							case KB:
+							case KEEP:
+							case KEEPFIXED:
+							case KEY_SOURCE:
+							case KEYS:
+							case KEYSET:
+							case LAG:
+							case LAST:
+							case LAST_VALUE:
+							case LEAD:
+							case LEVEL:
+							case LIST:
+							case LISTENER:
+							case LISTENER_URL:
+							case LOB_COMPACTION:
+							case LOCAL:
+							case LOCATION:
+							case LOCK:
+							case LOCK_ESCALATION:
+							case LOGIN:
+							case LOOP:
+							case LOW:
+							case MANUAL:
+							case MARK:
+							case MATERIALIZED:
+							case MAX:
+							case MAX_CPU_PERCENT:
+							case MAX_DOP:
+							case MAX_FILES:
+							case MAX_IOPS_PER_VOLUME:
+							case MAX_MEMORY_PERCENT:
+							case MAX_PROCESSES:
+							case MAX_QUEUE_READERS:
+							case MAX_ROLLOVER_FILES:
+							case MAXDOP:
+							case MAXRECURSION:
+							case MAXSIZE:
+							case MB:
+							case MEDIUM:
+							case MEMORY_OPTIMIZED_DATA:
+							case MESSAGE:
+							case MIN:
+							case MIN_ACTIVE_ROWVERSION:
+							case MIN_CPU_PERCENT:
+							case MIN_IOPS_PER_VOLUME:
+							case MIN_MEMORY_PERCENT:
+							case MINUTES:
+							case MIRROR_ADDRESS:
+							case MIXED_PAGE_ALLOCATION:
+							case MODE:
+							case MODIFY:
+							case MOVE:
+							case MULTI_USER:
+							case NAME:
+							case NESTED_TRIGGERS:
+							case NEW_ACCOUNT:
+							case NEW_BROKER:
+							case NEW_PASSWORD:
+							case NEXT:
+							case NO:
+							case NO_TRUNCATE:
+							case NO_WAIT:
+							case NOCOUNT:
+							case NODES:
+							case NOEXPAND:
+							case NON_TRANSACTED_ACCESS:
+							case NORECOMPUTE:
+							case NORECOVERY:
+							case NOWAIT:
+							case NTILE:
+							case NUMANODE:
+							case NUMBER:
+							case NUMERIC_ROUNDABORT:
+							case OBJECT:
+							case OFFLINE:
+							case OFFSET:
+							case OLD_ACCOUNT:
+							case ONLINE:
+							case ONLY:
+							case OPEN_EXISTING:
+							case OPTIMISTIC:
+							case OPTIMIZE:
+							case OUT:
+							case OUTPUT:
+							case OWNER:
+							case PAGE_VERIFY:
+							case PARAMETERIZATION:
+							case PARTITION:
+							case PARTITIONS:
+							case PARTNER:
+							case PATH:
+							case POISON_MESSAGE_HANDLING:
+							case POOL:
+							case PORT:
+							case PRECEDING:
+							case PRIMARY_ROLE:
+							case PRIOR:
+							case PRIORITY:
+							case PRIORITY_LEVEL:
+							case PRIVATE:
+							case PRIVATE_KEY:
+							case PRIVILEGES:
+							case PROCEDURE_NAME:
+							case PROPERTY:
+							case PROVIDER:
+							case PROVIDER_KEY_NAME:
+							case QUERY:
+							case QUEUE:
+							case QUEUE_DELAY:
+							case QUOTED_IDENTIFIER:
+							case RANGE:
+							case RANK:
+							case RC2:
+							case RC4:
+							case RC4_128:
+							case READ_COMMITTED_SNAPSHOT:
+							case READ_ONLY:
+							case READ_ONLY_ROUTING_LIST:
+							case READ_WRITE:
+							case READONLY:
+							case REBUILD:
+							case RECEIVE:
+							case RECOMPILE:
+							case RECOVERY:
+							case RECURSIVE_TRIGGERS:
+							case RELATIVE:
+							case REMOTE:
+							case REMOTE_SERVICE_NAME:
+							case REMOVE:
+							case REORGANIZE:
+							case REPEATABLE:
+							case REPLICA:
+							case REQUEST_MAX_CPU_TIME_SEC:
+							case REQUEST_MAX_MEMORY_GRANT_PERCENT:
+							case REQUEST_MEMORY_GRANT_TIMEOUT_SEC:
+							case REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT:
+							case RESERVE_DISK_SPACE:
+							case RESOURCE:
+							case RESOURCE_MANAGER_LOCATION:
+							case RESTRICTED_USER:
+							case RETENTION:
+							case ROBUST:
+							case ROOT:
+							case ROUTE:
+							case ROW:
+							case ROW_NUMBER:
+							case ROWGUID:
+							case ROWS:
+							case SAMPLE:
+							case SCHEMABINDING:
+							case SCOPED:
+							case SCROLL:
+							case SCROLL_LOCKS:
+							case SEARCH:
+							case SECONDARY:
+							case SECONDARY_ONLY:
+							case SECONDARY_ROLE:
+							case SECONDS:
+							case SECRET:
+							case SECURITY:
+							case SECURITY_LOG:
+							case SEEDING_MODE:
+							case SELF:
+							case SEMI_SENSITIVE:
+							case SEND:
+							case SENT:
+							case SEQUENCE:
+							case SERIALIZABLE:
+							case SESSION_TIMEOUT:
+							case SETERROR:
+							case SHARE:
+							case SHOWPLAN:
+							case SIGNATURE:
+							case SIMPLE:
+							case SINGLE_USER:
+							case SIZE:
+							case SMALLINT:
+							case SNAPSHOT:
+							case SPATIAL_WINDOW_MAX_CELLS:
+							case STANDBY:
+							case START_DATE:
+							case STATIC:
+							case STATS_STREAM:
+							case STATUS:
+							case STDEV:
+							case STDEVP:
+							case STOPLIST:
+							case STRING_AGG:
+							case STUFF:
+							case SUBJECT:
+							case SUM:
+							case SUSPEND:
+							case SYMMETRIC:
+							case SYNCHRONOUS_COMMIT:
+							case SYNONYM:
+							case SYSTEM:
+							case TAKE:
+							case TARGET_RECOVERY_TIME:
+							case TB:
+							case TEXTIMAGE_ON:
+							case THROW:
+							case TIES:
+							case TIME:
+							case TIMEOUT:
+							case TIMER:
+							case TINYINT:
+							case TORN_PAGE_DETECTION:
+							case TRANSFORM_NOISE_WORDS:
+							case TRIPLE_DES:
+							case TRIPLE_DES_3KEY:
+							case TRUSTWORTHY:
+							case TRY:
+							case TSQL:
+							case TWO_DIGIT_YEAR_CUTOFF:
+							case TYPE:
+							case TYPE_WARNING:
+							case UNBOUNDED:
+							case UNCOMMITTED:
+							case UNKNOWN:
+							case UNLIMITED:
+							case USING:
+							case VALID_XML:
+							case VALIDATION:
+							case VALUE:
+							case VAR:
+							case VARP:
+							case VIEW_METADATA:
+							case VIEWS:
+							case WAIT:
+							case WELL_FORMED_XML:
+							case WORK:
+							case WORKLOAD:
+							case XML:
+							case XMLNAMESPACES:
+							case DOUBLE_QUOTE_ID:
+							case SQUARE_BRACKET_ID:
+							case ID:
+							case URL:
+								{
+								setState(7493);
+								id();
+								}
+								break;
+							default:
+								throw new NoViableAltException(this);
+							}
+							}
+							}
+							break;
+						default:
+							throw new NoViableAltException(this);
+						}
 						setState(7498); 
 						_errHandler.sync(this);
-						_la = _input.LA(1);
-					} while ( _la==DISK || _la==TAPE || _la==URL || _la==COMMA );
+						_alt = getInterpreter().adaptivePredict(_input,999,_ctx);
+					} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 					}
 					}
 					setState(7502); 
@@ -54274,6 +54585,7 @@ public class MocaSqlParser extends Parser {
 							case CALLED:
 							case DATA_COMPRESSION:
 							case EVENTDATA:
+							case EXPIREDATE:
 							case FILENAME:
 							case FILLFACTOR:
 							case FORCESEEK:
@@ -54283,20 +54595,27 @@ public class MocaSqlParser extends Parser {
 							case MAX_MEMORY:
 							case OFFSETS:
 							case PAGE:
+							case POLICY:
+							case PRECISION:
 							case PUBLIC:
 							case R:
 							case RAW:
 							case RETURN:
 							case RETURNS:
+							case ROLE:
 							case ROWCOUNT:
 							case SAFETY:
+							case RULE:
 							case SERVER:
 							case SID:
 							case SOURCE:
 							case SPLIT:
 							case STATE:
 							case START:
+							case STOP:
 							case TARGET:
+							case TRAN:
+							case USER:
 							case ABSOLUTE:
 							case ACCENT_SENSITIVITY:
 							case ACTION:
@@ -54700,6 +55019,7 @@ public class MocaSqlParser extends Parser {
 							case DOUBLE_QUOTE_ID:
 							case SQUARE_BRACKET_ID:
 							case ID:
+							case URL:
 								{
 								setState(7525);
 								id();
@@ -54789,6 +55109,7 @@ public class MocaSqlParser extends Parser {
 								case CALLED:
 								case DATA_COMPRESSION:
 								case EVENTDATA:
+								case EXPIREDATE:
 								case FILENAME:
 								case FILLFACTOR:
 								case FORCESEEK:
@@ -54798,20 +55119,27 @@ public class MocaSqlParser extends Parser {
 								case MAX_MEMORY:
 								case OFFSETS:
 								case PAGE:
+								case POLICY:
+								case PRECISION:
 								case PUBLIC:
 								case R:
 								case RAW:
 								case RETURN:
 								case RETURNS:
+								case ROLE:
 								case ROWCOUNT:
 								case SAFETY:
+								case RULE:
 								case SERVER:
 								case SID:
 								case SOURCE:
 								case SPLIT:
 								case STATE:
 								case START:
+								case STOP:
 								case TARGET:
+								case TRAN:
+								case USER:
 								case ABSOLUTE:
 								case ACCENT_SENSITIVITY:
 								case ACTION:
@@ -55215,6 +55543,7 @@ public class MocaSqlParser extends Parser {
 								case DOUBLE_QUOTE_ID:
 								case SQUARE_BRACKET_ID:
 								case ID:
+								case URL:
 									{
 									setState(7548);
 									id();
@@ -55242,6 +55571,7 @@ public class MocaSqlParser extends Parser {
 								case CALLED:
 								case DATA_COMPRESSION:
 								case EVENTDATA:
+								case EXPIREDATE:
 								case FILENAME:
 								case FILLFACTOR:
 								case FORCESEEK:
@@ -55251,20 +55581,27 @@ public class MocaSqlParser extends Parser {
 								case MAX_MEMORY:
 								case OFFSETS:
 								case PAGE:
+								case POLICY:
+								case PRECISION:
 								case PUBLIC:
 								case R:
 								case RAW:
 								case RETURN:
 								case RETURNS:
+								case ROLE:
 								case ROWCOUNT:
 								case SAFETY:
+								case RULE:
 								case SERVER:
 								case SID:
 								case SOURCE:
 								case SPLIT:
 								case STATE:
 								case START:
+								case STOP:
 								case TARGET:
+								case TRAN:
+								case USER:
 								case ABSOLUTE:
 								case ACCENT_SENSITIVITY:
 								case ACTION:
@@ -55668,6 +56005,7 @@ public class MocaSqlParser extends Parser {
 								case DOUBLE_QUOTE_ID:
 								case SQUARE_BRACKET_ID:
 								case ID:
+								case URL:
 									{
 									setState(7554);
 									id();
@@ -55769,6 +56107,7 @@ public class MocaSqlParser extends Parser {
 							case CALLED:
 							case DATA_COMPRESSION:
 							case EVENTDATA:
+							case EXPIREDATE:
 							case FILENAME:
 							case FILLFACTOR:
 							case FORCESEEK:
@@ -55778,20 +56117,27 @@ public class MocaSqlParser extends Parser {
 							case MAX_MEMORY:
 							case OFFSETS:
 							case PAGE:
+							case POLICY:
+							case PRECISION:
 							case PUBLIC:
 							case R:
 							case RAW:
 							case RETURN:
 							case RETURNS:
+							case ROLE:
 							case ROWCOUNT:
 							case SAFETY:
+							case RULE:
 							case SERVER:
 							case SID:
 							case SOURCE:
 							case SPLIT:
 							case STATE:
 							case START:
+							case STOP:
 							case TARGET:
+							case TRAN:
+							case USER:
 							case ABSOLUTE:
 							case ACCENT_SENSITIVITY:
 							case ACTION:
@@ -56195,6 +56541,7 @@ public class MocaSqlParser extends Parser {
 							case DOUBLE_QUOTE_ID:
 							case SQUARE_BRACKET_ID:
 							case ID:
+							case URL:
 								{
 								setState(7577);
 								id();
@@ -56252,6 +56599,7 @@ public class MocaSqlParser extends Parser {
 							case CALLED:
 							case DATA_COMPRESSION:
 							case EVENTDATA:
+							case EXPIREDATE:
 							case FILENAME:
 							case FILLFACTOR:
 							case FORCESEEK:
@@ -56261,20 +56609,27 @@ public class MocaSqlParser extends Parser {
 							case MAX_MEMORY:
 							case OFFSETS:
 							case PAGE:
+							case POLICY:
+							case PRECISION:
 							case PUBLIC:
 							case R:
 							case RAW:
 							case RETURN:
 							case RETURNS:
+							case ROLE:
 							case ROWCOUNT:
 							case SAFETY:
+							case RULE:
 							case SERVER:
 							case SID:
 							case SOURCE:
 							case SPLIT:
 							case STATE:
 							case START:
+							case STOP:
 							case TARGET:
+							case TRAN:
+							case USER:
 							case ABSOLUTE:
 							case ACCENT_SENSITIVITY:
 							case ACTION:
@@ -56678,6 +57033,7 @@ public class MocaSqlParser extends Parser {
 							case DOUBLE_QUOTE_ID:
 							case SQUARE_BRACKET_ID:
 							case ID:
+							case URL:
 								{
 								setState(7592);
 								id();
@@ -56714,6 +57070,7 @@ public class MocaSqlParser extends Parser {
 							case CALLED:
 							case DATA_COMPRESSION:
 							case EVENTDATA:
+							case EXPIREDATE:
 							case FILENAME:
 							case FILLFACTOR:
 							case FORCESEEK:
@@ -56723,20 +57080,27 @@ public class MocaSqlParser extends Parser {
 							case MAX_MEMORY:
 							case OFFSETS:
 							case PAGE:
+							case POLICY:
+							case PRECISION:
 							case PUBLIC:
 							case R:
 							case RAW:
 							case RETURN:
 							case RETURNS:
+							case ROLE:
 							case ROWCOUNT:
 							case SAFETY:
+							case RULE:
 							case SERVER:
 							case SID:
 							case SOURCE:
 							case SPLIT:
 							case STATE:
 							case START:
+							case STOP:
 							case TARGET:
+							case TRAN:
+							case USER:
 							case ABSOLUTE:
 							case ACCENT_SENSITIVITY:
 							case ACTION:
@@ -57140,6 +57504,7 @@ public class MocaSqlParser extends Parser {
 							case DOUBLE_QUOTE_ID:
 							case SQUARE_BRACKET_ID:
 							case ID:
+							case URL:
 								{
 								setState(7601);
 								id();
@@ -57176,6 +57541,7 @@ public class MocaSqlParser extends Parser {
 							case CALLED:
 							case DATA_COMPRESSION:
 							case EVENTDATA:
+							case EXPIREDATE:
 							case FILENAME:
 							case FILLFACTOR:
 							case FORCESEEK:
@@ -57185,20 +57551,27 @@ public class MocaSqlParser extends Parser {
 							case MAX_MEMORY:
 							case OFFSETS:
 							case PAGE:
+							case POLICY:
+							case PRECISION:
 							case PUBLIC:
 							case R:
 							case RAW:
 							case RETURN:
 							case RETURNS:
+							case ROLE:
 							case ROWCOUNT:
 							case SAFETY:
+							case RULE:
 							case SERVER:
 							case SID:
 							case SOURCE:
 							case SPLIT:
 							case STATE:
 							case START:
+							case STOP:
 							case TARGET:
+							case TRAN:
+							case USER:
 							case ABSOLUTE:
 							case ACCENT_SENSITIVITY:
 							case ACTION:
@@ -57602,6 +57975,7 @@ public class MocaSqlParser extends Parser {
 							case DOUBLE_QUOTE_ID:
 							case SQUARE_BRACKET_ID:
 							case ID:
+							case URL:
 								{
 								setState(7610);
 								id();
@@ -58128,581 +58502,42 @@ public class MocaSqlParser extends Parser {
 				match(TO);
 				setState(7690); 
 				_errHandler.sync(this);
-				_la = _input.LA(1);
+				_alt = 1;
 				do {
-					{
-					{
-					setState(7682);
-					_la = _input.LA(1);
-					if (_la==COMMA) {
-						{
-						setState(7681);
-						match(COMMA);
-						}
-					}
-
-					setState(7684);
-					_la = _input.LA(1);
-					if ( !(_la==DISK || _la==TAPE || _la==URL) ) {
-					_errHandler.recoverInline(this);
-					} else {
-						consume();
-					}
-					setState(7685);
-					match(EQUAL);
-					setState(7688);
-					switch (_input.LA(1)) {
-					case STRING:
-						{
-						setState(7686);
-						match(STRING);
-						}
-						break;
-					case CALLED:
-					case DATA_COMPRESSION:
-					case EVENTDATA:
-					case FILENAME:
-					case FILLFACTOR:
-					case FORCESEEK:
-					case INIT:
-					case KEY:
-					case MASTER:
-					case MAX_MEMORY:
-					case OFFSETS:
-					case PAGE:
-					case PUBLIC:
-					case R:
-					case RAW:
-					case RETURN:
-					case RETURNS:
-					case ROWCOUNT:
-					case SAFETY:
-					case SERVER:
-					case SID:
-					case SOURCE:
-					case SPLIT:
-					case STATE:
-					case START:
-					case TARGET:
-					case ABSOLUTE:
-					case ACCENT_SENSITIVITY:
-					case ACTION:
-					case ACTIVATION:
-					case ACTIVE:
-					case ADDRESS:
-					case AES_128:
-					case AES_192:
-					case AES_256:
-					case AFFINITY:
-					case AFTER:
-					case AGGREGATE:
-					case ALGORITHM:
-					case ALLOW_ENCRYPTED_VALUE_MODIFICATIONS:
-					case ALLOW_SNAPSHOT_ISOLATION:
-					case ALLOWED:
-					case ANSI_NULL_DEFAULT:
-					case ANSI_NULLS:
-					case ANSI_PADDING:
-					case ANSI_WARNINGS:
-					case APPLICATION_LOG:
-					case APPLY:
-					case ARITHABORT:
-					case ASSEMBLY:
-					case AUDIT:
-					case AUDIT_GUID:
-					case AUTO:
-					case AUTO_CLEANUP:
-					case AUTO_CLOSE:
-					case AUTO_CREATE_STATISTICS:
-					case AUTO_SHRINK:
-					case AUTO_UPDATE_STATISTICS:
-					case AUTO_UPDATE_STATISTICS_ASYNC:
-					case AVAILABILITY:
-					case AVG:
-					case BACKUP_PRIORITY:
-					case BEGIN_DIALOG:
-					case BIGINT:
-					case BINARY_BASE64:
-					case BINARY_CHECKSUM:
-					case BINDING:
-					case BLOB_STORAGE:
-					case BROKER:
-					case BROKER_INSTANCE:
-					case BULK_LOGGED:
-					case CALLER:
-					case CAP_CPU_PERCENT:
-					case CAST:
-					case CATALOG:
-					case CATCH:
-					case CHANGE_RETENTION:
-					case CHANGE_TRACKING:
-					case CHECKSUM:
-					case CHECKSUM_AGG:
-					case CLEANUP:
-					case COLLECTION:
-					case COLUMN_MASTER_KEY:
-					case COMMITTED:
-					case COMPATIBILITY_LEVEL:
-					case CONCAT:
-					case CONCAT_NULL_YIELDS_NULL:
-					case CONTENT:
-					case CONTROL:
-					case COOKIE:
-					case COUNT:
-					case COUNT_BIG:
-					case COUNTER:
-					case CPU:
-					case CREATE_NEW:
-					case CREATION_DISPOSITION:
-					case CREDENTIAL:
-					case CRYPTOGRAPHIC:
-					case CURSOR_CLOSE_ON_COMMIT:
-					case CURSOR_DEFAULT:
-					case DATA:
-					case DATE_CORRELATION_OPTIMIZATION:
-					case DATEADD:
-					case DATEDIFF:
-					case DATENAME:
-					case DATEPART:
-					case DAYS:
-					case DB_CHAINING:
-					case DB_FAILOVER:
-					case DECRYPTION:
-					case DEFAULT_DOUBLE_QUOTE:
-					case DEFAULT_FULLTEXT_LANGUAGE:
-					case DEFAULT_LANGUAGE:
-					case DELAY:
-					case DELAYED_DURABILITY:
-					case DELETED:
-					case DENSE_RANK:
-					case DEPENDENTS:
-					case DES:
-					case DESCRIPTION:
-					case DESX:
-					case DHCP:
-					case DIALOG:
-					case DIRECTORY_NAME:
-					case DISABLE:
-					case DISABLE_BROKER:
-					case DISABLED:
-					case DISK_DRIVE:
-					case DOCUMENT:
-					case DYNAMIC:
-					case EMERGENCY:
-					case EMPTY:
-					case ENABLE:
-					case ENABLE_BROKER:
-					case ENCRYPTED_VALUE:
-					case ENCRYPTION:
-					case ENDPOINT_URL:
-					case ERROR_BROKER_CONVERSATIONS:
-					case EXCLUSIVE:
-					case EXECUTABLE:
-					case EXIST:
-					case EXPAND:
-					case EXPIRY_DATE:
-					case EXPLICIT:
-					case FAIL_OPERATION:
-					case FAILOVER_MODE:
-					case FAILURE:
-					case FAILURE_CONDITION_LEVEL:
-					case FAST:
-					case FAST_FORWARD:
-					case FILEGROUP:
-					case FILEGROWTH:
-					case FILEPATH:
-					case FILESTREAM:
-					case FILTER:
-					case FIRST:
-					case FIRST_VALUE:
-					case FOLLOWING:
-					case FORCE:
-					case FORCE_FAILOVER_ALLOW_DATA_LOSS:
-					case FORCED:
-					case FORMAT:
-					case FORWARD_ONLY:
-					case FULLSCAN:
-					case FULLTEXT:
-					case GB:
-					case GETDATE:
-					case GETUTCDATE:
-					case GLOBAL:
-					case GO:
-					case GROUP_MAX_REQUESTS:
-					case GROUPING:
-					case GROUPING_ID:
-					case HADR:
-					case HASH:
-					case HEALTH_CHECK_TIMEOUT:
-					case HIGH:
-					case HONOR_BROKER_PRIORITY:
-					case HOURS:
-					case IDENTITY_VALUE:
-					case IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX:
-					case IMMEDIATE:
-					case IMPERSONATE:
-					case IMPORTANCE:
-					case INCREMENTAL:
-					case INITIATOR:
-					case INPUT:
-					case INSENSITIVE:
-					case INSERTED:
-					case INT:
-					case IP:
-					case ISOLATION:
-					case KB:
-					case KEEP:
-					case KEEPFIXED:
-					case KEY_SOURCE:
-					case KEYS:
-					case KEYSET:
-					case LAG:
-					case LAST:
-					case LAST_VALUE:
-					case LEAD:
-					case LEVEL:
-					case LIST:
-					case LISTENER:
-					case LISTENER_URL:
-					case LOB_COMPACTION:
-					case LOCAL:
-					case LOCATION:
-					case LOCK:
-					case LOCK_ESCALATION:
-					case LOGIN:
-					case LOOP:
-					case LOW:
-					case MANUAL:
-					case MARK:
-					case MATERIALIZED:
-					case MAX:
-					case MAX_CPU_PERCENT:
-					case MAX_DOP:
-					case MAX_FILES:
-					case MAX_IOPS_PER_VOLUME:
-					case MAX_MEMORY_PERCENT:
-					case MAX_PROCESSES:
-					case MAX_QUEUE_READERS:
-					case MAX_ROLLOVER_FILES:
-					case MAXDOP:
-					case MAXRECURSION:
-					case MAXSIZE:
-					case MB:
-					case MEDIUM:
-					case MEMORY_OPTIMIZED_DATA:
-					case MESSAGE:
-					case MIN:
-					case MIN_ACTIVE_ROWVERSION:
-					case MIN_CPU_PERCENT:
-					case MIN_IOPS_PER_VOLUME:
-					case MIN_MEMORY_PERCENT:
-					case MINUTES:
-					case MIRROR_ADDRESS:
-					case MIXED_PAGE_ALLOCATION:
-					case MODE:
-					case MODIFY:
-					case MOVE:
-					case MULTI_USER:
-					case NAME:
-					case NESTED_TRIGGERS:
-					case NEW_ACCOUNT:
-					case NEW_BROKER:
-					case NEW_PASSWORD:
-					case NEXT:
-					case NO:
-					case NO_TRUNCATE:
-					case NO_WAIT:
-					case NOCOUNT:
-					case NODES:
-					case NOEXPAND:
-					case NON_TRANSACTED_ACCESS:
-					case NORECOMPUTE:
-					case NORECOVERY:
-					case NOWAIT:
-					case NTILE:
-					case NUMANODE:
-					case NUMBER:
-					case NUMERIC_ROUNDABORT:
-					case OBJECT:
-					case OFFLINE:
-					case OFFSET:
-					case OLD_ACCOUNT:
-					case ONLINE:
-					case ONLY:
-					case OPEN_EXISTING:
-					case OPTIMISTIC:
-					case OPTIMIZE:
-					case OUT:
-					case OUTPUT:
-					case OWNER:
-					case PAGE_VERIFY:
-					case PARAMETERIZATION:
-					case PARTITION:
-					case PARTITIONS:
-					case PARTNER:
-					case PATH:
-					case POISON_MESSAGE_HANDLING:
-					case POOL:
-					case PORT:
-					case PRECEDING:
-					case PRIMARY_ROLE:
-					case PRIOR:
-					case PRIORITY:
-					case PRIORITY_LEVEL:
-					case PRIVATE:
-					case PRIVATE_KEY:
-					case PRIVILEGES:
-					case PROCEDURE_NAME:
-					case PROPERTY:
-					case PROVIDER:
-					case PROVIDER_KEY_NAME:
-					case QUERY:
-					case QUEUE:
-					case QUEUE_DELAY:
-					case QUOTED_IDENTIFIER:
-					case RANGE:
-					case RANK:
-					case RC2:
-					case RC4:
-					case RC4_128:
-					case READ_COMMITTED_SNAPSHOT:
-					case READ_ONLY:
-					case READ_ONLY_ROUTING_LIST:
-					case READ_WRITE:
-					case READONLY:
-					case REBUILD:
-					case RECEIVE:
-					case RECOMPILE:
-					case RECOVERY:
-					case RECURSIVE_TRIGGERS:
-					case RELATIVE:
-					case REMOTE:
-					case REMOTE_SERVICE_NAME:
-					case REMOVE:
-					case REORGANIZE:
-					case REPEATABLE:
-					case REPLICA:
-					case REQUEST_MAX_CPU_TIME_SEC:
-					case REQUEST_MAX_MEMORY_GRANT_PERCENT:
-					case REQUEST_MEMORY_GRANT_TIMEOUT_SEC:
-					case REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT:
-					case RESERVE_DISK_SPACE:
-					case RESOURCE:
-					case RESOURCE_MANAGER_LOCATION:
-					case RESTRICTED_USER:
-					case RETENTION:
-					case ROBUST:
-					case ROOT:
-					case ROUTE:
-					case ROW:
-					case ROW_NUMBER:
-					case ROWGUID:
-					case ROWS:
-					case SAMPLE:
-					case SCHEMABINDING:
-					case SCOPED:
-					case SCROLL:
-					case SCROLL_LOCKS:
-					case SEARCH:
-					case SECONDARY:
-					case SECONDARY_ONLY:
-					case SECONDARY_ROLE:
-					case SECONDS:
-					case SECRET:
-					case SECURITY:
-					case SECURITY_LOG:
-					case SEEDING_MODE:
-					case SELF:
-					case SEMI_SENSITIVE:
-					case SEND:
-					case SENT:
-					case SEQUENCE:
-					case SERIALIZABLE:
-					case SESSION_TIMEOUT:
-					case SETERROR:
-					case SHARE:
-					case SHOWPLAN:
-					case SIGNATURE:
-					case SIMPLE:
-					case SINGLE_USER:
-					case SIZE:
-					case SMALLINT:
-					case SNAPSHOT:
-					case SPATIAL_WINDOW_MAX_CELLS:
-					case STANDBY:
-					case START_DATE:
-					case STATIC:
-					case STATS_STREAM:
-					case STATUS:
-					case STDEV:
-					case STDEVP:
-					case STOPLIST:
-					case STRING_AGG:
-					case STUFF:
-					case SUBJECT:
-					case SUM:
-					case SUSPEND:
-					case SYMMETRIC:
-					case SYNCHRONOUS_COMMIT:
-					case SYNONYM:
-					case SYSTEM:
-					case TAKE:
-					case TARGET_RECOVERY_TIME:
-					case TB:
-					case TEXTIMAGE_ON:
-					case THROW:
-					case TIES:
-					case TIME:
-					case TIMEOUT:
-					case TIMER:
-					case TINYINT:
-					case TORN_PAGE_DETECTION:
-					case TRANSFORM_NOISE_WORDS:
-					case TRIPLE_DES:
-					case TRIPLE_DES_3KEY:
-					case TRUSTWORTHY:
-					case TRY:
-					case TSQL:
-					case TWO_DIGIT_YEAR_CUTOFF:
-					case TYPE:
-					case TYPE_WARNING:
-					case UNBOUNDED:
-					case UNCOMMITTED:
-					case UNKNOWN:
-					case UNLIMITED:
-					case USING:
-					case VALID_XML:
-					case VALIDATION:
-					case VALUE:
-					case VAR:
-					case VARP:
-					case VIEW_METADATA:
-					case VIEWS:
-					case WAIT:
-					case WELL_FORMED_XML:
-					case WORK:
-					case WORKLOAD:
-					case XML:
-					case XMLNAMESPACES:
-					case DOUBLE_QUOTE_ID:
-					case SQUARE_BRACKET_ID:
-					case ID:
-						{
-						setState(7687);
-						id();
-						}
-						break;
-					default:
-						throw new NoViableAltException(this);
-					}
-					}
-					}
-					setState(7692); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				} while ( _la==DISK || _la==TAPE || _la==URL || _la==COMMA );
-				}
-				break;
-			}
-			setState(7729);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,1051,_ctx) ) {
-			case 1:
-				{
-				setState(7706); 
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				do {
-					{
-					{
-					setState(7696);
-					match(MIRROR);
-					setState(7697);
-					match(TO);
-					setState(7702); 
-					_errHandler.sync(this);
-					_alt = 1;
-					do {
-						switch (_alt) {
-						case 1:
-							{
-							{
-							setState(7699);
-							_la = _input.LA(1);
-							if (_la==COMMA) {
-								{
-								setState(7698);
-								match(COMMA);
-								}
-							}
-
-							setState(7701);
-							((Backup_logContext)_localctx).logical_device_name = id();
-							}
-							}
-							break;
-						default:
-							throw new NoViableAltException(this);
-						}
-						setState(7704); 
-						_errHandler.sync(this);
-						_alt = getInterpreter().adaptivePredict(_input,1045,_ctx);
-					} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-					}
-					}
-					setState(7708); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-				} while ( _la==MIRROR );
-				}
-				break;
-			case 2:
-				{
-				setState(7725); 
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				do {
-					{
-					{
-					setState(7710);
-					match(MIRROR);
-					setState(7711);
-					match(TO);
-					setState(7721); 
-					_errHandler.sync(this);
-					_la = _input.LA(1);
-					do {
+					switch (_alt) {
+					case 1:
 						{
 						{
-						setState(7713);
+						setState(7682);
 						_la = _input.LA(1);
 						if (_la==COMMA) {
 							{
-							setState(7712);
+							setState(7681);
 							match(COMMA);
 							}
 						}
 
-						setState(7715);
+						setState(7684);
 						_la = _input.LA(1);
 						if ( !(_la==DISK || _la==TAPE || _la==URL) ) {
 						_errHandler.recoverInline(this);
 						} else {
 							consume();
 						}
-						setState(7716);
+						setState(7685);
 						match(EQUAL);
-						setState(7719);
+						setState(7688);
 						switch (_input.LA(1)) {
 						case STRING:
 							{
-							setState(7717);
+							setState(7686);
 							match(STRING);
 							}
 							break;
 						case CALLED:
 						case DATA_COMPRESSION:
 						case EVENTDATA:
+						case EXPIREDATE:
 						case FILENAME:
 						case FILLFACTOR:
 						case FORCESEEK:
@@ -58712,20 +58547,27 @@ public class MocaSqlParser extends Parser {
 						case MAX_MEMORY:
 						case OFFSETS:
 						case PAGE:
+						case POLICY:
+						case PRECISION:
 						case PUBLIC:
 						case R:
 						case RAW:
 						case RETURN:
 						case RETURNS:
+						case ROLE:
 						case ROWCOUNT:
 						case SAFETY:
+						case RULE:
 						case SERVER:
 						case SID:
 						case SOURCE:
 						case SPLIT:
 						case STATE:
 						case START:
+						case STOP:
 						case TARGET:
+						case TRAN:
+						case USER:
 						case ABSOLUTE:
 						case ACCENT_SENSITIVITY:
 						case ACTION:
@@ -59129,8 +58971,9 @@ public class MocaSqlParser extends Parser {
 						case DOUBLE_QUOTE_ID:
 						case SQUARE_BRACKET_ID:
 						case ID:
+						case URL:
 							{
-							setState(7718);
+							setState(7687);
 							id();
 							}
 							break;
@@ -59139,10 +58982,571 @@ public class MocaSqlParser extends Parser {
 						}
 						}
 						}
+						break;
+					default:
+						throw new NoViableAltException(this);
+					}
+					setState(7692); 
+					_errHandler.sync(this);
+					_alt = getInterpreter().adaptivePredict(_input,1042,_ctx);
+				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+				}
+				break;
+			}
+			setState(7729);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,1051,_ctx) ) {
+			case 1:
+				{
+				setState(7706); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				do {
+					{
+					{
+					setState(7696);
+					match(MIRROR);
+					setState(7697);
+					match(TO);
+					setState(7702); 
+					_errHandler.sync(this);
+					_alt = 1;
+					do {
+						switch (_alt) {
+						case 1:
+							{
+							{
+							setState(7699);
+							_la = _input.LA(1);
+							if (_la==COMMA) {
+								{
+								setState(7698);
+								match(COMMA);
+								}
+							}
+
+							setState(7701);
+							((Backup_logContext)_localctx).logical_device_name = id();
+							}
+							}
+							break;
+						default:
+							throw new NoViableAltException(this);
+						}
+						setState(7704); 
+						_errHandler.sync(this);
+						_alt = getInterpreter().adaptivePredict(_input,1045,_ctx);
+					} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+					}
+					}
+					setState(7708); 
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+				} while ( _la==MIRROR );
+				}
+				break;
+			case 2:
+				{
+				setState(7725); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				do {
+					{
+					{
+					setState(7710);
+					match(MIRROR);
+					setState(7711);
+					match(TO);
+					setState(7721); 
+					_errHandler.sync(this);
+					_alt = 1;
+					do {
+						switch (_alt) {
+						case 1:
+							{
+							{
+							setState(7713);
+							_la = _input.LA(1);
+							if (_la==COMMA) {
+								{
+								setState(7712);
+								match(COMMA);
+								}
+							}
+
+							setState(7715);
+							_la = _input.LA(1);
+							if ( !(_la==DISK || _la==TAPE || _la==URL) ) {
+							_errHandler.recoverInline(this);
+							} else {
+								consume();
+							}
+							setState(7716);
+							match(EQUAL);
+							setState(7719);
+							switch (_input.LA(1)) {
+							case STRING:
+								{
+								setState(7717);
+								match(STRING);
+								}
+								break;
+							case CALLED:
+							case DATA_COMPRESSION:
+							case EVENTDATA:
+							case EXPIREDATE:
+							case FILENAME:
+							case FILLFACTOR:
+							case FORCESEEK:
+							case INIT:
+							case KEY:
+							case MASTER:
+							case MAX_MEMORY:
+							case OFFSETS:
+							case PAGE:
+							case POLICY:
+							case PRECISION:
+							case PUBLIC:
+							case R:
+							case RAW:
+							case RETURN:
+							case RETURNS:
+							case ROLE:
+							case ROWCOUNT:
+							case SAFETY:
+							case RULE:
+							case SERVER:
+							case SID:
+							case SOURCE:
+							case SPLIT:
+							case STATE:
+							case START:
+							case STOP:
+							case TARGET:
+							case TRAN:
+							case USER:
+							case ABSOLUTE:
+							case ACCENT_SENSITIVITY:
+							case ACTION:
+							case ACTIVATION:
+							case ACTIVE:
+							case ADDRESS:
+							case AES_128:
+							case AES_192:
+							case AES_256:
+							case AFFINITY:
+							case AFTER:
+							case AGGREGATE:
+							case ALGORITHM:
+							case ALLOW_ENCRYPTED_VALUE_MODIFICATIONS:
+							case ALLOW_SNAPSHOT_ISOLATION:
+							case ALLOWED:
+							case ANSI_NULL_DEFAULT:
+							case ANSI_NULLS:
+							case ANSI_PADDING:
+							case ANSI_WARNINGS:
+							case APPLICATION_LOG:
+							case APPLY:
+							case ARITHABORT:
+							case ASSEMBLY:
+							case AUDIT:
+							case AUDIT_GUID:
+							case AUTO:
+							case AUTO_CLEANUP:
+							case AUTO_CLOSE:
+							case AUTO_CREATE_STATISTICS:
+							case AUTO_SHRINK:
+							case AUTO_UPDATE_STATISTICS:
+							case AUTO_UPDATE_STATISTICS_ASYNC:
+							case AVAILABILITY:
+							case AVG:
+							case BACKUP_PRIORITY:
+							case BEGIN_DIALOG:
+							case BIGINT:
+							case BINARY_BASE64:
+							case BINARY_CHECKSUM:
+							case BINDING:
+							case BLOB_STORAGE:
+							case BROKER:
+							case BROKER_INSTANCE:
+							case BULK_LOGGED:
+							case CALLER:
+							case CAP_CPU_PERCENT:
+							case CAST:
+							case CATALOG:
+							case CATCH:
+							case CHANGE_RETENTION:
+							case CHANGE_TRACKING:
+							case CHECKSUM:
+							case CHECKSUM_AGG:
+							case CLEANUP:
+							case COLLECTION:
+							case COLUMN_MASTER_KEY:
+							case COMMITTED:
+							case COMPATIBILITY_LEVEL:
+							case CONCAT:
+							case CONCAT_NULL_YIELDS_NULL:
+							case CONTENT:
+							case CONTROL:
+							case COOKIE:
+							case COUNT:
+							case COUNT_BIG:
+							case COUNTER:
+							case CPU:
+							case CREATE_NEW:
+							case CREATION_DISPOSITION:
+							case CREDENTIAL:
+							case CRYPTOGRAPHIC:
+							case CURSOR_CLOSE_ON_COMMIT:
+							case CURSOR_DEFAULT:
+							case DATA:
+							case DATE_CORRELATION_OPTIMIZATION:
+							case DATEADD:
+							case DATEDIFF:
+							case DATENAME:
+							case DATEPART:
+							case DAYS:
+							case DB_CHAINING:
+							case DB_FAILOVER:
+							case DECRYPTION:
+							case DEFAULT_DOUBLE_QUOTE:
+							case DEFAULT_FULLTEXT_LANGUAGE:
+							case DEFAULT_LANGUAGE:
+							case DELAY:
+							case DELAYED_DURABILITY:
+							case DELETED:
+							case DENSE_RANK:
+							case DEPENDENTS:
+							case DES:
+							case DESCRIPTION:
+							case DESX:
+							case DHCP:
+							case DIALOG:
+							case DIRECTORY_NAME:
+							case DISABLE:
+							case DISABLE_BROKER:
+							case DISABLED:
+							case DISK_DRIVE:
+							case DOCUMENT:
+							case DYNAMIC:
+							case EMERGENCY:
+							case EMPTY:
+							case ENABLE:
+							case ENABLE_BROKER:
+							case ENCRYPTED_VALUE:
+							case ENCRYPTION:
+							case ENDPOINT_URL:
+							case ERROR_BROKER_CONVERSATIONS:
+							case EXCLUSIVE:
+							case EXECUTABLE:
+							case EXIST:
+							case EXPAND:
+							case EXPIRY_DATE:
+							case EXPLICIT:
+							case FAIL_OPERATION:
+							case FAILOVER_MODE:
+							case FAILURE:
+							case FAILURE_CONDITION_LEVEL:
+							case FAST:
+							case FAST_FORWARD:
+							case FILEGROUP:
+							case FILEGROWTH:
+							case FILEPATH:
+							case FILESTREAM:
+							case FILTER:
+							case FIRST:
+							case FIRST_VALUE:
+							case FOLLOWING:
+							case FORCE:
+							case FORCE_FAILOVER_ALLOW_DATA_LOSS:
+							case FORCED:
+							case FORMAT:
+							case FORWARD_ONLY:
+							case FULLSCAN:
+							case FULLTEXT:
+							case GB:
+							case GETDATE:
+							case GETUTCDATE:
+							case GLOBAL:
+							case GO:
+							case GROUP_MAX_REQUESTS:
+							case GROUPING:
+							case GROUPING_ID:
+							case HADR:
+							case HASH:
+							case HEALTH_CHECK_TIMEOUT:
+							case HIGH:
+							case HONOR_BROKER_PRIORITY:
+							case HOURS:
+							case IDENTITY_VALUE:
+							case IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX:
+							case IMMEDIATE:
+							case IMPERSONATE:
+							case IMPORTANCE:
+							case INCREMENTAL:
+							case INITIATOR:
+							case INPUT:
+							case INSENSITIVE:
+							case INSERTED:
+							case INT:
+							case IP:
+							case ISOLATION:
+							case KB:
+							case KEEP:
+							case KEEPFIXED:
+							case KEY_SOURCE:
+							case KEYS:
+							case KEYSET:
+							case LAG:
+							case LAST:
+							case LAST_VALUE:
+							case LEAD:
+							case LEVEL:
+							case LIST:
+							case LISTENER:
+							case LISTENER_URL:
+							case LOB_COMPACTION:
+							case LOCAL:
+							case LOCATION:
+							case LOCK:
+							case LOCK_ESCALATION:
+							case LOGIN:
+							case LOOP:
+							case LOW:
+							case MANUAL:
+							case MARK:
+							case MATERIALIZED:
+							case MAX:
+							case MAX_CPU_PERCENT:
+							case MAX_DOP:
+							case MAX_FILES:
+							case MAX_IOPS_PER_VOLUME:
+							case MAX_MEMORY_PERCENT:
+							case MAX_PROCESSES:
+							case MAX_QUEUE_READERS:
+							case MAX_ROLLOVER_FILES:
+							case MAXDOP:
+							case MAXRECURSION:
+							case MAXSIZE:
+							case MB:
+							case MEDIUM:
+							case MEMORY_OPTIMIZED_DATA:
+							case MESSAGE:
+							case MIN:
+							case MIN_ACTIVE_ROWVERSION:
+							case MIN_CPU_PERCENT:
+							case MIN_IOPS_PER_VOLUME:
+							case MIN_MEMORY_PERCENT:
+							case MINUTES:
+							case MIRROR_ADDRESS:
+							case MIXED_PAGE_ALLOCATION:
+							case MODE:
+							case MODIFY:
+							case MOVE:
+							case MULTI_USER:
+							case NAME:
+							case NESTED_TRIGGERS:
+							case NEW_ACCOUNT:
+							case NEW_BROKER:
+							case NEW_PASSWORD:
+							case NEXT:
+							case NO:
+							case NO_TRUNCATE:
+							case NO_WAIT:
+							case NOCOUNT:
+							case NODES:
+							case NOEXPAND:
+							case NON_TRANSACTED_ACCESS:
+							case NORECOMPUTE:
+							case NORECOVERY:
+							case NOWAIT:
+							case NTILE:
+							case NUMANODE:
+							case NUMBER:
+							case NUMERIC_ROUNDABORT:
+							case OBJECT:
+							case OFFLINE:
+							case OFFSET:
+							case OLD_ACCOUNT:
+							case ONLINE:
+							case ONLY:
+							case OPEN_EXISTING:
+							case OPTIMISTIC:
+							case OPTIMIZE:
+							case OUT:
+							case OUTPUT:
+							case OWNER:
+							case PAGE_VERIFY:
+							case PARAMETERIZATION:
+							case PARTITION:
+							case PARTITIONS:
+							case PARTNER:
+							case PATH:
+							case POISON_MESSAGE_HANDLING:
+							case POOL:
+							case PORT:
+							case PRECEDING:
+							case PRIMARY_ROLE:
+							case PRIOR:
+							case PRIORITY:
+							case PRIORITY_LEVEL:
+							case PRIVATE:
+							case PRIVATE_KEY:
+							case PRIVILEGES:
+							case PROCEDURE_NAME:
+							case PROPERTY:
+							case PROVIDER:
+							case PROVIDER_KEY_NAME:
+							case QUERY:
+							case QUEUE:
+							case QUEUE_DELAY:
+							case QUOTED_IDENTIFIER:
+							case RANGE:
+							case RANK:
+							case RC2:
+							case RC4:
+							case RC4_128:
+							case READ_COMMITTED_SNAPSHOT:
+							case READ_ONLY:
+							case READ_ONLY_ROUTING_LIST:
+							case READ_WRITE:
+							case READONLY:
+							case REBUILD:
+							case RECEIVE:
+							case RECOMPILE:
+							case RECOVERY:
+							case RECURSIVE_TRIGGERS:
+							case RELATIVE:
+							case REMOTE:
+							case REMOTE_SERVICE_NAME:
+							case REMOVE:
+							case REORGANIZE:
+							case REPEATABLE:
+							case REPLICA:
+							case REQUEST_MAX_CPU_TIME_SEC:
+							case REQUEST_MAX_MEMORY_GRANT_PERCENT:
+							case REQUEST_MEMORY_GRANT_TIMEOUT_SEC:
+							case REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT:
+							case RESERVE_DISK_SPACE:
+							case RESOURCE:
+							case RESOURCE_MANAGER_LOCATION:
+							case RESTRICTED_USER:
+							case RETENTION:
+							case ROBUST:
+							case ROOT:
+							case ROUTE:
+							case ROW:
+							case ROW_NUMBER:
+							case ROWGUID:
+							case ROWS:
+							case SAMPLE:
+							case SCHEMABINDING:
+							case SCOPED:
+							case SCROLL:
+							case SCROLL_LOCKS:
+							case SEARCH:
+							case SECONDARY:
+							case SECONDARY_ONLY:
+							case SECONDARY_ROLE:
+							case SECONDS:
+							case SECRET:
+							case SECURITY:
+							case SECURITY_LOG:
+							case SEEDING_MODE:
+							case SELF:
+							case SEMI_SENSITIVE:
+							case SEND:
+							case SENT:
+							case SEQUENCE:
+							case SERIALIZABLE:
+							case SESSION_TIMEOUT:
+							case SETERROR:
+							case SHARE:
+							case SHOWPLAN:
+							case SIGNATURE:
+							case SIMPLE:
+							case SINGLE_USER:
+							case SIZE:
+							case SMALLINT:
+							case SNAPSHOT:
+							case SPATIAL_WINDOW_MAX_CELLS:
+							case STANDBY:
+							case START_DATE:
+							case STATIC:
+							case STATS_STREAM:
+							case STATUS:
+							case STDEV:
+							case STDEVP:
+							case STOPLIST:
+							case STRING_AGG:
+							case STUFF:
+							case SUBJECT:
+							case SUM:
+							case SUSPEND:
+							case SYMMETRIC:
+							case SYNCHRONOUS_COMMIT:
+							case SYNONYM:
+							case SYSTEM:
+							case TAKE:
+							case TARGET_RECOVERY_TIME:
+							case TB:
+							case TEXTIMAGE_ON:
+							case THROW:
+							case TIES:
+							case TIME:
+							case TIMEOUT:
+							case TIMER:
+							case TINYINT:
+							case TORN_PAGE_DETECTION:
+							case TRANSFORM_NOISE_WORDS:
+							case TRIPLE_DES:
+							case TRIPLE_DES_3KEY:
+							case TRUSTWORTHY:
+							case TRY:
+							case TSQL:
+							case TWO_DIGIT_YEAR_CUTOFF:
+							case TYPE:
+							case TYPE_WARNING:
+							case UNBOUNDED:
+							case UNCOMMITTED:
+							case UNKNOWN:
+							case UNLIMITED:
+							case USING:
+							case VALID_XML:
+							case VALIDATION:
+							case VALUE:
+							case VAR:
+							case VARP:
+							case VIEW_METADATA:
+							case VIEWS:
+							case WAIT:
+							case WELL_FORMED_XML:
+							case WORK:
+							case WORKLOAD:
+							case XML:
+							case XMLNAMESPACES:
+							case DOUBLE_QUOTE_ID:
+							case SQUARE_BRACKET_ID:
+							case ID:
+							case URL:
+								{
+								setState(7718);
+								id();
+								}
+								break;
+							default:
+								throw new NoViableAltException(this);
+							}
+							}
+							}
+							break;
+						default:
+							throw new NoViableAltException(this);
+						}
 						setState(7723); 
 						_errHandler.sync(this);
-						_la = _input.LA(1);
-					} while ( _la==DISK || _la==TAPE || _la==URL || _la==COMMA );
+						_alt = getInterpreter().adaptivePredict(_input,1049,_ctx);
+					} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 					}
 					}
 					setState(7727); 
@@ -59244,6 +59648,7 @@ public class MocaSqlParser extends Parser {
 							case CALLED:
 							case DATA_COMPRESSION:
 							case EVENTDATA:
+							case EXPIREDATE:
 							case FILENAME:
 							case FILLFACTOR:
 							case FORCESEEK:
@@ -59253,20 +59658,27 @@ public class MocaSqlParser extends Parser {
 							case MAX_MEMORY:
 							case OFFSETS:
 							case PAGE:
+							case POLICY:
+							case PRECISION:
 							case PUBLIC:
 							case R:
 							case RAW:
 							case RETURN:
 							case RETURNS:
+							case ROLE:
 							case ROWCOUNT:
 							case SAFETY:
+							case RULE:
 							case SERVER:
 							case SID:
 							case SOURCE:
 							case SPLIT:
 							case STATE:
 							case START:
+							case STOP:
 							case TARGET:
+							case TRAN:
+							case USER:
 							case ABSOLUTE:
 							case ACCENT_SENSITIVITY:
 							case ACTION:
@@ -59670,6 +60082,7 @@ public class MocaSqlParser extends Parser {
 							case DOUBLE_QUOTE_ID:
 							case SQUARE_BRACKET_ID:
 							case ID:
+							case URL:
 								{
 								setState(7750);
 								id();
@@ -59759,6 +60172,7 @@ public class MocaSqlParser extends Parser {
 								case CALLED:
 								case DATA_COMPRESSION:
 								case EVENTDATA:
+								case EXPIREDATE:
 								case FILENAME:
 								case FILLFACTOR:
 								case FORCESEEK:
@@ -59768,20 +60182,27 @@ public class MocaSqlParser extends Parser {
 								case MAX_MEMORY:
 								case OFFSETS:
 								case PAGE:
+								case POLICY:
+								case PRECISION:
 								case PUBLIC:
 								case R:
 								case RAW:
 								case RETURN:
 								case RETURNS:
+								case ROLE:
 								case ROWCOUNT:
 								case SAFETY:
+								case RULE:
 								case SERVER:
 								case SID:
 								case SOURCE:
 								case SPLIT:
 								case STATE:
 								case START:
+								case STOP:
 								case TARGET:
+								case TRAN:
+								case USER:
 								case ABSOLUTE:
 								case ACCENT_SENSITIVITY:
 								case ACTION:
@@ -60185,6 +60606,7 @@ public class MocaSqlParser extends Parser {
 								case DOUBLE_QUOTE_ID:
 								case SQUARE_BRACKET_ID:
 								case ID:
+								case URL:
 									{
 									setState(7773);
 									id();
@@ -60212,6 +60634,7 @@ public class MocaSqlParser extends Parser {
 								case CALLED:
 								case DATA_COMPRESSION:
 								case EVENTDATA:
+								case EXPIREDATE:
 								case FILENAME:
 								case FILLFACTOR:
 								case FORCESEEK:
@@ -60221,20 +60644,27 @@ public class MocaSqlParser extends Parser {
 								case MAX_MEMORY:
 								case OFFSETS:
 								case PAGE:
+								case POLICY:
+								case PRECISION:
 								case PUBLIC:
 								case R:
 								case RAW:
 								case RETURN:
 								case RETURNS:
+								case ROLE:
 								case ROWCOUNT:
 								case SAFETY:
+								case RULE:
 								case SERVER:
 								case SID:
 								case SOURCE:
 								case SPLIT:
 								case STATE:
 								case START:
+								case STOP:
 								case TARGET:
+								case TRAN:
+								case USER:
 								case ABSOLUTE:
 								case ACCENT_SENSITIVITY:
 								case ACTION:
@@ -60638,6 +61068,7 @@ public class MocaSqlParser extends Parser {
 								case DOUBLE_QUOTE_ID:
 								case SQUARE_BRACKET_ID:
 								case ID:
+								case URL:
 									{
 									setState(7779);
 									id();
@@ -60739,6 +61170,7 @@ public class MocaSqlParser extends Parser {
 							case CALLED:
 							case DATA_COMPRESSION:
 							case EVENTDATA:
+							case EXPIREDATE:
 							case FILENAME:
 							case FILLFACTOR:
 							case FORCESEEK:
@@ -60748,20 +61180,27 @@ public class MocaSqlParser extends Parser {
 							case MAX_MEMORY:
 							case OFFSETS:
 							case PAGE:
+							case POLICY:
+							case PRECISION:
 							case PUBLIC:
 							case R:
 							case RAW:
 							case RETURN:
 							case RETURNS:
+							case ROLE:
 							case ROWCOUNT:
 							case SAFETY:
+							case RULE:
 							case SERVER:
 							case SID:
 							case SOURCE:
 							case SPLIT:
 							case STATE:
 							case START:
+							case STOP:
 							case TARGET:
+							case TRAN:
+							case USER:
 							case ABSOLUTE:
 							case ACCENT_SENSITIVITY:
 							case ACTION:
@@ -61165,6 +61604,7 @@ public class MocaSqlParser extends Parser {
 							case DOUBLE_QUOTE_ID:
 							case SQUARE_BRACKET_ID:
 							case ID:
+							case URL:
 								{
 								setState(7802);
 								id();
@@ -61222,6 +61662,7 @@ public class MocaSqlParser extends Parser {
 							case CALLED:
 							case DATA_COMPRESSION:
 							case EVENTDATA:
+							case EXPIREDATE:
 							case FILENAME:
 							case FILLFACTOR:
 							case FORCESEEK:
@@ -61231,20 +61672,27 @@ public class MocaSqlParser extends Parser {
 							case MAX_MEMORY:
 							case OFFSETS:
 							case PAGE:
+							case POLICY:
+							case PRECISION:
 							case PUBLIC:
 							case R:
 							case RAW:
 							case RETURN:
 							case RETURNS:
+							case ROLE:
 							case ROWCOUNT:
 							case SAFETY:
+							case RULE:
 							case SERVER:
 							case SID:
 							case SOURCE:
 							case SPLIT:
 							case STATE:
 							case START:
+							case STOP:
 							case TARGET:
+							case TRAN:
+							case USER:
 							case ABSOLUTE:
 							case ACCENT_SENSITIVITY:
 							case ACTION:
@@ -61648,6 +62096,7 @@ public class MocaSqlParser extends Parser {
 							case DOUBLE_QUOTE_ID:
 							case SQUARE_BRACKET_ID:
 							case ID:
+							case URL:
 								{
 								setState(7817);
 								id();
@@ -61684,6 +62133,7 @@ public class MocaSqlParser extends Parser {
 							case CALLED:
 							case DATA_COMPRESSION:
 							case EVENTDATA:
+							case EXPIREDATE:
 							case FILENAME:
 							case FILLFACTOR:
 							case FORCESEEK:
@@ -61693,20 +62143,27 @@ public class MocaSqlParser extends Parser {
 							case MAX_MEMORY:
 							case OFFSETS:
 							case PAGE:
+							case POLICY:
+							case PRECISION:
 							case PUBLIC:
 							case R:
 							case RAW:
 							case RETURN:
 							case RETURNS:
+							case ROLE:
 							case ROWCOUNT:
 							case SAFETY:
+							case RULE:
 							case SERVER:
 							case SID:
 							case SOURCE:
 							case SPLIT:
 							case STATE:
 							case START:
+							case STOP:
 							case TARGET:
+							case TRAN:
+							case USER:
 							case ABSOLUTE:
 							case ACCENT_SENSITIVITY:
 							case ACTION:
@@ -62110,6 +62567,7 @@ public class MocaSqlParser extends Parser {
 							case DOUBLE_QUOTE_ID:
 							case SQUARE_BRACKET_ID:
 							case ID:
+							case URL:
 								{
 								setState(7826);
 								id();
@@ -62146,6 +62604,7 @@ public class MocaSqlParser extends Parser {
 							case CALLED:
 							case DATA_COMPRESSION:
 							case EVENTDATA:
+							case EXPIREDATE:
 							case FILENAME:
 							case FILLFACTOR:
 							case FORCESEEK:
@@ -62155,20 +62614,27 @@ public class MocaSqlParser extends Parser {
 							case MAX_MEMORY:
 							case OFFSETS:
 							case PAGE:
+							case POLICY:
+							case PRECISION:
 							case PUBLIC:
 							case R:
 							case RAW:
 							case RETURN:
 							case RETURNS:
+							case ROLE:
 							case ROWCOUNT:
 							case SAFETY:
+							case RULE:
 							case SERVER:
 							case SID:
 							case SOURCE:
 							case SPLIT:
 							case STATE:
 							case START:
+							case STOP:
 							case TARGET:
+							case TRAN:
+							case USER:
 							case ABSOLUTE:
 							case ACCENT_SENSITIVITY:
 							case ACTION:
@@ -62572,6 +63038,7 @@ public class MocaSqlParser extends Parser {
 							case DOUBLE_QUOTE_ID:
 							case SQUARE_BRACKET_ID:
 							case ID:
+							case URL:
 								{
 								setState(7835);
 								id();
@@ -63776,6 +64243,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -63785,20 +64253,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -64211,6 +64686,7 @@ public class MocaSqlParser extends Parser {
 			case DOLLAR:
 			case PLUS:
 			case MINUS:
+			case URL:
 				{
 				setState(8051);
 				switch (_input.LA(1)) {
@@ -64231,6 +64707,7 @@ public class MocaSqlParser extends Parser {
 				case CALLED:
 				case DATA_COMPRESSION:
 				case EVENTDATA:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -64240,20 +64717,27 @@ public class MocaSqlParser extends Parser {
 				case MAX_MEMORY:
 				case OFFSETS:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SID:
 				case SOURCE:
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -64657,6 +65141,7 @@ public class MocaSqlParser extends Parser {
 				case DOUBLE_QUOTE_ID:
 				case SQUARE_BRACKET_ID:
 				case ID:
+				case URL:
 					{
 					setState(8050);
 					id();
@@ -66382,7 +66867,7 @@ public class MocaSqlParser extends Parser {
 				match(CONTROL);
 				setState(8327);
 				_la = _input.LA(1);
-				if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (TARGET - 295)))) != 0) || ((((_la - 380)) & ~0x3f) == 0 && ((1L << (_la - 380)) & ((1L << (ABSOLUTE - 380)) | (1L << (ACCENT_SENSITIVITY - 380)) | (1L << (ACTION - 380)) | (1L << (ACTIVATION - 380)) | (1L << (ACTIVE - 380)) | (1L << (ADDRESS - 380)) | (1L << (AES_128 - 380)) | (1L << (AES_192 - 380)) | (1L << (AES_256 - 380)) | (1L << (AFFINITY - 380)) | (1L << (AFTER - 380)) | (1L << (AGGREGATE - 380)) | (1L << (ALGORITHM - 380)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 380)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 380)) | (1L << (ALLOWED - 380)) | (1L << (ANSI_NULL_DEFAULT - 380)) | (1L << (ANSI_NULLS - 380)) | (1L << (ANSI_PADDING - 380)) | (1L << (ANSI_WARNINGS - 380)) | (1L << (APPLICATION_LOG - 380)) | (1L << (APPLY - 380)) | (1L << (ARITHABORT - 380)) | (1L << (ASSEMBLY - 380)) | (1L << (AUDIT - 380)) | (1L << (AUDIT_GUID - 380)) | (1L << (AUTO - 380)) | (1L << (AUTO_CLEANUP - 380)) | (1L << (AUTO_CLOSE - 380)) | (1L << (AUTO_CREATE_STATISTICS - 380)) | (1L << (AUTO_SHRINK - 380)) | (1L << (AUTO_UPDATE_STATISTICS - 380)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 380)) | (1L << (AVAILABILITY - 380)) | (1L << (AVG - 380)) | (1L << (BACKUP_PRIORITY - 380)) | (1L << (BEGIN_DIALOG - 380)) | (1L << (BIGINT - 380)) | (1L << (BINARY_BASE64 - 380)) | (1L << (BINARY_CHECKSUM - 380)) | (1L << (BINDING - 380)) | (1L << (BLOB_STORAGE - 380)) | (1L << (BROKER - 380)) | (1L << (BROKER_INSTANCE - 380)) | (1L << (BULK_LOGGED - 380)) | (1L << (CALLER - 380)) | (1L << (CAP_CPU_PERCENT - 380)) | (1L << (CAST - 380)) | (1L << (CATALOG - 380)) | (1L << (CATCH - 380)) | (1L << (CHANGE_RETENTION - 380)) | (1L << (CHANGE_TRACKING - 380)) | (1L << (CHECKSUM - 380)) | (1L << (CHECKSUM_AGG - 380)) | (1L << (CLEANUP - 380)) | (1L << (COLLECTION - 380)) | (1L << (COLUMN_MASTER_KEY - 380)) | (1L << (COMMITTED - 380)) | (1L << (COMPATIBILITY_LEVEL - 380)) | (1L << (CONCAT - 380)) | (1L << (CONCAT_NULL_YIELDS_NULL - 380)) | (1L << (CONTENT - 380)) | (1L << (CONTROL - 380)) | (1L << (COOKIE - 380)))) != 0) || ((((_la - 444)) & ~0x3f) == 0 && ((1L << (_la - 444)) & ((1L << (COUNT - 444)) | (1L << (COUNT_BIG - 444)) | (1L << (COUNTER - 444)) | (1L << (CPU - 444)) | (1L << (CREATE_NEW - 444)) | (1L << (CREATION_DISPOSITION - 444)) | (1L << (CREDENTIAL - 444)) | (1L << (CRYPTOGRAPHIC - 444)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 444)) | (1L << (CURSOR_DEFAULT - 444)) | (1L << (DATA - 444)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 444)) | (1L << (DATEADD - 444)) | (1L << (DATEDIFF - 444)) | (1L << (DATENAME - 444)) | (1L << (DATEPART - 444)) | (1L << (DAYS - 444)) | (1L << (DB_CHAINING - 444)) | (1L << (DB_FAILOVER - 444)) | (1L << (DECRYPTION - 444)) | (1L << (DEFAULT_DOUBLE_QUOTE - 444)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 444)) | (1L << (DEFAULT_LANGUAGE - 444)) | (1L << (DELAY - 444)) | (1L << (DELAYED_DURABILITY - 444)) | (1L << (DELETED - 444)) | (1L << (DENSE_RANK - 444)) | (1L << (DEPENDENTS - 444)) | (1L << (DES - 444)) | (1L << (DESCRIPTION - 444)) | (1L << (DESX - 444)) | (1L << (DHCP - 444)) | (1L << (DIALOG - 444)) | (1L << (DIRECTORY_NAME - 444)) | (1L << (DISABLE - 444)) | (1L << (DISABLE_BROKER - 444)) | (1L << (DISABLED - 444)) | (1L << (DISK_DRIVE - 444)) | (1L << (DOCUMENT - 444)) | (1L << (DYNAMIC - 444)) | (1L << (EMERGENCY - 444)) | (1L << (EMPTY - 444)) | (1L << (ENABLE - 444)) | (1L << (ENABLE_BROKER - 444)) | (1L << (ENCRYPTED_VALUE - 444)) | (1L << (ENCRYPTION - 444)) | (1L << (ENDPOINT_URL - 444)) | (1L << (ERROR_BROKER_CONVERSATIONS - 444)) | (1L << (EXCLUSIVE - 444)) | (1L << (EXECUTABLE - 444)) | (1L << (EXIST - 444)) | (1L << (EXPAND - 444)) | (1L << (EXPIRY_DATE - 444)) | (1L << (EXPLICIT - 444)) | (1L << (FAIL_OPERATION - 444)) | (1L << (FAILOVER_MODE - 444)) | (1L << (FAILURE - 444)) | (1L << (FAILURE_CONDITION_LEVEL - 444)) | (1L << (FAST - 444)) | (1L << (FAST_FORWARD - 444)) | (1L << (FILEGROUP - 444)) | (1L << (FILEGROWTH - 444)) | (1L << (FILEPATH - 444)))) != 0) || ((((_la - 508)) & ~0x3f) == 0 && ((1L << (_la - 508)) & ((1L << (FILESTREAM - 508)) | (1L << (FILTER - 508)) | (1L << (FIRST - 508)) | (1L << (FIRST_VALUE - 508)) | (1L << (FOLLOWING - 508)) | (1L << (FORCE - 508)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 508)) | (1L << (FORCED - 508)) | (1L << (FORMAT - 508)) | (1L << (FORWARD_ONLY - 508)) | (1L << (FULLSCAN - 508)) | (1L << (FULLTEXT - 508)) | (1L << (GB - 508)) | (1L << (GETDATE - 508)) | (1L << (GETUTCDATE - 508)) | (1L << (GLOBAL - 508)) | (1L << (GO - 508)) | (1L << (GROUP_MAX_REQUESTS - 508)) | (1L << (GROUPING - 508)) | (1L << (GROUPING_ID - 508)) | (1L << (HADR - 508)) | (1L << (HASH - 508)) | (1L << (HEALTH_CHECK_TIMEOUT - 508)) | (1L << (HIGH - 508)) | (1L << (HONOR_BROKER_PRIORITY - 508)) | (1L << (HOURS - 508)) | (1L << (IDENTITY_VALUE - 508)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 508)) | (1L << (IMMEDIATE - 508)) | (1L << (IMPERSONATE - 508)) | (1L << (IMPORTANCE - 508)) | (1L << (INCREMENTAL - 508)) | (1L << (INITIATOR - 508)) | (1L << (INPUT - 508)) | (1L << (INSENSITIVE - 508)) | (1L << (INSERTED - 508)) | (1L << (INT - 508)) | (1L << (IP - 508)) | (1L << (ISOLATION - 508)) | (1L << (KB - 508)) | (1L << (KEEP - 508)) | (1L << (KEEPFIXED - 508)) | (1L << (KEY_SOURCE - 508)) | (1L << (KEYS - 508)) | (1L << (KEYSET - 508)) | (1L << (LAG - 508)) | (1L << (LAST - 508)) | (1L << (LAST_VALUE - 508)) | (1L << (LEAD - 508)) | (1L << (LEVEL - 508)) | (1L << (LIST - 508)) | (1L << (LISTENER - 508)) | (1L << (LISTENER_URL - 508)) | (1L << (LOB_COMPACTION - 508)) | (1L << (LOCAL - 508)) | (1L << (LOCATION - 508)) | (1L << (LOCK - 508)) | (1L << (LOCK_ESCALATION - 508)) | (1L << (LOGIN - 508)) | (1L << (LOOP - 508)) | (1L << (LOW - 508)))) != 0) || ((((_la - 572)) & ~0x3f) == 0 && ((1L << (_la - 572)) & ((1L << (MANUAL - 572)) | (1L << (MARK - 572)) | (1L << (MATERIALIZED - 572)) | (1L << (MAX - 572)) | (1L << (MAX_CPU_PERCENT - 572)) | (1L << (MAX_DOP - 572)) | (1L << (MAX_FILES - 572)) | (1L << (MAX_IOPS_PER_VOLUME - 572)) | (1L << (MAX_MEMORY_PERCENT - 572)) | (1L << (MAX_PROCESSES - 572)) | (1L << (MAX_QUEUE_READERS - 572)) | (1L << (MAX_ROLLOVER_FILES - 572)) | (1L << (MAXDOP - 572)) | (1L << (MAXRECURSION - 572)) | (1L << (MAXSIZE - 572)) | (1L << (MB - 572)) | (1L << (MEDIUM - 572)) | (1L << (MEMORY_OPTIMIZED_DATA - 572)) | (1L << (MESSAGE - 572)) | (1L << (MIN - 572)) | (1L << (MIN_ACTIVE_ROWVERSION - 572)) | (1L << (MIN_CPU_PERCENT - 572)) | (1L << (MIN_IOPS_PER_VOLUME - 572)) | (1L << (MIN_MEMORY_PERCENT - 572)) | (1L << (MINUTES - 572)) | (1L << (MIRROR_ADDRESS - 572)) | (1L << (MIXED_PAGE_ALLOCATION - 572)) | (1L << (MODE - 572)) | (1L << (MODIFY - 572)) | (1L << (MOVE - 572)) | (1L << (MULTI_USER - 572)) | (1L << (NAME - 572)) | (1L << (NESTED_TRIGGERS - 572)) | (1L << (NEW_ACCOUNT - 572)) | (1L << (NEW_BROKER - 572)) | (1L << (NEW_PASSWORD - 572)) | (1L << (NEXT - 572)) | (1L << (NO - 572)) | (1L << (NO_TRUNCATE - 572)) | (1L << (NO_WAIT - 572)) | (1L << (NOCOUNT - 572)) | (1L << (NODES - 572)) | (1L << (NOEXPAND - 572)) | (1L << (NON_TRANSACTED_ACCESS - 572)) | (1L << (NORECOMPUTE - 572)) | (1L << (NORECOVERY - 572)) | (1L << (NOWAIT - 572)) | (1L << (NTILE - 572)) | (1L << (NUMANODE - 572)) | (1L << (NUMBER - 572)) | (1L << (NUMERIC_ROUNDABORT - 572)) | (1L << (OBJECT - 572)) | (1L << (OFFLINE - 572)) | (1L << (OFFSET - 572)) | (1L << (OLD_ACCOUNT - 572)) | (1L << (ONLINE - 572)) | (1L << (ONLY - 572)) | (1L << (OPEN_EXISTING - 572)) | (1L << (OPTIMISTIC - 572)) | (1L << (OPTIMIZE - 572)) | (1L << (OUT - 572)) | (1L << (OUTPUT - 572)) | (1L << (OWNER - 572)))) != 0) || ((((_la - 636)) & ~0x3f) == 0 && ((1L << (_la - 636)) & ((1L << (PAGE_VERIFY - 636)) | (1L << (PARAMETERIZATION - 636)) | (1L << (PARTITION - 636)) | (1L << (PARTITIONS - 636)) | (1L << (PARTNER - 636)) | (1L << (PATH - 636)) | (1L << (POISON_MESSAGE_HANDLING - 636)) | (1L << (POOL - 636)) | (1L << (PORT - 636)) | (1L << (PRECEDING - 636)) | (1L << (PRIMARY_ROLE - 636)) | (1L << (PRIOR - 636)) | (1L << (PRIORITY - 636)) | (1L << (PRIORITY_LEVEL - 636)) | (1L << (PRIVATE - 636)) | (1L << (PRIVATE_KEY - 636)) | (1L << (PRIVILEGES - 636)) | (1L << (PROCEDURE_NAME - 636)) | (1L << (PROPERTY - 636)) | (1L << (PROVIDER - 636)) | (1L << (PROVIDER_KEY_NAME - 636)) | (1L << (QUERY - 636)) | (1L << (QUEUE - 636)) | (1L << (QUEUE_DELAY - 636)) | (1L << (QUOTED_IDENTIFIER - 636)) | (1L << (RANGE - 636)) | (1L << (RANK - 636)) | (1L << (RC2 - 636)) | (1L << (RC4 - 636)) | (1L << (RC4_128 - 636)) | (1L << (READ_COMMITTED_SNAPSHOT - 636)) | (1L << (READ_ONLY - 636)) | (1L << (READ_ONLY_ROUTING_LIST - 636)) | (1L << (READ_WRITE - 636)) | (1L << (READONLY - 636)) | (1L << (REBUILD - 636)) | (1L << (RECEIVE - 636)) | (1L << (RECOMPILE - 636)) | (1L << (RECOVERY - 636)) | (1L << (RECURSIVE_TRIGGERS - 636)) | (1L << (RELATIVE - 636)) | (1L << (REMOTE - 636)) | (1L << (REMOTE_SERVICE_NAME - 636)) | (1L << (REMOVE - 636)) | (1L << (REORGANIZE - 636)) | (1L << (REPEATABLE - 636)) | (1L << (REPLICA - 636)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 636)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 636)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 636)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 636)) | (1L << (RESERVE_DISK_SPACE - 636)) | (1L << (RESOURCE - 636)) | (1L << (RESOURCE_MANAGER_LOCATION - 636)) | (1L << (RESTRICTED_USER - 636)) | (1L << (RETENTION - 636)) | (1L << (ROBUST - 636)) | (1L << (ROOT - 636)) | (1L << (ROUTE - 636)) | (1L << (ROW - 636)) | (1L << (ROW_NUMBER - 636)) | (1L << (ROWGUID - 636)) | (1L << (ROWS - 636)) | (1L << (SAMPLE - 636)))) != 0) || ((((_la - 700)) & ~0x3f) == 0 && ((1L << (_la - 700)) & ((1L << (SCHEMABINDING - 700)) | (1L << (SCOPED - 700)) | (1L << (SCROLL - 700)) | (1L << (SCROLL_LOCKS - 700)) | (1L << (SEARCH - 700)) | (1L << (SECONDARY - 700)) | (1L << (SECONDARY_ONLY - 700)) | (1L << (SECONDARY_ROLE - 700)) | (1L << (SECONDS - 700)) | (1L << (SECRET - 700)) | (1L << (SECURITY - 700)) | (1L << (SECURITY_LOG - 700)) | (1L << (SEEDING_MODE - 700)) | (1L << (SELF - 700)) | (1L << (SEMI_SENSITIVE - 700)) | (1L << (SEND - 700)) | (1L << (SENT - 700)) | (1L << (SEQUENCE - 700)) | (1L << (SERIALIZABLE - 700)) | (1L << (SESSION_TIMEOUT - 700)) | (1L << (SETERROR - 700)) | (1L << (SHARE - 700)) | (1L << (SHOWPLAN - 700)) | (1L << (SIGNATURE - 700)) | (1L << (SIMPLE - 700)) | (1L << (SINGLE_USER - 700)) | (1L << (SIZE - 700)) | (1L << (SMALLINT - 700)) | (1L << (SNAPSHOT - 700)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 700)) | (1L << (STANDBY - 700)) | (1L << (START_DATE - 700)) | (1L << (STATIC - 700)) | (1L << (STATS_STREAM - 700)) | (1L << (STATUS - 700)) | (1L << (STDEV - 700)) | (1L << (STDEVP - 700)) | (1L << (STOPLIST - 700)) | (1L << (STRING_AGG - 700)) | (1L << (STUFF - 700)) | (1L << (SUBJECT - 700)) | (1L << (SUM - 700)) | (1L << (SUSPEND - 700)) | (1L << (SYMMETRIC - 700)) | (1L << (SYNCHRONOUS_COMMIT - 700)) | (1L << (SYNONYM - 700)) | (1L << (SYSTEM - 700)) | (1L << (TAKE - 700)) | (1L << (TARGET_RECOVERY_TIME - 700)) | (1L << (TB - 700)) | (1L << (TEXTIMAGE_ON - 700)) | (1L << (THROW - 700)) | (1L << (TIES - 700)) | (1L << (TIME - 700)) | (1L << (TIMEOUT - 700)) | (1L << (TIMER - 700)) | (1L << (TINYINT - 700)) | (1L << (TORN_PAGE_DETECTION - 700)) | (1L << (TRANSFORM_NOISE_WORDS - 700)) | (1L << (TRIPLE_DES - 700)) | (1L << (TRIPLE_DES_3KEY - 700)) | (1L << (TRUSTWORTHY - 700)))) != 0) || ((((_la - 764)) & ~0x3f) == 0 && ((1L << (_la - 764)) & ((1L << (TRY - 764)) | (1L << (TSQL - 764)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 764)) | (1L << (TYPE - 764)) | (1L << (TYPE_WARNING - 764)) | (1L << (UNBOUNDED - 764)) | (1L << (UNCOMMITTED - 764)) | (1L << (UNKNOWN - 764)) | (1L << (UNLIMITED - 764)) | (1L << (USING - 764)) | (1L << (VALID_XML - 764)) | (1L << (VALIDATION - 764)) | (1L << (VALUE - 764)) | (1L << (VAR - 764)) | (1L << (VARP - 764)) | (1L << (VIEW_METADATA - 764)) | (1L << (VIEWS - 764)) | (1L << (WAIT - 764)) | (1L << (WELL_FORMED_XML - 764)) | (1L << (WORK - 764)) | (1L << (WORKLOAD - 764)) | (1L << (XML - 764)) | (1L << (XMLNAMESPACES - 764)) | (1L << (DOUBLE_QUOTE_ID - 764)) | (1L << (SQUARE_BRACKET_ID - 764)) | (1L << (ID - 764)))) != 0)) {
+				if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==URL) {
 					{
 					setState(8326);
 					id();
@@ -66447,7 +66932,7 @@ public class MocaSqlParser extends Parser {
 				match(ALTER);
 				setState(8344);
 				_la = _input.LA(1);
-				if (_la==ANY || _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (DATABASE - 80)) | (1L << (EVENTDATA - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (TARGET - 295)))) != 0) || ((((_la - 380)) & ~0x3f) == 0 && ((1L << (_la - 380)) & ((1L << (ABSOLUTE - 380)) | (1L << (ACCENT_SENSITIVITY - 380)) | (1L << (ACTION - 380)) | (1L << (ACTIVATION - 380)) | (1L << (ACTIVE - 380)) | (1L << (ADDRESS - 380)) | (1L << (AES_128 - 380)) | (1L << (AES_192 - 380)) | (1L << (AES_256 - 380)) | (1L << (AFFINITY - 380)) | (1L << (AFTER - 380)) | (1L << (AGGREGATE - 380)) | (1L << (ALGORITHM - 380)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 380)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 380)) | (1L << (ALLOWED - 380)) | (1L << (ANSI_NULL_DEFAULT - 380)) | (1L << (ANSI_NULLS - 380)) | (1L << (ANSI_PADDING - 380)) | (1L << (ANSI_WARNINGS - 380)) | (1L << (APPLICATION_LOG - 380)) | (1L << (APPLY - 380)) | (1L << (ARITHABORT - 380)) | (1L << (ASSEMBLY - 380)) | (1L << (AUDIT - 380)) | (1L << (AUDIT_GUID - 380)) | (1L << (AUTO - 380)) | (1L << (AUTO_CLEANUP - 380)) | (1L << (AUTO_CLOSE - 380)) | (1L << (AUTO_CREATE_STATISTICS - 380)) | (1L << (AUTO_SHRINK - 380)) | (1L << (AUTO_UPDATE_STATISTICS - 380)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 380)) | (1L << (AVAILABILITY - 380)) | (1L << (AVG - 380)) | (1L << (BACKUP_PRIORITY - 380)) | (1L << (BEGIN_DIALOG - 380)) | (1L << (BIGINT - 380)) | (1L << (BINARY_BASE64 - 380)) | (1L << (BINARY_CHECKSUM - 380)) | (1L << (BINDING - 380)) | (1L << (BLOB_STORAGE - 380)) | (1L << (BROKER - 380)) | (1L << (BROKER_INSTANCE - 380)) | (1L << (BULK_LOGGED - 380)) | (1L << (CALLER - 380)) | (1L << (CAP_CPU_PERCENT - 380)) | (1L << (CAST - 380)) | (1L << (CATALOG - 380)) | (1L << (CATCH - 380)) | (1L << (CHANGE_RETENTION - 380)) | (1L << (CHANGE_TRACKING - 380)) | (1L << (CHECKSUM - 380)) | (1L << (CHECKSUM_AGG - 380)) | (1L << (CLEANUP - 380)) | (1L << (COLLECTION - 380)) | (1L << (COLUMN_MASTER_KEY - 380)) | (1L << (COMMITTED - 380)) | (1L << (COMPATIBILITY_LEVEL - 380)) | (1L << (CONCAT - 380)) | (1L << (CONCAT_NULL_YIELDS_NULL - 380)) | (1L << (CONTENT - 380)) | (1L << (CONTROL - 380)) | (1L << (COOKIE - 380)))) != 0) || ((((_la - 444)) & ~0x3f) == 0 && ((1L << (_la - 444)) & ((1L << (COUNT - 444)) | (1L << (COUNT_BIG - 444)) | (1L << (COUNTER - 444)) | (1L << (CPU - 444)) | (1L << (CREATE_NEW - 444)) | (1L << (CREATION_DISPOSITION - 444)) | (1L << (CREDENTIAL - 444)) | (1L << (CRYPTOGRAPHIC - 444)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 444)) | (1L << (CURSOR_DEFAULT - 444)) | (1L << (DATA - 444)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 444)) | (1L << (DATEADD - 444)) | (1L << (DATEDIFF - 444)) | (1L << (DATENAME - 444)) | (1L << (DATEPART - 444)) | (1L << (DAYS - 444)) | (1L << (DB_CHAINING - 444)) | (1L << (DB_FAILOVER - 444)) | (1L << (DECRYPTION - 444)) | (1L << (DEFAULT_DOUBLE_QUOTE - 444)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 444)) | (1L << (DEFAULT_LANGUAGE - 444)) | (1L << (DELAY - 444)) | (1L << (DELAYED_DURABILITY - 444)) | (1L << (DELETED - 444)) | (1L << (DENSE_RANK - 444)) | (1L << (DEPENDENTS - 444)) | (1L << (DES - 444)) | (1L << (DESCRIPTION - 444)) | (1L << (DESX - 444)) | (1L << (DHCP - 444)) | (1L << (DIALOG - 444)) | (1L << (DIRECTORY_NAME - 444)) | (1L << (DISABLE - 444)) | (1L << (DISABLE_BROKER - 444)) | (1L << (DISABLED - 444)) | (1L << (DISK_DRIVE - 444)) | (1L << (DOCUMENT - 444)) | (1L << (DYNAMIC - 444)) | (1L << (EMERGENCY - 444)) | (1L << (EMPTY - 444)) | (1L << (ENABLE - 444)) | (1L << (ENABLE_BROKER - 444)) | (1L << (ENCRYPTED_VALUE - 444)) | (1L << (ENCRYPTION - 444)) | (1L << (ENDPOINT_URL - 444)) | (1L << (ERROR_BROKER_CONVERSATIONS - 444)) | (1L << (EXCLUSIVE - 444)) | (1L << (EXECUTABLE - 444)) | (1L << (EXIST - 444)) | (1L << (EXPAND - 444)) | (1L << (EXPIRY_DATE - 444)) | (1L << (EXPLICIT - 444)) | (1L << (FAIL_OPERATION - 444)) | (1L << (FAILOVER_MODE - 444)) | (1L << (FAILURE - 444)) | (1L << (FAILURE_CONDITION_LEVEL - 444)) | (1L << (FAST - 444)) | (1L << (FAST_FORWARD - 444)) | (1L << (FILEGROUP - 444)) | (1L << (FILEGROWTH - 444)) | (1L << (FILEPATH - 444)))) != 0) || ((((_la - 508)) & ~0x3f) == 0 && ((1L << (_la - 508)) & ((1L << (FILESTREAM - 508)) | (1L << (FILTER - 508)) | (1L << (FIRST - 508)) | (1L << (FIRST_VALUE - 508)) | (1L << (FOLLOWING - 508)) | (1L << (FORCE - 508)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 508)) | (1L << (FORCED - 508)) | (1L << (FORMAT - 508)) | (1L << (FORWARD_ONLY - 508)) | (1L << (FULLSCAN - 508)) | (1L << (FULLTEXT - 508)) | (1L << (GB - 508)) | (1L << (GETDATE - 508)) | (1L << (GETUTCDATE - 508)) | (1L << (GLOBAL - 508)) | (1L << (GO - 508)) | (1L << (GROUP_MAX_REQUESTS - 508)) | (1L << (GROUPING - 508)) | (1L << (GROUPING_ID - 508)) | (1L << (HADR - 508)) | (1L << (HASH - 508)) | (1L << (HEALTH_CHECK_TIMEOUT - 508)) | (1L << (HIGH - 508)) | (1L << (HONOR_BROKER_PRIORITY - 508)) | (1L << (HOURS - 508)) | (1L << (IDENTITY_VALUE - 508)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 508)) | (1L << (IMMEDIATE - 508)) | (1L << (IMPERSONATE - 508)) | (1L << (IMPORTANCE - 508)) | (1L << (INCREMENTAL - 508)) | (1L << (INITIATOR - 508)) | (1L << (INPUT - 508)) | (1L << (INSENSITIVE - 508)) | (1L << (INSERTED - 508)) | (1L << (INT - 508)) | (1L << (IP - 508)) | (1L << (ISOLATION - 508)) | (1L << (KB - 508)) | (1L << (KEEP - 508)) | (1L << (KEEPFIXED - 508)) | (1L << (KEY_SOURCE - 508)) | (1L << (KEYS - 508)) | (1L << (KEYSET - 508)) | (1L << (LAG - 508)) | (1L << (LAST - 508)) | (1L << (LAST_VALUE - 508)) | (1L << (LEAD - 508)) | (1L << (LEVEL - 508)) | (1L << (LIST - 508)) | (1L << (LISTENER - 508)) | (1L << (LISTENER_URL - 508)) | (1L << (LOB_COMPACTION - 508)) | (1L << (LOCAL - 508)) | (1L << (LOCATION - 508)) | (1L << (LOCK - 508)) | (1L << (LOCK_ESCALATION - 508)) | (1L << (LOGIN - 508)) | (1L << (LOOP - 508)) | (1L << (LOW - 508)))) != 0) || ((((_la - 572)) & ~0x3f) == 0 && ((1L << (_la - 572)) & ((1L << (MANUAL - 572)) | (1L << (MARK - 572)) | (1L << (MATERIALIZED - 572)) | (1L << (MAX - 572)) | (1L << (MAX_CPU_PERCENT - 572)) | (1L << (MAX_DOP - 572)) | (1L << (MAX_FILES - 572)) | (1L << (MAX_IOPS_PER_VOLUME - 572)) | (1L << (MAX_MEMORY_PERCENT - 572)) | (1L << (MAX_PROCESSES - 572)) | (1L << (MAX_QUEUE_READERS - 572)) | (1L << (MAX_ROLLOVER_FILES - 572)) | (1L << (MAXDOP - 572)) | (1L << (MAXRECURSION - 572)) | (1L << (MAXSIZE - 572)) | (1L << (MB - 572)) | (1L << (MEDIUM - 572)) | (1L << (MEMORY_OPTIMIZED_DATA - 572)) | (1L << (MESSAGE - 572)) | (1L << (MIN - 572)) | (1L << (MIN_ACTIVE_ROWVERSION - 572)) | (1L << (MIN_CPU_PERCENT - 572)) | (1L << (MIN_IOPS_PER_VOLUME - 572)) | (1L << (MIN_MEMORY_PERCENT - 572)) | (1L << (MINUTES - 572)) | (1L << (MIRROR_ADDRESS - 572)) | (1L << (MIXED_PAGE_ALLOCATION - 572)) | (1L << (MODE - 572)) | (1L << (MODIFY - 572)) | (1L << (MOVE - 572)) | (1L << (MULTI_USER - 572)) | (1L << (NAME - 572)) | (1L << (NESTED_TRIGGERS - 572)) | (1L << (NEW_ACCOUNT - 572)) | (1L << (NEW_BROKER - 572)) | (1L << (NEW_PASSWORD - 572)) | (1L << (NEXT - 572)) | (1L << (NO - 572)) | (1L << (NO_TRUNCATE - 572)) | (1L << (NO_WAIT - 572)) | (1L << (NOCOUNT - 572)) | (1L << (NODES - 572)) | (1L << (NOEXPAND - 572)) | (1L << (NON_TRANSACTED_ACCESS - 572)) | (1L << (NORECOMPUTE - 572)) | (1L << (NORECOVERY - 572)) | (1L << (NOWAIT - 572)) | (1L << (NTILE - 572)) | (1L << (NUMANODE - 572)) | (1L << (NUMBER - 572)) | (1L << (NUMERIC_ROUNDABORT - 572)) | (1L << (OBJECT - 572)) | (1L << (OFFLINE - 572)) | (1L << (OFFSET - 572)) | (1L << (OLD_ACCOUNT - 572)) | (1L << (ONLINE - 572)) | (1L << (ONLY - 572)) | (1L << (OPEN_EXISTING - 572)) | (1L << (OPTIMISTIC - 572)) | (1L << (OPTIMIZE - 572)) | (1L << (OUT - 572)) | (1L << (OUTPUT - 572)) | (1L << (OWNER - 572)))) != 0) || ((((_la - 636)) & ~0x3f) == 0 && ((1L << (_la - 636)) & ((1L << (PAGE_VERIFY - 636)) | (1L << (PARAMETERIZATION - 636)) | (1L << (PARTITION - 636)) | (1L << (PARTITIONS - 636)) | (1L << (PARTNER - 636)) | (1L << (PATH - 636)) | (1L << (POISON_MESSAGE_HANDLING - 636)) | (1L << (POOL - 636)) | (1L << (PORT - 636)) | (1L << (PRECEDING - 636)) | (1L << (PRIMARY_ROLE - 636)) | (1L << (PRIOR - 636)) | (1L << (PRIORITY - 636)) | (1L << (PRIORITY_LEVEL - 636)) | (1L << (PRIVATE - 636)) | (1L << (PRIVATE_KEY - 636)) | (1L << (PRIVILEGES - 636)) | (1L << (PROCEDURE_NAME - 636)) | (1L << (PROPERTY - 636)) | (1L << (PROVIDER - 636)) | (1L << (PROVIDER_KEY_NAME - 636)) | (1L << (QUERY - 636)) | (1L << (QUEUE - 636)) | (1L << (QUEUE_DELAY - 636)) | (1L << (QUOTED_IDENTIFIER - 636)) | (1L << (RANGE - 636)) | (1L << (RANK - 636)) | (1L << (RC2 - 636)) | (1L << (RC4 - 636)) | (1L << (RC4_128 - 636)) | (1L << (READ_COMMITTED_SNAPSHOT - 636)) | (1L << (READ_ONLY - 636)) | (1L << (READ_ONLY_ROUTING_LIST - 636)) | (1L << (READ_WRITE - 636)) | (1L << (READONLY - 636)) | (1L << (REBUILD - 636)) | (1L << (RECEIVE - 636)) | (1L << (RECOMPILE - 636)) | (1L << (RECOVERY - 636)) | (1L << (RECURSIVE_TRIGGERS - 636)) | (1L << (RELATIVE - 636)) | (1L << (REMOTE - 636)) | (1L << (REMOTE_SERVICE_NAME - 636)) | (1L << (REMOVE - 636)) | (1L << (REORGANIZE - 636)) | (1L << (REPEATABLE - 636)) | (1L << (REPLICA - 636)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 636)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 636)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 636)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 636)) | (1L << (RESERVE_DISK_SPACE - 636)) | (1L << (RESOURCE - 636)) | (1L << (RESOURCE_MANAGER_LOCATION - 636)) | (1L << (RESTRICTED_USER - 636)) | (1L << (RETENTION - 636)) | (1L << (ROBUST - 636)) | (1L << (ROOT - 636)) | (1L << (ROUTE - 636)) | (1L << (ROW - 636)) | (1L << (ROW_NUMBER - 636)) | (1L << (ROWGUID - 636)) | (1L << (ROWS - 636)) | (1L << (SAMPLE - 636)))) != 0) || ((((_la - 700)) & ~0x3f) == 0 && ((1L << (_la - 700)) & ((1L << (SCHEMABINDING - 700)) | (1L << (SCOPED - 700)) | (1L << (SCROLL - 700)) | (1L << (SCROLL_LOCKS - 700)) | (1L << (SEARCH - 700)) | (1L << (SECONDARY - 700)) | (1L << (SECONDARY_ONLY - 700)) | (1L << (SECONDARY_ROLE - 700)) | (1L << (SECONDS - 700)) | (1L << (SECRET - 700)) | (1L << (SECURITY - 700)) | (1L << (SECURITY_LOG - 700)) | (1L << (SEEDING_MODE - 700)) | (1L << (SELF - 700)) | (1L << (SEMI_SENSITIVE - 700)) | (1L << (SEND - 700)) | (1L << (SENT - 700)) | (1L << (SEQUENCE - 700)) | (1L << (SERIALIZABLE - 700)) | (1L << (SESSION_TIMEOUT - 700)) | (1L << (SETERROR - 700)) | (1L << (SHARE - 700)) | (1L << (SHOWPLAN - 700)) | (1L << (SIGNATURE - 700)) | (1L << (SIMPLE - 700)) | (1L << (SINGLE_USER - 700)) | (1L << (SIZE - 700)) | (1L << (SMALLINT - 700)) | (1L << (SNAPSHOT - 700)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 700)) | (1L << (STANDBY - 700)) | (1L << (START_DATE - 700)) | (1L << (STATIC - 700)) | (1L << (STATS_STREAM - 700)) | (1L << (STATUS - 700)) | (1L << (STDEV - 700)) | (1L << (STDEVP - 700)) | (1L << (STOPLIST - 700)) | (1L << (STRING_AGG - 700)) | (1L << (STUFF - 700)) | (1L << (SUBJECT - 700)) | (1L << (SUM - 700)) | (1L << (SUSPEND - 700)) | (1L << (SYMMETRIC - 700)) | (1L << (SYNCHRONOUS_COMMIT - 700)) | (1L << (SYNONYM - 700)) | (1L << (SYSTEM - 700)) | (1L << (TAKE - 700)) | (1L << (TARGET_RECOVERY_TIME - 700)) | (1L << (TB - 700)) | (1L << (TEXTIMAGE_ON - 700)) | (1L << (THROW - 700)) | (1L << (TIES - 700)) | (1L << (TIME - 700)) | (1L << (TIMEOUT - 700)) | (1L << (TIMER - 700)) | (1L << (TINYINT - 700)) | (1L << (TORN_PAGE_DETECTION - 700)) | (1L << (TRANSFORM_NOISE_WORDS - 700)) | (1L << (TRIPLE_DES - 700)) | (1L << (TRIPLE_DES_3KEY - 700)) | (1L << (TRUSTWORTHY - 700)))) != 0) || ((((_la - 764)) & ~0x3f) == 0 && ((1L << (_la - 764)) & ((1L << (TRY - 764)) | (1L << (TSQL - 764)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 764)) | (1L << (TYPE - 764)) | (1L << (TYPE_WARNING - 764)) | (1L << (UNBOUNDED - 764)) | (1L << (UNCOMMITTED - 764)) | (1L << (UNKNOWN - 764)) | (1L << (UNLIMITED - 764)) | (1L << (USING - 764)) | (1L << (VALID_XML - 764)) | (1L << (VALIDATION - 764)) | (1L << (VALUE - 764)) | (1L << (VAR - 764)) | (1L << (VARP - 764)) | (1L << (VIEW_METADATA - 764)) | (1L << (VIEWS - 764)) | (1L << (WAIT - 764)) | (1L << (WELL_FORMED_XML - 764)) | (1L << (WORK - 764)) | (1L << (WORKLOAD - 764)) | (1L << (XML - 764)) | (1L << (XMLNAMESPACES - 764)) | (1L << (DOUBLE_QUOTE_ID - 764)) | (1L << (SQUARE_BRACKET_ID - 764)) | (1L << (ID - 764)))) != 0)) {
+				if (_la==ANY || _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (DATABASE - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==URL) {
 					{
 					setState(8338);
 					_la = _input.LA(1);
@@ -66463,6 +66948,7 @@ public class MocaSqlParser extends Parser {
 					case CALLED:
 					case DATA_COMPRESSION:
 					case EVENTDATA:
+					case EXPIREDATE:
 					case FILENAME:
 					case FILLFACTOR:
 					case FORCESEEK:
@@ -66472,20 +66958,27 @@ public class MocaSqlParser extends Parser {
 					case MAX_MEMORY:
 					case OFFSETS:
 					case PAGE:
+					case POLICY:
+					case PRECISION:
 					case PUBLIC:
 					case R:
 					case RAW:
 					case RETURN:
 					case RETURNS:
+					case ROLE:
 					case ROWCOUNT:
 					case SAFETY:
+					case RULE:
 					case SERVER:
 					case SID:
 					case SOURCE:
 					case SPLIT:
 					case STATE:
 					case START:
+					case STOP:
 					case TARGET:
+					case TRAN:
+					case USER:
 					case ABSOLUTE:
 					case ACCENT_SENSITIVITY:
 					case ACTION:
@@ -66889,6 +67382,7 @@ public class MocaSqlParser extends Parser {
 					case DOUBLE_QUOTE_ID:
 					case SQUARE_BRACKET_ID:
 					case ID:
+					case URL:
 						{
 						setState(8340);
 						id();
@@ -67230,6 +67724,7 @@ public class MocaSqlParser extends Parser {
 					case CALLED:
 					case DATA_COMPRESSION:
 					case EVENTDATA:
+					case EXPIREDATE:
 					case FILENAME:
 					case FILLFACTOR:
 					case FORCESEEK:
@@ -67239,20 +67734,27 @@ public class MocaSqlParser extends Parser {
 					case MAX_MEMORY:
 					case OFFSETS:
 					case PAGE:
+					case POLICY:
+					case PRECISION:
 					case PUBLIC:
 					case R:
 					case RAW:
 					case RETURN:
 					case RETURNS:
+					case ROLE:
 					case ROWCOUNT:
 					case SAFETY:
+					case RULE:
 					case SERVER:
 					case SID:
 					case SOURCE:
 					case SPLIT:
 					case STATE:
 					case START:
+					case STOP:
 					case TARGET:
+					case TRAN:
+					case USER:
 					case ABSOLUTE:
 					case ACCENT_SENSITIVITY:
 					case ACTION:
@@ -67656,6 +68158,7 @@ public class MocaSqlParser extends Parser {
 					case DOUBLE_QUOTE_ID:
 					case SQUARE_BRACKET_ID:
 					case ID:
+					case URL:
 						{
 						setState(8401);
 						id();
@@ -67721,6 +68224,7 @@ public class MocaSqlParser extends Parser {
 					case CALLED:
 					case DATA_COMPRESSION:
 					case EVENTDATA:
+					case EXPIREDATE:
 					case FILENAME:
 					case FILLFACTOR:
 					case FORCESEEK:
@@ -67730,20 +68234,27 @@ public class MocaSqlParser extends Parser {
 					case MAX_MEMORY:
 					case OFFSETS:
 					case PAGE:
+					case POLICY:
+					case PRECISION:
 					case PUBLIC:
 					case R:
 					case RAW:
 					case RETURN:
 					case RETURNS:
+					case ROLE:
 					case ROWCOUNT:
 					case SAFETY:
+					case RULE:
 					case SERVER:
 					case SID:
 					case SOURCE:
 					case SPLIT:
 					case STATE:
 					case START:
+					case STOP:
 					case TARGET:
+					case TRAN:
+					case USER:
 					case ABSOLUTE:
 					case ACCENT_SENSITIVITY:
 					case ACTION:
@@ -68147,6 +68658,7 @@ public class MocaSqlParser extends Parser {
 					case DOUBLE_QUOTE_ID:
 					case SQUARE_BRACKET_ID:
 					case ID:
+					case URL:
 						{
 						setState(8417);
 						id();
@@ -69315,6 +69827,7 @@ public class MocaSqlParser extends Parser {
 			case DATA_COMPRESSION:
 			case DOUBLE:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -69324,20 +69837,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -69741,6 +70261,7 @@ public class MocaSqlParser extends Parser {
 			case DOUBLE_QUOTE_ID:
 			case SQUARE_BRACKET_ID:
 			case ID:
+			case URL:
 				{
 				setState(8561);
 				data_type();
@@ -70409,6 +70930,7 @@ public class MocaSqlParser extends Parser {
 					case CURRENT_USER:
 					case DATA_COMPRESSION:
 					case EVENTDATA:
+					case EXPIREDATE:
 					case FILENAME:
 					case FILLFACTOR:
 					case FORCESEEK:
@@ -70423,14 +70945,18 @@ public class MocaSqlParser extends Parser {
 					case NULLIF:
 					case OFFSETS:
 					case PAGE:
+					case POLICY:
+					case PRECISION:
 					case PUBLIC:
 					case R:
 					case RAW:
 					case RETURN:
 					case RETURNS:
 					case RIGHT:
+					case ROLE:
 					case ROWCOUNT:
 					case SAFETY:
+					case RULE:
 					case SERVER:
 					case SESSION_USER:
 					case SID:
@@ -70438,8 +70964,11 @@ public class MocaSqlParser extends Parser {
 					case SPLIT:
 					case STATE:
 					case START:
+					case STOP:
 					case SYSTEM_USER:
 					case TARGET:
+					case TRAN:
+					case USER:
 					case ABSOLUTE:
 					case ACCENT_SENSITIVITY:
 					case ACTION:
@@ -70844,6 +71373,7 @@ public class MocaSqlParser extends Parser {
 					case SQUARE_BRACKET_ID:
 					case LOCAL_ID:
 					case ID:
+					case URL:
 						{
 						setState(8694);
 						function_call();
@@ -70862,7 +71392,7 @@ public class MocaSqlParser extends Parser {
 					setState(8698); 
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-				} while ( ((((_la - 38)) & ~0x3f) == 0 && ((1L << (_la - 38)) & ((1L << (CALLED - 38)) | (1L << (COALESCE - 38)) | (1L << (CONVERT - 38)) | (1L << (CURRENT_TIMESTAMP - 38)) | (1L << (CURRENT_USER - 38)) | (1L << (DATA_COMPRESSION - 38)))) != 0) || ((((_la - 112)) & ~0x3f) == 0 && ((1L << (_la - 112)) & ((1L << (EVENTDATA - 112)) | (1L << (FILENAME - 112)) | (1L << (FILLFACTOR - 112)) | (1L << (FORCESEEK - 112)) | (1L << (IDENTITY - 112)) | (1L << (IIF - 112)) | (1L << (INIT - 112)) | (1L << (ISNULL - 112)) | (1L << (KEY - 112)) | (1L << (LEFT - 112)))) != 0) || ((((_la - 187)) & ~0x3f) == 0 && ((1L << (_la - 187)) & ((1L << (MASTER - 187)) | (1L << (MAX_MEMORY - 187)) | (1L << (NULLIF - 187)) | (1L << (OFFSETS - 187)) | (1L << (PAGE - 187)))) != 0) || ((((_la - 259)) & ~0x3f) == 0 && ((1L << (_la - 259)) & ((1L << (PUBLIC - 259)) | (1L << (R - 259)) | (1L << (RAW - 259)) | (1L << (RETURN - 259)) | (1L << (RETURNS - 259)) | (1L << (RIGHT - 259)) | (1L << (ROWCOUNT - 259)) | (1L << (SAFETY - 259)) | (1L << (SERVER - 259)) | (1L << (SESSION_USER - 259)) | (1L << (SID - 259)) | (1L << (SOURCE - 259)) | (1L << (SPLIT - 259)))) != 0) || ((((_la - 327)) & ~0x3f) == 0 && ((1L << (_la - 327)) & ((1L << (STATE - 327)) | (1L << (START - 327)) | (1L << (SYSTEM_USER - 327)) | (1L << (TARGET - 327)) | (1L << (ABSOLUTE - 327)) | (1L << (ACCENT_SENSITIVITY - 327)) | (1L << (ACTION - 327)) | (1L << (ACTIVATION - 327)) | (1L << (ACTIVE - 327)) | (1L << (ADDRESS - 327)) | (1L << (AES_128 - 327)) | (1L << (AES_192 - 327)) | (1L << (AES_256 - 327)) | (1L << (AFFINITY - 327)) | (1L << (AFTER - 327)))) != 0) || ((((_la - 391)) & ~0x3f) == 0 && ((1L << (_la - 391)) & ((1L << (AGGREGATE - 391)) | (1L << (ALGORITHM - 391)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 391)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 391)) | (1L << (ALLOWED - 391)) | (1L << (ANSI_NULL_DEFAULT - 391)) | (1L << (ANSI_NULLS - 391)) | (1L << (ANSI_PADDING - 391)) | (1L << (ANSI_WARNINGS - 391)) | (1L << (APPLICATION_LOG - 391)) | (1L << (APPLY - 391)) | (1L << (ARITHABORT - 391)) | (1L << (ASSEMBLY - 391)) | (1L << (AUDIT - 391)) | (1L << (AUDIT_GUID - 391)) | (1L << (AUTO - 391)) | (1L << (AUTO_CLEANUP - 391)) | (1L << (AUTO_CLOSE - 391)) | (1L << (AUTO_CREATE_STATISTICS - 391)) | (1L << (AUTO_SHRINK - 391)) | (1L << (AUTO_UPDATE_STATISTICS - 391)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 391)) | (1L << (AVAILABILITY - 391)) | (1L << (AVG - 391)) | (1L << (BACKUP_PRIORITY - 391)) | (1L << (BEGIN_DIALOG - 391)) | (1L << (BIGINT - 391)) | (1L << (BINARY_BASE64 - 391)) | (1L << (BINARY_CHECKSUM - 391)) | (1L << (BINDING - 391)) | (1L << (BLOB_STORAGE - 391)) | (1L << (BROKER - 391)) | (1L << (BROKER_INSTANCE - 391)) | (1L << (BULK_LOGGED - 391)) | (1L << (CALLER - 391)) | (1L << (CAP_CPU_PERCENT - 391)) | (1L << (CAST - 391)) | (1L << (CATALOG - 391)) | (1L << (CATCH - 391)) | (1L << (CHANGE_RETENTION - 391)) | (1L << (CHANGE_TRACKING - 391)) | (1L << (CHECKSUM - 391)) | (1L << (CHECKSUM_AGG - 391)) | (1L << (CLEANUP - 391)) | (1L << (COLLECTION - 391)) | (1L << (COLUMN_MASTER_KEY - 391)) | (1L << (COMMITTED - 391)) | (1L << (COMPATIBILITY_LEVEL - 391)) | (1L << (CONCAT - 391)) | (1L << (CONCAT_NULL_YIELDS_NULL - 391)) | (1L << (CONTENT - 391)) | (1L << (CONTROL - 391)) | (1L << (COOKIE - 391)) | (1L << (COUNT - 391)) | (1L << (COUNT_BIG - 391)) | (1L << (COUNTER - 391)) | (1L << (CPU - 391)) | (1L << (CREATE_NEW - 391)) | (1L << (CREATION_DISPOSITION - 391)) | (1L << (CREDENTIAL - 391)) | (1L << (CRYPTOGRAPHIC - 391)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 391)) | (1L << (CURSOR_DEFAULT - 391)) | (1L << (DATA - 391)))) != 0) || ((((_la - 455)) & ~0x3f) == 0 && ((1L << (_la - 455)) & ((1L << (DATE_CORRELATION_OPTIMIZATION - 455)) | (1L << (DATEADD - 455)) | (1L << (DATEDIFF - 455)) | (1L << (DATENAME - 455)) | (1L << (DATEPART - 455)) | (1L << (DAYS - 455)) | (1L << (DB_CHAINING - 455)) | (1L << (DB_FAILOVER - 455)) | (1L << (DECRYPTION - 455)) | (1L << (DEFAULT_DOUBLE_QUOTE - 455)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 455)) | (1L << (DEFAULT_LANGUAGE - 455)) | (1L << (DELAY - 455)) | (1L << (DELAYED_DURABILITY - 455)) | (1L << (DELETED - 455)) | (1L << (DENSE_RANK - 455)) | (1L << (DEPENDENTS - 455)) | (1L << (DES - 455)) | (1L << (DESCRIPTION - 455)) | (1L << (DESX - 455)) | (1L << (DHCP - 455)) | (1L << (DIALOG - 455)) | (1L << (DIRECTORY_NAME - 455)) | (1L << (DISABLE - 455)) | (1L << (DISABLE_BROKER - 455)) | (1L << (DISABLED - 455)) | (1L << (DISK_DRIVE - 455)) | (1L << (DOCUMENT - 455)) | (1L << (DYNAMIC - 455)) | (1L << (EMERGENCY - 455)) | (1L << (EMPTY - 455)) | (1L << (ENABLE - 455)) | (1L << (ENABLE_BROKER - 455)) | (1L << (ENCRYPTED_VALUE - 455)) | (1L << (ENCRYPTION - 455)) | (1L << (ENDPOINT_URL - 455)) | (1L << (ERROR_BROKER_CONVERSATIONS - 455)) | (1L << (EXCLUSIVE - 455)) | (1L << (EXECUTABLE - 455)) | (1L << (EXIST - 455)) | (1L << (EXPAND - 455)) | (1L << (EXPIRY_DATE - 455)) | (1L << (EXPLICIT - 455)) | (1L << (FAIL_OPERATION - 455)) | (1L << (FAILOVER_MODE - 455)) | (1L << (FAILURE - 455)) | (1L << (FAILURE_CONDITION_LEVEL - 455)) | (1L << (FAST - 455)) | (1L << (FAST_FORWARD - 455)) | (1L << (FILEGROUP - 455)) | (1L << (FILEGROWTH - 455)) | (1L << (FILEPATH - 455)) | (1L << (FILESTREAM - 455)) | (1L << (FILTER - 455)) | (1L << (FIRST - 455)) | (1L << (FIRST_VALUE - 455)) | (1L << (FOLLOWING - 455)) | (1L << (FORCE - 455)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 455)) | (1L << (FORCED - 455)) | (1L << (FORMAT - 455)) | (1L << (FORWARD_ONLY - 455)) | (1L << (FULLSCAN - 455)))) != 0) || ((((_la - 519)) & ~0x3f) == 0 && ((1L << (_la - 519)) & ((1L << (FULLTEXT - 519)) | (1L << (GB - 519)) | (1L << (GETDATE - 519)) | (1L << (GETUTCDATE - 519)) | (1L << (GLOBAL - 519)) | (1L << (GO - 519)) | (1L << (GROUP_MAX_REQUESTS - 519)) | (1L << (GROUPING - 519)) | (1L << (GROUPING_ID - 519)) | (1L << (HADR - 519)) | (1L << (HASH - 519)) | (1L << (HEALTH_CHECK_TIMEOUT - 519)) | (1L << (HIGH - 519)) | (1L << (HONOR_BROKER_PRIORITY - 519)) | (1L << (HOURS - 519)) | (1L << (IDENTITY_VALUE - 519)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 519)) | (1L << (IMMEDIATE - 519)) | (1L << (IMPERSONATE - 519)) | (1L << (IMPORTANCE - 519)) | (1L << (INCREMENTAL - 519)) | (1L << (INITIATOR - 519)) | (1L << (INPUT - 519)) | (1L << (INSENSITIVE - 519)) | (1L << (INSERTED - 519)) | (1L << (INT - 519)) | (1L << (IP - 519)) | (1L << (ISOLATION - 519)) | (1L << (KB - 519)) | (1L << (KEEP - 519)) | (1L << (KEEPFIXED - 519)) | (1L << (KEY_SOURCE - 519)) | (1L << (KEYS - 519)) | (1L << (KEYSET - 519)) | (1L << (LAG - 519)) | (1L << (LAST - 519)) | (1L << (LAST_VALUE - 519)) | (1L << (LEAD - 519)) | (1L << (LEVEL - 519)) | (1L << (LIST - 519)) | (1L << (LISTENER - 519)) | (1L << (LISTENER_URL - 519)) | (1L << (LOB_COMPACTION - 519)) | (1L << (LOCAL - 519)) | (1L << (LOCATION - 519)) | (1L << (LOCK - 519)) | (1L << (LOCK_ESCALATION - 519)) | (1L << (LOGIN - 519)) | (1L << (LOOP - 519)) | (1L << (LOW - 519)) | (1L << (MANUAL - 519)) | (1L << (MARK - 519)) | (1L << (MATERIALIZED - 519)) | (1L << (MAX - 519)) | (1L << (MAX_CPU_PERCENT - 519)) | (1L << (MAX_DOP - 519)) | (1L << (MAX_FILES - 519)) | (1L << (MAX_IOPS_PER_VOLUME - 519)) | (1L << (MAX_MEMORY_PERCENT - 519)) | (1L << (MAX_PROCESSES - 519)) | (1L << (MAX_QUEUE_READERS - 519)))) != 0) || ((((_la - 583)) & ~0x3f) == 0 && ((1L << (_la - 583)) & ((1L << (MAX_ROLLOVER_FILES - 583)) | (1L << (MAXDOP - 583)) | (1L << (MAXRECURSION - 583)) | (1L << (MAXSIZE - 583)) | (1L << (MB - 583)) | (1L << (MEDIUM - 583)) | (1L << (MEMORY_OPTIMIZED_DATA - 583)) | (1L << (MESSAGE - 583)) | (1L << (MIN - 583)) | (1L << (MIN_ACTIVE_ROWVERSION - 583)) | (1L << (MIN_CPU_PERCENT - 583)) | (1L << (MIN_IOPS_PER_VOLUME - 583)) | (1L << (MIN_MEMORY_PERCENT - 583)) | (1L << (MINUTES - 583)) | (1L << (MIRROR_ADDRESS - 583)) | (1L << (MIXED_PAGE_ALLOCATION - 583)) | (1L << (MODE - 583)) | (1L << (MODIFY - 583)) | (1L << (MOVE - 583)) | (1L << (MULTI_USER - 583)) | (1L << (NAME - 583)) | (1L << (NESTED_TRIGGERS - 583)) | (1L << (NEW_ACCOUNT - 583)) | (1L << (NEW_BROKER - 583)) | (1L << (NEW_PASSWORD - 583)) | (1L << (NEXT - 583)) | (1L << (NO - 583)) | (1L << (NO_TRUNCATE - 583)) | (1L << (NO_WAIT - 583)) | (1L << (NOCOUNT - 583)) | (1L << (NODES - 583)) | (1L << (NOEXPAND - 583)) | (1L << (NON_TRANSACTED_ACCESS - 583)) | (1L << (NORECOMPUTE - 583)) | (1L << (NORECOVERY - 583)) | (1L << (NOWAIT - 583)) | (1L << (NTILE - 583)) | (1L << (NUMANODE - 583)) | (1L << (NUMBER - 583)) | (1L << (NUMERIC_ROUNDABORT - 583)) | (1L << (OBJECT - 583)) | (1L << (OFFLINE - 583)) | (1L << (OFFSET - 583)) | (1L << (OLD_ACCOUNT - 583)) | (1L << (ONLINE - 583)) | (1L << (ONLY - 583)) | (1L << (OPEN_EXISTING - 583)) | (1L << (OPTIMISTIC - 583)) | (1L << (OPTIMIZE - 583)) | (1L << (OUT - 583)) | (1L << (OUTPUT - 583)) | (1L << (OWNER - 583)) | (1L << (PAGE_VERIFY - 583)) | (1L << (PARAMETERIZATION - 583)) | (1L << (PARTITION - 583)) | (1L << (PARTITIONS - 583)) | (1L << (PARTNER - 583)) | (1L << (PATH - 583)) | (1L << (POISON_MESSAGE_HANDLING - 583)) | (1L << (POOL - 583)) | (1L << (PORT - 583)) | (1L << (PRECEDING - 583)) | (1L << (PRIMARY_ROLE - 583)))) != 0) || ((((_la - 647)) & ~0x3f) == 0 && ((1L << (_la - 647)) & ((1L << (PRIOR - 647)) | (1L << (PRIORITY - 647)) | (1L << (PRIORITY_LEVEL - 647)) | (1L << (PRIVATE - 647)) | (1L << (PRIVATE_KEY - 647)) | (1L << (PRIVILEGES - 647)) | (1L << (PROCEDURE_NAME - 647)) | (1L << (PROPERTY - 647)) | (1L << (PROVIDER - 647)) | (1L << (PROVIDER_KEY_NAME - 647)) | (1L << (QUERY - 647)) | (1L << (QUEUE - 647)) | (1L << (QUEUE_DELAY - 647)) | (1L << (QUOTED_IDENTIFIER - 647)) | (1L << (RANGE - 647)) | (1L << (RANK - 647)) | (1L << (RC2 - 647)) | (1L << (RC4 - 647)) | (1L << (RC4_128 - 647)) | (1L << (READ_COMMITTED_SNAPSHOT - 647)) | (1L << (READ_ONLY - 647)) | (1L << (READ_ONLY_ROUTING_LIST - 647)) | (1L << (READ_WRITE - 647)) | (1L << (READONLY - 647)) | (1L << (REBUILD - 647)) | (1L << (RECEIVE - 647)) | (1L << (RECOMPILE - 647)) | (1L << (RECOVERY - 647)) | (1L << (RECURSIVE_TRIGGERS - 647)) | (1L << (RELATIVE - 647)) | (1L << (REMOTE - 647)) | (1L << (REMOTE_SERVICE_NAME - 647)) | (1L << (REMOVE - 647)) | (1L << (REORGANIZE - 647)) | (1L << (REPEATABLE - 647)) | (1L << (REPLICA - 647)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 647)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 647)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 647)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 647)) | (1L << (RESERVE_DISK_SPACE - 647)) | (1L << (RESOURCE - 647)) | (1L << (RESOURCE_MANAGER_LOCATION - 647)) | (1L << (RESTRICTED_USER - 647)) | (1L << (RETENTION - 647)) | (1L << (ROBUST - 647)) | (1L << (ROOT - 647)) | (1L << (ROUTE - 647)) | (1L << (ROW - 647)) | (1L << (ROW_NUMBER - 647)) | (1L << (ROWGUID - 647)) | (1L << (ROWS - 647)) | (1L << (SAMPLE - 647)) | (1L << (SCHEMABINDING - 647)) | (1L << (SCOPED - 647)) | (1L << (SCROLL - 647)) | (1L << (SCROLL_LOCKS - 647)) | (1L << (SEARCH - 647)) | (1L << (SECONDARY - 647)) | (1L << (SECONDARY_ONLY - 647)) | (1L << (SECONDARY_ROLE - 647)) | (1L << (SECONDS - 647)) | (1L << (SECRET - 647)) | (1L << (SECURITY - 647)))) != 0) || ((((_la - 711)) & ~0x3f) == 0 && ((1L << (_la - 711)) & ((1L << (SECURITY_LOG - 711)) | (1L << (SEEDING_MODE - 711)) | (1L << (SELF - 711)) | (1L << (SEMI_SENSITIVE - 711)) | (1L << (SEND - 711)) | (1L << (SENT - 711)) | (1L << (SEQUENCE - 711)) | (1L << (SERIALIZABLE - 711)) | (1L << (SESSION_TIMEOUT - 711)) | (1L << (SETERROR - 711)) | (1L << (SHARE - 711)) | (1L << (SHOWPLAN - 711)) | (1L << (SIGNATURE - 711)) | (1L << (SIMPLE - 711)) | (1L << (SINGLE_USER - 711)) | (1L << (SIZE - 711)) | (1L << (SMALLINT - 711)) | (1L << (SNAPSHOT - 711)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 711)) | (1L << (STANDBY - 711)) | (1L << (START_DATE - 711)) | (1L << (STATIC - 711)) | (1L << (STATS_STREAM - 711)) | (1L << (STATUS - 711)) | (1L << (STDEV - 711)) | (1L << (STDEVP - 711)) | (1L << (STOPLIST - 711)) | (1L << (STRING_AGG - 711)) | (1L << (STUFF - 711)) | (1L << (SUBJECT - 711)) | (1L << (SUM - 711)) | (1L << (SUSPEND - 711)) | (1L << (SYMMETRIC - 711)) | (1L << (SYNCHRONOUS_COMMIT - 711)) | (1L << (SYNONYM - 711)) | (1L << (SYSTEM - 711)) | (1L << (TAKE - 711)) | (1L << (TARGET_RECOVERY_TIME - 711)) | (1L << (TB - 711)) | (1L << (TEXTIMAGE_ON - 711)) | (1L << (THROW - 711)) | (1L << (TIES - 711)) | (1L << (TIME - 711)) | (1L << (TIMEOUT - 711)) | (1L << (TIMER - 711)) | (1L << (TINYINT - 711)) | (1L << (TORN_PAGE_DETECTION - 711)) | (1L << (TRANSFORM_NOISE_WORDS - 711)) | (1L << (TRIPLE_DES - 711)) | (1L << (TRIPLE_DES_3KEY - 711)) | (1L << (TRUSTWORTHY - 711)) | (1L << (TRY - 711)) | (1L << (TSQL - 711)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 711)) | (1L << (TYPE - 711)) | (1L << (TYPE_WARNING - 711)) | (1L << (UNBOUNDED - 711)) | (1L << (UNCOMMITTED - 711)) | (1L << (UNKNOWN - 711)) | (1L << (UNLIMITED - 711)) | (1L << (USING - 711)))) != 0) || ((((_la - 775)) & ~0x3f) == 0 && ((1L << (_la - 775)) & ((1L << (VALID_XML - 775)) | (1L << (VALIDATION - 775)) | (1L << (VALUE - 775)) | (1L << (VAR - 775)) | (1L << (VARP - 775)) | (1L << (VIEW_METADATA - 775)) | (1L << (VIEWS - 775)) | (1L << (WAIT - 775)) | (1L << (WELL_FORMED_XML - 775)) | (1L << (WORK - 775)) | (1L << (WORKLOAD - 775)) | (1L << (XML - 775)) | (1L << (XMLNAMESPACES - 775)) | (1L << (DOUBLE_QUOTE_ID - 775)) | (1L << (SQUARE_BRACKET_ID - 775)) | (1L << (LOCAL_ID - 775)) | (1L << (DECIMAL - 775)) | (1L << (ID - 775)) | (1L << (STRING - 775)) | (1L << (PLUS - 775)))) != 0) );
+				} while ( _la==CALLED || _la==COALESCE || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (CONVERT - 69)) | (1L << (CURRENT_TIMESTAMP - 69)) | (1L << (CURRENT_USER - 69)) | (1L << (DATA_COMPRESSION - 69)) | (1L << (EVENTDATA - 69)) | (1L << (EXPIREDATE - 69)) | (1L << (FILENAME - 69)) | (1L << (FILLFACTOR - 69)) | (1L << (FORCESEEK - 69)))) != 0) || ((((_la - 148)) & ~0x3f) == 0 && ((1L << (_la - 148)) & ((1L << (IDENTITY - 148)) | (1L << (IIF - 148)) | (1L << (INIT - 148)) | (1L << (ISNULL - 148)) | (1L << (KEY - 148)) | (1L << (LEFT - 148)) | (1L << (MASTER - 148)) | (1L << (MAX_MEMORY - 148)))) != 0) || ((((_la - 222)) & ~0x3f) == 0 && ((1L << (_la - 222)) & ((1L << (NULLIF - 222)) | (1L << (OFFSETS - 222)) | (1L << (PAGE - 222)) | (1L << (POLICY - 222)) | (1L << (PRECISION - 222)) | (1L << (PUBLIC - 222)) | (1L << (R - 222)) | (1L << (RAW - 222)) | (1L << (RETURN - 222)) | (1L << (RETURNS - 222)) | (1L << (RIGHT - 222)))) != 0) || ((((_la - 287)) & ~0x3f) == 0 && ((1L << (_la - 287)) & ((1L << (ROLE - 287)) | (1L << (ROWCOUNT - 287)) | (1L << (SAFETY - 287)) | (1L << (RULE - 287)) | (1L << (SERVER - 287)) | (1L << (SESSION_USER - 287)) | (1L << (SID - 287)) | (1L << (SOURCE - 287)) | (1L << (SPLIT - 287)) | (1L << (STATE - 287)) | (1L << (START - 287)) | (1L << (STOP - 287)) | (1L << (SYSTEM_USER - 287)) | (1L << (TARGET - 287)) | (1L << (TRAN - 287)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (LOCAL_ID - 748)) | (1L << (DECIMAL - 748)) | (1L << (ID - 748)) | (1L << (STRING - 748)))) != 0) || _la==PLUS || _la==URL );
 				setState(8701);
 				_la = _input.LA(1);
 				if (_la==RR_BRACKET) {
@@ -71231,6 +71761,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -71240,20 +71771,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -71655,6 +72193,7 @@ public class MocaSqlParser extends Parser {
 			case XML:
 			case XMLNAMESPACES:
 			case ID:
+			case URL:
 				{
 				setState(8762);
 				simple_id();
@@ -72304,6 +72843,7 @@ public class MocaSqlParser extends Parser {
 				case CALLED:
 				case DATA_COMPRESSION:
 				case EVENTDATA:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -72313,20 +72853,27 @@ public class MocaSqlParser extends Parser {
 				case MAX_MEMORY:
 				case OFFSETS:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SID:
 				case SOURCE:
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -72730,6 +73277,7 @@ public class MocaSqlParser extends Parser {
 				case DOUBLE_QUOTE_ID:
 				case SQUARE_BRACKET_ID:
 				case ID:
+				case URL:
 					{
 					setState(8853);
 					id();
@@ -75282,6 +75830,7 @@ public class MocaSqlParser extends Parser {
 				case CALLED:
 				case DATA_COMPRESSION:
 				case EVENTDATA:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -75291,20 +75840,27 @@ public class MocaSqlParser extends Parser {
 				case MAX_MEMORY:
 				case OFFSETS:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SID:
 				case SOURCE:
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -75708,6 +76264,7 @@ public class MocaSqlParser extends Parser {
 				case DOUBLE_QUOTE_ID:
 				case SQUARE_BRACKET_ID:
 				case ID:
+				case URL:
 					{
 					setState(9145);
 					full_column_name();
@@ -78170,7 +78727,7 @@ public class MocaSqlParser extends Parser {
 			{
 			setState(9562);
 			_la = _input.LA(1);
-			if (_la==BLOCKING_HIERARCHY || _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (TARGET - 295)))) != 0) || ((((_la - 380)) & ~0x3f) == 0 && ((1L << (_la - 380)) & ((1L << (ABSOLUTE - 380)) | (1L << (ACCENT_SENSITIVITY - 380)) | (1L << (ACTION - 380)) | (1L << (ACTIVATION - 380)) | (1L << (ACTIVE - 380)) | (1L << (ADDRESS - 380)) | (1L << (AES_128 - 380)) | (1L << (AES_192 - 380)) | (1L << (AES_256 - 380)) | (1L << (AFFINITY - 380)) | (1L << (AFTER - 380)) | (1L << (AGGREGATE - 380)) | (1L << (ALGORITHM - 380)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 380)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 380)) | (1L << (ALLOWED - 380)) | (1L << (ANSI_NULL_DEFAULT - 380)) | (1L << (ANSI_NULLS - 380)) | (1L << (ANSI_PADDING - 380)) | (1L << (ANSI_WARNINGS - 380)) | (1L << (APPLICATION_LOG - 380)) | (1L << (APPLY - 380)) | (1L << (ARITHABORT - 380)) | (1L << (ASSEMBLY - 380)) | (1L << (AUDIT - 380)) | (1L << (AUDIT_GUID - 380)) | (1L << (AUTO - 380)) | (1L << (AUTO_CLEANUP - 380)) | (1L << (AUTO_CLOSE - 380)) | (1L << (AUTO_CREATE_STATISTICS - 380)) | (1L << (AUTO_SHRINK - 380)) | (1L << (AUTO_UPDATE_STATISTICS - 380)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 380)) | (1L << (AVAILABILITY - 380)) | (1L << (AVG - 380)) | (1L << (BACKUP_PRIORITY - 380)) | (1L << (BEGIN_DIALOG - 380)) | (1L << (BIGINT - 380)) | (1L << (BINARY_BASE64 - 380)) | (1L << (BINARY_CHECKSUM - 380)) | (1L << (BINDING - 380)) | (1L << (BLOB_STORAGE - 380)) | (1L << (BROKER - 380)) | (1L << (BROKER_INSTANCE - 380)) | (1L << (BULK_LOGGED - 380)) | (1L << (CALLER - 380)) | (1L << (CAP_CPU_PERCENT - 380)) | (1L << (CAST - 380)) | (1L << (CATALOG - 380)) | (1L << (CATCH - 380)) | (1L << (CHANGE_RETENTION - 380)) | (1L << (CHANGE_TRACKING - 380)) | (1L << (CHECKSUM - 380)) | (1L << (CHECKSUM_AGG - 380)) | (1L << (CLEANUP - 380)) | (1L << (COLLECTION - 380)) | (1L << (COLUMN_MASTER_KEY - 380)) | (1L << (COMMITTED - 380)) | (1L << (COMPATIBILITY_LEVEL - 380)) | (1L << (CONCAT - 380)) | (1L << (CONCAT_NULL_YIELDS_NULL - 380)) | (1L << (CONTENT - 380)) | (1L << (CONTROL - 380)) | (1L << (COOKIE - 380)))) != 0) || ((((_la - 444)) & ~0x3f) == 0 && ((1L << (_la - 444)) & ((1L << (COUNT - 444)) | (1L << (COUNT_BIG - 444)) | (1L << (COUNTER - 444)) | (1L << (CPU - 444)) | (1L << (CREATE_NEW - 444)) | (1L << (CREATION_DISPOSITION - 444)) | (1L << (CREDENTIAL - 444)) | (1L << (CRYPTOGRAPHIC - 444)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 444)) | (1L << (CURSOR_DEFAULT - 444)) | (1L << (DATA - 444)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 444)) | (1L << (DATEADD - 444)) | (1L << (DATEDIFF - 444)) | (1L << (DATENAME - 444)) | (1L << (DATEPART - 444)) | (1L << (DAYS - 444)) | (1L << (DB_CHAINING - 444)) | (1L << (DB_FAILOVER - 444)) | (1L << (DECRYPTION - 444)) | (1L << (DEFAULT_DOUBLE_QUOTE - 444)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 444)) | (1L << (DEFAULT_LANGUAGE - 444)) | (1L << (DELAY - 444)) | (1L << (DELAYED_DURABILITY - 444)) | (1L << (DELETED - 444)) | (1L << (DENSE_RANK - 444)) | (1L << (DEPENDENTS - 444)) | (1L << (DES - 444)) | (1L << (DESCRIPTION - 444)) | (1L << (DESX - 444)) | (1L << (DHCP - 444)) | (1L << (DIALOG - 444)) | (1L << (DIRECTORY_NAME - 444)) | (1L << (DISABLE - 444)) | (1L << (DISABLE_BROKER - 444)) | (1L << (DISABLED - 444)) | (1L << (DISK_DRIVE - 444)) | (1L << (DOCUMENT - 444)) | (1L << (DYNAMIC - 444)) | (1L << (EMERGENCY - 444)) | (1L << (EMPTY - 444)) | (1L << (ENABLE - 444)) | (1L << (ENABLE_BROKER - 444)) | (1L << (ENCRYPTED_VALUE - 444)) | (1L << (ENCRYPTION - 444)) | (1L << (ENDPOINT_URL - 444)) | (1L << (ERROR_BROKER_CONVERSATIONS - 444)) | (1L << (EXCLUSIVE - 444)) | (1L << (EXECUTABLE - 444)) | (1L << (EXIST - 444)) | (1L << (EXPAND - 444)) | (1L << (EXPIRY_DATE - 444)) | (1L << (EXPLICIT - 444)) | (1L << (FAIL_OPERATION - 444)) | (1L << (FAILOVER_MODE - 444)) | (1L << (FAILURE - 444)) | (1L << (FAILURE_CONDITION_LEVEL - 444)) | (1L << (FAST - 444)) | (1L << (FAST_FORWARD - 444)) | (1L << (FILEGROUP - 444)) | (1L << (FILEGROWTH - 444)) | (1L << (FILEPATH - 444)))) != 0) || ((((_la - 508)) & ~0x3f) == 0 && ((1L << (_la - 508)) & ((1L << (FILESTREAM - 508)) | (1L << (FILTER - 508)) | (1L << (FIRST - 508)) | (1L << (FIRST_VALUE - 508)) | (1L << (FOLLOWING - 508)) | (1L << (FORCE - 508)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 508)) | (1L << (FORCED - 508)) | (1L << (FORMAT - 508)) | (1L << (FORWARD_ONLY - 508)) | (1L << (FULLSCAN - 508)) | (1L << (FULLTEXT - 508)) | (1L << (GB - 508)) | (1L << (GETDATE - 508)) | (1L << (GETUTCDATE - 508)) | (1L << (GLOBAL - 508)) | (1L << (GO - 508)) | (1L << (GROUP_MAX_REQUESTS - 508)) | (1L << (GROUPING - 508)) | (1L << (GROUPING_ID - 508)) | (1L << (HADR - 508)) | (1L << (HASH - 508)) | (1L << (HEALTH_CHECK_TIMEOUT - 508)) | (1L << (HIGH - 508)) | (1L << (HONOR_BROKER_PRIORITY - 508)) | (1L << (HOURS - 508)) | (1L << (IDENTITY_VALUE - 508)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 508)) | (1L << (IMMEDIATE - 508)) | (1L << (IMPERSONATE - 508)) | (1L << (IMPORTANCE - 508)) | (1L << (INCREMENTAL - 508)) | (1L << (INITIATOR - 508)) | (1L << (INPUT - 508)) | (1L << (INSENSITIVE - 508)) | (1L << (INSERTED - 508)) | (1L << (INT - 508)) | (1L << (IP - 508)) | (1L << (ISOLATION - 508)) | (1L << (KB - 508)) | (1L << (KEEP - 508)) | (1L << (KEEPFIXED - 508)) | (1L << (KEY_SOURCE - 508)) | (1L << (KEYS - 508)) | (1L << (KEYSET - 508)) | (1L << (LAG - 508)) | (1L << (LAST - 508)) | (1L << (LAST_VALUE - 508)) | (1L << (LEAD - 508)) | (1L << (LEVEL - 508)) | (1L << (LIST - 508)) | (1L << (LISTENER - 508)) | (1L << (LISTENER_URL - 508)) | (1L << (LOB_COMPACTION - 508)) | (1L << (LOCAL - 508)) | (1L << (LOCATION - 508)) | (1L << (LOCK - 508)) | (1L << (LOCK_ESCALATION - 508)) | (1L << (LOGIN - 508)) | (1L << (LOOP - 508)) | (1L << (LOW - 508)))) != 0) || ((((_la - 572)) & ~0x3f) == 0 && ((1L << (_la - 572)) & ((1L << (MANUAL - 572)) | (1L << (MARK - 572)) | (1L << (MATERIALIZED - 572)) | (1L << (MAX - 572)) | (1L << (MAX_CPU_PERCENT - 572)) | (1L << (MAX_DOP - 572)) | (1L << (MAX_FILES - 572)) | (1L << (MAX_IOPS_PER_VOLUME - 572)) | (1L << (MAX_MEMORY_PERCENT - 572)) | (1L << (MAX_PROCESSES - 572)) | (1L << (MAX_QUEUE_READERS - 572)) | (1L << (MAX_ROLLOVER_FILES - 572)) | (1L << (MAXDOP - 572)) | (1L << (MAXRECURSION - 572)) | (1L << (MAXSIZE - 572)) | (1L << (MB - 572)) | (1L << (MEDIUM - 572)) | (1L << (MEMORY_OPTIMIZED_DATA - 572)) | (1L << (MESSAGE - 572)) | (1L << (MIN - 572)) | (1L << (MIN_ACTIVE_ROWVERSION - 572)) | (1L << (MIN_CPU_PERCENT - 572)) | (1L << (MIN_IOPS_PER_VOLUME - 572)) | (1L << (MIN_MEMORY_PERCENT - 572)) | (1L << (MINUTES - 572)) | (1L << (MIRROR_ADDRESS - 572)) | (1L << (MIXED_PAGE_ALLOCATION - 572)) | (1L << (MODE - 572)) | (1L << (MODIFY - 572)) | (1L << (MOVE - 572)) | (1L << (MULTI_USER - 572)) | (1L << (NAME - 572)) | (1L << (NESTED_TRIGGERS - 572)) | (1L << (NEW_ACCOUNT - 572)) | (1L << (NEW_BROKER - 572)) | (1L << (NEW_PASSWORD - 572)) | (1L << (NEXT - 572)) | (1L << (NO - 572)) | (1L << (NO_TRUNCATE - 572)) | (1L << (NO_WAIT - 572)) | (1L << (NOCOUNT - 572)) | (1L << (NODES - 572)) | (1L << (NOEXPAND - 572)) | (1L << (NON_TRANSACTED_ACCESS - 572)) | (1L << (NORECOMPUTE - 572)) | (1L << (NORECOVERY - 572)) | (1L << (NOWAIT - 572)) | (1L << (NTILE - 572)) | (1L << (NUMANODE - 572)) | (1L << (NUMBER - 572)) | (1L << (NUMERIC_ROUNDABORT - 572)) | (1L << (OBJECT - 572)) | (1L << (OFFLINE - 572)) | (1L << (OFFSET - 572)) | (1L << (OLD_ACCOUNT - 572)) | (1L << (ONLINE - 572)) | (1L << (ONLY - 572)) | (1L << (OPEN_EXISTING - 572)) | (1L << (OPTIMISTIC - 572)) | (1L << (OPTIMIZE - 572)) | (1L << (OUT - 572)) | (1L << (OUTPUT - 572)) | (1L << (OWNER - 572)))) != 0) || ((((_la - 636)) & ~0x3f) == 0 && ((1L << (_la - 636)) & ((1L << (PAGE_VERIFY - 636)) | (1L << (PARAMETERIZATION - 636)) | (1L << (PARTITION - 636)) | (1L << (PARTITIONS - 636)) | (1L << (PARTNER - 636)) | (1L << (PATH - 636)) | (1L << (POISON_MESSAGE_HANDLING - 636)) | (1L << (POOL - 636)) | (1L << (PORT - 636)) | (1L << (PRECEDING - 636)) | (1L << (PRIMARY_ROLE - 636)) | (1L << (PRIOR - 636)) | (1L << (PRIORITY - 636)) | (1L << (PRIORITY_LEVEL - 636)) | (1L << (PRIVATE - 636)) | (1L << (PRIVATE_KEY - 636)) | (1L << (PRIVILEGES - 636)) | (1L << (PROCEDURE_NAME - 636)) | (1L << (PROPERTY - 636)) | (1L << (PROVIDER - 636)) | (1L << (PROVIDER_KEY_NAME - 636)) | (1L << (QUERY - 636)) | (1L << (QUEUE - 636)) | (1L << (QUEUE_DELAY - 636)) | (1L << (QUOTED_IDENTIFIER - 636)) | (1L << (RANGE - 636)) | (1L << (RANK - 636)) | (1L << (RC2 - 636)) | (1L << (RC4 - 636)) | (1L << (RC4_128 - 636)) | (1L << (READ_COMMITTED_SNAPSHOT - 636)) | (1L << (READ_ONLY - 636)) | (1L << (READ_ONLY_ROUTING_LIST - 636)) | (1L << (READ_WRITE - 636)) | (1L << (READONLY - 636)) | (1L << (REBUILD - 636)) | (1L << (RECEIVE - 636)) | (1L << (RECOMPILE - 636)) | (1L << (RECOVERY - 636)) | (1L << (RECURSIVE_TRIGGERS - 636)) | (1L << (RELATIVE - 636)) | (1L << (REMOTE - 636)) | (1L << (REMOTE_SERVICE_NAME - 636)) | (1L << (REMOVE - 636)) | (1L << (REORGANIZE - 636)) | (1L << (REPEATABLE - 636)) | (1L << (REPLICA - 636)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 636)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 636)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 636)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 636)) | (1L << (RESERVE_DISK_SPACE - 636)) | (1L << (RESOURCE - 636)) | (1L << (RESOURCE_MANAGER_LOCATION - 636)) | (1L << (RESTRICTED_USER - 636)) | (1L << (RETENTION - 636)) | (1L << (ROBUST - 636)) | (1L << (ROOT - 636)) | (1L << (ROUTE - 636)) | (1L << (ROW - 636)) | (1L << (ROW_NUMBER - 636)) | (1L << (ROWGUID - 636)) | (1L << (ROWS - 636)) | (1L << (SAMPLE - 636)))) != 0) || ((((_la - 700)) & ~0x3f) == 0 && ((1L << (_la - 700)) & ((1L << (SCHEMABINDING - 700)) | (1L << (SCOPED - 700)) | (1L << (SCROLL - 700)) | (1L << (SCROLL_LOCKS - 700)) | (1L << (SEARCH - 700)) | (1L << (SECONDARY - 700)) | (1L << (SECONDARY_ONLY - 700)) | (1L << (SECONDARY_ROLE - 700)) | (1L << (SECONDS - 700)) | (1L << (SECRET - 700)) | (1L << (SECURITY - 700)) | (1L << (SECURITY_LOG - 700)) | (1L << (SEEDING_MODE - 700)) | (1L << (SELF - 700)) | (1L << (SEMI_SENSITIVE - 700)) | (1L << (SEND - 700)) | (1L << (SENT - 700)) | (1L << (SEQUENCE - 700)) | (1L << (SERIALIZABLE - 700)) | (1L << (SESSION_TIMEOUT - 700)) | (1L << (SETERROR - 700)) | (1L << (SHARE - 700)) | (1L << (SHOWPLAN - 700)) | (1L << (SIGNATURE - 700)) | (1L << (SIMPLE - 700)) | (1L << (SINGLE_USER - 700)) | (1L << (SIZE - 700)) | (1L << (SMALLINT - 700)) | (1L << (SNAPSHOT - 700)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 700)) | (1L << (STANDBY - 700)) | (1L << (START_DATE - 700)) | (1L << (STATIC - 700)) | (1L << (STATS_STREAM - 700)) | (1L << (STATUS - 700)) | (1L << (STDEV - 700)) | (1L << (STDEVP - 700)) | (1L << (STOPLIST - 700)) | (1L << (STRING_AGG - 700)) | (1L << (STUFF - 700)) | (1L << (SUBJECT - 700)) | (1L << (SUM - 700)) | (1L << (SUSPEND - 700)) | (1L << (SYMMETRIC - 700)) | (1L << (SYNCHRONOUS_COMMIT - 700)) | (1L << (SYNONYM - 700)) | (1L << (SYSTEM - 700)) | (1L << (TAKE - 700)) | (1L << (TARGET_RECOVERY_TIME - 700)) | (1L << (TB - 700)) | (1L << (TEXTIMAGE_ON - 700)) | (1L << (THROW - 700)) | (1L << (TIES - 700)) | (1L << (TIME - 700)) | (1L << (TIMEOUT - 700)) | (1L << (TIMER - 700)) | (1L << (TINYINT - 700)) | (1L << (TORN_PAGE_DETECTION - 700)) | (1L << (TRANSFORM_NOISE_WORDS - 700)) | (1L << (TRIPLE_DES - 700)) | (1L << (TRIPLE_DES_3KEY - 700)) | (1L << (TRUSTWORTHY - 700)))) != 0) || ((((_la - 764)) & ~0x3f) == 0 && ((1L << (_la - 764)) & ((1L << (TRY - 764)) | (1L << (TSQL - 764)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 764)) | (1L << (TYPE - 764)) | (1L << (TYPE_WARNING - 764)) | (1L << (UNBOUNDED - 764)) | (1L << (UNCOMMITTED - 764)) | (1L << (UNKNOWN - 764)) | (1L << (UNLIMITED - 764)) | (1L << (USING - 764)) | (1L << (VALID_XML - 764)) | (1L << (VALIDATION - 764)) | (1L << (VALUE - 764)) | (1L << (VAR - 764)) | (1L << (VARP - 764)) | (1L << (VIEW_METADATA - 764)) | (1L << (VIEWS - 764)) | (1L << (WAIT - 764)) | (1L << (WELL_FORMED_XML - 764)) | (1L << (WORK - 764)) | (1L << (WORKLOAD - 764)) | (1L << (XML - 764)) | (1L << (XMLNAMESPACES - 764)) | (1L << (DOUBLE_QUOTE_ID - 764)) | (1L << (SQUARE_BRACKET_ID - 764)) | (1L << (ID - 764)))) != 0)) {
+			if (_la==BLOCKING_HIERARCHY || _la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==URL) {
 				{
 				setState(9559);
 				table_name();
@@ -78239,6 +78796,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -78248,20 +78806,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -78666,6 +79231,7 @@ public class MocaSqlParser extends Parser {
 			case SQUARE_BRACKET_ID:
 			case ID:
 			case DOLLAR:
+			case URL:
 				{
 				setState(9569);
 				_errHandler.sync(this);
@@ -81459,7 +82025,7 @@ public class MocaSqlParser extends Parser {
 				match(LR_BRACKET);
 				setState(9968);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BLOCKING_HIERARCHY) | (1L << CALLED) | (1L << CASE) | (1L << COALESCE))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (CONVERT - 69)) | (1L << (CURRENT_TIMESTAMP - 69)) | (1L << (CURRENT_USER - 69)) | (1L << (DATA_COMPRESSION - 69)) | (1L << (DEFAULT - 69)) | (1L << (EVENTDATA - 69)) | (1L << (FILENAME - 69)) | (1L << (FILLFACTOR - 69)) | (1L << (FORCESEEK - 69)))) != 0) || ((((_la - 148)) & ~0x3f) == 0 && ((1L << (_la - 148)) & ((1L << (IDENTITY - 148)) | (1L << (IIF - 148)) | (1L << (INIT - 148)) | (1L << (ISNULL - 148)) | (1L << (KEY - 148)) | (1L << (LEFT - 148)) | (1L << (MASTER - 148)) | (1L << (MAX_MEMORY - 148)))) != 0) || ((((_la - 221)) & ~0x3f) == 0 && ((1L << (_la - 221)) & ((1L << (NULL - 221)) | (1L << (NULLIF - 221)) | (1L << (OFFSETS - 221)) | (1L << (OVER - 221)) | (1L << (PAGE - 221)) | (1L << (PUBLIC - 221)) | (1L << (R - 221)) | (1L << (RAW - 221)) | (1L << (RETURN - 221)) | (1L << (RETURNS - 221)))) != 0) || ((((_la - 285)) & ~0x3f) == 0 && ((1L << (_la - 285)) & ((1L << (RIGHT - 285)) | (1L << (ROWCOUNT - 285)) | (1L << (SAFETY - 285)) | (1L << (SERVER - 285)) | (1L << (SESSION_USER - 285)) | (1L << (SID - 285)) | (1L << (SOURCE - 285)) | (1L << (SPLIT - 285)) | (1L << (STATE - 285)) | (1L << (START - 285)) | (1L << (SYSTEM_USER - 285)) | (1L << (TARGET - 285)))) != 0) || ((((_la - 380)) & ~0x3f) == 0 && ((1L << (_la - 380)) & ((1L << (ABSOLUTE - 380)) | (1L << (ACCENT_SENSITIVITY - 380)) | (1L << (ACTION - 380)) | (1L << (ACTIVATION - 380)) | (1L << (ACTIVE - 380)) | (1L << (ADDRESS - 380)) | (1L << (AES_128 - 380)) | (1L << (AES_192 - 380)) | (1L << (AES_256 - 380)) | (1L << (AFFINITY - 380)) | (1L << (AFTER - 380)) | (1L << (AGGREGATE - 380)) | (1L << (ALGORITHM - 380)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 380)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 380)) | (1L << (ALLOWED - 380)) | (1L << (ANSI_NULL_DEFAULT - 380)) | (1L << (ANSI_NULLS - 380)) | (1L << (ANSI_PADDING - 380)) | (1L << (ANSI_WARNINGS - 380)) | (1L << (APPLICATION_LOG - 380)) | (1L << (APPLY - 380)) | (1L << (ARITHABORT - 380)) | (1L << (ASSEMBLY - 380)) | (1L << (AUDIT - 380)) | (1L << (AUDIT_GUID - 380)) | (1L << (AUTO - 380)) | (1L << (AUTO_CLEANUP - 380)) | (1L << (AUTO_CLOSE - 380)) | (1L << (AUTO_CREATE_STATISTICS - 380)) | (1L << (AUTO_SHRINK - 380)) | (1L << (AUTO_UPDATE_STATISTICS - 380)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 380)) | (1L << (AVAILABILITY - 380)) | (1L << (AVG - 380)) | (1L << (BACKUP_PRIORITY - 380)) | (1L << (BEGIN_DIALOG - 380)) | (1L << (BIGINT - 380)) | (1L << (BINARY_BASE64 - 380)) | (1L << (BINARY_CHECKSUM - 380)) | (1L << (BINDING - 380)) | (1L << (BLOB_STORAGE - 380)) | (1L << (BROKER - 380)) | (1L << (BROKER_INSTANCE - 380)) | (1L << (BULK_LOGGED - 380)) | (1L << (CALLER - 380)) | (1L << (CAP_CPU_PERCENT - 380)) | (1L << (CAST - 380)) | (1L << (CATALOG - 380)) | (1L << (CATCH - 380)) | (1L << (CHANGE_RETENTION - 380)) | (1L << (CHANGE_TRACKING - 380)) | (1L << (CHECKSUM - 380)) | (1L << (CHECKSUM_AGG - 380)) | (1L << (CLEANUP - 380)) | (1L << (COLLECTION - 380)) | (1L << (COLUMN_MASTER_KEY - 380)) | (1L << (COMMITTED - 380)) | (1L << (COMPATIBILITY_LEVEL - 380)) | (1L << (CONCAT - 380)) | (1L << (CONCAT_NULL_YIELDS_NULL - 380)) | (1L << (CONTENT - 380)) | (1L << (CONTROL - 380)) | (1L << (COOKIE - 380)))) != 0) || ((((_la - 444)) & ~0x3f) == 0 && ((1L << (_la - 444)) & ((1L << (COUNT - 444)) | (1L << (COUNT_BIG - 444)) | (1L << (COUNTER - 444)) | (1L << (CPU - 444)) | (1L << (CREATE_NEW - 444)) | (1L << (CREATION_DISPOSITION - 444)) | (1L << (CREDENTIAL - 444)) | (1L << (CRYPTOGRAPHIC - 444)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 444)) | (1L << (CURSOR_DEFAULT - 444)) | (1L << (DATA - 444)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 444)) | (1L << (DATEADD - 444)) | (1L << (DATEDIFF - 444)) | (1L << (DATENAME - 444)) | (1L << (DATEPART - 444)) | (1L << (DAYS - 444)) | (1L << (DB_CHAINING - 444)) | (1L << (DB_FAILOVER - 444)) | (1L << (DECRYPTION - 444)) | (1L << (DEFAULT_DOUBLE_QUOTE - 444)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 444)) | (1L << (DEFAULT_LANGUAGE - 444)) | (1L << (DELAY - 444)) | (1L << (DELAYED_DURABILITY - 444)) | (1L << (DELETED - 444)) | (1L << (DENSE_RANK - 444)) | (1L << (DEPENDENTS - 444)) | (1L << (DES - 444)) | (1L << (DESCRIPTION - 444)) | (1L << (DESX - 444)) | (1L << (DHCP - 444)) | (1L << (DIALOG - 444)) | (1L << (DIRECTORY_NAME - 444)) | (1L << (DISABLE - 444)) | (1L << (DISABLE_BROKER - 444)) | (1L << (DISABLED - 444)) | (1L << (DISK_DRIVE - 444)) | (1L << (DOCUMENT - 444)) | (1L << (DYNAMIC - 444)) | (1L << (EMERGENCY - 444)) | (1L << (EMPTY - 444)) | (1L << (ENABLE - 444)) | (1L << (ENABLE_BROKER - 444)) | (1L << (ENCRYPTED_VALUE - 444)) | (1L << (ENCRYPTION - 444)) | (1L << (ENDPOINT_URL - 444)) | (1L << (ERROR_BROKER_CONVERSATIONS - 444)) | (1L << (EXCLUSIVE - 444)) | (1L << (EXECUTABLE - 444)) | (1L << (EXIST - 444)) | (1L << (EXPAND - 444)) | (1L << (EXPIRY_DATE - 444)) | (1L << (EXPLICIT - 444)) | (1L << (FAIL_OPERATION - 444)) | (1L << (FAILOVER_MODE - 444)) | (1L << (FAILURE - 444)) | (1L << (FAILURE_CONDITION_LEVEL - 444)) | (1L << (FAST - 444)) | (1L << (FAST_FORWARD - 444)) | (1L << (FILEGROUP - 444)) | (1L << (FILEGROWTH - 444)) | (1L << (FILEPATH - 444)))) != 0) || ((((_la - 508)) & ~0x3f) == 0 && ((1L << (_la - 508)) & ((1L << (FILESTREAM - 508)) | (1L << (FILTER - 508)) | (1L << (FIRST - 508)) | (1L << (FIRST_VALUE - 508)) | (1L << (FOLLOWING - 508)) | (1L << (FORCE - 508)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 508)) | (1L << (FORCED - 508)) | (1L << (FORMAT - 508)) | (1L << (FORWARD_ONLY - 508)) | (1L << (FULLSCAN - 508)) | (1L << (FULLTEXT - 508)) | (1L << (GB - 508)) | (1L << (GETDATE - 508)) | (1L << (GETUTCDATE - 508)) | (1L << (GLOBAL - 508)) | (1L << (GO - 508)) | (1L << (GROUP_MAX_REQUESTS - 508)) | (1L << (GROUPING - 508)) | (1L << (GROUPING_ID - 508)) | (1L << (HADR - 508)) | (1L << (HASH - 508)) | (1L << (HEALTH_CHECK_TIMEOUT - 508)) | (1L << (HIGH - 508)) | (1L << (HONOR_BROKER_PRIORITY - 508)) | (1L << (HOURS - 508)) | (1L << (IDENTITY_VALUE - 508)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 508)) | (1L << (IMMEDIATE - 508)) | (1L << (IMPERSONATE - 508)) | (1L << (IMPORTANCE - 508)) | (1L << (INCREMENTAL - 508)) | (1L << (INITIATOR - 508)) | (1L << (INPUT - 508)) | (1L << (INSENSITIVE - 508)) | (1L << (INSERTED - 508)) | (1L << (INT - 508)) | (1L << (IP - 508)) | (1L << (ISOLATION - 508)) | (1L << (KB - 508)) | (1L << (KEEP - 508)) | (1L << (KEEPFIXED - 508)) | (1L << (KEY_SOURCE - 508)) | (1L << (KEYS - 508)) | (1L << (KEYSET - 508)) | (1L << (LAG - 508)) | (1L << (LAST - 508)) | (1L << (LAST_VALUE - 508)) | (1L << (LEAD - 508)) | (1L << (LEVEL - 508)) | (1L << (LIST - 508)) | (1L << (LISTENER - 508)) | (1L << (LISTENER_URL - 508)) | (1L << (LOB_COMPACTION - 508)) | (1L << (LOCAL - 508)) | (1L << (LOCATION - 508)) | (1L << (LOCK - 508)) | (1L << (LOCK_ESCALATION - 508)) | (1L << (LOGIN - 508)) | (1L << (LOOP - 508)) | (1L << (LOW - 508)))) != 0) || ((((_la - 572)) & ~0x3f) == 0 && ((1L << (_la - 572)) & ((1L << (MANUAL - 572)) | (1L << (MARK - 572)) | (1L << (MATERIALIZED - 572)) | (1L << (MAX - 572)) | (1L << (MAX_CPU_PERCENT - 572)) | (1L << (MAX_DOP - 572)) | (1L << (MAX_FILES - 572)) | (1L << (MAX_IOPS_PER_VOLUME - 572)) | (1L << (MAX_MEMORY_PERCENT - 572)) | (1L << (MAX_PROCESSES - 572)) | (1L << (MAX_QUEUE_READERS - 572)) | (1L << (MAX_ROLLOVER_FILES - 572)) | (1L << (MAXDOP - 572)) | (1L << (MAXRECURSION - 572)) | (1L << (MAXSIZE - 572)) | (1L << (MB - 572)) | (1L << (MEDIUM - 572)) | (1L << (MEMORY_OPTIMIZED_DATA - 572)) | (1L << (MESSAGE - 572)) | (1L << (MIN - 572)) | (1L << (MIN_ACTIVE_ROWVERSION - 572)) | (1L << (MIN_CPU_PERCENT - 572)) | (1L << (MIN_IOPS_PER_VOLUME - 572)) | (1L << (MIN_MEMORY_PERCENT - 572)) | (1L << (MINUTES - 572)) | (1L << (MIRROR_ADDRESS - 572)) | (1L << (MIXED_PAGE_ALLOCATION - 572)) | (1L << (MODE - 572)) | (1L << (MODIFY - 572)) | (1L << (MOVE - 572)) | (1L << (MULTI_USER - 572)) | (1L << (NAME - 572)) | (1L << (NESTED_TRIGGERS - 572)) | (1L << (NEW_ACCOUNT - 572)) | (1L << (NEW_BROKER - 572)) | (1L << (NEW_PASSWORD - 572)) | (1L << (NEXT - 572)) | (1L << (NO - 572)) | (1L << (NO_TRUNCATE - 572)) | (1L << (NO_WAIT - 572)) | (1L << (NOCOUNT - 572)) | (1L << (NODES - 572)) | (1L << (NOEXPAND - 572)) | (1L << (NON_TRANSACTED_ACCESS - 572)) | (1L << (NORECOMPUTE - 572)) | (1L << (NORECOVERY - 572)) | (1L << (NOWAIT - 572)) | (1L << (NTILE - 572)) | (1L << (NUMANODE - 572)) | (1L << (NUMBER - 572)) | (1L << (NUMERIC_ROUNDABORT - 572)) | (1L << (OBJECT - 572)) | (1L << (OFFLINE - 572)) | (1L << (OFFSET - 572)) | (1L << (OLD_ACCOUNT - 572)) | (1L << (ONLINE - 572)) | (1L << (ONLY - 572)) | (1L << (OPEN_EXISTING - 572)) | (1L << (OPTIMISTIC - 572)) | (1L << (OPTIMIZE - 572)) | (1L << (OUT - 572)) | (1L << (OUTPUT - 572)) | (1L << (OWNER - 572)))) != 0) || ((((_la - 636)) & ~0x3f) == 0 && ((1L << (_la - 636)) & ((1L << (PAGE_VERIFY - 636)) | (1L << (PARAMETERIZATION - 636)) | (1L << (PARTITION - 636)) | (1L << (PARTITIONS - 636)) | (1L << (PARTNER - 636)) | (1L << (PATH - 636)) | (1L << (POISON_MESSAGE_HANDLING - 636)) | (1L << (POOL - 636)) | (1L << (PORT - 636)) | (1L << (PRECEDING - 636)) | (1L << (PRIMARY_ROLE - 636)) | (1L << (PRIOR - 636)) | (1L << (PRIORITY - 636)) | (1L << (PRIORITY_LEVEL - 636)) | (1L << (PRIVATE - 636)) | (1L << (PRIVATE_KEY - 636)) | (1L << (PRIVILEGES - 636)) | (1L << (PROCEDURE_NAME - 636)) | (1L << (PROPERTY - 636)) | (1L << (PROVIDER - 636)) | (1L << (PROVIDER_KEY_NAME - 636)) | (1L << (QUERY - 636)) | (1L << (QUEUE - 636)) | (1L << (QUEUE_DELAY - 636)) | (1L << (QUOTED_IDENTIFIER - 636)) | (1L << (RANGE - 636)) | (1L << (RANK - 636)) | (1L << (RC2 - 636)) | (1L << (RC4 - 636)) | (1L << (RC4_128 - 636)) | (1L << (READ_COMMITTED_SNAPSHOT - 636)) | (1L << (READ_ONLY - 636)) | (1L << (READ_ONLY_ROUTING_LIST - 636)) | (1L << (READ_WRITE - 636)) | (1L << (READONLY - 636)) | (1L << (REBUILD - 636)) | (1L << (RECEIVE - 636)) | (1L << (RECOMPILE - 636)) | (1L << (RECOVERY - 636)) | (1L << (RECURSIVE_TRIGGERS - 636)) | (1L << (RELATIVE - 636)) | (1L << (REMOTE - 636)) | (1L << (REMOTE_SERVICE_NAME - 636)) | (1L << (REMOVE - 636)) | (1L << (REORGANIZE - 636)) | (1L << (REPEATABLE - 636)) | (1L << (REPLICA - 636)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 636)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 636)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 636)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 636)) | (1L << (RESERVE_DISK_SPACE - 636)) | (1L << (RESOURCE - 636)) | (1L << (RESOURCE_MANAGER_LOCATION - 636)) | (1L << (RESTRICTED_USER - 636)) | (1L << (RETENTION - 636)) | (1L << (ROBUST - 636)) | (1L << (ROOT - 636)) | (1L << (ROUTE - 636)) | (1L << (ROW - 636)) | (1L << (ROW_NUMBER - 636)) | (1L << (ROWGUID - 636)) | (1L << (ROWS - 636)) | (1L << (SAMPLE - 636)))) != 0) || ((((_la - 700)) & ~0x3f) == 0 && ((1L << (_la - 700)) & ((1L << (SCHEMABINDING - 700)) | (1L << (SCOPED - 700)) | (1L << (SCROLL - 700)) | (1L << (SCROLL_LOCKS - 700)) | (1L << (SEARCH - 700)) | (1L << (SECONDARY - 700)) | (1L << (SECONDARY_ONLY - 700)) | (1L << (SECONDARY_ROLE - 700)) | (1L << (SECONDS - 700)) | (1L << (SECRET - 700)) | (1L << (SECURITY - 700)) | (1L << (SECURITY_LOG - 700)) | (1L << (SEEDING_MODE - 700)) | (1L << (SELF - 700)) | (1L << (SEMI_SENSITIVE - 700)) | (1L << (SEND - 700)) | (1L << (SENT - 700)) | (1L << (SEQUENCE - 700)) | (1L << (SERIALIZABLE - 700)) | (1L << (SESSION_TIMEOUT - 700)) | (1L << (SETERROR - 700)) | (1L << (SHARE - 700)) | (1L << (SHOWPLAN - 700)) | (1L << (SIGNATURE - 700)) | (1L << (SIMPLE - 700)) | (1L << (SINGLE_USER - 700)) | (1L << (SIZE - 700)) | (1L << (SMALLINT - 700)) | (1L << (SNAPSHOT - 700)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 700)) | (1L << (STANDBY - 700)) | (1L << (START_DATE - 700)) | (1L << (STATIC - 700)) | (1L << (STATS_STREAM - 700)) | (1L << (STATUS - 700)) | (1L << (STDEV - 700)) | (1L << (STDEVP - 700)) | (1L << (STOPLIST - 700)) | (1L << (STRING_AGG - 700)) | (1L << (STUFF - 700)) | (1L << (SUBJECT - 700)) | (1L << (SUM - 700)) | (1L << (SUSPEND - 700)) | (1L << (SYMMETRIC - 700)) | (1L << (SYNCHRONOUS_COMMIT - 700)) | (1L << (SYNONYM - 700)) | (1L << (SYSTEM - 700)) | (1L << (TAKE - 700)) | (1L << (TARGET_RECOVERY_TIME - 700)) | (1L << (TB - 700)) | (1L << (TEXTIMAGE_ON - 700)) | (1L << (THROW - 700)) | (1L << (TIES - 700)) | (1L << (TIME - 700)) | (1L << (TIMEOUT - 700)) | (1L << (TIMER - 700)) | (1L << (TINYINT - 700)) | (1L << (TORN_PAGE_DETECTION - 700)) | (1L << (TRANSFORM_NOISE_WORDS - 700)) | (1L << (TRIPLE_DES - 700)) | (1L << (TRIPLE_DES_3KEY - 700)) | (1L << (TRUSTWORTHY - 700)))) != 0) || ((((_la - 764)) & ~0x3f) == 0 && ((1L << (_la - 764)) & ((1L << (TRY - 764)) | (1L << (TSQL - 764)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 764)) | (1L << (TYPE - 764)) | (1L << (TYPE_WARNING - 764)) | (1L << (UNBOUNDED - 764)) | (1L << (UNCOMMITTED - 764)) | (1L << (UNKNOWN - 764)) | (1L << (UNLIMITED - 764)) | (1L << (USING - 764)) | (1L << (VALID_XML - 764)) | (1L << (VALIDATION - 764)) | (1L << (VALUE - 764)) | (1L << (VAR - 764)) | (1L << (VARP - 764)) | (1L << (VIEW_METADATA - 764)) | (1L << (VIEWS - 764)) | (1L << (WAIT - 764)) | (1L << (WELL_FORMED_XML - 764)) | (1L << (WORK - 764)) | (1L << (WORKLOAD - 764)) | (1L << (XML - 764)) | (1L << (XMLNAMESPACES - 764)) | (1L << (DOUBLE_QUOTE_ID - 764)) | (1L << (SQUARE_BRACKET_ID - 764)) | (1L << (LOCAL_ID - 764)) | (1L << (DECIMAL - 764)) | (1L << (ID - 764)) | (1L << (STRING - 764)) | (1L << (BINARY - 764)) | (1L << (FLOAT - 764)) | (1L << (REAL - 764)) | (1L << (AT - 764)))) != 0) || ((((_la - 828)) & ~0x3f) == 0 && ((1L << (_la - 828)) & ((1L << (DOLLAR - 828)) | (1L << (LR_BRACKET - 828)) | (1L << (COLON - 828)) | (1L << (PLUS - 828)) | (1L << (MINUS - 828)) | (1L << (BIT_NOT - 828)))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BLOCKING_HIERARCHY) | (1L << CALLED) | (1L << CASE) | (1L << COALESCE))) != 0) || ((((_la - 69)) & ~0x3f) == 0 && ((1L << (_la - 69)) & ((1L << (CONVERT - 69)) | (1L << (CURRENT_TIMESTAMP - 69)) | (1L << (CURRENT_USER - 69)) | (1L << (DATA_COMPRESSION - 69)) | (1L << (DEFAULT - 69)) | (1L << (EVENTDATA - 69)) | (1L << (EXPIREDATE - 69)) | (1L << (FILENAME - 69)) | (1L << (FILLFACTOR - 69)) | (1L << (FORCESEEK - 69)))) != 0) || ((((_la - 148)) & ~0x3f) == 0 && ((1L << (_la - 148)) & ((1L << (IDENTITY - 148)) | (1L << (IIF - 148)) | (1L << (INIT - 148)) | (1L << (ISNULL - 148)) | (1L << (KEY - 148)) | (1L << (LEFT - 148)) | (1L << (MASTER - 148)) | (1L << (MAX_MEMORY - 148)))) != 0) || ((((_la - 221)) & ~0x3f) == 0 && ((1L << (_la - 221)) & ((1L << (NULL - 221)) | (1L << (NULLIF - 221)) | (1L << (OFFSETS - 221)) | (1L << (OVER - 221)) | (1L << (PAGE - 221)) | (1L << (POLICY - 221)) | (1L << (PRECISION - 221)) | (1L << (PUBLIC - 221)) | (1L << (R - 221)) | (1L << (RAW - 221)) | (1L << (RETURN - 221)) | (1L << (RETURNS - 221)))) != 0) || ((((_la - 285)) & ~0x3f) == 0 && ((1L << (_la - 285)) & ((1L << (RIGHT - 285)) | (1L << (ROLE - 285)) | (1L << (ROWCOUNT - 285)) | (1L << (SAFETY - 285)) | (1L << (RULE - 285)) | (1L << (SERVER - 285)) | (1L << (SESSION_USER - 285)) | (1L << (SID - 285)) | (1L << (SOURCE - 285)) | (1L << (SPLIT - 285)) | (1L << (STATE - 285)) | (1L << (START - 285)) | (1L << (STOP - 285)) | (1L << (SYSTEM_USER - 285)) | (1L << (TARGET - 285)) | (1L << (TRAN - 285)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (LOCAL_ID - 748)) | (1L << (DECIMAL - 748)) | (1L << (ID - 748)) | (1L << (STRING - 748)) | (1L << (BINARY - 748)) | (1L << (FLOAT - 748)) | (1L << (REAL - 748)))) != 0) || ((((_la - 826)) & ~0x3f) == 0 && ((1L << (_la - 826)) & ((1L << (AT - 826)) | (1L << (DOLLAR - 826)) | (1L << (LR_BRACKET - 826)) | (1L << (COLON - 826)) | (1L << (PLUS - 826)) | (1L << (MINUS - 826)) | (1L << (BIT_NOT - 826)) | (1L << (URL - 826)))) != 0)) {
 					{
 					setState(9967);
 					expression_list();
@@ -82658,6 +83224,7 @@ public class MocaSqlParser extends Parser {
 				case CALLED:
 				case DATA_COMPRESSION:
 				case EVENTDATA:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -82667,20 +83234,27 @@ public class MocaSqlParser extends Parser {
 				case MAX_MEMORY:
 				case OFFSETS:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SID:
 				case SOURCE:
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -83085,6 +83659,7 @@ public class MocaSqlParser extends Parser {
 				case SQUARE_BRACKET_ID:
 				case DECIMAL:
 				case ID:
+				case URL:
 					{
 					setState(10154);
 					index_value();
@@ -83239,6 +83814,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -83248,20 +83824,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -83665,6 +84248,7 @@ public class MocaSqlParser extends Parser {
 			case DOUBLE_QUOTE_ID:
 			case SQUARE_BRACKET_ID:
 			case ID:
+			case URL:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(10192);
@@ -83794,6 +84378,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -83803,20 +84388,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -84220,6 +84812,7 @@ public class MocaSqlParser extends Parser {
 			case DOUBLE_QUOTE_ID:
 			case SQUARE_BRACKET_ID:
 			case ID:
+			case URL:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(10207);
@@ -84596,6 +85189,7 @@ public class MocaSqlParser extends Parser {
 				case DEFAULT:
 				case DISTINCT:
 				case EVENTDATA:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -84612,14 +85206,18 @@ public class MocaSqlParser extends Parser {
 				case OFFSETS:
 				case OVER:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
 				case RIGHT:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SESSION_USER:
 				case SID:
@@ -84627,8 +85225,11 @@ public class MocaSqlParser extends Parser {
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case SYSTEM_USER:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -85045,6 +85646,7 @@ public class MocaSqlParser extends Parser {
 				case PLUS:
 				case MINUS:
 				case BIT_NOT:
+				case URL:
 					{
 					setState(10255);
 					all_distinct_expression();
@@ -85804,6 +86406,7 @@ public class MocaSqlParser extends Parser {
 				case CALLED:
 				case DATA_COMPRESSION:
 				case EVENTDATA:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -85813,20 +86416,27 @@ public class MocaSqlParser extends Parser {
 				case MAX_MEMORY:
 				case OFFSETS:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SID:
 				case SOURCE:
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -86230,6 +86840,7 @@ public class MocaSqlParser extends Parser {
 				case DOUBLE_QUOTE_ID:
 				case SQUARE_BRACKET_ID:
 				case ID:
+				case URL:
 					{
 					setState(10361);
 					id();
@@ -86258,6 +86869,7 @@ public class MocaSqlParser extends Parser {
 				case CALLED:
 				case DATA_COMPRESSION:
 				case EVENTDATA:
+				case EXPIREDATE:
 				case FILENAME:
 				case FILLFACTOR:
 				case FORCESEEK:
@@ -86267,20 +86879,27 @@ public class MocaSqlParser extends Parser {
 				case MAX_MEMORY:
 				case OFFSETS:
 				case PAGE:
+				case POLICY:
+				case PRECISION:
 				case PUBLIC:
 				case R:
 				case RAW:
 				case RETURN:
 				case RETURNS:
+				case ROLE:
 				case ROWCOUNT:
 				case SAFETY:
+				case RULE:
 				case SERVER:
 				case SID:
 				case SOURCE:
 				case SPLIT:
 				case STATE:
 				case START:
+				case STOP:
 				case TARGET:
+				case TRAN:
+				case USER:
 				case ABSOLUTE:
 				case ACCENT_SENSITIVITY:
 				case ACTION:
@@ -86684,6 +87303,7 @@ public class MocaSqlParser extends Parser {
 				case DOUBLE_QUOTE_ID:
 				case SQUARE_BRACKET_ID:
 				case ID:
+				case URL:
 					{
 					setState(10367);
 					id();
@@ -87112,6 +87732,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -87121,20 +87742,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -87538,6 +88166,7 @@ public class MocaSqlParser extends Parser {
 			case DOUBLE_QUOTE_ID:
 			case SQUARE_BRACKET_ID:
 			case ID:
+			case URL:
 				{
 				setState(10425);
 				id();
@@ -87736,7 +88365,7 @@ public class MocaSqlParser extends Parser {
 				match(DOT);
 				setState(10477);
 				_la = _input.LA(1);
-				if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (TARGET - 295)))) != 0) || ((((_la - 380)) & ~0x3f) == 0 && ((1L << (_la - 380)) & ((1L << (ABSOLUTE - 380)) | (1L << (ACCENT_SENSITIVITY - 380)) | (1L << (ACTION - 380)) | (1L << (ACTIVATION - 380)) | (1L << (ACTIVE - 380)) | (1L << (ADDRESS - 380)) | (1L << (AES_128 - 380)) | (1L << (AES_192 - 380)) | (1L << (AES_256 - 380)) | (1L << (AFFINITY - 380)) | (1L << (AFTER - 380)) | (1L << (AGGREGATE - 380)) | (1L << (ALGORITHM - 380)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 380)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 380)) | (1L << (ALLOWED - 380)) | (1L << (ANSI_NULL_DEFAULT - 380)) | (1L << (ANSI_NULLS - 380)) | (1L << (ANSI_PADDING - 380)) | (1L << (ANSI_WARNINGS - 380)) | (1L << (APPLICATION_LOG - 380)) | (1L << (APPLY - 380)) | (1L << (ARITHABORT - 380)) | (1L << (ASSEMBLY - 380)) | (1L << (AUDIT - 380)) | (1L << (AUDIT_GUID - 380)) | (1L << (AUTO - 380)) | (1L << (AUTO_CLEANUP - 380)) | (1L << (AUTO_CLOSE - 380)) | (1L << (AUTO_CREATE_STATISTICS - 380)) | (1L << (AUTO_SHRINK - 380)) | (1L << (AUTO_UPDATE_STATISTICS - 380)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 380)) | (1L << (AVAILABILITY - 380)) | (1L << (AVG - 380)) | (1L << (BACKUP_PRIORITY - 380)) | (1L << (BEGIN_DIALOG - 380)) | (1L << (BIGINT - 380)) | (1L << (BINARY_BASE64 - 380)) | (1L << (BINARY_CHECKSUM - 380)) | (1L << (BINDING - 380)) | (1L << (BLOB_STORAGE - 380)) | (1L << (BROKER - 380)) | (1L << (BROKER_INSTANCE - 380)) | (1L << (BULK_LOGGED - 380)) | (1L << (CALLER - 380)) | (1L << (CAP_CPU_PERCENT - 380)) | (1L << (CAST - 380)) | (1L << (CATALOG - 380)) | (1L << (CATCH - 380)) | (1L << (CHANGE_RETENTION - 380)) | (1L << (CHANGE_TRACKING - 380)) | (1L << (CHECKSUM - 380)) | (1L << (CHECKSUM_AGG - 380)) | (1L << (CLEANUP - 380)) | (1L << (COLLECTION - 380)) | (1L << (COLUMN_MASTER_KEY - 380)) | (1L << (COMMITTED - 380)) | (1L << (COMPATIBILITY_LEVEL - 380)) | (1L << (CONCAT - 380)) | (1L << (CONCAT_NULL_YIELDS_NULL - 380)) | (1L << (CONTENT - 380)) | (1L << (CONTROL - 380)) | (1L << (COOKIE - 380)))) != 0) || ((((_la - 444)) & ~0x3f) == 0 && ((1L << (_la - 444)) & ((1L << (COUNT - 444)) | (1L << (COUNT_BIG - 444)) | (1L << (COUNTER - 444)) | (1L << (CPU - 444)) | (1L << (CREATE_NEW - 444)) | (1L << (CREATION_DISPOSITION - 444)) | (1L << (CREDENTIAL - 444)) | (1L << (CRYPTOGRAPHIC - 444)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 444)) | (1L << (CURSOR_DEFAULT - 444)) | (1L << (DATA - 444)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 444)) | (1L << (DATEADD - 444)) | (1L << (DATEDIFF - 444)) | (1L << (DATENAME - 444)) | (1L << (DATEPART - 444)) | (1L << (DAYS - 444)) | (1L << (DB_CHAINING - 444)) | (1L << (DB_FAILOVER - 444)) | (1L << (DECRYPTION - 444)) | (1L << (DEFAULT_DOUBLE_QUOTE - 444)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 444)) | (1L << (DEFAULT_LANGUAGE - 444)) | (1L << (DELAY - 444)) | (1L << (DELAYED_DURABILITY - 444)) | (1L << (DELETED - 444)) | (1L << (DENSE_RANK - 444)) | (1L << (DEPENDENTS - 444)) | (1L << (DES - 444)) | (1L << (DESCRIPTION - 444)) | (1L << (DESX - 444)) | (1L << (DHCP - 444)) | (1L << (DIALOG - 444)) | (1L << (DIRECTORY_NAME - 444)) | (1L << (DISABLE - 444)) | (1L << (DISABLE_BROKER - 444)) | (1L << (DISABLED - 444)) | (1L << (DISK_DRIVE - 444)) | (1L << (DOCUMENT - 444)) | (1L << (DYNAMIC - 444)) | (1L << (EMERGENCY - 444)) | (1L << (EMPTY - 444)) | (1L << (ENABLE - 444)) | (1L << (ENABLE_BROKER - 444)) | (1L << (ENCRYPTED_VALUE - 444)) | (1L << (ENCRYPTION - 444)) | (1L << (ENDPOINT_URL - 444)) | (1L << (ERROR_BROKER_CONVERSATIONS - 444)) | (1L << (EXCLUSIVE - 444)) | (1L << (EXECUTABLE - 444)) | (1L << (EXIST - 444)) | (1L << (EXPAND - 444)) | (1L << (EXPIRY_DATE - 444)) | (1L << (EXPLICIT - 444)) | (1L << (FAIL_OPERATION - 444)) | (1L << (FAILOVER_MODE - 444)) | (1L << (FAILURE - 444)) | (1L << (FAILURE_CONDITION_LEVEL - 444)) | (1L << (FAST - 444)) | (1L << (FAST_FORWARD - 444)) | (1L << (FILEGROUP - 444)) | (1L << (FILEGROWTH - 444)) | (1L << (FILEPATH - 444)))) != 0) || ((((_la - 508)) & ~0x3f) == 0 && ((1L << (_la - 508)) & ((1L << (FILESTREAM - 508)) | (1L << (FILTER - 508)) | (1L << (FIRST - 508)) | (1L << (FIRST_VALUE - 508)) | (1L << (FOLLOWING - 508)) | (1L << (FORCE - 508)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 508)) | (1L << (FORCED - 508)) | (1L << (FORMAT - 508)) | (1L << (FORWARD_ONLY - 508)) | (1L << (FULLSCAN - 508)) | (1L << (FULLTEXT - 508)) | (1L << (GB - 508)) | (1L << (GETDATE - 508)) | (1L << (GETUTCDATE - 508)) | (1L << (GLOBAL - 508)) | (1L << (GO - 508)) | (1L << (GROUP_MAX_REQUESTS - 508)) | (1L << (GROUPING - 508)) | (1L << (GROUPING_ID - 508)) | (1L << (HADR - 508)) | (1L << (HASH - 508)) | (1L << (HEALTH_CHECK_TIMEOUT - 508)) | (1L << (HIGH - 508)) | (1L << (HONOR_BROKER_PRIORITY - 508)) | (1L << (HOURS - 508)) | (1L << (IDENTITY_VALUE - 508)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 508)) | (1L << (IMMEDIATE - 508)) | (1L << (IMPERSONATE - 508)) | (1L << (IMPORTANCE - 508)) | (1L << (INCREMENTAL - 508)) | (1L << (INITIATOR - 508)) | (1L << (INPUT - 508)) | (1L << (INSENSITIVE - 508)) | (1L << (INSERTED - 508)) | (1L << (INT - 508)) | (1L << (IP - 508)) | (1L << (ISOLATION - 508)) | (1L << (KB - 508)) | (1L << (KEEP - 508)) | (1L << (KEEPFIXED - 508)) | (1L << (KEY_SOURCE - 508)) | (1L << (KEYS - 508)) | (1L << (KEYSET - 508)) | (1L << (LAG - 508)) | (1L << (LAST - 508)) | (1L << (LAST_VALUE - 508)) | (1L << (LEAD - 508)) | (1L << (LEVEL - 508)) | (1L << (LIST - 508)) | (1L << (LISTENER - 508)) | (1L << (LISTENER_URL - 508)) | (1L << (LOB_COMPACTION - 508)) | (1L << (LOCAL - 508)) | (1L << (LOCATION - 508)) | (1L << (LOCK - 508)) | (1L << (LOCK_ESCALATION - 508)) | (1L << (LOGIN - 508)) | (1L << (LOOP - 508)) | (1L << (LOW - 508)))) != 0) || ((((_la - 572)) & ~0x3f) == 0 && ((1L << (_la - 572)) & ((1L << (MANUAL - 572)) | (1L << (MARK - 572)) | (1L << (MATERIALIZED - 572)) | (1L << (MAX - 572)) | (1L << (MAX_CPU_PERCENT - 572)) | (1L << (MAX_DOP - 572)) | (1L << (MAX_FILES - 572)) | (1L << (MAX_IOPS_PER_VOLUME - 572)) | (1L << (MAX_MEMORY_PERCENT - 572)) | (1L << (MAX_PROCESSES - 572)) | (1L << (MAX_QUEUE_READERS - 572)) | (1L << (MAX_ROLLOVER_FILES - 572)) | (1L << (MAXDOP - 572)) | (1L << (MAXRECURSION - 572)) | (1L << (MAXSIZE - 572)) | (1L << (MB - 572)) | (1L << (MEDIUM - 572)) | (1L << (MEMORY_OPTIMIZED_DATA - 572)) | (1L << (MESSAGE - 572)) | (1L << (MIN - 572)) | (1L << (MIN_ACTIVE_ROWVERSION - 572)) | (1L << (MIN_CPU_PERCENT - 572)) | (1L << (MIN_IOPS_PER_VOLUME - 572)) | (1L << (MIN_MEMORY_PERCENT - 572)) | (1L << (MINUTES - 572)) | (1L << (MIRROR_ADDRESS - 572)) | (1L << (MIXED_PAGE_ALLOCATION - 572)) | (1L << (MODE - 572)) | (1L << (MODIFY - 572)) | (1L << (MOVE - 572)) | (1L << (MULTI_USER - 572)) | (1L << (NAME - 572)) | (1L << (NESTED_TRIGGERS - 572)) | (1L << (NEW_ACCOUNT - 572)) | (1L << (NEW_BROKER - 572)) | (1L << (NEW_PASSWORD - 572)) | (1L << (NEXT - 572)) | (1L << (NO - 572)) | (1L << (NO_TRUNCATE - 572)) | (1L << (NO_WAIT - 572)) | (1L << (NOCOUNT - 572)) | (1L << (NODES - 572)) | (1L << (NOEXPAND - 572)) | (1L << (NON_TRANSACTED_ACCESS - 572)) | (1L << (NORECOMPUTE - 572)) | (1L << (NORECOVERY - 572)) | (1L << (NOWAIT - 572)) | (1L << (NTILE - 572)) | (1L << (NUMANODE - 572)) | (1L << (NUMBER - 572)) | (1L << (NUMERIC_ROUNDABORT - 572)) | (1L << (OBJECT - 572)) | (1L << (OFFLINE - 572)) | (1L << (OFFSET - 572)) | (1L << (OLD_ACCOUNT - 572)) | (1L << (ONLINE - 572)) | (1L << (ONLY - 572)) | (1L << (OPEN_EXISTING - 572)) | (1L << (OPTIMISTIC - 572)) | (1L << (OPTIMIZE - 572)) | (1L << (OUT - 572)) | (1L << (OUTPUT - 572)) | (1L << (OWNER - 572)))) != 0) || ((((_la - 636)) & ~0x3f) == 0 && ((1L << (_la - 636)) & ((1L << (PAGE_VERIFY - 636)) | (1L << (PARAMETERIZATION - 636)) | (1L << (PARTITION - 636)) | (1L << (PARTITIONS - 636)) | (1L << (PARTNER - 636)) | (1L << (PATH - 636)) | (1L << (POISON_MESSAGE_HANDLING - 636)) | (1L << (POOL - 636)) | (1L << (PORT - 636)) | (1L << (PRECEDING - 636)) | (1L << (PRIMARY_ROLE - 636)) | (1L << (PRIOR - 636)) | (1L << (PRIORITY - 636)) | (1L << (PRIORITY_LEVEL - 636)) | (1L << (PRIVATE - 636)) | (1L << (PRIVATE_KEY - 636)) | (1L << (PRIVILEGES - 636)) | (1L << (PROCEDURE_NAME - 636)) | (1L << (PROPERTY - 636)) | (1L << (PROVIDER - 636)) | (1L << (PROVIDER_KEY_NAME - 636)) | (1L << (QUERY - 636)) | (1L << (QUEUE - 636)) | (1L << (QUEUE_DELAY - 636)) | (1L << (QUOTED_IDENTIFIER - 636)) | (1L << (RANGE - 636)) | (1L << (RANK - 636)) | (1L << (RC2 - 636)) | (1L << (RC4 - 636)) | (1L << (RC4_128 - 636)) | (1L << (READ_COMMITTED_SNAPSHOT - 636)) | (1L << (READ_ONLY - 636)) | (1L << (READ_ONLY_ROUTING_LIST - 636)) | (1L << (READ_WRITE - 636)) | (1L << (READONLY - 636)) | (1L << (REBUILD - 636)) | (1L << (RECEIVE - 636)) | (1L << (RECOMPILE - 636)) | (1L << (RECOVERY - 636)) | (1L << (RECURSIVE_TRIGGERS - 636)) | (1L << (RELATIVE - 636)) | (1L << (REMOTE - 636)) | (1L << (REMOTE_SERVICE_NAME - 636)) | (1L << (REMOVE - 636)) | (1L << (REORGANIZE - 636)) | (1L << (REPEATABLE - 636)) | (1L << (REPLICA - 636)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 636)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 636)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 636)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 636)) | (1L << (RESERVE_DISK_SPACE - 636)) | (1L << (RESOURCE - 636)) | (1L << (RESOURCE_MANAGER_LOCATION - 636)) | (1L << (RESTRICTED_USER - 636)) | (1L << (RETENTION - 636)) | (1L << (ROBUST - 636)) | (1L << (ROOT - 636)) | (1L << (ROUTE - 636)) | (1L << (ROW - 636)) | (1L << (ROW_NUMBER - 636)) | (1L << (ROWGUID - 636)) | (1L << (ROWS - 636)) | (1L << (SAMPLE - 636)))) != 0) || ((((_la - 700)) & ~0x3f) == 0 && ((1L << (_la - 700)) & ((1L << (SCHEMABINDING - 700)) | (1L << (SCOPED - 700)) | (1L << (SCROLL - 700)) | (1L << (SCROLL_LOCKS - 700)) | (1L << (SEARCH - 700)) | (1L << (SECONDARY - 700)) | (1L << (SECONDARY_ONLY - 700)) | (1L << (SECONDARY_ROLE - 700)) | (1L << (SECONDS - 700)) | (1L << (SECRET - 700)) | (1L << (SECURITY - 700)) | (1L << (SECURITY_LOG - 700)) | (1L << (SEEDING_MODE - 700)) | (1L << (SELF - 700)) | (1L << (SEMI_SENSITIVE - 700)) | (1L << (SEND - 700)) | (1L << (SENT - 700)) | (1L << (SEQUENCE - 700)) | (1L << (SERIALIZABLE - 700)) | (1L << (SESSION_TIMEOUT - 700)) | (1L << (SETERROR - 700)) | (1L << (SHARE - 700)) | (1L << (SHOWPLAN - 700)) | (1L << (SIGNATURE - 700)) | (1L << (SIMPLE - 700)) | (1L << (SINGLE_USER - 700)) | (1L << (SIZE - 700)) | (1L << (SMALLINT - 700)) | (1L << (SNAPSHOT - 700)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 700)) | (1L << (STANDBY - 700)) | (1L << (START_DATE - 700)) | (1L << (STATIC - 700)) | (1L << (STATS_STREAM - 700)) | (1L << (STATUS - 700)) | (1L << (STDEV - 700)) | (1L << (STDEVP - 700)) | (1L << (STOPLIST - 700)) | (1L << (STRING_AGG - 700)) | (1L << (STUFF - 700)) | (1L << (SUBJECT - 700)) | (1L << (SUM - 700)) | (1L << (SUSPEND - 700)) | (1L << (SYMMETRIC - 700)) | (1L << (SYNCHRONOUS_COMMIT - 700)) | (1L << (SYNONYM - 700)) | (1L << (SYSTEM - 700)) | (1L << (TAKE - 700)) | (1L << (TARGET_RECOVERY_TIME - 700)) | (1L << (TB - 700)) | (1L << (TEXTIMAGE_ON - 700)) | (1L << (THROW - 700)) | (1L << (TIES - 700)) | (1L << (TIME - 700)) | (1L << (TIMEOUT - 700)) | (1L << (TIMER - 700)) | (1L << (TINYINT - 700)) | (1L << (TORN_PAGE_DETECTION - 700)) | (1L << (TRANSFORM_NOISE_WORDS - 700)) | (1L << (TRIPLE_DES - 700)) | (1L << (TRIPLE_DES_3KEY - 700)) | (1L << (TRUSTWORTHY - 700)))) != 0) || ((((_la - 764)) & ~0x3f) == 0 && ((1L << (_la - 764)) & ((1L << (TRY - 764)) | (1L << (TSQL - 764)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 764)) | (1L << (TYPE - 764)) | (1L << (TYPE_WARNING - 764)) | (1L << (UNBOUNDED - 764)) | (1L << (UNCOMMITTED - 764)) | (1L << (UNKNOWN - 764)) | (1L << (UNLIMITED - 764)) | (1L << (USING - 764)) | (1L << (VALID_XML - 764)) | (1L << (VALIDATION - 764)) | (1L << (VALUE - 764)) | (1L << (VAR - 764)) | (1L << (VARP - 764)) | (1L << (VIEW_METADATA - 764)) | (1L << (VIEWS - 764)) | (1L << (WAIT - 764)) | (1L << (WELL_FORMED_XML - 764)) | (1L << (WORK - 764)) | (1L << (WORKLOAD - 764)) | (1L << (XML - 764)) | (1L << (XMLNAMESPACES - 764)) | (1L << (DOUBLE_QUOTE_ID - 764)) | (1L << (SQUARE_BRACKET_ID - 764)) | (1L << (ID - 764)))) != 0)) {
+				if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==URL) {
 					{
 					setState(10476);
 					((Entity_nameContext)_localctx).schema = id();
@@ -87968,7 +88597,7 @@ public class MocaSqlParser extends Parser {
 				match(DOT);
 				setState(10512);
 				_la = _input.LA(1);
-				if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (TARGET - 295)))) != 0) || ((((_la - 380)) & ~0x3f) == 0 && ((1L << (_la - 380)) & ((1L << (ABSOLUTE - 380)) | (1L << (ACCENT_SENSITIVITY - 380)) | (1L << (ACTION - 380)) | (1L << (ACTIVATION - 380)) | (1L << (ACTIVE - 380)) | (1L << (ADDRESS - 380)) | (1L << (AES_128 - 380)) | (1L << (AES_192 - 380)) | (1L << (AES_256 - 380)) | (1L << (AFFINITY - 380)) | (1L << (AFTER - 380)) | (1L << (AGGREGATE - 380)) | (1L << (ALGORITHM - 380)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 380)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 380)) | (1L << (ALLOWED - 380)) | (1L << (ANSI_NULL_DEFAULT - 380)) | (1L << (ANSI_NULLS - 380)) | (1L << (ANSI_PADDING - 380)) | (1L << (ANSI_WARNINGS - 380)) | (1L << (APPLICATION_LOG - 380)) | (1L << (APPLY - 380)) | (1L << (ARITHABORT - 380)) | (1L << (ASSEMBLY - 380)) | (1L << (AUDIT - 380)) | (1L << (AUDIT_GUID - 380)) | (1L << (AUTO - 380)) | (1L << (AUTO_CLEANUP - 380)) | (1L << (AUTO_CLOSE - 380)) | (1L << (AUTO_CREATE_STATISTICS - 380)) | (1L << (AUTO_SHRINK - 380)) | (1L << (AUTO_UPDATE_STATISTICS - 380)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 380)) | (1L << (AVAILABILITY - 380)) | (1L << (AVG - 380)) | (1L << (BACKUP_PRIORITY - 380)) | (1L << (BEGIN_DIALOG - 380)) | (1L << (BIGINT - 380)) | (1L << (BINARY_BASE64 - 380)) | (1L << (BINARY_CHECKSUM - 380)) | (1L << (BINDING - 380)) | (1L << (BLOB_STORAGE - 380)) | (1L << (BROKER - 380)) | (1L << (BROKER_INSTANCE - 380)) | (1L << (BULK_LOGGED - 380)) | (1L << (CALLER - 380)) | (1L << (CAP_CPU_PERCENT - 380)) | (1L << (CAST - 380)) | (1L << (CATALOG - 380)) | (1L << (CATCH - 380)) | (1L << (CHANGE_RETENTION - 380)) | (1L << (CHANGE_TRACKING - 380)) | (1L << (CHECKSUM - 380)) | (1L << (CHECKSUM_AGG - 380)) | (1L << (CLEANUP - 380)) | (1L << (COLLECTION - 380)) | (1L << (COLUMN_MASTER_KEY - 380)) | (1L << (COMMITTED - 380)) | (1L << (COMPATIBILITY_LEVEL - 380)) | (1L << (CONCAT - 380)) | (1L << (CONCAT_NULL_YIELDS_NULL - 380)) | (1L << (CONTENT - 380)) | (1L << (CONTROL - 380)) | (1L << (COOKIE - 380)))) != 0) || ((((_la - 444)) & ~0x3f) == 0 && ((1L << (_la - 444)) & ((1L << (COUNT - 444)) | (1L << (COUNT_BIG - 444)) | (1L << (COUNTER - 444)) | (1L << (CPU - 444)) | (1L << (CREATE_NEW - 444)) | (1L << (CREATION_DISPOSITION - 444)) | (1L << (CREDENTIAL - 444)) | (1L << (CRYPTOGRAPHIC - 444)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 444)) | (1L << (CURSOR_DEFAULT - 444)) | (1L << (DATA - 444)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 444)) | (1L << (DATEADD - 444)) | (1L << (DATEDIFF - 444)) | (1L << (DATENAME - 444)) | (1L << (DATEPART - 444)) | (1L << (DAYS - 444)) | (1L << (DB_CHAINING - 444)) | (1L << (DB_FAILOVER - 444)) | (1L << (DECRYPTION - 444)) | (1L << (DEFAULT_DOUBLE_QUOTE - 444)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 444)) | (1L << (DEFAULT_LANGUAGE - 444)) | (1L << (DELAY - 444)) | (1L << (DELAYED_DURABILITY - 444)) | (1L << (DELETED - 444)) | (1L << (DENSE_RANK - 444)) | (1L << (DEPENDENTS - 444)) | (1L << (DES - 444)) | (1L << (DESCRIPTION - 444)) | (1L << (DESX - 444)) | (1L << (DHCP - 444)) | (1L << (DIALOG - 444)) | (1L << (DIRECTORY_NAME - 444)) | (1L << (DISABLE - 444)) | (1L << (DISABLE_BROKER - 444)) | (1L << (DISABLED - 444)) | (1L << (DISK_DRIVE - 444)) | (1L << (DOCUMENT - 444)) | (1L << (DYNAMIC - 444)) | (1L << (EMERGENCY - 444)) | (1L << (EMPTY - 444)) | (1L << (ENABLE - 444)) | (1L << (ENABLE_BROKER - 444)) | (1L << (ENCRYPTED_VALUE - 444)) | (1L << (ENCRYPTION - 444)) | (1L << (ENDPOINT_URL - 444)) | (1L << (ERROR_BROKER_CONVERSATIONS - 444)) | (1L << (EXCLUSIVE - 444)) | (1L << (EXECUTABLE - 444)) | (1L << (EXIST - 444)) | (1L << (EXPAND - 444)) | (1L << (EXPIRY_DATE - 444)) | (1L << (EXPLICIT - 444)) | (1L << (FAIL_OPERATION - 444)) | (1L << (FAILOVER_MODE - 444)) | (1L << (FAILURE - 444)) | (1L << (FAILURE_CONDITION_LEVEL - 444)) | (1L << (FAST - 444)) | (1L << (FAST_FORWARD - 444)) | (1L << (FILEGROUP - 444)) | (1L << (FILEGROWTH - 444)) | (1L << (FILEPATH - 444)))) != 0) || ((((_la - 508)) & ~0x3f) == 0 && ((1L << (_la - 508)) & ((1L << (FILESTREAM - 508)) | (1L << (FILTER - 508)) | (1L << (FIRST - 508)) | (1L << (FIRST_VALUE - 508)) | (1L << (FOLLOWING - 508)) | (1L << (FORCE - 508)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 508)) | (1L << (FORCED - 508)) | (1L << (FORMAT - 508)) | (1L << (FORWARD_ONLY - 508)) | (1L << (FULLSCAN - 508)) | (1L << (FULLTEXT - 508)) | (1L << (GB - 508)) | (1L << (GETDATE - 508)) | (1L << (GETUTCDATE - 508)) | (1L << (GLOBAL - 508)) | (1L << (GO - 508)) | (1L << (GROUP_MAX_REQUESTS - 508)) | (1L << (GROUPING - 508)) | (1L << (GROUPING_ID - 508)) | (1L << (HADR - 508)) | (1L << (HASH - 508)) | (1L << (HEALTH_CHECK_TIMEOUT - 508)) | (1L << (HIGH - 508)) | (1L << (HONOR_BROKER_PRIORITY - 508)) | (1L << (HOURS - 508)) | (1L << (IDENTITY_VALUE - 508)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 508)) | (1L << (IMMEDIATE - 508)) | (1L << (IMPERSONATE - 508)) | (1L << (IMPORTANCE - 508)) | (1L << (INCREMENTAL - 508)) | (1L << (INITIATOR - 508)) | (1L << (INPUT - 508)) | (1L << (INSENSITIVE - 508)) | (1L << (INSERTED - 508)) | (1L << (INT - 508)) | (1L << (IP - 508)) | (1L << (ISOLATION - 508)) | (1L << (KB - 508)) | (1L << (KEEP - 508)) | (1L << (KEEPFIXED - 508)) | (1L << (KEY_SOURCE - 508)) | (1L << (KEYS - 508)) | (1L << (KEYSET - 508)) | (1L << (LAG - 508)) | (1L << (LAST - 508)) | (1L << (LAST_VALUE - 508)) | (1L << (LEAD - 508)) | (1L << (LEVEL - 508)) | (1L << (LIST - 508)) | (1L << (LISTENER - 508)) | (1L << (LISTENER_URL - 508)) | (1L << (LOB_COMPACTION - 508)) | (1L << (LOCAL - 508)) | (1L << (LOCATION - 508)) | (1L << (LOCK - 508)) | (1L << (LOCK_ESCALATION - 508)) | (1L << (LOGIN - 508)) | (1L << (LOOP - 508)) | (1L << (LOW - 508)))) != 0) || ((((_la - 572)) & ~0x3f) == 0 && ((1L << (_la - 572)) & ((1L << (MANUAL - 572)) | (1L << (MARK - 572)) | (1L << (MATERIALIZED - 572)) | (1L << (MAX - 572)) | (1L << (MAX_CPU_PERCENT - 572)) | (1L << (MAX_DOP - 572)) | (1L << (MAX_FILES - 572)) | (1L << (MAX_IOPS_PER_VOLUME - 572)) | (1L << (MAX_MEMORY_PERCENT - 572)) | (1L << (MAX_PROCESSES - 572)) | (1L << (MAX_QUEUE_READERS - 572)) | (1L << (MAX_ROLLOVER_FILES - 572)) | (1L << (MAXDOP - 572)) | (1L << (MAXRECURSION - 572)) | (1L << (MAXSIZE - 572)) | (1L << (MB - 572)) | (1L << (MEDIUM - 572)) | (1L << (MEMORY_OPTIMIZED_DATA - 572)) | (1L << (MESSAGE - 572)) | (1L << (MIN - 572)) | (1L << (MIN_ACTIVE_ROWVERSION - 572)) | (1L << (MIN_CPU_PERCENT - 572)) | (1L << (MIN_IOPS_PER_VOLUME - 572)) | (1L << (MIN_MEMORY_PERCENT - 572)) | (1L << (MINUTES - 572)) | (1L << (MIRROR_ADDRESS - 572)) | (1L << (MIXED_PAGE_ALLOCATION - 572)) | (1L << (MODE - 572)) | (1L << (MODIFY - 572)) | (1L << (MOVE - 572)) | (1L << (MULTI_USER - 572)) | (1L << (NAME - 572)) | (1L << (NESTED_TRIGGERS - 572)) | (1L << (NEW_ACCOUNT - 572)) | (1L << (NEW_BROKER - 572)) | (1L << (NEW_PASSWORD - 572)) | (1L << (NEXT - 572)) | (1L << (NO - 572)) | (1L << (NO_TRUNCATE - 572)) | (1L << (NO_WAIT - 572)) | (1L << (NOCOUNT - 572)) | (1L << (NODES - 572)) | (1L << (NOEXPAND - 572)) | (1L << (NON_TRANSACTED_ACCESS - 572)) | (1L << (NORECOMPUTE - 572)) | (1L << (NORECOVERY - 572)) | (1L << (NOWAIT - 572)) | (1L << (NTILE - 572)) | (1L << (NUMANODE - 572)) | (1L << (NUMBER - 572)) | (1L << (NUMERIC_ROUNDABORT - 572)) | (1L << (OBJECT - 572)) | (1L << (OFFLINE - 572)) | (1L << (OFFSET - 572)) | (1L << (OLD_ACCOUNT - 572)) | (1L << (ONLINE - 572)) | (1L << (ONLY - 572)) | (1L << (OPEN_EXISTING - 572)) | (1L << (OPTIMISTIC - 572)) | (1L << (OPTIMIZE - 572)) | (1L << (OUT - 572)) | (1L << (OUTPUT - 572)) | (1L << (OWNER - 572)))) != 0) || ((((_la - 636)) & ~0x3f) == 0 && ((1L << (_la - 636)) & ((1L << (PAGE_VERIFY - 636)) | (1L << (PARAMETERIZATION - 636)) | (1L << (PARTITION - 636)) | (1L << (PARTITIONS - 636)) | (1L << (PARTNER - 636)) | (1L << (PATH - 636)) | (1L << (POISON_MESSAGE_HANDLING - 636)) | (1L << (POOL - 636)) | (1L << (PORT - 636)) | (1L << (PRECEDING - 636)) | (1L << (PRIMARY_ROLE - 636)) | (1L << (PRIOR - 636)) | (1L << (PRIORITY - 636)) | (1L << (PRIORITY_LEVEL - 636)) | (1L << (PRIVATE - 636)) | (1L << (PRIVATE_KEY - 636)) | (1L << (PRIVILEGES - 636)) | (1L << (PROCEDURE_NAME - 636)) | (1L << (PROPERTY - 636)) | (1L << (PROVIDER - 636)) | (1L << (PROVIDER_KEY_NAME - 636)) | (1L << (QUERY - 636)) | (1L << (QUEUE - 636)) | (1L << (QUEUE_DELAY - 636)) | (1L << (QUOTED_IDENTIFIER - 636)) | (1L << (RANGE - 636)) | (1L << (RANK - 636)) | (1L << (RC2 - 636)) | (1L << (RC4 - 636)) | (1L << (RC4_128 - 636)) | (1L << (READ_COMMITTED_SNAPSHOT - 636)) | (1L << (READ_ONLY - 636)) | (1L << (READ_ONLY_ROUTING_LIST - 636)) | (1L << (READ_WRITE - 636)) | (1L << (READONLY - 636)) | (1L << (REBUILD - 636)) | (1L << (RECEIVE - 636)) | (1L << (RECOMPILE - 636)) | (1L << (RECOVERY - 636)) | (1L << (RECURSIVE_TRIGGERS - 636)) | (1L << (RELATIVE - 636)) | (1L << (REMOTE - 636)) | (1L << (REMOTE_SERVICE_NAME - 636)) | (1L << (REMOVE - 636)) | (1L << (REORGANIZE - 636)) | (1L << (REPEATABLE - 636)) | (1L << (REPLICA - 636)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 636)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 636)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 636)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 636)) | (1L << (RESERVE_DISK_SPACE - 636)) | (1L << (RESOURCE - 636)) | (1L << (RESOURCE_MANAGER_LOCATION - 636)) | (1L << (RESTRICTED_USER - 636)) | (1L << (RETENTION - 636)) | (1L << (ROBUST - 636)) | (1L << (ROOT - 636)) | (1L << (ROUTE - 636)) | (1L << (ROW - 636)) | (1L << (ROW_NUMBER - 636)) | (1L << (ROWGUID - 636)) | (1L << (ROWS - 636)) | (1L << (SAMPLE - 636)))) != 0) || ((((_la - 700)) & ~0x3f) == 0 && ((1L << (_la - 700)) & ((1L << (SCHEMABINDING - 700)) | (1L << (SCOPED - 700)) | (1L << (SCROLL - 700)) | (1L << (SCROLL_LOCKS - 700)) | (1L << (SEARCH - 700)) | (1L << (SECONDARY - 700)) | (1L << (SECONDARY_ONLY - 700)) | (1L << (SECONDARY_ROLE - 700)) | (1L << (SECONDS - 700)) | (1L << (SECRET - 700)) | (1L << (SECURITY - 700)) | (1L << (SECURITY_LOG - 700)) | (1L << (SEEDING_MODE - 700)) | (1L << (SELF - 700)) | (1L << (SEMI_SENSITIVE - 700)) | (1L << (SEND - 700)) | (1L << (SENT - 700)) | (1L << (SEQUENCE - 700)) | (1L << (SERIALIZABLE - 700)) | (1L << (SESSION_TIMEOUT - 700)) | (1L << (SETERROR - 700)) | (1L << (SHARE - 700)) | (1L << (SHOWPLAN - 700)) | (1L << (SIGNATURE - 700)) | (1L << (SIMPLE - 700)) | (1L << (SINGLE_USER - 700)) | (1L << (SIZE - 700)) | (1L << (SMALLINT - 700)) | (1L << (SNAPSHOT - 700)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 700)) | (1L << (STANDBY - 700)) | (1L << (START_DATE - 700)) | (1L << (STATIC - 700)) | (1L << (STATS_STREAM - 700)) | (1L << (STATUS - 700)) | (1L << (STDEV - 700)) | (1L << (STDEVP - 700)) | (1L << (STOPLIST - 700)) | (1L << (STRING_AGG - 700)) | (1L << (STUFF - 700)) | (1L << (SUBJECT - 700)) | (1L << (SUM - 700)) | (1L << (SUSPEND - 700)) | (1L << (SYMMETRIC - 700)) | (1L << (SYNCHRONOUS_COMMIT - 700)) | (1L << (SYNONYM - 700)) | (1L << (SYSTEM - 700)) | (1L << (TAKE - 700)) | (1L << (TARGET_RECOVERY_TIME - 700)) | (1L << (TB - 700)) | (1L << (TEXTIMAGE_ON - 700)) | (1L << (THROW - 700)) | (1L << (TIES - 700)) | (1L << (TIME - 700)) | (1L << (TIMEOUT - 700)) | (1L << (TIMER - 700)) | (1L << (TINYINT - 700)) | (1L << (TORN_PAGE_DETECTION - 700)) | (1L << (TRANSFORM_NOISE_WORDS - 700)) | (1L << (TRIPLE_DES - 700)) | (1L << (TRIPLE_DES_3KEY - 700)) | (1L << (TRUSTWORTHY - 700)))) != 0) || ((((_la - 764)) & ~0x3f) == 0 && ((1L << (_la - 764)) & ((1L << (TRY - 764)) | (1L << (TSQL - 764)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 764)) | (1L << (TYPE - 764)) | (1L << (TYPE_WARNING - 764)) | (1L << (UNBOUNDED - 764)) | (1L << (UNCOMMITTED - 764)) | (1L << (UNKNOWN - 764)) | (1L << (UNLIMITED - 764)) | (1L << (USING - 764)) | (1L << (VALID_XML - 764)) | (1L << (VALIDATION - 764)) | (1L << (VALUE - 764)) | (1L << (VAR - 764)) | (1L << (VARP - 764)) | (1L << (VIEW_METADATA - 764)) | (1L << (VIEWS - 764)) | (1L << (WAIT - 764)) | (1L << (WELL_FORMED_XML - 764)) | (1L << (WORK - 764)) | (1L << (WORKLOAD - 764)) | (1L << (XML - 764)) | (1L << (XMLNAMESPACES - 764)) | (1L << (DOUBLE_QUOTE_ID - 764)) | (1L << (SQUARE_BRACKET_ID - 764)) | (1L << (ID - 764)))) != 0)) {
+				if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==URL) {
 					{
 					setState(10511);
 					((Full_table_nameContext)_localctx).schema = id();
@@ -88055,7 +88684,7 @@ public class MocaSqlParser extends Parser {
 					match(DOT);
 					setState(10526);
 					_la = _input.LA(1);
-					if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (TARGET - 295)))) != 0) || ((((_la - 380)) & ~0x3f) == 0 && ((1L << (_la - 380)) & ((1L << (ABSOLUTE - 380)) | (1L << (ACCENT_SENSITIVITY - 380)) | (1L << (ACTION - 380)) | (1L << (ACTIVATION - 380)) | (1L << (ACTIVE - 380)) | (1L << (ADDRESS - 380)) | (1L << (AES_128 - 380)) | (1L << (AES_192 - 380)) | (1L << (AES_256 - 380)) | (1L << (AFFINITY - 380)) | (1L << (AFTER - 380)) | (1L << (AGGREGATE - 380)) | (1L << (ALGORITHM - 380)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 380)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 380)) | (1L << (ALLOWED - 380)) | (1L << (ANSI_NULL_DEFAULT - 380)) | (1L << (ANSI_NULLS - 380)) | (1L << (ANSI_PADDING - 380)) | (1L << (ANSI_WARNINGS - 380)) | (1L << (APPLICATION_LOG - 380)) | (1L << (APPLY - 380)) | (1L << (ARITHABORT - 380)) | (1L << (ASSEMBLY - 380)) | (1L << (AUDIT - 380)) | (1L << (AUDIT_GUID - 380)) | (1L << (AUTO - 380)) | (1L << (AUTO_CLEANUP - 380)) | (1L << (AUTO_CLOSE - 380)) | (1L << (AUTO_CREATE_STATISTICS - 380)) | (1L << (AUTO_SHRINK - 380)) | (1L << (AUTO_UPDATE_STATISTICS - 380)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 380)) | (1L << (AVAILABILITY - 380)) | (1L << (AVG - 380)) | (1L << (BACKUP_PRIORITY - 380)) | (1L << (BEGIN_DIALOG - 380)) | (1L << (BIGINT - 380)) | (1L << (BINARY_BASE64 - 380)) | (1L << (BINARY_CHECKSUM - 380)) | (1L << (BINDING - 380)) | (1L << (BLOB_STORAGE - 380)) | (1L << (BROKER - 380)) | (1L << (BROKER_INSTANCE - 380)) | (1L << (BULK_LOGGED - 380)) | (1L << (CALLER - 380)) | (1L << (CAP_CPU_PERCENT - 380)) | (1L << (CAST - 380)) | (1L << (CATALOG - 380)) | (1L << (CATCH - 380)) | (1L << (CHANGE_RETENTION - 380)) | (1L << (CHANGE_TRACKING - 380)) | (1L << (CHECKSUM - 380)) | (1L << (CHECKSUM_AGG - 380)) | (1L << (CLEANUP - 380)) | (1L << (COLLECTION - 380)) | (1L << (COLUMN_MASTER_KEY - 380)) | (1L << (COMMITTED - 380)) | (1L << (COMPATIBILITY_LEVEL - 380)) | (1L << (CONCAT - 380)) | (1L << (CONCAT_NULL_YIELDS_NULL - 380)) | (1L << (CONTENT - 380)) | (1L << (CONTROL - 380)) | (1L << (COOKIE - 380)))) != 0) || ((((_la - 444)) & ~0x3f) == 0 && ((1L << (_la - 444)) & ((1L << (COUNT - 444)) | (1L << (COUNT_BIG - 444)) | (1L << (COUNTER - 444)) | (1L << (CPU - 444)) | (1L << (CREATE_NEW - 444)) | (1L << (CREATION_DISPOSITION - 444)) | (1L << (CREDENTIAL - 444)) | (1L << (CRYPTOGRAPHIC - 444)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 444)) | (1L << (CURSOR_DEFAULT - 444)) | (1L << (DATA - 444)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 444)) | (1L << (DATEADD - 444)) | (1L << (DATEDIFF - 444)) | (1L << (DATENAME - 444)) | (1L << (DATEPART - 444)) | (1L << (DAYS - 444)) | (1L << (DB_CHAINING - 444)) | (1L << (DB_FAILOVER - 444)) | (1L << (DECRYPTION - 444)) | (1L << (DEFAULT_DOUBLE_QUOTE - 444)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 444)) | (1L << (DEFAULT_LANGUAGE - 444)) | (1L << (DELAY - 444)) | (1L << (DELAYED_DURABILITY - 444)) | (1L << (DELETED - 444)) | (1L << (DENSE_RANK - 444)) | (1L << (DEPENDENTS - 444)) | (1L << (DES - 444)) | (1L << (DESCRIPTION - 444)) | (1L << (DESX - 444)) | (1L << (DHCP - 444)) | (1L << (DIALOG - 444)) | (1L << (DIRECTORY_NAME - 444)) | (1L << (DISABLE - 444)) | (1L << (DISABLE_BROKER - 444)) | (1L << (DISABLED - 444)) | (1L << (DISK_DRIVE - 444)) | (1L << (DOCUMENT - 444)) | (1L << (DYNAMIC - 444)) | (1L << (EMERGENCY - 444)) | (1L << (EMPTY - 444)) | (1L << (ENABLE - 444)) | (1L << (ENABLE_BROKER - 444)) | (1L << (ENCRYPTED_VALUE - 444)) | (1L << (ENCRYPTION - 444)) | (1L << (ENDPOINT_URL - 444)) | (1L << (ERROR_BROKER_CONVERSATIONS - 444)) | (1L << (EXCLUSIVE - 444)) | (1L << (EXECUTABLE - 444)) | (1L << (EXIST - 444)) | (1L << (EXPAND - 444)) | (1L << (EXPIRY_DATE - 444)) | (1L << (EXPLICIT - 444)) | (1L << (FAIL_OPERATION - 444)) | (1L << (FAILOVER_MODE - 444)) | (1L << (FAILURE - 444)) | (1L << (FAILURE_CONDITION_LEVEL - 444)) | (1L << (FAST - 444)) | (1L << (FAST_FORWARD - 444)) | (1L << (FILEGROUP - 444)) | (1L << (FILEGROWTH - 444)) | (1L << (FILEPATH - 444)))) != 0) || ((((_la - 508)) & ~0x3f) == 0 && ((1L << (_la - 508)) & ((1L << (FILESTREAM - 508)) | (1L << (FILTER - 508)) | (1L << (FIRST - 508)) | (1L << (FIRST_VALUE - 508)) | (1L << (FOLLOWING - 508)) | (1L << (FORCE - 508)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 508)) | (1L << (FORCED - 508)) | (1L << (FORMAT - 508)) | (1L << (FORWARD_ONLY - 508)) | (1L << (FULLSCAN - 508)) | (1L << (FULLTEXT - 508)) | (1L << (GB - 508)) | (1L << (GETDATE - 508)) | (1L << (GETUTCDATE - 508)) | (1L << (GLOBAL - 508)) | (1L << (GO - 508)) | (1L << (GROUP_MAX_REQUESTS - 508)) | (1L << (GROUPING - 508)) | (1L << (GROUPING_ID - 508)) | (1L << (HADR - 508)) | (1L << (HASH - 508)) | (1L << (HEALTH_CHECK_TIMEOUT - 508)) | (1L << (HIGH - 508)) | (1L << (HONOR_BROKER_PRIORITY - 508)) | (1L << (HOURS - 508)) | (1L << (IDENTITY_VALUE - 508)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 508)) | (1L << (IMMEDIATE - 508)) | (1L << (IMPERSONATE - 508)) | (1L << (IMPORTANCE - 508)) | (1L << (INCREMENTAL - 508)) | (1L << (INITIATOR - 508)) | (1L << (INPUT - 508)) | (1L << (INSENSITIVE - 508)) | (1L << (INSERTED - 508)) | (1L << (INT - 508)) | (1L << (IP - 508)) | (1L << (ISOLATION - 508)) | (1L << (KB - 508)) | (1L << (KEEP - 508)) | (1L << (KEEPFIXED - 508)) | (1L << (KEY_SOURCE - 508)) | (1L << (KEYS - 508)) | (1L << (KEYSET - 508)) | (1L << (LAG - 508)) | (1L << (LAST - 508)) | (1L << (LAST_VALUE - 508)) | (1L << (LEAD - 508)) | (1L << (LEVEL - 508)) | (1L << (LIST - 508)) | (1L << (LISTENER - 508)) | (1L << (LISTENER_URL - 508)) | (1L << (LOB_COMPACTION - 508)) | (1L << (LOCAL - 508)) | (1L << (LOCATION - 508)) | (1L << (LOCK - 508)) | (1L << (LOCK_ESCALATION - 508)) | (1L << (LOGIN - 508)) | (1L << (LOOP - 508)) | (1L << (LOW - 508)))) != 0) || ((((_la - 572)) & ~0x3f) == 0 && ((1L << (_la - 572)) & ((1L << (MANUAL - 572)) | (1L << (MARK - 572)) | (1L << (MATERIALIZED - 572)) | (1L << (MAX - 572)) | (1L << (MAX_CPU_PERCENT - 572)) | (1L << (MAX_DOP - 572)) | (1L << (MAX_FILES - 572)) | (1L << (MAX_IOPS_PER_VOLUME - 572)) | (1L << (MAX_MEMORY_PERCENT - 572)) | (1L << (MAX_PROCESSES - 572)) | (1L << (MAX_QUEUE_READERS - 572)) | (1L << (MAX_ROLLOVER_FILES - 572)) | (1L << (MAXDOP - 572)) | (1L << (MAXRECURSION - 572)) | (1L << (MAXSIZE - 572)) | (1L << (MB - 572)) | (1L << (MEDIUM - 572)) | (1L << (MEMORY_OPTIMIZED_DATA - 572)) | (1L << (MESSAGE - 572)) | (1L << (MIN - 572)) | (1L << (MIN_ACTIVE_ROWVERSION - 572)) | (1L << (MIN_CPU_PERCENT - 572)) | (1L << (MIN_IOPS_PER_VOLUME - 572)) | (1L << (MIN_MEMORY_PERCENT - 572)) | (1L << (MINUTES - 572)) | (1L << (MIRROR_ADDRESS - 572)) | (1L << (MIXED_PAGE_ALLOCATION - 572)) | (1L << (MODE - 572)) | (1L << (MODIFY - 572)) | (1L << (MOVE - 572)) | (1L << (MULTI_USER - 572)) | (1L << (NAME - 572)) | (1L << (NESTED_TRIGGERS - 572)) | (1L << (NEW_ACCOUNT - 572)) | (1L << (NEW_BROKER - 572)) | (1L << (NEW_PASSWORD - 572)) | (1L << (NEXT - 572)) | (1L << (NO - 572)) | (1L << (NO_TRUNCATE - 572)) | (1L << (NO_WAIT - 572)) | (1L << (NOCOUNT - 572)) | (1L << (NODES - 572)) | (1L << (NOEXPAND - 572)) | (1L << (NON_TRANSACTED_ACCESS - 572)) | (1L << (NORECOMPUTE - 572)) | (1L << (NORECOVERY - 572)) | (1L << (NOWAIT - 572)) | (1L << (NTILE - 572)) | (1L << (NUMANODE - 572)) | (1L << (NUMBER - 572)) | (1L << (NUMERIC_ROUNDABORT - 572)) | (1L << (OBJECT - 572)) | (1L << (OFFLINE - 572)) | (1L << (OFFSET - 572)) | (1L << (OLD_ACCOUNT - 572)) | (1L << (ONLINE - 572)) | (1L << (ONLY - 572)) | (1L << (OPEN_EXISTING - 572)) | (1L << (OPTIMISTIC - 572)) | (1L << (OPTIMIZE - 572)) | (1L << (OUT - 572)) | (1L << (OUTPUT - 572)) | (1L << (OWNER - 572)))) != 0) || ((((_la - 636)) & ~0x3f) == 0 && ((1L << (_la - 636)) & ((1L << (PAGE_VERIFY - 636)) | (1L << (PARAMETERIZATION - 636)) | (1L << (PARTITION - 636)) | (1L << (PARTITIONS - 636)) | (1L << (PARTNER - 636)) | (1L << (PATH - 636)) | (1L << (POISON_MESSAGE_HANDLING - 636)) | (1L << (POOL - 636)) | (1L << (PORT - 636)) | (1L << (PRECEDING - 636)) | (1L << (PRIMARY_ROLE - 636)) | (1L << (PRIOR - 636)) | (1L << (PRIORITY - 636)) | (1L << (PRIORITY_LEVEL - 636)) | (1L << (PRIVATE - 636)) | (1L << (PRIVATE_KEY - 636)) | (1L << (PRIVILEGES - 636)) | (1L << (PROCEDURE_NAME - 636)) | (1L << (PROPERTY - 636)) | (1L << (PROVIDER - 636)) | (1L << (PROVIDER_KEY_NAME - 636)) | (1L << (QUERY - 636)) | (1L << (QUEUE - 636)) | (1L << (QUEUE_DELAY - 636)) | (1L << (QUOTED_IDENTIFIER - 636)) | (1L << (RANGE - 636)) | (1L << (RANK - 636)) | (1L << (RC2 - 636)) | (1L << (RC4 - 636)) | (1L << (RC4_128 - 636)) | (1L << (READ_COMMITTED_SNAPSHOT - 636)) | (1L << (READ_ONLY - 636)) | (1L << (READ_ONLY_ROUTING_LIST - 636)) | (1L << (READ_WRITE - 636)) | (1L << (READONLY - 636)) | (1L << (REBUILD - 636)) | (1L << (RECEIVE - 636)) | (1L << (RECOMPILE - 636)) | (1L << (RECOVERY - 636)) | (1L << (RECURSIVE_TRIGGERS - 636)) | (1L << (RELATIVE - 636)) | (1L << (REMOTE - 636)) | (1L << (REMOTE_SERVICE_NAME - 636)) | (1L << (REMOVE - 636)) | (1L << (REORGANIZE - 636)) | (1L << (REPEATABLE - 636)) | (1L << (REPLICA - 636)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 636)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 636)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 636)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 636)) | (1L << (RESERVE_DISK_SPACE - 636)) | (1L << (RESOURCE - 636)) | (1L << (RESOURCE_MANAGER_LOCATION - 636)) | (1L << (RESTRICTED_USER - 636)) | (1L << (RETENTION - 636)) | (1L << (ROBUST - 636)) | (1L << (ROOT - 636)) | (1L << (ROUTE - 636)) | (1L << (ROW - 636)) | (1L << (ROW_NUMBER - 636)) | (1L << (ROWGUID - 636)) | (1L << (ROWS - 636)) | (1L << (SAMPLE - 636)))) != 0) || ((((_la - 700)) & ~0x3f) == 0 && ((1L << (_la - 700)) & ((1L << (SCHEMABINDING - 700)) | (1L << (SCOPED - 700)) | (1L << (SCROLL - 700)) | (1L << (SCROLL_LOCKS - 700)) | (1L << (SEARCH - 700)) | (1L << (SECONDARY - 700)) | (1L << (SECONDARY_ONLY - 700)) | (1L << (SECONDARY_ROLE - 700)) | (1L << (SECONDS - 700)) | (1L << (SECRET - 700)) | (1L << (SECURITY - 700)) | (1L << (SECURITY_LOG - 700)) | (1L << (SEEDING_MODE - 700)) | (1L << (SELF - 700)) | (1L << (SEMI_SENSITIVE - 700)) | (1L << (SEND - 700)) | (1L << (SENT - 700)) | (1L << (SEQUENCE - 700)) | (1L << (SERIALIZABLE - 700)) | (1L << (SESSION_TIMEOUT - 700)) | (1L << (SETERROR - 700)) | (1L << (SHARE - 700)) | (1L << (SHOWPLAN - 700)) | (1L << (SIGNATURE - 700)) | (1L << (SIMPLE - 700)) | (1L << (SINGLE_USER - 700)) | (1L << (SIZE - 700)) | (1L << (SMALLINT - 700)) | (1L << (SNAPSHOT - 700)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 700)) | (1L << (STANDBY - 700)) | (1L << (START_DATE - 700)) | (1L << (STATIC - 700)) | (1L << (STATS_STREAM - 700)) | (1L << (STATUS - 700)) | (1L << (STDEV - 700)) | (1L << (STDEVP - 700)) | (1L << (STOPLIST - 700)) | (1L << (STRING_AGG - 700)) | (1L << (STUFF - 700)) | (1L << (SUBJECT - 700)) | (1L << (SUM - 700)) | (1L << (SUSPEND - 700)) | (1L << (SYMMETRIC - 700)) | (1L << (SYNCHRONOUS_COMMIT - 700)) | (1L << (SYNONYM - 700)) | (1L << (SYSTEM - 700)) | (1L << (TAKE - 700)) | (1L << (TARGET_RECOVERY_TIME - 700)) | (1L << (TB - 700)) | (1L << (TEXTIMAGE_ON - 700)) | (1L << (THROW - 700)) | (1L << (TIES - 700)) | (1L << (TIME - 700)) | (1L << (TIMEOUT - 700)) | (1L << (TIMER - 700)) | (1L << (TINYINT - 700)) | (1L << (TORN_PAGE_DETECTION - 700)) | (1L << (TRANSFORM_NOISE_WORDS - 700)) | (1L << (TRIPLE_DES - 700)) | (1L << (TRIPLE_DES_3KEY - 700)) | (1L << (TRUSTWORTHY - 700)))) != 0) || ((((_la - 764)) & ~0x3f) == 0 && ((1L << (_la - 764)) & ((1L << (TRY - 764)) | (1L << (TSQL - 764)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 764)) | (1L << (TYPE - 764)) | (1L << (TYPE_WARNING - 764)) | (1L << (UNBOUNDED - 764)) | (1L << (UNCOMMITTED - 764)) | (1L << (UNKNOWN - 764)) | (1L << (UNLIMITED - 764)) | (1L << (USING - 764)) | (1L << (VALID_XML - 764)) | (1L << (VALIDATION - 764)) | (1L << (VALUE - 764)) | (1L << (VAR - 764)) | (1L << (VARP - 764)) | (1L << (VIEW_METADATA - 764)) | (1L << (VIEWS - 764)) | (1L << (WAIT - 764)) | (1L << (WELL_FORMED_XML - 764)) | (1L << (WORK - 764)) | (1L << (WORKLOAD - 764)) | (1L << (XML - 764)) | (1L << (XMLNAMESPACES - 764)) | (1L << (DOUBLE_QUOTE_ID - 764)) | (1L << (SQUARE_BRACKET_ID - 764)) | (1L << (ID - 764)))) != 0)) {
+					if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==URL) {
 						{
 						setState(10525);
 						((Table_nameContext)_localctx).schema = id();
@@ -88093,7 +88722,7 @@ public class MocaSqlParser extends Parser {
 					match(DOT);
 					setState(10539);
 					_la = _input.LA(1);
-					if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (TARGET - 295)))) != 0) || ((((_la - 380)) & ~0x3f) == 0 && ((1L << (_la - 380)) & ((1L << (ABSOLUTE - 380)) | (1L << (ACCENT_SENSITIVITY - 380)) | (1L << (ACTION - 380)) | (1L << (ACTIVATION - 380)) | (1L << (ACTIVE - 380)) | (1L << (ADDRESS - 380)) | (1L << (AES_128 - 380)) | (1L << (AES_192 - 380)) | (1L << (AES_256 - 380)) | (1L << (AFFINITY - 380)) | (1L << (AFTER - 380)) | (1L << (AGGREGATE - 380)) | (1L << (ALGORITHM - 380)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 380)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 380)) | (1L << (ALLOWED - 380)) | (1L << (ANSI_NULL_DEFAULT - 380)) | (1L << (ANSI_NULLS - 380)) | (1L << (ANSI_PADDING - 380)) | (1L << (ANSI_WARNINGS - 380)) | (1L << (APPLICATION_LOG - 380)) | (1L << (APPLY - 380)) | (1L << (ARITHABORT - 380)) | (1L << (ASSEMBLY - 380)) | (1L << (AUDIT - 380)) | (1L << (AUDIT_GUID - 380)) | (1L << (AUTO - 380)) | (1L << (AUTO_CLEANUP - 380)) | (1L << (AUTO_CLOSE - 380)) | (1L << (AUTO_CREATE_STATISTICS - 380)) | (1L << (AUTO_SHRINK - 380)) | (1L << (AUTO_UPDATE_STATISTICS - 380)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 380)) | (1L << (AVAILABILITY - 380)) | (1L << (AVG - 380)) | (1L << (BACKUP_PRIORITY - 380)) | (1L << (BEGIN_DIALOG - 380)) | (1L << (BIGINT - 380)) | (1L << (BINARY_BASE64 - 380)) | (1L << (BINARY_CHECKSUM - 380)) | (1L << (BINDING - 380)) | (1L << (BLOB_STORAGE - 380)) | (1L << (BROKER - 380)) | (1L << (BROKER_INSTANCE - 380)) | (1L << (BULK_LOGGED - 380)) | (1L << (CALLER - 380)) | (1L << (CAP_CPU_PERCENT - 380)) | (1L << (CAST - 380)) | (1L << (CATALOG - 380)) | (1L << (CATCH - 380)) | (1L << (CHANGE_RETENTION - 380)) | (1L << (CHANGE_TRACKING - 380)) | (1L << (CHECKSUM - 380)) | (1L << (CHECKSUM_AGG - 380)) | (1L << (CLEANUP - 380)) | (1L << (COLLECTION - 380)) | (1L << (COLUMN_MASTER_KEY - 380)) | (1L << (COMMITTED - 380)) | (1L << (COMPATIBILITY_LEVEL - 380)) | (1L << (CONCAT - 380)) | (1L << (CONCAT_NULL_YIELDS_NULL - 380)) | (1L << (CONTENT - 380)) | (1L << (CONTROL - 380)) | (1L << (COOKIE - 380)))) != 0) || ((((_la - 444)) & ~0x3f) == 0 && ((1L << (_la - 444)) & ((1L << (COUNT - 444)) | (1L << (COUNT_BIG - 444)) | (1L << (COUNTER - 444)) | (1L << (CPU - 444)) | (1L << (CREATE_NEW - 444)) | (1L << (CREATION_DISPOSITION - 444)) | (1L << (CREDENTIAL - 444)) | (1L << (CRYPTOGRAPHIC - 444)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 444)) | (1L << (CURSOR_DEFAULT - 444)) | (1L << (DATA - 444)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 444)) | (1L << (DATEADD - 444)) | (1L << (DATEDIFF - 444)) | (1L << (DATENAME - 444)) | (1L << (DATEPART - 444)) | (1L << (DAYS - 444)) | (1L << (DB_CHAINING - 444)) | (1L << (DB_FAILOVER - 444)) | (1L << (DECRYPTION - 444)) | (1L << (DEFAULT_DOUBLE_QUOTE - 444)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 444)) | (1L << (DEFAULT_LANGUAGE - 444)) | (1L << (DELAY - 444)) | (1L << (DELAYED_DURABILITY - 444)) | (1L << (DELETED - 444)) | (1L << (DENSE_RANK - 444)) | (1L << (DEPENDENTS - 444)) | (1L << (DES - 444)) | (1L << (DESCRIPTION - 444)) | (1L << (DESX - 444)) | (1L << (DHCP - 444)) | (1L << (DIALOG - 444)) | (1L << (DIRECTORY_NAME - 444)) | (1L << (DISABLE - 444)) | (1L << (DISABLE_BROKER - 444)) | (1L << (DISABLED - 444)) | (1L << (DISK_DRIVE - 444)) | (1L << (DOCUMENT - 444)) | (1L << (DYNAMIC - 444)) | (1L << (EMERGENCY - 444)) | (1L << (EMPTY - 444)) | (1L << (ENABLE - 444)) | (1L << (ENABLE_BROKER - 444)) | (1L << (ENCRYPTED_VALUE - 444)) | (1L << (ENCRYPTION - 444)) | (1L << (ENDPOINT_URL - 444)) | (1L << (ERROR_BROKER_CONVERSATIONS - 444)) | (1L << (EXCLUSIVE - 444)) | (1L << (EXECUTABLE - 444)) | (1L << (EXIST - 444)) | (1L << (EXPAND - 444)) | (1L << (EXPIRY_DATE - 444)) | (1L << (EXPLICIT - 444)) | (1L << (FAIL_OPERATION - 444)) | (1L << (FAILOVER_MODE - 444)) | (1L << (FAILURE - 444)) | (1L << (FAILURE_CONDITION_LEVEL - 444)) | (1L << (FAST - 444)) | (1L << (FAST_FORWARD - 444)) | (1L << (FILEGROUP - 444)) | (1L << (FILEGROWTH - 444)) | (1L << (FILEPATH - 444)))) != 0) || ((((_la - 508)) & ~0x3f) == 0 && ((1L << (_la - 508)) & ((1L << (FILESTREAM - 508)) | (1L << (FILTER - 508)) | (1L << (FIRST - 508)) | (1L << (FIRST_VALUE - 508)) | (1L << (FOLLOWING - 508)) | (1L << (FORCE - 508)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 508)) | (1L << (FORCED - 508)) | (1L << (FORMAT - 508)) | (1L << (FORWARD_ONLY - 508)) | (1L << (FULLSCAN - 508)) | (1L << (FULLTEXT - 508)) | (1L << (GB - 508)) | (1L << (GETDATE - 508)) | (1L << (GETUTCDATE - 508)) | (1L << (GLOBAL - 508)) | (1L << (GO - 508)) | (1L << (GROUP_MAX_REQUESTS - 508)) | (1L << (GROUPING - 508)) | (1L << (GROUPING_ID - 508)) | (1L << (HADR - 508)) | (1L << (HASH - 508)) | (1L << (HEALTH_CHECK_TIMEOUT - 508)) | (1L << (HIGH - 508)) | (1L << (HONOR_BROKER_PRIORITY - 508)) | (1L << (HOURS - 508)) | (1L << (IDENTITY_VALUE - 508)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 508)) | (1L << (IMMEDIATE - 508)) | (1L << (IMPERSONATE - 508)) | (1L << (IMPORTANCE - 508)) | (1L << (INCREMENTAL - 508)) | (1L << (INITIATOR - 508)) | (1L << (INPUT - 508)) | (1L << (INSENSITIVE - 508)) | (1L << (INSERTED - 508)) | (1L << (INT - 508)) | (1L << (IP - 508)) | (1L << (ISOLATION - 508)) | (1L << (KB - 508)) | (1L << (KEEP - 508)) | (1L << (KEEPFIXED - 508)) | (1L << (KEY_SOURCE - 508)) | (1L << (KEYS - 508)) | (1L << (KEYSET - 508)) | (1L << (LAG - 508)) | (1L << (LAST - 508)) | (1L << (LAST_VALUE - 508)) | (1L << (LEAD - 508)) | (1L << (LEVEL - 508)) | (1L << (LIST - 508)) | (1L << (LISTENER - 508)) | (1L << (LISTENER_URL - 508)) | (1L << (LOB_COMPACTION - 508)) | (1L << (LOCAL - 508)) | (1L << (LOCATION - 508)) | (1L << (LOCK - 508)) | (1L << (LOCK_ESCALATION - 508)) | (1L << (LOGIN - 508)) | (1L << (LOOP - 508)) | (1L << (LOW - 508)))) != 0) || ((((_la - 572)) & ~0x3f) == 0 && ((1L << (_la - 572)) & ((1L << (MANUAL - 572)) | (1L << (MARK - 572)) | (1L << (MATERIALIZED - 572)) | (1L << (MAX - 572)) | (1L << (MAX_CPU_PERCENT - 572)) | (1L << (MAX_DOP - 572)) | (1L << (MAX_FILES - 572)) | (1L << (MAX_IOPS_PER_VOLUME - 572)) | (1L << (MAX_MEMORY_PERCENT - 572)) | (1L << (MAX_PROCESSES - 572)) | (1L << (MAX_QUEUE_READERS - 572)) | (1L << (MAX_ROLLOVER_FILES - 572)) | (1L << (MAXDOP - 572)) | (1L << (MAXRECURSION - 572)) | (1L << (MAXSIZE - 572)) | (1L << (MB - 572)) | (1L << (MEDIUM - 572)) | (1L << (MEMORY_OPTIMIZED_DATA - 572)) | (1L << (MESSAGE - 572)) | (1L << (MIN - 572)) | (1L << (MIN_ACTIVE_ROWVERSION - 572)) | (1L << (MIN_CPU_PERCENT - 572)) | (1L << (MIN_IOPS_PER_VOLUME - 572)) | (1L << (MIN_MEMORY_PERCENT - 572)) | (1L << (MINUTES - 572)) | (1L << (MIRROR_ADDRESS - 572)) | (1L << (MIXED_PAGE_ALLOCATION - 572)) | (1L << (MODE - 572)) | (1L << (MODIFY - 572)) | (1L << (MOVE - 572)) | (1L << (MULTI_USER - 572)) | (1L << (NAME - 572)) | (1L << (NESTED_TRIGGERS - 572)) | (1L << (NEW_ACCOUNT - 572)) | (1L << (NEW_BROKER - 572)) | (1L << (NEW_PASSWORD - 572)) | (1L << (NEXT - 572)) | (1L << (NO - 572)) | (1L << (NO_TRUNCATE - 572)) | (1L << (NO_WAIT - 572)) | (1L << (NOCOUNT - 572)) | (1L << (NODES - 572)) | (1L << (NOEXPAND - 572)) | (1L << (NON_TRANSACTED_ACCESS - 572)) | (1L << (NORECOMPUTE - 572)) | (1L << (NORECOVERY - 572)) | (1L << (NOWAIT - 572)) | (1L << (NTILE - 572)) | (1L << (NUMANODE - 572)) | (1L << (NUMBER - 572)) | (1L << (NUMERIC_ROUNDABORT - 572)) | (1L << (OBJECT - 572)) | (1L << (OFFLINE - 572)) | (1L << (OFFSET - 572)) | (1L << (OLD_ACCOUNT - 572)) | (1L << (ONLINE - 572)) | (1L << (ONLY - 572)) | (1L << (OPEN_EXISTING - 572)) | (1L << (OPTIMISTIC - 572)) | (1L << (OPTIMIZE - 572)) | (1L << (OUT - 572)) | (1L << (OUTPUT - 572)) | (1L << (OWNER - 572)))) != 0) || ((((_la - 636)) & ~0x3f) == 0 && ((1L << (_la - 636)) & ((1L << (PAGE_VERIFY - 636)) | (1L << (PARAMETERIZATION - 636)) | (1L << (PARTITION - 636)) | (1L << (PARTITIONS - 636)) | (1L << (PARTNER - 636)) | (1L << (PATH - 636)) | (1L << (POISON_MESSAGE_HANDLING - 636)) | (1L << (POOL - 636)) | (1L << (PORT - 636)) | (1L << (PRECEDING - 636)) | (1L << (PRIMARY_ROLE - 636)) | (1L << (PRIOR - 636)) | (1L << (PRIORITY - 636)) | (1L << (PRIORITY_LEVEL - 636)) | (1L << (PRIVATE - 636)) | (1L << (PRIVATE_KEY - 636)) | (1L << (PRIVILEGES - 636)) | (1L << (PROCEDURE_NAME - 636)) | (1L << (PROPERTY - 636)) | (1L << (PROVIDER - 636)) | (1L << (PROVIDER_KEY_NAME - 636)) | (1L << (QUERY - 636)) | (1L << (QUEUE - 636)) | (1L << (QUEUE_DELAY - 636)) | (1L << (QUOTED_IDENTIFIER - 636)) | (1L << (RANGE - 636)) | (1L << (RANK - 636)) | (1L << (RC2 - 636)) | (1L << (RC4 - 636)) | (1L << (RC4_128 - 636)) | (1L << (READ_COMMITTED_SNAPSHOT - 636)) | (1L << (READ_ONLY - 636)) | (1L << (READ_ONLY_ROUTING_LIST - 636)) | (1L << (READ_WRITE - 636)) | (1L << (READONLY - 636)) | (1L << (REBUILD - 636)) | (1L << (RECEIVE - 636)) | (1L << (RECOMPILE - 636)) | (1L << (RECOVERY - 636)) | (1L << (RECURSIVE_TRIGGERS - 636)) | (1L << (RELATIVE - 636)) | (1L << (REMOTE - 636)) | (1L << (REMOTE_SERVICE_NAME - 636)) | (1L << (REMOVE - 636)) | (1L << (REORGANIZE - 636)) | (1L << (REPEATABLE - 636)) | (1L << (REPLICA - 636)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 636)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 636)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 636)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 636)) | (1L << (RESERVE_DISK_SPACE - 636)) | (1L << (RESOURCE - 636)) | (1L << (RESOURCE_MANAGER_LOCATION - 636)) | (1L << (RESTRICTED_USER - 636)) | (1L << (RETENTION - 636)) | (1L << (ROBUST - 636)) | (1L << (ROOT - 636)) | (1L << (ROUTE - 636)) | (1L << (ROW - 636)) | (1L << (ROW_NUMBER - 636)) | (1L << (ROWGUID - 636)) | (1L << (ROWS - 636)) | (1L << (SAMPLE - 636)))) != 0) || ((((_la - 700)) & ~0x3f) == 0 && ((1L << (_la - 700)) & ((1L << (SCHEMABINDING - 700)) | (1L << (SCOPED - 700)) | (1L << (SCROLL - 700)) | (1L << (SCROLL_LOCKS - 700)) | (1L << (SEARCH - 700)) | (1L << (SECONDARY - 700)) | (1L << (SECONDARY_ONLY - 700)) | (1L << (SECONDARY_ROLE - 700)) | (1L << (SECONDS - 700)) | (1L << (SECRET - 700)) | (1L << (SECURITY - 700)) | (1L << (SECURITY_LOG - 700)) | (1L << (SEEDING_MODE - 700)) | (1L << (SELF - 700)) | (1L << (SEMI_SENSITIVE - 700)) | (1L << (SEND - 700)) | (1L << (SENT - 700)) | (1L << (SEQUENCE - 700)) | (1L << (SERIALIZABLE - 700)) | (1L << (SESSION_TIMEOUT - 700)) | (1L << (SETERROR - 700)) | (1L << (SHARE - 700)) | (1L << (SHOWPLAN - 700)) | (1L << (SIGNATURE - 700)) | (1L << (SIMPLE - 700)) | (1L << (SINGLE_USER - 700)) | (1L << (SIZE - 700)) | (1L << (SMALLINT - 700)) | (1L << (SNAPSHOT - 700)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 700)) | (1L << (STANDBY - 700)) | (1L << (START_DATE - 700)) | (1L << (STATIC - 700)) | (1L << (STATS_STREAM - 700)) | (1L << (STATUS - 700)) | (1L << (STDEV - 700)) | (1L << (STDEVP - 700)) | (1L << (STOPLIST - 700)) | (1L << (STRING_AGG - 700)) | (1L << (STUFF - 700)) | (1L << (SUBJECT - 700)) | (1L << (SUM - 700)) | (1L << (SUSPEND - 700)) | (1L << (SYMMETRIC - 700)) | (1L << (SYNCHRONOUS_COMMIT - 700)) | (1L << (SYNONYM - 700)) | (1L << (SYSTEM - 700)) | (1L << (TAKE - 700)) | (1L << (TARGET_RECOVERY_TIME - 700)) | (1L << (TB - 700)) | (1L << (TEXTIMAGE_ON - 700)) | (1L << (THROW - 700)) | (1L << (TIES - 700)) | (1L << (TIME - 700)) | (1L << (TIMEOUT - 700)) | (1L << (TIMER - 700)) | (1L << (TINYINT - 700)) | (1L << (TORN_PAGE_DETECTION - 700)) | (1L << (TRANSFORM_NOISE_WORDS - 700)) | (1L << (TRIPLE_DES - 700)) | (1L << (TRIPLE_DES_3KEY - 700)) | (1L << (TRUSTWORTHY - 700)))) != 0) || ((((_la - 764)) & ~0x3f) == 0 && ((1L << (_la - 764)) & ((1L << (TRY - 764)) | (1L << (TSQL - 764)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 764)) | (1L << (TYPE - 764)) | (1L << (TYPE_WARNING - 764)) | (1L << (UNBOUNDED - 764)) | (1L << (UNCOMMITTED - 764)) | (1L << (UNKNOWN - 764)) | (1L << (UNLIMITED - 764)) | (1L << (USING - 764)) | (1L << (VALID_XML - 764)) | (1L << (VALIDATION - 764)) | (1L << (VALUE - 764)) | (1L << (VAR - 764)) | (1L << (VARP - 764)) | (1L << (VIEW_METADATA - 764)) | (1L << (VIEWS - 764)) | (1L << (WAIT - 764)) | (1L << (WELL_FORMED_XML - 764)) | (1L << (WORK - 764)) | (1L << (WORKLOAD - 764)) | (1L << (XML - 764)) | (1L << (XMLNAMESPACES - 764)) | (1L << (DOUBLE_QUOTE_ID - 764)) | (1L << (SQUARE_BRACKET_ID - 764)) | (1L << (ID - 764)))) != 0)) {
+					if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==URL) {
 						{
 						setState(10538);
 						((Table_nameContext)_localctx).schema = id();
@@ -88315,7 +88944,7 @@ public class MocaSqlParser extends Parser {
 					match(DOT);
 					setState(10569);
 					_la = _input.LA(1);
-					if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (TARGET - 295)))) != 0) || ((((_la - 380)) & ~0x3f) == 0 && ((1L << (_la - 380)) & ((1L << (ABSOLUTE - 380)) | (1L << (ACCENT_SENSITIVITY - 380)) | (1L << (ACTION - 380)) | (1L << (ACTIVATION - 380)) | (1L << (ACTIVE - 380)) | (1L << (ADDRESS - 380)) | (1L << (AES_128 - 380)) | (1L << (AES_192 - 380)) | (1L << (AES_256 - 380)) | (1L << (AFFINITY - 380)) | (1L << (AFTER - 380)) | (1L << (AGGREGATE - 380)) | (1L << (ALGORITHM - 380)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 380)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 380)) | (1L << (ALLOWED - 380)) | (1L << (ANSI_NULL_DEFAULT - 380)) | (1L << (ANSI_NULLS - 380)) | (1L << (ANSI_PADDING - 380)) | (1L << (ANSI_WARNINGS - 380)) | (1L << (APPLICATION_LOG - 380)) | (1L << (APPLY - 380)) | (1L << (ARITHABORT - 380)) | (1L << (ASSEMBLY - 380)) | (1L << (AUDIT - 380)) | (1L << (AUDIT_GUID - 380)) | (1L << (AUTO - 380)) | (1L << (AUTO_CLEANUP - 380)) | (1L << (AUTO_CLOSE - 380)) | (1L << (AUTO_CREATE_STATISTICS - 380)) | (1L << (AUTO_SHRINK - 380)) | (1L << (AUTO_UPDATE_STATISTICS - 380)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 380)) | (1L << (AVAILABILITY - 380)) | (1L << (AVG - 380)) | (1L << (BACKUP_PRIORITY - 380)) | (1L << (BEGIN_DIALOG - 380)) | (1L << (BIGINT - 380)) | (1L << (BINARY_BASE64 - 380)) | (1L << (BINARY_CHECKSUM - 380)) | (1L << (BINDING - 380)) | (1L << (BLOB_STORAGE - 380)) | (1L << (BROKER - 380)) | (1L << (BROKER_INSTANCE - 380)) | (1L << (BULK_LOGGED - 380)) | (1L << (CALLER - 380)) | (1L << (CAP_CPU_PERCENT - 380)) | (1L << (CAST - 380)) | (1L << (CATALOG - 380)) | (1L << (CATCH - 380)) | (1L << (CHANGE_RETENTION - 380)) | (1L << (CHANGE_TRACKING - 380)) | (1L << (CHECKSUM - 380)) | (1L << (CHECKSUM_AGG - 380)) | (1L << (CLEANUP - 380)) | (1L << (COLLECTION - 380)) | (1L << (COLUMN_MASTER_KEY - 380)) | (1L << (COMMITTED - 380)) | (1L << (COMPATIBILITY_LEVEL - 380)) | (1L << (CONCAT - 380)) | (1L << (CONCAT_NULL_YIELDS_NULL - 380)) | (1L << (CONTENT - 380)) | (1L << (CONTROL - 380)) | (1L << (COOKIE - 380)))) != 0) || ((((_la - 444)) & ~0x3f) == 0 && ((1L << (_la - 444)) & ((1L << (COUNT - 444)) | (1L << (COUNT_BIG - 444)) | (1L << (COUNTER - 444)) | (1L << (CPU - 444)) | (1L << (CREATE_NEW - 444)) | (1L << (CREATION_DISPOSITION - 444)) | (1L << (CREDENTIAL - 444)) | (1L << (CRYPTOGRAPHIC - 444)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 444)) | (1L << (CURSOR_DEFAULT - 444)) | (1L << (DATA - 444)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 444)) | (1L << (DATEADD - 444)) | (1L << (DATEDIFF - 444)) | (1L << (DATENAME - 444)) | (1L << (DATEPART - 444)) | (1L << (DAYS - 444)) | (1L << (DB_CHAINING - 444)) | (1L << (DB_FAILOVER - 444)) | (1L << (DECRYPTION - 444)) | (1L << (DEFAULT_DOUBLE_QUOTE - 444)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 444)) | (1L << (DEFAULT_LANGUAGE - 444)) | (1L << (DELAY - 444)) | (1L << (DELAYED_DURABILITY - 444)) | (1L << (DELETED - 444)) | (1L << (DENSE_RANK - 444)) | (1L << (DEPENDENTS - 444)) | (1L << (DES - 444)) | (1L << (DESCRIPTION - 444)) | (1L << (DESX - 444)) | (1L << (DHCP - 444)) | (1L << (DIALOG - 444)) | (1L << (DIRECTORY_NAME - 444)) | (1L << (DISABLE - 444)) | (1L << (DISABLE_BROKER - 444)) | (1L << (DISABLED - 444)) | (1L << (DISK_DRIVE - 444)) | (1L << (DOCUMENT - 444)) | (1L << (DYNAMIC - 444)) | (1L << (EMERGENCY - 444)) | (1L << (EMPTY - 444)) | (1L << (ENABLE - 444)) | (1L << (ENABLE_BROKER - 444)) | (1L << (ENCRYPTED_VALUE - 444)) | (1L << (ENCRYPTION - 444)) | (1L << (ENDPOINT_URL - 444)) | (1L << (ERROR_BROKER_CONVERSATIONS - 444)) | (1L << (EXCLUSIVE - 444)) | (1L << (EXECUTABLE - 444)) | (1L << (EXIST - 444)) | (1L << (EXPAND - 444)) | (1L << (EXPIRY_DATE - 444)) | (1L << (EXPLICIT - 444)) | (1L << (FAIL_OPERATION - 444)) | (1L << (FAILOVER_MODE - 444)) | (1L << (FAILURE - 444)) | (1L << (FAILURE_CONDITION_LEVEL - 444)) | (1L << (FAST - 444)) | (1L << (FAST_FORWARD - 444)) | (1L << (FILEGROUP - 444)) | (1L << (FILEGROWTH - 444)) | (1L << (FILEPATH - 444)))) != 0) || ((((_la - 508)) & ~0x3f) == 0 && ((1L << (_la - 508)) & ((1L << (FILESTREAM - 508)) | (1L << (FILTER - 508)) | (1L << (FIRST - 508)) | (1L << (FIRST_VALUE - 508)) | (1L << (FOLLOWING - 508)) | (1L << (FORCE - 508)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 508)) | (1L << (FORCED - 508)) | (1L << (FORMAT - 508)) | (1L << (FORWARD_ONLY - 508)) | (1L << (FULLSCAN - 508)) | (1L << (FULLTEXT - 508)) | (1L << (GB - 508)) | (1L << (GETDATE - 508)) | (1L << (GETUTCDATE - 508)) | (1L << (GLOBAL - 508)) | (1L << (GO - 508)) | (1L << (GROUP_MAX_REQUESTS - 508)) | (1L << (GROUPING - 508)) | (1L << (GROUPING_ID - 508)) | (1L << (HADR - 508)) | (1L << (HASH - 508)) | (1L << (HEALTH_CHECK_TIMEOUT - 508)) | (1L << (HIGH - 508)) | (1L << (HONOR_BROKER_PRIORITY - 508)) | (1L << (HOURS - 508)) | (1L << (IDENTITY_VALUE - 508)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 508)) | (1L << (IMMEDIATE - 508)) | (1L << (IMPERSONATE - 508)) | (1L << (IMPORTANCE - 508)) | (1L << (INCREMENTAL - 508)) | (1L << (INITIATOR - 508)) | (1L << (INPUT - 508)) | (1L << (INSENSITIVE - 508)) | (1L << (INSERTED - 508)) | (1L << (INT - 508)) | (1L << (IP - 508)) | (1L << (ISOLATION - 508)) | (1L << (KB - 508)) | (1L << (KEEP - 508)) | (1L << (KEEPFIXED - 508)) | (1L << (KEY_SOURCE - 508)) | (1L << (KEYS - 508)) | (1L << (KEYSET - 508)) | (1L << (LAG - 508)) | (1L << (LAST - 508)) | (1L << (LAST_VALUE - 508)) | (1L << (LEAD - 508)) | (1L << (LEVEL - 508)) | (1L << (LIST - 508)) | (1L << (LISTENER - 508)) | (1L << (LISTENER_URL - 508)) | (1L << (LOB_COMPACTION - 508)) | (1L << (LOCAL - 508)) | (1L << (LOCATION - 508)) | (1L << (LOCK - 508)) | (1L << (LOCK_ESCALATION - 508)) | (1L << (LOGIN - 508)) | (1L << (LOOP - 508)) | (1L << (LOW - 508)))) != 0) || ((((_la - 572)) & ~0x3f) == 0 && ((1L << (_la - 572)) & ((1L << (MANUAL - 572)) | (1L << (MARK - 572)) | (1L << (MATERIALIZED - 572)) | (1L << (MAX - 572)) | (1L << (MAX_CPU_PERCENT - 572)) | (1L << (MAX_DOP - 572)) | (1L << (MAX_FILES - 572)) | (1L << (MAX_IOPS_PER_VOLUME - 572)) | (1L << (MAX_MEMORY_PERCENT - 572)) | (1L << (MAX_PROCESSES - 572)) | (1L << (MAX_QUEUE_READERS - 572)) | (1L << (MAX_ROLLOVER_FILES - 572)) | (1L << (MAXDOP - 572)) | (1L << (MAXRECURSION - 572)) | (1L << (MAXSIZE - 572)) | (1L << (MB - 572)) | (1L << (MEDIUM - 572)) | (1L << (MEMORY_OPTIMIZED_DATA - 572)) | (1L << (MESSAGE - 572)) | (1L << (MIN - 572)) | (1L << (MIN_ACTIVE_ROWVERSION - 572)) | (1L << (MIN_CPU_PERCENT - 572)) | (1L << (MIN_IOPS_PER_VOLUME - 572)) | (1L << (MIN_MEMORY_PERCENT - 572)) | (1L << (MINUTES - 572)) | (1L << (MIRROR_ADDRESS - 572)) | (1L << (MIXED_PAGE_ALLOCATION - 572)) | (1L << (MODE - 572)) | (1L << (MODIFY - 572)) | (1L << (MOVE - 572)) | (1L << (MULTI_USER - 572)) | (1L << (NAME - 572)) | (1L << (NESTED_TRIGGERS - 572)) | (1L << (NEW_ACCOUNT - 572)) | (1L << (NEW_BROKER - 572)) | (1L << (NEW_PASSWORD - 572)) | (1L << (NEXT - 572)) | (1L << (NO - 572)) | (1L << (NO_TRUNCATE - 572)) | (1L << (NO_WAIT - 572)) | (1L << (NOCOUNT - 572)) | (1L << (NODES - 572)) | (1L << (NOEXPAND - 572)) | (1L << (NON_TRANSACTED_ACCESS - 572)) | (1L << (NORECOMPUTE - 572)) | (1L << (NORECOVERY - 572)) | (1L << (NOWAIT - 572)) | (1L << (NTILE - 572)) | (1L << (NUMANODE - 572)) | (1L << (NUMBER - 572)) | (1L << (NUMERIC_ROUNDABORT - 572)) | (1L << (OBJECT - 572)) | (1L << (OFFLINE - 572)) | (1L << (OFFSET - 572)) | (1L << (OLD_ACCOUNT - 572)) | (1L << (ONLINE - 572)) | (1L << (ONLY - 572)) | (1L << (OPEN_EXISTING - 572)) | (1L << (OPTIMISTIC - 572)) | (1L << (OPTIMIZE - 572)) | (1L << (OUT - 572)) | (1L << (OUTPUT - 572)) | (1L << (OWNER - 572)))) != 0) || ((((_la - 636)) & ~0x3f) == 0 && ((1L << (_la - 636)) & ((1L << (PAGE_VERIFY - 636)) | (1L << (PARAMETERIZATION - 636)) | (1L << (PARTITION - 636)) | (1L << (PARTITIONS - 636)) | (1L << (PARTNER - 636)) | (1L << (PATH - 636)) | (1L << (POISON_MESSAGE_HANDLING - 636)) | (1L << (POOL - 636)) | (1L << (PORT - 636)) | (1L << (PRECEDING - 636)) | (1L << (PRIMARY_ROLE - 636)) | (1L << (PRIOR - 636)) | (1L << (PRIORITY - 636)) | (1L << (PRIORITY_LEVEL - 636)) | (1L << (PRIVATE - 636)) | (1L << (PRIVATE_KEY - 636)) | (1L << (PRIVILEGES - 636)) | (1L << (PROCEDURE_NAME - 636)) | (1L << (PROPERTY - 636)) | (1L << (PROVIDER - 636)) | (1L << (PROVIDER_KEY_NAME - 636)) | (1L << (QUERY - 636)) | (1L << (QUEUE - 636)) | (1L << (QUEUE_DELAY - 636)) | (1L << (QUOTED_IDENTIFIER - 636)) | (1L << (RANGE - 636)) | (1L << (RANK - 636)) | (1L << (RC2 - 636)) | (1L << (RC4 - 636)) | (1L << (RC4_128 - 636)) | (1L << (READ_COMMITTED_SNAPSHOT - 636)) | (1L << (READ_ONLY - 636)) | (1L << (READ_ONLY_ROUTING_LIST - 636)) | (1L << (READ_WRITE - 636)) | (1L << (READONLY - 636)) | (1L << (REBUILD - 636)) | (1L << (RECEIVE - 636)) | (1L << (RECOMPILE - 636)) | (1L << (RECOVERY - 636)) | (1L << (RECURSIVE_TRIGGERS - 636)) | (1L << (RELATIVE - 636)) | (1L << (REMOTE - 636)) | (1L << (REMOTE_SERVICE_NAME - 636)) | (1L << (REMOVE - 636)) | (1L << (REORGANIZE - 636)) | (1L << (REPEATABLE - 636)) | (1L << (REPLICA - 636)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 636)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 636)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 636)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 636)) | (1L << (RESERVE_DISK_SPACE - 636)) | (1L << (RESOURCE - 636)) | (1L << (RESOURCE_MANAGER_LOCATION - 636)) | (1L << (RESTRICTED_USER - 636)) | (1L << (RETENTION - 636)) | (1L << (ROBUST - 636)) | (1L << (ROOT - 636)) | (1L << (ROUTE - 636)) | (1L << (ROW - 636)) | (1L << (ROW_NUMBER - 636)) | (1L << (ROWGUID - 636)) | (1L << (ROWS - 636)) | (1L << (SAMPLE - 636)))) != 0) || ((((_la - 700)) & ~0x3f) == 0 && ((1L << (_la - 700)) & ((1L << (SCHEMABINDING - 700)) | (1L << (SCOPED - 700)) | (1L << (SCROLL - 700)) | (1L << (SCROLL_LOCKS - 700)) | (1L << (SEARCH - 700)) | (1L << (SECONDARY - 700)) | (1L << (SECONDARY_ONLY - 700)) | (1L << (SECONDARY_ROLE - 700)) | (1L << (SECONDS - 700)) | (1L << (SECRET - 700)) | (1L << (SECURITY - 700)) | (1L << (SECURITY_LOG - 700)) | (1L << (SEEDING_MODE - 700)) | (1L << (SELF - 700)) | (1L << (SEMI_SENSITIVE - 700)) | (1L << (SEND - 700)) | (1L << (SENT - 700)) | (1L << (SEQUENCE - 700)) | (1L << (SERIALIZABLE - 700)) | (1L << (SESSION_TIMEOUT - 700)) | (1L << (SETERROR - 700)) | (1L << (SHARE - 700)) | (1L << (SHOWPLAN - 700)) | (1L << (SIGNATURE - 700)) | (1L << (SIMPLE - 700)) | (1L << (SINGLE_USER - 700)) | (1L << (SIZE - 700)) | (1L << (SMALLINT - 700)) | (1L << (SNAPSHOT - 700)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 700)) | (1L << (STANDBY - 700)) | (1L << (START_DATE - 700)) | (1L << (STATIC - 700)) | (1L << (STATS_STREAM - 700)) | (1L << (STATUS - 700)) | (1L << (STDEV - 700)) | (1L << (STDEVP - 700)) | (1L << (STOPLIST - 700)) | (1L << (STRING_AGG - 700)) | (1L << (STUFF - 700)) | (1L << (SUBJECT - 700)) | (1L << (SUM - 700)) | (1L << (SUSPEND - 700)) | (1L << (SYMMETRIC - 700)) | (1L << (SYNCHRONOUS_COMMIT - 700)) | (1L << (SYNONYM - 700)) | (1L << (SYSTEM - 700)) | (1L << (TAKE - 700)) | (1L << (TARGET_RECOVERY_TIME - 700)) | (1L << (TB - 700)) | (1L << (TEXTIMAGE_ON - 700)) | (1L << (THROW - 700)) | (1L << (TIES - 700)) | (1L << (TIME - 700)) | (1L << (TIMEOUT - 700)) | (1L << (TIMER - 700)) | (1L << (TINYINT - 700)) | (1L << (TORN_PAGE_DETECTION - 700)) | (1L << (TRANSFORM_NOISE_WORDS - 700)) | (1L << (TRIPLE_DES - 700)) | (1L << (TRIPLE_DES_3KEY - 700)) | (1L << (TRUSTWORTHY - 700)))) != 0) || ((((_la - 764)) & ~0x3f) == 0 && ((1L << (_la - 764)) & ((1L << (TRY - 764)) | (1L << (TSQL - 764)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 764)) | (1L << (TYPE - 764)) | (1L << (TYPE_WARNING - 764)) | (1L << (UNBOUNDED - 764)) | (1L << (UNCOMMITTED - 764)) | (1L << (UNKNOWN - 764)) | (1L << (UNLIMITED - 764)) | (1L << (USING - 764)) | (1L << (VALID_XML - 764)) | (1L << (VALIDATION - 764)) | (1L << (VALUE - 764)) | (1L << (VAR - 764)) | (1L << (VARP - 764)) | (1L << (VIEW_METADATA - 764)) | (1L << (VIEWS - 764)) | (1L << (WAIT - 764)) | (1L << (WELL_FORMED_XML - 764)) | (1L << (WORK - 764)) | (1L << (WORKLOAD - 764)) | (1L << (XML - 764)) | (1L << (XMLNAMESPACES - 764)) | (1L << (DOUBLE_QUOTE_ID - 764)) | (1L << (SQUARE_BRACKET_ID - 764)) | (1L << (ID - 764)))) != 0)) {
+					if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==URL) {
 						{
 						setState(10568);
 						((Func_proc_name_database_schemaContext)_localctx).schema = id();
@@ -88410,7 +89039,7 @@ public class MocaSqlParser extends Parser {
 					match(DOT);
 					setState(10584);
 					_la = _input.LA(1);
-					if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (TARGET - 295)))) != 0) || ((((_la - 380)) & ~0x3f) == 0 && ((1L << (_la - 380)) & ((1L << (ABSOLUTE - 380)) | (1L << (ACCENT_SENSITIVITY - 380)) | (1L << (ACTION - 380)) | (1L << (ACTIVATION - 380)) | (1L << (ACTIVE - 380)) | (1L << (ADDRESS - 380)) | (1L << (AES_128 - 380)) | (1L << (AES_192 - 380)) | (1L << (AES_256 - 380)) | (1L << (AFFINITY - 380)) | (1L << (AFTER - 380)) | (1L << (AGGREGATE - 380)) | (1L << (ALGORITHM - 380)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 380)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 380)) | (1L << (ALLOWED - 380)) | (1L << (ANSI_NULL_DEFAULT - 380)) | (1L << (ANSI_NULLS - 380)) | (1L << (ANSI_PADDING - 380)) | (1L << (ANSI_WARNINGS - 380)) | (1L << (APPLICATION_LOG - 380)) | (1L << (APPLY - 380)) | (1L << (ARITHABORT - 380)) | (1L << (ASSEMBLY - 380)) | (1L << (AUDIT - 380)) | (1L << (AUDIT_GUID - 380)) | (1L << (AUTO - 380)) | (1L << (AUTO_CLEANUP - 380)) | (1L << (AUTO_CLOSE - 380)) | (1L << (AUTO_CREATE_STATISTICS - 380)) | (1L << (AUTO_SHRINK - 380)) | (1L << (AUTO_UPDATE_STATISTICS - 380)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 380)) | (1L << (AVAILABILITY - 380)) | (1L << (AVG - 380)) | (1L << (BACKUP_PRIORITY - 380)) | (1L << (BEGIN_DIALOG - 380)) | (1L << (BIGINT - 380)) | (1L << (BINARY_BASE64 - 380)) | (1L << (BINARY_CHECKSUM - 380)) | (1L << (BINDING - 380)) | (1L << (BLOB_STORAGE - 380)) | (1L << (BROKER - 380)) | (1L << (BROKER_INSTANCE - 380)) | (1L << (BULK_LOGGED - 380)) | (1L << (CALLER - 380)) | (1L << (CAP_CPU_PERCENT - 380)) | (1L << (CAST - 380)) | (1L << (CATALOG - 380)) | (1L << (CATCH - 380)) | (1L << (CHANGE_RETENTION - 380)) | (1L << (CHANGE_TRACKING - 380)) | (1L << (CHECKSUM - 380)) | (1L << (CHECKSUM_AGG - 380)) | (1L << (CLEANUP - 380)) | (1L << (COLLECTION - 380)) | (1L << (COLUMN_MASTER_KEY - 380)) | (1L << (COMMITTED - 380)) | (1L << (COMPATIBILITY_LEVEL - 380)) | (1L << (CONCAT - 380)) | (1L << (CONCAT_NULL_YIELDS_NULL - 380)) | (1L << (CONTENT - 380)) | (1L << (CONTROL - 380)) | (1L << (COOKIE - 380)))) != 0) || ((((_la - 444)) & ~0x3f) == 0 && ((1L << (_la - 444)) & ((1L << (COUNT - 444)) | (1L << (COUNT_BIG - 444)) | (1L << (COUNTER - 444)) | (1L << (CPU - 444)) | (1L << (CREATE_NEW - 444)) | (1L << (CREATION_DISPOSITION - 444)) | (1L << (CREDENTIAL - 444)) | (1L << (CRYPTOGRAPHIC - 444)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 444)) | (1L << (CURSOR_DEFAULT - 444)) | (1L << (DATA - 444)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 444)) | (1L << (DATEADD - 444)) | (1L << (DATEDIFF - 444)) | (1L << (DATENAME - 444)) | (1L << (DATEPART - 444)) | (1L << (DAYS - 444)) | (1L << (DB_CHAINING - 444)) | (1L << (DB_FAILOVER - 444)) | (1L << (DECRYPTION - 444)) | (1L << (DEFAULT_DOUBLE_QUOTE - 444)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 444)) | (1L << (DEFAULT_LANGUAGE - 444)) | (1L << (DELAY - 444)) | (1L << (DELAYED_DURABILITY - 444)) | (1L << (DELETED - 444)) | (1L << (DENSE_RANK - 444)) | (1L << (DEPENDENTS - 444)) | (1L << (DES - 444)) | (1L << (DESCRIPTION - 444)) | (1L << (DESX - 444)) | (1L << (DHCP - 444)) | (1L << (DIALOG - 444)) | (1L << (DIRECTORY_NAME - 444)) | (1L << (DISABLE - 444)) | (1L << (DISABLE_BROKER - 444)) | (1L << (DISABLED - 444)) | (1L << (DISK_DRIVE - 444)) | (1L << (DOCUMENT - 444)) | (1L << (DYNAMIC - 444)) | (1L << (EMERGENCY - 444)) | (1L << (EMPTY - 444)) | (1L << (ENABLE - 444)) | (1L << (ENABLE_BROKER - 444)) | (1L << (ENCRYPTED_VALUE - 444)) | (1L << (ENCRYPTION - 444)) | (1L << (ENDPOINT_URL - 444)) | (1L << (ERROR_BROKER_CONVERSATIONS - 444)) | (1L << (EXCLUSIVE - 444)) | (1L << (EXECUTABLE - 444)) | (1L << (EXIST - 444)) | (1L << (EXPAND - 444)) | (1L << (EXPIRY_DATE - 444)) | (1L << (EXPLICIT - 444)) | (1L << (FAIL_OPERATION - 444)) | (1L << (FAILOVER_MODE - 444)) | (1L << (FAILURE - 444)) | (1L << (FAILURE_CONDITION_LEVEL - 444)) | (1L << (FAST - 444)) | (1L << (FAST_FORWARD - 444)) | (1L << (FILEGROUP - 444)) | (1L << (FILEGROWTH - 444)) | (1L << (FILEPATH - 444)))) != 0) || ((((_la - 508)) & ~0x3f) == 0 && ((1L << (_la - 508)) & ((1L << (FILESTREAM - 508)) | (1L << (FILTER - 508)) | (1L << (FIRST - 508)) | (1L << (FIRST_VALUE - 508)) | (1L << (FOLLOWING - 508)) | (1L << (FORCE - 508)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 508)) | (1L << (FORCED - 508)) | (1L << (FORMAT - 508)) | (1L << (FORWARD_ONLY - 508)) | (1L << (FULLSCAN - 508)) | (1L << (FULLTEXT - 508)) | (1L << (GB - 508)) | (1L << (GETDATE - 508)) | (1L << (GETUTCDATE - 508)) | (1L << (GLOBAL - 508)) | (1L << (GO - 508)) | (1L << (GROUP_MAX_REQUESTS - 508)) | (1L << (GROUPING - 508)) | (1L << (GROUPING_ID - 508)) | (1L << (HADR - 508)) | (1L << (HASH - 508)) | (1L << (HEALTH_CHECK_TIMEOUT - 508)) | (1L << (HIGH - 508)) | (1L << (HONOR_BROKER_PRIORITY - 508)) | (1L << (HOURS - 508)) | (1L << (IDENTITY_VALUE - 508)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 508)) | (1L << (IMMEDIATE - 508)) | (1L << (IMPERSONATE - 508)) | (1L << (IMPORTANCE - 508)) | (1L << (INCREMENTAL - 508)) | (1L << (INITIATOR - 508)) | (1L << (INPUT - 508)) | (1L << (INSENSITIVE - 508)) | (1L << (INSERTED - 508)) | (1L << (INT - 508)) | (1L << (IP - 508)) | (1L << (ISOLATION - 508)) | (1L << (KB - 508)) | (1L << (KEEP - 508)) | (1L << (KEEPFIXED - 508)) | (1L << (KEY_SOURCE - 508)) | (1L << (KEYS - 508)) | (1L << (KEYSET - 508)) | (1L << (LAG - 508)) | (1L << (LAST - 508)) | (1L << (LAST_VALUE - 508)) | (1L << (LEAD - 508)) | (1L << (LEVEL - 508)) | (1L << (LIST - 508)) | (1L << (LISTENER - 508)) | (1L << (LISTENER_URL - 508)) | (1L << (LOB_COMPACTION - 508)) | (1L << (LOCAL - 508)) | (1L << (LOCATION - 508)) | (1L << (LOCK - 508)) | (1L << (LOCK_ESCALATION - 508)) | (1L << (LOGIN - 508)) | (1L << (LOOP - 508)) | (1L << (LOW - 508)))) != 0) || ((((_la - 572)) & ~0x3f) == 0 && ((1L << (_la - 572)) & ((1L << (MANUAL - 572)) | (1L << (MARK - 572)) | (1L << (MATERIALIZED - 572)) | (1L << (MAX - 572)) | (1L << (MAX_CPU_PERCENT - 572)) | (1L << (MAX_DOP - 572)) | (1L << (MAX_FILES - 572)) | (1L << (MAX_IOPS_PER_VOLUME - 572)) | (1L << (MAX_MEMORY_PERCENT - 572)) | (1L << (MAX_PROCESSES - 572)) | (1L << (MAX_QUEUE_READERS - 572)) | (1L << (MAX_ROLLOVER_FILES - 572)) | (1L << (MAXDOP - 572)) | (1L << (MAXRECURSION - 572)) | (1L << (MAXSIZE - 572)) | (1L << (MB - 572)) | (1L << (MEDIUM - 572)) | (1L << (MEMORY_OPTIMIZED_DATA - 572)) | (1L << (MESSAGE - 572)) | (1L << (MIN - 572)) | (1L << (MIN_ACTIVE_ROWVERSION - 572)) | (1L << (MIN_CPU_PERCENT - 572)) | (1L << (MIN_IOPS_PER_VOLUME - 572)) | (1L << (MIN_MEMORY_PERCENT - 572)) | (1L << (MINUTES - 572)) | (1L << (MIRROR_ADDRESS - 572)) | (1L << (MIXED_PAGE_ALLOCATION - 572)) | (1L << (MODE - 572)) | (1L << (MODIFY - 572)) | (1L << (MOVE - 572)) | (1L << (MULTI_USER - 572)) | (1L << (NAME - 572)) | (1L << (NESTED_TRIGGERS - 572)) | (1L << (NEW_ACCOUNT - 572)) | (1L << (NEW_BROKER - 572)) | (1L << (NEW_PASSWORD - 572)) | (1L << (NEXT - 572)) | (1L << (NO - 572)) | (1L << (NO_TRUNCATE - 572)) | (1L << (NO_WAIT - 572)) | (1L << (NOCOUNT - 572)) | (1L << (NODES - 572)) | (1L << (NOEXPAND - 572)) | (1L << (NON_TRANSACTED_ACCESS - 572)) | (1L << (NORECOMPUTE - 572)) | (1L << (NORECOVERY - 572)) | (1L << (NOWAIT - 572)) | (1L << (NTILE - 572)) | (1L << (NUMANODE - 572)) | (1L << (NUMBER - 572)) | (1L << (NUMERIC_ROUNDABORT - 572)) | (1L << (OBJECT - 572)) | (1L << (OFFLINE - 572)) | (1L << (OFFSET - 572)) | (1L << (OLD_ACCOUNT - 572)) | (1L << (ONLINE - 572)) | (1L << (ONLY - 572)) | (1L << (OPEN_EXISTING - 572)) | (1L << (OPTIMISTIC - 572)) | (1L << (OPTIMIZE - 572)) | (1L << (OUT - 572)) | (1L << (OUTPUT - 572)) | (1L << (OWNER - 572)))) != 0) || ((((_la - 636)) & ~0x3f) == 0 && ((1L << (_la - 636)) & ((1L << (PAGE_VERIFY - 636)) | (1L << (PARAMETERIZATION - 636)) | (1L << (PARTITION - 636)) | (1L << (PARTITIONS - 636)) | (1L << (PARTNER - 636)) | (1L << (PATH - 636)) | (1L << (POISON_MESSAGE_HANDLING - 636)) | (1L << (POOL - 636)) | (1L << (PORT - 636)) | (1L << (PRECEDING - 636)) | (1L << (PRIMARY_ROLE - 636)) | (1L << (PRIOR - 636)) | (1L << (PRIORITY - 636)) | (1L << (PRIORITY_LEVEL - 636)) | (1L << (PRIVATE - 636)) | (1L << (PRIVATE_KEY - 636)) | (1L << (PRIVILEGES - 636)) | (1L << (PROCEDURE_NAME - 636)) | (1L << (PROPERTY - 636)) | (1L << (PROVIDER - 636)) | (1L << (PROVIDER_KEY_NAME - 636)) | (1L << (QUERY - 636)) | (1L << (QUEUE - 636)) | (1L << (QUEUE_DELAY - 636)) | (1L << (QUOTED_IDENTIFIER - 636)) | (1L << (RANGE - 636)) | (1L << (RANK - 636)) | (1L << (RC2 - 636)) | (1L << (RC4 - 636)) | (1L << (RC4_128 - 636)) | (1L << (READ_COMMITTED_SNAPSHOT - 636)) | (1L << (READ_ONLY - 636)) | (1L << (READ_ONLY_ROUTING_LIST - 636)) | (1L << (READ_WRITE - 636)) | (1L << (READONLY - 636)) | (1L << (REBUILD - 636)) | (1L << (RECEIVE - 636)) | (1L << (RECOMPILE - 636)) | (1L << (RECOVERY - 636)) | (1L << (RECURSIVE_TRIGGERS - 636)) | (1L << (RELATIVE - 636)) | (1L << (REMOTE - 636)) | (1L << (REMOTE_SERVICE_NAME - 636)) | (1L << (REMOVE - 636)) | (1L << (REORGANIZE - 636)) | (1L << (REPEATABLE - 636)) | (1L << (REPLICA - 636)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 636)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 636)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 636)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 636)) | (1L << (RESERVE_DISK_SPACE - 636)) | (1L << (RESOURCE - 636)) | (1L << (RESOURCE_MANAGER_LOCATION - 636)) | (1L << (RESTRICTED_USER - 636)) | (1L << (RETENTION - 636)) | (1L << (ROBUST - 636)) | (1L << (ROOT - 636)) | (1L << (ROUTE - 636)) | (1L << (ROW - 636)) | (1L << (ROW_NUMBER - 636)) | (1L << (ROWGUID - 636)) | (1L << (ROWS - 636)) | (1L << (SAMPLE - 636)))) != 0) || ((((_la - 700)) & ~0x3f) == 0 && ((1L << (_la - 700)) & ((1L << (SCHEMABINDING - 700)) | (1L << (SCOPED - 700)) | (1L << (SCROLL - 700)) | (1L << (SCROLL_LOCKS - 700)) | (1L << (SEARCH - 700)) | (1L << (SECONDARY - 700)) | (1L << (SECONDARY_ONLY - 700)) | (1L << (SECONDARY_ROLE - 700)) | (1L << (SECONDS - 700)) | (1L << (SECRET - 700)) | (1L << (SECURITY - 700)) | (1L << (SECURITY_LOG - 700)) | (1L << (SEEDING_MODE - 700)) | (1L << (SELF - 700)) | (1L << (SEMI_SENSITIVE - 700)) | (1L << (SEND - 700)) | (1L << (SENT - 700)) | (1L << (SEQUENCE - 700)) | (1L << (SERIALIZABLE - 700)) | (1L << (SESSION_TIMEOUT - 700)) | (1L << (SETERROR - 700)) | (1L << (SHARE - 700)) | (1L << (SHOWPLAN - 700)) | (1L << (SIGNATURE - 700)) | (1L << (SIMPLE - 700)) | (1L << (SINGLE_USER - 700)) | (1L << (SIZE - 700)) | (1L << (SMALLINT - 700)) | (1L << (SNAPSHOT - 700)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 700)) | (1L << (STANDBY - 700)) | (1L << (START_DATE - 700)) | (1L << (STATIC - 700)) | (1L << (STATS_STREAM - 700)) | (1L << (STATUS - 700)) | (1L << (STDEV - 700)) | (1L << (STDEVP - 700)) | (1L << (STOPLIST - 700)) | (1L << (STRING_AGG - 700)) | (1L << (STUFF - 700)) | (1L << (SUBJECT - 700)) | (1L << (SUM - 700)) | (1L << (SUSPEND - 700)) | (1L << (SYMMETRIC - 700)) | (1L << (SYNCHRONOUS_COMMIT - 700)) | (1L << (SYNONYM - 700)) | (1L << (SYSTEM - 700)) | (1L << (TAKE - 700)) | (1L << (TARGET_RECOVERY_TIME - 700)) | (1L << (TB - 700)) | (1L << (TEXTIMAGE_ON - 700)) | (1L << (THROW - 700)) | (1L << (TIES - 700)) | (1L << (TIME - 700)) | (1L << (TIMEOUT - 700)) | (1L << (TIMER - 700)) | (1L << (TINYINT - 700)) | (1L << (TORN_PAGE_DETECTION - 700)) | (1L << (TRANSFORM_NOISE_WORDS - 700)) | (1L << (TRIPLE_DES - 700)) | (1L << (TRIPLE_DES_3KEY - 700)) | (1L << (TRUSTWORTHY - 700)))) != 0) || ((((_la - 764)) & ~0x3f) == 0 && ((1L << (_la - 764)) & ((1L << (TRY - 764)) | (1L << (TSQL - 764)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 764)) | (1L << (TYPE - 764)) | (1L << (TYPE_WARNING - 764)) | (1L << (UNBOUNDED - 764)) | (1L << (UNCOMMITTED - 764)) | (1L << (UNKNOWN - 764)) | (1L << (UNLIMITED - 764)) | (1L << (USING - 764)) | (1L << (VALID_XML - 764)) | (1L << (VALIDATION - 764)) | (1L << (VALUE - 764)) | (1L << (VAR - 764)) | (1L << (VARP - 764)) | (1L << (VIEW_METADATA - 764)) | (1L << (VIEWS - 764)) | (1L << (WAIT - 764)) | (1L << (WELL_FORMED_XML - 764)) | (1L << (WORK - 764)) | (1L << (WORKLOAD - 764)) | (1L << (XML - 764)) | (1L << (XMLNAMESPACES - 764)) | (1L << (DOUBLE_QUOTE_ID - 764)) | (1L << (SQUARE_BRACKET_ID - 764)) | (1L << (ID - 764)))) != 0)) {
+					if (_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (DOUBLE_QUOTE_ID - 748)) | (1L << (SQUARE_BRACKET_ID - 748)) | (1L << (ID - 748)))) != 0) || _la==URL) {
 						{
 						setState(10583);
 						((Func_proc_name_server_database_schemaContext)_localctx).schema = id();
@@ -88472,6 +89101,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -88481,20 +89111,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -88898,6 +89535,7 @@ public class MocaSqlParser extends Parser {
 			case DOUBLE_QUOTE_ID:
 			case SQUARE_BRACKET_ID:
 			case ID:
+			case URL:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(10593);
@@ -89329,6 +89967,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -89338,20 +89977,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -89755,6 +90401,7 @@ public class MocaSqlParser extends Parser {
 			case DOUBLE_QUOTE_ID:
 			case SQUARE_BRACKET_ID:
 			case ID:
+			case URL:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(10669);
@@ -91085,14 +91732,15 @@ public class MocaSqlParser extends Parser {
 				setState(10846);
 				match(DOUBLE);
 				setState(10848);
-				_la = _input.LA(1);
-				if (_la==PRECISION) {
+				_errHandler.sync(this);
+				switch ( getInterpreter().adaptivePredict(_input,1517,_ctx) ) {
+				case 1:
 					{
 					setState(10847);
 					match(PRECISION);
 					}
+					break;
 				}
-
 				}
 				break;
 			case 3:
@@ -91415,6 +92063,7 @@ public class MocaSqlParser extends Parser {
 			case CALLED:
 			case DATA_COMPRESSION:
 			case EVENTDATA:
+			case EXPIREDATE:
 			case FILENAME:
 			case FILLFACTOR:
 			case FORCESEEK:
@@ -91424,20 +92073,27 @@ public class MocaSqlParser extends Parser {
 			case MAX_MEMORY:
 			case OFFSETS:
 			case PAGE:
+			case POLICY:
+			case PRECISION:
 			case PUBLIC:
 			case R:
 			case RAW:
 			case RETURN:
 			case RETURNS:
+			case ROLE:
 			case ROWCOUNT:
 			case SAFETY:
+			case RULE:
 			case SERVER:
 			case SID:
 			case SOURCE:
 			case SPLIT:
 			case STATE:
 			case START:
+			case STOP:
 			case TARGET:
+			case TRAN:
+			case USER:
 			case ABSOLUTE:
 			case ACCENT_SENSITIVITY:
 			case ACTION:
@@ -91839,6 +92495,7 @@ public class MocaSqlParser extends Parser {
 			case XML:
 			case XMLNAMESPACES:
 			case ID:
+			case URL:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(10880);
@@ -92052,7 +92709,10 @@ public class MocaSqlParser extends Parser {
 		public TerminalNode KB() { return getToken(MocaSqlParser.KB, 0); }
 		public TerminalNode KEEP() { return getToken(MocaSqlParser.KEEP, 0); }
 		public TerminalNode KEEPFIXED() { return getToken(MocaSqlParser.KEEPFIXED, 0); }
-		public TerminalNode KEY() { return getToken(MocaSqlParser.KEY, 0); }
+		public List<TerminalNode> KEY() { return getTokens(MocaSqlParser.KEY); }
+		public TerminalNode KEY(int i) {
+			return getToken(MocaSqlParser.KEY, i);
+		}
 		public TerminalNode KEY_SOURCE() { return getToken(MocaSqlParser.KEY_SOURCE, 0); }
 		public TerminalNode KEYS() { return getToken(MocaSqlParser.KEYS, 0); }
 		public TerminalNode KEYSET() { return getToken(MocaSqlParser.KEYSET, 0); }
@@ -92165,10 +92825,16 @@ public class MocaSqlParser extends Parser {
 		public TerminalNode QUEUE() { return getToken(MocaSqlParser.QUEUE, 0); }
 		public TerminalNode QUEUE_DELAY() { return getToken(MocaSqlParser.QUEUE_DELAY, 0); }
 		public TerminalNode QUOTED_IDENTIFIER() { return getToken(MocaSqlParser.QUOTED_IDENTIFIER, 0); }
-		public TerminalNode R() { return getToken(MocaSqlParser.R, 0); }
+		public List<TerminalNode> R() { return getTokens(MocaSqlParser.R); }
+		public TerminalNode R(int i) {
+			return getToken(MocaSqlParser.R, i);
+		}
 		public TerminalNode RANGE() { return getToken(MocaSqlParser.RANGE, 0); }
 		public TerminalNode RANK() { return getToken(MocaSqlParser.RANK, 0); }
-		public TerminalNode RAW() { return getToken(MocaSqlParser.RAW, 0); }
+		public List<TerminalNode> RAW() { return getTokens(MocaSqlParser.RAW); }
+		public TerminalNode RAW(int i) {
+			return getToken(MocaSqlParser.RAW, i);
+		}
 		public TerminalNode RC2() { return getToken(MocaSqlParser.RC2, 0); }
 		public TerminalNode RC4() { return getToken(MocaSqlParser.RC4, 0); }
 		public TerminalNode RC4_128() { return getToken(MocaSqlParser.RC4_128, 0); }
@@ -92305,6 +92971,15 @@ public class MocaSqlParser extends Parser {
 		public TerminalNode WORKLOAD() { return getToken(MocaSqlParser.WORKLOAD, 0); }
 		public TerminalNode XML() { return getToken(MocaSqlParser.XML, 0); }
 		public TerminalNode XMLNAMESPACES() { return getToken(MocaSqlParser.XMLNAMESPACES, 0); }
+		public TerminalNode EXPIREDATE() { return getToken(MocaSqlParser.EXPIREDATE, 0); }
+		public TerminalNode POLICY() { return getToken(MocaSqlParser.POLICY, 0); }
+		public TerminalNode PRECISION() { return getToken(MocaSqlParser.PRECISION, 0); }
+		public TerminalNode ROLE() { return getToken(MocaSqlParser.ROLE, 0); }
+		public TerminalNode RULE() { return getToken(MocaSqlParser.RULE, 0); }
+		public TerminalNode STOP() { return getToken(MocaSqlParser.STOP, 0); }
+		public TerminalNode TRAN() { return getToken(MocaSqlParser.TRAN, 0); }
+		public TerminalNode URL() { return getToken(MocaSqlParser.URL, 0); }
+		public TerminalNode USER() { return getToken(MocaSqlParser.USER, 0); }
 		public Simple_idContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -92333,7 +93008,7 @@ public class MocaSqlParser extends Parser {
 			{
 			setState(10885);
 			_la = _input.LA(1);
-			if ( !(_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (TARGET - 295)))) != 0) || ((((_la - 380)) & ~0x3f) == 0 && ((1L << (_la - 380)) & ((1L << (ABSOLUTE - 380)) | (1L << (ACCENT_SENSITIVITY - 380)) | (1L << (ACTION - 380)) | (1L << (ACTIVATION - 380)) | (1L << (ACTIVE - 380)) | (1L << (ADDRESS - 380)) | (1L << (AES_128 - 380)) | (1L << (AES_192 - 380)) | (1L << (AES_256 - 380)) | (1L << (AFFINITY - 380)) | (1L << (AFTER - 380)) | (1L << (AGGREGATE - 380)) | (1L << (ALGORITHM - 380)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 380)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 380)) | (1L << (ALLOWED - 380)) | (1L << (ANSI_NULL_DEFAULT - 380)) | (1L << (ANSI_NULLS - 380)) | (1L << (ANSI_PADDING - 380)) | (1L << (ANSI_WARNINGS - 380)) | (1L << (APPLICATION_LOG - 380)) | (1L << (APPLY - 380)) | (1L << (ARITHABORT - 380)) | (1L << (ASSEMBLY - 380)) | (1L << (AUDIT - 380)) | (1L << (AUDIT_GUID - 380)) | (1L << (AUTO - 380)) | (1L << (AUTO_CLEANUP - 380)) | (1L << (AUTO_CLOSE - 380)) | (1L << (AUTO_CREATE_STATISTICS - 380)) | (1L << (AUTO_SHRINK - 380)) | (1L << (AUTO_UPDATE_STATISTICS - 380)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 380)) | (1L << (AVAILABILITY - 380)) | (1L << (AVG - 380)) | (1L << (BACKUP_PRIORITY - 380)) | (1L << (BEGIN_DIALOG - 380)) | (1L << (BIGINT - 380)) | (1L << (BINARY_BASE64 - 380)) | (1L << (BINARY_CHECKSUM - 380)) | (1L << (BINDING - 380)) | (1L << (BLOB_STORAGE - 380)) | (1L << (BROKER - 380)) | (1L << (BROKER_INSTANCE - 380)) | (1L << (BULK_LOGGED - 380)) | (1L << (CALLER - 380)) | (1L << (CAP_CPU_PERCENT - 380)) | (1L << (CAST - 380)) | (1L << (CATALOG - 380)) | (1L << (CATCH - 380)) | (1L << (CHANGE_RETENTION - 380)) | (1L << (CHANGE_TRACKING - 380)) | (1L << (CHECKSUM - 380)) | (1L << (CHECKSUM_AGG - 380)) | (1L << (CLEANUP - 380)) | (1L << (COLLECTION - 380)) | (1L << (COLUMN_MASTER_KEY - 380)) | (1L << (COMMITTED - 380)) | (1L << (COMPATIBILITY_LEVEL - 380)) | (1L << (CONCAT - 380)) | (1L << (CONCAT_NULL_YIELDS_NULL - 380)) | (1L << (CONTENT - 380)) | (1L << (CONTROL - 380)) | (1L << (COOKIE - 380)))) != 0) || ((((_la - 444)) & ~0x3f) == 0 && ((1L << (_la - 444)) & ((1L << (COUNT - 444)) | (1L << (COUNT_BIG - 444)) | (1L << (COUNTER - 444)) | (1L << (CPU - 444)) | (1L << (CREATE_NEW - 444)) | (1L << (CREATION_DISPOSITION - 444)) | (1L << (CREDENTIAL - 444)) | (1L << (CRYPTOGRAPHIC - 444)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 444)) | (1L << (CURSOR_DEFAULT - 444)) | (1L << (DATA - 444)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 444)) | (1L << (DATEADD - 444)) | (1L << (DATEDIFF - 444)) | (1L << (DATENAME - 444)) | (1L << (DATEPART - 444)) | (1L << (DAYS - 444)) | (1L << (DB_CHAINING - 444)) | (1L << (DB_FAILOVER - 444)) | (1L << (DECRYPTION - 444)) | (1L << (DEFAULT_DOUBLE_QUOTE - 444)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 444)) | (1L << (DEFAULT_LANGUAGE - 444)) | (1L << (DELAY - 444)) | (1L << (DELAYED_DURABILITY - 444)) | (1L << (DELETED - 444)) | (1L << (DENSE_RANK - 444)) | (1L << (DEPENDENTS - 444)) | (1L << (DES - 444)) | (1L << (DESCRIPTION - 444)) | (1L << (DESX - 444)) | (1L << (DHCP - 444)) | (1L << (DIALOG - 444)) | (1L << (DIRECTORY_NAME - 444)) | (1L << (DISABLE - 444)) | (1L << (DISABLE_BROKER - 444)) | (1L << (DISABLED - 444)) | (1L << (DISK_DRIVE - 444)) | (1L << (DOCUMENT - 444)) | (1L << (DYNAMIC - 444)) | (1L << (EMERGENCY - 444)) | (1L << (EMPTY - 444)) | (1L << (ENABLE - 444)) | (1L << (ENABLE_BROKER - 444)) | (1L << (ENCRYPTED_VALUE - 444)) | (1L << (ENCRYPTION - 444)) | (1L << (ENDPOINT_URL - 444)) | (1L << (ERROR_BROKER_CONVERSATIONS - 444)) | (1L << (EXCLUSIVE - 444)) | (1L << (EXECUTABLE - 444)) | (1L << (EXIST - 444)) | (1L << (EXPAND - 444)) | (1L << (EXPIRY_DATE - 444)) | (1L << (EXPLICIT - 444)) | (1L << (FAIL_OPERATION - 444)) | (1L << (FAILOVER_MODE - 444)) | (1L << (FAILURE - 444)) | (1L << (FAILURE_CONDITION_LEVEL - 444)) | (1L << (FAST - 444)) | (1L << (FAST_FORWARD - 444)) | (1L << (FILEGROUP - 444)) | (1L << (FILEGROWTH - 444)) | (1L << (FILEPATH - 444)))) != 0) || ((((_la - 508)) & ~0x3f) == 0 && ((1L << (_la - 508)) & ((1L << (FILESTREAM - 508)) | (1L << (FILTER - 508)) | (1L << (FIRST - 508)) | (1L << (FIRST_VALUE - 508)) | (1L << (FOLLOWING - 508)) | (1L << (FORCE - 508)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 508)) | (1L << (FORCED - 508)) | (1L << (FORMAT - 508)) | (1L << (FORWARD_ONLY - 508)) | (1L << (FULLSCAN - 508)) | (1L << (FULLTEXT - 508)) | (1L << (GB - 508)) | (1L << (GETDATE - 508)) | (1L << (GETUTCDATE - 508)) | (1L << (GLOBAL - 508)) | (1L << (GO - 508)) | (1L << (GROUP_MAX_REQUESTS - 508)) | (1L << (GROUPING - 508)) | (1L << (GROUPING_ID - 508)) | (1L << (HADR - 508)) | (1L << (HASH - 508)) | (1L << (HEALTH_CHECK_TIMEOUT - 508)) | (1L << (HIGH - 508)) | (1L << (HONOR_BROKER_PRIORITY - 508)) | (1L << (HOURS - 508)) | (1L << (IDENTITY_VALUE - 508)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 508)) | (1L << (IMMEDIATE - 508)) | (1L << (IMPERSONATE - 508)) | (1L << (IMPORTANCE - 508)) | (1L << (INCREMENTAL - 508)) | (1L << (INITIATOR - 508)) | (1L << (INPUT - 508)) | (1L << (INSENSITIVE - 508)) | (1L << (INSERTED - 508)) | (1L << (INT - 508)) | (1L << (IP - 508)) | (1L << (ISOLATION - 508)) | (1L << (KB - 508)) | (1L << (KEEP - 508)) | (1L << (KEEPFIXED - 508)) | (1L << (KEY_SOURCE - 508)) | (1L << (KEYS - 508)) | (1L << (KEYSET - 508)) | (1L << (LAG - 508)) | (1L << (LAST - 508)) | (1L << (LAST_VALUE - 508)) | (1L << (LEAD - 508)) | (1L << (LEVEL - 508)) | (1L << (LIST - 508)) | (1L << (LISTENER - 508)) | (1L << (LISTENER_URL - 508)) | (1L << (LOB_COMPACTION - 508)) | (1L << (LOCAL - 508)) | (1L << (LOCATION - 508)) | (1L << (LOCK - 508)) | (1L << (LOCK_ESCALATION - 508)) | (1L << (LOGIN - 508)) | (1L << (LOOP - 508)) | (1L << (LOW - 508)))) != 0) || ((((_la - 572)) & ~0x3f) == 0 && ((1L << (_la - 572)) & ((1L << (MANUAL - 572)) | (1L << (MARK - 572)) | (1L << (MATERIALIZED - 572)) | (1L << (MAX - 572)) | (1L << (MAX_CPU_PERCENT - 572)) | (1L << (MAX_DOP - 572)) | (1L << (MAX_FILES - 572)) | (1L << (MAX_IOPS_PER_VOLUME - 572)) | (1L << (MAX_MEMORY_PERCENT - 572)) | (1L << (MAX_PROCESSES - 572)) | (1L << (MAX_QUEUE_READERS - 572)) | (1L << (MAX_ROLLOVER_FILES - 572)) | (1L << (MAXDOP - 572)) | (1L << (MAXRECURSION - 572)) | (1L << (MAXSIZE - 572)) | (1L << (MB - 572)) | (1L << (MEDIUM - 572)) | (1L << (MEMORY_OPTIMIZED_DATA - 572)) | (1L << (MESSAGE - 572)) | (1L << (MIN - 572)) | (1L << (MIN_ACTIVE_ROWVERSION - 572)) | (1L << (MIN_CPU_PERCENT - 572)) | (1L << (MIN_IOPS_PER_VOLUME - 572)) | (1L << (MIN_MEMORY_PERCENT - 572)) | (1L << (MINUTES - 572)) | (1L << (MIRROR_ADDRESS - 572)) | (1L << (MIXED_PAGE_ALLOCATION - 572)) | (1L << (MODE - 572)) | (1L << (MODIFY - 572)) | (1L << (MOVE - 572)) | (1L << (MULTI_USER - 572)) | (1L << (NAME - 572)) | (1L << (NESTED_TRIGGERS - 572)) | (1L << (NEW_ACCOUNT - 572)) | (1L << (NEW_BROKER - 572)) | (1L << (NEW_PASSWORD - 572)) | (1L << (NEXT - 572)) | (1L << (NO - 572)) | (1L << (NO_TRUNCATE - 572)) | (1L << (NO_WAIT - 572)) | (1L << (NOCOUNT - 572)) | (1L << (NODES - 572)) | (1L << (NOEXPAND - 572)) | (1L << (NON_TRANSACTED_ACCESS - 572)) | (1L << (NORECOMPUTE - 572)) | (1L << (NORECOVERY - 572)) | (1L << (NOWAIT - 572)) | (1L << (NTILE - 572)) | (1L << (NUMANODE - 572)) | (1L << (NUMBER - 572)) | (1L << (NUMERIC_ROUNDABORT - 572)) | (1L << (OBJECT - 572)) | (1L << (OFFLINE - 572)) | (1L << (OFFSET - 572)) | (1L << (OLD_ACCOUNT - 572)) | (1L << (ONLINE - 572)) | (1L << (ONLY - 572)) | (1L << (OPEN_EXISTING - 572)) | (1L << (OPTIMISTIC - 572)) | (1L << (OPTIMIZE - 572)) | (1L << (OUT - 572)) | (1L << (OUTPUT - 572)) | (1L << (OWNER - 572)))) != 0) || ((((_la - 636)) & ~0x3f) == 0 && ((1L << (_la - 636)) & ((1L << (PAGE_VERIFY - 636)) | (1L << (PARAMETERIZATION - 636)) | (1L << (PARTITION - 636)) | (1L << (PARTITIONS - 636)) | (1L << (PARTNER - 636)) | (1L << (PATH - 636)) | (1L << (POISON_MESSAGE_HANDLING - 636)) | (1L << (POOL - 636)) | (1L << (PORT - 636)) | (1L << (PRECEDING - 636)) | (1L << (PRIMARY_ROLE - 636)) | (1L << (PRIOR - 636)) | (1L << (PRIORITY - 636)) | (1L << (PRIORITY_LEVEL - 636)) | (1L << (PRIVATE - 636)) | (1L << (PRIVATE_KEY - 636)) | (1L << (PRIVILEGES - 636)) | (1L << (PROCEDURE_NAME - 636)) | (1L << (PROPERTY - 636)) | (1L << (PROVIDER - 636)) | (1L << (PROVIDER_KEY_NAME - 636)) | (1L << (QUERY - 636)) | (1L << (QUEUE - 636)) | (1L << (QUEUE_DELAY - 636)) | (1L << (QUOTED_IDENTIFIER - 636)) | (1L << (RANGE - 636)) | (1L << (RANK - 636)) | (1L << (RC2 - 636)) | (1L << (RC4 - 636)) | (1L << (RC4_128 - 636)) | (1L << (READ_COMMITTED_SNAPSHOT - 636)) | (1L << (READ_ONLY - 636)) | (1L << (READ_ONLY_ROUTING_LIST - 636)) | (1L << (READ_WRITE - 636)) | (1L << (READONLY - 636)) | (1L << (REBUILD - 636)) | (1L << (RECEIVE - 636)) | (1L << (RECOMPILE - 636)) | (1L << (RECOVERY - 636)) | (1L << (RECURSIVE_TRIGGERS - 636)) | (1L << (RELATIVE - 636)) | (1L << (REMOTE - 636)) | (1L << (REMOTE_SERVICE_NAME - 636)) | (1L << (REMOVE - 636)) | (1L << (REORGANIZE - 636)) | (1L << (REPEATABLE - 636)) | (1L << (REPLICA - 636)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 636)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 636)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 636)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 636)) | (1L << (RESERVE_DISK_SPACE - 636)) | (1L << (RESOURCE - 636)) | (1L << (RESOURCE_MANAGER_LOCATION - 636)) | (1L << (RESTRICTED_USER - 636)) | (1L << (RETENTION - 636)) | (1L << (ROBUST - 636)) | (1L << (ROOT - 636)) | (1L << (ROUTE - 636)) | (1L << (ROW - 636)) | (1L << (ROW_NUMBER - 636)) | (1L << (ROWGUID - 636)) | (1L << (ROWS - 636)) | (1L << (SAMPLE - 636)))) != 0) || ((((_la - 700)) & ~0x3f) == 0 && ((1L << (_la - 700)) & ((1L << (SCHEMABINDING - 700)) | (1L << (SCOPED - 700)) | (1L << (SCROLL - 700)) | (1L << (SCROLL_LOCKS - 700)) | (1L << (SEARCH - 700)) | (1L << (SECONDARY - 700)) | (1L << (SECONDARY_ONLY - 700)) | (1L << (SECONDARY_ROLE - 700)) | (1L << (SECONDS - 700)) | (1L << (SECRET - 700)) | (1L << (SECURITY - 700)) | (1L << (SECURITY_LOG - 700)) | (1L << (SEEDING_MODE - 700)) | (1L << (SELF - 700)) | (1L << (SEMI_SENSITIVE - 700)) | (1L << (SEND - 700)) | (1L << (SENT - 700)) | (1L << (SEQUENCE - 700)) | (1L << (SERIALIZABLE - 700)) | (1L << (SESSION_TIMEOUT - 700)) | (1L << (SETERROR - 700)) | (1L << (SHARE - 700)) | (1L << (SHOWPLAN - 700)) | (1L << (SIGNATURE - 700)) | (1L << (SIMPLE - 700)) | (1L << (SINGLE_USER - 700)) | (1L << (SIZE - 700)) | (1L << (SMALLINT - 700)) | (1L << (SNAPSHOT - 700)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 700)) | (1L << (STANDBY - 700)) | (1L << (START_DATE - 700)) | (1L << (STATIC - 700)) | (1L << (STATS_STREAM - 700)) | (1L << (STATUS - 700)) | (1L << (STDEV - 700)) | (1L << (STDEVP - 700)) | (1L << (STOPLIST - 700)) | (1L << (STRING_AGG - 700)) | (1L << (STUFF - 700)) | (1L << (SUBJECT - 700)) | (1L << (SUM - 700)) | (1L << (SUSPEND - 700)) | (1L << (SYMMETRIC - 700)) | (1L << (SYNCHRONOUS_COMMIT - 700)) | (1L << (SYNONYM - 700)) | (1L << (SYSTEM - 700)) | (1L << (TAKE - 700)) | (1L << (TARGET_RECOVERY_TIME - 700)) | (1L << (TB - 700)) | (1L << (TEXTIMAGE_ON - 700)) | (1L << (THROW - 700)) | (1L << (TIES - 700)) | (1L << (TIME - 700)) | (1L << (TIMEOUT - 700)) | (1L << (TIMER - 700)) | (1L << (TINYINT - 700)) | (1L << (TORN_PAGE_DETECTION - 700)) | (1L << (TRANSFORM_NOISE_WORDS - 700)) | (1L << (TRIPLE_DES - 700)) | (1L << (TRIPLE_DES_3KEY - 700)) | (1L << (TRUSTWORTHY - 700)))) != 0) || ((((_la - 764)) & ~0x3f) == 0 && ((1L << (_la - 764)) & ((1L << (TRY - 764)) | (1L << (TSQL - 764)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 764)) | (1L << (TYPE - 764)) | (1L << (TYPE_WARNING - 764)) | (1L << (UNBOUNDED - 764)) | (1L << (UNCOMMITTED - 764)) | (1L << (UNKNOWN - 764)) | (1L << (UNLIMITED - 764)) | (1L << (USING - 764)) | (1L << (VALID_XML - 764)) | (1L << (VALIDATION - 764)) | (1L << (VALUE - 764)) | (1L << (VAR - 764)) | (1L << (VARP - 764)) | (1L << (VIEW_METADATA - 764)) | (1L << (VIEWS - 764)) | (1L << (WAIT - 764)) | (1L << (WELL_FORMED_XML - 764)) | (1L << (WORK - 764)) | (1L << (WORKLOAD - 764)) | (1L << (XML - 764)) | (1L << (XMLNAMESPACES - 764)) | (1L << (ID - 764)))) != 0)) ) {
+			if ( !(_la==CALLED || ((((_la - 80)) & ~0x3f) == 0 && ((1L << (_la - 80)) & ((1L << (DATA_COMPRESSION - 80)) | (1L << (EVENTDATA - 80)) | (1L << (EXPIREDATE - 80)) | (1L << (FILENAME - 80)) | (1L << (FILLFACTOR - 80)) | (1L << (FORCESEEK - 80)))) != 0) || ((((_la - 158)) & ~0x3f) == 0 && ((1L << (_la - 158)) & ((1L << (INIT - 158)) | (1L << (KEY - 158)) | (1L << (MASTER - 158)) | (1L << (MAX_MEMORY - 158)))) != 0) || ((((_la - 225)) & ~0x3f) == 0 && ((1L << (_la - 225)) & ((1L << (OFFSETS - 225)) | (1L << (PAGE - 225)) | (1L << (POLICY - 225)) | (1L << (PRECISION - 225)) | (1L << (PUBLIC - 225)) | (1L << (R - 225)) | (1L << (RAW - 225)) | (1L << (RETURN - 225)) | (1L << (RETURNS - 225)) | (1L << (ROLE - 225)) | (1L << (ROWCOUNT - 225)))) != 0) || ((((_la - 295)) & ~0x3f) == 0 && ((1L << (_la - 295)) & ((1L << (SAFETY - 295)) | (1L << (RULE - 295)) | (1L << (SERVER - 295)) | (1L << (SID - 295)) | (1L << (SOURCE - 295)) | (1L << (SPLIT - 295)) | (1L << (STATE - 295)) | (1L << (START - 295)) | (1L << (STOP - 295)) | (1L << (TARGET - 295)) | (1L << (TRAN - 295)))) != 0) || ((((_la - 364)) & ~0x3f) == 0 && ((1L << (_la - 364)) & ((1L << (USER - 364)) | (1L << (ABSOLUTE - 364)) | (1L << (ACCENT_SENSITIVITY - 364)) | (1L << (ACTION - 364)) | (1L << (ACTIVATION - 364)) | (1L << (ACTIVE - 364)) | (1L << (ADDRESS - 364)) | (1L << (AES_128 - 364)) | (1L << (AES_192 - 364)) | (1L << (AES_256 - 364)) | (1L << (AFFINITY - 364)) | (1L << (AFTER - 364)) | (1L << (AGGREGATE - 364)) | (1L << (ALGORITHM - 364)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 364)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 364)) | (1L << (ALLOWED - 364)) | (1L << (ANSI_NULL_DEFAULT - 364)) | (1L << (ANSI_NULLS - 364)) | (1L << (ANSI_PADDING - 364)) | (1L << (ANSI_WARNINGS - 364)) | (1L << (APPLICATION_LOG - 364)) | (1L << (APPLY - 364)) | (1L << (ARITHABORT - 364)) | (1L << (ASSEMBLY - 364)) | (1L << (AUDIT - 364)) | (1L << (AUDIT_GUID - 364)) | (1L << (AUTO - 364)) | (1L << (AUTO_CLEANUP - 364)) | (1L << (AUTO_CLOSE - 364)) | (1L << (AUTO_CREATE_STATISTICS - 364)) | (1L << (AUTO_SHRINK - 364)) | (1L << (AUTO_UPDATE_STATISTICS - 364)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 364)) | (1L << (AVAILABILITY - 364)) | (1L << (AVG - 364)) | (1L << (BACKUP_PRIORITY - 364)) | (1L << (BEGIN_DIALOG - 364)) | (1L << (BIGINT - 364)) | (1L << (BINARY_BASE64 - 364)) | (1L << (BINARY_CHECKSUM - 364)) | (1L << (BINDING - 364)) | (1L << (BLOB_STORAGE - 364)) | (1L << (BROKER - 364)) | (1L << (BROKER_INSTANCE - 364)) | (1L << (BULK_LOGGED - 364)) | (1L << (CALLER - 364)) | (1L << (CAP_CPU_PERCENT - 364)) | (1L << (CAST - 364)))) != 0) || ((((_la - 428)) & ~0x3f) == 0 && ((1L << (_la - 428)) & ((1L << (CATALOG - 428)) | (1L << (CATCH - 428)) | (1L << (CHANGE_RETENTION - 428)) | (1L << (CHANGE_TRACKING - 428)) | (1L << (CHECKSUM - 428)) | (1L << (CHECKSUM_AGG - 428)) | (1L << (CLEANUP - 428)) | (1L << (COLLECTION - 428)) | (1L << (COLUMN_MASTER_KEY - 428)) | (1L << (COMMITTED - 428)) | (1L << (COMPATIBILITY_LEVEL - 428)) | (1L << (CONCAT - 428)) | (1L << (CONCAT_NULL_YIELDS_NULL - 428)) | (1L << (CONTENT - 428)) | (1L << (CONTROL - 428)) | (1L << (COOKIE - 428)) | (1L << (COUNT - 428)) | (1L << (COUNT_BIG - 428)) | (1L << (COUNTER - 428)) | (1L << (CPU - 428)) | (1L << (CREATE_NEW - 428)) | (1L << (CREATION_DISPOSITION - 428)) | (1L << (CREDENTIAL - 428)) | (1L << (CRYPTOGRAPHIC - 428)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 428)) | (1L << (CURSOR_DEFAULT - 428)) | (1L << (DATA - 428)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 428)) | (1L << (DATEADD - 428)) | (1L << (DATEDIFF - 428)) | (1L << (DATENAME - 428)) | (1L << (DATEPART - 428)) | (1L << (DAYS - 428)) | (1L << (DB_CHAINING - 428)) | (1L << (DB_FAILOVER - 428)) | (1L << (DECRYPTION - 428)) | (1L << (DEFAULT_DOUBLE_QUOTE - 428)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 428)) | (1L << (DEFAULT_LANGUAGE - 428)) | (1L << (DELAY - 428)) | (1L << (DELAYED_DURABILITY - 428)) | (1L << (DELETED - 428)) | (1L << (DENSE_RANK - 428)) | (1L << (DEPENDENTS - 428)) | (1L << (DES - 428)) | (1L << (DESCRIPTION - 428)) | (1L << (DESX - 428)) | (1L << (DHCP - 428)) | (1L << (DIALOG - 428)) | (1L << (DIRECTORY_NAME - 428)) | (1L << (DISABLE - 428)) | (1L << (DISABLE_BROKER - 428)) | (1L << (DISABLED - 428)) | (1L << (DISK_DRIVE - 428)) | (1L << (DOCUMENT - 428)) | (1L << (DYNAMIC - 428)) | (1L << (EMERGENCY - 428)) | (1L << (EMPTY - 428)) | (1L << (ENABLE - 428)) | (1L << (ENABLE_BROKER - 428)) | (1L << (ENCRYPTED_VALUE - 428)) | (1L << (ENCRYPTION - 428)) | (1L << (ENDPOINT_URL - 428)))) != 0) || ((((_la - 492)) & ~0x3f) == 0 && ((1L << (_la - 492)) & ((1L << (ERROR_BROKER_CONVERSATIONS - 492)) | (1L << (EXCLUSIVE - 492)) | (1L << (EXECUTABLE - 492)) | (1L << (EXIST - 492)) | (1L << (EXPAND - 492)) | (1L << (EXPIRY_DATE - 492)) | (1L << (EXPLICIT - 492)) | (1L << (FAIL_OPERATION - 492)) | (1L << (FAILOVER_MODE - 492)) | (1L << (FAILURE - 492)) | (1L << (FAILURE_CONDITION_LEVEL - 492)) | (1L << (FAST - 492)) | (1L << (FAST_FORWARD - 492)) | (1L << (FILEGROUP - 492)) | (1L << (FILEGROWTH - 492)) | (1L << (FILEPATH - 492)) | (1L << (FILESTREAM - 492)) | (1L << (FILTER - 492)) | (1L << (FIRST - 492)) | (1L << (FIRST_VALUE - 492)) | (1L << (FOLLOWING - 492)) | (1L << (FORCE - 492)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 492)) | (1L << (FORCED - 492)) | (1L << (FORMAT - 492)) | (1L << (FORWARD_ONLY - 492)) | (1L << (FULLSCAN - 492)) | (1L << (FULLTEXT - 492)) | (1L << (GB - 492)) | (1L << (GETDATE - 492)) | (1L << (GETUTCDATE - 492)) | (1L << (GLOBAL - 492)) | (1L << (GO - 492)) | (1L << (GROUP_MAX_REQUESTS - 492)) | (1L << (GROUPING - 492)) | (1L << (GROUPING_ID - 492)) | (1L << (HADR - 492)) | (1L << (HASH - 492)) | (1L << (HEALTH_CHECK_TIMEOUT - 492)) | (1L << (HIGH - 492)) | (1L << (HONOR_BROKER_PRIORITY - 492)) | (1L << (HOURS - 492)) | (1L << (IDENTITY_VALUE - 492)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 492)) | (1L << (IMMEDIATE - 492)) | (1L << (IMPERSONATE - 492)) | (1L << (IMPORTANCE - 492)) | (1L << (INCREMENTAL - 492)) | (1L << (INITIATOR - 492)) | (1L << (INPUT - 492)) | (1L << (INSENSITIVE - 492)) | (1L << (INSERTED - 492)) | (1L << (INT - 492)) | (1L << (IP - 492)) | (1L << (ISOLATION - 492)) | (1L << (KB - 492)) | (1L << (KEEP - 492)) | (1L << (KEEPFIXED - 492)) | (1L << (KEY_SOURCE - 492)) | (1L << (KEYS - 492)) | (1L << (KEYSET - 492)))) != 0) || ((((_la - 556)) & ~0x3f) == 0 && ((1L << (_la - 556)) & ((1L << (LAG - 556)) | (1L << (LAST - 556)) | (1L << (LAST_VALUE - 556)) | (1L << (LEAD - 556)) | (1L << (LEVEL - 556)) | (1L << (LIST - 556)) | (1L << (LISTENER - 556)) | (1L << (LISTENER_URL - 556)) | (1L << (LOB_COMPACTION - 556)) | (1L << (LOCAL - 556)) | (1L << (LOCATION - 556)) | (1L << (LOCK - 556)) | (1L << (LOCK_ESCALATION - 556)) | (1L << (LOGIN - 556)) | (1L << (LOOP - 556)) | (1L << (LOW - 556)) | (1L << (MANUAL - 556)) | (1L << (MARK - 556)) | (1L << (MATERIALIZED - 556)) | (1L << (MAX - 556)) | (1L << (MAX_CPU_PERCENT - 556)) | (1L << (MAX_DOP - 556)) | (1L << (MAX_FILES - 556)) | (1L << (MAX_IOPS_PER_VOLUME - 556)) | (1L << (MAX_MEMORY_PERCENT - 556)) | (1L << (MAX_PROCESSES - 556)) | (1L << (MAX_QUEUE_READERS - 556)) | (1L << (MAX_ROLLOVER_FILES - 556)) | (1L << (MAXDOP - 556)) | (1L << (MAXRECURSION - 556)) | (1L << (MAXSIZE - 556)) | (1L << (MB - 556)) | (1L << (MEDIUM - 556)) | (1L << (MEMORY_OPTIMIZED_DATA - 556)) | (1L << (MESSAGE - 556)) | (1L << (MIN - 556)) | (1L << (MIN_ACTIVE_ROWVERSION - 556)) | (1L << (MIN_CPU_PERCENT - 556)) | (1L << (MIN_IOPS_PER_VOLUME - 556)) | (1L << (MIN_MEMORY_PERCENT - 556)) | (1L << (MINUTES - 556)) | (1L << (MIRROR_ADDRESS - 556)) | (1L << (MIXED_PAGE_ALLOCATION - 556)) | (1L << (MODE - 556)) | (1L << (MODIFY - 556)) | (1L << (MOVE - 556)) | (1L << (MULTI_USER - 556)) | (1L << (NAME - 556)) | (1L << (NESTED_TRIGGERS - 556)) | (1L << (NEW_ACCOUNT - 556)) | (1L << (NEW_BROKER - 556)) | (1L << (NEW_PASSWORD - 556)) | (1L << (NEXT - 556)) | (1L << (NO - 556)) | (1L << (NO_TRUNCATE - 556)) | (1L << (NO_WAIT - 556)) | (1L << (NOCOUNT - 556)) | (1L << (NODES - 556)) | (1L << (NOEXPAND - 556)) | (1L << (NON_TRANSACTED_ACCESS - 556)) | (1L << (NORECOMPUTE - 556)) | (1L << (NORECOVERY - 556)) | (1L << (NOWAIT - 556)) | (1L << (NTILE - 556)))) != 0) || ((((_la - 620)) & ~0x3f) == 0 && ((1L << (_la - 620)) & ((1L << (NUMANODE - 620)) | (1L << (NUMBER - 620)) | (1L << (NUMERIC_ROUNDABORT - 620)) | (1L << (OBJECT - 620)) | (1L << (OFFLINE - 620)) | (1L << (OFFSET - 620)) | (1L << (OLD_ACCOUNT - 620)) | (1L << (ONLINE - 620)) | (1L << (ONLY - 620)) | (1L << (OPEN_EXISTING - 620)) | (1L << (OPTIMISTIC - 620)) | (1L << (OPTIMIZE - 620)) | (1L << (OUT - 620)) | (1L << (OUTPUT - 620)) | (1L << (OWNER - 620)) | (1L << (PAGE_VERIFY - 620)) | (1L << (PARAMETERIZATION - 620)) | (1L << (PARTITION - 620)) | (1L << (PARTITIONS - 620)) | (1L << (PARTNER - 620)) | (1L << (PATH - 620)) | (1L << (POISON_MESSAGE_HANDLING - 620)) | (1L << (POOL - 620)) | (1L << (PORT - 620)) | (1L << (PRECEDING - 620)) | (1L << (PRIMARY_ROLE - 620)) | (1L << (PRIOR - 620)) | (1L << (PRIORITY - 620)) | (1L << (PRIORITY_LEVEL - 620)) | (1L << (PRIVATE - 620)) | (1L << (PRIVATE_KEY - 620)) | (1L << (PRIVILEGES - 620)) | (1L << (PROCEDURE_NAME - 620)) | (1L << (PROPERTY - 620)) | (1L << (PROVIDER - 620)) | (1L << (PROVIDER_KEY_NAME - 620)) | (1L << (QUERY - 620)) | (1L << (QUEUE - 620)) | (1L << (QUEUE_DELAY - 620)) | (1L << (QUOTED_IDENTIFIER - 620)) | (1L << (RANGE - 620)) | (1L << (RANK - 620)) | (1L << (RC2 - 620)) | (1L << (RC4 - 620)) | (1L << (RC4_128 - 620)) | (1L << (READ_COMMITTED_SNAPSHOT - 620)) | (1L << (READ_ONLY - 620)) | (1L << (READ_ONLY_ROUTING_LIST - 620)) | (1L << (READ_WRITE - 620)) | (1L << (READONLY - 620)) | (1L << (REBUILD - 620)) | (1L << (RECEIVE - 620)) | (1L << (RECOMPILE - 620)) | (1L << (RECOVERY - 620)) | (1L << (RECURSIVE_TRIGGERS - 620)) | (1L << (RELATIVE - 620)) | (1L << (REMOTE - 620)) | (1L << (REMOTE_SERVICE_NAME - 620)) | (1L << (REMOVE - 620)) | (1L << (REORGANIZE - 620)) | (1L << (REPEATABLE - 620)) | (1L << (REPLICA - 620)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 620)))) != 0) || ((((_la - 684)) & ~0x3f) == 0 && ((1L << (_la - 684)) & ((1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 684)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 684)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 684)) | (1L << (RESERVE_DISK_SPACE - 684)) | (1L << (RESOURCE - 684)) | (1L << (RESOURCE_MANAGER_LOCATION - 684)) | (1L << (RESTRICTED_USER - 684)) | (1L << (RETENTION - 684)) | (1L << (ROBUST - 684)) | (1L << (ROOT - 684)) | (1L << (ROUTE - 684)) | (1L << (ROW - 684)) | (1L << (ROW_NUMBER - 684)) | (1L << (ROWGUID - 684)) | (1L << (ROWS - 684)) | (1L << (SAMPLE - 684)) | (1L << (SCHEMABINDING - 684)) | (1L << (SCOPED - 684)) | (1L << (SCROLL - 684)) | (1L << (SCROLL_LOCKS - 684)) | (1L << (SEARCH - 684)) | (1L << (SECONDARY - 684)) | (1L << (SECONDARY_ONLY - 684)) | (1L << (SECONDARY_ROLE - 684)) | (1L << (SECONDS - 684)) | (1L << (SECRET - 684)) | (1L << (SECURITY - 684)) | (1L << (SECURITY_LOG - 684)) | (1L << (SEEDING_MODE - 684)) | (1L << (SELF - 684)) | (1L << (SEMI_SENSITIVE - 684)) | (1L << (SEND - 684)) | (1L << (SENT - 684)) | (1L << (SEQUENCE - 684)) | (1L << (SERIALIZABLE - 684)) | (1L << (SESSION_TIMEOUT - 684)) | (1L << (SETERROR - 684)) | (1L << (SHARE - 684)) | (1L << (SHOWPLAN - 684)) | (1L << (SIGNATURE - 684)) | (1L << (SIMPLE - 684)) | (1L << (SINGLE_USER - 684)) | (1L << (SIZE - 684)) | (1L << (SMALLINT - 684)) | (1L << (SNAPSHOT - 684)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 684)) | (1L << (STANDBY - 684)) | (1L << (START_DATE - 684)) | (1L << (STATIC - 684)) | (1L << (STATS_STREAM - 684)) | (1L << (STATUS - 684)) | (1L << (STDEV - 684)) | (1L << (STDEVP - 684)) | (1L << (STOPLIST - 684)) | (1L << (STRING_AGG - 684)) | (1L << (STUFF - 684)) | (1L << (SUBJECT - 684)) | (1L << (SUM - 684)) | (1L << (SUSPEND - 684)) | (1L << (SYMMETRIC - 684)) | (1L << (SYNCHRONOUS_COMMIT - 684)) | (1L << (SYNONYM - 684)))) != 0) || ((((_la - 748)) & ~0x3f) == 0 && ((1L << (_la - 748)) & ((1L << (SYSTEM - 748)) | (1L << (TAKE - 748)) | (1L << (TARGET_RECOVERY_TIME - 748)) | (1L << (TB - 748)) | (1L << (TEXTIMAGE_ON - 748)) | (1L << (THROW - 748)) | (1L << (TIES - 748)) | (1L << (TIME - 748)) | (1L << (TIMEOUT - 748)) | (1L << (TIMER - 748)) | (1L << (TINYINT - 748)) | (1L << (TORN_PAGE_DETECTION - 748)) | (1L << (TRANSFORM_NOISE_WORDS - 748)) | (1L << (TRIPLE_DES - 748)) | (1L << (TRIPLE_DES_3KEY - 748)) | (1L << (TRUSTWORTHY - 748)) | (1L << (TRY - 748)) | (1L << (TSQL - 748)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 748)) | (1L << (TYPE - 748)) | (1L << (TYPE_WARNING - 748)) | (1L << (UNBOUNDED - 748)) | (1L << (UNCOMMITTED - 748)) | (1L << (UNKNOWN - 748)) | (1L << (UNLIMITED - 748)) | (1L << (USING - 748)) | (1L << (VALID_XML - 748)) | (1L << (VALIDATION - 748)) | (1L << (VALUE - 748)) | (1L << (VAR - 748)) | (1L << (VARP - 748)) | (1L << (VIEW_METADATA - 748)) | (1L << (VIEWS - 748)) | (1L << (WAIT - 748)) | (1L << (WELL_FORMED_XML - 748)) | (1L << (WORK - 748)) | (1L << (WORKLOAD - 748)) | (1L << (XML - 748)) | (1L << (XMLNAMESPACES - 748)) | (1L << (ID - 748)))) != 0) || _la==URL) ) {
 			_errHandler.recoverInline(this);
 			} else {
 				consume();
@@ -92608,7 +93283,7 @@ public class MocaSqlParser extends Parser {
 
 	private static final int _serializedATNSegments = 5;
 	private static final String _serializedATNSegment0 =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\u034d\u2aa1\4\2\t"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\u034e\u2aa1\4\2\t"+
 		"\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -93937,7 +94612,7 @@ public class MocaSqlParser extends Parser {
 		"\u0205\4\2\u0118\u0118\u02ea\u02ea\4\2\u0205\u0205\u02d6\u02d6\5\2\u008c"+
 		"\u008c\u01aa\u01aa\u02d6\u02d6\5\2\u00d5\u00d5\u01b2\u01b2\u02f9\u02f9"+
 		"\4\2\u0256\u0256\u02c6\u02c6\4\2\u0081\u0081\u01fb\u01fb\5\2aa\u0155\u0155"+
-		"\u016b\u016b\4\299\u00da\u00da\4\2\u00a0\u00a0\u00d3\u00d3\4\2\u00d7\u00d7"+
+		"\u034e\u034e\4\299\u00da\u00da\4\2\u00a0\u00a0\u00d3\u00d3\4\2\u00d7\u00d7"+
 		"\u013f\u013f\4\2\u00d2\u00d2\u0206\u0206\4\2\u00d9\u00d9\u01b2\u01b2\4"+
 		"\2CC\u0150\u0150\4\2\u00d6\u00d6\u011e\u011e\4\2\u00b9\u00b9\u00d8\u00d8"+
 		"\4\2\u0184\u0186\u02fc\u02fc\4\2\u016e\u016e\u023b\u023b\3\2\u027a\u027b"+
@@ -93958,163 +94633,164 @@ public class MocaSqlParser extends Parser {
 		"\u030d\3\2\u01be\u01bf\4\2\u0201\u0201\u0230\u0230\4\2\u022e\u022e\u0231"+
 		"\u0231\4\2\u0297\u0297\u02bc\u02bc\5\2\u008c\u008c\u00e2\u00e2\u029d\u029d"+
 		"\4\2\65\65\u00d4\u00d4\3\2\u0110\u0111\4\2\u0241\u0241\u0325\u0325\4\2"+
-		"\u0325\u0325\u032b\u032b$\2((RRrr\u0082\u0083\u0086\u0086\u00a0\u00a0"+
-		"\u00ac\u00ac\u00bd\u00be\u00e3\u00e3\u00f1\u00f1\u0105\u0105\u0107\u0107"+
-		"\u0109\u0109\u011a\u011b\u0122\u0122\u0129\u0129\u0135\u0135\u013e\u013e"+
-		"\u0142\u0142\u0144\u0144\u0149\u0149\u014b\u014b\u0156\u0156\u017e\u01e5"+
-		"\u01e7\u021c\u021e\u0225\u0228\u027b\u027d\u02e0\u02e2\u02e7\u02e9\u0306"+
-		"\u0308\u0311\u0313\u0315\u0317\u0317\u0326\u0326\3\2\u0331\u0338\7\2\u020a"+
-		"\u020a\u0228\u0228\u024d\u024d\u02f1\u02f1\u0346\u0346\u317c\2\u0401\3"+
-		"\2\2\2\4\u0417\3\2\2\2\6\u041d\3\2\2\2\b\u0428\3\2\2\2\n\u042f\3\2\2\2"+
-		"\f\u04d0\3\2\2\2\16\u04d7\3\2\2\2\20\u04e5\3\2\2\2\22\u04e7\3\2\2\2\24"+
-		"\u04f2\3\2\2\2\26\u04f6\3\2\2\2\30\u0504\3\2\2\2\32\u0506\3\2\2\2\34\u050d"+
-		"\3\2\2\2\36\u0517\3\2\2\2 \u0523\3\2\2\2\"\u0525\3\2\2\2$\u0527\3\2\2"+
-		"\2&\u0529\3\2\2\2(\u0543\3\2\2\2*\u0554\3\2\2\2,\u0561\3\2\2\2.\u0590"+
-		"\3\2\2\2\60\u0592\3\2\2\2\62\u05a4\3\2\2\2\64\u05a6\3\2\2\2\66\u05c3\3"+
-		"\2\2\28\u05d8\3\2\2\2:\u05e5\3\2\2\2<\u05ea\3\2\2\2>\u05ee\3\2\2\2@\u05f2"+
-		"\3\2\2\2B\u05fd\3\2\2\2D\u0602\3\2\2\2F\u0604\3\2\2\2H\u0609\3\2\2\2J"+
-		"\u060b\3\2\2\2L\u060d\3\2\2\2N\u0610\3\2\2\2P\u0614\3\2\2\2R\u061a\3\2"+
-		"\2\2T\u061c\3\2\2\2V\u061f\3\2\2\2X\u0621\3\2\2\2Z\u0624\3\2\2\2\\\u0629"+
-		"\3\2\2\2^\u0634\3\2\2\2`\u063d\3\2\2\2b\u0641\3\2\2\2d\u0643\3\2\2\2f"+
-		"\u0649\3\2\2\2h\u064b\3\2\2\2j\u064d\3\2\2\2l\u0650\3\2\2\2n\u0658\3\2"+
-		"\2\2p\u065a\3\2\2\2r\u065c\3\2\2\2t\u0672\3\2\2\2v\u0685\3\2\2\2x\u068d"+
-		"\3\2\2\2z\u0691\3\2\2\2|\u0699\3\2\2\2~\u06a8\3\2\2\2\u0080\u06aa\3\2"+
-		"\2\2\u0082\u06d6\3\2\2\2\u0084\u06df\3\2\2\2\u0086\u06ec\3\2\2\2\u0088"+
-		"\u06ee\3\2\2\2\u008a\u06f0\3\2\2\2\u008c\u06f3\3\2\2\2\u008e\u06f7\3\2"+
-		"\2\2\u0090\u0701\3\2\2\2\u0092\u070b\3\2\2\2\u0094\u0737\3\2\2\2\u0096"+
-		"\u074e\3\2\2\2\u0098\u0750\3\2\2\2\u009a\u0752\3\2\2\2\u009c\u0754\3\2"+
-		"\2\2\u009e\u0759\3\2\2\2\u00a0\u075c\3\2\2\2\u00a2\u08bf\3\2\2\2\u00a4"+
-		"\u08c1\3\2\2\2\u00a6\u08f7\3\2\2\2\u00a8\u08fc\3\2\2\2\u00aa\u0928\3\2"+
-		"\2\2\u00ac\u093f\3\2\2\2\u00ae\u095d\3\2\2\2\u00b0\u0961\3\2\2\2\u00b2"+
-		"\u0967\3\2\2\2\u00b4\u096d\3\2\2\2\u00b6\u0971\3\2\2\2\u00b8\u0975\3\2"+
-		"\2\2\u00ba\u097a\3\2\2\2\u00bc\u0988\3\2\2\2\u00be\u098e\3\2\2\2\u00c0"+
-		"\u0994\3\2\2\2\u00c2\u09a4\3\2\2\2\u00c4\u09a8\3\2\2\2\u00c6\u09ae\3\2"+
-		"\2\2\u00c8\u09b4\3\2\2\2\u00ca\u09bc\3\2\2\2\u00cc\u09c2\3\2\2\2\u00ce"+
-		"\u09d1\3\2\2\2\u00d0\u09e3\3\2\2\2\u00d2\u09ea\3\2\2\2\u00d4\u09ef\3\2"+
-		"\2\2\u00d6\u09fa\3\2\2\2\u00d8\u09ff\3\2\2\2\u00da\u0a03\3\2\2\2\u00dc"+
-		"\u0a07\3\2\2\2\u00de\u0a0c\3\2\2\2\u00e0\u0a11\3\2\2\2\u00e2\u0a16\3\2"+
-		"\2\2\u00e4\u0a24\3\2\2\2\u00e6\u0a2a\3\2\2\2\u00e8\u0a2f\3\2\2\2\u00ea"+
-		"\u0a37\3\2\2\2\u00ec\u0a3b\3\2\2\2\u00ee\u0a4c\3\2\2\2\u00f0\u0a54\3\2"+
-		"\2\2\u00f2\u0a5a\3\2\2\2\u00f4\u0a68\3\2\2\2\u00f6\u0a7e\3\2\2\2\u00f8"+
-		"\u0a83\3\2\2\2\u00fa\u0a89\3\2\2\2\u00fc\u0a8e\3\2\2\2\u00fe\u0a92\3\2"+
-		"\2\2\u0100\u0aae\3\2\2\2\u0102\u0ab9\3\2\2\2\u0104\u0ac2\3\2\2\2\u0106"+
-		"\u0acf\3\2\2\2\u0108\u0ad7\3\2\2\2\u010a\u0adc\3\2\2\2\u010c\u0ae7\3\2"+
-		"\2\2\u010e\u0b05\3\2\2\2\u0110\u0b23\3\2\2\2\u0112\u0b31\3\2\2\2\u0114"+
-		"\u0b49\3\2\2\2\u0116\u0b59\3\2\2\2\u0118\u0b66\3\2\2\2\u011a\u0b79\3\2"+
-		"\2\2\u011c\u0b86\3\2\2\2\u011e\u0b8f\3\2\2\2\u0120\u0bad\3\2\2\2\u0122"+
-		"\u0ca0\3\2\2\2\u0124\u0ca9\3\2\2\2\u0126\u0ce3\3\2\2\2\u0128\u0d14\3\2"+
-		"\2\2\u012a\u0d16\3\2\2\2\u012c\u0d3f\3\2\2\2\u012e\u0d71\3\2\2\2\u0130"+
-		"\u0db7\3\2\2\2\u0132\u0dfa\3\2\2\2\u0134\u0e0a\3\2\2\2\u0136\u0e26\3\2"+
-		"\2\2\u0138\u0e39\3\2\2\2\u013a\u0e4e\3\2\2\2\u013c\u0e96\3\2\2\2\u013e"+
-		"\u0ef5\3\2\2\2\u0140\u0f0b\3\2\2\2\u0142\u0f17\3\2\2\2\u0144\u0f33\3\2"+
-		"\2\2\u0146\u0f48\3\2\2\2\u0148\u0f62\3\2\2\2\u014a\u0f6b\3\2\2\2\u014c"+
-		"\u0f8b\3\2\2\2\u014e\u0f95\3\2\2\2\u0150\u0fa5\3\2\2\2\u0152\u0fb1\3\2"+
-		"\2\2\u0154\u0fba\3\2\2\2\u0156\u0fcb\3\2\2\2\u0158\u0fe3\3\2\2\2\u015a"+
-		"\u104f\3\2\2\2\u015c\u1069\3\2\2\2\u015e\u1075\3\2\2\2\u0160\u107c\3\2"+
-		"\2\2\u0162\u10a8\3\2\2\2\u0164\u10b3\3\2\2\2\u0166\u10c7\3\2\2\2\u0168"+
-		"\u10f1\3\2\2\2\u016a\u10f8\3\2\2\2\u016c\u1106\3\2\2\2\u016e\u1118\3\2"+
-		"\2\2\u0170\u115e\3\2\2\2\u0172\u1189\3\2\2\2\u0174\u11bf\3\2\2\2\u0176"+
-		"\u1248\3\2\2\2\u0178\u12d7\3\2\2\2\u017a\u12f4\3\2\2\2\u017c\u1311\3\2"+
-		"\2\2\u017e\u1380\3\2\2\2\u0180\u138d\3\2\2\2\u0182\u1395\3\2\2\2\u0184"+
-		"\u139d\3\2\2\2\u0186\u13b3\3\2\2\2\u0188\u13d1\3\2\2\2\u018a\u13ec\3\2"+
-		"\2\2\u018c\u1400\3\2\2\2\u018e\u1430\3\2\2\2\u0190\u1455\3\2\2\2\u0192"+
-		"\u1521\3\2\2\2\u0194\u153f\3\2\2\2\u0196\u1541\3\2\2\2\u0198\u1561\3\2"+
-		"\2\2\u019a\u1590\3\2\2\2\u019c\u15c4\3\2\2\2\u019e\u15d4\3\2\2\2\u01a0"+
-		"\u15e2\3\2\2\2\u01a2\u162b\3\2\2\2\u01a4\u164a\3\2\2\2\u01a6\u164c\3\2"+
-		"\2\2\u01a8\u1650\3\2\2\2\u01aa\u166e\3\2\2\2\u01ac\u1670\3\2\2\2\u01ae"+
-		"\u1685\3\2\2\2\u01b0\u16de\3\2\2\2\u01b2\u16e0\3\2\2\2\u01b4\u16ed\3\2"+
-		"\2\2\u01b6\u1725\3\2\2\2\u01b8\u1728\3\2\2\2\u01ba\u1756\3\2\2\2\u01bc"+
-		"\u1759\3\2\2\2\u01be\u177a\3\2\2\2\u01c0\u178b\3\2\2\2\u01c2\u178e\3\2"+
-		"\2\2\u01c4\u17c9\3\2\2\2\u01c6\u17e1\3\2\2\2\u01c8\u17f1\3\2\2\2\u01ca"+
-		"\u17f3\3\2\2\2\u01cc\u1824\3\2\2\2\u01ce\u184d\3\2\2\2\u01d0\u1879\3\2"+
-		"\2\2\u01d2\u1881\3\2\2\2\u01d4\u18ae\3\2\2\2\u01d6\u18b0\3\2\2\2\u01d8"+
-		"\u18b8\3\2\2\2\u01da\u18d9\3\2\2\2\u01dc\u18e1\3\2\2\2\u01de\u18fc\3\2"+
-		"\2\2\u01e0\u1914\3\2\2\2\u01e2\u1934\3\2\2\2\u01e4\u1952\3\2\2\2\u01e6"+
-		"\u1969\3\2\2\2\u01e8\u1977\3\2\2\2\u01ea\u1979\3\2\2\2\u01ec\u1998\3\2"+
-		"\2\2\u01ee\u19a6\3\2\2\2\u01f0\u19c6\3\2\2\2\u01f2\u19dc\3\2\2\2\u01f4"+
-		"\u19fa\3\2\2\2\u01f6\u19fc\3\2\2\2\u01f8\u1a2f\3\2\2\2\u01fa\u1a5d\3\2"+
-		"\2\2\u01fc\u1a70\3\2\2\2\u01fe\u1a72\3\2\2\2\u0200\u1a8b\3\2\2\2\u0202"+
-		"\u1a8d\3\2\2\2\u0204\u1a95\3\2\2\2\u0206\u1a97\3\2\2\2\u0208\u1b23\3\2"+
-		"\2\2\u020a\u1b2b\3\2\2\2\u020c\u1b2d\3\2\2\2\u020e\u1b2f\3\2\2\2\u0210"+
-		"\u1b31\3\2\2\2\u0212\u1b3f\3\2\2\2\u0214\u1b45\3\2\2\2\u0216\u1b47\3\2"+
-		"\2\2\u0218\u1b49\3\2\2\2\u021a\u1b4e\3\2\2\2\u021c\u1b50\3\2\2\2\u021e"+
-		"\u1b54\3\2\2\2\u0220\u1b60\3\2\2\2\u0222\u1b62\3\2\2\2\u0224\u1b65\3\2"+
-		"\2\2\u0226\u1b68\3\2\2\2\u0228\u1b6a\3\2\2\2\u022a\u1b6c\3\2\2\2\u022c"+
-		"\u1b6e\3\2\2\2\u022e\u1b8b\3\2\2\2\u0230\u1b8d\3\2\2\2\u0232\u1b98\3\2"+
-		"\2\2\u0234\u1b9b\3\2\2\2\u0236\u1ba4\3\2\2\2\u0238\u1bac\3\2\2\2\u023a"+
-		"\u1bb3\3\2\2\2\u023c\u1bca\3\2\2\2\u023e\u1bcc\3\2\2\2\u0240\u1bd7\3\2"+
-		"\2\2\u0242\u1bd9\3\2\2\2\u0244\u1bf4\3\2\2\2\u0246\u1bfb\3\2\2\2\u0248"+
-		"\u1c01\3\2\2\2\u024a\u1c14\3\2\2\2\u024c\u1c16\3\2\2\2\u024e\u1c27\3\2"+
-		"\2\2\u0250\u1c3e\3\2\2\2\u0252\u1c4f\3\2\2\2\u0254\u1c60\3\2\2\2\u0256"+
-		"\u1c6a\3\2\2\2\u0258\u1c7b\3\2\2\2\u025a\u1c8c\3\2\2\2\u025c\u1c96\3\2"+
-		"\2\2\u025e\u1c98\3\2\2\2\u0260\u1c9f\3\2\2\2\u0262\u1cdb\3\2\2\2\u0264"+
-		"\u1cfa\3\2\2\2\u0266\u1cfc\3\2\2\2\u0268\u1df6\3\2\2\2\u026a\u1ee4\3\2"+
-		"\2\2\u026c\u1f0c\3\2\2\2\u026e\u1f19\3\2\2\2\u0270\u1f27\3\2\2\2\u0272"+
-		"\u1f2f\3\2\2\2\u0274\u1f35\3\2\2\2\u0276\u1f3c\3\2\2\2\u0278\u1f40\3\2"+
-		"\2\2\u027a\u1f6d\3\2\2\2\u027c\u1f71\3\2\2\2\u027e\u1f7e\3\2\2\2\u0280"+
-		"\u1fbb\3\2\2\2\u0282\u1fbd\3\2\2\2\u0284\u1fe2\3\2\2\2\u0286\u1fe4\3\2"+
-		"\2\2\u0288\u1ff4\3\2\2\2\u028a\u2001\3\2\2\2\u028c\u2015\3\2\2\2\u028e"+
-		"\u2022\3\2\2\2\u0290\u2047\3\2\2\2\u0292\u2058\3\2\2\2\u0294\u205a\3\2"+
-		"\2\2\u0296\u2067\3\2\2\2\u0298\u2080\3\2\2\2\u029a\u209c\3\2\2\2\u029c"+
-		"\u20c5\3\2\2\2\u029e\u2118\3\2\2\2\u02a0\u211a\3\2\2\2\u02a2\u211e\3\2"+
-		"\2\2\u02a4\u2123\3\2\2\2\u02a6\u2127\3\2\2\2\u02a8\u212c\3\2\2\2\u02aa"+
-		"\u2131\3\2\2\2\u02ac\u2140\3\2\2\2\u02ae\u2145\3\2\2\2\u02b0\u2149\3\2"+
-		"\2\2\u02b2\u2152\3\2\2\2\u02b4\u2157\3\2\2\2\u02b6\u215f\3\2\2\2\u02b8"+
-		"\u2163\3\2\2\2\u02ba\u2170\3\2\2\2\u02bc\u2172\3\2\2\2\u02be\u219f\3\2"+
-		"\2\2\u02c0\u21a9\3\2\2\2\u02c2\u21d4\3\2\2\2\u02c4\u2218\3\2\2\2\u02c6"+
-		"\u2223\3\2\2\2\u02c8\u222e\3\2\2\2\u02ca\u223a\3\2\2\2\u02cc\u2241\3\2"+
-		"\2\2\u02ce\u226a\3\2\2\2\u02d0\u2275\3\2\2\2\u02d2\u2277\3\2\2\2\u02d4"+
-		"\u22c6\3\2\2\2\u02d6\u22ca\3\2\2\2\u02d8\u22d8\3\2\2\2\u02da\u22f8\3\2"+
-		"\2\2\u02dc\u2303\3\2\2\2\u02de\u2305\3\2\2\2\u02e0\u2308\3\2\2\2\u02e2"+
-		"\u230c\3\2\2\2\u02e4\u2310\3\2\2\2\u02e6\u2314\3\2\2\2\u02e8\u2318\3\2"+
-		"\2\2\u02ea\u231d\3\2\2\2\u02ec\u231f\3\2\2\2\u02ee\u2323\3\2\2\2\u02f0"+
-		"\u2327\3\2\2\2\u02f2\u232b\3\2\2\2\u02f4\u232f\3\2\2\2\u02f6\u2333\3\2"+
-		"\2\2\u02f8\u2339\3\2\2\2\u02fa\u233b\3\2\2\2\u02fc\u233f\3\2\2\2\u02fe"+
-		"\u2343\3\2\2\2\u0300\u2347\3\2\2\2\u0302\u234b\3\2\2\2\u0304\u234f\3\2"+
-		"\2\2\u0306\u2353\3\2\2\2\u0308\u235a\3\2\2\2\u030a\u2375\3\2\2\2\u030c"+
-		"\u237b\3\2\2\2\u030e\u2385\3\2\2\2\u0310\u238f\3\2\2\2\u0312\u2391\3\2"+
-		"\2\2\u0314\u23ad\3\2\2\2\u0316\u23af\3\2\2\2\u0318\u23cb\3\2\2\2\u031a"+
-		"\u23cd\3\2\2\2\u031c\u23d5\3\2\2\2\u031e\u23dd\3\2\2\2\u0320\u23e6\3\2"+
-		"\2\2\u0322\u2422\3\2\2\2\u0324\u2429\3\2\2\2\u0326\u2437\3\2\2\2\u0328"+
-		"\u2440\3\2\2\2\u032a\u2467\3\2\2\2\u032c\u2477\3\2\2\2\u032e\u247e\3\2"+
-		"\2\2\u0330\u2480\3\2\2\2\u0332\u24ef\3\2\2\2\u0334\u24f1\3\2\2\2\u0336"+
-		"\u24fc\3\2\2\2\u0338\u2500\3\2\2\2\u033a\u2502\3\2\2\2\u033c\u253b\3\2"+
-		"\2\2\u033e\u253d\3\2\2\2\u0340\u2546\3\2\2\2\u0342\u254e\3\2\2\2\u0344"+
-		"\u255c\3\2\2\2\u0346\u256d\3\2\2\2\u0348\u2583\3\2\2\2\u034a\u258d\3\2"+
-		"\2\2\u034c\u2593\3\2\2\2\u034e\u2595\3\2\2\2\u0350\u25a2\3\2\2\2\u0352"+
-		"\u25a4\3\2\2\2\u0354\u25dc\3\2\2\2\u0356\u25de\3\2\2\2\u0358\u25ef\3\2"+
-		"\2\2\u035a\u25f7\3\2\2\2\u035c\u25fc\3\2\2\2\u035e\u2626\3\2\2\2\u0360"+
-		"\u2628\3\2\2\2\u0362\u2630\3\2\2\2\u0364\u263a\3\2\2\2\u0366\u2642\3\2"+
-		"\2\2\u0368\u2660\3\2\2\2\u036a\u2662\3\2\2\2\u036c\u2670\3\2\2\2\u036e"+
-		"\u2704\3\2\2\2\u0370\u270b\3\2\2\2\u0372\u2738\3\2\2\2\u0374\u2750\3\2"+
-		"\2\2\u0376\u2752\3\2\2\2\u0378\u2759\3\2\2\2\u037a\u2760\3\2\2\2\u037c"+
-		"\u2767\3\2\2\2\u037e\u276c\3\2\2\2\u0380\u2772\3\2\2\2\u0382\u2777\3\2"+
-		"\2\2\u0384\u277b\3\2\2\2\u0386\u2780\3\2\2\2\u0388\u278f\3\2\2\2\u038a"+
-		"\u279e\3\2\2\2\u038c\u27d4\3\2\2\2\u038e\u27d6\3\2\2\2\u0390\u27e3\3\2"+
-		"\2\2\u0392\u27e5\3\2\2\2\u0394\u27f3\3\2\2\2\u0396\u2805\3\2\2\2\u0398"+
-		"\u2827\3\2\2\2\u039a\u283d\3\2\2\2\u039c\u2840\3\2\2\2\u039e\u2844\3\2"+
-		"\2\2\u03a0\u2853\3\2\2\2\u03a2\u285c\3\2\2\2\u03a4\u2860\3\2\2\2\u03a6"+
-		"\u2868\3\2\2\2\u03a8\u286e\3\2\2\2\u03aa\u2892\3\2\2\2\u03ac\u2894\3\2"+
-		"\2\2\u03ae\u28a1\3\2\2\2\u03b0\u28a3\3\2\2\2\u03b2\u28b8\3\2\2\2\u03b4"+
-		"\u28f6\3\2\2\2\u03b6\u28ff\3\2\2\2\u03b8\u2906\3\2\2\2\u03ba\u2919\3\2"+
-		"\2\2\u03bc\u2937\3\2\2\2\u03be\u293c\3\2\2\2\u03c0\u2943\3\2\2\2\u03c2"+
-		"\u2952\3\2\2\2\u03c4\u2961\3\2\2\2\u03c6\u2965\3\2\2\2\u03c8\u2997\3\2"+
-		"\2\2\u03ca\u2999\3\2\2\2\u03cc\u29a7\3\2\2\2\u03ce\u29b1\3\2\2\2\u03d0"+
-		"\u29b3\3\2\2\2\u03d2\u29b5\3\2\2\2\u03d4\u29b8\3\2\2\2\u03d6\u29c3\3\2"+
-		"\2\2\u03d8\u29ca\3\2\2\2\u03da\u29cc\3\2\2\2\u03dc\u29d8\3\2\2\2\u03de"+
-		"\u2a08\3\2\2\2\u03e0\u2a0c\3\2\2\2\u03e2\u2a0e\3\2\2\2\u03e4\u2a23\3\2"+
-		"\2\2\u03e6\u2a32\3\2\2\2\u03e8\u2a42\3\2\2\2\u03ea\u2a44\3\2\2\2\u03ec"+
-		"\u2a68\3\2\2\2\u03ee\u2a6d\3\2\2\2\u03f0\u2a7e\3\2\2\2\u03f2\u2a80\3\2"+
-		"\2\2\u03f4\u2a85\3\2\2\2\u03f6\u2a87\3\2\2\2\u03f8\u2a98\3\2\2\2\u03fa"+
-		"\u2a9a\3\2\2\2\u03fc\u2a9c\3\2\2\2\u03fe\u0400\5\4\3\2\u03ff\u03fe\3\2"+
-		"\2\2\u0400\u0403\3\2\2\2\u0401\u03ff\3\2\2\2\u0401\u0402\3\2\2\2\u0402"+
-		"\u0404\3\2\2\2\u0403\u0401\3\2\2\2\u0404\u0405\7\2\2\3\u0405\3\3\2\2\2"+
-		"\u0406\u040a\5\u027a\u013e\2\u0407\u0409\5\u02a0\u0151\2\u0408\u0407\3"+
-		"\2\2\2\u0409\u040c\3\2\2\2\u040a\u0408\3\2\2\2\u040a\u040b\3\2\2\2\u040b"+
-		"\u0418\3\2\2\2\u040c\u040a\3\2\2\2\u040d\u040f\5\u027a\u013e\2\u040e\u040d"+
-		"\3\2\2\2\u040e\u040f\3\2\2\2\u040f\u0410\3\2\2\2\u0410\u0414\5\6\4\2\u0411"+
-		"\u0413\5\u02a0\u0151\2\u0412\u0411\3\2\2\2\u0413\u0416\3\2\2\2\u0414\u0412"+
-		"\3\2\2\2\u0414\u0415\3\2\2\2\u0415\u0418\3\2\2\2\u0416\u0414\3\2\2\2\u0417"+
+		"\u0325\u0325\u032b\u032b*\2((RRrrxx\u0082\u0083\u0086\u0086\u00a0\u00a0"+
+		"\u00ac\u00ac\u00bd\u00be\u00e3\u00e3\u00f1\u00f1\u00fd\u00fe\u0105\u0105"+
+		"\u0107\u0107\u0109\u0109\u011a\u011b\u0121\u0122\u0129\u012a\u0135\u0135"+
+		"\u013e\u013e\u0142\u0142\u0144\u0144\u0149\u0149\u014b\u014b\u014e\u014e"+
+		"\u0156\u0156\u015d\u015d\u016e\u016e\u017e\u01e5\u01e7\u021c\u021e\u0225"+
+		"\u0228\u027b\u027d\u02e0\u02e2\u02e7\u02e9\u0306\u0308\u0311\u0313\u0315"+
+		"\u0317\u0317\u0326\u0326\u034e\u034e\3\2\u0331\u0338\7\2\u020a\u020a\u0228"+
+		"\u0228\u024d\u024d\u02f1\u02f1\u0346\u0346\u317c\2\u0401\3\2\2\2\4\u0417"+
+		"\3\2\2\2\6\u041d\3\2\2\2\b\u0428\3\2\2\2\n\u042f\3\2\2\2\f\u04d0\3\2\2"+
+		"\2\16\u04d7\3\2\2\2\20\u04e5\3\2\2\2\22\u04e7\3\2\2\2\24\u04f2\3\2\2\2"+
+		"\26\u04f6\3\2\2\2\30\u0504\3\2\2\2\32\u0506\3\2\2\2\34\u050d\3\2\2\2\36"+
+		"\u0517\3\2\2\2 \u0523\3\2\2\2\"\u0525\3\2\2\2$\u0527\3\2\2\2&\u0529\3"+
+		"\2\2\2(\u0543\3\2\2\2*\u0554\3\2\2\2,\u0561\3\2\2\2.\u0590\3\2\2\2\60"+
+		"\u0592\3\2\2\2\62\u05a4\3\2\2\2\64\u05a6\3\2\2\2\66\u05c3\3\2\2\28\u05d8"+
+		"\3\2\2\2:\u05e5\3\2\2\2<\u05ea\3\2\2\2>\u05ee\3\2\2\2@\u05f2\3\2\2\2B"+
+		"\u05fd\3\2\2\2D\u0602\3\2\2\2F\u0604\3\2\2\2H\u0609\3\2\2\2J\u060b\3\2"+
+		"\2\2L\u060d\3\2\2\2N\u0610\3\2\2\2P\u0614\3\2\2\2R\u061a\3\2\2\2T\u061c"+
+		"\3\2\2\2V\u061f\3\2\2\2X\u0621\3\2\2\2Z\u0624\3\2\2\2\\\u0629\3\2\2\2"+
+		"^\u0634\3\2\2\2`\u063d\3\2\2\2b\u0641\3\2\2\2d\u0643\3\2\2\2f\u0649\3"+
+		"\2\2\2h\u064b\3\2\2\2j\u064d\3\2\2\2l\u0650\3\2\2\2n\u0658\3\2\2\2p\u065a"+
+		"\3\2\2\2r\u065c\3\2\2\2t\u0672\3\2\2\2v\u0685\3\2\2\2x\u068d\3\2\2\2z"+
+		"\u0691\3\2\2\2|\u0699\3\2\2\2~\u06a8\3\2\2\2\u0080\u06aa\3\2\2\2\u0082"+
+		"\u06d6\3\2\2\2\u0084\u06df\3\2\2\2\u0086\u06ec\3\2\2\2\u0088\u06ee\3\2"+
+		"\2\2\u008a\u06f0\3\2\2\2\u008c\u06f3\3\2\2\2\u008e\u06f7\3\2\2\2\u0090"+
+		"\u0701\3\2\2\2\u0092\u070b\3\2\2\2\u0094\u0737\3\2\2\2\u0096\u074e\3\2"+
+		"\2\2\u0098\u0750\3\2\2\2\u009a\u0752\3\2\2\2\u009c\u0754\3\2\2\2\u009e"+
+		"\u0759\3\2\2\2\u00a0\u075c\3\2\2\2\u00a2\u08bf\3\2\2\2\u00a4\u08c1\3\2"+
+		"\2\2\u00a6\u08f7\3\2\2\2\u00a8\u08fc\3\2\2\2\u00aa\u0928\3\2\2\2\u00ac"+
+		"\u093f\3\2\2\2\u00ae\u095d\3\2\2\2\u00b0\u0961\3\2\2\2\u00b2\u0967\3\2"+
+		"\2\2\u00b4\u096d\3\2\2\2\u00b6\u0971\3\2\2\2\u00b8\u0975\3\2\2\2\u00ba"+
+		"\u097a\3\2\2\2\u00bc\u0988\3\2\2\2\u00be\u098e\3\2\2\2\u00c0\u0994\3\2"+
+		"\2\2\u00c2\u09a4\3\2\2\2\u00c4\u09a8\3\2\2\2\u00c6\u09ae\3\2\2\2\u00c8"+
+		"\u09b4\3\2\2\2\u00ca\u09bc\3\2\2\2\u00cc\u09c2\3\2\2\2\u00ce\u09d1\3\2"+
+		"\2\2\u00d0\u09e3\3\2\2\2\u00d2\u09ea\3\2\2\2\u00d4\u09ef\3\2\2\2\u00d6"+
+		"\u09fa\3\2\2\2\u00d8\u09ff\3\2\2\2\u00da\u0a03\3\2\2\2\u00dc\u0a07\3\2"+
+		"\2\2\u00de\u0a0c\3\2\2\2\u00e0\u0a11\3\2\2\2\u00e2\u0a16\3\2\2\2\u00e4"+
+		"\u0a24\3\2\2\2\u00e6\u0a2a\3\2\2\2\u00e8\u0a2f\3\2\2\2\u00ea\u0a37\3\2"+
+		"\2\2\u00ec\u0a3b\3\2\2\2\u00ee\u0a4c\3\2\2\2\u00f0\u0a54\3\2\2\2\u00f2"+
+		"\u0a5a\3\2\2\2\u00f4\u0a68\3\2\2\2\u00f6\u0a7e\3\2\2\2\u00f8\u0a83\3\2"+
+		"\2\2\u00fa\u0a89\3\2\2\2\u00fc\u0a8e\3\2\2\2\u00fe\u0a92\3\2\2\2\u0100"+
+		"\u0aae\3\2\2\2\u0102\u0ab9\3\2\2\2\u0104\u0ac2\3\2\2\2\u0106\u0acf\3\2"+
+		"\2\2\u0108\u0ad7\3\2\2\2\u010a\u0adc\3\2\2\2\u010c\u0ae7\3\2\2\2\u010e"+
+		"\u0b05\3\2\2\2\u0110\u0b23\3\2\2\2\u0112\u0b31\3\2\2\2\u0114\u0b49\3\2"+
+		"\2\2\u0116\u0b59\3\2\2\2\u0118\u0b66\3\2\2\2\u011a\u0b79\3\2\2\2\u011c"+
+		"\u0b86\3\2\2\2\u011e\u0b8f\3\2\2\2\u0120\u0bad\3\2\2\2\u0122\u0ca0\3\2"+
+		"\2\2\u0124\u0ca9\3\2\2\2\u0126\u0ce3\3\2\2\2\u0128\u0d14\3\2\2\2\u012a"+
+		"\u0d16\3\2\2\2\u012c\u0d3f\3\2\2\2\u012e\u0d71\3\2\2\2\u0130\u0db7\3\2"+
+		"\2\2\u0132\u0dfa\3\2\2\2\u0134\u0e0a\3\2\2\2\u0136\u0e26\3\2\2\2\u0138"+
+		"\u0e39\3\2\2\2\u013a\u0e4e\3\2\2\2\u013c\u0e96\3\2\2\2\u013e\u0ef5\3\2"+
+		"\2\2\u0140\u0f0b\3\2\2\2\u0142\u0f17\3\2\2\2\u0144\u0f33\3\2\2\2\u0146"+
+		"\u0f48\3\2\2\2\u0148\u0f62\3\2\2\2\u014a\u0f6b\3\2\2\2\u014c\u0f8b\3\2"+
+		"\2\2\u014e\u0f95\3\2\2\2\u0150\u0fa5\3\2\2\2\u0152\u0fb1\3\2\2\2\u0154"+
+		"\u0fba\3\2\2\2\u0156\u0fcb\3\2\2\2\u0158\u0fe3\3\2\2\2\u015a\u104f\3\2"+
+		"\2\2\u015c\u1069\3\2\2\2\u015e\u1075\3\2\2\2\u0160\u107c\3\2\2\2\u0162"+
+		"\u10a8\3\2\2\2\u0164\u10b3\3\2\2\2\u0166\u10c7\3\2\2\2\u0168\u10f1\3\2"+
+		"\2\2\u016a\u10f8\3\2\2\2\u016c\u1106\3\2\2\2\u016e\u1118\3\2\2\2\u0170"+
+		"\u115e\3\2\2\2\u0172\u1189\3\2\2\2\u0174\u11bf\3\2\2\2\u0176\u1248\3\2"+
+		"\2\2\u0178\u12d7\3\2\2\2\u017a\u12f4\3\2\2\2\u017c\u1311\3\2\2\2\u017e"+
+		"\u1380\3\2\2\2\u0180\u138d\3\2\2\2\u0182\u1395\3\2\2\2\u0184\u139d\3\2"+
+		"\2\2\u0186\u13b3\3\2\2\2\u0188\u13d1\3\2\2\2\u018a\u13ec\3\2\2\2\u018c"+
+		"\u1400\3\2\2\2\u018e\u1430\3\2\2\2\u0190\u1455\3\2\2\2\u0192\u1521\3\2"+
+		"\2\2\u0194\u153f\3\2\2\2\u0196\u1541\3\2\2\2\u0198\u1561\3\2\2\2\u019a"+
+		"\u1590\3\2\2\2\u019c\u15c4\3\2\2\2\u019e\u15d4\3\2\2\2\u01a0\u15e2\3\2"+
+		"\2\2\u01a2\u162b\3\2\2\2\u01a4\u164a\3\2\2\2\u01a6\u164c\3\2\2\2\u01a8"+
+		"\u1650\3\2\2\2\u01aa\u166e\3\2\2\2\u01ac\u1670\3\2\2\2\u01ae\u1685\3\2"+
+		"\2\2\u01b0\u16de\3\2\2\2\u01b2\u16e0\3\2\2\2\u01b4\u16ed\3\2\2\2\u01b6"+
+		"\u1725\3\2\2\2\u01b8\u1728\3\2\2\2\u01ba\u1756\3\2\2\2\u01bc\u1759\3\2"+
+		"\2\2\u01be\u177a\3\2\2\2\u01c0\u178b\3\2\2\2\u01c2\u178e\3\2\2\2\u01c4"+
+		"\u17c9\3\2\2\2\u01c6\u17e1\3\2\2\2\u01c8\u17f1\3\2\2\2\u01ca\u17f3\3\2"+
+		"\2\2\u01cc\u1824\3\2\2\2\u01ce\u184d\3\2\2\2\u01d0\u1879\3\2\2\2\u01d2"+
+		"\u1881\3\2\2\2\u01d4\u18ae\3\2\2\2\u01d6\u18b0\3\2\2\2\u01d8\u18b8\3\2"+
+		"\2\2\u01da\u18d9\3\2\2\2\u01dc\u18e1\3\2\2\2\u01de\u18fc\3\2\2\2\u01e0"+
+		"\u1914\3\2\2\2\u01e2\u1934\3\2\2\2\u01e4\u1952\3\2\2\2\u01e6\u1969\3\2"+
+		"\2\2\u01e8\u1977\3\2\2\2\u01ea\u1979\3\2\2\2\u01ec\u1998\3\2\2\2\u01ee"+
+		"\u19a6\3\2\2\2\u01f0\u19c6\3\2\2\2\u01f2\u19dc\3\2\2\2\u01f4\u19fa\3\2"+
+		"\2\2\u01f6\u19fc\3\2\2\2\u01f8\u1a2f\3\2\2\2\u01fa\u1a5d\3\2\2\2\u01fc"+
+		"\u1a70\3\2\2\2\u01fe\u1a72\3\2\2\2\u0200\u1a8b\3\2\2\2\u0202\u1a8d\3\2"+
+		"\2\2\u0204\u1a95\3\2\2\2\u0206\u1a97\3\2\2\2\u0208\u1b23\3\2\2\2\u020a"+
+		"\u1b2b\3\2\2\2\u020c\u1b2d\3\2\2\2\u020e\u1b2f\3\2\2\2\u0210\u1b31\3\2"+
+		"\2\2\u0212\u1b3f\3\2\2\2\u0214\u1b45\3\2\2\2\u0216\u1b47\3\2\2\2\u0218"+
+		"\u1b49\3\2\2\2\u021a\u1b4e\3\2\2\2\u021c\u1b50\3\2\2\2\u021e\u1b54\3\2"+
+		"\2\2\u0220\u1b60\3\2\2\2\u0222\u1b62\3\2\2\2\u0224\u1b65\3\2\2\2\u0226"+
+		"\u1b68\3\2\2\2\u0228\u1b6a\3\2\2\2\u022a\u1b6c\3\2\2\2\u022c\u1b6e\3\2"+
+		"\2\2\u022e\u1b8b\3\2\2\2\u0230\u1b8d\3\2\2\2\u0232\u1b98\3\2\2\2\u0234"+
+		"\u1b9b\3\2\2\2\u0236\u1ba4\3\2\2\2\u0238\u1bac\3\2\2\2\u023a\u1bb3\3\2"+
+		"\2\2\u023c\u1bca\3\2\2\2\u023e\u1bcc\3\2\2\2\u0240\u1bd7\3\2\2\2\u0242"+
+		"\u1bd9\3\2\2\2\u0244\u1bf4\3\2\2\2\u0246\u1bfb\3\2\2\2\u0248\u1c01\3\2"+
+		"\2\2\u024a\u1c14\3\2\2\2\u024c\u1c16\3\2\2\2\u024e\u1c27\3\2\2\2\u0250"+
+		"\u1c3e\3\2\2\2\u0252\u1c4f\3\2\2\2\u0254\u1c60\3\2\2\2\u0256\u1c6a\3\2"+
+		"\2\2\u0258\u1c7b\3\2\2\2\u025a\u1c8c\3\2\2\2\u025c\u1c96\3\2\2\2\u025e"+
+		"\u1c98\3\2\2\2\u0260\u1c9f\3\2\2\2\u0262\u1cdb\3\2\2\2\u0264\u1cfa\3\2"+
+		"\2\2\u0266\u1cfc\3\2\2\2\u0268\u1df6\3\2\2\2\u026a\u1ee4\3\2\2\2\u026c"+
+		"\u1f0c\3\2\2\2\u026e\u1f19\3\2\2\2\u0270\u1f27\3\2\2\2\u0272\u1f2f\3\2"+
+		"\2\2\u0274\u1f35\3\2\2\2\u0276\u1f3c\3\2\2\2\u0278\u1f40\3\2\2\2\u027a"+
+		"\u1f6d\3\2\2\2\u027c\u1f71\3\2\2\2\u027e\u1f7e\3\2\2\2\u0280\u1fbb\3\2"+
+		"\2\2\u0282\u1fbd\3\2\2\2\u0284\u1fe2\3\2\2\2\u0286\u1fe4\3\2\2\2\u0288"+
+		"\u1ff4\3\2\2\2\u028a\u2001\3\2\2\2\u028c\u2015\3\2\2\2\u028e\u2022\3\2"+
+		"\2\2\u0290\u2047\3\2\2\2\u0292\u2058\3\2\2\2\u0294\u205a\3\2\2\2\u0296"+
+		"\u2067\3\2\2\2\u0298\u2080\3\2\2\2\u029a\u209c\3\2\2\2\u029c\u20c5\3\2"+
+		"\2\2\u029e\u2118\3\2\2\2\u02a0\u211a\3\2\2\2\u02a2\u211e\3\2\2\2\u02a4"+
+		"\u2123\3\2\2\2\u02a6\u2127\3\2\2\2\u02a8\u212c\3\2\2\2\u02aa\u2131\3\2"+
+		"\2\2\u02ac\u2140\3\2\2\2\u02ae\u2145\3\2\2\2\u02b0\u2149\3\2\2\2\u02b2"+
+		"\u2152\3\2\2\2\u02b4\u2157\3\2\2\2\u02b6\u215f\3\2\2\2\u02b8\u2163\3\2"+
+		"\2\2\u02ba\u2170\3\2\2\2\u02bc\u2172\3\2\2\2\u02be\u219f\3\2\2\2\u02c0"+
+		"\u21a9\3\2\2\2\u02c2\u21d4\3\2\2\2\u02c4\u2218\3\2\2\2\u02c6\u2223\3\2"+
+		"\2\2\u02c8\u222e\3\2\2\2\u02ca\u223a\3\2\2\2\u02cc\u2241\3\2\2\2\u02ce"+
+		"\u226a\3\2\2\2\u02d0\u2275\3\2\2\2\u02d2\u2277\3\2\2\2\u02d4\u22c6\3\2"+
+		"\2\2\u02d6\u22ca\3\2\2\2\u02d8\u22d8\3\2\2\2\u02da\u22f8\3\2\2\2\u02dc"+
+		"\u2303\3\2\2\2\u02de\u2305\3\2\2\2\u02e0\u2308\3\2\2\2\u02e2\u230c\3\2"+
+		"\2\2\u02e4\u2310\3\2\2\2\u02e6\u2314\3\2\2\2\u02e8\u2318\3\2\2\2\u02ea"+
+		"\u231d\3\2\2\2\u02ec\u231f\3\2\2\2\u02ee\u2323\3\2\2\2\u02f0\u2327\3\2"+
+		"\2\2\u02f2\u232b\3\2\2\2\u02f4\u232f\3\2\2\2\u02f6\u2333\3\2\2\2\u02f8"+
+		"\u2339\3\2\2\2\u02fa\u233b\3\2\2\2\u02fc\u233f\3\2\2\2\u02fe\u2343\3\2"+
+		"\2\2\u0300\u2347\3\2\2\2\u0302\u234b\3\2\2\2\u0304\u234f\3\2\2\2\u0306"+
+		"\u2353\3\2\2\2\u0308\u235a\3\2\2\2\u030a\u2375\3\2\2\2\u030c\u237b\3\2"+
+		"\2\2\u030e\u2385\3\2\2\2\u0310\u238f\3\2\2\2\u0312\u2391\3\2\2\2\u0314"+
+		"\u23ad\3\2\2\2\u0316\u23af\3\2\2\2\u0318\u23cb\3\2\2\2\u031a\u23cd\3\2"+
+		"\2\2\u031c\u23d5\3\2\2\2\u031e\u23dd\3\2\2\2\u0320\u23e6\3\2\2\2\u0322"+
+		"\u2422\3\2\2\2\u0324\u2429\3\2\2\2\u0326\u2437\3\2\2\2\u0328\u2440\3\2"+
+		"\2\2\u032a\u2467\3\2\2\2\u032c\u2477\3\2\2\2\u032e\u247e\3\2\2\2\u0330"+
+		"\u2480\3\2\2\2\u0332\u24ef\3\2\2\2\u0334\u24f1\3\2\2\2\u0336\u24fc\3\2"+
+		"\2\2\u0338\u2500\3\2\2\2\u033a\u2502\3\2\2\2\u033c\u253b\3\2\2\2\u033e"+
+		"\u253d\3\2\2\2\u0340\u2546\3\2\2\2\u0342\u254e\3\2\2\2\u0344\u255c\3\2"+
+		"\2\2\u0346\u256d\3\2\2\2\u0348\u2583\3\2\2\2\u034a\u258d\3\2\2\2\u034c"+
+		"\u2593\3\2\2\2\u034e\u2595\3\2\2\2\u0350\u25a2\3\2\2\2\u0352\u25a4\3\2"+
+		"\2\2\u0354\u25dc\3\2\2\2\u0356\u25de\3\2\2\2\u0358\u25ef\3\2\2\2\u035a"+
+		"\u25f7\3\2\2\2\u035c\u25fc\3\2\2\2\u035e\u2626\3\2\2\2\u0360\u2628\3\2"+
+		"\2\2\u0362\u2630\3\2\2\2\u0364\u263a\3\2\2\2\u0366\u2642\3\2\2\2\u0368"+
+		"\u2660\3\2\2\2\u036a\u2662\3\2\2\2\u036c\u2670\3\2\2\2\u036e\u2704\3\2"+
+		"\2\2\u0370\u270b\3\2\2\2\u0372\u2738\3\2\2\2\u0374\u2750\3\2\2\2\u0376"+
+		"\u2752\3\2\2\2\u0378\u2759\3\2\2\2\u037a\u2760\3\2\2\2\u037c\u2767\3\2"+
+		"\2\2\u037e\u276c\3\2\2\2\u0380\u2772\3\2\2\2\u0382\u2777\3\2\2\2\u0384"+
+		"\u277b\3\2\2\2\u0386\u2780\3\2\2\2\u0388\u278f\3\2\2\2\u038a\u279e\3\2"+
+		"\2\2\u038c\u27d4\3\2\2\2\u038e\u27d6\3\2\2\2\u0390\u27e3\3\2\2\2\u0392"+
+		"\u27e5\3\2\2\2\u0394\u27f3\3\2\2\2\u0396\u2805\3\2\2\2\u0398\u2827\3\2"+
+		"\2\2\u039a\u283d\3\2\2\2\u039c\u2840\3\2\2\2\u039e\u2844\3\2\2\2\u03a0"+
+		"\u2853\3\2\2\2\u03a2\u285c\3\2\2\2\u03a4\u2860\3\2\2\2\u03a6\u2868\3\2"+
+		"\2\2\u03a8\u286e\3\2\2\2\u03aa\u2892\3\2\2\2\u03ac\u2894\3\2\2\2\u03ae"+
+		"\u28a1\3\2\2\2\u03b0\u28a3\3\2\2\2\u03b2\u28b8\3\2\2\2\u03b4\u28f6\3\2"+
+		"\2\2\u03b6\u28ff\3\2\2\2\u03b8\u2906\3\2\2\2\u03ba\u2919\3\2\2\2\u03bc"+
+		"\u2937\3\2\2\2\u03be\u293c\3\2\2\2\u03c0\u2943\3\2\2\2\u03c2\u2952\3\2"+
+		"\2\2\u03c4\u2961\3\2\2\2\u03c6\u2965\3\2\2\2\u03c8\u2997\3\2\2\2\u03ca"+
+		"\u2999\3\2\2\2\u03cc\u29a7\3\2\2\2\u03ce\u29b1\3\2\2\2\u03d0\u29b3\3\2"+
+		"\2\2\u03d2\u29b5\3\2\2\2\u03d4\u29b8\3\2\2\2\u03d6\u29c3\3\2\2\2\u03d8"+
+		"\u29ca\3\2\2\2\u03da\u29cc\3\2\2\2\u03dc\u29d8\3\2\2\2\u03de\u2a08\3\2"+
+		"\2\2\u03e0\u2a0c\3\2\2\2\u03e2\u2a0e\3\2\2\2\u03e4\u2a23\3\2\2\2\u03e6"+
+		"\u2a32\3\2\2\2\u03e8\u2a42\3\2\2\2\u03ea\u2a44\3\2\2\2\u03ec\u2a68\3\2"+
+		"\2\2\u03ee\u2a6d\3\2\2\2\u03f0\u2a7e\3\2\2\2\u03f2\u2a80\3\2\2\2\u03f4"+
+		"\u2a85\3\2\2\2\u03f6\u2a87\3\2\2\2\u03f8\u2a98\3\2\2\2\u03fa\u2a9a\3\2"+
+		"\2\2\u03fc\u2a9c\3\2\2\2\u03fe\u0400\5\4\3\2\u03ff\u03fe\3\2\2\2\u0400"+
+		"\u0403\3\2\2\2\u0401\u03ff\3\2\2\2\u0401\u0402\3\2\2\2\u0402\u0404\3\2"+
+		"\2\2\u0403\u0401\3\2\2\2\u0404\u0405\7\2\2\3\u0405\3\3\2\2\2\u0406\u040a"+
+		"\5\u027a\u013e\2\u0407\u0409\5\u02a0\u0151\2\u0408\u0407\3\2\2\2\u0409"+
+		"\u040c\3\2\2\2\u040a\u0408\3\2\2\2\u040a\u040b\3\2\2\2\u040b\u0418\3\2"+
+		"\2\2\u040c\u040a\3\2\2\2\u040d\u040f\5\u027a\u013e\2\u040e\u040d\3\2\2"+
+		"\2\u040e\u040f\3\2\2\2\u040f\u0410\3\2\2\2\u0410\u0414\5\6\4\2\u0411\u0413"+
+		"\5\u02a0\u0151\2\u0412\u0411\3\2\2\2\u0413\u0416\3\2\2\2\u0414\u0412\3"+
+		"\2\2\2\u0414\u0415\3\2\2\2\u0415\u0418\3\2\2\2\u0416\u0414\3\2\2\2\u0417"+
 		"\u0406\3\2\2\2\u0417\u040e\3\2\2\2\u0418\5\3\2\2\2\u0419\u041b\5\b\5\2"+
 		"\u041a\u041c\7\u0342\2\2\u041b\u041a\3\2\2\2\u041b\u041c\3\2\2\2\u041c"+
 		"\u041e\3\2\2\2\u041d\u0419\3\2\2\2\u041e\u041f\3\2\2\2\u041f\u041d\3\2"+
@@ -94911,286 +95587,287 @@ public class MocaSqlParser extends Parser {
 		"\7\u0325\2\2\u0c22\u0c24\7\u0340\2\2\u0c23\u0c22\3\2\2\2\u0c23\u0c24\3"+
 		"\2\2\2\u0c24\u0c27\3\2\2\2\u0c25\u0c27\7\u0329\2\2\u0c26\u0c1f\3\2\2\2"+
 		"\u0c26\u0c25\3\2\2\2\u0c27\u0c29\3\2\2\2\u0c28\u0c1a\3\2\2\2\u0c29\u0c2a"+
-		"\3\2\2\2\u0c2a\u0c28\3\2\2\2\u0c2a\u0c2b\3\2\2\2\u0c2b\u0c2c\3\2\2";
+		"\3\2\2\2\u0c2a\u0c28\3\2\2";
 	private static final String _serializedATNSegment2 =
-		"\2\u0c2c\u0c2d\7\u0340\2\2\u0c2d\u0c2f\3\2\2\2\u0c2e\u0c17\3\2\2\2\u0c2f"+
-		"\u0c32\3\2\2\2\u0c30\u0c2e\3\2\2\2\u0c30\u0c31\3\2\2\2\u0c31\u0c34\3\2"+
-		"\2\2\u0c32\u0c30\3\2\2\2\u0c33\u0c0c\3\2\2\2\u0c34\u0c37\3\2\2\2\u0c35"+
-		"\u0c33\3\2\2\2\u0c35\u0c36\3\2\2\2\u0c36\u0c45\3\2\2\2\u0c37\u0c35\3\2"+
-		"\2\2\u0c38\u0c39\7g\2\2\u0c39\u0c3d\7\u0156\2\2\u0c3a\u0c3b\5\u03f4\u01fb"+
-		"\2\u0c3b\u0c3c\7\u033a\2\2\u0c3c\u0c3e\3\2\2\2\u0c3d\u0c3a\3\2\2\2\u0c3d"+
-		"\u0c3e\3\2\2\2\u0c3e\u0c3f\3\2\2\2\u0c3f\u0c40\5\u03f4\u01fb\2\u0c40\u0c41"+
-		"\7\u033a\2\2\u0c41\u0c42\5\u03f4\u01fb\2\u0c42\u0c44\3\2\2\2\u0c43\u0c38"+
-		"\3\2\2\2\u0c44\u0c47\3\2\2\2\u0c45\u0c43\3\2\2\2\u0c45\u0c46\3\2\2\2\u0c46"+
-		"\u0c89\3\2\2\2\u0c47\u0c45\3\2\2\2\u0c48\u0c49\7\u0179\2\2\u0c49\u0c51"+
-		"\7\u033f\2\2\u0c4a\u0c4c\7\u0341\2\2\u0c4b\u0c4a\3\2\2\2\u0c4b\u0c4c\3"+
-		"\2\2\2\u0c4c\u0c4d\3\2\2\2\u0c4d\u0c4e\7\u00be\2\2\u0c4e\u0c4f\7\u032d"+
-		"\2\2\u0c4f\u0c50\7\u0325\2\2\u0c50\u0c52\t\31\2\2\u0c51\u0c4b\3\2\2\2"+
-		"\u0c51\u0c52\3\2\2\2\u0c52\u0c59\3\2\2\2\u0c53\u0c55\7\u0341\2\2\u0c54"+
-		"\u0c53\3\2\2\2\u0c54\u0c55\3\2\2\2\u0c55\u0c56\3\2\2\2\u0c56\u0c57\7s"+
-		"\2\2\u0c57\u0c58\7\u032d\2\2\u0c58\u0c5a\t\32\2\2\u0c59\u0c54\3\2\2\2"+
-		"\u0c59\u0c5a\3\2\2\2\u0c5a\u0c65\3\2\2\2\u0c5b\u0c5d\7\u0341\2\2\u0c5c"+
-		"\u0c5b\3\2\2\2\u0c5c\u0c5d\3\2\2\2\u0c5d\u0c5e\3\2\2\2\u0c5e\u0c5f\7\u00c1"+
-		"\2\2\u0c5f\u0c63\7\u032d\2\2\u0c60\u0c61\7\u0325\2\2\u0c61\u0c64\7\u02c6"+
-		"\2\2\u0c62\u0c64\7\u009f\2\2\u0c63\u0c60\3\2\2\2\u0c63\u0c62\3\2\2\2\u0c64"+
-		"\u0c66\3\2\2\2\u0c65\u0c5c\3\2\2\2\u0c65\u0c66\3\2\2\2\u0c66\u0c6e\3\2"+
-		"\2\2\u0c67\u0c69\7\u0341\2\2\u0c68\u0c67\3\2\2\2\u0c68\u0c69\3\2\2\2\u0c69"+
-		"\u0c6a\3\2\2\2\u0c6a\u0c6b\7\u00c2\2\2\u0c6b\u0c6c\7\u032d\2\2\u0c6c\u0c6d"+
-		"\7\u0325\2\2\u0c6d\u0c6f\t\31\2\2\u0c6e\u0c68\3\2\2\2\u0c6e\u0c6f\3\2"+
-		"\2\2\u0c6f\u0c76\3\2\2\2\u0c70\u0c72\7\u0341\2\2\u0c71\u0c70\3\2\2\2\u0c71"+
-		"\u0c72\3\2\2\2\u0c72\u0c73\3\2\2\2\u0c73\u0c74\7\u00c8\2\2\u0c74\u0c75"+
-		"\7\u032d\2\2\u0c75\u0c77\t\33\2\2\u0c76\u0c71\3\2\2\2\u0c76\u0c77\3\2"+
-		"\2\2\u0c77\u0c7e\3\2\2\2\u0c78\u0c7a\7\u0341\2\2\u0c79\u0c78\3\2\2\2\u0c79"+
-		"\u0c7a\3\2\2\2\u0c7a\u0c7b\3\2\2\2\u0c7b\u0c7c\7\u015c\2\2\u0c7c\u0c7d"+
-		"\7\u032d\2\2\u0c7d\u0c7f\t\t\2\2\u0c7e\u0c79\3\2\2\2\u0c7e\u0c7f\3\2\2"+
-		"\2\u0c7f\u0c86\3\2\2\2\u0c80\u0c82\7\u0341\2\2\u0c81\u0c80\3\2\2\2\u0c81"+
-		"\u0c82\3\2\2\2\u0c82\u0c83\3\2\2\2\u0c83\u0c84\7\u014d\2\2\u0c84\u0c85"+
-		"\7\u032d\2\2\u0c85\u0c87\t\t\2\2\u0c86\u0c81\3\2\2\2\u0c86\u0c87\3\2\2"+
-		"\2\u0c87\u0c88\3\2\2\2\u0c88\u0c8a\7\u0340\2\2\u0c89\u0c48\3\2\2\2\u0c89"+
-		"\u0c8a\3\2\2\2\u0c8a\u0c8e\3\2\2\2\u0c8b\u0c8c\7\u0149\2\2\u0c8c\u0c8d"+
-		"\7\u032d\2\2\u0c8d\u0c8f\t\34\2\2\u0c8e\u0c8b\3\2\2\2\u0c8e\u0c8f\3\2"+
-		"\2\2\u0c8f\u0121\3\2\2\2\u0c90\u0c92\7\u0341\2\2\u0c91\u0c90\3\2\2\2\u0c91"+
-		"\u0c92\3\2\2\2\u0c92\u0c94\3\2\2\2\u0c93\u0c95\t\35\2\2\u0c94\u0c93\3"+
-		"\2\2\2\u0c94\u0c95\3\2\2\2\u0c95\u0c97\3\2\2\2\u0c96\u0c98\7\u00dc\2\2"+
-		"\u0c97\u0c96\3\2\2\2\u0c97\u0c98\3\2\2\2\u0c98\u0c9e\3\2\2\2\u0c99\u0c9f"+
-		"\5\u0124\u0093\2\u0c9a\u0c9b\7\u033f\2\2\u0c9b\u0c9c\5\u0122\u0092\2\u0c9c"+
-		"\u0c9d\7\u0340\2\2\u0c9d\u0c9f\3\2\2\2\u0c9e\u0c99\3\2\2\2\u0c9e\u0c9a"+
-		"\3\2\2\2\u0c9f\u0ca1\3\2\2\2\u0ca0\u0c91\3\2\2\2\u0ca1\u0ca2\3\2\2\2\u0ca2"+
-		"\u0ca0\3\2\2\2\u0ca2\u0ca3\3\2\2\2\u0ca3\u0123\3\2\2\2\u0ca4\u0caa\5\u0126"+
-		"\u0094\2\u0ca5\u0ca6\7\u033f\2\2\u0ca6\u0ca7\5\u0122\u0092\2\u0ca7\u0ca8"+
-		"\7\u0340\2\2\u0ca8\u0caa\3\2\2\2\u0ca9\u0ca4\3\2\2\2\u0ca9\u0ca5\3\2\2"+
-		"\2\u0caa\u0125\3\2\2\2\u0cab\u0cc8\5\u03f4\u01fb\2\u0cac\u0cb7\5\u03f4"+
-		"\u01fb\2\u0cad\u0cae\5\u03f4\u01fb\2\u0cae\u0caf\7\u033a\2\2\u0caf\u0cb1"+
-		"\3\2\2\2\u0cb0\u0cad\3\2\2\2\u0cb0\u0cb1\3\2\2\2\u0cb1\u0cb2\3\2\2\2\u0cb2"+
-		"\u0cb3\5\u03f4\u01fb\2\u0cb3\u0cb4\7\u033a\2\2\u0cb4\u0cb5\5\u03f4\u01fb"+
-		"\2\u0cb5\u0cb7\3\2\2\2\u0cb6\u0cac\3\2\2\2\u0cb6\u0cb0\3\2\2\2\u0cb7\u0cc3"+
-		"\3\2\2\2\u0cb8\u0cc4\7\u032d\2\2\u0cb9\u0cba\7\u032f\2\2\u0cba\u0cc4\7"+
-		"\u032e\2\2\u0cbb\u0cbc\7\u0330\2\2\u0cbc\u0cc4\7\u032d\2\2\u0cbd\u0cc4"+
-		"\7\u032e\2\2\u0cbe\u0cbf\7\u032e\2\2\u0cbf\u0cc4\7\u032d\2\2\u0cc0\u0cc4"+
-		"\7\u032f\2\2\u0cc1\u0cc2\7\u032f\2\2\u0cc2\u0cc4\7\u032d\2\2\u0cc3\u0cb8"+
-		"\3\2\2\2\u0cc3\u0cb9\3\2\2\2\u0cc3\u0cbb\3\2\2\2\u0cc3\u0cbd\3\2\2\2\u0cc3"+
-		"\u0cbe\3\2\2\2\u0cc3\u0cc0\3\2\2\2\u0cc3\u0cc1\3\2\2\2\u0cc4\u0cc5\3\2"+
-		"\2\2\u0cc5\u0cc6\t\30\2\2\u0cc6\u0cc8\3\2\2\2\u0cc7\u0cab\3\2\2\2\u0cc7"+
-		"\u0cb6\3\2\2\2\u0cc8\u0ce4\3\2\2\2\u0cc9\u0cca\5\u03f4\u01fb\2\u0cca\u0ccb"+
-		"\7\u033a\2\2\u0ccb\u0ccd\3\2\2\2\u0ccc\u0cc9\3\2\2\2\u0ccc\u0ccd\3\2\2"+
-		"\2\u0ccd\u0cce\3\2\2\2\u0cce\u0ccf\5\u03f4\u01fb\2\u0ccf\u0cd0\7\u033a"+
-		"\2\2\u0cd0\u0cd1\5\u03f4\u01fb\2\u0cd1\u0cdf\7\u033f\2\2\u0cd2\u0ce0\5"+
-		"\u03f4\u01fb\2\u0cd3\u0cd4\5\u03f4\u01fb\2\u0cd4\u0cd5\7\u033a\2\2\u0cd5"+
-		"\u0cd7\3\2\2\2\u0cd6\u0cd3\3\2\2\2\u0cd6\u0cd7\3\2\2\2\u0cd7\u0cd8\3\2"+
-		"\2\2\u0cd8\u0cd9\5\u03f4\u01fb\2\u0cd9\u0cda\7\u033a\2\2\u0cda\u0cdb\5"+
-		"\u03f4\u01fb\2\u0cdb\u0cdc\3\2\2\2\u0cdc\u0cdd\7\u0341\2\2\u0cdd\u0cde"+
-		"\t\30\2\2\u0cde\u0ce0\3\2\2\2\u0cdf\u0cd2\3\2\2\2\u0cdf\u0cd6\3\2\2\2"+
-		"\u0ce0\u0ce1\3\2\2\2\u0ce1\u0ce2\7\u0340\2\2\u0ce2\u0ce4\3\2\2\2\u0ce3"+
-		"\u0cc7\3\2\2\2\u0ce3\u0ccc\3\2\2\2\u0ce4\u0127\3\2\2\2\u0ce5\u0ce6\7\n"+
-		"\2\2\u0ce6\u0ce7\7{\2\2\u0ce7\u0ce8\7\u01c8\2\2\u0ce8\u0ce9\7\u0142\2"+
-		"\2\u0ce9\u0cea\5\u03f4\u01fb\2\u0cea\u0cfa\7\u013b\2\2\u0ceb\u0cec\7\u0238"+
-		"\2\2\u0cec\u0ced\7\u032d\2\2\u0ced\u0cef\t\36\2\2\u0cee\u0cf0\7\u0341"+
-		"\2\2\u0cef\u0cee\3\2\2\2\u0cef\u0cf0\3\2\2\2\u0cf0\u0cfb\3\2\2\2\u0cf1"+
-		"\u0cf2\7\u02b3\2\2\u0cf2\u0cf3\7\u032d\2\2\u0cf3\u0cf5\t\36\2\2\u0cf4"+
-		"\u0cf6\7\u0341\2\2\u0cf5\u0cf4\3\2\2\2\u0cf5\u0cf6\3\2\2\2\u0cf6\u0cfb"+
-		"\3\2\2\2\u0cf7\u0cf8\7\u01c4\2\2\u0cf8\u0cf9\7\u032d\2\2\u0cf9\u0cfb\5"+
-		"\u03f4\u01fb\2\u0cfa\u0ceb\3\2\2\2\u0cfa\u0cf1\3\2\2\2\u0cfa\u0cf7\3\2"+
-		"\2\2\u0cfb\u0cfc\3\2\2\2\u0cfc\u0cfa\3\2\2\2\u0cfc\u0cfd\3\2\2\2\u0cfd"+
-		"\u0d15\3\2\2\2\u0cfe\u0cff\7\n\2\2\u0cff\u0d00\7{\2\2\u0d00\u0d01\7\u01c8"+
-		"\2\2\u0d01\u0d02\7\u0142\2\2\u0d02\u0d03\5\u03f4\u01fb\2\u0d03\u0d04\7"+
-		"\u0179\2\2\u0d04\u0d05\7\u033f\2\2\u0d05\u0d06\7\u0301\2\2\u0d06\u0d07"+
-		"\7\u032d\2\2\u0d07\u0d08\7\u01a7\2\2\u0d08\u0d09\7\u0341\2\2\u0d09\u0d0a"+
-		"\7\u0238\2\2\u0d0a\u0d0b\7\u032d\2\2\u0d0b\u0d10\7\u0329\2\2\u0d0c\u0d0d"+
-		"\7\u0341\2\2\u0d0d\u0d0e\7\u01c4\2\2\u0d0e\u0d0f\7\u032d\2\2\u0d0f\u0d11"+
-		"\5\u03f4\u01fb\2\u0d10\u0d0c\3\2\2\2\u0d10\u0d11\3\2\2\2\u0d11\u0d12\3"+
-		"\2\2\2\u0d12\u0d13\7\u0340\2\2\u0d13\u0d15\3\2\2\2\u0d14\u0ce5\3\2\2\2"+
-		"\u0d14\u0cfe\3\2\2\2\u0d15\u0129\3\2\2\2\u0d16\u0d17\7\n\2\2\u0d17\u0d18"+
-		"\7{\2\2\u0d18\u0d19\7\u00b2\2\2\u0d19\u0d1c\5\u03f4\u01fb\2\u0d1a\u0d1b"+
-		"\7\24\2\2\u0d1b\u0d1d\5\u03f4\u01fb\2\u0d1c\u0d1a\3\2\2\2\u0d1c\u0d1d"+
-		"\3\2\2\2\u0d1d\u0d1e\3\2\2\2\u0d1e\u0d1f\t\37\2\2\u0d1f\u0d20\7\u033f"+
-		"\2\2\u0d20\u0d21\7\u01bb\2\2\u0d21\u0d25\7\u032d\2\2\u0d22\u0d26\7\u0329"+
-		"\2\2\u0d23\u0d26\7\u032a\2\2\u0d24\u0d26\7\u00d5\2\2\u0d25\u0d22\3\2\2"+
-		"\2\u0d25\u0d23\3\2\2\2\u0d25\u0d24\3\2\2\2\u0d26\u0d27\3\2\2\2\u0d27\u0d28"+
-		"\7\u0341\2\2\u0d28\u0d29\7\u00fc\2\2\u0d29\u0d2b\7\u032d\2\2\u0d2a\u0d2c"+
-		"\t \2\2\u0d2b\u0d2a\3\2\2\2\u0d2b\u0d2c\3\2\2\2\u0d2c\u0d2d\3\2\2\2\u0d2d"+
-		"\u0d2e\7\u0340\2\2\u0d2e\u0d2f\3\2\2\2\u0d2f\u0d39\7\u0179\2\2\u0d30\u0d32"+
-		"\7\u0341\2\2\u0d31\u0d30\3\2\2\2\u0d31\u0d32\3\2\2\2\u0d32\u0d33\3\2\2"+
-		"\2\u0d33\u0d34\7\u00b0\2\2\u0d34\u0d35\7\u032d\2\2\u0d35\u0d3a\t!\2\2"+
-		"\u0d36\u0d37\7S\2\2\u0d37\u0d38\7\u032d\2\2\u0d38\u0d3a\5\u03f4\u01fb"+
-		"\2\u0d39\u0d31\3\2\2\2\u0d39\u0d36\3\2\2\2\u0d3a\u0d3b\3\2\2\2\u0d3b\u0d39"+
-		"\3\2\2\2\u0d3b\u0d3c\3\2\2\2\u0d3c\u0d3d\3\2\2\2\u0d3d\u0d3e\7\u0340\2"+
-		"\2\u0d3e\u012b\3\2\2\2\u0d3f\u0d40\7I\2\2\u0d40\u0d41\7{\2\2\u0d41\u0d42"+
-		"\7\u00b2\2\2\u0d42\u0d45\5\u03f4\u01fb\2\u0d43\u0d44\7\24\2\2\u0d44\u0d46"+
-		"\5\u03f4\u01fb\2\u0d45\u0d43\3\2\2\2\u0d45\u0d46\3\2\2\2\u0d46\u0d47\3"+
-		"\2\2\2\u0d47\u0d49\7\u008b\2\2\u0d48\u0d4a\7\u0341\2\2\u0d49\u0d48\3\2"+
-		"\2\2\u0d49\u0d4a\3\2\2\2\u0d4a\u0d4c\3\2\2\2\u0d4b\u0d4d\7\u033f\2\2\u0d4c"+
-		"\u0d4b\3\2\2\2\u0d4c\u0d4d\3\2\2\2\u0d4d\u0d50\3\2\2\2\u0d4e\u0d4f\7\u01bb"+
-		"\2\2\u0d4f\u0d51\7\u032d\2\2\u0d50\u0d4e\3\2\2\2\u0d50\u0d51\3\2\2\2\u0d51"+
-		"\u0d55\3\2\2\2\u0d52\u0d56\7\u0329\2\2\u0d53\u0d56\7\u032a\2\2\u0d54\u0d56"+
-		"\7\u00d5\2\2\u0d55\u0d52\3\2\2\2\u0d55\u0d53\3\2\2\2\u0d55\u0d54\3\2\2"+
-		"\2\u0d56\u0d5e\3\2\2\2\u0d57\u0d58\7\u0341\2\2\u0d58\u0d59\7\u00fc\2\2"+
-		"\u0d59\u0d5b\7\u032d\2\2\u0d5a\u0d5c\t \2\2\u0d5b\u0d5a\3\2\2\2\u0d5b"+
-		"\u0d5c\3\2\2\2\u0d5c\u0d5d\3\2\2\2\u0d5d\u0d5f\7\u0340\2\2\u0d5e\u0d57"+
-		"\3\2\2\2\u0d5e\u0d5f\3\2\2\2\u0d5f\u0d6f\3\2\2\2\u0d60\u0d6a\7\u0179\2"+
-		"\2\u0d61\u0d63\7\u0341\2\2\u0d62\u0d61\3\2\2\2\u0d62\u0d63\3\2\2\2\u0d63"+
-		"\u0d64\3\2\2\2\u0d64\u0d65\7\u00b0\2\2\u0d65\u0d66\7\u032d\2\2\u0d66\u0d6b"+
-		"\t!\2\2\u0d67\u0d68\7S\2\2\u0d68\u0d69\7\u032d\2\2\u0d69\u0d6b\5\u03f4"+
-		"\u01fb\2\u0d6a\u0d62\3\2\2\2\u0d6a\u0d67\3\2\2\2\u0d6b\u0d6c\3\2\2\2\u0d6c"+
-		"\u0d6a\3\2\2\2\u0d6c\u0d6d\3\2\2\2\u0d6d\u0d6e\3\2\2\2\u0d6e\u0d70\7\u0340"+
-		"\2\2\u0d6f\u0d60\3\2\2\2\u0d6f\u0d70\3\2\2\2\u0d70\u012d\3\2\2\2\u0d71"+
-		"\u0d72\7\n\2\2\u0d72\u0d73\7{\2\2\u0d73\u0d74\7\u02b2\2\2\u0d74\u0d77"+
-		"\7\u0285\2\2\u0d75\u0d78\5\u03f4\u01fb\2\u0d76\u0d78\7\u01d2\2\2\u0d77"+
-		"\u0d75\3\2\2\2\u0d77\u0d76\3\2\2\2\u0d78\u0d79\3\2\2\2\u0d79\u0d7a\7\u0179"+
-		"\2\2\u0d7a\u0d7b\7\u033f\2\2\u0d7b\u0d7c\7\u0242\2\2\u0d7c\u0d7d\7\u032d"+
-		"\2\2\u0d7d\u0da3\7\u0325\2\2\u0d7e\u0d80\7\u0341\2\2\u0d7f\u0d7e\3\2\2"+
-		"\2\u0d7f\u0d80\3\2\2\2\u0d80\u0d81\3\2\2\2\u0d81\u0d82\7\u0187\2\2\u0d82"+
-		"\u0d83\7\u01c1\2\2\u0d83\u0d91\7\u032d\2\2\u0d84\u0d92\7\u0198\2\2\u0d85"+
-		"\u0d87\7\u0341\2\2\u0d86\u0d85\3\2\2\2\u0d86\u0d87\3\2\2\2\u0d87\u0d88"+
-		"\3\2\2\2\u0d88\u0d89\7\u0325\2\2\u0d89\u0d8a\7\u015a\2\2\u0d8a\u0d8e\7"+
-		"\u0325\2\2\u0d8b\u0d8c\7\u0341\2\2\u0d8c\u0d8e\7\u0325\2\2\u0d8d\u0d86"+
-		"\3\2\2\2\u0d8d\u0d8b\3\2\2\2\u0d8e\u0d8f\3\2\2\2\u0d8f\u0d8d\3\2\2\2\u0d8f"+
-		"\u0d90\3\2\2\2\u0d90\u0d92\3\2\2\2\u0d91\u0d84\3\2\2\2\u0d91\u0d8d\3\2"+
-		"\2\2\u0d92\u0da4\3\2\2\2\u0d93\u0d94\7\u026e\2\2\u0d94\u0d9f\7\u032d\2"+
-		"\2\u0d95\u0d97\7\u0341\2\2\u0d96\u0d95\3\2\2\2\u0d96\u0d97\3\2\2\2\u0d97"+
-		"\u0d98\3\2\2\2\u0d98\u0d99\7\u0325\2\2\u0d99\u0d9a\7\u015a\2\2\u0d9a\u0da0"+
-		"\7\u0325\2\2\u0d9b\u0d9d\7\u0341\2\2\u0d9c\u0d9b\3\2\2\2\u0d9c\u0d9d\3"+
-		"\2\2\2\u0d9d\u0d9e\3\2\2\2\u0d9e\u0da0\7\u0325\2\2\u0d9f\u0d96\3\2\2\2"+
-		"\u0d9f\u0d9c\3\2\2\2\u0da0\u0da1\3\2\2\2\u0da1\u0d9f\3\2\2\2\u0da1\u0da2"+
-		"\3\2\2\2\u0da2\u0da4\3\2\2\2\u0da3\u0d7f\3\2\2\2\u0da3\u0d93\3\2\2\2\u0da4"+
-		"\u0dab\3\2\2\2\u0da5\u0da7\7\u0341\2\2\u0da6\u0da5\3\2\2\2\u0da6\u0da7"+
-		"\3\2\2\2\u0da7\u0da8\3\2\2\2\u0da8\u0da9\7\u0246\2\2\u0da9\u0daa\7\u032d"+
-		"\2\2\u0daa\u0dac\7\u0325\2\2\u0dab\u0da6\3\2\2\2\u0dab\u0dac\3\2\2\2\u0dac"+
-		"\u0db3\3\2\2\2\u0dad\u0daf\7\u0341\2\2\u0dae\u0dad\3\2\2\2\u0dae\u0daf"+
-		"\3\2\2\2\u0daf\u0db0\3\2\2\2\u0db0\u0db1\7\u0247\2\2\u0db1\u0db2\7\u032d"+
-		"\2\2\u0db2\u0db4\7\u0325\2\2\u0db3\u0dae\3\2\2\2\u0db3\u0db4\3\2\2\2\u0db4"+
-		"\u0db5\3\2\2\2\u0db5\u0db6\7\u0340\2\2\u0db6\u012f\3\2\2\2\u0db7\u0db8"+
-		"\7I\2\2\u0db8\u0db9\7{\2\2\u0db9\u0dba\7\u02b2\2\2\u0dba\u0dbb\7\u0285"+
-		"\2\2\u0dbb\u0dbc\5\u03f4\u01fb\2\u0dbc\u0dbd\7\u0179\2\2\u0dbd\u0dbe\7"+
-		"\u033f\2\2\u0dbe\u0dbf\7\u0242\2\2\u0dbf\u0dc0\7\u032d\2\2\u0dc0\u0de6"+
-		"\7\u0325\2\2\u0dc1\u0dc3\7\u0341\2\2\u0dc2\u0dc1\3\2\2\2\u0dc2\u0dc3\3"+
-		"\2\2\2\u0dc3\u0dc4\3\2\2\2\u0dc4\u0dc5\7\u0187\2\2\u0dc5\u0dc6\7\u01c1"+
-		"\2\2\u0dc6\u0dd4\7\u032d\2\2\u0dc7\u0dd5\7\u0198\2\2\u0dc8\u0dca\7\u0341"+
-		"\2\2\u0dc9\u0dc8\3\2\2\2\u0dc9\u0dca\3\2\2\2\u0dca\u0dcb\3\2\2\2\u0dcb"+
-		"\u0dcc\7\u0325\2\2\u0dcc\u0dcd\7\u015a\2\2\u0dcd\u0dd1\7\u0325\2\2\u0dce"+
-		"\u0dcf\7\u0341\2\2\u0dcf\u0dd1\7\u0325\2\2\u0dd0\u0dc9\3\2\2\2\u0dd0\u0dce"+
-		"\3\2\2\2\u0dd1\u0dd2\3\2\2\2\u0dd2\u0dd0\3\2\2\2\u0dd2\u0dd3\3\2\2\2\u0dd3"+
-		"\u0dd5\3\2\2\2\u0dd4\u0dc7\3\2\2\2\u0dd4\u0dd0\3\2\2\2\u0dd5\u0de7\3\2"+
-		"\2\2\u0dd6\u0dd7\7\u026e\2\2\u0dd7\u0de2\7\u032d\2\2\u0dd8\u0dda\7\u0341"+
-		"\2\2\u0dd9\u0dd8\3\2\2\2\u0dd9\u0dda\3\2\2\2\u0dda\u0ddb\3\2\2\2\u0ddb"+
-		"\u0ddc\7\u0325\2\2\u0ddc\u0ddd\7\u015a\2\2\u0ddd\u0de3\7\u0325\2\2\u0dde"+
-		"\u0de0\7\u0341\2\2\u0ddf\u0dde\3\2\2\2\u0ddf\u0de0\3\2\2\2\u0de0\u0de1"+
-		"\3\2\2\2\u0de1\u0de3\7\u0325\2\2\u0de2\u0dd9\3\2\2\2\u0de2\u0ddf\3\2\2"+
-		"\2\u0de3\u0de4\3\2\2\2\u0de4\u0de2\3\2\2\2\u0de4\u0de5\3\2\2\2\u0de5\u0de7"+
-		"\3\2\2\2\u0de6\u0dc2\3\2\2\2\u0de6\u0dd6\3\2\2\2\u0de7\u0dee\3\2\2\2\u0de8"+
-		"\u0dea\7\u0341\2\2\u0de9\u0de8\3\2\2\2\u0de9\u0dea\3\2\2\2\u0dea\u0deb"+
-		"\3\2\2\2\u0deb\u0dec\7\u0246\2\2\u0dec\u0ded\7\u032d\2\2\u0ded\u0def\7"+
-		"\u0325\2\2\u0dee\u0de9\3\2\2\2\u0dee\u0def\3\2\2\2\u0def\u0df6\3\2\2\2"+
-		"\u0df0\u0df2\7\u0341\2\2\u0df1\u0df0\3\2\2\2\u0df1\u0df2\3\2\2\2\u0df2"+
-		"\u0df3\3\2\2\2\u0df3\u0df4\7\u0247\2\2\u0df4\u0df5\7\u032d\2\2\u0df5\u0df7"+
-		"\7\u0325\2\2\u0df6\u0df1\3\2\2\2\u0df6\u0df7\3\2\2\2\u0df7\u0df8\3\2\2"+
-		"\2\u0df8\u0df9\7\u0340\2\2\u0df9\u0131\3\2\2\2\u0dfa\u0dfb\7\n\2\2\u0dfb"+
-		"\u0dfc\7\u0209\2\2\u0dfc\u0dfd\7\u01ae\2\2\u0dfd\u0e08\5\u03f4\u01fb\2"+
-		"\u0dfe\u0e03\7\u02a1\2\2\u0dff\u0e00\7\u0179\2\2\u0e00\u0e01\7\u017f\2"+
-		"\2\u0e01\u0e02\7\u032d\2\2\u0e02\u0e04\t\t\2\2\u0e03\u0dff\3\2\2\2\u0e03"+
-		"\u0e04\3\2\2\2\u0e04\u0e09\3\2\2\2\u0e05\u0e09\7\u02aa\2\2\u0e06\u0e07"+
-		"\7\20\2\2\u0e07\u0e09\7Y\2\2\u0e08\u0dfe\3\2\2\2\u0e08\u0e05\3\2\2\2\u0e08"+
-		"\u0e06\3\2\2\2\u0e09\u0133\3\2\2\2\u0e0a\u0e0b\7I\2\2\u0e0b\u0e0c\7\u0209"+
-		"\2\2\u0e0c\u0e0d\7\u01ae\2\2\u0e0d\u0e11\5\u03f4\u01fb\2\u0e0e\u0e0f\7"+
-		"\u00e5\2\2\u0e0f\u0e10\7\u01fb\2\2\u0e10\u0e12\5\u03f4\u01fb\2\u0e11\u0e0e"+
-		"\3\2\2\2\u0e11\u0e12\3\2\2\2\u0e12\u0e16\3\2\2\2\u0e13\u0e14\7\u009b\2"+
-		"\2\u0e14\u0e15\7\u0283\2\2\u0e15\u0e17\7\u0329\2\2\u0e16\u0e13\3\2\2\2"+
-		"\u0e16\u0e17\3\2\2\2\u0e17\u0e1c\3\2\2\2\u0e18\u0e19\7\u0179\2\2\u0e19"+
-		"\u0e1a\7\u017f\2\2\u0e1a\u0e1b\7\u032d\2\2\u0e1b\u0e1d\t\t\2\2\u0e1c\u0e18"+
-		"\3\2\2\2\u0e1c\u0e1d\3\2\2\2\u0e1d\u0e20\3\2\2\2\u0e1e\u0e1f\7\20\2\2"+
-		"\u0e1f\u0e21\7Y\2\2\u0e20\u0e1e\3\2\2\2\u0e20\u0e21\3\2\2\2\u0e21\u0e24"+
-		"\3\2\2\2\u0e22\u0e23\7\24\2\2\u0e23\u0e25\5\u03f4\u01fb\2\u0e24\u0e22"+
-		"\3\2\2\2\u0e24\u0e25\3\2\2\2\u0e25\u0135\3\2\2\2\u0e26\u0e27\7\n\2\2\u0e27"+
-		"\u0e28\7\u0209\2\2\u0e28\u0e29\7\u02e4\2\2\u0e29\u0e37\5\u03f4\u01fb\2"+
-		"\u0e2a\u0e2b\7\4\2\2\u0e2b\u0e2c\7\u0329\2\2\u0e2c\u0e2d\7\u00b0\2\2\u0e2d"+
-		"\u0e38\t\"\2\2\u0e2e\u0e35\7g\2\2\u0e2f\u0e30\7\u0329\2\2\u0e30\u0e31"+
-		"\7\u00b0\2\2\u0e31\u0e36\t\"\2\2\u0e32\u0e33\7\6\2\2\u0e33\u0e36\t\"\2"+
-		"\2\u0e34\u0e36\7\6\2\2\u0e35\u0e2f\3\2\2\2\u0e35\u0e32\3\2\2\2\u0e35\u0e34"+
-		"\3\2\2\2\u0e36\u0e38\3\2\2\2\u0e37\u0e2a\3\2\2\2\u0e37\u0e2e\3\2\2\2\u0e38"+
-		"\u0137\3\2\2\2\u0e39\u0e3a\7I\2\2\u0e3a\u0e3b\7\u0209\2\2\u0e3b\u0e3c"+
-		"\7\u02e4\2\2\u0e3c\u0e48\5\u03f4\u01fb\2\u0e3d\u0e46\7\u008b\2\2\u0e3e"+
-		"\u0e3f\5\u03f4\u01fb\2\u0e3f\u0e40\7\u033a\2\2\u0e40\u0e42\3\2\2\2\u0e41"+
-		"\u0e3e\3\2\2\2\u0e41\u0e42\3\2\2\2\u0e42\u0e43\3\2\2\2\u0e43\u0e47\5\u03f4"+
-		"\u01fb\2\u0e44\u0e45\7\u02ee\2\2\u0e45\u0e47\7\u02e4\2\2\u0e46\u0e41\3"+
-		"\2\2\2\u0e46\u0e44\3\2\2\2\u0e47\u0e49\3\2\2\2\u0e48\u0e3d\3\2\2\2\u0e48"+
-		"\u0e49\3\2\2\2\u0e49\u0e4c\3\2\2\2\u0e4a\u0e4b\7\24\2\2\u0e4b\u0e4d\5"+
-		"\u03f4\u01fb\2\u0e4c\u0e4a\3\2\2\2\u0e4c\u0e4d\3\2\2\2\u0e4d\u0139\3\2"+
-		"\2\2\u0e4e\u0e4f\7\n\2\2\u0e4f\u0e50\7\u023b\2\2\u0e50\u0e94\5\u03f4\u01fb"+
-		"\2\u0e51\u0e53\t\27\2\2\u0e52\u0e51\3\2\2\2\u0e52\u0e53\3\2\2\2\u0e53"+
-		"\u0e95\3\2\2\2\u0e54\u0e62\7\u0179\2\2\u0e55\u0e56\7\u00f4\2\2\u0e56\u0e5a"+
-		"\7\u032d\2\2\u0e57\u0e5b\7\u0329\2\2\u0e58\u0e59\7\u032a\2\2\u0e59\u0e5b"+
-		"\7\u0094\2\2\u0e5a\u0e57\3\2\2\2\u0e5a\u0e58\3\2\2\2\u0e5b\u0e5f\3\2\2"+
-		"\2\u0e5c\u0e5e\t#\2\2\u0e5d\u0e5c\3\2\2\2\u0e5e\u0e61\3\2\2\2\u0e5f\u0e5d"+
-		"\3\2\2\2\u0e5f\u0e60\3\2\2\2\u0e60\u0e63\3\2\2\2\u0e61\u0e5f\3\2\2\2\u0e62"+
-		"\u0e55\3\2\2\2\u0e62\u0e63\3\2\2\2\u0e63\u0e6d\3\2\2\2\u0e64\u0e65\7\u00e4"+
-		"\2\2\u0e65\u0e66\7\u032d\2\2\u0e66\u0e6a\7\u0329\2\2\u0e67\u0e69\t#\2"+
-		"\2\u0e68\u0e67\3\2\2\2\u0e69\u0e6c\3\2\2\2\u0e6a\u0e68\3\2\2\2\u0e6a\u0e6b"+
-		"\3\2\2\2\u0e6b\u0e6e\3\2\2\2\u0e6c\u0e6a\3\2\2\2\u0e6d\u0e64\3\2\2\2\u0e6d"+
-		"\u0e6e\3\2\2\2\u0e6e\u0e72\3\2\2\2\u0e6f\u0e70\7Z\2\2\u0e70\u0e71\7\u032d"+
-		"\2\2\u0e71\u0e73\5\u03f4\u01fb\2\u0e72\u0e6f\3\2\2\2\u0e72\u0e73\3\2\2"+
-		"\2\u0e73\u0e77\3\2\2\2\u0e74\u0e75\7\u01d4\2\2\u0e75\u0e76\7\u032d\2\2"+
-		"\u0e76\u0e78\5\u03f4\u01fb\2\u0e77\u0e74\3\2\2\2\u0e77\u0e78\3\2\2\2\u0e78"+
-		"\u0e7c\3\2\2\2\u0e79\u0e7a\7\u025d\2\2\u0e7a\u0e7b\7\u032d\2\2\u0e7b\u0e7d"+
-		"\5\u03f4\u01fb\2\u0e7c\u0e79\3\2\2\2\u0e7c\u0e7d\3\2\2\2\u0e7d\u0e81\3"+
-		"\2\2\2\u0e7e\u0e7f\7\60\2\2\u0e7f\u0e80\7\u032d\2\2\u0e80\u0e82\t\t\2"+
-		"\2\u0e81\u0e7e\3\2\2\2\u0e81\u0e82\3\2\2\2\u0e82\u0e86\3\2\2\2\u0e83\u0e84"+
-		"\7\61\2\2\u0e84\u0e85\7\u032d\2\2\u0e85\u0e87\t\t\2\2\u0e86\u0e83\3\2"+
-		"\2\2\u0e86\u0e87\3\2\2\2\u0e87\u0e8b\3\2\2\2\u0e88\u0e89\7\u01c4\2\2\u0e89"+
-		"\u0e8a\7\u032d\2\2\u0e8a\u0e8c\5\u03f4\u01fb\2\u0e8b\u0e88\3\2\2\2\u0e8b"+
-		"\u0e8c\3\2\2\2\u0e8c\u0e8f\3\2\2\2\u0e8d\u0e8e\7\u0263\2\2\u0e8e\u0e90"+
-		"\7\u01c4\2\2\u0e8f\u0e8d\3\2\2\2\u0e8f\u0e90\3\2\2\2\u0e90\u0e95\3\2\2"+
-		"\2\u0e91\u0e92\t\25\2\2\u0e92\u0e93\7\u01c4\2\2\u0e93\u0e95\5\u03f4\u01fb"+
-		"\2\u0e94\u0e52\3\2\2\2\u0e94\u0e54\3\2\2\2\u0e94\u0e91\3\2\2\2\u0e95\u013b"+
-		"\3\2\2\2\u0e96\u0e97\7I\2\2\u0e97\u0e98\7\u023b\2\2\u0e98\u0ef3\5\u03f4"+
-		"\u01fb\2\u0e99\u0ea7\7\u0179\2\2\u0e9a\u0e9b\7\u00f4\2\2\u0e9b\u0e9f\7"+
-		"\u032d\2\2\u0e9c\u0ea0\7\u0329\2\2\u0e9d\u0e9e\7\u032a\2\2\u0e9e\u0ea0"+
-		"\7\u0094\2\2\u0e9f\u0e9c\3\2\2\2\u0e9f\u0e9d\3\2\2\2\u0ea0\u0ea4\3\2\2"+
-		"\2\u0ea1\u0ea3\t#\2\2\u0ea2\u0ea1\3\2\2\2\u0ea3\u0ea6\3\2\2\2\u0ea4\u0ea2"+
-		"\3\2\2\2\u0ea4\u0ea5\3\2\2\2\u0ea5\u0ea8\3\2\2\2\u0ea6\u0ea4\3\2\2\2\u0ea7"+
-		"\u0e9a\3\2\2\2\u0ea7\u0ea8\3\2\2\2\u0ea8\u0eaf\3\2\2\2\u0ea9\u0eab\7\u0341"+
-		"\2\2\u0eaa\u0ea9\3\2\2\2\u0eaa\u0eab\3\2\2\2\u0eab\u0eac\3\2\2\2\u0eac"+
-		"\u0ead\7\u013e\2\2\u0ead\u0eae\7\u032d\2\2\u0eae\u0eb0\7\u032a\2\2\u0eaf"+
-		"\u0eaa\3\2\2\2\u0eaf\u0eb0\3\2\2\2\u0eb0\u0eb7\3\2\2\2\u0eb1\u0eb3\7\u0341"+
-		"\2\2\u0eb2\u0eb1\3\2\2\2\u0eb2\u0eb3\3\2\2\2\u0eb3\u0eb4\3\2\2\2\u0eb4"+
-		"\u0eb5\7Z\2\2\u0eb5\u0eb6\7\u032d\2\2\u0eb6\u0eb8\5\u03f4\u01fb\2\u0eb7"+
-		"\u0eb2\3\2\2\2\u0eb7\u0eb8\3\2\2\2\u0eb8\u0ebf\3\2\2\2\u0eb9\u0ebb\7\u0341"+
-		"\2\2\u0eba\u0eb9\3\2\2\2\u0eba\u0ebb\3\2\2\2\u0ebb\u0ebc\3\2\2\2\u0ebc"+
-		"\u0ebd\7\u01d4\2\2\u0ebd\u0ebe\7\u032d\2\2\u0ebe\u0ec0\5\u03f4\u01fb\2"+
-		"\u0ebf\u0eba\3\2\2\2\u0ebf\u0ec0\3\2\2\2\u0ec0\u0ec7\3\2\2\2\u0ec1\u0ec3"+
-		"\7\u0341\2\2\u0ec2\u0ec1\3\2\2\2\u0ec2\u0ec3\3\2\2\2\u0ec3\u0ec4\3\2\2"+
-		"\2\u0ec4\u0ec5\7\61\2\2\u0ec5\u0ec6\7\u032d\2\2\u0ec6\u0ec8\t\t\2\2\u0ec7"+
-		"\u0ec2\3\2\2\2\u0ec7\u0ec8\3\2\2\2\u0ec8\u0ecf\3\2\2\2\u0ec9\u0ecb\7\u0341"+
-		"\2\2\u0eca\u0ec9\3\2\2\2\u0eca\u0ecb\3\2\2\2\u0ecb\u0ecc\3\2\2\2\u0ecc"+
-		"\u0ecd\7\60\2\2\u0ecd\u0ece\7\u032d\2\2\u0ece\u0ed0\t\t\2\2\u0ecf\u0eca"+
-		"\3\2\2\2\u0ecf\u0ed0\3\2\2\2\u0ed0\u0ed7\3\2\2\2\u0ed1\u0ed3\7\u0341\2"+
-		"\2\u0ed2\u0ed1\3\2\2\2\u0ed2\u0ed3\3\2\2\2\u0ed3\u0ed4\3\2\2\2\u0ed4\u0ed5"+
-		"\7\u01c4\2\2\u0ed5\u0ed6\7\u032d\2\2\u0ed6\u0ed8\5\u03f4\u01fb\2\u0ed7"+
-		"\u0ed2\3\2\2\2\u0ed7\u0ed8\3\2\2\2\u0ed8\u0ef4\3\2\2\2\u0ed9\u0ef1\7\u008b"+
-		"\2\2\u0eda\u0edb\7\u0178\2\2\u0edb\u0ee2\7\u0179\2\2\u0edc\u0ede\7\u0341"+
-		"\2\2\u0edd\u0edc\3\2\2\2\u0edd\u0ede\3\2\2\2\u0ede\u0edf\3\2\2\2\u0edf"+
-		"\u0ee0\7Z\2\2\u0ee0\u0ee1\7\u032d\2\2\u0ee1\u0ee3\5\u03f4\u01fb\2\u0ee2"+
-		"\u0edd\3\2\2\2\u0ee2\u0ee3\3\2\2\2\u0ee3\u0eea\3\2\2\2\u0ee4\u0ee6\7\u0341"+
-		"\2\2\u0ee5\u0ee4\3\2\2\2\u0ee5\u0ee6\3\2\2\2\u0ee6\u0ee7\3\2\2\2\u0ee7"+
-		"\u0ee8\7\u01d4\2\2\u0ee8\u0ee9\7\u032d\2\2\u0ee9\u0eeb\7\u0329\2\2\u0eea"+
-		"\u0ee5\3\2\2\2\u0eea\u0eeb\3\2\2\2\u0eeb\u0ef2\3\2\2\2\u0eec\u0eed\7+"+
-		"\2\2\u0eed\u0ef2\5\u03f4\u01fb\2\u0eee\u0eef\7\22\2\2\u0eef\u0ef0\7\u00ac"+
-		"\2\2\u0ef0\u0ef2\5\u03f4\u01fb\2\u0ef1\u0eda\3\2\2\2\u0ef1\u0eec\3\2\2"+
-		"\2\u0ef1\u0eee\3\2\2\2\u0ef2\u0ef4\3\2\2\2\u0ef3\u0e99\3\2\2\2\u0ef3\u0ed9"+
-		"\3\2\2\2\u0ef4\u013d\3\2\2\2\u0ef5\u0ef6\7\n\2\2\u0ef6\u0ef7\7\u023b\2"+
-		"\2\u0ef7\u0f09\5\u03f4\u01fb\2\u0ef8\u0efa\t\27\2\2\u0ef9\u0ef8\3\2\2"+
-		"\2\u0ef9\u0efa\3\2\2\2\u0efa\u0f0a\3\2\2\2\u0efb\u0f07\7\u0179\2\2\u0efc"+
-		"\u0efd\7\u00f4\2\2\u0efd\u0efe\7\u032d\2\2\u0efe\u0f02\7\u0329\2\2\u0eff"+
-		"\u0f00\7\u00e4\2\2\u0f00\u0f01\7\u032d\2\2\u0f01\u0f03\7\u0329\2\2\u0f02"+
-		"\u0eff\3\2\2\2\u0f02\u0f03\3\2\2\2\u0f03\u0f08\3\2\2\2\u0f04\u0f05\7\u025d"+
-		"\2\2\u0f05\u0f06\7\u032d\2\2\u0f06\u0f08\5\u03f4\u01fb\2\u0f07\u0efc\3"+
-		"\2\2\2\u0f07\u0f04\3\2\2\2\u0f08\u0f0a\3\2\2\2\u0f09\u0ef9\3\2\2\2\u0f09"+
-		"\u0efb\3\2\2\2\u0f0a\u013f\3\2\2\2\u0f0b\u0f0c\7I\2\2\u0f0c\u0f0d\7\u023b"+
-		"\2\2\u0f0d\u0f0e\5\u03f4\u01fb\2\u0f0e\u0f0f\7\u0179\2\2\u0f0f\u0f10\7"+
-		"\u00f4\2\2\u0f10\u0f11\7\u032d\2\2\u0f11\u0f15\7\u0329\2\2\u0f12\u0f13"+
-		"\7\u013e\2\2\u0f13\u0f14\7\u032d\2\2\u0f14\u0f16\7\u032a\2\2\u0f15\u0f12"+
-		"\3\2\2\2\u0f15\u0f16\3\2\2\2\u0f16\u0141\3\2\2\2\u0f17\u0f18\7\n\2\2\u0f18"+
-		"\u0f19\7\u023b\2\2\u0f19\u0f31\5\u03f4\u01fb\2\u0f1a\u0f1c\t\27\2\2\u0f1b"+
-		"\u0f1a\3\2\2\2\u0f1b\u0f1c\3\2\2\2\u0f1c\u0f32\3\2\2\2\u0f1d\u0f2f\7\u0179"+
-		"\2\2\u0f1e\u0f1f\7\u00f4\2\2\u0f1f\u0f20\7\u032d\2\2\u0f20\u0f2a\7\u0329"+
+		"\2\u0c2a\u0c2b\3\2\2\2\u0c2b\u0c2c\3\2\2\2\u0c2c\u0c2d\7\u0340\2\2\u0c2d"+
+		"\u0c2f\3\2\2\2\u0c2e\u0c17\3\2\2\2\u0c2f\u0c32\3\2\2\2\u0c30\u0c2e\3\2"+
+		"\2\2\u0c30\u0c31\3\2\2\2\u0c31\u0c34\3\2\2\2\u0c32\u0c30\3\2\2\2\u0c33"+
+		"\u0c0c\3\2\2\2\u0c34\u0c37\3\2\2\2\u0c35\u0c33\3\2\2\2\u0c35\u0c36\3\2"+
+		"\2\2\u0c36\u0c45\3\2\2\2\u0c37\u0c35\3\2\2\2\u0c38\u0c39\7g\2\2\u0c39"+
+		"\u0c3d\7\u0156\2\2\u0c3a\u0c3b\5\u03f4\u01fb\2\u0c3b\u0c3c\7\u033a\2\2"+
+		"\u0c3c\u0c3e\3\2\2\2\u0c3d\u0c3a\3\2\2\2\u0c3d\u0c3e\3\2\2\2\u0c3e\u0c3f"+
+		"\3\2\2\2\u0c3f\u0c40\5\u03f4\u01fb\2\u0c40\u0c41\7\u033a\2\2\u0c41\u0c42"+
+		"\5\u03f4\u01fb\2\u0c42\u0c44\3\2\2\2\u0c43\u0c38\3\2\2\2\u0c44\u0c47\3"+
+		"\2\2\2\u0c45\u0c43\3\2\2\2\u0c45\u0c46\3\2\2\2\u0c46\u0c89\3\2\2\2\u0c47"+
+		"\u0c45\3\2\2\2\u0c48\u0c49\7\u0179\2\2\u0c49\u0c51\7\u033f\2\2\u0c4a\u0c4c"+
+		"\7\u0341\2\2\u0c4b\u0c4a\3\2\2\2\u0c4b\u0c4c\3\2\2\2\u0c4c\u0c4d\3\2\2"+
+		"\2\u0c4d\u0c4e\7\u00be\2\2\u0c4e\u0c4f\7\u032d\2\2\u0c4f\u0c50\7\u0325"+
+		"\2\2\u0c50\u0c52\t\31\2\2\u0c51\u0c4b\3\2\2\2\u0c51\u0c52\3\2\2\2\u0c52"+
+		"\u0c59\3\2\2\2\u0c53\u0c55\7\u0341\2\2\u0c54\u0c53\3\2\2\2\u0c54\u0c55"+
+		"\3\2\2\2\u0c55\u0c56\3\2\2\2\u0c56\u0c57\7s\2\2\u0c57\u0c58\7\u032d\2"+
+		"\2\u0c58\u0c5a\t\32\2\2\u0c59\u0c54\3\2\2\2\u0c59\u0c5a\3\2\2\2\u0c5a"+
+		"\u0c65\3\2\2\2\u0c5b\u0c5d\7\u0341\2\2\u0c5c\u0c5b\3\2\2\2\u0c5c\u0c5d"+
+		"\3\2\2\2\u0c5d\u0c5e\3\2\2\2\u0c5e\u0c5f\7\u00c1\2\2\u0c5f\u0c63\7\u032d"+
+		"\2\2\u0c60\u0c61\7\u0325\2\2\u0c61\u0c64\7\u02c6\2\2\u0c62\u0c64\7\u009f"+
+		"\2\2\u0c63\u0c60\3\2\2\2\u0c63\u0c62\3\2\2\2\u0c64\u0c66\3\2\2\2\u0c65"+
+		"\u0c5c\3\2\2\2\u0c65\u0c66\3\2\2\2\u0c66\u0c6e\3\2\2\2\u0c67\u0c69\7\u0341"+
+		"\2\2\u0c68\u0c67\3\2\2\2\u0c68\u0c69\3\2\2\2\u0c69\u0c6a\3\2\2\2\u0c6a"+
+		"\u0c6b\7\u00c2\2\2\u0c6b\u0c6c\7\u032d\2\2\u0c6c\u0c6d\7\u0325\2\2\u0c6d"+
+		"\u0c6f\t\31\2\2\u0c6e\u0c68\3\2\2\2\u0c6e\u0c6f\3\2\2\2\u0c6f\u0c76\3"+
+		"\2\2\2\u0c70\u0c72\7\u0341\2\2\u0c71\u0c70\3\2\2\2\u0c71\u0c72\3\2\2\2"+
+		"\u0c72\u0c73\3\2\2\2\u0c73\u0c74\7\u00c8\2\2\u0c74\u0c75\7\u032d\2\2\u0c75"+
+		"\u0c77\t\33\2\2\u0c76\u0c71\3\2\2\2\u0c76\u0c77\3\2\2\2\u0c77\u0c7e\3"+
+		"\2\2\2\u0c78\u0c7a\7\u0341\2\2\u0c79\u0c78\3\2\2\2\u0c79\u0c7a\3\2\2\2"+
+		"\u0c7a\u0c7b\3\2\2\2\u0c7b\u0c7c\7\u015c\2\2\u0c7c\u0c7d\7\u032d\2\2\u0c7d"+
+		"\u0c7f\t\t\2\2\u0c7e\u0c79\3\2\2\2\u0c7e\u0c7f\3\2\2\2\u0c7f\u0c86\3\2"+
+		"\2\2\u0c80\u0c82\7\u0341\2\2\u0c81\u0c80\3\2\2\2\u0c81\u0c82\3\2\2\2\u0c82"+
+		"\u0c83\3\2\2\2\u0c83\u0c84\7\u014d\2\2\u0c84\u0c85\7\u032d\2\2\u0c85\u0c87"+
+		"\t\t\2\2\u0c86\u0c81\3\2\2\2\u0c86\u0c87\3\2\2\2\u0c87\u0c88\3\2\2\2\u0c88"+
+		"\u0c8a\7\u0340\2\2\u0c89\u0c48\3\2\2\2\u0c89\u0c8a\3\2\2\2\u0c8a\u0c8e"+
+		"\3\2\2\2\u0c8b\u0c8c\7\u0149\2\2\u0c8c\u0c8d\7\u032d\2\2\u0c8d\u0c8f\t"+
+		"\34\2\2\u0c8e\u0c8b\3\2\2\2\u0c8e\u0c8f\3\2\2\2\u0c8f\u0121\3\2\2\2\u0c90"+
+		"\u0c92\7\u0341\2\2\u0c91\u0c90\3\2\2\2\u0c91\u0c92\3\2\2\2\u0c92\u0c94"+
+		"\3\2\2\2\u0c93\u0c95\t\35\2\2\u0c94\u0c93\3\2\2\2\u0c94\u0c95\3\2\2\2"+
+		"\u0c95\u0c97\3\2\2\2\u0c96\u0c98\7\u00dc\2\2\u0c97\u0c96\3\2\2\2\u0c97"+
+		"\u0c98\3\2\2\2\u0c98\u0c9e\3\2\2\2\u0c99\u0c9f\5\u0124\u0093\2\u0c9a\u0c9b"+
+		"\7\u033f\2\2\u0c9b\u0c9c\5\u0122\u0092\2\u0c9c\u0c9d\7\u0340\2\2\u0c9d"+
+		"\u0c9f\3\2\2\2\u0c9e\u0c99\3\2\2\2\u0c9e\u0c9a\3\2\2\2\u0c9f\u0ca1\3\2"+
+		"\2\2\u0ca0\u0c91\3\2\2\2\u0ca1\u0ca2\3\2\2\2\u0ca2\u0ca0\3\2\2\2\u0ca2"+
+		"\u0ca3\3\2\2\2\u0ca3\u0123\3\2\2\2\u0ca4\u0caa\5\u0126\u0094\2\u0ca5\u0ca6"+
+		"\7\u033f\2\2\u0ca6\u0ca7\5\u0122\u0092\2\u0ca7\u0ca8\7\u0340\2\2\u0ca8"+
+		"\u0caa\3\2\2\2\u0ca9\u0ca4\3\2\2\2\u0ca9\u0ca5\3\2\2\2\u0caa\u0125\3\2"+
+		"\2\2\u0cab\u0cc8\5\u03f4\u01fb\2\u0cac\u0cb7\5\u03f4\u01fb\2\u0cad\u0cae"+
+		"\5\u03f4\u01fb\2\u0cae\u0caf\7\u033a\2\2\u0caf\u0cb1\3\2\2\2\u0cb0\u0cad"+
+		"\3\2\2\2\u0cb0\u0cb1\3\2\2\2\u0cb1\u0cb2\3\2\2\2\u0cb2\u0cb3\5\u03f4\u01fb"+
+		"\2\u0cb3\u0cb4\7\u033a\2\2\u0cb4\u0cb5\5\u03f4\u01fb\2\u0cb5\u0cb7\3\2"+
+		"\2\2\u0cb6\u0cac\3\2\2\2\u0cb6\u0cb0\3\2\2\2\u0cb7\u0cc3\3\2\2\2\u0cb8"+
+		"\u0cc4\7\u032d\2\2\u0cb9\u0cba\7\u032f\2\2\u0cba\u0cc4\7\u032e\2\2\u0cbb"+
+		"\u0cbc\7\u0330\2\2\u0cbc\u0cc4\7\u032d\2\2\u0cbd\u0cc4\7\u032e\2\2\u0cbe"+
+		"\u0cbf\7\u032e\2\2\u0cbf\u0cc4\7\u032d\2\2\u0cc0\u0cc4\7\u032f\2\2\u0cc1"+
+		"\u0cc2\7\u032f\2\2\u0cc2\u0cc4\7\u032d\2\2\u0cc3\u0cb8\3\2\2\2\u0cc3\u0cb9"+
+		"\3\2\2\2\u0cc3\u0cbb\3\2\2\2\u0cc3\u0cbd\3\2\2\2\u0cc3\u0cbe\3\2\2\2\u0cc3"+
+		"\u0cc0\3\2\2\2\u0cc3\u0cc1\3\2\2\2\u0cc4\u0cc5\3\2\2\2\u0cc5\u0cc6\t\30"+
+		"\2\2\u0cc6\u0cc8\3\2\2\2\u0cc7\u0cab\3\2\2\2\u0cc7\u0cb6\3\2\2\2\u0cc8"+
+		"\u0ce4\3\2\2\2\u0cc9\u0cca\5\u03f4\u01fb\2\u0cca\u0ccb\7\u033a\2\2\u0ccb"+
+		"\u0ccd\3\2\2\2\u0ccc\u0cc9\3\2\2\2\u0ccc\u0ccd\3\2\2\2\u0ccd\u0cce\3\2"+
+		"\2\2\u0cce\u0ccf\5\u03f4\u01fb\2\u0ccf\u0cd0\7\u033a\2\2\u0cd0\u0cd1\5"+
+		"\u03f4\u01fb\2\u0cd1\u0cdf\7\u033f\2\2\u0cd2\u0ce0\5\u03f4\u01fb\2\u0cd3"+
+		"\u0cd4\5\u03f4\u01fb\2\u0cd4\u0cd5\7\u033a\2\2\u0cd5\u0cd7\3\2\2\2\u0cd6"+
+		"\u0cd3\3\2\2\2\u0cd6\u0cd7\3\2\2\2\u0cd7\u0cd8\3\2\2\2\u0cd8\u0cd9\5\u03f4"+
+		"\u01fb\2\u0cd9\u0cda\7\u033a\2\2\u0cda\u0cdb\5\u03f4\u01fb\2\u0cdb\u0cdc"+
+		"\3\2\2\2\u0cdc\u0cdd\7\u0341\2\2\u0cdd\u0cde\t\30\2\2\u0cde\u0ce0\3\2"+
+		"\2\2\u0cdf\u0cd2\3\2\2\2\u0cdf\u0cd6\3\2\2\2\u0ce0\u0ce1\3\2\2\2\u0ce1"+
+		"\u0ce2\7\u0340\2\2\u0ce2\u0ce4\3\2\2\2\u0ce3\u0cc7\3\2\2\2\u0ce3\u0ccc"+
+		"\3\2\2\2\u0ce4\u0127\3\2\2\2\u0ce5\u0ce6\7\n\2\2\u0ce6\u0ce7\7{\2\2\u0ce7"+
+		"\u0ce8\7\u01c8\2\2\u0ce8\u0ce9\7\u0142\2\2\u0ce9\u0cea\5\u03f4\u01fb\2"+
+		"\u0cea\u0cfa\7\u013b\2\2\u0ceb\u0cec\7\u0238\2\2\u0cec\u0ced\7\u032d\2"+
+		"\2\u0ced\u0cef\t\36\2\2\u0cee\u0cf0\7\u0341\2\2\u0cef\u0cee\3\2\2\2\u0cef"+
+		"\u0cf0\3\2\2\2\u0cf0\u0cfb\3\2\2\2\u0cf1\u0cf2\7\u02b3\2\2\u0cf2\u0cf3"+
+		"\7\u032d\2\2\u0cf3\u0cf5\t\36\2\2\u0cf4\u0cf6\7\u0341\2\2\u0cf5\u0cf4"+
+		"\3\2\2\2\u0cf5\u0cf6\3\2\2\2\u0cf6\u0cfb\3\2\2\2\u0cf7\u0cf8\7\u01c4\2"+
+		"\2\u0cf8\u0cf9\7\u032d\2\2\u0cf9\u0cfb\5\u03f4\u01fb\2\u0cfa\u0ceb\3\2"+
+		"\2\2\u0cfa\u0cf1\3\2\2\2\u0cfa\u0cf7\3\2\2\2\u0cfb\u0cfc\3\2\2\2\u0cfc"+
+		"\u0cfa\3\2\2\2\u0cfc\u0cfd\3\2\2\2\u0cfd\u0d15\3\2\2\2\u0cfe\u0cff\7\n"+
+		"\2\2\u0cff\u0d00\7{\2\2\u0d00\u0d01\7\u01c8\2\2\u0d01\u0d02\7\u0142\2"+
+		"\2\u0d02\u0d03\5\u03f4\u01fb\2\u0d03\u0d04\7\u0179\2\2\u0d04\u0d05\7\u033f"+
+		"\2\2\u0d05\u0d06\7\u0301\2\2\u0d06\u0d07\7\u032d\2\2\u0d07\u0d08\7\u01a7"+
+		"\2\2\u0d08\u0d09\7\u0341\2\2\u0d09\u0d0a\7\u0238\2\2\u0d0a\u0d0b\7\u032d"+
+		"\2\2\u0d0b\u0d10\7\u0329\2\2\u0d0c\u0d0d\7\u0341\2\2\u0d0d\u0d0e\7\u01c4"+
+		"\2\2\u0d0e\u0d0f\7\u032d\2\2\u0d0f\u0d11\5\u03f4\u01fb\2\u0d10\u0d0c\3"+
+		"\2\2\2\u0d10\u0d11\3\2\2\2\u0d11\u0d12\3\2\2\2\u0d12\u0d13\7\u0340\2\2"+
+		"\u0d13\u0d15\3\2\2\2\u0d14\u0ce5\3\2\2\2\u0d14\u0cfe\3\2\2\2\u0d15\u0129"+
+		"\3\2\2\2\u0d16\u0d17\7\n\2\2\u0d17\u0d18\7{\2\2\u0d18\u0d19\7\u00b2\2"+
+		"\2\u0d19\u0d1c\5\u03f4\u01fb\2\u0d1a\u0d1b\7\24\2\2\u0d1b\u0d1d\5\u03f4"+
+		"\u01fb\2\u0d1c\u0d1a\3\2\2\2\u0d1c\u0d1d\3\2\2\2\u0d1d\u0d1e\3\2\2\2\u0d1e"+
+		"\u0d1f\t\37\2\2\u0d1f\u0d20\7\u033f\2\2\u0d20\u0d21\7\u01bb\2\2\u0d21"+
+		"\u0d25\7\u032d\2\2\u0d22\u0d26\7\u0329\2\2\u0d23\u0d26\7\u032a\2\2\u0d24"+
+		"\u0d26\7\u00d5\2\2\u0d25\u0d22\3\2\2\2\u0d25\u0d23\3\2\2\2\u0d25\u0d24"+
+		"\3\2\2\2\u0d26\u0d27\3\2\2\2\u0d27\u0d28\7\u0341\2\2\u0d28\u0d29\7\u00fc"+
+		"\2\2\u0d29\u0d2b\7\u032d\2\2\u0d2a\u0d2c\t \2\2\u0d2b\u0d2a\3\2\2\2\u0d2b"+
+		"\u0d2c\3\2\2\2\u0d2c\u0d2d\3\2\2\2\u0d2d\u0d2e\7\u0340\2\2\u0d2e\u0d2f"+
+		"\3\2\2\2\u0d2f\u0d39\7\u0179\2\2\u0d30\u0d32\7\u0341\2\2\u0d31\u0d30\3"+
+		"\2\2\2\u0d31\u0d32\3\2\2\2\u0d32\u0d33\3\2\2\2\u0d33\u0d34\7\u00b0\2\2"+
+		"\u0d34\u0d35\7\u032d\2\2\u0d35\u0d3a\t!\2\2\u0d36\u0d37\7S\2\2\u0d37\u0d38"+
+		"\7\u032d\2\2\u0d38\u0d3a\5\u03f4\u01fb\2\u0d39\u0d31\3\2\2\2\u0d39\u0d36"+
+		"\3\2\2\2\u0d3a\u0d3b\3\2\2\2\u0d3b\u0d39\3\2\2\2\u0d3b\u0d3c\3\2\2\2\u0d3c"+
+		"\u0d3d\3\2\2\2\u0d3d\u0d3e\7\u0340\2\2\u0d3e\u012b\3\2\2\2\u0d3f\u0d40"+
+		"\7I\2\2\u0d40\u0d41\7{\2\2\u0d41\u0d42\7\u00b2\2\2\u0d42\u0d45\5\u03f4"+
+		"\u01fb\2\u0d43\u0d44\7\24\2\2\u0d44\u0d46\5\u03f4\u01fb\2\u0d45\u0d43"+
+		"\3\2\2\2\u0d45\u0d46\3\2\2\2\u0d46\u0d47\3\2\2\2\u0d47\u0d49\7\u008b\2"+
+		"\2\u0d48\u0d4a\7\u0341\2\2\u0d49\u0d48\3\2\2\2\u0d49\u0d4a\3\2\2\2\u0d4a"+
+		"\u0d4c\3\2\2\2\u0d4b\u0d4d\7\u033f\2\2\u0d4c\u0d4b\3\2\2\2\u0d4c\u0d4d"+
+		"\3\2\2\2\u0d4d\u0d50\3\2\2\2\u0d4e\u0d4f\7\u01bb\2\2\u0d4f\u0d51\7\u032d"+
+		"\2\2\u0d50\u0d4e\3\2\2\2\u0d50\u0d51\3\2\2\2\u0d51\u0d55\3\2\2\2\u0d52"+
+		"\u0d56\7\u0329\2\2\u0d53\u0d56\7\u032a\2\2\u0d54\u0d56\7\u00d5\2\2\u0d55"+
+		"\u0d52\3\2\2\2\u0d55\u0d53\3\2\2\2\u0d55\u0d54\3\2\2\2\u0d56\u0d5e\3\2"+
+		"\2\2\u0d57\u0d58\7\u0341\2\2\u0d58\u0d59\7\u00fc\2\2\u0d59\u0d5b\7\u032d"+
+		"\2\2\u0d5a\u0d5c\t \2\2\u0d5b\u0d5a\3\2\2\2\u0d5b\u0d5c\3\2\2\2\u0d5c"+
+		"\u0d5d\3\2\2\2\u0d5d\u0d5f\7\u0340\2\2\u0d5e\u0d57\3\2\2\2\u0d5e\u0d5f"+
+		"\3\2\2\2\u0d5f\u0d6f\3\2\2\2\u0d60\u0d6a\7\u0179\2\2\u0d61\u0d63\7\u0341"+
+		"\2\2\u0d62\u0d61\3\2\2\2\u0d62\u0d63\3\2\2\2\u0d63\u0d64\3\2\2\2\u0d64"+
+		"\u0d65\7\u00b0\2\2\u0d65\u0d66\7\u032d\2\2\u0d66\u0d6b\t!\2\2\u0d67\u0d68"+
+		"\7S\2\2\u0d68\u0d69\7\u032d\2\2\u0d69\u0d6b\5\u03f4\u01fb\2\u0d6a\u0d62"+
+		"\3\2\2\2\u0d6a\u0d67\3\2\2\2\u0d6b\u0d6c\3\2\2\2\u0d6c\u0d6a\3\2\2\2\u0d6c"+
+		"\u0d6d\3\2\2\2\u0d6d\u0d6e\3\2\2\2\u0d6e\u0d70\7\u0340\2\2\u0d6f\u0d60"+
+		"\3\2\2\2\u0d6f\u0d70\3\2\2\2\u0d70\u012d\3\2\2\2\u0d71\u0d72\7\n\2\2\u0d72"+
+		"\u0d73\7{\2\2\u0d73\u0d74\7\u02b2\2\2\u0d74\u0d77\7\u0285\2\2\u0d75\u0d78"+
+		"\5\u03f4\u01fb\2\u0d76\u0d78\7\u01d2\2\2\u0d77\u0d75\3\2\2\2\u0d77\u0d76"+
+		"\3\2\2\2\u0d78\u0d79\3\2\2\2\u0d79\u0d7a\7\u0179\2\2\u0d7a\u0d7b\7\u033f"+
+		"\2\2\u0d7b\u0d7c\7\u0242\2\2\u0d7c\u0d7d\7\u032d\2\2\u0d7d\u0da3\7\u0325"+
+		"\2\2\u0d7e\u0d80\7\u0341\2\2\u0d7f\u0d7e\3\2\2\2\u0d7f\u0d80\3\2\2\2\u0d80"+
+		"\u0d81\3\2\2\2\u0d81\u0d82\7\u0187\2\2\u0d82\u0d83\7\u01c1\2\2\u0d83\u0d91"+
+		"\7\u032d\2\2\u0d84\u0d92\7\u0198\2\2\u0d85\u0d87\7\u0341\2\2\u0d86\u0d85"+
+		"\3\2\2\2\u0d86\u0d87\3\2\2\2\u0d87\u0d88\3\2\2\2\u0d88\u0d89\7\u0325\2"+
+		"\2\u0d89\u0d8a\7\u015a\2\2\u0d8a\u0d8e\7\u0325\2\2\u0d8b\u0d8c\7\u0341"+
+		"\2\2\u0d8c\u0d8e\7\u0325\2\2\u0d8d\u0d86\3\2\2\2\u0d8d\u0d8b\3\2\2\2\u0d8e"+
+		"\u0d8f\3\2\2\2\u0d8f\u0d8d\3\2\2\2\u0d8f\u0d90\3\2\2\2\u0d90\u0d92\3\2"+
+		"\2\2\u0d91\u0d84\3\2\2\2\u0d91\u0d8d\3\2\2\2\u0d92\u0da4\3\2\2\2\u0d93"+
+		"\u0d94\7\u026e\2\2\u0d94\u0d9f\7\u032d\2\2\u0d95\u0d97\7\u0341\2\2\u0d96"+
+		"\u0d95\3\2\2\2\u0d96\u0d97\3\2\2\2\u0d97\u0d98\3\2\2\2\u0d98\u0d99\7\u0325"+
+		"\2\2\u0d99\u0d9a\7\u015a\2\2\u0d9a\u0da0\7\u0325\2\2\u0d9b\u0d9d\7\u0341"+
+		"\2\2\u0d9c\u0d9b\3\2\2\2\u0d9c\u0d9d\3\2\2\2\u0d9d\u0d9e\3\2\2\2\u0d9e"+
+		"\u0da0\7\u0325\2\2\u0d9f\u0d96\3\2\2\2\u0d9f\u0d9c\3\2\2\2\u0da0\u0da1"+
+		"\3\2\2\2\u0da1\u0d9f\3\2\2\2\u0da1\u0da2\3\2\2\2\u0da2\u0da4\3\2\2\2\u0da3"+
+		"\u0d7f\3\2\2\2\u0da3\u0d93\3\2\2\2\u0da4\u0dab\3\2\2\2\u0da5\u0da7\7\u0341"+
+		"\2\2\u0da6\u0da5\3\2\2\2\u0da6\u0da7\3\2\2\2\u0da7\u0da8\3\2\2\2\u0da8"+
+		"\u0da9\7\u0246\2\2\u0da9\u0daa\7\u032d\2\2\u0daa\u0dac\7\u0325\2\2\u0dab"+
+		"\u0da6\3\2\2\2\u0dab\u0dac\3\2\2\2\u0dac\u0db3\3\2\2\2\u0dad\u0daf\7\u0341"+
+		"\2\2\u0dae\u0dad\3\2\2\2\u0dae\u0daf\3\2\2\2\u0daf\u0db0\3\2\2\2\u0db0"+
+		"\u0db1\7\u0247\2\2\u0db1\u0db2\7\u032d\2\2\u0db2\u0db4\7\u0325\2\2\u0db3"+
+		"\u0dae\3\2\2\2\u0db3\u0db4\3\2\2\2\u0db4\u0db5\3\2\2\2\u0db5\u0db6\7\u0340"+
+		"\2\2\u0db6\u012f\3\2\2\2\u0db7\u0db8\7I\2\2\u0db8\u0db9\7{\2\2\u0db9\u0dba"+
+		"\7\u02b2\2\2\u0dba\u0dbb\7\u0285\2\2\u0dbb\u0dbc\5\u03f4\u01fb\2\u0dbc"+
+		"\u0dbd\7\u0179\2\2\u0dbd\u0dbe\7\u033f\2\2\u0dbe\u0dbf\7\u0242\2\2\u0dbf"+
+		"\u0dc0\7\u032d\2\2\u0dc0\u0de6\7\u0325\2\2\u0dc1\u0dc3\7\u0341\2\2\u0dc2"+
+		"\u0dc1\3\2\2\2\u0dc2\u0dc3\3\2\2\2\u0dc3\u0dc4\3\2\2\2\u0dc4\u0dc5\7\u0187"+
+		"\2\2\u0dc5\u0dc6\7\u01c1\2\2\u0dc6\u0dd4\7\u032d\2\2\u0dc7\u0dd5\7\u0198"+
+		"\2\2\u0dc8\u0dca\7\u0341\2\2\u0dc9\u0dc8\3\2\2\2\u0dc9\u0dca\3\2\2\2\u0dca"+
+		"\u0dcb\3\2\2\2\u0dcb\u0dcc\7\u0325\2\2\u0dcc\u0dcd\7\u015a\2\2\u0dcd\u0dd1"+
+		"\7\u0325\2\2\u0dce\u0dcf\7\u0341\2\2\u0dcf\u0dd1\7\u0325\2\2\u0dd0\u0dc9"+
+		"\3\2\2\2\u0dd0\u0dce\3\2\2\2\u0dd1\u0dd2\3\2\2\2\u0dd2\u0dd0\3\2\2\2\u0dd2"+
+		"\u0dd3\3\2\2\2\u0dd3\u0dd5\3\2\2\2\u0dd4\u0dc7\3\2\2\2\u0dd4\u0dd0\3\2"+
+		"\2\2\u0dd5\u0de7\3\2\2\2\u0dd6\u0dd7\7\u026e\2\2\u0dd7\u0de2\7\u032d\2"+
+		"\2\u0dd8\u0dda\7\u0341\2\2\u0dd9\u0dd8\3\2\2\2\u0dd9\u0dda\3\2\2\2\u0dda"+
+		"\u0ddb\3\2\2\2\u0ddb\u0ddc\7\u0325\2\2\u0ddc\u0ddd\7\u015a\2\2\u0ddd\u0de3"+
+		"\7\u0325\2\2\u0dde\u0de0\7\u0341\2\2\u0ddf\u0dde\3\2\2\2\u0ddf\u0de0\3"+
+		"\2\2\2\u0de0\u0de1\3\2\2\2\u0de1\u0de3\7\u0325\2\2\u0de2\u0dd9\3\2\2\2"+
+		"\u0de2\u0ddf\3\2\2\2\u0de3\u0de4\3\2\2\2\u0de4\u0de2\3\2\2\2\u0de4\u0de5"+
+		"\3\2\2\2\u0de5\u0de7\3\2\2\2\u0de6\u0dc2\3\2\2\2\u0de6\u0dd6\3\2\2\2\u0de7"+
+		"\u0dee\3\2\2\2\u0de8\u0dea\7\u0341\2\2\u0de9\u0de8\3\2\2\2\u0de9\u0dea"+
+		"\3\2\2\2\u0dea\u0deb\3\2\2\2\u0deb\u0dec\7\u0246\2\2\u0dec\u0ded\7\u032d"+
+		"\2\2\u0ded\u0def\7\u0325\2\2\u0dee\u0de9\3\2\2\2\u0dee\u0def\3\2\2\2\u0def"+
+		"\u0df6\3\2\2\2\u0df0\u0df2\7\u0341\2\2\u0df1\u0df0\3\2\2\2\u0df1\u0df2"+
+		"\3\2\2\2\u0df2\u0df3\3\2\2\2\u0df3\u0df4\7\u0247\2\2\u0df4\u0df5\7\u032d"+
+		"\2\2\u0df5\u0df7\7\u0325\2\2\u0df6\u0df1\3\2\2\2\u0df6\u0df7\3\2\2\2\u0df7"+
+		"\u0df8\3\2\2\2\u0df8\u0df9\7\u0340\2\2\u0df9\u0131\3\2\2\2\u0dfa\u0dfb"+
+		"\7\n\2\2\u0dfb\u0dfc\7\u0209\2\2\u0dfc\u0dfd\7\u01ae\2\2\u0dfd\u0e08\5"+
+		"\u03f4\u01fb\2\u0dfe\u0e03\7\u02a1\2\2\u0dff\u0e00\7\u0179\2\2\u0e00\u0e01"+
+		"\7\u017f\2\2\u0e01\u0e02\7\u032d\2\2\u0e02\u0e04\t\t\2\2\u0e03\u0dff\3"+
+		"\2\2\2\u0e03\u0e04\3\2\2\2\u0e04\u0e09\3\2\2\2\u0e05\u0e09\7\u02aa\2\2"+
+		"\u0e06\u0e07\7\20\2\2\u0e07\u0e09\7Y\2\2\u0e08\u0dfe\3\2\2\2\u0e08\u0e05"+
+		"\3\2\2\2\u0e08\u0e06\3\2\2\2\u0e09\u0133\3\2\2\2\u0e0a\u0e0b\7I\2\2\u0e0b"+
+		"\u0e0c\7\u0209\2\2\u0e0c\u0e0d\7\u01ae\2\2\u0e0d\u0e11\5\u03f4\u01fb\2"+
+		"\u0e0e\u0e0f\7\u00e5\2\2\u0e0f\u0e10\7\u01fb\2\2\u0e10\u0e12\5\u03f4\u01fb"+
+		"\2\u0e11\u0e0e\3\2\2\2\u0e11\u0e12\3\2\2\2\u0e12\u0e16\3\2\2\2\u0e13\u0e14"+
+		"\7\u009b\2\2\u0e14\u0e15\7\u0283\2\2\u0e15\u0e17\7\u0329\2\2\u0e16\u0e13"+
+		"\3\2\2\2\u0e16\u0e17\3\2\2\2\u0e17\u0e1c\3\2\2\2\u0e18\u0e19\7\u0179\2"+
+		"\2\u0e19\u0e1a\7\u017f\2\2\u0e1a\u0e1b\7\u032d\2\2\u0e1b\u0e1d\t\t\2\2"+
+		"\u0e1c\u0e18\3\2\2\2\u0e1c\u0e1d\3\2\2\2\u0e1d\u0e20\3\2\2\2\u0e1e\u0e1f"+
+		"\7\20\2\2\u0e1f\u0e21\7Y\2\2\u0e20\u0e1e\3\2\2\2\u0e20\u0e21\3\2\2\2\u0e21"+
+		"\u0e24\3\2\2\2\u0e22\u0e23\7\24\2\2\u0e23\u0e25\5\u03f4\u01fb\2\u0e24"+
+		"\u0e22\3\2\2\2\u0e24\u0e25\3\2\2\2\u0e25\u0135\3\2\2\2\u0e26\u0e27\7\n"+
+		"\2\2\u0e27\u0e28\7\u0209\2\2\u0e28\u0e29\7\u02e4\2\2\u0e29\u0e37\5\u03f4"+
+		"\u01fb\2\u0e2a\u0e2b\7\4\2\2\u0e2b\u0e2c\7\u0329\2\2\u0e2c\u0e2d\7\u00b0"+
+		"\2\2\u0e2d\u0e38\t\"\2\2\u0e2e\u0e35\7g\2\2\u0e2f\u0e30\7\u0329\2\2\u0e30"+
+		"\u0e31\7\u00b0\2\2\u0e31\u0e36\t\"\2\2\u0e32\u0e33\7\6\2\2\u0e33\u0e36"+
+		"\t\"\2\2\u0e34\u0e36\7\6\2\2\u0e35\u0e2f\3\2\2\2\u0e35\u0e32\3\2\2\2\u0e35"+
+		"\u0e34\3\2\2\2\u0e36\u0e38\3\2\2\2\u0e37\u0e2a\3\2\2\2\u0e37\u0e2e\3\2"+
+		"\2\2\u0e38\u0137\3\2\2\2\u0e39\u0e3a\7I\2\2\u0e3a\u0e3b\7\u0209\2\2\u0e3b"+
+		"\u0e3c\7\u02e4\2\2\u0e3c\u0e48\5\u03f4\u01fb\2\u0e3d\u0e46\7\u008b\2\2"+
+		"\u0e3e\u0e3f\5\u03f4\u01fb\2\u0e3f\u0e40\7\u033a\2\2\u0e40\u0e42\3\2\2"+
+		"\2\u0e41\u0e3e\3\2\2\2\u0e41\u0e42\3\2\2\2\u0e42\u0e43\3\2\2\2\u0e43\u0e47"+
+		"\5\u03f4\u01fb\2\u0e44\u0e45\7\u02ee\2\2\u0e45\u0e47\7\u02e4\2\2\u0e46"+
+		"\u0e41\3\2\2\2\u0e46\u0e44\3\2\2\2\u0e47\u0e49\3\2\2\2\u0e48\u0e3d\3\2"+
+		"\2\2\u0e48\u0e49\3\2\2\2\u0e49\u0e4c\3\2\2\2\u0e4a\u0e4b\7\24\2\2\u0e4b"+
+		"\u0e4d\5\u03f4\u01fb\2\u0e4c\u0e4a\3\2\2\2\u0e4c\u0e4d\3\2\2\2\u0e4d\u0139"+
+		"\3\2\2\2\u0e4e\u0e4f\7\n\2\2\u0e4f\u0e50\7\u023b\2\2\u0e50\u0e94\5\u03f4"+
+		"\u01fb\2\u0e51\u0e53\t\27\2\2\u0e52\u0e51\3\2\2\2\u0e52\u0e53\3\2\2\2"+
+		"\u0e53\u0e95\3\2\2\2\u0e54\u0e62\7\u0179\2\2\u0e55\u0e56\7\u00f4\2\2\u0e56"+
+		"\u0e5a\7\u032d\2\2\u0e57\u0e5b\7\u0329\2\2\u0e58\u0e59\7\u032a\2\2\u0e59"+
+		"\u0e5b\7\u0094\2\2\u0e5a\u0e57\3\2\2\2\u0e5a\u0e58\3\2\2\2\u0e5b\u0e5f"+
+		"\3\2\2\2\u0e5c\u0e5e\t#\2\2\u0e5d\u0e5c\3\2\2\2\u0e5e\u0e61\3\2\2\2\u0e5f"+
+		"\u0e5d\3\2\2\2\u0e5f\u0e60\3\2\2\2\u0e60\u0e63\3\2\2\2\u0e61\u0e5f\3\2"+
+		"\2\2\u0e62\u0e55\3\2\2\2\u0e62\u0e63\3\2\2\2\u0e63\u0e6d\3\2\2\2\u0e64"+
+		"\u0e65\7\u00e4\2\2\u0e65\u0e66\7\u032d\2\2\u0e66\u0e6a\7\u0329\2\2\u0e67"+
+		"\u0e69\t#\2\2\u0e68\u0e67\3\2\2\2\u0e69\u0e6c\3\2\2\2\u0e6a\u0e68\3\2"+
+		"\2\2\u0e6a\u0e6b\3\2\2\2\u0e6b\u0e6e\3\2\2\2\u0e6c\u0e6a\3\2\2\2\u0e6d"+
+		"\u0e64\3\2\2\2\u0e6d\u0e6e\3\2\2\2\u0e6e\u0e72\3\2\2\2\u0e6f\u0e70\7Z"+
+		"\2\2\u0e70\u0e71\7\u032d\2\2\u0e71\u0e73\5\u03f4\u01fb\2\u0e72\u0e6f\3"+
+		"\2\2\2\u0e72\u0e73\3\2\2\2\u0e73\u0e77\3\2\2\2\u0e74\u0e75\7\u01d4\2\2"+
+		"\u0e75\u0e76\7\u032d\2\2\u0e76\u0e78\5\u03f4\u01fb\2\u0e77\u0e74\3\2\2"+
+		"\2\u0e77\u0e78\3\2\2\2\u0e78\u0e7c\3\2\2\2\u0e79\u0e7a\7\u025d\2\2\u0e7a"+
+		"\u0e7b\7\u032d\2\2\u0e7b\u0e7d\5\u03f4\u01fb\2\u0e7c\u0e79\3\2\2\2\u0e7c"+
+		"\u0e7d\3\2\2\2\u0e7d\u0e81\3\2\2\2\u0e7e\u0e7f\7\60\2\2\u0e7f\u0e80\7"+
+		"\u032d\2\2\u0e80\u0e82\t\t\2\2\u0e81\u0e7e\3\2\2\2\u0e81\u0e82\3\2\2\2"+
+		"\u0e82\u0e86\3\2\2\2\u0e83\u0e84\7\61\2\2\u0e84\u0e85\7\u032d\2\2\u0e85"+
+		"\u0e87\t\t\2\2\u0e86\u0e83\3\2\2\2\u0e86\u0e87\3\2\2\2\u0e87\u0e8b\3\2"+
+		"\2\2\u0e88\u0e89\7\u01c4\2\2\u0e89\u0e8a\7\u032d\2\2\u0e8a\u0e8c\5\u03f4"+
+		"\u01fb\2\u0e8b\u0e88\3\2\2\2\u0e8b\u0e8c\3\2\2\2\u0e8c\u0e8f\3\2\2\2\u0e8d"+
+		"\u0e8e\7\u0263\2\2\u0e8e\u0e90\7\u01c4\2\2\u0e8f\u0e8d\3\2\2\2\u0e8f\u0e90"+
+		"\3\2\2\2\u0e90\u0e95\3\2\2\2\u0e91\u0e92\t\25\2\2\u0e92\u0e93\7\u01c4"+
+		"\2\2\u0e93\u0e95\5\u03f4\u01fb\2\u0e94\u0e52\3\2\2\2\u0e94\u0e54\3\2\2"+
+		"\2\u0e94\u0e91\3\2\2\2\u0e95\u013b\3\2\2\2\u0e96\u0e97\7I\2\2\u0e97\u0e98"+
+		"\7\u023b\2\2\u0e98\u0ef3\5\u03f4\u01fb\2\u0e99\u0ea7\7\u0179\2\2\u0e9a"+
+		"\u0e9b\7\u00f4\2\2\u0e9b\u0e9f\7\u032d\2\2\u0e9c\u0ea0\7\u0329\2\2\u0e9d"+
+		"\u0e9e\7\u032a\2\2\u0e9e\u0ea0\7\u0094\2\2\u0e9f\u0e9c\3\2\2\2\u0e9f\u0e9d"+
+		"\3\2\2\2\u0ea0\u0ea4\3\2\2\2\u0ea1\u0ea3\t#\2\2\u0ea2\u0ea1\3\2\2\2\u0ea3"+
+		"\u0ea6\3\2\2\2\u0ea4\u0ea2\3\2\2\2\u0ea4\u0ea5\3\2\2\2\u0ea5\u0ea8\3\2"+
+		"\2\2\u0ea6\u0ea4\3\2\2\2\u0ea7\u0e9a\3\2\2\2\u0ea7\u0ea8\3\2\2\2\u0ea8"+
+		"\u0eaf\3\2\2\2\u0ea9\u0eab\7\u0341\2\2\u0eaa\u0ea9\3\2\2\2\u0eaa\u0eab"+
+		"\3\2\2\2\u0eab\u0eac\3\2\2\2\u0eac\u0ead\7\u013e\2\2\u0ead\u0eae\7\u032d"+
+		"\2\2\u0eae\u0eb0\7\u032a\2\2\u0eaf\u0eaa\3\2\2\2\u0eaf\u0eb0\3\2\2\2\u0eb0"+
+		"\u0eb7\3\2\2\2\u0eb1\u0eb3\7\u0341\2\2\u0eb2\u0eb1\3\2\2\2\u0eb2\u0eb3"+
+		"\3\2\2\2\u0eb3\u0eb4\3\2\2\2\u0eb4\u0eb5\7Z\2\2\u0eb5\u0eb6\7\u032d\2"+
+		"\2\u0eb6\u0eb8\5\u03f4\u01fb\2\u0eb7\u0eb2\3\2\2\2\u0eb7\u0eb8\3\2\2\2"+
+		"\u0eb8\u0ebf\3\2\2\2\u0eb9\u0ebb\7\u0341\2\2\u0eba\u0eb9\3\2\2\2\u0eba"+
+		"\u0ebb\3\2\2\2\u0ebb\u0ebc\3\2\2\2\u0ebc\u0ebd\7\u01d4\2\2\u0ebd\u0ebe"+
+		"\7\u032d\2\2\u0ebe\u0ec0\5\u03f4\u01fb\2\u0ebf\u0eba\3\2\2\2\u0ebf\u0ec0"+
+		"\3\2\2\2\u0ec0\u0ec7\3\2\2\2\u0ec1\u0ec3\7\u0341\2\2\u0ec2\u0ec1\3\2\2"+
+		"\2\u0ec2\u0ec3\3\2\2\2\u0ec3\u0ec4\3\2\2\2\u0ec4\u0ec5\7\61\2\2\u0ec5"+
+		"\u0ec6\7\u032d\2\2\u0ec6\u0ec8\t\t\2\2\u0ec7\u0ec2\3\2\2\2\u0ec7\u0ec8"+
+		"\3\2\2\2\u0ec8\u0ecf\3\2\2\2\u0ec9\u0ecb\7\u0341\2\2\u0eca\u0ec9\3\2\2"+
+		"\2\u0eca\u0ecb\3\2\2\2\u0ecb\u0ecc\3\2\2\2\u0ecc\u0ecd\7\60\2\2\u0ecd"+
+		"\u0ece\7\u032d\2\2\u0ece\u0ed0\t\t\2\2\u0ecf\u0eca\3\2\2\2\u0ecf\u0ed0"+
+		"\3\2\2\2\u0ed0\u0ed7\3\2\2\2\u0ed1\u0ed3\7\u0341\2\2\u0ed2\u0ed1\3\2\2"+
+		"\2\u0ed2\u0ed3\3\2\2\2\u0ed3\u0ed4\3\2\2\2\u0ed4\u0ed5\7\u01c4\2\2\u0ed5"+
+		"\u0ed6\7\u032d\2\2\u0ed6\u0ed8\5\u03f4\u01fb\2\u0ed7\u0ed2\3\2\2\2\u0ed7"+
+		"\u0ed8\3\2\2\2\u0ed8\u0ef4\3\2\2\2\u0ed9\u0ef1\7\u008b\2\2\u0eda\u0edb"+
+		"\7\u0178\2\2\u0edb\u0ee2\7\u0179\2\2\u0edc\u0ede\7\u0341\2\2\u0edd\u0edc"+
+		"\3\2\2\2\u0edd\u0ede\3\2\2\2\u0ede\u0edf\3\2\2\2\u0edf\u0ee0\7Z\2\2\u0ee0"+
+		"\u0ee1\7\u032d\2\2\u0ee1\u0ee3\5\u03f4\u01fb\2\u0ee2\u0edd\3\2\2\2\u0ee2"+
+		"\u0ee3\3\2\2\2\u0ee3\u0eea\3\2\2\2\u0ee4\u0ee6\7\u0341\2\2\u0ee5\u0ee4"+
+		"\3\2\2\2\u0ee5\u0ee6\3\2\2\2\u0ee6\u0ee7\3\2\2\2\u0ee7\u0ee8\7\u01d4\2"+
+		"\2\u0ee8\u0ee9\7\u032d\2\2\u0ee9\u0eeb\7\u0329\2\2\u0eea\u0ee5\3\2\2\2"+
+		"\u0eea\u0eeb\3\2\2\2\u0eeb\u0ef2\3\2\2\2\u0eec\u0eed\7+\2\2\u0eed\u0ef2"+
+		"\5\u03f4\u01fb\2\u0eee\u0eef\7\22\2\2\u0eef\u0ef0\7\u00ac\2\2\u0ef0\u0ef2"+
+		"\5\u03f4\u01fb\2\u0ef1\u0eda\3\2\2\2\u0ef1\u0eec\3\2\2\2\u0ef1\u0eee\3"+
+		"\2\2\2\u0ef2\u0ef4\3\2\2\2\u0ef3\u0e99\3\2\2\2\u0ef3\u0ed9\3\2\2\2\u0ef4"+
+		"\u013d\3\2\2\2\u0ef5\u0ef6\7\n\2\2\u0ef6\u0ef7\7\u023b\2\2\u0ef7\u0f09"+
+		"\5\u03f4\u01fb\2\u0ef8\u0efa\t\27\2\2\u0ef9\u0ef8\3\2\2\2\u0ef9\u0efa"+
+		"\3\2\2\2\u0efa\u0f0a\3\2\2\2\u0efb\u0f07\7\u0179\2\2\u0efc\u0efd\7\u00f4"+
+		"\2\2\u0efd\u0efe\7\u032d\2\2\u0efe\u0f02\7\u0329\2\2\u0eff\u0f00\7\u00e4"+
+		"\2\2\u0f00\u0f01\7\u032d\2\2\u0f01\u0f03\7\u0329\2\2\u0f02\u0eff\3\2\2"+
+		"\2\u0f02\u0f03\3\2\2\2\u0f03\u0f08\3\2\2\2\u0f04\u0f05\7\u025d\2\2\u0f05"+
+		"\u0f06\7\u032d\2\2\u0f06\u0f08\5\u03f4\u01fb\2\u0f07\u0efc\3\2\2\2\u0f07"+
+		"\u0f04\3\2\2\2\u0f08\u0f0a\3\2\2\2\u0f09\u0ef9\3\2\2\2\u0f09\u0efb\3\2"+
+		"\2\2\u0f0a\u013f\3\2\2\2\u0f0b\u0f0c\7I\2\2\u0f0c\u0f0d\7\u023b\2\2\u0f0d"+
+		"\u0f0e\5\u03f4\u01fb\2\u0f0e\u0f0f\7\u0179\2\2\u0f0f\u0f10\7\u00f4\2\2"+
+		"\u0f10\u0f11\7\u032d\2\2\u0f11\u0f15\7\u0329\2\2\u0f12\u0f13\7\u013e\2"+
+		"\2\u0f13\u0f14\7\u032d\2\2\u0f14\u0f16\7\u032a\2\2\u0f15\u0f12\3\2\2\2"+
+		"\u0f15\u0f16\3\2\2\2\u0f16\u0141\3\2\2\2\u0f17\u0f18\7\n\2\2\u0f18\u0f19"+
+		"\7\u023b\2\2\u0f19\u0f31\5\u03f4\u01fb\2\u0f1a\u0f1c\t\27\2\2\u0f1b\u0f1a"+
+		"\3\2\2\2\u0f1b\u0f1c\3\2\2\2\u0f1c\u0f32\3\2\2\2\u0f1d\u0f2f\7\u0179\2"+
+		"\2\u0f1e\u0f1f\7\u00f4\2\2\u0f1f\u0f20\7\u032d\2\2\u0f20\u0f2a\7\u0329"+
 		"\2\2\u0f21\u0f22\7\u00e4\2\2\u0f22\u0f23\7\u032d\2\2\u0f23\u0f27\7\u0329"+
 		"\2\2\u0f24\u0f26\t#\2\2\u0f25\u0f24\3\2\2\2\u0f26\u0f29\3\2\2\2\u0f27"+
 		"\u0f25\3\2\2\2\u0f27\u0f28\3\2\2\2\u0f28\u0f2b\3\2\2\2\u0f29\u0f27\3\2"+
@@ -96034,82 +96711,82 @@ public class MocaSqlParser extends Parser {
 		"\2\2\u17cf\u17d0\3\2\2\2\u17d0\u17dd\3\2\2\2\u17d1\u17cf\3\2\2\2\u17d2"+
 		"\u17d5\7\u00a5\2\2\u17d3\u17d6\7\u0324\2\2\u17d4\u17d6\5\u03bc\u01df\2"+
 		"\u17d5\u17d3\3\2\2\2\u17d5\u17d4\3\2\2\2\u17d6\u17db\3\2\2\2\u17d7\u17d8"+
-		"\7\u033f\2\2\u17d8\u17d9\5\u03cc\u01e7\2\u17d9\u17da\7\u0340\2\2\u17da"+
-		"\u17dc\3\2";
+		"\7\u033f\2\2\u17d8\u17d9\5\u03cc";
 	private static final String _serializedATNSegment3 =
-		"\2\2\u17db\u17d7\3\2\2\2\u17db\u17dc\3\2\2\2\u17dc\u17de\3\2\2\2\u17dd"+
-		"\u17d2\3\2\2\2\u17dd\u17de\3\2\2\2\u17de\u01c5\3\2\2\2\u17df\u17e2\5\u01c8"+
-		"\u00e5\2\u17e0\u17e2\5\u02d8\u016d\2\u17e1\u17df\3\2\2\2\u17e1\u17e0\3"+
-		"\2\2\2\u17e2\u17e4\3\2\2\2\u17e3\u17e5\5\u0380\u01c1\2\u17e4\u17e3\3\2"+
-		"\2\2\u17e4\u17e5\3\2\2\2\u17e5\u01c7\3\2\2\2\u17e6\u17ea\7\u01d7\2\2\u17e7"+
-		"\u17ea\7\u0222\2\2\u17e8\u17ea\5\u03bc\u01df\2\u17e9\u17e6\3\2\2\2\u17e9"+
-		"\u17e7\3\2\2\2\u17e9\u17e8\3\2\2\2\u17ea\u17eb\3\2\2\2\u17eb\u17ee\7\u033a"+
-		"\2\2\u17ec\u17ef\7\u0344\2\2\u17ed\u17ef\5\u03f4\u01fb\2\u17ee\u17ec\3"+
-		"\2\2\2\u17ee\u17ed\3\2\2\2\u17ef\u17f2\3\2\2\2\u17f0\u17f2\7\u031a\2\2"+
-		"\u17f1\u17e9\3\2\2\2\u17f1\u17f0\3\2\2\2\u17f2\u01c9\3\2\2\2\u17f3\u17f4"+
-		"\7I\2\2\u17f4\u17f5\7T\2\2\u17f5\u17f9\5\u03f4\u01fb\2\u17f6\u17f7\7>"+
-		"\2\2\u17f7\u17f8\7\u032d\2\2\u17f8\u17fa\t\67\2\2\u17f9\u17f6\3\2\2\2"+
-		"\u17f9\u17fa\3\2\2\2\u17fa\u1807\3\2\2\2\u17fb\u17fd\7\u00e5\2\2\u17fc"+
-		"\u17fe\7\u0100\2\2\u17fd\u17fc\3\2\2\2\u17fd\u17fe\3\2\2\2\u17fe\u17ff"+
-		"\3\2\2\2\u17ff\u1804\5\u03ae\u01d8\2\u1800\u1801\7\u0341\2\2\u1801\u1803"+
-		"\5\u03ae\u01d8\2\u1802\u1800\3\2\2\2\u1803\u1806\3\2\2\2\u1804\u1802\3"+
-		"\2\2\2\u1804\u1805\3\2\2\2\u1805\u1808\3\2\2\2\u1806\u1804\3\2\2\2\u1807"+
-		"\u17fb\3\2\2\2\u1807\u1808\3\2\2\2\u1808\u1813\3\2\2\2\u1809\u180a\7\u00bb"+
-		"\2\2\u180a\u180b\7\u00e5\2\2\u180b\u1810\5\u03ae\u01d8\2\u180c\u180d\7"+
-		"\u0341\2\2\u180d\u180f\5\u03ae\u01d8\2\u180e\u180c\3\2\2\2\u180f\u1812"+
-		"\3\2\2\2\u1810\u180e\3\2\2\2\u1810\u1811\3\2\2\2\u1811\u1814\3\2\2\2\u1812"+
-		"\u1810\3\2\2\2\u1813\u1809\3\2\2\2\u1813\u1814\3\2\2\2\u1814\u1817\3\2"+
-		"\2\2\u1815\u1816\7\67\2\2\u1816\u1818\5\u03f4\u01fb\2\u1817\u1815\3\2"+
-		"\2\2\u1817\u1818\3\2\2\2\u1818\u1822\3\2\2\2\u1819\u181a\7\u0179\2\2\u181a"+
-		"\u181f\5\u03aa\u01d6\2\u181b\u181c\7\u0341\2\2\u181c\u181e\5\u03aa\u01d6"+
-		"\2\u181d\u181b\3\2\2\2\u181e\u1821\3\2\2\2\u181f\u181d\3\2\2\2\u181f\u1820"+
-		"\3\2\2\2\u1820\u1823\3\2\2\2\u1821\u181f\3\2\2\2\u1822\u1819\3\2\2\2\u1822"+
-		"\u1823\3\2\2\2\u1823\u01cb\3\2\2\2\u1824\u1826\7I\2\2\u1825\u1827\7\u0165"+
-		"\2\2\u1826\u1825\3\2\2\2\u1826\u1827\3\2\2\2\u1827\u1829\3\2\2\2\u1828"+
-		"\u182a\5\u03d2\u01ea\2\u1829\u1828\3\2\2\2\u1829\u182a\3\2\2\2\u182a\u182b"+
-		"\3\2\2\2\u182b\u182c\7\u009e\2\2\u182c\u182d\5\u03f4\u01fb\2\u182d\u182e"+
-		"\7\u00e5\2\2\u182e\u182f\5\u0366\u01b4\2\u182f\u1830\7\u033f\2\2\u1830"+
-		"\u1831\5\u03ca\u01e6\2\u1831\u1837\7\u0340\2\2\u1832\u1833\7\u009c\2\2"+
-		"\u1833\u1834\7\u033f\2\2\u1834\u1835\5\u03cc\u01e7\2\u1835\u1836\7\u0340"+
-		"\2\2\u1836\u1838\3\2\2\2\u1837\u1832\3\2\2\2\u1837\u1838\3\2\2\2\u1838"+
-		"\u183b\3\2\2\2\u1839\u183a\7\u0176\2\2\u183a\u183c\5\u031c\u018f\2\u183b"+
-		"\u1839\3\2\2\2\u183b\u183c\3\2\2\2\u183c\u183e\3\2\2\2\u183d\u183f\5\u02c8"+
-		"\u0165\2\u183e\u183d\3\2\2\2\u183e\u183f\3\2\2\2\u183f\u1842\3\2\2\2\u1840"+
-		"\u1841\7\u00e5\2\2\u1841\u1843\5\u03f4\u01fb\2\u1842\u1840\3\2\2\2\u1842"+
-		"\u1843\3\2\2\2\u1843\u1845\3\2\2\2\u1844\u1846\7\u0342\2\2\u1845\u1844"+
-		"\3\2\2\2\u1845\u1846\3\2\2\2\u1846\u01cd\3\2\2\2\u1847\u184a\7I\2\2\u1848"+
-		"\u1849\7\u00ed\2\2\u1849\u184b\7\n\2\2\u184a\u1848\3\2\2\2\u184a\u184b"+
-		"\3\2\2\2\u184b\u184e\3\2\2\2\u184c\u184e\7\n\2\2\u184d\u1847\3\2\2\2\u184d"+
-		"\u184c\3\2\2\2\u184e\u184f\3\2\2\2\u184f\u1850\t8\2\2\u1850\u1853\5\u03c0"+
-		"\u01e1\2\u1851\u1852\7\u0342\2\2\u1852\u1854\7\u0325\2\2\u1853\u1851\3"+
-		"\2\2\2\u1853\u1854\3\2\2\2\u1854\u1863\3\2\2\2\u1855\u1857\7\u033f\2\2"+
-		"\u1856\u1855\3\2\2\2\u1856\u1857\3\2\2\2\u1857\u1858\3\2\2\2\u1858\u185d"+
-		"\5\u01e4\u00f3\2\u1859\u185a\7\u0341\2\2\u185a\u185c\5\u01e4\u00f3\2\u185b"+
-		"\u1859\3\2\2\2\u185c\u185f\3\2\2\2\u185d\u185b\3\2\2\2\u185d\u185e\3\2"+
-		"\2\2\u185e\u1861\3\2\2\2\u185f\u185d\3\2\2\2\u1860\u1862\7\u0340\2\2\u1861"+
-		"\u1860\3\2\2\2\u1861\u1862\3\2\2\2\u1862\u1864\3\2\2\2\u1863\u1856\3\2"+
-		"\2\2\u1863\u1864\3\2\2\2\u1864\u186e\3\2\2\2\u1865\u1866\7\u0179\2\2\u1866"+
-		"\u186b\5\u01e6\u00f4\2\u1867\u1868\7\u0341\2\2\u1868\u186a\5\u01e6\u00f4"+
-		"\2\u1869\u1867\3\2\2\2\u186a\u186d\3\2\2\2\u186b\u1869\3\2\2\2\u186b\u186c"+
-		"\3\2\2\2\u186c\u186f\3\2\2\2\u186d\u186b\3\2\2\2\u186e\u1865\3\2\2\2\u186e"+
-		"\u186f\3\2\2\2\u186f\u1872\3\2\2\2\u1870\u1871\7\u0085\2\2\u1871\u1873"+
-		"\7\u0112\2\2\u1872\u1870\3\2\2\2\u1872\u1873\3\2\2\2\u1873\u1874\3\2\2"+
-		"\2\u1874\u1875\7\20\2\2\u1875\u1876\5\6\4\2\u1876\u01cf\3\2\2\2\u1877"+
-		"\u187a\5\u01d2\u00ea\2\u1878\u187a\5\u01d8\u00ed\2\u1879\u1877\3\2\2\2"+
-		"\u1879\u1878\3\2\2\2\u187a\u01d1\3\2\2\2\u187b\u187e\7I\2\2\u187c\u187d"+
-		"\7\u00ed\2\2\u187d\u187f\7\n\2\2\u187e\u187c\3\2\2\2\u187e\u187f\3\2\2"+
-		"\2\u187f\u1882\3\2\2\2\u1880\u1882\7\n\2\2\u1881\u187b\3\2\2\2\u1881\u1880"+
-		"\3\2\2\2\u1882\u1883\3\2\2\2\u1883\u1884\7\u0160\2\2\u1884\u1885\5\u03be"+
-		"\u01e0\2\u1885\u1886\7\u00e5\2\2\u1886\u1890\5\u03bc\u01df\2\u1887\u1888"+
-		"\7\u0179\2\2\u1888\u188d\5\u01d4\u00eb\2\u1889\u188a\7\u0341\2\2\u188a"+
-		"\u188c\5\u01d4\u00eb\2\u188b\u1889\3\2\2\2\u188c\u188f\3\2\2\2\u188d\u188b"+
-		"\3\2\2\2\u188d\u188e\3\2\2\2\u188e\u1891\3\2\2\2\u188f\u188d\3\2\2\2\u1890"+
-		"\u1887\3\2\2\2\u1890\u1891\3\2\2\2\u1891\u1896\3\2\2\2\u1892\u1897\7\u0085"+
-		"\2\2\u1893\u1897\7\u0188\2\2\u1894\u1895\7\u00a3\2\2\u1895\u1897\7\u00e1"+
-		"\2\2\u1896\u1892\3\2\2\2\u1896\u1893\3\2\2\2\u1896\u1894\3\2\2\2\u1897"+
-		"\u1898\3\2\2\2\u1898\u189d\5\u01d6\u00ec\2\u1899\u189a\7\u0341\2\2\u189a"+
-		"\u189c\5\u01d6\u00ec\2\u189b\u1899\3\2\2\2\u189c\u189f\3\2\2\2\u189d\u189b"+
-		"\3\2\2\2\u189d\u189e\3\2\2\2\u189e\u18a2\3\2\2\2\u189f\u189d\3\2\2\2\u18a0"+
+		"\u01e7\2\u17d9\u17da\7\u0340\2\2\u17da\u17dc\3\2\2\2\u17db\u17d7\3\2\2"+
+		"\2\u17db\u17dc\3\2\2\2\u17dc\u17de\3\2\2\2\u17dd\u17d2\3\2\2\2\u17dd\u17de"+
+		"\3\2\2\2\u17de\u01c5\3\2\2\2\u17df\u17e2\5\u01c8\u00e5\2\u17e0\u17e2\5"+
+		"\u02d8\u016d\2\u17e1\u17df\3\2\2\2\u17e1\u17e0\3\2\2\2\u17e2\u17e4\3\2"+
+		"\2\2\u17e3\u17e5\5\u0380\u01c1\2\u17e4\u17e3\3\2\2\2\u17e4\u17e5\3\2\2"+
+		"\2\u17e5\u01c7\3\2\2\2\u17e6\u17ea\7\u01d7\2\2\u17e7\u17ea\7\u0222\2\2"+
+		"\u17e8\u17ea\5\u03bc\u01df\2\u17e9\u17e6\3\2\2\2\u17e9\u17e7\3\2\2\2\u17e9"+
+		"\u17e8\3\2\2\2\u17ea\u17eb\3\2\2\2\u17eb\u17ee\7\u033a\2\2\u17ec\u17ef"+
+		"\7\u0344\2\2\u17ed\u17ef\5\u03f4\u01fb\2\u17ee\u17ec\3\2\2\2\u17ee\u17ed"+
+		"\3\2\2\2\u17ef\u17f2\3\2\2\2\u17f0\u17f2\7\u031a\2\2\u17f1\u17e9\3\2\2"+
+		"\2\u17f1\u17f0\3\2\2\2\u17f2\u01c9\3\2\2\2\u17f3\u17f4\7I\2\2\u17f4\u17f5"+
+		"\7T\2\2\u17f5\u17f9\5\u03f4\u01fb\2\u17f6\u17f7\7>\2\2\u17f7\u17f8\7\u032d"+
+		"\2\2\u17f8\u17fa\t\67\2\2\u17f9\u17f6\3\2\2\2\u17f9\u17fa\3\2\2\2\u17fa"+
+		"\u1807\3\2\2\2\u17fb\u17fd\7\u00e5\2\2\u17fc\u17fe\7\u0100\2\2\u17fd\u17fc"+
+		"\3\2\2\2\u17fd\u17fe\3\2\2\2\u17fe\u17ff\3\2\2\2\u17ff\u1804\5\u03ae\u01d8"+
+		"\2\u1800\u1801\7\u0341\2\2\u1801\u1803\5\u03ae\u01d8\2\u1802\u1800\3\2"+
+		"\2\2\u1803\u1806\3\2\2\2\u1804\u1802\3\2\2\2\u1804\u1805\3\2\2\2\u1805"+
+		"\u1808\3\2\2\2\u1806\u1804\3\2\2\2\u1807\u17fb\3\2\2\2\u1807\u1808\3\2"+
+		"\2\2\u1808\u1813\3\2\2\2\u1809\u180a\7\u00bb\2\2\u180a\u180b\7\u00e5\2"+
+		"\2\u180b\u1810\5\u03ae\u01d8\2\u180c\u180d\7\u0341\2\2\u180d\u180f\5\u03ae"+
+		"\u01d8\2\u180e\u180c\3\2\2\2\u180f\u1812\3\2\2\2\u1810\u180e\3\2\2\2\u1810"+
+		"\u1811\3\2\2\2\u1811\u1814\3\2\2\2\u1812\u1810\3\2\2\2\u1813\u1809\3\2"+
+		"\2\2\u1813\u1814\3\2\2\2\u1814\u1817\3\2\2\2\u1815\u1816\7\67\2\2\u1816"+
+		"\u1818\5\u03f4\u01fb\2\u1817\u1815\3\2\2\2\u1817\u1818\3\2\2\2\u1818\u1822"+
+		"\3\2\2\2\u1819\u181a\7\u0179\2\2\u181a\u181f\5\u03aa\u01d6\2\u181b\u181c"+
+		"\7\u0341\2\2\u181c\u181e\5\u03aa\u01d6\2\u181d\u181b\3\2\2\2\u181e\u1821"+
+		"\3\2\2\2\u181f\u181d\3\2\2\2\u181f\u1820\3\2\2\2\u1820\u1823\3\2\2\2\u1821"+
+		"\u181f\3\2\2\2\u1822\u1819\3\2\2\2\u1822\u1823\3\2\2\2\u1823\u01cb\3\2"+
+		"\2\2\u1824\u1826\7I\2\2\u1825\u1827\7\u0165\2\2\u1826\u1825\3\2\2\2\u1826"+
+		"\u1827\3\2\2\2\u1827\u1829\3\2\2\2\u1828\u182a\5\u03d2\u01ea\2\u1829\u1828"+
+		"\3\2\2\2\u1829\u182a\3\2\2\2\u182a\u182b\3\2\2\2\u182b\u182c\7\u009e\2"+
+		"\2\u182c\u182d\5\u03f4\u01fb\2\u182d\u182e\7\u00e5\2\2\u182e\u182f\5\u0366"+
+		"\u01b4\2\u182f\u1830\7\u033f\2\2\u1830\u1831\5\u03ca\u01e6\2\u1831\u1837"+
+		"\7\u0340\2\2\u1832\u1833\7\u009c\2\2\u1833\u1834\7\u033f\2\2\u1834\u1835"+
+		"\5\u03cc\u01e7\2\u1835\u1836\7\u0340\2\2\u1836\u1838\3\2\2\2\u1837\u1832"+
+		"\3\2\2\2\u1837\u1838\3\2\2\2\u1838\u183b\3\2\2\2\u1839\u183a\7\u0176\2"+
+		"\2\u183a\u183c\5\u031c\u018f\2\u183b\u1839\3\2\2\2\u183b\u183c\3\2\2\2"+
+		"\u183c\u183e\3\2\2\2\u183d\u183f\5\u02c8\u0165\2\u183e\u183d\3\2\2\2\u183e"+
+		"\u183f\3\2\2\2\u183f\u1842\3\2\2\2\u1840\u1841\7\u00e5\2\2\u1841\u1843"+
+		"\5\u03f4\u01fb\2\u1842\u1840\3\2\2\2\u1842\u1843\3\2\2\2\u1843\u1845\3"+
+		"\2\2\2\u1844\u1846\7\u0342\2\2\u1845\u1844\3\2\2\2\u1845\u1846\3\2\2\2"+
+		"\u1846\u01cd\3\2\2\2\u1847\u184a\7I\2\2\u1848\u1849\7\u00ed\2\2\u1849"+
+		"\u184b\7\n\2\2\u184a\u1848\3\2\2\2\u184a\u184b\3\2\2\2\u184b\u184e\3\2"+
+		"\2\2\u184c\u184e\7\n\2\2\u184d\u1847\3\2\2\2\u184d\u184c\3\2\2\2\u184e"+
+		"\u184f\3\2\2\2\u184f\u1850\t8\2\2\u1850\u1853\5\u03c0\u01e1\2\u1851\u1852"+
+		"\7\u0342\2\2\u1852\u1854\7\u0325\2\2\u1853\u1851\3\2\2\2\u1853\u1854\3"+
+		"\2\2\2\u1854\u1863\3\2\2\2\u1855\u1857\7\u033f\2\2\u1856\u1855\3\2\2\2"+
+		"\u1856\u1857\3\2\2\2\u1857\u1858\3\2\2\2\u1858\u185d\5\u01e4\u00f3\2\u1859"+
+		"\u185a\7\u0341\2\2\u185a\u185c\5\u01e4\u00f3\2\u185b\u1859\3\2\2\2\u185c"+
+		"\u185f\3\2\2\2\u185d\u185b\3\2\2\2\u185d\u185e\3\2\2\2\u185e\u1861\3\2"+
+		"\2\2\u185f\u185d\3\2\2\2\u1860\u1862\7\u0340\2\2\u1861\u1860\3\2\2\2\u1861"+
+		"\u1862\3\2\2\2\u1862\u1864\3\2\2\2\u1863\u1856\3\2\2\2\u1863\u1864\3\2"+
+		"\2\2\u1864\u186e\3\2\2\2\u1865\u1866\7\u0179\2\2\u1866\u186b\5\u01e6\u00f4"+
+		"\2\u1867\u1868\7\u0341\2\2\u1868\u186a\5\u01e6\u00f4\2\u1869\u1867\3\2"+
+		"\2\2\u186a\u186d\3\2\2\2\u186b\u1869\3\2\2\2\u186b\u186c\3\2\2\2\u186c"+
+		"\u186f\3\2\2\2\u186d\u186b\3\2\2\2\u186e\u1865\3\2\2\2\u186e\u186f\3\2"+
+		"\2\2\u186f\u1872\3\2\2\2\u1870\u1871\7\u0085\2\2\u1871\u1873\7\u0112\2"+
+		"\2\u1872\u1870\3\2\2\2\u1872\u1873\3\2\2\2\u1873\u1874\3\2\2\2\u1874\u1875"+
+		"\7\20\2\2\u1875\u1876\5\6\4\2\u1876\u01cf\3\2\2\2\u1877\u187a\5\u01d2"+
+		"\u00ea\2\u1878\u187a\5\u01d8\u00ed\2\u1879\u1877\3\2\2\2\u1879\u1878\3"+
+		"\2\2\2\u187a\u01d1\3\2\2\2\u187b\u187e\7I\2\2\u187c\u187d\7\u00ed\2\2"+
+		"\u187d\u187f\7\n\2\2\u187e\u187c\3\2\2\2\u187e\u187f\3\2\2\2\u187f\u1882"+
+		"\3\2\2\2\u1880\u1882\7\n\2\2\u1881\u187b\3\2\2\2\u1881\u1880\3\2\2\2\u1882"+
+		"\u1883\3\2\2\2\u1883\u1884\7\u0160\2\2\u1884\u1885\5\u03be\u01e0\2\u1885"+
+		"\u1886\7\u00e5\2\2\u1886\u1890\5\u03bc\u01df\2\u1887\u1888\7\u0179\2\2"+
+		"\u1888\u188d\5\u01d4\u00eb\2\u1889\u188a\7\u0341\2\2\u188a\u188c\5\u01d4"+
+		"\u00eb\2\u188b\u1889\3\2\2\2\u188c\u188f\3\2\2\2\u188d\u188b\3\2\2\2\u188d"+
+		"\u188e\3\2\2\2\u188e\u1891\3\2\2\2\u188f\u188d\3\2\2\2\u1890\u1887\3\2"+
+		"\2\2\u1890\u1891\3\2\2\2\u1891\u1896\3\2\2\2\u1892\u1897\7\u0085\2\2\u1893"+
+		"\u1897\7\u0188\2\2\u1894\u1895\7\u00a3\2\2\u1895\u1897\7\u00e1\2\2\u1896"+
+		"\u1892\3\2\2\2\u1896\u1893\3\2\2\2\u1896\u1894\3\2\2\2\u1897\u1898\3\2"+
+		"\2\2\u1898\u189d\5\u01d6\u00ec\2\u1899\u189a\7\u0341\2\2\u189a\u189c\5"+
+		"\u01d6\u00ec\2\u189b\u1899\3\2\2\2\u189c\u189f\3\2\2\2\u189d\u189b\3\2"+
+		"\2\2\u189d\u189e\3\2\2\2\u189e\u18a2\3\2\2\2\u189f\u189d\3\2\2\2\u18a0"+
 		"\u18a1\7\u0179\2\2\u18a1\u18a3\7\16\2\2\u18a2\u18a0\3\2\2\2\u18a2\u18a3"+
 		"\3\2\2\2\u18a3\u18a7\3\2\2\2\u18a4\u18a5\7\u00dc\2\2\u18a5\u18a6\7\u0085"+
 		"\2\2\u18a6\u18a8\7\u0112\2\2\u18a7\u18a4\3\2\2\2\u18a7\u18a8\3\2\2\2\u18a8"+
@@ -97160,116 +97837,116 @@ public class MocaSqlParser extends Parser {
 		"\2\u2344\u2345\7\u0343\2\2\u2345\u2346\7\u0326\2\2\u2346\u02ff\3\2\2\2"+
 		"\u2347\u2348\5\u02e4\u0173\2\u2348\u2349\7\u0343\2\2\u2349\u234a\7\u0326"+
 		"\2\2\u234a\u0301\3\2\2\2\u234b\u234c\5\u02e4\u0173\2\u234c\u234d\7\u033a"+
-		"\2\2\u234d\u234e\7\u0326\2\2\u234e\u0303\3\2\2\2\u234f\u2350\5\u02e6\u0174"+
-		"\2\u2350\u2351\7";
+		"\2\2\u234d\u234e\7\u0326\2\2\u234e\u0303\3";
 	private static final String _serializedATNSegment4 =
-		"\u033a\2\2\u2351\u2352\7\u0326\2\2\u2352\u0305\3\2\2\2\u2353\u2354\7\u0343"+
-		"\2\2\u2354\u2355\7\u0326\2\2\u2355\u0307\3\2\2\2\u2356\u235b\7Y\2\2\u2357"+
-		"\u235b\7\u00df\2\2\u2358\u235b\7\u0324\2\2\u2359\u235b\5\u03f0\u01f9\2"+
-		"\u235a\u2356\3\2\2\2\u235a\u2357\3\2\2\2\u235a\u2358\3\2\2\2\u235a\u2359"+
-		"\3\2\2\2\u235b\u0309\3\2\2\2\u235c\u235d\7*\2\2\u235d\u235f\5\u02d8\u016d"+
-		"\2\u235e\u2360\5\u037c\u01bf\2\u235f\u235e\3\2\2\2\u2360\u2361\3\2\2\2"+
-		"\u2361\u235f\3\2\2\2\u2361\u2362\3\2\2\2\u2362\u2365\3\2\2\2\u2363\u2364"+
-		"\7j\2\2\u2364\u2366\5\u02d8\u016d\2\u2365\u2363\3\2\2\2\u2365\u2366\3"+
-		"\2\2\2\u2366\u2367\3\2\2\2\u2367\u2368\7l\2\2\u2368\u2376\3\2\2\2\u2369"+
-		"\u236b\7*\2\2\u236a\u236c\5\u037e\u01c0\2\u236b\u236a\3\2\2\2\u236c\u236d"+
-		"\3\2\2\2\u236d\u236b\3\2\2\2\u236d\u236e\3\2\2\2\u236e\u2371\3\2\2\2\u236f"+
-		"\u2370\7j\2\2\u2370\u2372\5\u02d8\u016d\2\u2371\u236f\3\2\2\2\u2371\u2372"+
-		"\3\2\2\2\u2372\u2373\3\2\2\2\u2373\u2374\7l\2\2\u2374\u2376\3\2\2\2\u2375"+
-		"\u235c\3\2\2\2\u2375\u2369\3\2\2\2\u2376\u030b\3\2\2\2\u2377\u2378\7\u0349"+
-		"\2\2\u2378\u237c\5\u02d8\u016d\2\u2379\u237a\tm\2\2\u237a\u237c\5\u02d8"+
-		"\u016d\2\u237b\u2377\3\2\2\2\u237b\u2379\3\2\2\2\u237c\u030d\3\2\2\2\u237d"+
-		"\u237e\7\u033f\2\2\u237e\u237f\5\u02d8\u016d\2\u237f\u2380\7\u0340\2\2"+
-		"\u2380\u2386\3\2\2\2\u2381\u2382\7\u033f\2\2\u2382\u2383\5\u0312\u018a"+
-		"\2\u2383\u2384\7\u0340\2\2\u2384\u2386\3\2\2\2\u2385\u237d\3\2\2\2\u2385"+
-		"\u2381\3\2\2\2\u2386\u030f\3\2\2\2\u2387\u2390\7\u00df\2\2\u2388\u2390"+
-		"\5\u03f0\u01f9\2\u2389\u2390\5\u036e\u01b8\2\u238a\u2390\7\u0324\2\2\u238b"+
-		"\u238c\7\u033f\2\2\u238c\u238d\5\u0310\u0189\2\u238d\u238e\7\u0340\2\2"+
-		"\u238e\u2390\3\2\2\2\u238f\u2387\3\2\2\2\u238f\u2388\3\2\2\2\u238f\u2389"+
-		"\3\2\2\2\u238f\u238a\3\2\2\2\u238f\u238b\3\2\2\2\u2390\u0311\3\2\2\2\u2391"+
-		"\u2392\5\u01be\u00e0\2\u2392\u0313\3\2\2\2\u2393\u2396\7\u0179\2\2\u2394"+
-		"\u2395\7\u0317\2\2\u2395\u2397\7\u0341\2\2\u2396\u2394\3\2\2\2\u2396\u2397"+
-		"\3\2\2\2\u2397\u2398\3\2\2\2\u2398\u239d\5\u0316\u018c\2\u2399\u239a\7"+
-		"\u0341\2\2\u239a\u239c\5\u0316\u018c\2\u239b\u2399\3\2\2\2\u239c\u239f"+
-		"\3\2\2\2\u239d\u239b\3\2\2\2\u239d\u239e\3\2\2\2\u239e\u23ae\3\2\2\2\u239f"+
-		"\u239d\3\2\2\2\u23a0\u23a1\7\u0179\2\2\u23a1\u23a6\7 \2\2\u23a2\u23a3"+
-		"\7\u033f\2\2\u23a3\u23a4\5\u0364\u01b3\2\u23a4\u23a5\7\u0340\2\2\u23a5"+
-		"\u23a7\3\2\2\2\u23a6\u23a2\3\2\2\2\u23a6\u23a7\3\2\2\2\u23a7\u23a8\3\2"+
-		"\2\2\u23a8\u23a9\7\20\2\2\u23a9\u23aa\7\u033f\2\2\u23aa\u23ab\5\u01be"+
-		"\u00e0\2\u23ab\u23ac\7\u0340\2\2\u23ac\u23ae\3\2\2\2\u23ad\u2393\3\2\2"+
-		"\2\u23ad\u23a0\3\2\2\2\u23ae\u0315\3\2\2\2\u23af\u23b4\5\u03f4\u01fb\2"+
-		"\u23b0\u23b1\7\u033f\2\2\u23b1\u23b2\5\u03cc\u01e7\2\u23b2\u23b3\7\u0340"+
-		"\2\2\u23b3\u23b5\3\2\2\2\u23b4\u23b0\3\2\2\2\u23b4\u23b5\3\2\2\2\u23b5"+
-		"\u23b6\3\2\2\2\u23b6\u23b7\7\20\2\2\u23b7\u23b8\7\u033f\2\2\u23b8\u23b9"+
-		"\5\u01be\u00e0\2\u23b9\u23ba\7\u0340\2\2\u23ba\u0317\3\2\2\2\u23bb\u23be"+
-		"\5\u03c8\u01e5\2\u23bc\u23be\7\u0324\2\2\u23bd\u23bb\3\2\2\2\u23bd\u23bc"+
-		"\3\2\2\2\u23be\u23c1\3\2\2\2\u23bf\u23c2\7\u032d\2\2\u23c0\u23c2\5\u03fa"+
-		"\u01fe\2\u23c1\u23bf\3\2\2\2\u23c1\u23c0\3\2\2\2\u23c2\u23c3\3\2\2\2\u23c3"+
-		"\u23cc\5\u02d8\u016d\2\u23c4\u23c5\5\u03f4\u01fb\2\u23c5\u23c6\7\u033a"+
-		"\2\2\u23c6\u23c7\5\u03f4\u01fb\2\u23c7\u23c8\7\u033f\2\2\u23c8\u23c9\5"+
-		"\u0394\u01cb\2\u23c9\u23ca\7\u0340\2\2\u23ca\u23cc\3\2\2\2\u23cb\u23bd"+
-		"\3\2\2\2\u23cb\u23c4\3\2\2\2\u23cc\u0319\3\2\2\2\u23cd\u23d2\5\u031c\u018f"+
-		"\2\u23ce\u23cf\7\u0341\2\2\u23cf\u23d1\5\u031c\u018f\2\u23d0\u23ce\3\2"+
-		"\2\2\u23d1\u23d4\3\2\2\2\u23d2\u23d0\3\2\2\2\u23d2\u23d3\3\2\2\2\u23d3"+
-		"\u031b\3\2\2\2\u23d4\u23d2\3\2\2\2\u23d5\u23da\5\u031e\u0190\2\u23d6\u23d7"+
-		"\7\u00ed\2\2\u23d7\u23d9\5\u031e\u0190\2\u23d8\u23d6\3\2\2\2\u23d9\u23dc"+
-		"\3\2\2\2\u23da\u23d8\3\2\2\2\u23da\u23db\3\2\2\2\u23db\u031d\3\2\2\2\u23dc"+
-		"\u23da\3\2\2\2\u23dd\u23e2\5\u0320\u0191\2\u23de\u23df\7\13\2\2\u23df"+
-		"\u23e1\5\u0320\u0191\2\u23e0\u23de\3\2\2\2\u23e1\u23e4\3\2\2\2\u23e2\u23e0"+
-		"\3\2\2\2\u23e2\u23e3\3\2\2\2\u23e3\u031f\3\2\2\2\u23e4\u23e2\3\2\2\2\u23e5"+
-		"\u23e7\7\u00dc\2\2\u23e6\u23e5\3\2\2\2\u23e6\u23e7\3\2\2\2\u23e7\u23e8"+
-		"\3\2\2\2\u23e8\u23e9\5\u0322\u0192\2\u23e9\u0321\3\2\2\2\u23ea\u23eb\7"+
-		"w\2\2\u23eb\u23ec\7\u033f\2\2\u23ec\u23ed\5\u0312\u018a\2\u23ed\u23ee"+
-		"\7\u0340\2\2\u23ee\u2423\3\2\2\2\u23ef\u23f0\5\u02d8\u016d\2\u23f0\u23f1"+
-		"\5\u03f8\u01fd\2\u23f1\u23f2\5\u02d8\u016d\2\u23f2\u2423\3\2\2\2\u23f3"+
-		"\u23f4\5\u02d8\u016d\2\u23f4\u23f5\5\u03f8\u01fd\2\u23f5\u23f6\tn\2\2"+
-		"\u23f6\u23f7\7\u033f\2\2\u23f7\u23f8\5\u0312\u018a\2\u23f8\u23f9\7\u0340"+
-		"\2\2\u23f9\u2423\3\2\2\2\u23fa\u23fc\5\u02d8\u016d\2\u23fb\u23fd\7\u00dc"+
-		"\2\2\u23fc\u23fb\3\2\2\2\u23fc\u23fd\3\2\2\2\u23fd\u23fe\3\2\2\2\u23fe"+
-		"\u23ff\7\35\2\2\u23ff\u2400\5\u02d8\u016d\2\u2400\u2401\7\13\2\2\u2401"+
-		"\u2402\5\u02d8\u016d\2\u2402\u2423\3\2\2\2\u2403\u2405\5\u02d8\u016d\2"+
-		"\u2404\u2406\7\u00dc\2\2\u2405\u2404\3\2\2\2\u2405\u2406\3\2\2\2\u2406"+
-		"\u2407\3\2\2\2\u2407\u2408\7\u009b\2\2\u2408\u240b\7\u033f\2\2\u2409\u240c"+
-		"\5\u0312\u018a\2\u240a\u240c\5\u0394\u01cb\2\u240b\u2409\3\2\2\2\u240b"+
-		"\u240a\3\2\2\2\u240c\u240d\3\2\2\2\u240d\u240e\7\u0340\2\2\u240e\u2423"+
-		"\3\2\2\2\u240f\u2411\5\u02d8\u016d\2\u2410\u2412\7\u00dc\2\2\u2411\u2410"+
-		"\3\2\2\2\u2411\u2412\3\2\2\2\u2412\u2413\3\2\2\2\u2413\u2414\7\u00b4\2"+
-		"\2\u2414\u2417\5\u02d8\u016d\2\u2415\u2416\7o\2\2\u2416\u2418\5\u02d8"+
-		"\u016d\2\u2417\u2415\3\2\2\2\u2417\u2418\3\2\2\2\u2418\u2423\3\2\2\2\u2419"+
-		"\u241a\5\u02d8\u016d\2\u241a\u241b\7\u00a8\2\2\u241b\u241c\5\u03d4\u01eb"+
-		"\2\u241c\u2423\3\2\2\2\u241d\u2423\5\u02dc\u016f\2\u241e\u241f\7\u033f"+
-		"\2\2\u241f\u2420\5\u031c\u018f\2\u2420\u2421\7\u0340\2\2\u2421\u2423\3"+
-		"\2\2\2\u2422\u23ea\3\2\2\2\u2422\u23ef\3\2\2\2\u2422\u23f3\3\2\2\2\u2422"+
-		"\u23fa\3\2\2\2\u2422\u2403\3\2\2\2\u2422\u240f\3\2\2\2\u2422\u2419\3\2"+
-		"\2\2\u2422\u241d\3\2\2\2\u2422\u241e\3\2\2\2\u2423\u0323\3\2\2\2\u2424"+
-		"\u242a\5\u0328\u0195\2\u2425\u2426\7\u033f\2\2\u2426\u2427\5\u0324\u0193"+
-		"\2\u2427\u2428\7\u0340\2\2\u2428\u242a\3\2\2\2\u2429\u2424\3\2\2\2\u2429"+
-		"\u2425\3\2\2\2\u242a\u242e\3\2\2\2\u242b\u242d\5\u0326\u0194\2\u242c\u242b"+
-		"\3\2\2\2\u242d\u2430\3\2\2\2\u242e\u242c\3\2\2\2\u242e\u242f\3\2\2\2\u242f"+
-		"\u0325\3\2\2\2\u2430\u242e\3\2\2\2\u2431\u2433\7\u0164\2\2\u2432\u2434"+
-		"\7\6\2\2\u2433\u2432\3\2\2\2\u2433\u2434\3\2\2\2\u2434\u2438\3\2\2\2\u2435"+
-		"\u2438\7t\2\2\u2436\u2438\7\u00a4\2\2\u2437\u2431\3\2\2\2\u2437\u2435"+
-		"\3\2\2\2\u2437\u2436\3\2\2\2\u2438\u243e\3\2\2\2\u2439\u243f\5\u0328\u0195"+
-		"\2\u243a\u243b\7\u033f\2\2\u243b\u243c\5\u0324\u0193\2\u243c\u243d\7\u0340"+
-		"\2\2\u243d\u243f\3\2\2\2\u243e\u2439\3\2\2\2\u243e\u243a\3\2\2\2\u243f"+
-		"\u0327\3\2\2\2\u2440\u2442\7\u0131\2\2\u2441\u2443\to\2\2\u2442\u2441"+
-		"\3\2\2\2\u2442\u2443\3\2\2\2\u2443\u2445\3\2\2\2\u2444\u2446\5\u032a\u0196"+
-		"\2\u2445\u2444\3\2\2\2\u2445\u2446\3\2\2\2\u2446\u2447\3\2\2\2\u2447\u244a"+
-		"\5\u0340\u01a1\2\u2448\u2449\7\u00a5\2\2\u2449\u244b\5\u03bc\u01df\2\u244a"+
-		"\u2448\3\2\2\2\u244a\u244b\3\2\2\2\u244b\u244e\3\2\2\2\u244c\u244d\7\u008b"+
-		"\2\2\u244d\u244f\5\u034e\u01a8\2\u244e\u244c\3\2\2\2\u244e\u244f\3\2\2"+
-		"\2\u244f\u2452\3\2\2\2\u2450\u2451\7\u0176\2\2\u2451\u2453\5\u031c\u018f"+
-		"\2\u2452\u2450\3\2\2\2\u2452\u2453\3\2\2\2\u2453\u2461\3\2\2\2\u2454\u2455"+
-		"\7\u0092\2\2\u2455\u2457\7&\2\2\u2456\u2458\7\6\2\2\u2457\u2456\3\2\2"+
-		"\2\u2457\u2458\3\2\2\2\u2458\u2459\3\2\2\2\u2459\u245e\5\u0338\u019d\2"+
-		"\u245a\u245b\7\u0341\2\2\u245b\u245d\5\u0338\u019d\2\u245c\u245a\3\2\2"+
-		"\2\u245d\u2460\3\2\2\2\u245e\u245c\3\2\2\2\u245e\u245f\3\2\2\2\u245f\u2462"+
-		"\3\2\2\2\u2460\u245e\3\2\2\2\u2461\u2454\3\2\2\2\u2461\u2462\3\2\2\2\u2462"+
-		"\u2465\3\2\2\2\u2463\u2464\7\u0093\2\2\u2464\u2466\5\u031c\u018f\2\u2465"+
-		"\u2463\3\2\2\2\u2465\u2466\3\2\2\2\u2466\u0329\3\2\2\2\u2467\u246a\7\u015b"+
-		"\2\2\u2468\u246b\5\u032c\u0197\2\u2469\u246b\5\u032e\u0198\2\u246a\u2468"+
-		"\3\2\2\2\u246a\u2469\3\2\2\2\u246b\u246e\3\2\2\2\u246c\u246d\7\u0179\2"+
-		"\2\u246d\u246f\7\u02f4\2\2\u246e\u246c\3\2\2\2\u246e\u246f\3\2\2\2\u246f"+
+		"\2\2\2\u234f\u2350\5\u02e6\u0174\2\u2350\u2351\7\u033a\2\2\u2351\u2352"+
+		"\7\u0326\2\2\u2352\u0305\3\2\2\2\u2353\u2354\7\u0343\2\2\u2354\u2355\7"+
+		"\u0326\2\2\u2355\u0307\3\2\2\2\u2356\u235b\7Y\2\2\u2357\u235b\7\u00df"+
+		"\2\2\u2358\u235b\7\u0324\2\2\u2359\u235b\5\u03f0\u01f9\2\u235a\u2356\3"+
+		"\2\2\2\u235a\u2357\3\2\2\2\u235a\u2358\3\2\2\2\u235a\u2359\3\2\2\2\u235b"+
+		"\u0309\3\2\2\2\u235c\u235d\7*\2\2\u235d\u235f\5\u02d8\u016d\2\u235e\u2360"+
+		"\5\u037c\u01bf\2\u235f\u235e\3\2\2\2\u2360\u2361\3\2\2\2\u2361\u235f\3"+
+		"\2\2\2\u2361\u2362\3\2\2\2\u2362\u2365\3\2\2\2\u2363\u2364\7j\2\2\u2364"+
+		"\u2366\5\u02d8\u016d\2\u2365\u2363\3\2\2\2\u2365\u2366\3\2\2\2\u2366\u2367"+
+		"\3\2\2\2\u2367\u2368\7l\2\2\u2368\u2376\3\2\2\2\u2369\u236b\7*\2\2\u236a"+
+		"\u236c\5\u037e\u01c0\2\u236b\u236a\3\2\2\2\u236c\u236d\3\2\2\2\u236d\u236b"+
+		"\3\2\2\2\u236d\u236e\3\2\2\2\u236e\u2371\3\2\2\2\u236f\u2370\7j\2\2\u2370"+
+		"\u2372\5\u02d8\u016d\2\u2371\u236f\3\2\2\2\u2371\u2372\3\2\2\2\u2372\u2373"+
+		"\3\2\2\2\u2373\u2374\7l\2\2\u2374\u2376\3\2\2\2\u2375\u235c\3\2\2\2\u2375"+
+		"\u2369\3\2\2\2\u2376\u030b\3\2\2\2\u2377\u2378\7\u0349\2\2\u2378\u237c"+
+		"\5\u02d8\u016d\2\u2379\u237a\tm\2\2\u237a\u237c\5\u02d8\u016d\2\u237b"+
+		"\u2377\3\2\2\2\u237b\u2379\3\2\2\2\u237c\u030d\3\2\2\2\u237d\u237e\7\u033f"+
+		"\2\2\u237e\u237f\5\u02d8\u016d\2\u237f\u2380\7\u0340\2\2\u2380\u2386\3"+
+		"\2\2\2\u2381\u2382\7\u033f\2\2\u2382\u2383\5\u0312\u018a\2\u2383\u2384"+
+		"\7\u0340\2\2\u2384\u2386\3\2\2\2\u2385\u237d\3\2\2\2\u2385\u2381\3\2\2"+
+		"\2\u2386\u030f\3\2\2\2\u2387\u2390\7\u00df\2\2\u2388\u2390\5\u03f0\u01f9"+
+		"\2\u2389\u2390\5\u036e\u01b8\2\u238a\u2390\7\u0324\2\2\u238b\u238c\7\u033f"+
+		"\2\2\u238c\u238d\5\u0310\u0189\2\u238d\u238e\7\u0340\2\2\u238e\u2390\3"+
+		"\2\2\2\u238f\u2387\3\2\2\2\u238f\u2388\3\2\2\2\u238f\u2389\3\2\2\2\u238f"+
+		"\u238a\3\2\2\2\u238f\u238b\3\2\2\2\u2390\u0311\3\2\2\2\u2391\u2392\5\u01be"+
+		"\u00e0\2\u2392\u0313\3\2\2\2\u2393\u2396\7\u0179\2\2\u2394\u2395\7\u0317"+
+		"\2\2\u2395\u2397\7\u0341\2\2\u2396\u2394\3\2\2\2\u2396\u2397\3\2\2\2\u2397"+
+		"\u2398\3\2\2\2\u2398\u239d\5\u0316\u018c\2\u2399\u239a\7\u0341\2\2\u239a"+
+		"\u239c\5\u0316\u018c\2\u239b\u2399\3\2\2\2\u239c\u239f\3\2\2\2\u239d\u239b"+
+		"\3\2\2\2\u239d\u239e\3\2\2\2\u239e\u23ae\3\2\2\2\u239f\u239d\3\2\2\2\u23a0"+
+		"\u23a1\7\u0179\2\2\u23a1\u23a6\7 \2\2\u23a2\u23a3\7\u033f\2\2\u23a3\u23a4"+
+		"\5\u0364\u01b3\2\u23a4\u23a5\7\u0340\2\2\u23a5\u23a7\3\2\2\2\u23a6\u23a2"+
+		"\3\2\2\2\u23a6\u23a7\3\2\2\2\u23a7\u23a8\3\2\2\2\u23a8\u23a9\7\20\2\2"+
+		"\u23a9\u23aa\7\u033f\2\2\u23aa\u23ab\5\u01be\u00e0\2\u23ab\u23ac\7\u0340"+
+		"\2\2\u23ac\u23ae\3\2\2\2\u23ad\u2393\3\2\2\2\u23ad\u23a0\3\2\2\2\u23ae"+
+		"\u0315\3\2\2\2\u23af\u23b4\5\u03f4\u01fb\2\u23b0\u23b1\7\u033f\2\2\u23b1"+
+		"\u23b2\5\u03cc\u01e7\2\u23b2\u23b3\7\u0340\2\2\u23b3\u23b5\3\2\2\2\u23b4"+
+		"\u23b0\3\2\2\2\u23b4\u23b5\3\2\2\2\u23b5\u23b6\3\2\2\2\u23b6\u23b7\7\20"+
+		"\2\2\u23b7\u23b8\7\u033f\2\2\u23b8\u23b9\5\u01be\u00e0\2\u23b9\u23ba\7"+
+		"\u0340\2\2\u23ba\u0317\3\2\2\2\u23bb\u23be\5\u03c8\u01e5\2\u23bc\u23be"+
+		"\7\u0324\2\2\u23bd\u23bb\3\2\2\2\u23bd\u23bc\3\2\2\2\u23be\u23c1\3\2\2"+
+		"\2\u23bf\u23c2\7\u032d\2\2\u23c0\u23c2\5\u03fa\u01fe\2\u23c1\u23bf\3\2"+
+		"\2\2\u23c1\u23c0\3\2\2\2\u23c2\u23c3\3\2\2\2\u23c3\u23cc\5\u02d8\u016d"+
+		"\2\u23c4\u23c5\5\u03f4\u01fb\2\u23c5\u23c6\7\u033a\2\2\u23c6\u23c7\5\u03f4"+
+		"\u01fb\2\u23c7\u23c8\7\u033f\2\2\u23c8\u23c9\5\u0394\u01cb\2\u23c9\u23ca"+
+		"\7\u0340\2\2\u23ca\u23cc\3\2\2\2\u23cb\u23bd\3\2\2\2\u23cb\u23c4\3\2\2"+
+		"\2\u23cc\u0319\3\2\2\2\u23cd\u23d2\5\u031c\u018f\2\u23ce\u23cf\7\u0341"+
+		"\2\2\u23cf\u23d1\5\u031c\u018f\2\u23d0\u23ce\3\2\2\2\u23d1\u23d4\3\2\2"+
+		"\2\u23d2\u23d0\3\2\2\2\u23d2\u23d3\3\2\2\2\u23d3\u031b\3\2\2\2\u23d4\u23d2"+
+		"\3\2\2\2\u23d5\u23da\5\u031e\u0190\2\u23d6\u23d7\7\u00ed\2\2\u23d7\u23d9"+
+		"\5\u031e\u0190\2\u23d8\u23d6\3\2\2\2\u23d9\u23dc\3\2\2\2\u23da\u23d8\3"+
+		"\2\2\2\u23da\u23db\3\2\2\2\u23db\u031d\3\2\2\2\u23dc\u23da\3\2\2\2\u23dd"+
+		"\u23e2\5\u0320\u0191\2\u23de\u23df\7\13\2\2\u23df\u23e1\5\u0320\u0191"+
+		"\2\u23e0\u23de\3\2\2\2\u23e1\u23e4\3\2\2\2\u23e2\u23e0\3\2\2\2\u23e2\u23e3"+
+		"\3\2\2\2\u23e3\u031f\3\2\2\2\u23e4\u23e2\3\2\2\2\u23e5\u23e7\7\u00dc\2"+
+		"\2\u23e6\u23e5\3\2\2\2\u23e6\u23e7\3\2\2\2\u23e7\u23e8\3\2\2\2\u23e8\u23e9"+
+		"\5\u0322\u0192\2\u23e9\u0321\3\2\2\2\u23ea\u23eb\7w\2\2\u23eb\u23ec\7"+
+		"\u033f\2\2\u23ec\u23ed\5\u0312\u018a\2\u23ed\u23ee\7\u0340\2\2\u23ee\u2423"+
+		"\3\2\2\2\u23ef\u23f0\5\u02d8\u016d\2\u23f0\u23f1\5\u03f8\u01fd\2\u23f1"+
+		"\u23f2\5\u02d8\u016d\2\u23f2\u2423\3\2\2\2\u23f3\u23f4\5\u02d8\u016d\2"+
+		"\u23f4\u23f5\5\u03f8\u01fd\2\u23f5\u23f6\tn\2\2\u23f6\u23f7\7\u033f\2"+
+		"\2\u23f7\u23f8\5\u0312\u018a\2\u23f8\u23f9\7\u0340\2\2\u23f9\u2423\3\2"+
+		"\2\2\u23fa\u23fc\5\u02d8\u016d\2\u23fb\u23fd\7\u00dc\2\2\u23fc\u23fb\3"+
+		"\2\2\2\u23fc\u23fd\3\2\2\2\u23fd\u23fe\3\2\2\2\u23fe\u23ff\7\35\2\2\u23ff"+
+		"\u2400\5\u02d8\u016d\2\u2400\u2401\7\13\2\2\u2401\u2402\5\u02d8\u016d"+
+		"\2\u2402\u2423\3\2\2\2\u2403\u2405\5\u02d8\u016d\2\u2404\u2406\7\u00dc"+
+		"\2\2\u2405\u2404\3\2\2\2\u2405\u2406\3\2\2\2\u2406\u2407\3\2\2\2\u2407"+
+		"\u2408\7\u009b\2\2\u2408\u240b\7\u033f\2\2\u2409\u240c\5\u0312\u018a\2"+
+		"\u240a\u240c\5\u0394\u01cb\2\u240b\u2409\3\2\2\2\u240b\u240a\3\2\2\2\u240c"+
+		"\u240d\3\2\2\2\u240d\u240e\7\u0340\2\2\u240e\u2423\3\2\2\2\u240f\u2411"+
+		"\5\u02d8\u016d\2\u2410\u2412\7\u00dc\2\2\u2411\u2410\3\2\2\2\u2411\u2412"+
+		"\3\2\2\2\u2412\u2413\3\2\2\2\u2413\u2414\7\u00b4\2\2\u2414\u2417\5\u02d8"+
+		"\u016d\2\u2415\u2416\7o\2\2\u2416\u2418\5\u02d8\u016d\2\u2417\u2415\3"+
+		"\2\2\2\u2417\u2418\3\2\2\2\u2418\u2423\3\2\2\2\u2419\u241a\5\u02d8\u016d"+
+		"\2\u241a\u241b\7\u00a8\2\2\u241b\u241c\5\u03d4\u01eb\2\u241c\u2423\3\2"+
+		"\2\2\u241d\u2423\5\u02dc\u016f\2\u241e\u241f\7\u033f\2\2\u241f\u2420\5"+
+		"\u031c\u018f\2\u2420\u2421\7\u0340\2\2\u2421\u2423\3\2\2\2\u2422\u23ea"+
+		"\3\2\2\2\u2422\u23ef\3\2\2\2\u2422\u23f3\3\2\2\2\u2422\u23fa\3\2\2\2\u2422"+
+		"\u2403\3\2\2\2\u2422\u240f\3\2\2\2\u2422\u2419\3\2\2\2\u2422\u241d\3\2"+
+		"\2\2\u2422\u241e\3\2\2\2\u2423\u0323\3\2\2\2\u2424\u242a\5\u0328\u0195"+
+		"\2\u2425\u2426\7\u033f\2\2\u2426\u2427\5\u0324\u0193\2\u2427\u2428\7\u0340"+
+		"\2\2\u2428\u242a\3\2\2\2\u2429\u2424\3\2\2\2\u2429\u2425\3\2\2\2\u242a"+
+		"\u242e\3\2\2\2\u242b\u242d\5\u0326\u0194\2\u242c\u242b\3\2\2\2\u242d\u2430"+
+		"\3\2\2\2\u242e\u242c\3\2\2\2\u242e\u242f\3\2\2\2\u242f\u0325\3\2\2\2\u2430"+
+		"\u242e\3\2\2\2\u2431\u2433\7\u0164\2\2\u2432\u2434\7\6\2\2\u2433\u2432"+
+		"\3\2\2\2\u2433\u2434\3\2\2\2\u2434\u2438\3\2\2\2\u2435\u2438\7t\2\2\u2436"+
+		"\u2438\7\u00a4\2\2\u2437\u2431\3\2\2\2\u2437\u2435\3\2\2\2\u2437\u2436"+
+		"\3\2\2\2\u2438\u243e\3\2\2\2\u2439\u243f\5\u0328\u0195\2\u243a\u243b\7"+
+		"\u033f\2\2\u243b\u243c\5\u0324\u0193\2\u243c\u243d\7\u0340\2\2\u243d\u243f"+
+		"\3\2\2\2\u243e\u2439\3\2\2\2\u243e\u243a\3\2\2\2\u243f\u0327\3\2\2\2\u2440"+
+		"\u2442\7\u0131\2\2\u2441\u2443\to\2\2\u2442\u2441\3\2\2\2\u2442\u2443"+
+		"\3\2\2\2\u2443\u2445\3\2\2\2\u2444\u2446\5\u032a\u0196\2\u2445\u2444\3"+
+		"\2\2\2\u2445\u2446\3\2\2\2\u2446\u2447\3\2\2\2\u2447\u244a\5\u0340\u01a1"+
+		"\2\u2448\u2449\7\u00a5\2\2\u2449\u244b\5\u03bc\u01df\2\u244a\u2448\3\2"+
+		"\2\2\u244a\u244b\3\2\2\2\u244b\u244e\3\2\2\2\u244c\u244d\7\u008b\2\2\u244d"+
+		"\u244f\5\u034e\u01a8\2\u244e\u244c\3\2\2\2\u244e\u244f\3\2\2\2\u244f\u2452"+
+		"\3\2\2\2\u2450\u2451\7\u0176\2\2\u2451\u2453\5\u031c\u018f\2\u2452\u2450"+
+		"\3\2\2\2\u2452\u2453\3\2\2\2\u2453\u2461\3\2\2\2\u2454\u2455\7\u0092\2"+
+		"\2\u2455\u2457\7&\2\2\u2456\u2458\7\6\2\2\u2457\u2456\3\2\2\2\u2457\u2458"+
+		"\3\2\2\2\u2458\u2459\3\2\2\2\u2459\u245e\5\u0338\u019d\2\u245a\u245b\7"+
+		"\u0341\2\2\u245b\u245d\5\u0338\u019d\2\u245c\u245a\3\2\2\2\u245d\u2460"+
+		"\3\2\2\2\u245e\u245c\3\2\2\2\u245e\u245f\3\2\2\2\u245f\u2462\3\2\2\2\u2460"+
+		"\u245e\3\2\2\2\u2461\u2454\3\2\2\2\u2461\u2462\3\2\2\2\u2462\u2465\3\2"+
+		"\2\2\u2463\u2464\7\u0093\2\2\u2464\u2466\5\u031c\u018f\2\u2465\u2463\3"+
+		"\2\2\2\u2465\u2466\3\2\2\2\u2466\u0329\3\2\2\2\u2467\u246a\7\u015b\2\2"+
+		"\u2468\u246b\5\u032c\u0197\2\u2469\u246b\5\u032e\u0198\2\u246a\u2468\3"+
+		"\2\2\2\u246a\u2469\3\2\2\2\u246b\u246e\3\2\2\2\u246c\u246d\7\u0179\2\2"+
+		"\u246d\u246f\7\u02f4\2\2\u246e\u246c\3\2\2\2\u246e\u246f\3\2\2\2\u246f"+
 		"\u032b\3\2\2\2\u2470\u2471\tp\2\2\u2471\u2478\7\u00f5\2\2\u2472\u2473"+
 		"\7\u033f\2\2\u2473\u2474\5\u02d8\u016d\2\u2474\u2475\7\u0340\2\2\u2475"+
 		"\u2476\7\u00f5\2\2\u2476\u2478\3\2\2\2\u2477\u2470\3\2\2\2\u2477\u2472"+
