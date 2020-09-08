@@ -185,30 +185,37 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                         }
                     }
                 }
+            }
+        }
 
-                // Now the goal is to see if this column elem is inside of a subquery.
-                // Let's try to find a subquery context parent and go from there.
-                SubqueryContext subqueryCtx = (SubqueryContext) getParentRuleContext(ctx, SubqueryContext.class);
-                if (subqueryCtx != null) {
+        // Now the goal is to see if this column elem is inside of a subquery.
+        // Let's try to find a subquery context parent and go from there.
+        SubqueryContext subqueryCtx = (SubqueryContext) getParentRuleContext(ctx, SubqueryContext.class);
+        if (subqueryCtx != null) {
 
-                    // With subquery, we want to add the column alias if it exists.
-                    Token subqueryColumnToken = columnToken;
-                    if (ctx.as_column_alias() != null) {
-                        subqueryColumnToken = ctx.as_column_alias().getStop();
-                    }
+            // With subquery, we want to add the column alias if it exists.
+            Token subqueryColumnToken = columnToken;
+            if (ctx.as_column_alias() != null) {
+                subqueryColumnToken = ctx.as_column_alias().getStop();
+            }
 
-                    // Check subquery columns map first.
-                    if (this.subqueryColumns.containsKey(subqueryCtx)) {
-                        this.subqueryColumns.get(subqueryCtx).add(subqueryColumnToken);
-                    } else {
-                        // Let's see if we have an value in the subquery map that matches.
-                        if (this.subqueries.values().contains(subqueryCtx)) {
-                            // We need to put in a new sub query column map entry.
-                            ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
-                            subqueryColumnTokens.add(subqueryColumnToken);
-                            this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
-                        }
-                    }
+            // Check subquery columns map first.
+            if (this.subqueryColumns.containsKey(subqueryCtx)) {
+                this.subqueryColumns.get(subqueryCtx).add(subqueryColumnToken);
+            } else {
+                // Let's see if we have an value in the subquery map that matches.
+                if (this.subqueries.values().contains(subqueryCtx)) {
+                    // We need to put in a new sub query column map entry.
+                    ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
+                    subqueryColumnTokens.add(subqueryColumnToken);
+                    this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
+                } else {
+                    // Looks like subquery context does not exist in subqueries map yet. Let's go
+                    // ahead and still add to subquery columns map.
+                    // We need to put in a new sub query column map entry.
+                    ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
+                    subqueryColumnTokens.add(subqueryColumnToken);
+                    this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
                 }
             }
         }
@@ -378,65 +385,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             // qualified table name.
             tableName = ctx.table_name().getStop().getText();
 
-            // Before we try to get all columns that asterisk is referring to, we need to
-            // see what the table is.
-            boolean processedAsteriskColumns = false;
-
-            // Check table/view cache first.
-            if (!processedAsteriskColumns) {
-
-                ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
-                        .getColumnsForTable(tableName);
-
-                if (tableColumnsForAsterisk != null) {
-
-                    processedAsteriskColumns = true;
-
-                    for (TableColumn tableColumn : tableColumnsForAsterisk) {
-                        // Should be able to just use all the details for the asterisk token and just
-                        // change the text.
-                        CommonToken commonToken = new CommonToken(asteriskToken);
-                        commonToken.setText(tableColumn.column_name);
-                        columnTokensForAsterisk.add((Token) commonToken);
-                    }
-                }
-            }
-
-            // Check aliases next.
-            if (this.aliasedTableNames.containsKey(tableName)) {
-                processedAsteriskColumns = true;
-
-                // Get all columns from cache for aliased table.
-                ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
-                        .getColumnsForTable(this.aliasedTableNames.get(tableName));
-
-                if (tableColumnsForAsterisk != null) {
-                    for (TableColumn tableColumn : tableColumnsForAsterisk) {
-                        // Should be able to just use all the details for the asterisk token and just
-                        // change the text.
-                        CommonToken commonToken = new CommonToken(asteriskToken);
-                        commonToken.setText(tableColumn.column_name);
-                        columnTokensForAsterisk.add((Token) commonToken);
-                    }
-                }
-            }
-
-            // Finally, check subqueries.
-            if (!processedAsteriskColumns && this.subqueries.containsKey(tableName)) {
-                processedAsteriskColumns = true;
-
-                ArrayList<Token> subqueryColumnTokens = this.subqueryColumns.get(this.subqueries.get(tableName));
-                if (subqueryColumnTokens != null) {
-                    for (Token subqueryColumnToken : subqueryColumnTokens) {
-                        // Should be able to just use all the details for the asterisk token and just
-                        // change the text.
-                        CommonToken commonToken = new CommonToken(asteriskToken);
-                        commonToken.setText(subqueryColumnToken.getText());
-                        columnTokensForAsterisk.add((Token) commonToken);
-                    }
-                }
-            }
-
         } else {
             // If table name is null, we can get the tables via going up through parents.
             // Parent we want is query_specification. Right now, we are likely in the column
@@ -473,83 +421,90 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                         }
                     }
                 }
+            }
+        }
 
-                // Before we try to get all columns that asterisk is referring to, we need to
-                // see what the table is.
-                boolean processedAsteriskColumns = false;
+        // Before we try to get all columns that asterisk is referring to, we need to
+        // see what the table is.
+        boolean processedAsteriskColumns = false;
 
-                // Check table/view cache first.
-                if (!processedAsteriskColumns) {
+        // Check table/view cache first.
+        if (!processedAsteriskColumns) {
 
-                    ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
-                            .getColumnsForTable(tableName);
+            ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
+                    .getColumnsForTable(tableName);
 
-                    if (tableColumnsForAsterisk != null) {
+            if (tableColumnsForAsterisk != null) {
 
-                        processedAsteriskColumns = true;
+                processedAsteriskColumns = true;
 
-                        for (TableColumn tableColumn : tableColumnsForAsterisk) {
-                            // Should be able to just use all the details for the asterisk token and just
-                            // change the text.
-                            CommonToken commonToken = new CommonToken(asteriskToken);
-                            commonToken.setText(tableColumn.column_name);
-                            columnTokensForAsterisk.add((Token) commonToken);
-                        }
-                    }
+                for (TableColumn tableColumn : tableColumnsForAsterisk) {
+                    // Should be able to just use all the details for the asterisk token and just
+                    // change the text.
+                    CommonToken commonToken = new CommonToken(asteriskToken);
+                    commonToken.setText(tableColumn.column_name);
+                    columnTokensForAsterisk.add((Token) commonToken);
                 }
+            }
+        }
 
-                // Check aliases next.
-                if (this.aliasedTableNames.containsKey(tableName)) {
-                    processedAsteriskColumns = true;
+        // Check aliases next.
+        if (this.aliasedTableNames.containsKey(tableName)) {
+            processedAsteriskColumns = true;
 
-                    // Get all columns from cache for aliased table.
-                    ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
-                            .getColumnsForTable(this.aliasedTableNames.get(tableName));
+            // Get all columns from cache for aliased table.
+            ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
+                    .getColumnsForTable(this.aliasedTableNames.get(tableName));
 
-                    if (tableColumnsForAsterisk != null) {
-                        for (TableColumn tableColumn : tableColumnsForAsterisk) {
-                            // Should be able to just use all the details for the asterisk token and just
-                            // change the text.
-                            CommonToken commonToken = new CommonToken(asteriskToken);
-                            commonToken.setText(tableColumn.column_name);
-                            columnTokensForAsterisk.add((Token) commonToken);
-                        }
-                    }
+            if (tableColumnsForAsterisk != null) {
+                for (TableColumn tableColumn : tableColumnsForAsterisk) {
+                    // Should be able to just use all the details for the asterisk token and just
+                    // change the text.
+                    CommonToken commonToken = new CommonToken(asteriskToken);
+                    commonToken.setText(tableColumn.column_name);
+                    columnTokensForAsterisk.add((Token) commonToken);
                 }
+            }
+        }
 
-                // Finally, check subqueries.
-                if (!processedAsteriskColumns && this.subqueries.containsKey(tableName)) {
-                    processedAsteriskColumns = true;
+        // Finally, check subqueries.
+        if (!processedAsteriskColumns && this.subqueries.containsKey(tableName)) {
+            processedAsteriskColumns = true;
 
-                    ArrayList<Token> subqueryColumnTokens = this.subqueryColumns.get(this.subqueries.get(tableName));
-                    if (subqueryColumnTokens != null) {
-                        for (Token subqueryColumnToken : subqueryColumnTokens) {
-                            // Should be able to just use all the details for the asterisk token and just
-                            // change the text.
-                            CommonToken commonToken = new CommonToken(asteriskToken);
-                            commonToken.setText(subqueryColumnToken.getText());
-                            columnTokensForAsterisk.add((Token) commonToken);
-                        }
-                    }
+            ArrayList<Token> subqueryColumnTokens = this.subqueryColumns.get(this.subqueries.get(tableName));
+            if (subqueryColumnTokens != null) {
+                for (Token subqueryColumnToken : subqueryColumnTokens) {
+                    // Should be able to just use all the details for the asterisk token and just
+                    // change the text.
+                    CommonToken commonToken = new CommonToken(asteriskToken);
+                    commonToken.setText(subqueryColumnToken.getText());
+                    columnTokensForAsterisk.add((Token) commonToken);
                 }
+            }
+        }
 
-                // Now the goal is to see if this column elem is inside of a subquery.
-                // Let's try to find a subquery context parent and go from there.
-                SubqueryContext subqueryCtx = (SubqueryContext) getParentRuleContext(ctx, SubqueryContext.class);
-                if (subqueryCtx != null) {
+        // Now the goal is to see if this column elem is inside of a subquery.
+        // Let's try to find a subquery context parent and go from there.
+        SubqueryContext subqueryCtx = (SubqueryContext) getParentRuleContext(ctx, SubqueryContext.class);
+        if (subqueryCtx != null) {
 
-                    // Check subquery columns map first.
-                    if (this.subqueryColumns.containsKey(subqueryCtx)) {
-                        this.subqueryColumns.get(subqueryCtx).addAll(columnTokensForAsterisk);
-                    } else {
-                        // Let's see if we have an value in the subquery map that matches.
-                        if (this.subqueries.values().contains(subqueryCtx)) {
-                            // We need to put in a new sub query column map entry.
-                            ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
-                            subqueryColumnTokens.addAll(columnTokensForAsterisk);
-                            this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
-                        }
-                    }
+            // Check subquery columns map first.
+            if (this.subqueryColumns.containsKey(subqueryCtx)) {
+                this.subqueryColumns.get(subqueryCtx).addAll(columnTokensForAsterisk);
+            } else {
+                // Let's see if we have an value in the subquery map that matches.
+                if (this.subqueries.values().contains(subqueryCtx)) {
+                    // We need to put in a new sub query column map entry.
+                    ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
+                    subqueryColumnTokens.addAll(columnTokensForAsterisk);
+                    this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
+                } else {
+                    // Looks like subquery context does not exist in subqueries map yet. Let's go
+                    // ahead and still add to subquery columns map.
+                    // We need to put in a new sub query column map entry.
+                    ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
+                    subqueryColumnTokens.addAll(columnTokensForAsterisk);
+                    this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
                 }
             }
         }

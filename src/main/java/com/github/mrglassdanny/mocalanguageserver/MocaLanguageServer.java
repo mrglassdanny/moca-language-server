@@ -48,13 +48,12 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
                 System.out);
 
         // TODO: remove after done sql debugging!!!
-        MocaSqlCompiler test = new MocaSqlCompiler();
-        test.compileScript(0,
-                "select testerboi.stoloc, arecod, locsts\n" + " from ( select l.stoloc, l.wh_id, l.useflg\n"
-                        + " from ( select stoloc, wh_id, locsts, useflg\n" + " from locmst) as z\n" + " inner\n"
-                        + " join ( select stoloc, wh_id, locsts, useflg\n" + " from locmst)l\n"
-                        + " on z.useflg = l.useflg\n" + " where z.stoloc = 'asdf')testerboi");
-        MocaSqlCompilationResult res = test.compilationResults.get(0);
+        // MocaSqlCompiler test = new MocaSqlCompiler();
+        // test.compileScript(0, "select stoloc from ( select l.stoloc from ( select
+        // stoloc\n" + " from locmst) as z\n"
+        // + " inner\n" + " join ( select stoloc\n" + " from locmst)l\n" + " on z.useflg
+        // = l.useflg)testerboi");
+        // MocaSqlCompilationResult res = test.compilationResults.get(0);
 
         server.connect(launcher.getRemoteProxy());
         launcher.startListening();
