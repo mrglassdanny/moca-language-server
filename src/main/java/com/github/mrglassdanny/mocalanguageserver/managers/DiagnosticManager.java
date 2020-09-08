@@ -389,33 +389,36 @@ public class DiagnosticManager {
                         ArrayList<org.antlr.v4.runtime.Token> subqueryColumnTokens = sqlParseTreeListener.subqueryColumns
                                 .get(sqlParseTreeListener.subqueries.get(tableName));
 
-                        for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
+                        if (subqueryColumnTokens != null) {
+                            for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
 
-                            // Check if column token exists in subquery column token list.
-                            // Need to compare token text since objects are likely different instances.
-                            boolean foundColumn = false;
-                            for (org.antlr.v4.runtime.Token subqueryColumnToken : subqueryColumnTokens) {
-                                if (columnToken.getText().compareToIgnoreCase(subqueryColumnToken.getText()) == 0) {
-                                    foundColumn = true;
-                                    break;
+                                // Check if column token exists in subquery column token list.
+                                // Need to compare token text since objects are likely different instances.
+                                boolean foundColumn = false;
+
+                                for (org.antlr.v4.runtime.Token subqueryColumnToken : subqueryColumnTokens) {
+                                    if (columnToken.getText().compareToIgnoreCase(subqueryColumnToken.getText()) == 0) {
+                                        foundColumn = true;
+                                        break;
+                                    }
                                 }
-                            }
 
-                            if (!foundColumn) {
-                                Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                        columnToken.getCharPositionInLine(), sqlScriptRange);
-                                Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                        columnToken.getCharPositionInLine(), sqlScriptRange);
+                                if (!foundColumn) {
+                                    Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                            columnToken.getCharPositionInLine(), sqlScriptRange);
+                                    Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                            columnToken.getCharPositionInLine(), sqlScriptRange);
 
-                                if (beginPos != null && endPos != null) {
-                                    Range range = new Range(beginPos, endPos);
-                                    Diagnostic diagnostic = new Diagnostic();
-                                    diagnostic.setRange(range);
-                                    diagnostic.setSeverity(DiagnosticSeverity.Warning);
-                                    diagnostic
-                                            .setMessage(String.format("SQL: Column '%s' may not exist on Subquery '%s'",
-                                                    columnToken.getText(), tableName));
-                                    diagnostics.add(diagnostic);
+                                    if (beginPos != null && endPos != null) {
+                                        Range range = new Range(beginPos, endPos);
+                                        Diagnostic diagnostic = new Diagnostic();
+                                        diagnostic.setRange(range);
+                                        diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                                        diagnostic.setMessage(
+                                                String.format("SQL: Column '%s' may not exist on Subquery '%s'",
+                                                        columnToken.getText(), tableName));
+                                        diagnostics.add(diagnostic);
+                                    }
                                 }
                             }
                         }

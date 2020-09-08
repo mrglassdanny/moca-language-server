@@ -25,6 +25,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompila
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyASTUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.MocaSqlParseTreeListener;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
@@ -268,6 +269,12 @@ public class CompletionProvider {
                         populateAliasedTableNames(sqlCompilationResult.sqlParseTreeListener.aliasedTableNames, items);
                         populateSubqueryNames(sqlCompilationResult.sqlParseTreeListener.subqueries, items);
 
+                        // Could be anonymous subquery.
+                        populateSqlColumnsFromSubquery(sqlCompilationResult.sqlParseTreeListener.subqueryColumns
+                                .get(sqlCompilationResult.sqlParseTreeListener.subqueries
+                                        .get(MocaSqlParseTreeListener.ANONYMOUS_SUBQUERY)),
+                                items);
+
                     }
 
                 }
@@ -438,6 +445,10 @@ public class CompletionProvider {
     private static void populateAliasedTableNames(HashMap<String, String> aliasedTableNames,
             List<CompletionItem> items) {
 
+        if (aliasedTableNames == null) {
+            return;
+        }
+
         for (Map.Entry<String, String> entry : aliasedTableNames.entrySet()) {
             CompletionItem item = new CompletionItem(entry.getKey());
             item.setDocumentation("(alias) " + entry.getValue());
@@ -447,6 +458,10 @@ public class CompletionProvider {
     }
 
     private static void populateSubqueryNames(HashMap<String, SubqueryContext> subqueries, List<CompletionItem> items) {
+
+        if (subqueries == null) {
+            return;
+        }
 
         for (String subqueryName : subqueries.keySet()) {
             CompletionItem item = new CompletionItem(subqueryName);
@@ -496,6 +511,11 @@ public class CompletionProvider {
 
     private static void populateSqlColumnsFromSubquery(ArrayList<org.antlr.v4.runtime.Token> columnTokens,
             List<CompletionItem> items) {
+
+        if (columnTokens == null) {
+            return;
+        }
+
         for (org.antlr.v4.runtime.Token columnToken : columnTokens) {
             String columnName = columnToken.getText();
             CompletionItem item = new CompletionItem(columnName);

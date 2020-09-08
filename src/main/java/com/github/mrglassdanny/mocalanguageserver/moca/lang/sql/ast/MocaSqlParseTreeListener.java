@@ -58,6 +58,11 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterTable_source_item(MocaSqlParser.Table_source_itemContext ctx) {
 
+        // Need to make sure context is not null.
+        if (ctx == null) {
+            return;
+        }
+
         String tableName = null;
         String tableAliasName = null;
 
@@ -102,6 +107,11 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterFull_table_name(MocaSqlParser.Full_table_nameContext ctx) {
 
+        // Need to make sure context is not null.
+        if (ctx == null) {
+            return;
+        }
+
         // Table token we care about will be the last token, since it could be fully
         // qualified table name.
         this.tableTokens.add(ctx.getStop());
@@ -111,6 +121,11 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterTable_name(MocaSqlParser.Table_nameContext ctx) {
 
+        // Need to make sure context is not null.
+        if (ctx == null) {
+            return;
+        }
+
         // Table token we care about will be the last token, since it could be fully
         // qualified table name.
         this.tableTokens.add(ctx.getStop());
@@ -119,6 +134,11 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     // SELECT statements.
     @Override
     public void enterColumn_elem(MocaSqlParser.Column_elemContext ctx) {
+
+        // Need to make sure context is not null.
+        if (ctx == null || ctx.id() == null) {
+            return;
+        }
 
         Token columnToken = ctx.id().getStop();
 
@@ -208,6 +228,11 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterFull_column_name(MocaSqlParser.Full_column_nameContext ctx) {
 
+        // Need to make sure context is not null.
+        if (ctx == null || ctx.id() == null) {
+            return;
+        }
+
         Token columnToken = ctx.id().getStop();
 
         String tableName = null;
@@ -290,6 +315,11 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterColumn_name_list(MocaSqlParser.Column_name_listContext ctx) {
 
+        // Need to make sure context is not null.
+        if (ctx == null || ctx.children == null) {
+            return;
+        }
+
         // Column tokens will be delimited by commas -- let's go ahead and put them in a
         // list.
         ArrayList<Token> columnTokenList = new ArrayList<>();
@@ -325,13 +355,18 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
 
     // SELECT statements.
     @Override
-    public void enterAsterisk(MocaSqlParser.AsteriskContext ctx) {
+    public void exitAsterisk(MocaSqlParser.AsteriskContext ctx) {
         // MocaSqlParser does not consider '*' a column element, though we want to treat
         // it like one. Instead of just adding it like a regular column elem, we
         // will get all of the columns in the mocasql cache/subquery for the
         // table/subquery that it refers to and add them to the column list. If there
         // are no columns, we will not worry about adding anything -- including the
         // asterisk.
+
+        // Need to make sure context is not null.
+        if (ctx == null) {
+            return;
+        }
 
         Token asteriskToken = ctx.getStop();
         ArrayList<Token> columnTokensForAsterisk = new ArrayList<>();
@@ -346,15 +381,17 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             // Before we try to get all columns that asterisk is referring to, we need to
             // see what the table is.
             boolean processedAsteriskColumns = false;
-            // Check aliases first.
-            if (this.aliasedTableNames.containsKey(tableName)) {
-                processedAsteriskColumns = true;
 
-                // Get all columns from cache for aliased table.
+            // Check table/view cache first.
+            if (!processedAsteriskColumns) {
+
                 ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
-                        .getColumnsForTable(this.aliasedTableNames.get(tableName));
+                        .getColumnsForTable(tableName);
 
                 if (tableColumnsForAsterisk != null) {
+
+                    processedAsteriskColumns = true;
+
                     for (TableColumn tableColumn : tableColumnsForAsterisk) {
                         // Should be able to just use all the details for the asterisk token and just
                         // change the text.
@@ -365,13 +402,13 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                 }
             }
 
-            // Now check table tokens.
-            if (!processedAsteriskColumns && this.tableTokens.contains(ctx.table_name().getStop())) {
+            // Check aliases next.
+            if (this.aliasedTableNames.containsKey(tableName)) {
                 processedAsteriskColumns = true;
 
-                // Get all columns from cache for table.
+                // Get all columns from cache for aliased table.
                 ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
-                        .getColumnsForTable(tableName);
+                        .getColumnsForTable(this.aliasedTableNames.get(tableName));
 
                 if (tableColumnsForAsterisk != null) {
                     for (TableColumn tableColumn : tableColumnsForAsterisk) {
@@ -440,15 +477,17 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                 // Before we try to get all columns that asterisk is referring to, we need to
                 // see what the table is.
                 boolean processedAsteriskColumns = false;
-                // Check aliases first.
-                if (this.aliasedTableNames.containsKey(tableName)) {
-                    processedAsteriskColumns = true;
 
-                    // Get all columns from cache for aliased table.
+                // Check table/view cache first.
+                if (!processedAsteriskColumns) {
+
                     ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
-                            .getColumnsForTable(this.aliasedTableNames.get(tableName));
+                            .getColumnsForTable(tableName);
 
                     if (tableColumnsForAsterisk != null) {
+
+                        processedAsteriskColumns = true;
+
                         for (TableColumn tableColumn : tableColumnsForAsterisk) {
                             // Should be able to just use all the details for the asterisk token and just
                             // change the text.
@@ -459,13 +498,13 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                     }
                 }
 
-                // Now check table tokens.
-                if (!processedAsteriskColumns && this.tableTokens.contains(ctx.table_name().getStop())) {
+                // Check aliases next.
+                if (this.aliasedTableNames.containsKey(tableName)) {
                     processedAsteriskColumns = true;
 
-                    // Get all columns from cache for table.
+                    // Get all columns from cache for aliased table.
                     ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
-                            .getColumnsForTable(tableName);
+                            .getColumnsForTable(this.aliasedTableNames.get(tableName));
 
                     if (tableColumnsForAsterisk != null) {
                         for (TableColumn tableColumn : tableColumnsForAsterisk) {
