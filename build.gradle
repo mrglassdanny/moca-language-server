@@ -22,15 +22,9 @@ dependencies {
     compile 'io.github.classgraph:classgraph:4.8.53'
     compile 'com.google.code.gson:gson:2.8.6'
 
-    compile files('lib/sqlite-jdbc-3.23.1.jar')
     compile files('lib/codebuff-1.5.1.mrglassdanny.jar')
     
-    
-
     antlr 'org.antlr:antlr4:4.5.3'
-
-    
-
 }
 
 
