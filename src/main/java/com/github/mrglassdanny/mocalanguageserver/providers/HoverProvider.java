@@ -17,7 +17,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompila
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.ast.GroovyASTNodeVisitor;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyASTUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyNodeToStringUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
 import org.codehaus.groovy.ast.ASTNode;
@@ -97,45 +97,49 @@ public class HoverProvider {
                 }
 
                 break;
-            case Sql:
+            case MocaSql:
 
-                // For hover, we need to make sure the sql compiliation result we are
+                // For hover, we need to make sure the moca sql compiliation result we are
                 // looking at has no errors.
-                MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
+                MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
                         .get(ctx.rangeIdx);
 
                 // Tables, views, aliases, and subqueries - oh my!
-                String sqlWord = Positions.getWordAtPosition(textDocumentContents, position);
+                String mocaSqlWord = Positions.getWordAtPosition(textDocumentContents, position);
 
-                if (sqlWord != null) {
+                if (mocaSqlWord != null) {
                     // Convert to lowercase since repo is in lowercase.
-                    sqlWord = sqlWord.toLowerCase();
+                    mocaSqlWord = mocaSqlWord.toLowerCase();
 
-                    // Check first to see if sql word is table/view in database.
-                    Table table = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.get(sqlWord);
+                    // Check first to see if mocasql word is table/view in database.
+                    Table table = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.get(mocaSqlWord);
                     if (table != null) {
-                        contents.add(Either.forRight(new MarkedString("plaintext", getSqlContent(table, false))));
+                        contents.add(Either.forRight(new MarkedString("plaintext", getMocaSqlContent(table, false))));
                         return CompletableFuture.completedFuture(hover);
                     }
 
-                    Table view = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.get(sqlWord);
+                    Table view = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.get(mocaSqlWord);
                     if (view != null) {
-                        contents.add(Either.forRight(new MarkedString("plaintext", getSqlContent(view, true))));
+                        contents.add(Either.forRight(new MarkedString("plaintext", getMocaSqlContent(view, true))));
                         return CompletableFuture.completedFuture(hover);
                     }
 
                     // If not, check aliased tables/views/subqueries.
-                    if (sqlCompilationResult != null && sqlCompilationResult.sqlParseTreeListener != null
-                            && sqlCompilationResult.sqlParseTreeListener.aliasedTableNames != null
-                            && sqlCompilationResult.sqlParseTreeListener.aliasedTableNames.containsKey(sqlWord)) {
-                        contents.add(Either.forRight(new MarkedString("plaintext", "(alias) "
-                                + sqlCompilationResult.sqlParseTreeListener.aliasedTableNames.get(sqlWord))));
+                    if (mocaSqlCompilationResult != null && mocaSqlCompilationResult.mocaSqlParseTreeListener != null
+                            && mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames != null
+                            && mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
+                                    .containsKey(mocaSqlWord)) {
+                        contents.add(Either.forRight(new MarkedString("plaintext",
+                                String.format("(alias) '%s'",
+                                        mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
+                                                .get(mocaSqlWord)))));
                         return CompletableFuture.completedFuture(hover);
                     }
-                    if (sqlCompilationResult != null && sqlCompilationResult.sqlParseTreeListener != null
-                            && sqlCompilationResult.sqlParseTreeListener.subqueries != null
-                            && sqlCompilationResult.sqlParseTreeListener.subqueries.containsKey(sqlWord)) {
-                        contents.add(Either.forRight(new MarkedString("plaintext", "subquery " + sqlWord)));
+                    if (mocaSqlCompilationResult != null && mocaSqlCompilationResult.mocaSqlParseTreeListener != null
+                            && mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries != null
+                            && mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries.containsKey(mocaSqlWord)) {
+                        contents.add(Either
+                                .forRight(new MarkedString("plaintext", String.format("subquery '%s'", mocaSqlWord))));
                         return CompletableFuture.completedFuture(hover);
                     }
 
@@ -177,7 +181,7 @@ public class HoverProvider {
     // MOCA.
     private static String getMocaContent(String commandName, ArrayList<MocaCommand> mcmds) {
 
-        String contents = "command " + commandName + "\n";
+        String contents = "command '" + commandName + "'\n";
         for (MocaCommand mcmd : mcmds) {
             contents += mcmd.cmplvl + " - " + mcmd.type + "\n";
         }
@@ -214,13 +218,13 @@ public class HoverProvider {
 
     }
 
-    // SQL.
-    private static String getSqlContent(Table table, boolean isView) {
+    // MOCA SQL.
+    private static String getMocaSqlContent(Table table, boolean isView) {
 
         if (isView) {
-            return "view " + table.table_name + "\n" + (table.description == null ? "" : table.description);
+            return "view '" + table.table_name + "'\n" + (table.description == null ? "" : table.description);
         } else {
-            return "table " + table.table_name + "\n" + (table.description == null ? "" : table.description);
+            return "table '" + table.table_name + "'\n" + (table.description == null ? "" : table.description);
         }
     }
 

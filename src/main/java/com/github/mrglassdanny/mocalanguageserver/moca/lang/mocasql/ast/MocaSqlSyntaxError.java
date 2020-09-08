@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast;
 
 public class MocaSqlSyntaxError {
     public int line;

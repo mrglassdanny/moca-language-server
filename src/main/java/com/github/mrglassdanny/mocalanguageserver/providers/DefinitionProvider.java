@@ -86,9 +86,9 @@ public class DefinitionProvider {
                                             try {
 
                                                 String mcmdFileName = MocaLanguageServer.globalStoragePath
-                                                        + "\\command_lookup\\"
+                                                        + "\\command-lookup\\"
                                                         + (mcmd.cmplvl + "-" + mcmd.command).replace(" ", "_")
-                                                        + ".msql.readonly";
+                                                        + ".moca.readonly";
                                                 File mcmdFile = new File(mcmdFileName);
                                                 URI mcmdFileUri = mcmdFile.toURI();
                                                 BufferedWriter mcmdBufferedWriter = new BufferedWriter(
@@ -116,7 +116,7 @@ public class DefinitionProvider {
                     }
                 }
                 return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
-            case Sql:
+            case MocaSql:
                 return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
             case Groovy:
 

@@ -8,9 +8,8 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.format.MocaFormatter;
-
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.format.MocaSqlFormatter;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.MocaSqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.format.MocaSqlFormatter;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
 import org.antlr.v4.runtime.Token;
@@ -64,40 +63,41 @@ public class DocumentFormattingProvider {
 
                 String formattedTextDocumentContents = textDocumentContents;
 
-                // Process sql & groovy:
+                // Process mocasql & groovy:
                 for (Token mocaToken : mocaCompiler.mocaTokens) {
                         if (mocaToken.getType() == MocaLexer.SINGLE_BRACKET_STRING) {
 
-                                // Make sure we are dealing with actual sql string.
+                                // Make sure we are dealing with actual mocasql string.
                                 String tokenText = mocaToken.getText();
-                                if (MocaSqlLanguageUtils.isMocaTokenValueSqlScript(tokenText)) {
+                                if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(tokenText)) {
                                         // Remove brackets for formatting.
-                                        String sqlScript = tokenText.substring(1, tokenText.length() - 1);
+                                        String mocaSqlScript = tokenText.substring(1, tokenText.length() - 1);
 
-                                        String formattedSqlScript = MocaSqlFormatter.format(sqlScript);
+                                        String formattedMocaSqlScript = MocaSqlFormatter.format(mocaSqlScript);
 
-                                        if (formattedSqlScript != null) {
-                                                // In order for the entire sql script to be indented correctly
+                                        if (formattedMocaSqlScript != null) {
+                                                // In order for the entire mocasql script to be indented correctly
                                                 // after formatting, we need to get the char num from the single bracket
                                                 // string token and add that amount spaces/tabs to each newline in
-                                                // formatted sql script.
+                                                // formatted mocasql script.
                                                 StringBuilder indentBuf = new StringBuilder(
                                                                 mocaToken.getCharPositionInLine());
                                                 for (int i = 0; i < mocaToken.getCharPositionInLine(); i++) {
                                                         indentBuf.append(' ');
                                                 }
-                                                formattedSqlScript = formattedSqlScript.replace("\n",
+                                                formattedMocaSqlScript = formattedMocaSqlScript.replace("\n",
                                                                 "\n" + indentBuf.toString());
 
                                                 // Add to formatted text doc.
                                                 // Dont forget to add brackets back!
                                                 formattedTextDocumentContents = formattedTextDocumentContents.replace(
-                                                                mocaToken.getText(), "[" + formattedSqlScript + "]");
+                                                                mocaToken.getText(),
+                                                                "[" + formattedMocaSqlScript + "]");
                                         }
                                 }
 
                         } else if (mocaToken.getType() == MocaLexer.DOUBLE_BRACKET_STRING) {
-                                // TODO: format groovy!
+                                // Format groovy!
                         }
                 }
 
@@ -105,7 +105,7 @@ public class DocumentFormattingProvider {
 
                 if (formattedMocaScript != null) {
                         // If successful, replace formatted text doc with formatted moca script.
-                        // Otherwise, we still want previous sql/groovy edits to go through.
+                        // Otherwise, we still want previous mocasql/groovy edits to go through.
                         formattedTextDocumentContents = formattedMocaScript;
                 }
 

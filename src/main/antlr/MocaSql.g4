@@ -3096,7 +3096,9 @@ constant_LOCAL_ID: constant | LOCAL_ID;
 // precendence:
 // https://docs.microsoft.com/en-us/sql/t-sql/language-elements/operator-precedence-transact-sql
 expression:
-	primitive_expression
+    moca_at_variables
+	| moca_at_plus_variables
+	| primitive_expression
 	| function_call
 	| expression COLLATE id
 	| case_expression
@@ -3107,15 +3109,13 @@ expression:
 	| expression op = ('+' | '-' | '&' | '^' | '|' | '||') expression
 	| expression comparison_operator expression
 	| expression assignment_operator expression
-	| over_clause
-	| moca_at_variables expression
-	| moca_at_plus_variables;
+	| over_clause;
 
 
 /*
 MOCA variable clarification:
-	When I group moca variables together under 1 parse rule, I am considering '@' & '@-' as moca_at variables/directives 
-		and '@+' & '@%' as moca_at_plus variables/directives. Grouped moca variable parse rules will also have an 's' at 
+	When I group moca variables together under 1 parse rule, I am considering '@' & '@-' as moca_at variables/directives
+		and '@+' & '@%' as moca_at_plus variables/directives. Grouped moca variable parse rules will also have an 's' at
 		the end to make it clear that it applies to more than 1 variable/directive.
  */
 
@@ -3140,11 +3140,11 @@ moca_at_plus_variables:
 	| moca_at_plus_database_qualifier_variable
 	| moca_at_mod_database_qualifier_variable;
 
-moca_at_variable: AT ID; // @variable
-moca_environment_variable: AT AT ID; // @@variable
-moca_at_minus_variable: AT MINUS ID; // @-variable
-moca_at_plus_variable: AT PLUS ID; // @+variable
-moca_at_mod_variable: AT MODULE ID; // @%variable
+moca_at_variable: LOCAL_ID; // @variable -- can use existing adjusted LOCALE_ID.
+moca_environment_variable: MOCA_ENVIRONMENT_VARIABLE; // @@variable
+moca_at_minus_variable: MOCA_AT_MINUS_VARIABLE; // @-variable
+moca_at_plus_variable: MOCA_AT_PLUS_VARIABLE; // @+variable
+moca_at_mod_variable: MOCA_AT_MOD_VARIABLE; // @%variable
 moca_at_star: AT STAR; // @*
 
 moca_at_keep_directives:
@@ -3168,21 +3168,21 @@ moca_at_plus_oldvar_directives:
 	moca_at_plus_oldvar_directive
 	| moca_at_mod_oldvar_directive;
 moca_at_plus_oldvar_directive:
-	moca_at_plus_variable BIT_XOR ID; // @+newvariable^oldvariable
+	moca_at_plus_variable BIT_XOR simple_id; // @+newvariable^oldvariable
 moca_at_mod_oldvar_directive:
-	moca_at_mod_variable BIT_XOR ID; // @%newvariable^oldvariable
+	moca_at_mod_variable BIT_XOR simple_id; // @%newvariable^oldvariable
 
 moca_at_type_cast_variable:
-	moca_at_variable COLON ID; //@variable:raw
+	moca_at_variable COLON simple_id; //@variable:raw
 moca_at_plus_type_cast_variable:
-	moca_at_plus_variable COLON ID; //@+variable:raw
+	moca_at_plus_variable COLON simple_id; //@+variable:raw
 
 moca_at_plus_database_qualifier_variable:
-	moca_at_plus_variable DOT ID; // @+tablename.variable
+	moca_at_plus_variable DOT simple_id; // @+tablename.variable
 moca_at_mod_database_qualifier_variable:
-	moca_at_mod_variable DOT ID; // @%tablename.variable
+	moca_at_mod_variable DOT simple_id; // @%tablename.variable
 
-moca_integration_variable: COLON ID;
+moca_integration_variable: (':i_' | ':I_') simple_id;
 
 primitive_expression: DEFAULT | NULL | LOCAL_ID | constant;
 
@@ -4284,7 +4284,23 @@ simple_id:
 	| WORK
 	| WORKLOAD
 	| XML
-	| XMLNAMESPACES;
+	| XMLNAMESPACES
+	// moca - keyword additions (see a few lines down for details)
+	| EXPIREDATE
+	| KEY
+	| POLICY
+	| PRECISION
+	| R
+	| RAW
+	| ROLE
+	| RULE
+	| STOP
+	| TRAN
+	| URL
+	| USER;
+
+
+
 
 // https://msdn.microsoft.com/en-us/library/ms188074.aspx Spaces are allowed for comparison
 // operators.
@@ -4312,6 +4328,7 @@ assignment_operator:
 file_size: DECIMAL ( KB | MB | GB | TB | '%')?;
 
 // Basic keywords (from https://msdn.microsoft.com/en-us/library/ms189822.aspx)
+// moca - commenting about keywords that are conflicting with mocasql cache/common variable names and adding them to simple_id parse rule.
 ABSENT: 'ABSENT';
 ADD: 'ADD';
 AES: 'AES';
@@ -4429,7 +4446,7 @@ EXCEPT: 'EXCEPT';
 EXECUTABLE_FILE: 'EXECUTABLE_FILE';
 EXECUTE: 'EXEC' 'UTE'?;
 EXISTS: 'EXISTS';
-EXPIREDATE: 'EXPIREDATE';
+EXPIREDATE: 'EXPIREDATE'; // moca - Could be id
 EXIT: 'EXIT';
 EXTENSION: 'EXTENSION';
 EXTERNAL: 'EXTERNAL';
@@ -4486,7 +4503,7 @@ IS: 'IS';
 ISNULL: 'ISNULL';
 JOIN: 'JOIN';
 KERBEROS: 'KERBEROS';
-KEY: 'KEY';
+KEY: 'KEY'; // moca - Could be id
 KEY_PATH: 'KEY_PATH';
 KEY_STORE_PROVIDER_NAME: 'KEY_STORE_PROVIDER_NAME';
 KILL: 'KILL';
@@ -4567,8 +4584,8 @@ PER_NODE: 'PER_NODE';
 PIVOT: 'PIVOT';
 PLAN: 'PLAN';
 PLATFORM: 'PLATFORM';
-POLICY: 'POLICY';
-PRECISION: 'PRECISION';
+POLICY: 'POLICY'; // moca - Could be id
+PRECISION: 'PRECISION'; // moca - Could be id
 PREDICATE: 'PREDICATE';
 PRIMARY: 'PRIMARY';
 PRINT: 'PRINT';
@@ -4576,10 +4593,10 @@ PROC: 'PROC';
 PROCEDURE: 'PROCEDURE';
 PROCESS: 'PROCESS';
 PUBLIC: 'PUBLIC';
-PYTHON: 'PYTHON';
-R: 'R';
+PYTHON: 'PYTHON'; // moca - Could be id
+R: 'R'; // moca - Could be id
 RAISERROR: 'RAISERROR';
-RAW: 'RAW';
+RAW: 'RAW'; // moca - Could be id
 READ: 'READ';
 READTEXT: 'READTEXT';
 READ_WRITE_FILEGROUPS: 'READ_WRITE_FILEGROUPS';
@@ -4603,7 +4620,7 @@ REVOKE: 'REVOKE';
 REWIND: 'REWIND';
 RIGHT: 'RIGHT';
 ROLLBACK: 'ROLLBACK';
-ROLE: 'ROLE';
+ROLE: 'ROLE'; // moca - Could be id
 ROWCOUNT: 'ROWCOUNT';
 ROWGUIDCOL: 'ROWGUIDCOL';
 RSA_512: 'RSA_512';
@@ -4612,7 +4629,7 @@ RSA_2048: 'RSA_2048';
 RSA_3072: 'RSA_3072';
 RSA_4096: 'RSA_4096';
 SAFETY: 'SAFETY';
-RULE: 'RULE';
+RULE: 'RULE'; // moca - Could be id
 SAFE: 'SAFE';
 SAVE: 'SAVE';
 SCHEDULER: 'SCHEDULER';
@@ -4649,7 +4666,7 @@ STATS: 'STATS';
 START: 'START';
 STARTED: 'STARTED';
 STARTUP_STATE: 'STARTUP_STATE';
-STOP: 'STOP';
+STOP: 'STOP'; // moca - Could be id
 STOPPED: 'STOPPED';
 STOP_ON_ERROR: 'STOP_ON_ERROR';
 SUPPORTED: 'SUPPORTED';
@@ -4664,7 +4681,7 @@ THEN: 'THEN';
 TO: 'TO';
 TOP: 'TOP';
 TRACK_CAUSALITY: 'TRACK_CAUSALITY';
-TRAN: 'TRAN';
+TRAN: 'TRAN'; // moca - Could be id
 TRANSACTION: 'TRANSACTION';
 TRANSFER: 'TRANSFER';
 TRIGGER: 'TRIGGER';
@@ -4678,10 +4695,10 @@ UNPIVOT: 'UNPIVOT';
 UNSAFE: 'UNSAFE';
 UPDATE: 'UPDATE';
 UPDATETEXT: 'UPDATETEXT';
-URL: 'URL';
+RL: 'URL'; // moca - Could be id
 USE: 'USE';
 USED: 'USED';
-USER: 'USER';
+USER: 'USER'; // moca - Could be id
 VALUES: 'VALUES';
 VARYING: 'VARYING';
 VERBOSELOGGING: 'VERBOSELOGGING';
@@ -5124,6 +5141,8 @@ MOCA_KEEP: 'keep';
 MOCA_ONSTACK: 'onstack';
 MOCA_IGNORE: 'ignore';
 
+
+
 SPACE: [ \t\r\n]+ -> channel(HIDDEN);
 // https://docs.microsoft.com/en-us/sql/t-sql/language-elements/slash-star-comment-transact-sql
 COMMENT: '/*' (COMMENT | .)*? '*/' -> channel(HIDDEN);
@@ -5133,7 +5152,16 @@ LINE_COMMENT: '--' ~[\r\n]* -> channel(HIDDEN);
 DOUBLE_QUOTE_ID: '"' ~'"'+ '"';
 SINGLE_QUOTE: '\'';
 SQUARE_BRACKET_ID: '[' ~']'+ ']';
-LOCAL_ID: '@' ([A-Z_$@#0-9] | FullWidthLetter)+;
+
+// LOCAL_ID: '@' ([A-Z_$@#0-9] | FullWidthLetter)+; -- see adjusted version for moca below!
+// NOTE: not including possibility for '.' in regex due to how mocasql behaves differently regarding '.'s in vars than moca does.
+LOCAL_ID: AT [a-zA-Z_0-9]+;
+MOCA_ENVIRONMENT_VARIABLE: AT AT [a-zA-Z_0-9]+;
+MOCA_AT_MINUS_VARIABLE:AT MINUS [a-zA-Z_0-9]+;
+MOCA_AT_PLUS_VARIABLE: AT PLUS [a-zA-Z_0-9]+;
+MOCA_AT_MOD_VARIABLE: AT MODULE [a-zA-Z_0-9]+;
+
+
 DECIMAL: DEC_DIGIT+;
 ID: ([A-Z_#] | FullWidthLetter) ([A-Z_#$@0-9] | FullWidthLetter)*;
 QUOTED_URL:

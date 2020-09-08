@@ -7,15 +7,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaSyntaxError;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.MocaSqlParseTreeListener;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.MocaSqlSyntaxError;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.MocaSqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlParseTreeListener;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlSyntaxError;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
@@ -79,9 +80,10 @@ public class DiagnosticManager {
         diagnostics.addAll(handleMocaSyntaxErrors(uriStr, mocaCompiler.currentCompilationResult));
 
         // SQL.
-        for (int i = 0; i < mocaCompiler.sqlRanges.size(); i++) {
-            diagnostics.addAll(handleSqlSyntaxErrors(uriStr,
-                    mocaCompiler.currentCompilationResult.sqlCompilationResults.get(i), mocaCompiler.sqlRanges.get(i)));
+        for (int i = 0; i < mocaCompiler.mocaSqlRanges.size(); i++) {
+            diagnostics.addAll(handleMocaSqlSyntaxErrors(uriStr,
+                    mocaCompiler.currentCompilationResult.mocaSqlCompilationResults.get(i),
+                    mocaCompiler.mocaSqlRanges.get(i)));
         }
 
         // GROOVY.
@@ -105,12 +107,14 @@ public class DiagnosticManager {
         diagnostics.addAll(handleMocaCommandMayNotExistWarnings(uriStr, script, mocaCompiler));
 
         // SQL.
-        for (int i = 0; i < mocaCompiler.sqlRanges.size(); i++) {
-            MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.sqlCompilationResults
+        for (int i = 0; i < mocaCompiler.mocaSqlRanges.size(); i++) {
+            MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
                     .get(i);
-            Range sqlRange = mocaCompiler.sqlRanges.get(i);
-            diagnostics.addAll(handleSqlTableMayNotExistWarnings(uriStr, script,
-                    sqlCompilationResult.sqlParseTreeListener, sqlRange));
+            Range sqlRange = mocaCompiler.mocaSqlRanges.get(i);
+            diagnostics.addAll(handleMocaSqlTableMayNotExistWarnings(uriStr, script,
+                    sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
+            diagnostics.addAll(handleMocaSqlColumnsMayNotExistInTableWarnings(uriStr, script,
+                    sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
         }
 
         return diagnostics;
@@ -174,7 +178,7 @@ public class DiagnosticManager {
         }
 
         // Loop through all verb noun clauses and see if we have any verbNounClauses
-        // that do not exist in repository. If so, we will get the range, build the
+        // that do not exist in cache. If so, we will get the range, build the
         // diagnosic, and add it to the list.
         for (Map.Entry<StringBuilder, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                 .entrySet()) {
@@ -208,8 +212,8 @@ public class DiagnosticManager {
         return diagnostics;
     }
 
-    // SQL.
-    private static ArrayList<Diagnostic> handleSqlSyntaxErrors(String uriStr,
+    // MOCASQL.
+    private static ArrayList<Diagnostic> handleMocaSqlSyntaxErrors(String uriStr,
             MocaSqlCompilationResult compilationResult, Range sqlScriptRange) {
         if (!compilationResult.hasSqlErrors()) {
             return new ArrayList<Diagnostic>();
@@ -217,7 +221,7 @@ public class DiagnosticManager {
             // Set diagnostics.
             ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
-            for (MocaSqlSyntaxError sqlSyntaxError : compilationResult.sqlSyntaxErrorListener.sqlSyntaxErrors) {
+            for (MocaSqlSyntaxError sqlSyntaxError : compilationResult.mocaSqlSyntaxErrorListener.mocaSqlSyntaxErrors) {
                 Range range = MocaSqlLanguageUtils.syntaxExceptionToRange(sqlSyntaxError, sqlScriptRange);
                 Diagnostic diagnostic = new Diagnostic();
                 diagnostic.setRange(range);
@@ -230,16 +234,13 @@ public class DiagnosticManager {
         }
     }
 
-    private static ArrayList<Diagnostic> handleSqlTableMayNotExistWarnings(String uriStr, String script,
+    private static ArrayList<Diagnostic> handleMocaSqlTableMayNotExistWarnings(String uriStr, String script,
             MocaSqlParseTreeListener sqlParseTreeListener, Range sqlScriptRange) {
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
-        // Basically we are going to check all tables in the ast against our repository
+        // Basically we are going to check all tables in the ast against our cache
         // and see if there are an discrepancies.
-
-        // NOTE: can use current compilation results -- it doesnt matter if we have an
-        // ast or not since errors take precedence anyways.
 
         for (Token tableToken : sqlParseTreeListener.tableTokens) {
 
@@ -247,12 +248,24 @@ public class DiagnosticManager {
 
             String tableTokenText = tableToken.getText().toLowerCase();
 
-            if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.containsKey(tableTokenText)) {
+            // Check tables and views.
+            if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.containsKey(tableTokenText)
+                    || MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.containsKey(tableTokenText)) {
                 foundTable = true;
             }
 
+            // Check to see if is alias for table name.
+            // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree -- a
+            // risk I am willing to take!
             if (!foundTable) {
-                if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.containsKey(tableTokenText)) {
+                if (sqlParseTreeListener.aliasedTableNames.containsKey(tableTokenText)) {
+                    foundTable = true;
+                }
+            }
+
+            // Try subqueries.
+            if (!foundTable) {
+                if (sqlParseTreeListener.subqueries.containsKey(tableTokenText)) {
                     foundTable = true;
                 }
             }
@@ -276,6 +289,186 @@ public class DiagnosticManager {
             }
         }
 
+        return diagnostics;
+    }
+
+    private static ArrayList<Diagnostic> handleMocaSqlColumnsMayNotExistInTableWarnings(String uriStr, String script,
+            MocaSqlParseTreeListener sqlParseTreeListener, Range sqlScriptRange) {
+
+        ArrayList<Diagnostic> diagnostics = new ArrayList<>();
+
+        for (Map.Entry<String, ArrayList<org.antlr.v4.runtime.Token>> entry : sqlParseTreeListener.columnTokens
+                .entrySet()) {
+
+            String tableName = entry.getKey();
+
+            // Before we continue, we need to check if this is an alias for another table.
+            if (sqlParseTreeListener.aliasedTableNames.containsKey(tableName)) {
+                // Switch to actual table name.
+                // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree -- a
+                // risk I am willing to take!
+                tableName = sqlParseTreeListener.aliasedTableNames.get(tableName);
+            }
+
+            if (tableName == null) {
+                // Should not be null..
+            } else {
+                // Analyze table name and see if column(s) exist for it.
+
+                if (tableName.compareTo(MocaSqlParseTreeListener.MULTIPLE_TABLES_DETECTED_FOR_COLUMN) == 0) {
+
+                    // This is bad practice -- return warning to user.
+
+                    for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
+                        Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                columnToken.getCharPositionInLine(), sqlScriptRange);
+                        Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                columnToken.getCharPositionInLine(), sqlScriptRange);
+
+                        if (beginPos != null && endPos != null) {
+                            Range range = new Range(beginPos, endPos);
+                            Diagnostic diagnostic = new Diagnostic();
+                            diagnostic.setRange(range);
+                            diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                            diagnostic.setMessage(
+                                    String.format("SQL: Multiple tables detected; please specify table for column '%s'",
+                                            columnToken.getText()));
+                            diagnostics.add(diagnostic);
+                        }
+
+                    }
+
+                } else if (tableName.compareTo(MocaSqlParseTreeListener.ANONYMOUS_SUBQUERY) == 0) {
+
+                    // Dealing with anon subquery -- check columns in map for anon subquery key.
+                    // NOTE: could see goofy stuff if multiple anonymous subqueries, but that is a
+                    // risk I am willing to take!
+                    ArrayList<org.antlr.v4.runtime.Token> subqueryColumnTokens = sqlParseTreeListener.subqueryColumns
+                            .get(sqlParseTreeListener.subqueries.get(MocaSqlParseTreeListener.ANONYMOUS_SUBQUERY));
+
+                    if (subqueryColumnTokens != null) {
+                        for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
+
+                            // Check if column token exists in subquery column token list.
+                            // Need to compare token text since objects are likely different instances.
+                            boolean foundColumn = false;
+                            for (org.antlr.v4.runtime.Token subqueryColumnToken : subqueryColumnTokens) {
+                                if (columnToken.getText().compareToIgnoreCase(subqueryColumnToken.getText()) == 0) {
+                                    foundColumn = true;
+                                    break;
+                                }
+                            }
+
+                            if (!foundColumn) {
+                                Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                        columnToken.getCharPositionInLine(), sqlScriptRange);
+                                Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                        columnToken.getCharPositionInLine(), sqlScriptRange);
+
+                                if (beginPos != null && endPos != null) {
+                                    Range range = new Range(beginPos, endPos);
+                                    Diagnostic diagnostic = new Diagnostic();
+                                    diagnostic.setRange(range);
+                                    diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                                    diagnostic.setMessage(String.format("SQL: Column '%s' may not exist in Subquery",
+                                            columnToken.getText(), tableName));
+                                    diagnostics.add(diagnostic);
+                                }
+                            }
+                        }
+                    }
+                } else {
+
+                    // Let's see if this table is a subquery.
+                    if (sqlParseTreeListener.subqueries.containsKey(tableName)) {
+
+                        // Check columns in here.
+                        // NOTE: could see goofy stuff if multiple subqueries of the same name, but that
+                        // is a risk I am willing to take!
+                        ArrayList<org.antlr.v4.runtime.Token> subqueryColumnTokens = sqlParseTreeListener.subqueryColumns
+                                .get(sqlParseTreeListener.subqueries.get(tableName));
+
+                        if (subqueryColumnTokens != null) {
+                            for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
+
+                                // Check if column token exists in subquery column token list.
+                                // Need to compare token text since objects are likely different instances.
+                                boolean foundColumn = false;
+
+                                for (org.antlr.v4.runtime.Token subqueryColumnToken : subqueryColumnTokens) {
+                                    if (columnToken.getText().compareToIgnoreCase(subqueryColumnToken.getText()) == 0) {
+                                        foundColumn = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!foundColumn) {
+                                    Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                            columnToken.getCharPositionInLine(), sqlScriptRange);
+                                    Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                            columnToken.getCharPositionInLine(), sqlScriptRange);
+
+                                    if (beginPos != null && endPos != null) {
+                                        Range range = new Range(beginPos, endPos);
+                                        Diagnostic diagnostic = new Diagnostic();
+                                        diagnostic.setRange(range);
+                                        diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                                        diagnostic.setMessage(
+                                                String.format("SQL: Column '%s' may not exist on Subquery '%s'",
+                                                        columnToken.getText(), tableName));
+                                        diagnostics.add(diagnostic);
+                                    }
+                                }
+                            }
+                        }
+
+                    } else {
+
+                        // Do not worry about checking aliases -- we did so above and table name has
+                        // been adjusted accordingly.
+
+                        tableName = tableName.toLowerCase();
+
+                        for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
+
+                            ArrayList<TableColumn> columnsInTable = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
+                                    .getColumnsForTable(tableName);
+
+                            boolean foundColumn = false;
+                            if (columnsInTable != null) {
+                                for (TableColumn tableColumn : columnsInTable) {
+                                    if (tableColumn.column_name.compareToIgnoreCase(columnToken.getText()) == 0) {
+                                        foundColumn = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (!foundColumn) {
+
+                                Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                        columnToken.getCharPositionInLine(), sqlScriptRange);
+                                Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                        columnToken.getCharPositionInLine(), sqlScriptRange);
+
+                                if (beginPos != null && endPos != null) {
+                                    Range range = new Range(beginPos, endPos);
+                                    Diagnostic diagnostic = new Diagnostic();
+                                    diagnostic.setRange(range);
+                                    diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                                    diagnostic.setMessage(String.format("SQL: Column '%s' may not exist on Table '%s'",
+                                            columnToken.getText(), tableName));
+                                    diagnostics.add(diagnostic);
+                                }
+
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        }
         return diagnostics;
     }
 
@@ -347,7 +540,7 @@ public class DiagnosticManager {
             // Now let's check if todo is in sql or groovy range.
             boolean inSqlRange = false;
             boolean inGroovyRange = false;
-            for (Range sqlRange : mocaCompiler.sqlRanges) {
+            for (Range sqlRange : mocaCompiler.mocaSqlRanges) {
                 if (Ranges.contains(sqlRange, range)) {
                     inSqlRange = true;
                     break;

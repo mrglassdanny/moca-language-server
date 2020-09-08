@@ -1,12 +1,12 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql;
 
 import java.util.HashMap;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlrutil.CaseChangingCharStream;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlParseTreeListener;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlSyntaxErrorListener;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlLexer;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.MocaSqlParseTreeListener;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast.MocaSqlSyntaxErrorListener;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -25,18 +25,18 @@ public class MocaSqlCompiler {
     public MocaSqlCompilationResult compileScript(int rangeIdx, String script) {
         MocaSqlCompilationResult compilationResult = new MocaSqlCompilationResult();
 
-        compilationResult.sqlTokens = new MocaSqlLexer(new CaseChangingCharStream(new ANTLRInputStream(script), true))
-                .getAllTokens();
-        compilationResult.sqlParser = new MocaSqlParser(new CommonTokenStream(
+        compilationResult.mocaSqlTokens = new MocaSqlLexer(
+                new CaseChangingCharStream(new ANTLRInputStream(script), true)).getAllTokens();
+        compilationResult.mocaSqlParser = new MocaSqlParser(new CommonTokenStream(
                 new MocaSqlLexer(new CaseChangingCharStream(new ANTLRInputStream(script), true))));
-        compilationResult.sqlSyntaxErrorListener = new MocaSqlSyntaxErrorListener();
-        compilationResult.sqlParser.addErrorListener(compilationResult.sqlSyntaxErrorListener);
+        compilationResult.mocaSqlSyntaxErrorListener = new MocaSqlSyntaxErrorListener();
+        compilationResult.mocaSqlParser.addErrorListener(compilationResult.mocaSqlSyntaxErrorListener);
         // Since we do not want errors printing to the console, remove this
         // ConsoleErrorListener.
-        compilationResult.sqlParser.removeErrorListener(ConsoleErrorListener.INSTANCE);
-        ParseTree parseTree = compilationResult.sqlParser.moca_sql_script();
-        compilationResult.sqlParseTreeListener = new MocaSqlParseTreeListener();
-        new ParseTreeWalker().walk(compilationResult.sqlParseTreeListener, parseTree);
+        compilationResult.mocaSqlParser.removeErrorListener(ConsoleErrorListener.INSTANCE);
+        ParseTree parseTree = compilationResult.mocaSqlParser.moca_sql_script();
+        compilationResult.mocaSqlParseTreeListener = new MocaSqlParseTreeListener();
+        new ParseTreeWalker().walk(compilationResult.mocaSqlParseTreeListener, parseTree);
 
         this.compilationResults.put(rangeIdx, compilationResult);
         return compilationResult;

@@ -10,8 +10,8 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaSyntaxErrorL
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.MocaSqlCompiler;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.util.MocaSqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
@@ -33,20 +33,20 @@ public class MocaCompiler {
     public List<? extends Token> mocaTokens; // From lexer.
     public MocaCompilationResult currentCompilationResult;
 
-    public ArrayList<Range> sqlRanges;
+    public ArrayList<Range> mocaSqlRanges;
     public ArrayList<Range> groovyRanges;
 
-    private MocaSqlCompiler sqlCompiler;
+    private MocaSqlCompiler mocaSqlCompiler;
     private GroovyCompiler groovyCompiler;
 
     public MocaCompiler() {
         this.mocaTokens = null;
         this.currentCompilationResult = null;
 
-        this.sqlRanges = new ArrayList<>();
+        this.mocaSqlRanges = new ArrayList<>();
         this.groovyRanges = new ArrayList<>();
 
-        this.sqlCompiler = new MocaSqlCompiler();
+        this.mocaSqlCompiler = new MocaSqlCompiler();
         this.groovyCompiler = new GroovyCompiler();
     }
 
@@ -114,32 +114,32 @@ public class MocaCompiler {
         // bite us would be if there is a combined ~20000 sql/groovy contexts that need
         // to be compiled -- I am okay with risking our naive strategy for now!
 
-        // Start with SQL.
-        Thread mainSqlThread = null;
-        if (!this.sqlRanges.isEmpty()) {
+        // Start with MOCA SQL.
+        Thread mainMocaSqlThread = null;
+        if (!this.mocaSqlRanges.isEmpty()) {
 
-            mainSqlThread = new Thread(() -> {
-                ArrayList<Thread> sqlThreads = new ArrayList<>();
-                for (int i = 0; i < this.sqlRanges.size(); i++) {
+            mainMocaSqlThread = new Thread(() -> {
+                ArrayList<Thread> mocaSqlThreads = new ArrayList<>();
+                for (int i = 0; i < this.mocaSqlRanges.size(); i++) {
 
                     final int rangeIdx = i;
 
-                    // Compiling sql ranges via another thread.
-                    Thread sqlThread = new Thread(() -> {
+                    // Compiling moca sql ranges via another thread.
+                    Thread mocaSqlThread = new Thread(() -> {
                         // Remove first and last characters('[', ']').
-                        String sqlScript = Ranges.getText(finalMocaScript, this.sqlRanges.get(rangeIdx));
-                        sqlScript = sqlScript.substring(1, sqlScript.length() - 1);
-                        this.sqlCompiler.compileScript(rangeIdx, sqlScript);
+                        String mocaSqlScript = Ranges.getText(finalMocaScript, this.mocaSqlRanges.get(rangeIdx));
+                        mocaSqlScript = mocaSqlScript.substring(1, mocaSqlScript.length() - 1);
+                        this.mocaSqlCompiler.compileScript(rangeIdx, mocaSqlScript);
                     });
 
-                    sqlThread.start();
-                    sqlThreads.add(sqlThread);
+                    mocaSqlThread.start();
+                    mocaSqlThreads.add(mocaSqlThread);
 
                 }
 
                 // Mark sure all sql threads are done before we leave.
                 try {
-                    for (Thread thread : sqlThreads) {
+                    for (Thread thread : mocaSqlThreads) {
                         thread.join();
                     }
 
@@ -148,7 +148,7 @@ public class MocaCompiler {
                 }
             });
 
-            mainSqlThread.start();
+            mainMocaSqlThread.start();
 
         }
 
@@ -191,11 +191,11 @@ public class MocaCompiler {
 
         }
 
-        // Wait for sql and groovy threads to finish.
+        // Wait for moca sql and groovy threads to finish.
         try {
-            if (mainSqlThread != null) {
-                mainSqlThread.join();
-                compilationResult.sqlCompilationResults = this.sqlCompiler.compilationResults;
+            if (mainMocaSqlThread != null) {
+                mainMocaSqlThread.join();
+                compilationResult.mocaSqlCompilationResults = this.mocaSqlCompiler.compilationResults;
             }
             if (mainGroovyThread != null) {
                 mainGroovyThread.join();
@@ -210,7 +210,7 @@ public class MocaCompiler {
     }
 
     public void updateEmbeddedLanguageRanges(String mocaScript) {
-        this.sqlRanges.clear();
+        this.mocaSqlRanges.clear();
         this.groovyRanges.clear();
 
         // Can assume we do not have any ranges if no moca tokens exist.
@@ -221,8 +221,8 @@ public class MocaCompiler {
         // Now just loop through tokens and find scripts.
         for (Token curMocaToken : this.mocaTokens) {
             if (curMocaToken.getType() == MocaLexer.SINGLE_BRACKET_STRING) {
-                if (MocaSqlLanguageUtils.isMocaTokenValueSqlScript(curMocaToken.getText())) {
-                    this.sqlRanges.add(new Range(Positions.getPosition(mocaScript, curMocaToken.getStartIndex()),
+                if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(curMocaToken.getText())) {
+                    this.mocaSqlRanges.add(new Range(Positions.getPosition(mocaScript, curMocaToken.getStartIndex()),
                             Positions.getPosition(mocaScript,
                                     MocaTokenUtils.getAdjustedMocaTokenStopIndex(curMocaToken.getStopIndex()))));
                 }
@@ -237,13 +237,13 @@ public class MocaCompiler {
 
     public MocaLanguageContext getMocaLanguageContextFromPosition(Position position) {
 
-        // Check sql.
-        int sqlCount = 0;
-        for (Range range : this.sqlRanges) {
+        // Check moca sql.
+        int mocaSqlCount = 0;
+        for (Range range : this.mocaSqlRanges) {
             if (Ranges.contains(range, position)) {
-                return new MocaLanguageContext(MocaLanguageContext.ContextId.Sql, sqlCount);
+                return new MocaLanguageContext(MocaLanguageContext.ContextId.MocaSql, mocaSqlCount);
             }
-            sqlCount++;
+            mocaSqlCount++;
         }
 
         // Check groovy.

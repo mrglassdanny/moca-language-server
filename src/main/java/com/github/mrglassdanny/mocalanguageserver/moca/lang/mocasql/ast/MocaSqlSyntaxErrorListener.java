@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.ast;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast;
 
 import java.util.ArrayList;
 
@@ -8,15 +8,15 @@ import org.antlr.v4.runtime.Recognizer;
 
 public class MocaSqlSyntaxErrorListener extends BaseErrorListener {
 
-    public ArrayList<MocaSqlSyntaxError> sqlSyntaxErrors;
+    public ArrayList<MocaSqlSyntaxError> mocaSqlSyntaxErrors;
 
     public MocaSqlSyntaxErrorListener() {
-        this.sqlSyntaxErrors = new ArrayList<>();
+        this.mocaSqlSyntaxErrors = new ArrayList<>();
     }
 
     @Override
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine,
             String msg, RecognitionException e) {
-        this.sqlSyntaxErrors.add(new MocaSqlSyntaxError(line, charPositionInLine, msg));
+        this.mocaSqlSyntaxErrors.add(new MocaSqlSyntaxError(line, charPositionInLine, msg));
     }
 }

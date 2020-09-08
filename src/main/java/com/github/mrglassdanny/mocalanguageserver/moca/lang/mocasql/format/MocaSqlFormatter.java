@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.lang.sql.format;
+package com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.format;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,7 +17,7 @@ public class MocaSqlFormatter {
 
     public static void configureAndTrain(String corpusDirName) throws Exception {
         mocaSqlLangDescriptor = new org.antlr.codebuff.misc.LangDescriptor("MocaSql",
-                MocaLanguageServer.globalStoragePath + FORMATTING_TRAINING_DIR_FRAGMENT + corpusDirName, ".*\\.sql",
+                MocaLanguageServer.globalStoragePath + FORMATTING_TRAINING_DIR_FRAGMENT + corpusDirName, ".*\\.mocasql",
                 MocaSqlLexer.class, MocaSqlParser.class, "moca_sql_script", 4, MocaSqlLexer.LINE_COMMENT);
 
         mocaSqlCorpus = org.antlr.codebuff.Tool.trainCorpusForMocaLanguageServer(mocaSqlLangDescriptor);
@@ -44,7 +44,7 @@ public class MocaSqlFormatter {
 
             Files.createDirectories(Paths.get(defaultPath));
 
-            Files.write(Paths.get(defaultPath + "\\file.sql"), "select * from locmst".getBytes());
+            Files.write(Paths.get(defaultPath + "\\file.mocasql"), "select * from locmst".getBytes());
         }
 
     }

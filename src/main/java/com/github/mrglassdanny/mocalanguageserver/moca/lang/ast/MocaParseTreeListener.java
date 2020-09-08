@@ -25,6 +25,11 @@ public class MocaParseTreeListener extends MocaBaseListener {
     @Override
     public void enterVerb_noun_clause(MocaParser.Verb_noun_clauseContext ctx) {
 
+        // Make sure context is not null.
+        if (ctx == null) {
+            return;
+        }
+
         StringBuilder verbNounClause = new StringBuilder();
         ArrayList<Token> tokens = new ArrayList<>();
         for (int i = 0; i < ctx.children.size(); i++) {
@@ -55,6 +60,12 @@ public class MocaParseTreeListener extends MocaBaseListener {
 
     @Override
     public void enterRedirect_expr(MocaParser.Redirect_exprContext ctx) {
+
+        // Make sure context is not null.
+        if (ctx == null) {
+            return;
+        }
+
         // Redirects are setup as DOUBLE_GREATER then WORD.
         // Therefore, we can just get the stop token and use it's
         // data to fill hashmap.
