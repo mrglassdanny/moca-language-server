@@ -7,8 +7,6 @@ import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.managers.SemanticHighlightingManager;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompiler;
 import com.github.mrglassdanny.mocalanguageserver.providers.ExecuteCommandProvider;
 
 import org.eclipse.lsp4j.CompletionOptions;
@@ -46,14 +44,6 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
         MocaLanguageServer server = new MocaLanguageServer();
         Launcher<LanguageClient> launcher = Launcher.createLauncher(server, LanguageClient.class, System.in,
                 System.out);
-
-        // TODO: remove after done sql debugging!!!
-        // MocaSqlCompiler test = new MocaSqlCompiler();
-        // test.compileScript(0, "select stoloc from ( select l.stoloc from ( select
-        // stoloc\n" + " from locmst) as z\n"
-        // + " inner\n" + " join ( select stoloc\n" + " from locmst)l\n" + " on z.useflg
-        // = l.useflg)testerboi");
-        // MocaSqlCompilationResult res = test.compilationResults.get(0);
 
         server.connect(launcher.getRemoteProxy());
         launcher.startListening();

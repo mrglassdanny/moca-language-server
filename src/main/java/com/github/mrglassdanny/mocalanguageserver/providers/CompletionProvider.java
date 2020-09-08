@@ -263,6 +263,13 @@ public class CompletionProvider {
                             } else {
                                 populateMocaSqlColumnsFromTableName(tableName, null, false, items);
                             }
+
+                            // If there is a single anonymous subquery.
+                            populateMocaSqlColumnsFromSubquery(
+                                    mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueryColumns
+                                            .get(mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries
+                                                    .get(MocaSqlParseTreeListener.ANONYMOUS_SUBQUERY)),
+                                    items);
                         }
 
                         // Get tables/views from database.
@@ -271,13 +278,6 @@ public class CompletionProvider {
                         populateMocaSqlAliasedTableNames(
                                 mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames, items);
                         populateMocaSqlSubqueryNames(mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries,
-                                items);
-
-                        // Could be anonymous subquery.
-                        populateMocaSqlColumnsFromSubquery(
-                                mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueryColumns
-                                        .get(mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries
-                                                .get(MocaSqlParseTreeListener.ANONYMOUS_SUBQUERY)),
                                 items);
 
                     }

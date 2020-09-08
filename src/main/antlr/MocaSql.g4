@@ -3096,7 +3096,9 @@ constant_LOCAL_ID: constant | LOCAL_ID;
 // precendence:
 // https://docs.microsoft.com/en-us/sql/t-sql/language-elements/operator-precedence-transact-sql
 expression:
-	primitive_expression
+    moca_at_variables
+	| moca_at_plus_variables
+	| primitive_expression
 	| function_call
 	| expression COLLATE id
 	| case_expression
@@ -3107,15 +3109,13 @@ expression:
 	| expression op = ('+' | '-' | '&' | '^' | '|' | '||') expression
 	| expression comparison_operator expression
 	| expression assignment_operator expression
-	| over_clause
-	| moca_at_variables expression
-	| moca_at_plus_variables;
+	| over_clause;
 
 
 /*
 MOCA variable clarification:
-	When I group moca variables together under 1 parse rule, I am considering '@' & '@-' as moca_at variables/directives 
-		and '@+' & '@%' as moca_at_plus variables/directives. Grouped moca variable parse rules will also have an 's' at 
+	When I group moca variables together under 1 parse rule, I am considering '@' & '@-' as moca_at variables/directives
+		and '@+' & '@%' as moca_at_plus variables/directives. Grouped moca variable parse rules will also have an 's' at
 		the end to make it clear that it applies to more than 1 variable/directive.
  */
 
@@ -3140,11 +3140,11 @@ moca_at_plus_variables:
 	| moca_at_plus_database_qualifier_variable
 	| moca_at_mod_database_qualifier_variable;
 
-moca_at_variable: AT ID; // @variable
-moca_environment_variable: AT AT ID; // @@variable
-moca_at_minus_variable: AT MINUS ID; // @-variable
-moca_at_plus_variable: AT PLUS ID; // @+variable
-moca_at_mod_variable: AT MODULE ID; // @%variable
+moca_at_variable: LOCAL_ID; // @variable -- can use existing adjusted LOCALE_ID.
+moca_environment_variable: MOCA_ENVIRONMENT_VARIABLE; // @@variable
+moca_at_minus_variable: MOCA_AT_MINUS_VARIABLE; // @-variable
+moca_at_plus_variable: MOCA_AT_PLUS_VARIABLE; // @+variable
+moca_at_mod_variable: MOCA_AT_MOD_VARIABLE; // @%variable
 moca_at_star: AT STAR; // @*
 
 moca_at_keep_directives:
@@ -3168,21 +3168,21 @@ moca_at_plus_oldvar_directives:
 	moca_at_plus_oldvar_directive
 	| moca_at_mod_oldvar_directive;
 moca_at_plus_oldvar_directive:
-	moca_at_plus_variable BIT_XOR ID; // @+newvariable^oldvariable
+	moca_at_plus_variable BIT_XOR simple_id; // @+newvariable^oldvariable
 moca_at_mod_oldvar_directive:
-	moca_at_mod_variable BIT_XOR ID; // @%newvariable^oldvariable
+	moca_at_mod_variable BIT_XOR simple_id; // @%newvariable^oldvariable
 
 moca_at_type_cast_variable:
-	moca_at_variable COLON ID; //@variable:raw
+	moca_at_variable COLON simple_id; //@variable:raw
 moca_at_plus_type_cast_variable:
-	moca_at_plus_variable COLON ID; //@+variable:raw
+	moca_at_plus_variable COLON simple_id; //@+variable:raw
 
 moca_at_plus_database_qualifier_variable:
-	moca_at_plus_variable DOT ID; // @+tablename.variable
+	moca_at_plus_variable DOT simple_id; // @+tablename.variable
 moca_at_mod_database_qualifier_variable:
-	moca_at_mod_variable DOT ID; // @%tablename.variable
+	moca_at_mod_variable DOT simple_id; // @%tablename.variable
 
-moca_integration_variable: COLON ID;
+moca_integration_variable: (':i_' | ':I_') simple_id;
 
 primitive_expression: DEFAULT | NULL | LOCAL_ID | constant;
 
@@ -5141,6 +5141,8 @@ MOCA_KEEP: 'keep';
 MOCA_ONSTACK: 'onstack';
 MOCA_IGNORE: 'ignore';
 
+
+
 SPACE: [ \t\r\n]+ -> channel(HIDDEN);
 // https://docs.microsoft.com/en-us/sql/t-sql/language-elements/slash-star-comment-transact-sql
 COMMENT: '/*' (COMMENT | .)*? '*/' -> channel(HIDDEN);
@@ -5150,7 +5152,16 @@ LINE_COMMENT: '--' ~[\r\n]* -> channel(HIDDEN);
 DOUBLE_QUOTE_ID: '"' ~'"'+ '"';
 SINGLE_QUOTE: '\'';
 SQUARE_BRACKET_ID: '[' ~']'+ ']';
-LOCAL_ID: '@' ([A-Z_$@#0-9] | FullWidthLetter)+;
+
+// LOCAL_ID: '@' ([A-Z_$@#0-9] | FullWidthLetter)+; -- see adjusted version for moca below!
+// NOTE: not including possibility for '.' in regex due to how mocasql behaves differently regarding '.'s in vars than moca does.
+LOCAL_ID: AT [a-zA-Z_0-9]+;
+MOCA_ENVIRONMENT_VARIABLE: AT AT [a-zA-Z_0-9]+;
+MOCA_AT_MINUS_VARIABLE:AT MINUS [a-zA-Z_0-9]+;
+MOCA_AT_PLUS_VARIABLE: AT PLUS [a-zA-Z_0-9]+;
+MOCA_AT_MOD_VARIABLE: AT MODULE [a-zA-Z_0-9]+;
+
+
 DECIMAL: DEC_DIGIT+;
 ID: ([A-Z_#] | FullWidthLetter) ([A-Z_#$@0-9] | FullWidthLetter)*;
 QUOTED_URL:
