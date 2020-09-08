@@ -86,9 +86,9 @@ public class DefinitionProvider {
                                             try {
 
                                                 String mcmdFileName = MocaLanguageServer.globalStoragePath
-                                                        + "\\command_lookup\\"
+                                                        + "\\command-lookup\\"
                                                         + (mcmd.cmplvl + "-" + mcmd.command).replace(" ", "_")
-                                                        + ".msql.readonly";
+                                                        + ".moca.readonly";
                                                 File mcmdFile = new File(mcmdFileName);
                                                 URI mcmdFileUri = mcmdFile.toURI();
                                                 BufferedWriter mcmdBufferedWriter = new BufferedWriter(
