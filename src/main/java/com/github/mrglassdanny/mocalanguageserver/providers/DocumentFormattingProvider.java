@@ -85,6 +85,10 @@ public class DocumentFormattingProvider {
                                                 for (int i = 0; i < mocaToken.getCharPositionInLine(); i++) {
                                                         indentBuf.append(' ');
                                                 }
+
+                                                // Since we have a '[', let's add 1 more space.
+                                                indentBuf.append(' ');
+
                                                 formattedMocaSqlScript = formattedMocaSqlScript.replace("\n",
                                                                 "\n" + indentBuf.toString());
 
