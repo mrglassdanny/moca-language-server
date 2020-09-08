@@ -28,8 +28,6 @@ import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
 import org.codehaus.groovy.syntax.SyntaxException;
 import org.eclipse.lsp4j.Diagnostic;
 import org.eclipse.lsp4j.DiagnosticSeverity;
-import org.eclipse.lsp4j.MessageParams;
-import org.eclipse.lsp4j.MessageType;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.Range;
@@ -214,7 +212,7 @@ public class DiagnosticManager {
         return diagnostics;
     }
 
-    // SQL.
+    // MOCASQL.
     private static ArrayList<Diagnostic> handleMocaSqlSyntaxErrors(String uriStr,
             MocaSqlCompilationResult compilationResult, Range sqlScriptRange) {
         if (!compilationResult.hasSqlErrors()) {
@@ -223,7 +221,7 @@ public class DiagnosticManager {
             // Set diagnostics.
             ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
-            for (MocaSqlSyntaxError sqlSyntaxError : compilationResult.mocaSqlSyntaxErrorListener.sqlSyntaxErrors) {
+            for (MocaSqlSyntaxError sqlSyntaxError : compilationResult.mocaSqlSyntaxErrorListener.mocaSqlSyntaxErrors) {
                 Range range = MocaSqlLanguageUtils.syntaxExceptionToRange(sqlSyntaxError, sqlScriptRange);
                 Diagnostic diagnostic = new Diagnostic();
                 diagnostic.setRange(range);

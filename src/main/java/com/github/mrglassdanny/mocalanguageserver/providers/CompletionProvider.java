@@ -29,7 +29,6 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlP
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 
-import org.antlr.v4.runtime.Token;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.FieldNode;
@@ -195,15 +194,16 @@ public class CompletionProvider {
                 return CompletableFuture.completedFuture(Either.forLeft(items));
             case MocaSql:
 
-                // For completion, we need to make sure the sql compiliation result we are
+                // For completion, we need to make sure the mocasql compiliation result we are
                 // looking at has no errors.
-                MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
+                MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
                         .get(ctx.rangeIdx);
 
                 // If we do not have one, we need to quit now.
-                if (sqlCompilationResult != null) {
+                if (mocaSqlCompilationResult != null) {
 
-                    // Checking to see if we pressed '.' - which in an sql context would mean that
+                    // Checking to see if we pressed '.' - which in an mocasql context would mean
+                    // that
                     // we are looking for table columns.
                     if (Positions.getCharacterAtPosition(textDocumentContents,
                             new Position(position.getLine(), position.getCharacter() - 1)) == '.') {
@@ -222,20 +222,20 @@ public class CompletionProvider {
                             if (items.isEmpty()) { // Empty - must be alias or subquery.
 
                                 // Checking if table is aliased.
-                                if (sqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
+                                if (mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
                                         .containsKey(lowerCaseWord)) {
                                     populateMocaSqlColumnsFromTableName(
-                                            sqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
+                                            mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
                                                     .get(lowerCaseWord),
                                             lowerCaseWord, true, items);
                                 } else {
                                     // Must be a subquery.
                                     // See if match in map.
-                                    if (sqlCompilationResult.mocaSqlParseTreeListener.subqueries
+                                    if (mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries
                                             .containsKey(lowerCaseWord)) {
                                         populateMocaSqlColumnsFromSubquery(
-                                                sqlCompilationResult.mocaSqlParseTreeListener.subqueryColumns
-                                                        .get(sqlCompilationResult.mocaSqlParseTreeListener.subqueries
+                                                mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueryColumns.get(
+                                                        mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries
                                                                 .get(lowerCaseWord)),
                                                 items);
                                     }
@@ -247,13 +247,13 @@ public class CompletionProvider {
 
                         // Let's check how many tables there are in script. If there is just 1, we will
                         // get the columns for it.
-                        if (sqlCompilationResult.mocaSqlParseTreeListener.tableTokens.size() == 1) {
-                            String tableName = sqlCompilationResult.mocaSqlParseTreeListener.tableTokens.get(0)
+                        if (mocaSqlCompilationResult.mocaSqlParseTreeListener.tableTokens.size() == 1) {
+                            String tableName = mocaSqlCompilationResult.mocaSqlParseTreeListener.tableTokens.get(0)
                                     .getText();
                             // Check if it has been aliased.
-                            if (sqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
+                            if (mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
                                     .containsValue(tableName)) {
-                                for (Map.Entry<String, String> entry : sqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
+                                for (Map.Entry<String, String> entry : mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
                                         .entrySet()) {
                                     if (entry.getValue().compareTo(tableName) == 0) {
                                         populateMocaSqlColumnsFromTableName(tableName, entry.getKey(), false, items);
@@ -269,13 +269,15 @@ public class CompletionProvider {
                         populateMocaSqlTables(items);
                         // Also get any other aliased entities in script.
                         populateMocaSqlAliasedTableNames(
-                                sqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames, items);
-                        populateMocaSqlSubqueryNames(sqlCompilationResult.mocaSqlParseTreeListener.subqueries, items);
+                                mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames, items);
+                        populateMocaSqlSubqueryNames(mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries,
+                                items);
 
                         // Could be anonymous subquery.
-                        populateMocaSqlColumnsFromSubquery(sqlCompilationResult.mocaSqlParseTreeListener.subqueryColumns
-                                .get(sqlCompilationResult.mocaSqlParseTreeListener.subqueries
-                                        .get(MocaSqlParseTreeListener.ANONYMOUS_SUBQUERY)),
+                        populateMocaSqlColumnsFromSubquery(
+                                mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueryColumns
+                                        .get(mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries
+                                                .get(MocaSqlParseTreeListener.ANONYMOUS_SUBQUERY)),
                                 items);
 
                     }
@@ -422,7 +424,7 @@ public class CompletionProvider {
 
     }
 
-    // SQL.
+    // MOCA SQL.
     // Includes views.
     private static void populateMocaSqlTables(List<CompletionItem> items) {
 

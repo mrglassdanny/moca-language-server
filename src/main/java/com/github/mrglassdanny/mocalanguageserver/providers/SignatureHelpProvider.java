@@ -112,7 +112,7 @@ public class SignatureHelpProvider {
 
     // MOCA.
 
-    // SQL.
+    // MOCA SQL.
 
     // GROOVY.
     private static int getActiveParameter(Position position, List<Expression> expressions, Range groovyScriptRange) {

@@ -24,6 +24,7 @@ public class MocaSqlCompilationResult {
     }
 
     public boolean hasSqlErrors() {
-        return this.mocaSqlSyntaxErrorListener != null && this.mocaSqlSyntaxErrorListener.sqlSyntaxErrors.size() > 0;
+        return this.mocaSqlSyntaxErrorListener != null
+                && this.mocaSqlSyntaxErrorListener.mocaSqlSyntaxErrors.size() > 0;
     }
 }

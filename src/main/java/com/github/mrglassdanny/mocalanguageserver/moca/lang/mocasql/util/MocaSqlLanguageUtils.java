@@ -73,8 +73,9 @@ public class MocaSqlLanguageUtils {
     }
 
     public static boolean isMocaTokenValueMocaSqlScript(String mocaTokenValue) {
-        Matcher sqlStartWordMatcher = MocaSqlLanguageUtils.MOCA_SQL_RANGE_START_WORD_PATTERN.matcher(mocaTokenValue);
-        if (sqlStartWordMatcher.find()) {
+        Matcher mocaSqlStartWordMatcher = MocaSqlLanguageUtils.MOCA_SQL_RANGE_START_WORD_PATTERN
+                .matcher(mocaTokenValue);
+        if (mocaSqlStartWordMatcher.find()) {
             return true;
         } else {
             return false;
