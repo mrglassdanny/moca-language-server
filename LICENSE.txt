@@ -23,5 +23,5 @@ SOFTWARE.
 
 =====
 
-antlr/codebuff : https://github.com/antlr/codebuff/blob/master/LICENSE
+antlr/codebuff (BSD 2-Clause "Simplified" License): https://github.com/antlr/codebuff
 
