@@ -13,10 +13,12 @@ import com.google.gson.Gson;
 public class MocaConnection {
 
     private String urlStr;
+    private String sessionId;
     private String environmentVariablesXmlStr;
 
     public MocaConnection(String urlStr) {
         this.urlStr = urlStr;
+        this.sessionId = "";
         this.environmentVariablesXmlStr = "";
     }
 
@@ -36,7 +38,15 @@ public class MocaConnection {
     public MocaResults executeCommand(String command) throws IOException, MocaException, Exception {
 
         // Setup connection object(s).
-        URL url = new URL(this.urlStr);
+        // Add session id to url string if it is not null.
+        URL url = null;
+        if (this.sessionId != null) {
+            url = new URL(String.format("%s?msession=%s", this.urlStr, this.sessionId));
+
+        } else {
+            url = new URL(this.urlStr);
+        }
+
         // We have to create a new instance of HttpURLConnection every time we send a
         // request to the MOCA server.
         HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
@@ -47,8 +57,8 @@ public class MocaConnection {
         httpConnection.setDoOutput(true);
 
         // Build moca request.
-        String mocaRequest = MocaConnection.generateMocaRequestXmlString(true, this.environmentVariablesXmlStr,
-                command);
+        String mocaRequest = MocaConnection.generateMocaRequestXmlString(true, this.sessionId,
+                this.environmentVariablesXmlStr, command);
 
         // Send request.
         try (OutputStream outputStream = httpConnection.getOutputStream()) {
@@ -75,9 +85,18 @@ public class MocaConnection {
         }
 
         // Process headers -- these will tell the story if something went wrong.
+        // We also need to extract session id if it is there.
+        String sessionId = null;
         int commandStatusHeader = 0;
         String messageHeader = null;
+
         try {
+            sessionId = httpConnection.getHeaderField("Session-Id");
+            // Change session id if it is different than before.
+            if (sessionId != null && !sessionId.equals(this.sessionId)) {
+                this.sessionId = sessionId;
+            }
+
             commandStatusHeader = Integer.parseInt(httpConnection.getHeaderField("Command-Status"));
             messageHeader = httpConnection.getHeaderField("Message");
         } catch (Exception headerAnalysisException) {
@@ -125,10 +144,14 @@ public class MocaConnection {
 
     }
 
-    private static String generateMocaRequestXmlString(boolean autoCommit, String environmentVariables, String query) {
+    private static String generateMocaRequestXmlString(boolean autoCommit, String sessionId,
+            String environmentVariables, String query) {
 
         // Auto commit:
         String autoCommitXmlElem = String.format("autocommit=\"%s\"", (autoCommit ? "true" : "false"));
+
+        // Session id:
+        String sessionIdXmlElem = String.format("<session id=\"%s\"/>", sessionId);
 
         // Environment variables:
         String environmentVariablesXmlElem = String.format("<environment>%s</environment>", environmentVariables);
@@ -138,8 +161,8 @@ public class MocaConnection {
         String escapedQuery = MocaConnection.escapeXml(query);
         String queryXmlElem = String.format("<query>%s</query>", escapedQuery);
 
-        return String.format("<moca-request %s>%s%s</moca-request>", autoCommitXmlElem, environmentVariablesXmlElem,
-                queryXmlElem);
+        return String.format("<moca-request %s>%s%s%s</moca-request>", autoCommitXmlElem, sessionIdXmlElem,
+                environmentVariablesXmlElem, queryXmlElem);
 
     }
 }
