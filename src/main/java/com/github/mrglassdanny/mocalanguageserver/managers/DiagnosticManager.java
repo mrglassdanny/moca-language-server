@@ -35,6 +35,19 @@ import org.eclipse.lsp4j.services.LanguageClient;
 
 public class DiagnosticManager {
 
+    private static final String MOCA_SYNTAX_ERROR = "MOCA: line %d:%d %s";
+    private static final String MOCA_COMMAND_DOES_NOT_EXIST_WARNING = "MOCA: Command '%s' does not exist";
+    private static final String MOCASQL_SYNTAX_ERROR = "SQL: %s";
+    private static final String MOCASQL_TABLE_DOES_NOT_EXIST_WARNING = "SQL: Table/View/Subquery '%s' does not exist";
+    private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_TABLE_OR_VIEW_WARNING = "SQL: Column '%s' does not exist on Table/View '%s'";
+    private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_SUBQUERY_WARNING = "SQL: Column '%s' does not exist on Subquery '%s'";
+    private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_ANON_SUBQUERY_WARNING = "SQL: Column '%s' does not exist on anonymous Subquery";
+    private static final String MOCASQL_MULTIPLE_TABLES_FOR_COLUMN_WARNING = "SQL: Multiple tables detected; please specify table for column '%s'";
+    private static final String GROOVY_SYNTAX_ERROR = "GROOVY: %s";
+    private static final String GROOVY_WARNING = "GROOVY: %s";
+
+    private static final String[] MOCASQL_RESERVED_COLUMN_NAMES = { "rownum", "sysdate" };
+
     public static void streamAll(LanguageClient languageClient, String uriStr, String script,
             MocaCompiler mocaCompiler) {
 
@@ -154,7 +167,7 @@ public class DiagnosticManager {
                 Diagnostic diagnostic = new Diagnostic();
                 diagnostic.setRange(range);
                 diagnostic.setSeverity(DiagnosticSeverity.Error);
-                diagnostic.setMessage(String.format("MOCA: line %d:%d %s", mocaSyntaxError.line,
+                diagnostic.setMessage(String.format(MOCA_SYNTAX_ERROR, mocaSyntaxError.line,
                         mocaSyntaxError.charPositionInLine, mocaSyntaxError.msg));
                 diagnostics.add(diagnostic);
             }
@@ -203,7 +216,7 @@ public class DiagnosticManager {
                     Diagnostic diagnostic = new Diagnostic();
                     diagnostic.setRange(range);
                     diagnostic.setSeverity(DiagnosticSeverity.Warning);
-                    diagnostic.setMessage("MOCA: Command '" + verbNounClause + "' may not exist");
+                    diagnostic.setMessage(String.format(MOCA_COMMAND_DOES_NOT_EXIST_WARNING, verbNounClause));
                     diagnostics.add(diagnostic);
                 }
             }
@@ -226,7 +239,7 @@ public class DiagnosticManager {
                 Diagnostic diagnostic = new Diagnostic();
                 diagnostic.setRange(range);
                 diagnostic.setSeverity(DiagnosticSeverity.Error);
-                diagnostic.setMessage("SQL: " + sqlSyntaxError.msg);
+                diagnostic.setMessage(String.format(MOCASQL_SYNTAX_ERROR, sqlSyntaxError.msg));
                 diagnostics.add(diagnostic);
             }
 
@@ -282,7 +295,7 @@ public class DiagnosticManager {
                     Diagnostic diagnostic = new Diagnostic();
                     diagnostic.setRange(range);
                     diagnostic.setSeverity(DiagnosticSeverity.Warning);
-                    diagnostic.setMessage("SQL: Table/View '" + tableTokenText + "' may not exist");
+                    diagnostic.setMessage(String.format(MOCASQL_TABLE_DOES_NOT_EXIST_WARNING, tableTokenText));
                     diagnostics.add(diagnostic);
                 }
 
@@ -320,22 +333,34 @@ public class DiagnosticManager {
                     // This is bad practice -- return warning to user.
 
                     for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
-                        Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                columnToken.getCharPositionInLine(), sqlScriptRange);
-                        Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                columnToken.getCharPositionInLine(), sqlScriptRange);
 
-                        if (beginPos != null && endPos != null) {
-                            Range range = new Range(beginPos, endPos);
-                            Diagnostic diagnostic = new Diagnostic();
-                            diagnostic.setRange(range);
-                            diagnostic.setSeverity(DiagnosticSeverity.Warning);
-                            diagnostic.setMessage(
-                                    String.format("SQL: Multiple tables detected; please specify table for column '%s'",
-                                            columnToken.getText()));
-                            diagnostics.add(diagnostic);
+                        String columnTokenText = columnToken.getText();
+
+                        // Make sure column does not exist in reserved column names array.
+                        boolean isReservedColumn = false;
+                        for (String reservedColumnName : MOCASQL_RESERVED_COLUMN_NAMES) {
+                            if (reservedColumnName.compareToIgnoreCase(columnTokenText) == 0) {
+                                isReservedColumn = true;
+                                break;
+                            }
                         }
 
+                        if (!isReservedColumn) {
+                            Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                    columnToken.getCharPositionInLine(), sqlScriptRange);
+                            Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                    columnToken.getCharPositionInLine(), sqlScriptRange);
+
+                            if (beginPos != null && endPos != null) {
+                                Range range = new Range(beginPos, endPos);
+                                Diagnostic diagnostic = new Diagnostic();
+                                diagnostic.setRange(range);
+                                diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                                diagnostic.setMessage(
+                                        String.format(MOCASQL_MULTIPLE_TABLES_FOR_COLUMN_WARNING, columnTokenText));
+                                diagnostics.add(diagnostic);
+                            }
+                        }
                     }
 
                 } else if (tableName.compareTo(MocaSqlParseTreeListener.ANONYMOUS_SUBQUERY) == 0) {
@@ -349,17 +374,31 @@ public class DiagnosticManager {
                     if (subqueryColumnTokens != null) {
                         for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
 
+                            String columnTokenText = columnToken.getText();
+
                             // Check if column token exists in subquery column token list.
                             // Need to compare token text since objects are likely different instances.
                             boolean foundColumn = false;
                             for (org.antlr.v4.runtime.Token subqueryColumnToken : subqueryColumnTokens) {
-                                if (columnToken.getText().compareToIgnoreCase(subqueryColumnToken.getText()) == 0) {
+                                if (columnTokenText.compareToIgnoreCase(subqueryColumnToken.getText()) == 0) {
                                     foundColumn = true;
                                     break;
                                 }
                             }
 
+                            // Make sure column does not exist in reserved column names array.
+                            boolean isReservedColumn = false;
+                            // Do not check if already found!
                             if (!foundColumn) {
+                                for (String reservedColumnName : MOCASQL_RESERVED_COLUMN_NAMES) {
+                                    if (reservedColumnName.compareToIgnoreCase(columnTokenText) == 0) {
+                                        isReservedColumn = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (!foundColumn && !isReservedColumn) {
                                 Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
                                         columnToken.getCharPositionInLine(), sqlScriptRange);
                                 Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
@@ -370,8 +409,8 @@ public class DiagnosticManager {
                                     Diagnostic diagnostic = new Diagnostic();
                                     diagnostic.setRange(range);
                                     diagnostic.setSeverity(DiagnosticSeverity.Warning);
-                                    diagnostic.setMessage(String.format("SQL: Column '%s' may not exist in Subquery",
-                                            columnToken.getText(), tableName));
+                                    diagnostic.setMessage(String.format(
+                                            MOCASQL_COLUMN_DOES_NOT_EXIST_ON_ANON_SUBQUERY_WARNING, columnTokenText));
                                     diagnostics.add(diagnostic);
                                 }
                             }
@@ -391,18 +430,32 @@ public class DiagnosticManager {
                         if (subqueryColumnTokens != null) {
                             for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
 
+                                String columnTokenText = columnToken.getText();
+
                                 // Check if column token exists in subquery column token list.
                                 // Need to compare token text since objects are likely different instances.
                                 boolean foundColumn = false;
 
                                 for (org.antlr.v4.runtime.Token subqueryColumnToken : subqueryColumnTokens) {
-                                    if (columnToken.getText().compareToIgnoreCase(subqueryColumnToken.getText()) == 0) {
+                                    if (columnTokenText.compareToIgnoreCase(subqueryColumnToken.getText()) == 0) {
                                         foundColumn = true;
                                         break;
                                     }
                                 }
 
+                                // Make sure column does not exist in reserved column names array.
+                                boolean isReservedColumn = false;
+                                // Do not check if already found!
                                 if (!foundColumn) {
+                                    for (String reservedColumnName : MOCASQL_RESERVED_COLUMN_NAMES) {
+                                        if (reservedColumnName.compareToIgnoreCase(columnTokenText) == 0) {
+                                            isReservedColumn = true;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if (!foundColumn && !isReservedColumn) {
                                     Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
                                             columnToken.getCharPositionInLine(), sqlScriptRange);
                                     Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
@@ -414,8 +467,8 @@ public class DiagnosticManager {
                                         diagnostic.setRange(range);
                                         diagnostic.setSeverity(DiagnosticSeverity.Warning);
                                         diagnostic.setMessage(
-                                                String.format("SQL: Column '%s' may not exist on Subquery '%s'",
-                                                        columnToken.getText(), tableName));
+                                                String.format(MOCASQL_COLUMN_DOES_NOT_EXIST_ON_SUBQUERY_WARNING,
+                                                        columnTokenText, tableName));
                                         diagnostics.add(diagnostic);
                                     }
                                 }
@@ -431,20 +484,34 @@ public class DiagnosticManager {
 
                         for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
 
+                            String columnTokenText = columnToken.getText();
+
                             ArrayList<TableColumn> columnsInTable = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
                                     .getColumnsForTable(tableName);
 
                             boolean foundColumn = false;
                             if (columnsInTable != null) {
                                 for (TableColumn tableColumn : columnsInTable) {
-                                    if (tableColumn.column_name.compareToIgnoreCase(columnToken.getText()) == 0) {
+                                    if (tableColumn.column_name.compareToIgnoreCase(columnTokenText) == 0) {
                                         foundColumn = true;
                                         break;
                                     }
                                 }
                             }
 
+                            // Make sure column does not exist in reserved column names array.
+                            boolean isReservedColumn = false;
+                            // Do not check if already found!
                             if (!foundColumn) {
+                                for (String reservedColumnName : MOCASQL_RESERVED_COLUMN_NAMES) {
+                                    if (reservedColumnName.compareToIgnoreCase(columnTokenText) == 0) {
+                                        isReservedColumn = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (!foundColumn && !isReservedColumn) {
 
                                 Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
                                         columnToken.getCharPositionInLine(), sqlScriptRange);
@@ -456,8 +523,9 @@ public class DiagnosticManager {
                                     Diagnostic diagnostic = new Diagnostic();
                                     diagnostic.setRange(range);
                                     diagnostic.setSeverity(DiagnosticSeverity.Warning);
-                                    diagnostic.setMessage(String.format("SQL: Column '%s' may not exist on Table '%s'",
-                                            columnToken.getText(), tableName));
+                                    diagnostic.setMessage(
+                                            String.format(MOCASQL_COLUMN_DOES_NOT_EXIST_ON_TABLE_OR_VIEW_WARNING,
+                                                    columnTokenText, tableName));
                                     diagnostics.add(diagnostic);
                                 }
 
@@ -493,7 +561,7 @@ public class DiagnosticManager {
                     diagnostic.setRange(range);
                     diagnostic.setSeverity(cause.isFatal() ? DiagnosticSeverity.Error : DiagnosticSeverity.Warning);
                     String errMsg = cause.getMessage();
-                    diagnostic.setMessage("GROOVY: " + errMsg);
+                    diagnostic.setMessage(String.format(GROOVY_SYNTAX_ERROR, errMsg));
 
                     // Check to see if we have already add message.
                     if (!alreadyAddedMessages.contains(errMsg)) {
@@ -514,7 +582,7 @@ public class DiagnosticManager {
                     diagnostic.setRange(range);
                     diagnostic.setSeverity(DiagnosticSeverity.Warning);
                     String errMsg = cause.getMessage();
-                    diagnostic.setMessage("GROOVY: " + errMsg);
+                    diagnostic.setMessage(String.format(GROOVY_WARNING, errMsg));
                 }
 
             });
