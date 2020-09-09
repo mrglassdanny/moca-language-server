@@ -118,7 +118,7 @@ public class ExecuteCommandProvider {
                 // arguments.
 
                 // Make sure connection has url.
-                if (MocaLanguageServer.currentMocaConnection.url == null) {
+                if (MocaLanguageServer.currentMocaConnection.urlStr == null) {
                     LoadCacheResponse loadCacheResponse = new LoadCacheResponse(
                             new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER));
                     return CompletableFuture.completedFuture(loadCacheResponse);
@@ -154,7 +154,7 @@ public class ExecuteCommandProvider {
                 return CompletableFuture.completedFuture(new LoadCacheResponse(null));
             case EXECUTE:
 
-                if (MocaLanguageServer.currentMocaConnection.url == null) {
+                if (MocaLanguageServer.currentMocaConnection.urlStr == null) {
                     MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null,
                             new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER));
                     return CompletableFuture.completedFuture(mocaResultsResponse);
@@ -223,7 +223,7 @@ public class ExecuteCommandProvider {
 
             case TRACE:
 
-                if (MocaLanguageServer.currentMocaConnection.url == null) {
+                if (MocaLanguageServer.currentMocaConnection.urlStr == null) {
                     MocaTraceResponse mocaTraceResponse = new MocaTraceResponse(
                             new MocaResultsResponse(null, new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER)));
                     return CompletableFuture.completedFuture(mocaTraceResponse);

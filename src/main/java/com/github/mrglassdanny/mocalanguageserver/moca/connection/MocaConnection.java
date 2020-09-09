@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.google.gson.Gson;
@@ -49,27 +52,36 @@ public class MocaConnection {
 
         // We have to create a new instance of HttpURLConnection every time we send a
         // request to the MOCA server.
-        HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
-        httpConnection.setRequestMethod("POST");
-        httpConnection.setRequestProperty("Content-Type", "application/moca-xml");
-        httpConnection.setRequestProperty("Accept", "application/json");
-        httpConnection.setRequestProperty("Response-Encoder", "Json");
-        httpConnection.setDoOutput(true);
+        URLConnection connection = null;
+
+        // Make sure to use correct connection type (http/https).
+        String lowerCaseUrlStr = this.urlStr.toLowerCase();
+        if (lowerCaseUrlStr.startsWith("https")) {
+            connection = (HttpsURLConnection) url.openConnection();
+            ((HttpsURLConnection) connection).setRequestMethod("POST");
+        } else {
+            connection = (HttpURLConnection) url.openConnection();
+            ((HttpURLConnection) connection).setRequestMethod("POST");
+        }
+
+        connection.setRequestProperty("Content-Type", "application/moca-xml");
+        connection.setRequestProperty("Accept", "application/json");
+        connection.setRequestProperty("Response-Encoder", "Json");
+        connection.setDoOutput(true);
 
         // Build moca request.
         String mocaRequest = MocaConnection.generateMocaRequestXmlString(true, this.sessionId,
                 this.environmentVariablesXmlStr, command);
 
         // Send request.
-        try (OutputStream outputStream = httpConnection.getOutputStream()) {
+        try (OutputStream outputStream = connection.getOutputStream()) {
             byte[] input = mocaRequest.getBytes();
             outputStream.write(input, 0, input.length);
         }
 
         // Read response.
         String responseJsonStr = null;
-        try (BufferedReader bufferedReader = new BufferedReader(
-                new InputStreamReader(httpConnection.getInputStream()))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
             StringBuilder responseBuf = new StringBuilder();
             String responseLine = null;
             while ((responseLine = bufferedReader.readLine()) != null) {
@@ -91,14 +103,14 @@ public class MocaConnection {
         String messageHeader = null;
 
         try {
-            sessionId = httpConnection.getHeaderField("Session-Id");
+            sessionId = connection.getHeaderField("Session-Id");
             // Change session id if it is different than before.
             if (sessionId != null && !sessionId.equals(this.sessionId)) {
                 this.sessionId = sessionId;
             }
 
-            commandStatusHeader = Integer.parseInt(httpConnection.getHeaderField("Command-Status"));
-            messageHeader = httpConnection.getHeaderField("Message");
+            commandStatusHeader = Integer.parseInt(connection.getHeaderField("Command-Status"));
+            messageHeader = connection.getHeaderField("Message");
         } catch (Exception headerAnalysisException) {
             // Do not care about doing anything here -- just want to make sure we do not
             // crash.

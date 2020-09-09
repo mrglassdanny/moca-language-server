@@ -12,14 +12,14 @@ import java.io.IOException;
 public class MocaConnectionWrapper {
 
     private MocaConnection mocaConnection;
-    public String url;
+    public String urlStr;
     public String userId;
     private String password;
     public Cache cache;
 
     public MocaConnectionWrapper() {
         this.mocaConnection = null;
-        this.url = null;
+        this.urlStr = null;
         this.userId = null;
         this.password = null;
         this.cache = new Cache();
@@ -28,7 +28,7 @@ public class MocaConnectionWrapper {
     public MocaConnectionWrapper(String url, String userId, String password) {
 
         this.mocaConnection = null;
-        this.url = url;
+        this.urlStr = url;
         this.userId = userId;
         this.password = password;
 
@@ -38,7 +38,7 @@ public class MocaConnectionWrapper {
     public MocaConnectionWrapper(String url, String userId, String password, Cache existingMocaCache) {
 
         this.mocaConnection = null;
-        this.url = url;
+        this.urlStr = url;
         this.userId = userId;
         this.password = password;
 
@@ -50,16 +50,18 @@ public class MocaConnectionWrapper {
         MocaConnectionResponse response = new MocaConnectionResponse();
 
         // Test to see if url is correct type -- we will only support http and https.
-        if (!this.url.startsWith("http") && !this.url.startsWith("https")) {
+        String lowerCaseUrlStr = this.urlStr.toLowerCase();
+        if (!lowerCaseUrlStr.startsWith("http") && !lowerCaseUrlStr.startsWith("https")) {
             this.mocaConnection = null;
             response.eOk = false;
-            response.exception = new UnsupportedConnectionTypeException("URL must be either HTTP or HTTPS!");
+            response.exception = new UnsupportedConnectionTypeException(
+                    "MOCA Language Server only supports 'http' and 'https' connections!");
             return response;
         }
 
         // Now attempt to connect.
         try {
-            this.mocaConnection = new MocaConnection(this.url);
+            this.mocaConnection = new MocaConnection(this.urlStr);
             this.mocaConnection.login(this.userId, this.password);
             response.eOk = true;
             response.exception = null;
