@@ -42,8 +42,9 @@ public class MocaParseTreeListener extends MocaBaseListener {
                 // Token could be a CARET if override; let's ignore it.
                 // Let's also ignore WHERE token.
                 if (commonToken.getType() != MocaLexer.CARET && commonToken.getType() != MocaLexer.WHERE) {
-                    verbNounClause.append(commonToken.getText() + " "); // Need to put a space since we skip
-                                                                        // whitespace in parser!
+                    verbNounClause.append(commonToken.getText());
+                    // Need to put a space since we skip whitespace in parser!
+                    verbNounClause.append(" ");
                     tokens.add(commonToken);
                 }
             } else {
