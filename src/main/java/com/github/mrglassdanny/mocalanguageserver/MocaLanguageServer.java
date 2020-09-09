@@ -14,6 +14,8 @@ import org.eclipse.lsp4j.DocumentOnTypeFormattingOptions;
 import org.eclipse.lsp4j.ExecuteCommandOptions;
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
+import org.eclipse.lsp4j.MessageParams;
+import org.eclipse.lsp4j.MessageType;
 import org.eclipse.lsp4j.SemanticHighlightingServerCapabilities;
 import org.eclipse.lsp4j.ServerCapabilities;
 import org.eclipse.lsp4j.SignatureHelpOptions;
@@ -26,6 +28,10 @@ import org.eclipse.lsp4j.services.TextDocumentService;
 import org.eclipse.lsp4j.services.WorkspaceService;
 
 public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
+
+    // Will have global reference to lang client for various purposes -- mainly
+    // logging.
+    private static LanguageClient languageClient;
 
     // Will only ever have 1 at a time. We also want it to be easily accessible to
     // anything that needs it.
@@ -188,6 +194,33 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
     @Override
     public void connect(LanguageClient client) {
         this.services.connect(client);
+
+        MocaLanguageServer.languageClient = client;
+    }
+
+    // Logging methods:
+    public static void logToLanguageClient(String msg) {
+        if (MocaLanguageServer.languageClient != null) {
+            MocaLanguageServer.languageClient.logMessage(new MessageParams(MessageType.Log, msg));
+        }
+    }
+
+    public static void logErrorToLanguageClient(String msg) {
+        if (MocaLanguageServer.languageClient != null) {
+            MocaLanguageServer.languageClient.logMessage(new MessageParams(MessageType.Error, msg));
+        }
+    }
+
+    public static void logWarningToLanguageClient(String msg) {
+        if (MocaLanguageServer.languageClient != null) {
+            MocaLanguageServer.languageClient.logMessage(new MessageParams(MessageType.Warning, msg));
+        }
+    }
+
+    public static void logInfoToLanguageClient(String msg) {
+        if (MocaLanguageServer.languageClient != null) {
+            MocaLanguageServer.languageClient.logMessage(new MessageParams(MessageType.Info, msg));
+        }
     }
 
 }
