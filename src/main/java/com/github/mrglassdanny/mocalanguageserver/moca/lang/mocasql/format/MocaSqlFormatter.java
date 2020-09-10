@@ -65,7 +65,7 @@ public class MocaSqlFormatter {
         }
     }
 
-    public static String formatStandard(List<? extends Token> tokens) {
+    public static String format(List<? extends Token> tokens) {
 
         StringBuilder buf = new StringBuilder(2048);
 
