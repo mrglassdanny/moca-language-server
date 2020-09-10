@@ -4,7 +4,11 @@ import org.antlr.v4.runtime.Token;
 
 import java.util.List;
 
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.format.MocaSqlFormatter;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
 
 public class MocaFormatter {
 
@@ -68,7 +72,9 @@ public class MocaFormatter {
         buf.append(a.toString());
     }
 
-    public static String formatStandard(List<? extends Token> tokens) {
+    public static String formatStandard(MocaCompiler mocaCompiler) {
+
+        List<? extends Token> tokens = mocaCompiler.mocaTokens;
 
         StringBuilder buf = new StringBuilder(2048);
 
@@ -102,7 +108,20 @@ public class MocaFormatter {
                     buf.append(tokenText);
                     break;
                 case MocaLexer.SINGLE_BRACKET_STRING:
-                    buf.append(tokenText);
+
+                    if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(tokenText)) {
+                        MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
+                                .get(0);
+                        String formattedMocaSqlScript = formatMocaSql(mocaSqlCompilationResult.mocaSqlTokens, 0);
+                        if (formattedMocaSqlScript == null) {
+                            buf.append(tokenText);
+                        } else {
+                            buf.append(formattedMocaSqlScript);
+                        }
+                    } else {
+                        buf.append(tokenText);
+                    }
+
                     break;
 
                 case MocaLexer.LEFT_PAREN:
@@ -320,7 +339,9 @@ public class MocaFormatter {
         return buf.toString();
     }
 
-    public static String formatJavaStyleBraces(List<? extends Token> tokens) {
+    public static String formatJavaStyleBraces(MocaCompiler mocaCompiler) {
+
+        List<? extends Token> tokens = mocaCompiler.mocaTokens;
 
         StringBuilder buf = new StringBuilder(2048);
 
@@ -354,7 +375,18 @@ public class MocaFormatter {
                     buf.append(tokenText);
                     break;
                 case MocaLexer.SINGLE_BRACKET_STRING:
-                    buf.append(tokenText);
+                    if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(tokenText)) {
+                        MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
+                                .get(0);
+                        String formattedMocaSqlScript = formatMocaSql(mocaSqlCompilationResult.mocaSqlTokens, 0);
+                        if (formattedMocaSqlScript == null) {
+                            buf.append(tokenText);
+                        } else {
+                            buf.append(formattedMocaSqlScript);
+                        }
+                    } else {
+                        buf.append(tokenText);
+                    }
                     break;
 
                 case MocaLexer.LEFT_PAREN:
@@ -568,4 +600,28 @@ public class MocaFormatter {
         return buf.toString();
     }
 
+    private static String formatMocaSql(List<? extends Token> tokens, int charPositionInLine) {
+
+        String formattedMocaSqlScript = MocaSqlFormatter.formatStandard(tokens);
+
+        if (formattedMocaSqlScript != null) {
+            // In order for the entire mocasql script to be indented correctly
+            // after formatting, we need to get the char num from the single bracket
+            // string token and add that amount spaces/tabs to each newline in
+            // formatted mocasql script.
+            StringBuilder indentBuf = new StringBuilder(charPositionInLine);
+            for (int i = 0; i < charPositionInLine; i++) {
+                indentBuf.append(' ');
+            }
+
+            // Since we have a '[', let's add 1 more space.
+            indentBuf.append(' ');
+
+            formattedMocaSqlScript = formattedMocaSqlScript.replace("\n", "\n" + indentBuf.toString());
+
+        }
+
+        return String.format("[%s]", formattedMocaSqlScript);
+
+    }
 }

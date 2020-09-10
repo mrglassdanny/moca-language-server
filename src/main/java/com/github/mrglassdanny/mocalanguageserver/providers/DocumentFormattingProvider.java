@@ -56,7 +56,7 @@ public class DocumentFormattingProvider {
                         MocaCompiler mocaCompiler) {
                 ArrayList<TextEdit> edits = new ArrayList<>();
 
-                String formattedTextDocumentContents = MocaFormatter.formatStandard(mocaCompiler.mocaTokens);
+                String formattedTextDocumentContents = MocaFormatter.formatStandard(mocaCompiler);
 
                 // Add to text doc edits and return!
                 edits.add(new TextEdit(
@@ -66,5 +66,4 @@ public class DocumentFormattingProvider {
                                 formattedTextDocumentContents));
                 return edits;
         }
-
 }
