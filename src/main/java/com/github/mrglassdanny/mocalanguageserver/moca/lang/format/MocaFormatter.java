@@ -77,7 +77,7 @@ public class MocaFormatter {
 
         Token token, prevToken = null, nextToken = null;
 
-        int parenStack = 0;
+        int parenCounter = 0;
 
         // Get rid of whitespace/newline tokens before we do anything.
         for (int i = 0; i < tokens.size(); i++) {
@@ -111,10 +111,10 @@ public class MocaFormatter {
 
                 case MocaLexer.LEFT_PAREN:
                     buf.append(tokenText);
-                    parenStack++;
+                    parenCounter++;
                     break;
                 case MocaLexer.RIGHT_PAREN:
-                    parenStack--;
+                    parenCounter--;
                     buf.append(tokenText);
                     break;
 
@@ -279,7 +279,7 @@ public class MocaFormatter {
                     break;
                 case MocaLexer.AND:
 
-                    if (parenStack > 0) {
+                    if (parenCounter > 0) {
                         buf.append(' ');
                         buf.append(tokenText);
                         buf.append(' ');
@@ -381,7 +381,7 @@ public class MocaFormatter {
 
         Token token, prevToken = null, nextToken = null;
 
-        int parenStack = 0;
+        int parenCounter = 0;
 
         // Get rid of whitespace/newline tokens before we do anything.
         for (int i = 0; i < tokens.size(); i++) {
@@ -415,10 +415,10 @@ public class MocaFormatter {
 
                 case MocaLexer.LEFT_PAREN:
                     buf.append(tokenText);
-                    parenStack++;
+                    parenCounter++;
                     break;
                 case MocaLexer.RIGHT_PAREN:
-                    parenStack--;
+                    parenCounter--;
                     buf.append(tokenText);
                     break;
 
@@ -583,7 +583,7 @@ public class MocaFormatter {
                     break;
                 case MocaLexer.AND:
 
-                    if (parenStack > 0) {
+                    if (parenCounter > 0) {
                         buf.append(' ');
                         buf.append(tokenText);
                         buf.append(' ');
