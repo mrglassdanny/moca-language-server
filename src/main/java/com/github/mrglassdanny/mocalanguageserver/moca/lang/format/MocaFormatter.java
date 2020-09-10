@@ -111,19 +111,10 @@ public class MocaFormatter {
 
                     if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(tokenText)) {
 
-                        int charPositionInLine = 0;
-                        for (int j = buf.length() - 1; j >= 0; j--) {
-                            if (buf.charAt(j) == '\n') {
-                                break;
-                            } else {
-                                charPositionInLine++;
-                            }
-                        }
-
                         MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
                                 .get(0);
                         String formattedMocaSqlScript = formatMocaSql(mocaSqlCompilationResult.mocaSqlTokens,
-                                charPositionInLine);
+                                indentBuf);
                         if (formattedMocaSqlScript == null) {
                             buf.append(tokenText);
                         } else {
@@ -350,24 +341,15 @@ public class MocaFormatter {
         return buf.toString();
     }
 
-    private static String formatMocaSql(List<? extends Token> tokens, int charPositionInLine) {
+    private static String formatMocaSql(List<? extends Token> tokens, final StringBuilder mocaIndentBufState) {
 
         String formattedMocaSqlScript = MocaSqlFormatter.format(tokens);
 
         if (formattedMocaSqlScript != null) {
-            // In order for the entire mocasql script to be indented correctly
-            // after formatting, we need to get the char num from the single bracket
-            // string token and add that amount spaces/tabs to each newline in
-            // formatted mocasql script.
-            StringBuilder indentBuf = new StringBuilder(charPositionInLine);
-            for (int i = 0; i < charPositionInLine; i++) {
-                indentBuf.append(' ');
-            }
-
-            // Since we have a '[', let's add 1 more space.
-            indentBuf.append(' ');
-
-            formattedMocaSqlScript = formattedMocaSqlScript.replace("\n", "\n" + indentBuf.toString());
+            // Make copy so we can add to it.
+            StringBuilder mocaIndentBufStateClone = new StringBuilder(mocaIndentBufState);
+            mocaIndentBufStateClone.append(' ');
+            formattedMocaSqlScript = formattedMocaSqlScript.replace("\n", "\n" + mocaIndentBufStateClone.toString());
 
         }
 
