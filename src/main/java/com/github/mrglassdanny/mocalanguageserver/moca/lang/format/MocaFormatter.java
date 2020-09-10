@@ -63,8 +63,6 @@ public class MocaFormatter {
         }
     }
 
-    // Since we have indents to think about when we add newlines, it will be easiest
-    // to have 1 function to manage adding newlines.
     private static void addNewline(StringBuilder buf, StringBuilder a) {
         buf.append('\n');
         buf.append(a.toString());
