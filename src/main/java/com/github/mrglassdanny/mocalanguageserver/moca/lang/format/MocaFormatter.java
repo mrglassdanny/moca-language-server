@@ -73,9 +73,8 @@ public class MocaFormatter {
     public static String formatStandard(List<? extends Token> tokens) {
 
         StringBuilder buf = new StringBuilder(2048);
-        StringBuilder indentBuf = new StringBuilder();
 
-        Token token, prevToken = null, nextToken = null;
+        StringBuilder indentBuf = new StringBuilder();
 
         int parenCounter = 0;
 
@@ -85,6 +84,8 @@ public class MocaFormatter {
                 tokens.remove(i--);
             }
         }
+
+        Token token, prevToken = null, nextToken = null;
 
         for (int i = 0; i < tokens.size(); i++) {
 
@@ -377,9 +378,8 @@ public class MocaFormatter {
     public static String formatJavaStyleBraces(List<? extends Token> tokens) {
 
         StringBuilder buf = new StringBuilder(2048);
-        StringBuilder indentBuf = new StringBuilder();
 
-        Token token, prevToken = null, nextToken = null;
+        StringBuilder indentBuf = new StringBuilder();
 
         int parenCounter = 0;
 
@@ -389,6 +389,8 @@ public class MocaFormatter {
                 tokens.remove(i--);
             }
         }
+
+        Token token, prevToken = null, nextToken = null;
 
         for (int i = 0; i < tokens.size(); i++) {
 
