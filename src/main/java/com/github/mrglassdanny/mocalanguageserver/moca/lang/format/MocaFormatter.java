@@ -155,27 +155,7 @@ public class MocaFormatter {
                     break;
 
                 case MocaLexer.STAR:
-                    if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
-                        buf.append(tokenText);
-                    } else {
-                        buf.append(' ');
-                        buf.append(tokenText);
-                        buf.append(' ');
-                    }
-
-                    break;
-
                 case MocaLexer.MOD:
-                    if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
-                        buf.append(tokenText);
-                    } else {
-                        buf.append(' ');
-                        buf.append(tokenText);
-                        buf.append(' ');
-                    }
-
-                    break;
-
                 case MocaLexer.PLUS:
                     if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
                         buf.append(tokenText);
@@ -184,6 +164,7 @@ public class MocaFormatter {
                         buf.append(tokenText);
                         buf.append(' ');
                     }
+
                     break;
 
                 case MocaLexer.MINUS:
@@ -206,21 +187,6 @@ public class MocaFormatter {
 
                     break;
 
-                case MocaLexer.BANG:
-                    buf.append(tokenText);
-                    break;
-                case MocaLexer.QUESTION:
-                    buf.append(tokenText);
-                    break;
-
-                case MocaLexer.COLON:
-                    buf.append(tokenText);
-                    break;
-
-                case MocaLexer.CARET:
-                    buf.append(tokenText);
-                    break;
-
                 case MocaLexer.COMMA:
                     buf.append(tokenText);
                     buf.append(' ');
@@ -230,22 +196,6 @@ public class MocaFormatter {
                     buf.append(' ');
                     buf.append(tokenText);
                     buf.append(' ');
-                    break;
-
-                case MocaLexer.POUND:
-                    buf.append(tokenText);
-                    break;
-
-                case MocaLexer.AT:
-                    buf.append(tokenText);
-                    break;
-
-                case MocaLexer.DOT:
-                    buf.append(tokenText);
-                    break;
-
-                case MocaLexer.BACKSLASH:
-                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.SEMI_COLON:
@@ -459,27 +409,7 @@ public class MocaFormatter {
                     break;
 
                 case MocaLexer.STAR:
-                    if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
-                        buf.append(tokenText);
-                    } else {
-                        buf.append(' ');
-                        buf.append(tokenText);
-                        buf.append(' ');
-                    }
-
-                    break;
-
                 case MocaLexer.MOD:
-                    if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
-                        buf.append(tokenText);
-                    } else {
-                        buf.append(' ');
-                        buf.append(tokenText);
-                        buf.append(' ');
-                    }
-
-                    break;
-
                 case MocaLexer.PLUS:
                     if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
                         buf.append(tokenText);
@@ -488,6 +418,7 @@ public class MocaFormatter {
                         buf.append(tokenText);
                         buf.append(' ');
                     }
+
                     break;
 
                 case MocaLexer.MINUS:
@@ -510,21 +441,6 @@ public class MocaFormatter {
 
                     break;
 
-                case MocaLexer.BANG:
-                    buf.append(tokenText);
-                    break;
-                case MocaLexer.QUESTION:
-                    buf.append(tokenText);
-                    break;
-
-                case MocaLexer.COLON:
-                    buf.append(tokenText);
-                    break;
-
-                case MocaLexer.CARET:
-                    buf.append(tokenText);
-                    break;
-
                 case MocaLexer.COMMA:
                     buf.append(tokenText);
                     buf.append(' ');
@@ -534,22 +450,6 @@ public class MocaFormatter {
                     buf.append(' ');
                     buf.append(tokenText);
                     buf.append(' ');
-                    break;
-
-                case MocaLexer.POUND:
-                    buf.append(tokenText);
-                    break;
-
-                case MocaLexer.AT:
-                    buf.append(tokenText);
-                    break;
-
-                case MocaLexer.DOT:
-                    buf.append(tokenText);
-                    break;
-
-                case MocaLexer.BACKSLASH:
-                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.SEMI_COLON:
