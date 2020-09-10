@@ -91,24 +91,24 @@ public class MocaFormatter {
                 nextToken = tokens.get(i + 1);
             }
 
-            String trimmedTokenText = token.getText().trim();
+            String tokenText = token.getText();
 
             switch (token.getType()) {
 
                 case MocaLexer.DOUBLE_BRACKET_STRING:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
                 case MocaLexer.SINGLE_BRACKET_STRING:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.LEFT_PAREN:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     parenStack++;
                     break;
                 case MocaLexer.RIGHT_PAREN:
                     parenStack--;
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.LEFT_BRACE:
@@ -119,7 +119,7 @@ public class MocaFormatter {
                     }
                     indentBuf.append('\t');
 
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append('\n');
                     buf.append(indentBuf.toString());
                     break;
@@ -128,7 +128,7 @@ public class MocaFormatter {
 
                     buf.append('\n');
                     buf.append(indentBuf.toString());
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.EQUAL:
@@ -138,22 +138,22 @@ public class MocaFormatter {
                 case MocaLexer.LESS_EQUAL:
                 case MocaLexer.GREATER_EQUAL:
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
 
                 case MocaLexer.DIV:
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
 
                 case MocaLexer.STAR:
                     if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                     } else {
                         buf.append(' ');
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                         buf.append(' ');
                     }
 
@@ -161,10 +161,10 @@ public class MocaFormatter {
 
                 case MocaLexer.MOD:
                     if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                     } else {
                         buf.append(' ');
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                         buf.append(' ');
                     }
 
@@ -172,10 +172,10 @@ public class MocaFormatter {
 
                 case MocaLexer.PLUS:
                     if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                     } else {
                         buf.append(' ');
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                         buf.append(' ');
                     }
                     break;
@@ -185,86 +185,86 @@ public class MocaFormatter {
                     if (nextToken != null && isWord(nextToken)) {
                         if (prevToken != null
                                 && (isOperator(prevToken) || prevToken.getType() == MocaLexer.LEFT_PAREN)) {
-                            buf.append(trimmedTokenText);
+                            buf.append(tokenText);
                         } else {
                             buf.append(' ');
-                            buf.append(trimmedTokenText);
+                            buf.append(tokenText);
                         }
                     } else if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                     } else {
                         buf.append(' ');
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                         buf.append(' ');
                     }
 
                     break;
 
                 case MocaLexer.BANG:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
                 case MocaLexer.QUESTION:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.COLON:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.CARET:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.COMMA:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
 
                 case MocaLexer.DOUBLE_PIPE:
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
 
                 case MocaLexer.POUND:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.AT:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.DOT:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.BACKSLASH:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.SEMI_COLON:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append('\n');
                     buf.append(indentBuf.toString());
                     break;
                 case MocaLexer.PIPE:
                     buf.append('\n');
                     buf.append(indentBuf.toString());
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append('\n');
                     buf.append(indentBuf.toString());
                     break;
 
                 case MocaLexer.AMPERSAND:
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append('\n');
                     buf.append(indentBuf.toString());
                     break;
 
                 case MocaLexer.DOUBLE_GREATER:
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
 
@@ -272,7 +272,7 @@ public class MocaFormatter {
                     buf.append('\n');
                     buf.append(indentBuf.toString());
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
 
                     break;
@@ -280,7 +280,7 @@ public class MocaFormatter {
 
                     if (parenStack > 0) {
                         buf.append(' ');
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                         buf.append(' ');
                     } else {
                         buf.append('\n');
@@ -288,7 +288,7 @@ public class MocaFormatter {
                         buf.append(' ');
                         buf.append(' ');
                         buf.append(' ');
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                         buf.append(' ');
                     }
 
@@ -300,7 +300,7 @@ public class MocaFormatter {
                         buf.append(' ');
                     }
 
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
                 case MocaLexer.ELSE:
@@ -310,43 +310,43 @@ public class MocaFormatter {
                         buf.append(indentBuf.toString());
                     }
 
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.OR:
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
 
                 case MocaLexer.TRY:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
                 case MocaLexer.CATCH:
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
                 case MocaLexer.FINALLY:
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
 
                 case MocaLexer.REMOTE:
                 case MocaLexer.PARALLEL:
                 case MocaLexer.INPARALLEL:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.BLOCK_COMMENT:
 
                     if (prevToken == null || (prevToken != null && addedNewline(prevToken))) {
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                     } else {
                         buf.append('\n');
                         buf.append(indentBuf.toString());
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                     }
 
                     if (nextToken != null && !addedNewline(nextToken)) {
@@ -364,10 +364,10 @@ public class MocaFormatter {
                             buf.append(' ');
                         }
 
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
 
                     } else {
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                     }
 
                     break;
@@ -405,24 +405,24 @@ public class MocaFormatter {
                 nextToken = tokens.get(i + 1);
             }
 
-            String trimmedTokenText = token.getText().trim();
+            String tokenText = token.getText();
 
             switch (token.getType()) {
 
                 case MocaLexer.DOUBLE_BRACKET_STRING:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
                 case MocaLexer.SINGLE_BRACKET_STRING:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.LEFT_PAREN:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     parenStack++;
                     break;
                 case MocaLexer.RIGHT_PAREN:
                     parenStack--;
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.LEFT_BRACE:
@@ -432,7 +432,7 @@ public class MocaFormatter {
                         buf.append(' ');
                     }
 
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append('\n');
                     buf.append(indentBuf.toString());
                     break;
@@ -441,7 +441,7 @@ public class MocaFormatter {
 
                     buf.append('\n');
                     buf.append(indentBuf.toString());
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.EQUAL:
@@ -451,22 +451,22 @@ public class MocaFormatter {
                 case MocaLexer.LESS_EQUAL:
                 case MocaLexer.GREATER_EQUAL:
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
 
                 case MocaLexer.DIV:
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
 
                 case MocaLexer.STAR:
                     if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                     } else {
                         buf.append(' ');
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                         buf.append(' ');
                     }
 
@@ -474,10 +474,10 @@ public class MocaFormatter {
 
                 case MocaLexer.MOD:
                     if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                     } else {
                         buf.append(' ');
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                         buf.append(' ');
                     }
 
@@ -485,10 +485,10 @@ public class MocaFormatter {
 
                 case MocaLexer.PLUS:
                     if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                     } else {
                         buf.append(' ');
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                         buf.append(' ');
                     }
                     break;
@@ -498,86 +498,86 @@ public class MocaFormatter {
                     if (nextToken != null && isWord(nextToken)) {
                         if (prevToken != null
                                 && (isOperator(prevToken) || prevToken.getType() == MocaLexer.LEFT_PAREN)) {
-                            buf.append(trimmedTokenText);
+                            buf.append(tokenText);
                         } else {
                             buf.append(' ');
-                            buf.append(trimmedTokenText);
+                            buf.append(tokenText);
                         }
                     } else if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                     } else {
                         buf.append(' ');
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                         buf.append(' ');
                     }
 
                     break;
 
                 case MocaLexer.BANG:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
                 case MocaLexer.QUESTION:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.COLON:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.CARET:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.COMMA:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
 
                 case MocaLexer.DOUBLE_PIPE:
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
 
                 case MocaLexer.POUND:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.AT:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.DOT:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.BACKSLASH:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.SEMI_COLON:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append('\n');
                     buf.append(indentBuf.toString());
                     break;
                 case MocaLexer.PIPE:
                     buf.append('\n');
                     buf.append(indentBuf.toString());
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append('\n');
                     buf.append(indentBuf.toString());
                     break;
 
                 case MocaLexer.AMPERSAND:
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append('\n');
                     buf.append(indentBuf.toString());
                     break;
 
                 case MocaLexer.DOUBLE_GREATER:
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
 
@@ -585,7 +585,7 @@ public class MocaFormatter {
                     buf.append('\n');
                     buf.append(indentBuf.toString());
                     buf.append('\t');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
 
                     break;
@@ -593,7 +593,7 @@ public class MocaFormatter {
 
                     if (parenStack > 0) {
                         buf.append(' ');
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                         buf.append(' ');
                     } else {
                         buf.append('\n');
@@ -601,14 +601,14 @@ public class MocaFormatter {
                         buf.append('\t');
                         buf.append(' ');
                         buf.append(' ');
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                         buf.append(' ');
                     }
 
                     break;
 
                 case MocaLexer.IF:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
                 case MocaLexer.ELSE:
@@ -617,44 +617,44 @@ public class MocaFormatter {
                         buf.append(' ');
                     }
 
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
 
                 case MocaLexer.OR:
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
 
                 case MocaLexer.TRY:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
                 case MocaLexer.CATCH:
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
                 case MocaLexer.FINALLY:
                     buf.append(' ');
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     buf.append(' ');
                     break;
 
                 case MocaLexer.REMOTE:
                 case MocaLexer.PARALLEL:
                 case MocaLexer.INPARALLEL:
-                    buf.append(trimmedTokenText);
+                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.BLOCK_COMMENT:
 
                     if (prevToken == null || (prevToken != null && addedNewline(prevToken))) {
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                     } else {
                         buf.append('\n');
                         buf.append(indentBuf.toString());
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                     }
 
                     if (nextToken != null && !addedNewline(nextToken)) {
@@ -672,10 +672,10 @@ public class MocaFormatter {
                             buf.append(' ');
                         }
 
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
 
                     } else {
-                        buf.append(trimmedTokenText);
+                        buf.append(tokenText);
                     }
 
                     break;
