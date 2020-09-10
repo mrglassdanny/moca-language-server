@@ -2,8 +2,6 @@ package com.github.mrglassdanny.mocalanguageserver.moca.lang;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaParseTreeListener;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaSyntaxErrorListener;
@@ -27,10 +25,7 @@ import org.eclipse.lsp4j.Range;
 
 public class MocaCompiler {
 
-    private static final Pattern XML_HEADER_PATTERN = Pattern
-            .compile("<!\\[CDATA\\[(?=(?:[^(\"|')]*(\"|')[^(\"|')]*(\"|'))*[^(\"|')]*$)");
-
-    public List<? extends Token> mocaTokens; // From lexer.
+    public List<? extends Token> mocaTokens;
     public MocaCompilationResult currentCompilationResult;
 
     public ArrayList<Range> mocaSqlRanges;
@@ -50,48 +45,16 @@ public class MocaCompiler {
         this.groovyCompiler = new GroovyCompiler();
     }
 
-    // New thread per script.
-    public MocaCompilationResult compileScript(String mocaScript) {
+    public MocaCompilationResult compileScript(final String mocaScript) {
 
         MocaCompilationResult compilationResult = new MocaCompilationResult();
         this.currentCompilationResult = compilationResult;
-
-        // Alter mocaScript to handle mcmd/mtrg xml header and footer text.
-        // We should be able to just wrap these in comment blocks(will have to replace a
-        // few characters in order to not mess up lexer token positions). That way the
-        // lexer tokens' positions are correct and the moca compiler will not think
-        // these sections are part of the script.
-        // NOTE: there could be multiple XML_HEADER_PATTERN matches. That being said,
-        // the first match should be the only one we care about.
-        Matcher xmlHeaderMatcher = XML_HEADER_PATTERN.matcher(mocaScript);
-        if (xmlHeaderMatcher.find()) {
-
-            int headerStartIdx = 0;
-            int headerEndIdx = xmlHeaderMatcher.end();
-            int footerStartIdx = mocaScript.indexOf("]]>", headerEndIdx);
-            int footerEndIdx = mocaScript.length() - 1;
-
-            char[] mocaScriptCharArr = mocaScript.toCharArray();
-            mocaScriptCharArr[headerStartIdx] = '/';
-            mocaScriptCharArr[headerStartIdx + 1] = '*';
-            mocaScriptCharArr[headerEndIdx - 1] = '*';
-            mocaScriptCharArr[headerEndIdx] = '/';
-            mocaScriptCharArr[footerStartIdx] = '/';
-            mocaScriptCharArr[footerStartIdx + 1] = '*';
-            mocaScriptCharArr[footerEndIdx - 1] = '*';
-            mocaScriptCharArr[footerEndIdx] = '/';
-
-            mocaScript = new String(mocaScriptCharArr);
-        }
-
-        // Making final so that we can introduce more threads.
-        final String finalMocaScript = mocaScript;
 
         // If error, no exception will be thrown -- we will use the
         // MocaSyntaxErrorListener.
 
         compilationResult.mocaParser = new MocaParser(
-                new CommonTokenStream(new MocaLexer(new ANTLRInputStream(finalMocaScript))));
+                new CommonTokenStream(new MocaLexer(new ANTLRInputStream(mocaScript))));
 
         compilationResult.mocaSyntaxErrorListener = new MocaSyntaxErrorListener();
         compilationResult.mocaParser.addErrorListener(compilationResult.mocaSyntaxErrorListener);
@@ -102,17 +65,26 @@ public class MocaCompiler {
         compilationResult.mocaParseTreeListener = new MocaParseTreeListener();
         new ParseTreeWalker().walk(compilationResult.mocaParseTreeListener, parseTree);
 
-        this.mocaTokens = new MocaLexer(new ANTLRInputStream(finalMocaScript)).getAllTokens();
+        this.mocaTokens = new MocaLexer(new ANTLRInputStream(mocaScript)).getAllTokens();
 
         // Update embedded lang ranges, then compile them.
-        this.updateEmbeddedLanguageRanges(finalMocaScript);
 
-        // Before setting up infrastructure to compile sql and groovy, make sure there
+        // The basic strategy is to have each mocasql/groovy context on its own thread.
+        // That way we compile multiple contexts at once -- should make a pretty big
+        // difference for large/many-context scripts. At the very end of this function,
+        // we will make sure that all created threads are complete before we exit
+        // function -- that way we know that all other processes in language server can
+        // read compilation output without worrying about concurrency issues.
+
+        this.updateEmbeddedLanguageRanges(mocaScript);
+
+        // Before setting up infrastructure to compile mocasql and groovy, make sure
+        // there
         // is something to compile!
 
         // We are utilizing a very naive threading strategy below. The only way it could
         // bite us would be if there is a combined ~20000 sql/groovy contexts that need
-        // to be compiled -- I am okay with risking our naive strategy for now!
+        // to be compiled -- I am okay taking this risk..
 
         // Start with MOCA SQL.
         Thread mainMocaSqlThread = null;
@@ -127,7 +99,7 @@ public class MocaCompiler {
                     // Compiling moca sql ranges via another thread.
                     Thread mocaSqlThread = new Thread(() -> {
                         // Remove first and last characters('[', ']').
-                        String mocaSqlScript = Ranges.getText(finalMocaScript, this.mocaSqlRanges.get(rangeIdx));
+                        String mocaSqlScript = Ranges.getText(mocaScript, this.mocaSqlRanges.get(rangeIdx));
                         mocaSqlScript = mocaSqlScript.substring(1, mocaSqlScript.length() - 1);
                         this.mocaSqlCompiler.compileScript(rangeIdx, mocaSqlScript);
                     });
@@ -166,10 +138,10 @@ public class MocaCompiler {
                     // Compiling groovy ranges via another thread.
                     Thread groovyThread = new Thread(() -> {
                         // Remove '[[]]'.
-                        String groovyScript = Ranges.getText(finalMocaScript, this.groovyRanges.get(rangeIdx));
+                        String groovyScript = Ranges.getText(mocaScript, this.groovyRanges.get(rangeIdx));
                         groovyScript = groovyScript.substring(2, groovyScript.length() - 2);
 
-                        this.groovyCompiler.compileScript(rangeIdx, groovyScript, this, finalMocaScript);
+                        this.groovyCompiler.compileScript(rangeIdx, groovyScript, this, mocaScript);
                     });
 
                     groovyThread.start();
