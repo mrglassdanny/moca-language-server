@@ -76,7 +76,6 @@ public class MocaFormatter {
         int parenCounter = 0;
         Token token, prevToken = null, nextToken = null;
 
-        // Get rid of whitespace/newline tokens before we do anything.
         for (int i = 0; i < tokens.size(); i++) {
             if (tokens.get(i).getType() == MocaLexer.WHITESPACE || tokens.get(i).getType() == MocaLexer.NEWLINE) {
                 tokens.remove(i--);
@@ -329,7 +328,6 @@ public class MocaFormatter {
         int parenCounter = 0;
         Token token, prevToken = null, nextToken = null;
 
-        // Get rid of whitespace/newline tokens before we do anything.
         for (int i = 0; i < tokens.size(); i++) {
             if (tokens.get(i).getType() == MocaLexer.WHITESPACE || tokens.get(i).getType() == MocaLexer.NEWLINE) {
                 tokens.remove(i--);
