@@ -110,9 +110,20 @@ public class MocaFormatter {
                 case MocaLexer.SINGLE_BRACKET_STRING:
 
                     if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(tokenText)) {
+
+                        int charPositionInLine = 0;
+                        for (int j = buf.length() - 1; j >= 0; j--) {
+                            if (buf.charAt(j) == '\n') {
+                                break;
+                            } else {
+                                charPositionInLine++;
+                            }
+                        }
+
                         MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
                                 .get(0);
-                        String formattedMocaSqlScript = formatMocaSql(mocaSqlCompilationResult.mocaSqlTokens, 0);
+                        String formattedMocaSqlScript = formatMocaSql(mocaSqlCompilationResult.mocaSqlTokens,
+                                charPositionInLine);
                         if (formattedMocaSqlScript == null) {
                             buf.append(tokenText);
                         } else {
@@ -376,9 +387,20 @@ public class MocaFormatter {
                     break;
                 case MocaLexer.SINGLE_BRACKET_STRING:
                     if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(tokenText)) {
+
+                        int charPositionInLine = 0;
+                        for (int j = buf.length() - 1; j >= 0; j--) {
+                            if (buf.charAt(j) == '\n') {
+                                break;
+                            } else {
+                                charPositionInLine++;
+                            }
+                        }
+
                         MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
                                 .get(0);
-                        String formattedMocaSqlScript = formatMocaSql(mocaSqlCompilationResult.mocaSqlTokens, 0);
+                        String formattedMocaSqlScript = formatMocaSql(mocaSqlCompilationResult.mocaSqlTokens,
+                                charPositionInLine);
                         if (formattedMocaSqlScript == null) {
                             buf.append(tokenText);
                         } else {
@@ -387,6 +409,7 @@ public class MocaFormatter {
                     } else {
                         buf.append(tokenText);
                     }
+
                     break;
 
                 case MocaLexer.LEFT_PAREN:
