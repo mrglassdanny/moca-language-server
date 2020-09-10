@@ -76,6 +76,7 @@ public class MocaFormatter {
 
         StringBuilder indentBuf = new StringBuilder();
         int parenCounter = 0;
+        Token token, prevToken = null, nextToken = null;
 
         // Get rid of whitespace/newline tokens before we do anything.
         for (int i = 0; i < tokens.size(); i++) {
@@ -83,8 +84,6 @@ public class MocaFormatter {
                 tokens.remove(i--);
             }
         }
-
-        Token token, prevToken = null, nextToken = null;
 
         for (int i = 0; i < tokens.size(); i++) {
 
@@ -330,6 +329,7 @@ public class MocaFormatter {
 
         StringBuilder indentBuf = new StringBuilder();
         int parenCounter = 0;
+        Token token, prevToken = null, nextToken = null;
 
         // Get rid of whitespace/newline tokens before we do anything.
         for (int i = 0; i < tokens.size(); i++) {
@@ -337,8 +337,6 @@ public class MocaFormatter {
                 tokens.remove(i--);
             }
         }
-
-        Token token, prevToken = null, nextToken = null;
 
         for (int i = 0; i < tokens.size(); i++) {
 
