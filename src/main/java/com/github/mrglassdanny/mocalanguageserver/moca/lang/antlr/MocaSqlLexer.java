@@ -176,8 +176,8 @@ public class MocaSqlLexer extends Lexer {
 		SQUARE_BRACKET_ID=803, LOCAL_ID=804, MOCA_ENVIRONMENT_VARIABLE=805, MOCA_AT_MINUS_VARIABLE=806, 
 		MOCA_AT_PLUS_VARIABLE=807, MOCA_AT_MOD_VARIABLE=808, DECIMAL=809, ID=810, 
 		QUOTED_URL=811, QUOTED_HOST_AND_PORT=812, STRING=813, BINARY=814, FLOAT=815, 
-		REAL=816, EQUAL=817, GREATER=818, LESS=819, GREATER_EQUAL=820, LESS_EQUAL=821, 
-		NOT_EQUAL=822, EXCLAMATION=823, PLUS_ASSIGN=824, MINUS_ASSIGN=825, MULT_ASSIGN=826, 
+		REAL=816, EQUAL=817, NOT_EQUAL=818, GREATER=819, LESS=820, GREATER_EQUAL=821, 
+		LESS_EQUAL=822, EXCLAMATION=823, PLUS_ASSIGN=824, MINUS_ASSIGN=825, MULT_ASSIGN=826, 
 		DIV_ASSIGN=827, MOD_ASSIGN=828, AND_ASSIGN=829, XOR_ASSIGN=830, OR_ASSIGN=831, 
 		DOUBLE_BAR=832, DOT=833, UNDERLINE=834, AT=835, SHARP=836, DOLLAR=837, 
 		LR_BRACKET=838, RR_BRACKET=839, COMMA=840, SEMI=841, COLON=842, STAR=843, 
@@ -327,8 +327,8 @@ public class MocaSqlLexer extends Lexer {
 		"DOUBLE_QUOTE_ID", "SINGLE_QUOTE", "SQUARE_BRACKET_ID", "LOCAL_ID", "MOCA_ENVIRONMENT_VARIABLE", 
 		"MOCA_AT_MINUS_VARIABLE", "MOCA_AT_PLUS_VARIABLE", "MOCA_AT_MOD_VARIABLE", 
 		"DECIMAL", "ID", "QUOTED_URL", "QUOTED_HOST_AND_PORT", "STRING", "BINARY", 
-		"FLOAT", "REAL", "EQUAL", "GREATER", "LESS", "GREATER_EQUAL", "LESS_EQUAL", 
-		"NOT_EQUAL", "EXCLAMATION", "PLUS_ASSIGN", "MINUS_ASSIGN", "MULT_ASSIGN", 
+		"FLOAT", "REAL", "EQUAL", "NOT_EQUAL", "GREATER", "LESS", "GREATER_EQUAL", 
+		"LESS_EQUAL", "EXCLAMATION", "PLUS_ASSIGN", "MINUS_ASSIGN", "MULT_ASSIGN", 
 		"DIV_ASSIGN", "MOD_ASSIGN", "AND_ASSIGN", "XOR_ASSIGN", "OR_ASSIGN", "DOUBLE_BAR", 
 		"DOT", "UNDERLINE", "AT", "SHARP", "DOLLAR", "LR_BRACKET", "RR_BRACKET", 
 		"COMMA", "SEMI", "COLON", "STAR", "DIVIDE", "MODULE", "PLUS", "MINUS", 
@@ -492,7 +492,7 @@ public class MocaSqlLexer extends Lexer {
 		"'WORKLOAD'", "'XML'", "'XMLDATA'", "'XMLNAMESPACES'", "'XMLSCHEMA'", 
 		"'XSINIL'", "'$ACTION'", "'keep'", "'onstack'", "'ignore'", null, null, 
 		null, null, "'''", null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, "'='", "'>'", "'<'", "'>='", "'<='", null, 
+		null, null, null, null, null, "'='", null, "'>'", "'<'", "'>='", "'<='", 
 		"'!'", "'+='", "'-='", "'*='", "'/='", "'%='", "'&='", "'^='", "'|='", 
 		"'||'", "'.'", "'_'", "'@'", "'#'", "'$'", "'('", "')'", "','", "';'", 
 		"':'", "'*'", "'/'", "'%'", "'+'", "'-'", "'~'", "'|'", "'&'", "'^'"
@@ -637,8 +637,8 @@ public class MocaSqlLexer extends Lexer {
 		"DOUBLE_QUOTE_ID", "SINGLE_QUOTE", "SQUARE_BRACKET_ID", "LOCAL_ID", "MOCA_ENVIRONMENT_VARIABLE", 
 		"MOCA_AT_MINUS_VARIABLE", "MOCA_AT_PLUS_VARIABLE", "MOCA_AT_MOD_VARIABLE", 
 		"DECIMAL", "ID", "QUOTED_URL", "QUOTED_HOST_AND_PORT", "STRING", "BINARY", 
-		"FLOAT", "REAL", "EQUAL", "GREATER", "LESS", "GREATER_EQUAL", "LESS_EQUAL", 
-		"NOT_EQUAL", "EXCLAMATION", "PLUS_ASSIGN", "MINUS_ASSIGN", "MULT_ASSIGN", 
+		"FLOAT", "REAL", "EQUAL", "NOT_EQUAL", "GREATER", "LESS", "GREATER_EQUAL", 
+		"LESS_EQUAL", "EXCLAMATION", "PLUS_ASSIGN", "MINUS_ASSIGN", "MULT_ASSIGN", 
 		"DIV_ASSIGN", "MOD_ASSIGN", "AND_ASSIGN", "XOR_ASSIGN", "OR_ASSIGN", "DOUBLE_BAR", 
 		"DOT", "UNDERLINE", "AT", "SHARP", "DOLLAR", "LR_BRACKET", "RR_BRACKET", 
 		"COMMA", "SEMI", "COLON", "STAR", "DIVIDE", "MODULE", "PLUS", "MINUS", 
@@ -1737,9 +1737,9 @@ public class MocaSqlLexer extends Lexer {
 		"\3\u032f\7\u032f\u272f\n\u032f\f\u032f\16\u032f\u2732\13\u032f\3\u0330"+
 		"\3\u0330\3\u0331\3\u0331\5\u0331\u2738\n\u0331\3\u0331\3\u0331\5\u0331"+
 		"\u273c\n\u0331\3\u0331\6\u0331\u273f\n\u0331\r\u0331\16\u0331\u2740\3"+
-		"\u0332\3\u0332\3\u0333\3\u0333\3\u0334\3\u0334\3\u0335\3\u0335\3\u0335"+
-		"\3\u0336\3\u0336\3\u0336\3\u0337\3\u0337\3\u0337\3\u0337\5\u0337\u2753"+
-		"\n\u0337\3\u0338\3\u0338\3\u0339\3\u0339\3\u0339\3\u033a\3\u033a\3\u033a"+
+		"\u0332\3\u0332\3\u0333\3\u0333\3\u0333\3\u0333\5\u0333\u2749\n\u0333\3"+
+		"\u0334\3\u0334\3\u0335\3\u0335\3\u0336\3\u0336\3\u0336\3\u0337\3\u0337"+
+		"\3\u0337\3\u0338\3\u0338\3\u0339\3\u0339\3\u0339\3\u033a\3\u033a\3\u033a"+
 		"\3\u033b\3\u033b\3\u033b\3\u033c\3\u033c\3\u033c\3\u033d\3\u033d\3\u033d"+
 		"\3\u033e\3\u033e\3\u033e\3\u033f\3\u033f\3\u033f\3\u0340\3\u0340\3\u0340"+
 		"\3\u0341\3\u0341\3\u0341\3\u0342\3\u0342\3\u0343\3\u0343\3\u0344\3\u0344"+
@@ -2304,9 +2304,9 @@ public class MocaSqlLexer extends Lexer {
 		"\2\2\u064b\u26bb\3\2\2\2\u064d\u26c2\3\2\2\2\u064f\u26c9\3\2\2\2\u0651"+
 		"\u26d0\3\2\2\2\u0653\u26d8\3\2\2\2\u0655\u26de\3\2\2\2\u0657\u26e7\3\2"+
 		"\2\2\u0659\u2707\3\2\2\2\u065b\u271e\3\2\2\2\u065d\u272b\3\2\2\2\u065f"+
-		"\u2733\3\2\2\2\u0661\u2737\3\2\2\2\u0663\u2742\3\2\2\2\u0665\u2744\3\2"+
-		"\2\2\u0667\u2746\3\2\2\2\u0669\u2748\3\2\2\2\u066b\u274b\3\2\2\2\u066d"+
-		"\u2752\3\2\2\2\u066f\u2754\3\2\2\2\u0671\u2756\3\2\2\2\u0673\u2759\3\2"+
+		"\u2733\3\2\2\2\u0661\u2737\3\2\2\2\u0663\u2742\3\2\2\2\u0665\u2748\3\2"+
+		"\2\2\u0667\u274a\3\2\2\2\u0669\u274c\3\2\2\2\u066b\u274e\3\2\2\2\u066d"+
+		"\u2751\3\2\2\2\u066f\u2754\3\2\2\2\u0671\u2756\3\2\2\2\u0673\u2759\3\2"+
 		"\2\2\u0675\u275c\3\2\2\2\u0677\u275f\3\2\2\2\u0679\u2762\3\2\2\2\u067b"+
 		"\u2765\3\2\2\2\u067d\u2768\3\2\2\2\u067f\u276b\3\2\2\2\u0681\u276e\3\2"+
 		"\2\2\u0683\u2771\3\2\2\2\u0685\u2773\3\2\2\2\u0687\u2775\3\2\2\2\u0689"+
@@ -4613,11 +4613,11 @@ public class MocaSqlLexer extends Lexer {
 		"\u273b\7G\2\2\u273a\u273c\t\16\2\2\u273b\u273a\3\2\2\2\u273b\u273c\3\2"+
 		"\2\2\u273c\u273e\3\2\2\2\u273d\u273f\5\u06b3\u035a\2\u273e\u273d\3\2\2"+
 		"\2\u273f\u2740\3\2\2\2\u2740\u273e\3\2\2\2\u2740\u2741\3\2\2\2\u2741\u0662"+
-		"\3\2\2\2\u2742\u2743\7?\2\2\u2743\u0664\3\2\2\2\u2744\u2745\7@\2\2\u2745"+
-		"\u0666\3\2\2\2\u2746\u2747\7>\2\2\u2747\u0668\3\2\2\2\u2748\u2749\7@\2"+
-		"\2\u2749\u274a\7?\2\2\u274a\u066a\3\2\2\2\u274b\u274c\7>\2\2\u274c\u274d"+
-		"\7?\2\2\u274d\u066c\3\2\2\2\u274e\u274f\7#\2\2\u274f\u2753\7?\2\2\u2750"+
-		"\u2751\7>\2\2\u2751\u2753\7@\2\2\u2752\u274e\3\2\2\2\u2752\u2750\3\2\2"+
+		"\3\2\2\2\u2742\u2743\7?\2\2\u2743\u0664\3\2\2\2\u2744\u2745\7#\2\2\u2745"+
+		"\u2749\7?\2\2\u2746\u2747\7>\2\2\u2747\u2749\7@\2\2\u2748\u2744\3\2\2"+
+		"\2\u2748\u2746\3\2\2\2\u2749\u0666\3\2\2\2\u274a\u274b\7@\2\2\u274b\u0668"+
+		"\3\2\2\2\u274c\u274d\7>\2\2\u274d\u066a\3\2\2\2\u274e\u274f\7@\2\2\u274f"+
+		"\u2750\7?\2\2\u2750\u066c\3\2\2\2\u2751\u2752\7>\2\2\u2752\u2753\7?\2"+
 		"\2\u2753\u066e\3\2\2\2\u2754\u2755\7#\2\2\u2755\u0670\3\2\2\2\u2756\u2757"+
 		"\7-\2\2\u2757\u2758\7?\2\2\u2758\u0672\3\2\2\2\u2759\u275a\7/\2\2\u275a"+
 		"\u275b\7?\2\2\u275b\u0674\3\2\2\2\u275c\u275d\7,\2\2\u275d\u275e\7?\2"+
@@ -4658,7 +4658,7 @@ public class MocaSqlLexer extends Lexer {
 		"\u0d32\u0d35\u0d38\u0d3b\u0d3f\u0d42\u0d45\u0d48\u0d4c\u0d4f\u0d52\u0d55"+
 		"\u0d58\u1741\u2685\u268e\u2690\u269e\u26a7\u26b1\u26b9\u26c0\u26c7\u26ce"+
 		"\u26d5\u26da\u26de\u26e2\u26e4\u26ec\u26f6\u26fc\u26fe\u2701\u270b\u2711"+
-		"\u2713\u2716\u271e\u2724\u2726\u2730\u2737\u273b\u2740\u2752\u279f\u27a2"+
+		"\u2713\u2716\u271e\u2724\u2726\u2730\u2737\u273b\u2740\u2748\u279f\u27a2"+
 		"\u27a9\u27af\u27b4\u27bc\u27be\3\2\3\2";
 	public static final String _serializedATN = Utils.join(
 		new String[] {

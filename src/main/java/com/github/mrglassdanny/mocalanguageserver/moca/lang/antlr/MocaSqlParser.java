@@ -176,8 +176,8 @@ public class MocaSqlParser extends Parser {
 		SQUARE_BRACKET_ID=803, LOCAL_ID=804, MOCA_ENVIRONMENT_VARIABLE=805, MOCA_AT_MINUS_VARIABLE=806, 
 		MOCA_AT_PLUS_VARIABLE=807, MOCA_AT_MOD_VARIABLE=808, DECIMAL=809, ID=810, 
 		QUOTED_URL=811, QUOTED_HOST_AND_PORT=812, STRING=813, BINARY=814, FLOAT=815, 
-		REAL=816, EQUAL=817, GREATER=818, LESS=819, GREATER_EQUAL=820, LESS_EQUAL=821, 
-		NOT_EQUAL=822, EXCLAMATION=823, PLUS_ASSIGN=824, MINUS_ASSIGN=825, MULT_ASSIGN=826, 
+		REAL=816, EQUAL=817, NOT_EQUAL=818, GREATER=819, LESS=820, GREATER_EQUAL=821, 
+		LESS_EQUAL=822, EXCLAMATION=823, PLUS_ASSIGN=824, MINUS_ASSIGN=825, MULT_ASSIGN=826, 
 		DIV_ASSIGN=827, MOD_ASSIGN=828, AND_ASSIGN=829, XOR_ASSIGN=830, OR_ASSIGN=831, 
 		DOUBLE_BAR=832, DOT=833, UNDERLINE=834, AT=835, SHARP=836, DOLLAR=837, 
 		LR_BRACKET=838, RR_BRACKET=839, COMMA=840, SEMI=841, COLON=842, STAR=843, 
@@ -669,7 +669,7 @@ public class MocaSqlParser extends Parser {
 		"'WORKLOAD'", "'XML'", "'XMLDATA'", "'XMLNAMESPACES'", "'XMLSCHEMA'", 
 		"'XSINIL'", "'$ACTION'", "'keep'", "'onstack'", "'ignore'", null, null, 
 		null, null, "'''", null, null, null, null, null, null, null, null, null, 
-		null, null, null, null, null, "'='", "'>'", "'<'", "'>='", "'<='", null, 
+		null, null, null, null, null, "'='", null, "'>'", "'<'", "'>='", "'<='", 
 		"'!'", "'+='", "'-='", "'*='", "'/='", "'%='", "'&='", "'^='", "'|='", 
 		"'||'", "'.'", "'_'", "'@'", "'#'", "'$'", "'('", "')'", "','", "';'", 
 		"':'", "'*'", "'/'", "'%'", "'+'", "'-'", "'~'", "'|'", "'&'", "'^'"
@@ -814,8 +814,8 @@ public class MocaSqlParser extends Parser {
 		"DOUBLE_QUOTE_ID", "SINGLE_QUOTE", "SQUARE_BRACKET_ID", "LOCAL_ID", "MOCA_ENVIRONMENT_VARIABLE", 
 		"MOCA_AT_MINUS_VARIABLE", "MOCA_AT_PLUS_VARIABLE", "MOCA_AT_MOD_VARIABLE", 
 		"DECIMAL", "ID", "QUOTED_URL", "QUOTED_HOST_AND_PORT", "STRING", "BINARY", 
-		"FLOAT", "REAL", "EQUAL", "GREATER", "LESS", "GREATER_EQUAL", "LESS_EQUAL", 
-		"NOT_EQUAL", "EXCLAMATION", "PLUS_ASSIGN", "MINUS_ASSIGN", "MULT_ASSIGN", 
+		"FLOAT", "REAL", "EQUAL", "NOT_EQUAL", "GREATER", "LESS", "GREATER_EQUAL", 
+		"LESS_EQUAL", "EXCLAMATION", "PLUS_ASSIGN", "MINUS_ASSIGN", "MULT_ASSIGN", 
 		"DIV_ASSIGN", "MOD_ASSIGN", "AND_ASSIGN", "XOR_ASSIGN", "OR_ASSIGN", "DOUBLE_BAR", 
 		"DOT", "UNDERLINE", "AT", "SHARP", "DOLLAR", "LR_BRACKET", "RR_BRACKET", 
 		"COMMA", "SEMI", "COLON", "STAR", "DIVIDE", "MODULE", "PLUS", "MINUS", 
@@ -95649,9 +95649,9 @@ public class MocaSqlParser extends Parser {
 		"\3\2\2\2\u0cb1\u0cb2\3\2\2\2\u0cb2\u0cb3\5\u03f4\u01fb\2\u0cb3\u0cb4\7"+
 		"\u0343\2\2\u0cb4\u0cb5\5\u03f4\u01fb\2\u0cb5\u0cb7\3\2\2\2\u0cb6\u0cac"+
 		"\3\2\2\2\u0cb6\u0cb0\3\2\2\2\u0cb7\u0cc3\3\2\2\2\u0cb8\u0cc4\7\u0333\2"+
-		"\2\u0cb9\u0cba\7\u0335\2\2\u0cba\u0cc4\7\u0334\2\2\u0cbb\u0cbc\7\u0339"+
-		"\2\2\u0cbc\u0cc4\7\u0333\2\2\u0cbd\u0cc4\7\u0334\2\2\u0cbe\u0cbf\7\u0334"+
-		"\2\2\u0cbf\u0cc4\7\u0333\2\2\u0cc0\u0cc4\7\u0335\2\2\u0cc1\u0cc2\7\u0335"+
+		"\2\u0cb9\u0cba\7\u0336\2\2\u0cba\u0cc4\7\u0335\2\2\u0cbb\u0cbc\7\u0339"+
+		"\2\2\u0cbc\u0cc4\7\u0333\2\2\u0cbd\u0cc4\7\u0335\2\2\u0cbe\u0cbf\7\u0335"+
+		"\2\2\u0cbf\u0cc4\7\u0333\2\2\u0cc0\u0cc4\7\u0336\2\2\u0cc1\u0cc2\7\u0336"+
 		"\2\2\u0cc2\u0cc4\7\u0333\2\2\u0cc3\u0cb8\3\2\2\2\u0cc3\u0cb9\3\2\2\2\u0cc3"+
 		"\u0cbb\3\2\2\2\u0cc3\u0cbd\3\2\2\2\u0cc3\u0cbe\3\2\2\2\u0cc3\u0cc0\3\2"+
 		"\2\2\u0cc3\u0cc1\3\2\2\2\u0cc4\u0cc5\3\2\2\2\u0cc5\u0cc6\t\30\2\2\u0cc6"+
@@ -96156,19 +96156,19 @@ public class MocaSqlParser extends Parser {
 		"\3\2\2\2\u1210\u123c\7\u0178\2\2\u1211\u1213\7\u034a\2\2\u1212\u1211\3"+
 		"\2\2\2\u1212\u1213\3\2\2\2\u1213\u1215\3\2\2\2\u1214\u1216\7\u00de\2\2"+
 		"\u1215\u1214\3\2\2\2\u1215\u1216\3\2\2\2\u1216\u1217\3\2\2\2\u1217\u1223"+
-		"\5\u03f4\u01fb\2\u1218\u1224\7\u0333\2\2\u1219\u121a\7\u0335\2\2\u121a"+
-		"\u1224\7\u0334\2\2\u121b\u121c\7\u0339\2\2\u121c\u1224\7\u0333\2\2\u121d"+
-		"\u1224\7\u0334\2\2\u121e\u121f\7\u0334\2\2\u121f\u1224\7\u0333\2\2\u1220"+
-		"\u1224\7\u0335\2\2\u1221\u1222\7\u0335\2\2\u1222\u1224\7\u0333\2\2\u1223"+
+		"\5\u03f4\u01fb\2\u1218\u1224\7\u0333\2\2\u1219\u121a\7\u0336\2\2\u121a"+
+		"\u1224\7\u0335\2\2\u121b\u121c\7\u0339\2\2\u121c\u1224\7\u0333\2\2\u121d"+
+		"\u1224\7\u0335\2\2\u121e\u121f\7\u0335\2\2\u121f\u1224\7\u0333\2\2\u1220"+
+		"\u1224\7\u0336\2\2\u1221\u1222\7\u0336\2\2\u1222\u1224\7\u0333\2\2\u1223"+
 		"\u1218\3\2\2\2\u1223\u1219\3\2\2\2\u1223\u121b\3\2\2\2\u1223\u121d\3\2"+
 		"\2\2\u1223\u121e\3\2\2\2\u1223\u1220\3\2\2\2\u1223\u1221\3\2\2\2\u1224"+
 		"\u1225\3\2\2\2\u1225\u1226\t\30\2\2\u1226\u123d\3\2\2\2\u1227\u1229\7"+
 		"\u034a\2\2\u1228\u1227\3\2\2\2\u1228\u1229\3\2\2\2\u1229\u122a\3\2\2\2"+
 		"\u122a\u122c\t\35\2\2\u122b\u122d\7\u00de\2\2\u122c\u122b\3\2\2\2\u122c"+
 		"\u122d\3\2\2\2\u122d\u1239\3\2\2\2\u122e\u123a\7\u0333\2\2\u122f\u1230"+
-		"\7\u0335\2\2\u1230\u123a\7\u0334\2\2\u1231\u1232\7\u0339\2\2\u1232\u123a"+
-		"\7\u0333\2\2\u1233\u123a\7\u0334\2\2\u1234\u1235\7\u0334\2\2\u1235\u123a"+
-		"\7\u0333\2\2\u1236\u123a\7\u0335\2\2\u1237\u1238\7\u0335\2\2\u1238\u123a"+
+		"\7\u0336\2\2\u1230\u123a\7\u0335\2\2\u1231\u1232\7\u0339\2\2\u1232\u123a"+
+		"\7\u0333\2\2\u1233\u123a\7\u0335\2\2\u1234\u1235\7\u0335\2\2\u1235\u123a"+
+		"\7\u0333\2\2\u1236\u123a\7\u0336\2\2\u1237\u1238\7\u0336\2\2\u1238\u123a"+
 		"\7\u0333\2\2\u1239\u122e\3\2\2\2\u1239\u122f\3\2\2\2\u1239\u1231\3\2\2"+
 		"\2\u1239\u1233\3\2\2\2\u1239\u1234\3\2\2\2\u1239\u1236\3\2\2\2\u1239\u1237"+
 		"\3\2\2\2\u123a\u123b\3\2\2\2\u123b\u123d\t\30\2\2\u123c\u1212\3\2\2\2"+
@@ -96213,19 +96213,19 @@ public class MocaSqlParser extends Parser {
 		"\u12cd\3\2\2\2\u129f\u12cb\7\u0178\2\2\u12a0\u12a2\7\u034a\2\2\u12a1\u12a0"+
 		"\3\2\2\2\u12a1\u12a2\3\2\2\2\u12a2\u12a4\3\2\2\2\u12a3\u12a5\7\u00de\2"+
 		"\2\u12a4\u12a3\3\2\2\2\u12a4\u12a5\3\2\2\2\u12a5\u12a6\3\2\2\2\u12a6\u12b2"+
-		"\5\u03f4\u01fb\2\u12a7\u12b3\7\u0333\2\2\u12a8\u12a9\7\u0335\2\2\u12a9"+
-		"\u12b3\7\u0334\2\2\u12aa\u12ab\7\u0339\2\2\u12ab\u12b3\7\u0333\2\2\u12ac"+
-		"\u12b3\7\u0334\2\2\u12ad\u12ae\7\u0334\2\2\u12ae\u12b3\7\u0333\2\2\u12af"+
-		"\u12b3\7\u0335\2\2\u12b0\u12b1\7\u0335\2\2\u12b1\u12b3\7\u0333\2\2\u12b2"+
+		"\5\u03f4\u01fb\2\u12a7\u12b3\7\u0333\2\2\u12a8\u12a9\7\u0336\2\2\u12a9"+
+		"\u12b3\7\u0335\2\2\u12aa\u12ab\7\u0339\2\2\u12ab\u12b3\7\u0333\2\2\u12ac"+
+		"\u12b3\7\u0335\2\2\u12ad\u12ae\7\u0335\2\2\u12ae\u12b3\7\u0333\2\2\u12af"+
+		"\u12b3\7\u0336\2\2\u12b0\u12b1\7\u0336\2\2\u12b1\u12b3\7\u0333\2\2\u12b2"+
 		"\u12a7\3\2\2\2\u12b2\u12a8\3\2\2\2\u12b2\u12aa\3\2\2\2\u12b2\u12ac\3\2"+
 		"\2\2\u12b2\u12ad\3\2\2\2\u12b2\u12af\3\2\2\2\u12b2\u12b0\3\2\2\2\u12b3"+
 		"\u12b4\3\2\2\2\u12b4\u12b5\t\30\2\2\u12b5\u12cc\3\2\2\2\u12b6\u12b8\7"+
 		"\u034a\2\2\u12b7\u12b6\3\2\2\2\u12b7\u12b8\3\2\2\2\u12b8\u12b9\3\2\2\2"+
 		"\u12b9\u12bb\t\35\2\2\u12ba\u12bc\7\u00de\2\2\u12bb\u12ba\3\2\2\2\u12bb"+
 		"\u12bc\3\2\2\2\u12bc\u12c8\3\2\2\2\u12bd\u12c9\7\u0333\2\2\u12be\u12bf"+
-		"\7\u0335\2\2\u12bf\u12c9\7\u0334\2\2\u12c0\u12c1\7\u0339\2\2\u12c1\u12c9"+
-		"\7\u0333\2\2\u12c2\u12c9\7\u0334\2\2\u12c3\u12c4\7\u0334\2\2\u12c4\u12c9"+
-		"\7\u0333\2\2\u12c5\u12c9\7\u0335\2\2\u12c6\u12c7\7\u0335\2\2\u12c7\u12c9"+
+		"\7\u0336\2\2\u12bf\u12c9\7\u0335\2\2\u12c0\u12c1\7\u0339\2\2\u12c1\u12c9"+
+		"\7\u0333\2\2\u12c2\u12c9\7\u0335\2\2\u12c3\u12c4\7\u0335\2\2\u12c4\u12c9"+
+		"\7\u0333\2\2\u12c5\u12c9\7\u0336\2\2\u12c6\u12c7\7\u0336\2\2\u12c7\u12c9"+
 		"\7\u0333\2\2\u12c8\u12bd\3\2\2\2\u12c8\u12be\3\2\2\2\u12c8\u12c0\3\2\2"+
 		"\2\u12c8\u12c2\3\2\2\2\u12c8\u12c3\3\2\2\2\u12c8\u12c5\3\2\2\2\u12c8\u12c6"+
 		"\3\2\2\2\u12c9\u12ca\3\2\2\2\u12ca\u12cc\t\30\2\2\u12cb\u12a1\3\2\2\2"+
@@ -98544,9 +98544,9 @@ public class MocaSqlParser extends Parser {
 		"\2\u2a78\u2a7b\7\u0323\2\2\u2a79\u2a7b\7\u0325\2\2\u2a7a\u2a77\3\2\2\2"+
 		"\u2a7a\u2a78\3\2\2\2\u2a7a\u2a79\3\2\2\2\u2a7b\u03f5\3\2\2\2\u2a7c\u2a7d"+
 		"\t\u0089\2\2\u2a7d\u03f7\3\2\2\2\u2a7e\u2a89\7\u0333\2\2\u2a7f\u2a89\7"+
-		"\u0335\2\2\u2a80\u2a89\7\u0334\2\2\u2a81\u2a89\7\u0337\2\2\u2a82\u2a89"+
-		"\7\u0336\2\2\u2a83\u2a89\7\u0338\2\2\u2a84\u2a85\7\u0339\2\2\u2a85\u2a89"+
-		"\7\u0334\2\2\u2a86\u2a87\7\u0339\2\2\u2a87\u2a89\7\u0335\2\2\u2a88\u2a7e"+
+		"\u0336\2\2\u2a80\u2a89\7\u0335\2\2\u2a81\u2a89\7\u0338\2\2\u2a82\u2a89"+
+		"\7\u0337\2\2\u2a83\u2a89\7\u0334\2\2\u2a84\u2a85\7\u0339\2\2\u2a85\u2a89"+
+		"\7\u0335\2\2\u2a86\u2a87\7\u0339\2\2\u2a87\u2a89\7\u0336\2\2\u2a88\u2a7e"+
 		"\3\2\2\2\u2a88\u2a7f\3\2\2\2\u2a88\u2a80\3\2\2\2\u2a88\u2a81\3\2\2\2\u2a88"+
 		"\u2a82\3\2\2\2\u2a88\u2a83\3\2\2\2\u2a88\u2a84\3\2\2\2\u2a88\u2a86\3\2"+
 		"\2\2\u2a89\u03f9\3\2\2\2\u2a8a\u2a8b\t\u008a\2\2\u2a8b\u03fb\3\2\2\2\u2a8c"+

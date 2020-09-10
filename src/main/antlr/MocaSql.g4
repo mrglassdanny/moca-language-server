@@ -5177,12 +5177,11 @@ FLOAT: DEC_DOT_DEC;
 REAL: (DECIMAL | DEC_DOT_DEC) ('E' [+-]? DEC_DIGIT+);
 
 EQUAL: '=';
-
+NOT_EQUAL: '!=' | '<>';
 GREATER: '>';
 LESS: '<';
 GREATER_EQUAL: '>=';
 LESS_EQUAL: '<=';
-NOT_EQUAL: '!=' | '<>';
 EXCLAMATION: '!';
 
 PLUS_ASSIGN: '+=';
