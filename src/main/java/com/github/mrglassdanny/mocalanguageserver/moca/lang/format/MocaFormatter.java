@@ -63,6 +63,13 @@ public class MocaFormatter {
         }
     }
 
+    // Since we have indents to think about when we add newlines, it will be easiest
+    // to have 1 function to manage adding newlines.
+    private static void addNewline(StringBuilder buf, StringBuilder a) {
+        buf.append('\n');
+        buf.append(a.toString());
+    }
+
     public static String formatStandard(List<? extends Token> tokens) {
 
         StringBuilder buf = new StringBuilder(2048);
@@ -114,20 +121,19 @@ public class MocaFormatter {
                 case MocaLexer.LEFT_BRACE:
 
                     if (prevToken == null || (prevToken != null && !addedNewline(prevToken))) {
-                        buf.append('\n');
-                        buf.append(indentBuf.toString());
+                        addNewline(buf, indentBuf);
                     }
                     indentBuf.append('\t');
 
                     buf.append(tokenText);
-                    buf.append('\n');
-                    buf.append(indentBuf.toString());
+
+                    addNewline(buf, indentBuf);
                     break;
                 case MocaLexer.RIGHT_BRACE:
                     indentBuf.deleteCharAt(indentBuf.length() - 1);
 
-                    buf.append('\n');
-                    buf.append(indentBuf.toString());
+                    addNewline(buf, indentBuf);
+
                     buf.append(tokenText);
                     break;
 
@@ -244,22 +250,18 @@ public class MocaFormatter {
 
                 case MocaLexer.SEMI_COLON:
                     buf.append(tokenText);
-                    buf.append('\n');
-                    buf.append(indentBuf.toString());
+                    addNewline(buf, indentBuf);
                     break;
                 case MocaLexer.PIPE:
-                    buf.append('\n');
-                    buf.append(indentBuf.toString());
+                    addNewline(buf, indentBuf);
                     buf.append(tokenText);
-                    buf.append('\n');
-                    buf.append(indentBuf.toString());
+                    addNewline(buf, indentBuf);
                     break;
 
                 case MocaLexer.AMPERSAND:
                     buf.append(' ');
                     buf.append(tokenText);
-                    buf.append('\n');
-                    buf.append(indentBuf.toString());
+                    addNewline(buf, indentBuf);
                     break;
 
                 case MocaLexer.DOUBLE_GREATER:
@@ -269,8 +271,7 @@ public class MocaFormatter {
                     break;
 
                 case MocaLexer.WHERE:
-                    buf.append('\n');
-                    buf.append(indentBuf.toString());
+                    addNewline(buf, indentBuf);
                     buf.append(' ');
                     buf.append(tokenText);
                     buf.append(' ');
@@ -283,8 +284,7 @@ public class MocaFormatter {
                         buf.append(tokenText);
                         buf.append(' ');
                     } else {
-                        buf.append('\n');
-                        buf.append(indentBuf.toString());
+                        addNewline(buf, indentBuf);
                         buf.append(' ');
                         buf.append(' ');
                         buf.append(' ');
@@ -306,8 +306,7 @@ public class MocaFormatter {
                 case MocaLexer.ELSE:
 
                     if (prevToken != null && prevToken.getType() == MocaLexer.RIGHT_BRACE) {
-                        buf.append('\n');
-                        buf.append(indentBuf.toString());
+                        addNewline(buf, indentBuf);
                     }
 
                     buf.append(tokenText);
@@ -344,14 +343,12 @@ public class MocaFormatter {
                     if (prevToken == null || (prevToken != null && addedNewline(prevToken))) {
                         buf.append(tokenText);
                     } else {
-                        buf.append('\n');
-                        buf.append(indentBuf.toString());
+                        addNewline(buf, indentBuf);
                         buf.append(tokenText);
                     }
 
                     if (nextToken != null && !addedNewline(nextToken)) {
-                        buf.append('\n');
-                        buf.append(indentBuf.toString());
+                        addNewline(buf, indentBuf);
                     }
 
                     break;
@@ -433,14 +430,14 @@ public class MocaFormatter {
                     }
 
                     buf.append(tokenText);
-                    buf.append('\n');
-                    buf.append(indentBuf.toString());
+
+                    addNewline(buf, indentBuf);
                     break;
                 case MocaLexer.RIGHT_BRACE:
                     indentBuf.deleteCharAt(indentBuf.length() - 1);
 
-                    buf.append('\n');
-                    buf.append(indentBuf.toString());
+                    addNewline(buf, indentBuf);
+
                     buf.append(tokenText);
                     break;
 
@@ -557,22 +554,18 @@ public class MocaFormatter {
 
                 case MocaLexer.SEMI_COLON:
                     buf.append(tokenText);
-                    buf.append('\n');
-                    buf.append(indentBuf.toString());
+                    addNewline(buf, indentBuf);
                     break;
                 case MocaLexer.PIPE:
-                    buf.append('\n');
-                    buf.append(indentBuf.toString());
+                    addNewline(buf, indentBuf);
                     buf.append(tokenText);
-                    buf.append('\n');
-                    buf.append(indentBuf.toString());
+                    addNewline(buf, indentBuf);
                     break;
 
                 case MocaLexer.AMPERSAND:
                     buf.append(' ');
                     buf.append(tokenText);
-                    buf.append('\n');
-                    buf.append(indentBuf.toString());
+                    addNewline(buf, indentBuf);
                     break;
 
                 case MocaLexer.DOUBLE_GREATER:
@@ -582,8 +575,7 @@ public class MocaFormatter {
                     break;
 
                 case MocaLexer.WHERE:
-                    buf.append('\n');
-                    buf.append(indentBuf.toString());
+                    addNewline(buf, indentBuf);
                     buf.append('\t');
                     buf.append(tokenText);
                     buf.append(' ');
@@ -596,8 +588,7 @@ public class MocaFormatter {
                         buf.append(tokenText);
                         buf.append(' ');
                     } else {
-                        buf.append('\n');
-                        buf.append(indentBuf.toString());
+                        addNewline(buf, indentBuf);
                         buf.append('\t');
                         buf.append(' ');
                         buf.append(' ');
@@ -652,14 +643,12 @@ public class MocaFormatter {
                     if (prevToken == null || (prevToken != null && addedNewline(prevToken))) {
                         buf.append(tokenText);
                     } else {
-                        buf.append('\n');
-                        buf.append(indentBuf.toString());
+                        addNewline(buf, indentBuf);
                         buf.append(tokenText);
                     }
 
                     if (nextToken != null && !addedNewline(nextToken)) {
-                        buf.append('\n');
-                        buf.append(indentBuf.toString());
+                        addNewline(buf, indentBuf);
                     }
 
                     break;
