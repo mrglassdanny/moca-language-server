@@ -248,32 +248,11 @@ public class MocaFormatter {
                     buf.append(indentBuf.toString());
                     break;
                 case MocaLexer.PIPE:
-                    // Adding some logic to handle the case where user is trying to type a
-                    // DOUBLE_PIPE. This is needed mainly during format on type.
-                    if (prevToken != null && prevToken.getType() == MocaLexer.PIPE) {
-
-                        int cnt = -1;
-                        for (int j = buf.length() - 1; j >= 0; j--) {
-                            char c = buf.charAt(j);
-                            if (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '|') {
-                                cnt++;
-                            } else {
-                                break;
-                            }
-                        }
-
-                        buf.delete(buf.length() - 1 - cnt, buf.length() - 1);
-
-                        buf.append(' ');
-                        buf.append(trimmedTokenText);
-                        buf.append(trimmedTokenText);
-                    } else {
-                        buf.append('\n');
-                        buf.append(indentBuf.toString());
-                        buf.append(trimmedTokenText);
-                        buf.append('\n');
-                        buf.append(indentBuf.toString());
-                    }
+                    buf.append('\n');
+                    buf.append(indentBuf.toString());
+                    buf.append(trimmedTokenText);
+                    buf.append('\n');
+                    buf.append(indentBuf.toString());
                     break;
 
                 case MocaLexer.AMPERSAND:
@@ -316,6 +295,11 @@ public class MocaFormatter {
                     break;
 
                 case MocaLexer.IF:
+
+                    if (prevToken != null && prevToken.getType() == MocaLexer.ELSE) {
+                        buf.append(' ');
+                    }
+
                     buf.append(trimmedTokenText);
                     buf.append(' ');
                     break;
@@ -577,33 +561,11 @@ public class MocaFormatter {
                     buf.append(indentBuf.toString());
                     break;
                 case MocaLexer.PIPE:
-                    // Adding some logic to handle the case where user is trying to type a
-                    // DOUBLE_PIPE. This is needed mainly during format on type.
-                    if (prevToken != null && prevToken.getType() == MocaLexer.PIPE) {
-
-                        int cnt = -1;
-                        for (int j = buf.length() - 1; j >= 0; j--) {
-                            char c = buf.charAt(j);
-                            if (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '|') {
-                                cnt++;
-                            } else {
-                                break;
-                            }
-                        }
-
-                        buf.delete(buf.length() - 1 - cnt, buf.length() - 1);
-
-                        buf.append(' ');
-                        buf.append(trimmedTokenText);
-                        buf.append(trimmedTokenText);
-                    } else {
-                        buf.append('\n');
-                        buf.append(indentBuf.toString());
-                        buf.append(trimmedTokenText);
-                        buf.append('\n');
-                        buf.append(indentBuf.toString());
-                    }
-
+                    buf.append('\n');
+                    buf.append(indentBuf.toString());
+                    buf.append(trimmedTokenText);
+                    buf.append('\n');
+                    buf.append(indentBuf.toString());
                     break;
 
                 case MocaLexer.AMPERSAND:
