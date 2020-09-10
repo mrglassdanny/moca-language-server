@@ -1,90 +1,359 @@
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.format;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import org.antlr.v4.runtime.Token;
 
-import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
+import java.util.List;
+
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.format.MocaSqlFormatter;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
 
 public class MocaFormatter {
 
-    private static String FORMATTING_TRAINING_DIR_FRAGMENT = "\\formatting\\training\\moca\\";
+    private static boolean isWord(Token token) {
 
-    private static org.antlr.codebuff.misc.LangDescriptor mocaLangDescriptor = null;
-    private static org.antlr.codebuff.Corpus mocaCorpus = null;
-
-    public static void configureAndTrain(String corpusDirName) throws Exception {
-        mocaLangDescriptor = new org.antlr.codebuff.misc.LangDescriptor("Moca",
-                MocaLanguageServer.globalStoragePath + FORMATTING_TRAINING_DIR_FRAGMENT + corpusDirName, ".*\\.moca",
-                MocaLexer.class, MocaParser.class, "moca_script", 2, MocaLexer.BLOCK_COMMENT);
-
-        mocaCorpus = org.antlr.codebuff.Tool.trainCorpusForMocaLanguageServer(mocaLangDescriptor);
+        switch (token.getType()) {
+            case MocaLexer.WORD:
+            case MocaLexer.OVERSTACKED_ARGS:
+            case MocaLexer.SPECIAL_COMMAND_ARG_NO_ROWS:
+            case MocaLexer.SPECIAL_COMMAND_ARG_DUMMY_ARG:
+            case MocaLexer.ONSTACK:
+            case MocaLexer.KEEP:
+            case MocaLexer.NUMERIC_LITERAL:
+            case MocaLexer.STRING_LITERAL:
+            case MocaLexer.LIKE:
+            case MocaLexer.IS:
+            case MocaLexer.NOT:
+            case MocaLexer.NULL:
+                return true;
+            default:
+                return false;
+        }
     }
 
-    public static String format(String src) {
-
-        String dst = null;
-        try {
-            dst = org.antlr.codebuff.Tool.formatForMocaLanguageServer(MocaFormatter.mocaLangDescriptor, src,
-                    MocaFormatter.mocaCorpus);
-        } catch (Exception e) {
+    private static boolean isOperator(Token token) {
+        switch (token.getType()) {
+            case MocaLexer.EQUAL:
+            case MocaLexer.NOT_EQUAL:
+            case MocaLexer.LESS:
+            case MocaLexer.GREATER:
+            case MocaLexer.LESS_EQUAL:
+            case MocaLexer.GREATER_EQUAL:
+            case MocaLexer.PLUS:
+            case MocaLexer.MINUS:
+            case MocaLexer.STAR:
+            case MocaLexer.DIV:
+            case MocaLexer.MOD:
+                return true;
+            default:
+                return false;
         }
-
-        return dst;
     }
 
-    public static void createDefaults() throws IOException {
-
-        // Main default:
-        {
-            final String defaultPath = MocaLanguageServer.globalStoragePath + FORMATTING_TRAINING_DIR_FRAGMENT
-                    + "\\default";
-
-            Files.createDirectories(Paths.get(defaultPath));
-
-            String example1 = "example moca command\n" + " where var_a = 'string'\n" + "   and var_b = @var\n"
-                    + "   and var_c = @@env_var\n" + "   and var_d = @var:date\n" + "   and var_e = @var#onstack\n"
-                    + "   and @+var\n" + "   and @%var\n" + "   and @*\n" + "|\n" + "another example command\n"
-                    + " where var_a = nvl(@func, @@func)\n" + "   and var_b = 'string again';\n"
-                    + "another example command\n" + " where var_a = 'adfadsf'\n" + "   and var_b = @@abc &\n"
-                    + "so many commands >> res;\n" + "test abc catch(510, -1403, @?)\n" + "|\n"
-                    + "say hello to my little friend\n" + " where friend = 'machine gun' catch(@?)\n" + "|\n"
-                    + "if (@? = 0)\n" + "{\n" + "    publish data\n" + "     where status = @?\n"
-                    + "       and msg = @! >> res\n" + "    |\n"
-                    + "    if (@a = @b and @c = @b or @something = 'something')\n" + "    {\n" + "        do stuff\n"
-                    + "         where a = @abc\n" + "           and b = @def\n"
-                    + "           and foo = nvl('', '') >> res\n" + "    }\n" + "    else\n" + "    {\n"
-                    + "        more stuff here\n" + "         where a = rowcount(@abc)\n"
-                    + "           and b = 'asldkfjasldkjfsalkd' &\n" + "        hello world >> res;\n" + "        {\n"
-                    + "            {\n" + "                {\n" + "                    here are some nested brackets\n"
-                    + "                     where foo = 'foo'\n" + "                       and bar = @bar\n"
-                    + "                       and @+database.qualifier\n" + "                       and @*\n"
-                    + "                }\n" + "            }\n" + "        }\n" + "    }\n" + "}\n" + "|\n" + "try\n"
-                    + "{\n" + "    publish data\n" + "     where a = 'here is a try'\n" + "} catch(1)\n" + "{\n"
-                    + "    publish data\n" + "     where a = 'here is a catch'\n" + "} catch(-2)\n" + "{\n"
-                    + "    publish data\n" + "     where a = 'here is another catch'\n" + "}\n" + "finally\n" + "{\n"
-                    + "    publish data\n" + "     where a = 'here is a finally'\n" + "};\n" + "hello;\n" + "world;\n"
-                    + "hello &\n" + "world;\n" + "hello\n" + "|\n" + "world\n" + "|\n" + "hello\n" + "|\n" + "{\n"
-                    + "    {\n" + "        {\n" + "            {\n" + "                {\n"
-                    + "                    world\n" + "                    |\n" + "                    world\n"
-                    + "                    |\n" + "                    world\n" + "                     where w = ''\n"
-                    + "                       and w = @asdflkj\n"
-                    + "                       and w = nvl(@sadflkj, @@sdzaflkj)\n" + "                       and @*\n"
-                    + "                }\n" + "            }\n" + "        }\n" + "    }\n" + "};\n"
-                    + "if (@abc = 111 or @def = @asdlkfj or @asdf = 'asdfsd') do something good\n"
-                    + "else do something bad\n" + "|\n" + "if (@? = 0)\n" + "{\n" + "    blah blah\n"
-                    + "     where blah = @blah\n" + "       and blah = @blah\n" + "       and blah = @blah\n"
-                    + "       and blah = @blah\n" + "}\n" + "else if (@? != 0)\n" + "{\n" + "    blah blah\n"
-                    + "     where blah = @blah\n" + "       and blah = @blah\n" + "       and blah = @blah\n"
-                    + "       and blah = @blah\n" + "}\n" + "else\n" + "{\n" + "    blah blah\n"
-                    + "     where blah = @blah\n" + "       and blah = @blah\n" + "       and blah = @blah\n"
-                    + "       and blah = @blah\n" + "}";
-            ;
-
-            Files.write(Paths.get(defaultPath + "\\example1.moca"), example1.getBytes());
+    private static boolean addedNewline(Token token) {
+        switch (token.getType()) {
+            case MocaLexer.SEMI_COLON:
+            case MocaLexer.PIPE:
+            case MocaLexer.AMPERSAND:
+            case MocaLexer.LEFT_BRACE:
+            case MocaLexer.RIGHT_BRACE:
+            case MocaLexer.WHERE:
+            case MocaLexer.AND:
+                return true;
+            default:
+                return false;
         }
+    }
+
+    private static void addNewline(StringBuilder buf, StringBuilder a) {
+        buf.append('\n');
+        buf.append(a.toString());
+    }
+
+    public static String format(MocaCompiler mocaCompiler) {
+
+        List<? extends Token> tokens = mocaCompiler.mocaTokens;
+
+        StringBuilder buf = new StringBuilder(2048);
+
+        StringBuilder indentBuf = new StringBuilder();
+        int parenCounter = 0;
+        Token token, prevToken = null, nextToken = null;
+
+        for (int i = 0; i < tokens.size(); i++) {
+            if (tokens.get(i).getType() == MocaLexer.WHITESPACE || tokens.get(i).getType() == MocaLexer.NEWLINE) {
+                tokens.remove(i--);
+            }
+        }
+
+        for (int i = 0; i < tokens.size(); i++) {
+
+            token = tokens.get(i);
+
+            if (i > 0) {
+                prevToken = tokens.get(i - 1);
+            }
+
+            if (i < tokens.size() - 1) {
+                nextToken = tokens.get(i + 1);
+            }
+
+            String tokenText = token.getText();
+
+            switch (token.getType()) {
+
+                case MocaLexer.DOUBLE_BRACKET_STRING:
+                    buf.append(tokenText);
+                    break;
+                case MocaLexer.SINGLE_BRACKET_STRING:
+
+                    if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(tokenText)) {
+
+                        MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
+                                .get(0);
+                        String formattedMocaSqlScript = formatMocaSql(mocaSqlCompilationResult.mocaSqlTokens,
+                                indentBuf);
+                        if (formattedMocaSqlScript == null) {
+                            buf.append(tokenText);
+                        } else {
+                            buf.append(formattedMocaSqlScript);
+                        }
+                    } else {
+                        buf.append(tokenText);
+                    }
+
+                    break;
+
+                case MocaLexer.LEFT_PAREN:
+                    buf.append(tokenText);
+                    parenCounter++;
+                    break;
+                case MocaLexer.RIGHT_PAREN:
+                    parenCounter--;
+                    buf.append(tokenText);
+                    break;
+
+                case MocaLexer.LEFT_BRACE:
+
+                    if (prevToken == null || (prevToken != null && !addedNewline(prevToken))) {
+                        addNewline(buf, indentBuf);
+                    }
+                    indentBuf.append('\t');
+
+                    buf.append(tokenText);
+
+                    addNewline(buf, indentBuf);
+                    break;
+                case MocaLexer.RIGHT_BRACE:
+                    indentBuf.deleteCharAt(indentBuf.length() - 1);
+
+                    addNewline(buf, indentBuf);
+
+                    buf.append(tokenText);
+                    break;
+
+                case MocaLexer.EQUAL:
+                case MocaLexer.NOT_EQUAL:
+                case MocaLexer.LESS:
+                case MocaLexer.GREATER:
+                case MocaLexer.LESS_EQUAL:
+                case MocaLexer.GREATER_EQUAL:
+                    buf.append(' ');
+                    buf.append(tokenText);
+                    buf.append(' ');
+                    break;
+
+                case MocaLexer.DIV:
+                    buf.append(' ');
+                    buf.append(tokenText);
+                    buf.append(' ');
+                    break;
+
+                case MocaLexer.STAR:
+                case MocaLexer.MOD:
+                case MocaLexer.PLUS:
+                    if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
+                        buf.append(tokenText);
+                    } else {
+                        buf.append(' ');
+                        buf.append(tokenText);
+                        buf.append(' ');
+                    }
+
+                    break;
+
+                case MocaLexer.MINUS:
+
+                    if (nextToken != null && isWord(nextToken)) {
+                        if (prevToken != null
+                                && (isOperator(prevToken) || prevToken.getType() == MocaLexer.LEFT_PAREN)) {
+                            buf.append(tokenText);
+                        } else {
+                            buf.append(' ');
+                            buf.append(tokenText);
+                        }
+                    } else if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
+                        buf.append(tokenText);
+                    } else {
+                        buf.append(' ');
+                        buf.append(tokenText);
+                        buf.append(' ');
+                    }
+
+                    break;
+
+                case MocaLexer.COMMA:
+                    buf.append(tokenText);
+                    buf.append(' ');
+                    break;
+
+                case MocaLexer.DOUBLE_PIPE:
+                    buf.append(' ');
+                    buf.append(tokenText);
+                    buf.append(' ');
+                    break;
+
+                case MocaLexer.SEMI_COLON:
+                    buf.append(tokenText);
+                    addNewline(buf, indentBuf);
+                    break;
+                case MocaLexer.PIPE:
+                    addNewline(buf, indentBuf);
+                    buf.append(tokenText);
+                    addNewline(buf, indentBuf);
+                    break;
+
+                case MocaLexer.AMPERSAND:
+                    buf.append(' ');
+                    buf.append(tokenText);
+                    addNewline(buf, indentBuf);
+                    break;
+
+                case MocaLexer.DOUBLE_GREATER:
+                    buf.append(' ');
+                    buf.append(tokenText);
+                    buf.append(' ');
+                    break;
+
+                case MocaLexer.WHERE:
+                    addNewline(buf, indentBuf);
+                    buf.append(' ');
+                    buf.append(tokenText);
+                    buf.append(' ');
+
+                    break;
+                case MocaLexer.AND:
+
+                    if (parenCounter > 0) {
+                        buf.append(' ');
+                        buf.append(tokenText);
+                        buf.append(' ');
+                    } else {
+                        addNewline(buf, indentBuf);
+                        buf.append(' ');
+                        buf.append(' ');
+                        buf.append(' ');
+                        buf.append(tokenText);
+                        buf.append(' ');
+                    }
+
+                    break;
+
+                case MocaLexer.IF:
+
+                    if (prevToken != null && prevToken.getType() == MocaLexer.ELSE) {
+                        buf.append(' ');
+                    }
+
+                    buf.append(tokenText);
+                    buf.append(' ');
+                    break;
+                case MocaLexer.ELSE:
+
+                    if (prevToken != null && prevToken.getType() == MocaLexer.RIGHT_BRACE) {
+                        addNewline(buf, indentBuf);
+                    }
+
+                    buf.append(tokenText);
+                    break;
+
+                case MocaLexer.OR:
+                    buf.append(' ');
+                    buf.append(tokenText);
+                    buf.append(' ');
+                    break;
+
+                case MocaLexer.TRY:
+                    buf.append(tokenText);
+                    buf.append(' ');
+                    break;
+                case MocaLexer.CATCH:
+                    buf.append(' ');
+                    buf.append(tokenText);
+                    break;
+                case MocaLexer.FINALLY:
+                    buf.append(' ');
+                    buf.append(tokenText);
+                    buf.append(' ');
+                    break;
+
+                case MocaLexer.REMOTE:
+                case MocaLexer.PARALLEL:
+                case MocaLexer.INPARALLEL:
+                    buf.append(tokenText);
+                    break;
+
+                case MocaLexer.BLOCK_COMMENT:
+
+                    if (prevToken == null || (prevToken != null && addedNewline(prevToken))) {
+                        buf.append(tokenText);
+                    } else {
+                        addNewline(buf, indentBuf);
+                        buf.append(tokenText);
+                    }
+
+                    if (nextToken != null && !addedNewline(nextToken)) {
+                        addNewline(buf, indentBuf);
+                    }
+
+                    break;
+
+                default:
+
+                    if (isWord(token)) {
+
+                        if (prevToken != null && isWord(prevToken)) {
+                            buf.append(' ');
+                        }
+
+                        buf.append(tokenText);
+
+                    } else {
+                        buf.append(tokenText);
+                    }
+
+                    break;
+            }
+        }
+
+        return buf.toString();
+    }
+
+    private static String formatMocaSql(List<? extends Token> tokens, final StringBuilder mocaIndentBufState) {
+
+        String formattedMocaSqlScript = MocaSqlFormatter.format(tokens);
+
+        if (formattedMocaSqlScript != null) {
+            // Make copy so we can add to it.
+            StringBuilder mocaIndentBufStateClone = new StringBuilder(mocaIndentBufState);
+            mocaIndentBufStateClone.append(' ');
+            formattedMocaSqlScript = formattedMocaSqlScript.replace("\n", "\n" + mocaIndentBufStateClone.toString());
+
+        }
+
+        return String.format("[%s]", formattedMocaSqlScript);
 
     }
 }

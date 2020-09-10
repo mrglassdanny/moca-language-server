@@ -10,19 +10,15 @@ import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaCon
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaLanguageServerActivateRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaResultsRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaTraceRequest;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.request.TrainFormattersRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.LoadCacheResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaCommandLookupResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaConnectionResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaLanguageServerActivateResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaResultsResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaTraceResponse;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.response.TrainFormattersResponse;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.format.MocaFormatter;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.format.MocaSqlFormatter;
 
 import org.eclipse.lsp4j.ExecuteCommandParams;
 import org.eclipse.lsp4j.MessageParams;
@@ -66,15 +62,6 @@ public class ExecuteCommandProvider {
                     MocaLanguageServerActivateRequest mocaLanguageServerActivateRequest = new MocaLanguageServerActivateRequest(
                             args);
                     MocaLanguageServer.globalStoragePath = mocaLanguageServerActivateRequest.globalStoragePath;
-
-                    // Now that we have a global storage path, lets take this opportunity to do a
-                    // couple of things:
-                    // Make sure format training defaults exist.
-                    MocaFormatter.createDefaults();
-                    MocaSqlFormatter.createDefaults();
-                    // Train our formatters.
-                    MocaFormatter.configureAndTrain(mocaLanguageServerActivateRequest.formatTrainingMocaDirName);
-                    MocaSqlFormatter.configureAndTrain(mocaLanguageServerActivateRequest.formatTrainingMocaSqlDirName);
 
                     return CompletableFuture.completedFuture(new Object());
                 } catch (Exception exception) {
@@ -283,24 +270,7 @@ public class ExecuteCommandProvider {
                     return CompletableFuture
                             .completedFuture(new MocaCommandLookupResponse(null, null, null, exception));
                 }
-            case TRAIN_FORMATTERS:
-                try {
 
-                    List<Object> args = params.getArguments();
-                    if (args == null) {
-                        return CompletableFuture.completedFuture(new Object());
-                    }
-
-                    TrainFormattersRequest trainFormattersRequest = new TrainFormattersRequest(args);
-
-                    MocaFormatter.configureAndTrain(trainFormattersRequest.mocaDirName);
-                    MocaSqlFormatter.configureAndTrain(trainFormattersRequest.mocaSqlDirName);
-
-                    return CompletableFuture.completedFuture(new Object());
-                } catch (Exception exception) {
-                    TrainFormattersResponse trainFormattersResponse = new TrainFormattersResponse(exception);
-                    return CompletableFuture.completedFuture(trainFormattersResponse);
-                }
             default:
                 break;
 

@@ -3146,7 +3146,7 @@ moca_environment_variable: MOCA_ENVIRONMENT_VARIABLE; // @@variable
 moca_at_minus_variable: MOCA_AT_MINUS_VARIABLE; // @-variable
 moca_at_plus_variable: MOCA_AT_PLUS_VARIABLE; // @+variable
 moca_at_mod_variable: MOCA_AT_MOD_VARIABLE; // @%variable
-moca_at_star: AT STAR; // @*
+moca_at_star: MOCA_AT_STAR; // @*
 
 moca_at_keep_directives:
 	moca_at_keep_directive
@@ -4306,22 +4306,21 @@ simple_id:
 // https://msdn.microsoft.com/en-us/library/ms188074.aspx Spaces are allowed for comparison
 // operators.
 comparison_operator:
-	'='
-	| '>'
-	| '<'
-	| '<' '='
-	| '>' '='
-	| '<' '>'
-	| '!' '='
+	EQUAL
+	| LESS
+	| GREATER
+	| LESS_EQUAL
+	| GREATER_EQUAL
+	| NOT_EQUAL
 	| '!' '>'
 	| '!' '<';
 
 assignment_operator:
-	'+='
-	| '-='
-	| '*='
-	| '/='
-	| '%='
+	PLUS_ASSIGN
+	| MINUS_ASSIGN
+	| MULT_ASSIGN
+	| DIV_ASSIGN
+	| MOD_ASSIGN
 	| '&='
 	| '^='
 	| '|=';
@@ -5161,6 +5160,7 @@ MOCA_ENVIRONMENT_VARIABLE: AT AT [a-zA-Z_0-9]+;
 MOCA_AT_MINUS_VARIABLE:AT MINUS [a-zA-Z_0-9]+;
 MOCA_AT_PLUS_VARIABLE: AT PLUS [a-zA-Z_0-9]+;
 MOCA_AT_MOD_VARIABLE: AT MODULE [a-zA-Z_0-9]+;
+MOCA_AT_STAR: AT STAR;
 
 
 DECIMAL: DEC_DIGIT+;
@@ -5178,9 +5178,11 @@ FLOAT: DEC_DOT_DEC;
 REAL: (DECIMAL | DEC_DOT_DEC) ('E' [+-]? DEC_DIGIT+);
 
 EQUAL: '=';
-
+NOT_EQUAL: '!=' | '<>';
 GREATER: '>';
 LESS: '<';
+GREATER_EQUAL: '>=';
+LESS_EQUAL: '<=';
 EXCLAMATION: '!';
 
 PLUS_ASSIGN: '+=';

@@ -24,12 +24,25 @@ public class DocumentOnTypeFormattingProvider {
                         return CompletableFuture.completedFuture(new ArrayList<>());
                 }
 
-                // If we are typing new line whitespace, do not attempt to format.
+                // If we are typing new line whitespace, do not attempt to format. We are doing
+                // this for user experience during editting.
                 if (params.getCh().contains("\n")) {
                         return CompletableFuture.completedFuture(new ArrayList<>());
                 } else {
-                        return CompletableFuture.completedFuture(DocumentFormattingProvider
-                                        .processDocumentFormatting(textDocumentContents, mocaCompiler));
+
+                        // Also check for certain moca/mocasql characters that we do not want to attempt
+                        // formatting on at the moment. Reason being is that the formatting result may
+                        // not be what the user wants at that moment. Good example is in moca where the
+                        // user is typing DOUBLE_PIPE. Normally, the PIPE will add newlines -- this
+                        // would be annoying to the user if their goal is to type a DOUBLE_PIPE token.
+                        // For characters like this, formatting can wait until the next character is
+                        // typed!
+                        if (params.getCh().contains("|")) {
+                                return CompletableFuture.completedFuture(new ArrayList<>());
+                        } else {
+                                return CompletableFuture.completedFuture(DocumentFormattingProvider
+                                                .processDocumentFormatting(textDocumentContents, mocaCompiler));
+                        }
                 }
         }
 
