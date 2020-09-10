@@ -70,10 +70,8 @@ public class ExecuteCommandProvider {
                     // Now that we have a global storage path, lets take this opportunity to do a
                     // couple of things:
                     // Make sure format training defaults exist.
-                    MocaFormatter.createDefaults();
                     MocaSqlFormatter.createDefaults();
                     // Train our formatters.
-                    MocaFormatter.configureAndTrain(mocaLanguageServerActivateRequest.formatTrainingMocaDirName);
                     MocaSqlFormatter.configureAndTrain(mocaLanguageServerActivateRequest.formatTrainingMocaSqlDirName);
 
                     return CompletableFuture.completedFuture(new Object());
@@ -293,7 +291,6 @@ public class ExecuteCommandProvider {
 
                     TrainFormattersRequest trainFormattersRequest = new TrainFormattersRequest(args);
 
-                    MocaFormatter.configureAndTrain(trainFormattersRequest.mocaDirName);
                     MocaSqlFormatter.configureAndTrain(trainFormattersRequest.mocaSqlDirName);
 
                     return CompletableFuture.completedFuture(new Object());
