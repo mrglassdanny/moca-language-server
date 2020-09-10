@@ -75,7 +75,6 @@ public class MocaFormatter {
         StringBuilder buf = new StringBuilder(2048);
 
         StringBuilder indentBuf = new StringBuilder();
-
         int parenCounter = 0;
 
         // Get rid of whitespace/newline tokens before we do anything.
@@ -380,7 +379,6 @@ public class MocaFormatter {
         StringBuilder buf = new StringBuilder(2048);
 
         StringBuilder indentBuf = new StringBuilder();
-
         int parenCounter = 0;
 
         // Get rid of whitespace/newline tokens before we do anything.

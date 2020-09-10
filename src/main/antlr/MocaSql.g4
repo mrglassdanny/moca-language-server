@@ -4306,22 +4306,21 @@ simple_id:
 // https://msdn.microsoft.com/en-us/library/ms188074.aspx Spaces are allowed for comparison
 // operators.
 comparison_operator:
-	'='
-	| '>'
-	| '<'
-	| '<' '='
-	| '>' '='
-	| '<' '>'
-	| '!' '='
+	EQUAL
+	| LESS
+	| GREATER
+	| LESS_EQUAL
+	| GREATER_EQUAL
+	| NOT_EQUAL
 	| '!' '>'
 	| '!' '<';
 
 assignment_operator:
-	'+='
-	| '-='
-	| '*='
-	| '/='
-	| '%='
+	PLUS_ASSIGN
+	| MINUS_ASSIGN
+	| MULT_ASSIGN
+	| DIV_ASSIGN
+	| MOD_ASSIGN
 	| '&='
 	| '^='
 	| '|=';
@@ -5181,6 +5180,9 @@ EQUAL: '=';
 
 GREATER: '>';
 LESS: '<';
+GREATER_EQUAL: '>=';
+LESS_EQUAL: '<=';
+NOT_EQUAL: '!=' | '<>';
 EXCLAMATION: '!';
 
 PLUS_ASSIGN: '+=';
