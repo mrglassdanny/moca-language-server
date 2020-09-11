@@ -65,6 +65,42 @@ public class MocaSqlFormatter {
         }
     }
 
+    private static boolean tokenWillAddNewline(Token token) {
+        switch (token.getType()) {
+            case MocaSqlLexer.COMMA:
+            case MocaSqlLexer.FROM:
+            case MocaSqlLexer.WHERE:
+            case MocaSqlLexer.AND:
+            case MocaSqlLexer.OR:
+            case MocaSqlLexer.INNER:
+            case MocaSqlLexer.RIGHT:
+            case MocaSqlLexer.OUTER:
+            case MocaSqlLexer.CROSS:
+            case MocaSqlLexer.JOIN:
+            case MocaSqlLexer.LEFT:
+            case MocaSqlLexer.ON:
+            case MocaSqlLexer.GROUP:
+            case MocaSqlLexer.ORDER:
+            case MocaSqlLexer.HAVING:
+            case MocaSqlLexer.UNION:
+            case MocaSqlLexer.ALL:
+            case MocaSqlLexer.SET:
+            case MocaSqlLexer.INTO:
+            case MocaSqlLexer.VALUES:
+            case MocaSqlLexer.TABLE:
+            case MocaSqlLexer.ADD:
+            case MocaSqlLexer.DROP:
+            case MocaSqlLexer.ALTER:
+            case MocaSqlLexer.MODIFY:
+            case MocaSqlLexer.WHEN:
+            case MocaSqlLexer.END:
+            case MocaSqlLexer.COMMENT:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     public static String format(List<? extends Token> tokens) {
 
         StringBuilder buf = new StringBuilder(2048);
@@ -78,12 +114,15 @@ public class MocaSqlFormatter {
 
         queryStack.push(new Query(parenCounter));
 
+        // Get rid of whitespace before we process formatting.
         for (int i = 0; i < tokens.size(); i++) {
             if (tokens.get(i).getType() == MocaSqlLexer.SPACE) {
                 tokens.remove(i--);
             }
         }
 
+        // Whitespace and comments dealt with; process formatting.
+        // Code is pretty self-explanatory -- just look at each condition for specifics.
         for (int i = 0; i < tokens.size(); i++) {
 
             token = tokens.get(i);
@@ -580,6 +619,41 @@ public class MocaSqlFormatter {
                     buf.append(tokenText);
 
                     inCaseWhen = false;
+                    break;
+
+                case MocaSqlLexer.COMMENT:
+
+                    if (prevToken == null || (prevToken != null && tokenWillAddNewline(prevToken))) {
+                        if (prevToken != null && isWord(prevToken)) {
+                            buf.append(' ');
+                        }
+                        // Reason for replacement in token text here is due to the MocaFormatter indent
+                        // buffer. When injecting formatted mocasql code into [...], we need to take
+                        // moca indent buffer into account so that the mocasql can fit into the moca
+                        // script correctly. Since we do not worry about formatting internal text of a
+                        // comment, we need to make sure that the indent buffer does not continue
+                        // pushing comment internal text out further and further. This seems weird, but
+                        // it works -- this is the only place in mocasql formatting that we do something
+                        // like this.
+                        buf.append(tokenText.replace("\n ", "\n"));
+                    } else {
+                        addNewline(buf, queryStack);
+                        buf.append(tokenText);
+                    }
+
+                    if (nextToken != null && !tokenWillAddNewline(nextToken)) {
+                        addNewline(buf, queryStack);
+                    }
+                    break;
+                case MocaSqlLexer.LINE_COMMENT:
+                    if (prevToken != null && isWord(prevToken)) {
+                        buf.append(' ');
+                    }
+                    buf.append(tokenText);
+
+                    if (nextToken != null && !tokenWillAddNewline(nextToken)) {
+                        addNewline(buf, queryStack);
+                    }
                     break;
 
                 default:

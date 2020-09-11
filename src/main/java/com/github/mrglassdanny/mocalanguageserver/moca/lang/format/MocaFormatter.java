@@ -52,7 +52,7 @@ public class MocaFormatter {
         }
     }
 
-    private static boolean addedNewline(Token token) {
+    private static boolean tokenWillAddNewline(Token token) {
         switch (token.getType()) {
             case MocaLexer.SEMI_COLON:
             case MocaLexer.PIPE:
@@ -82,12 +82,15 @@ public class MocaFormatter {
         int parenCounter = 0;
         Token token, prevToken = null, nextToken = null;
 
+        // Get rid of whitespace before we process formatting.
         for (int i = 0; i < tokens.size(); i++) {
             if (tokens.get(i).getType() == MocaLexer.WHITESPACE || tokens.get(i).getType() == MocaLexer.NEWLINE) {
                 tokens.remove(i--);
             }
         }
 
+        // Whitespace and comments dealt with; process formatting.
+        // Code is pretty self-explanatory -- just look at each condition for specifics.
         for (int i = 0; i < tokens.size(); i++) {
 
             token = tokens.get(i);
@@ -137,7 +140,7 @@ public class MocaFormatter {
 
                 case MocaLexer.LEFT_BRACE:
 
-                    if (prevToken == null || (prevToken != null && !addedNewline(prevToken))) {
+                    if (prevToken == null || (prevToken != null && !tokenWillAddNewline(prevToken))) {
                         addNewline(buf, indentBuf);
                     }
                     indentBuf.append('\t');
@@ -307,14 +310,14 @@ public class MocaFormatter {
 
                 case MocaLexer.BLOCK_COMMENT:
 
-                    if (prevToken == null || (prevToken != null && addedNewline(prevToken))) {
+                    if (prevToken == null || (prevToken != null && tokenWillAddNewline(prevToken))) {
                         buf.append(tokenText);
                     } else {
                         addNewline(buf, indentBuf);
                         buf.append(tokenText);
                     }
 
-                    if (nextToken != null && !addedNewline(nextToken)) {
+                    if (nextToken != null && !tokenWillAddNewline(nextToken)) {
                         addNewline(buf, indentBuf);
                     }
 
