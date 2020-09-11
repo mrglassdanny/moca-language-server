@@ -20,9 +20,8 @@ public class DocumentFormattingProvider {
                         DocumentFormattingParams params, String textDocumentContents, MocaCompiler mocaCompiler) {
 
                 // Check to see if file extension is marked as read only. If so, do not attempt
-                // to format.
-                // This will be the case for any files created by command lookup functionality
-                // in the client.
+                // to format. This will be the case for any files created by command lookup
+                // functionality in the client.
                 String uriStr = params.getTextDocument().getUri();
                 String uriExtStr = uriStr.substring(uriStr.lastIndexOf("."));
                 if (uriExtStr.compareToIgnoreCase(".readonly") == 0) {
@@ -39,9 +38,8 @@ public class DocumentFormattingProvider {
                         DocumentRangeFormattingParams params, String textDocumentContents, MocaCompiler mocaCompiler) {
 
                 // Check to see if file extension is marked as read only. If so, do not attempt
-                // to format.
-                // This will be the case for any files created by command lookup functionality
-                // in the client.
+                // to format. This will be the case for any files created by command lookup
+                // functionality in the client.
                 String uriStr = params.getTextDocument().getUri();
                 String uriExtStr = uriStr.substring(uriStr.lastIndexOf("."));
                 if (uriExtStr.compareToIgnoreCase(".readonly") == 0) {

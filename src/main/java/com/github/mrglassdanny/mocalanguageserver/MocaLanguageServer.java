@@ -78,17 +78,11 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
         serverCapabilities.setDocumentFormattingProvider(true);
         serverCapabilities.setDocumentRangeFormattingProvider(true);
         DocumentOnTypeFormattingOptions documentOnTypeFormattingProvider = new DocumentOnTypeFormattingOptions();
-        documentOnTypeFormattingProvider.setFirstTriggerCharacter("|");
+        documentOnTypeFormattingProvider.setFirstTriggerCharacter(".");
         List<String> additionalOnTypeFormattingTriggerChars = new ArrayList<>();
         {
-            additionalOnTypeFormattingTriggerChars.add(".");
             additionalOnTypeFormattingTriggerChars.add(";");
-            additionalOnTypeFormattingTriggerChars.add(",");
-            additionalOnTypeFormattingTriggerChars.add("\n");
-            additionalOnTypeFormattingTriggerChars.add("\t");
             additionalOnTypeFormattingTriggerChars.add("&");
-            additionalOnTypeFormattingTriggerChars.add("{");
-            additionalOnTypeFormattingTriggerChars.add("}");
             additionalOnTypeFormattingTriggerChars.add("(");
             additionalOnTypeFormattingTriggerChars.add(")");
             additionalOnTypeFormattingTriggerChars.add("a");
@@ -153,6 +147,7 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
             additionalOnTypeFormattingTriggerChars.add("7");
             additionalOnTypeFormattingTriggerChars.add("8");
             additionalOnTypeFormattingTriggerChars.add("9");
+            additionalOnTypeFormattingTriggerChars.add("@");
         }
         documentOnTypeFormattingProvider.setMoreTriggerCharacter(additionalOnTypeFormattingTriggerChars);
         serverCapabilities.setDocumentOnTypeFormattingProvider(documentOnTypeFormattingProvider);
