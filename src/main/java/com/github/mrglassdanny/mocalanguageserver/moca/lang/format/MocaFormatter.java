@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.Token;
 
 import java.util.List;
 
+import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
@@ -89,6 +90,9 @@ public class MocaFormatter {
             }
         }
 
+        int mocasqlCompilationResultsVisited = 0;
+        int groovyCompilationResultsVisited = 0;
+
         // Whitespace and comments dealt with; process formatting.
         // Code is pretty self-explanatory -- just look at each condition for specifics.
         for (int i = 0; i < tokens.size(); i++) {
@@ -108,21 +112,42 @@ public class MocaFormatter {
             switch (token.getType()) {
 
                 case MocaLexer.DOUBLE_BRACKET_STRING:
-                    buf.append(tokenText);
+
+                    // Make sure moca language server options allow us to format.
+                    if (MocaLanguageServer.mocaLanguageServerOptions.groovyFormattingEnabled) {
+                        // Groovy formatting not yet supported!
+                        buf.append(tokenText);
+                    } else {
+                        buf.append(tokenText);
+                    }
+
+                    // Increment groovy compilation result visit count.
+                    groovyCompilationResultsVisited++;
+
                     break;
                 case MocaLexer.SINGLE_BRACKET_STRING:
 
+                    // Could just be an ordinary bracket string -- make sure to check!
                     if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(tokenText)) {
 
-                        MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
-                                .get(0);
-                        String formattedMocaSqlScript = formatMocaSql(mocaSqlCompilationResult.mocaSqlTokens,
-                                indentBuf);
-                        if (formattedMocaSqlScript == null) {
-                            buf.append(tokenText);
+                        // Make sure moca language server options allow us to format.
+                        if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlFormattingEnabled) {
+                            MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
+                                    .get(mocasqlCompilationResultsVisited);
+                            String formattedMocaSqlScript = formatMocaSql(mocaSqlCompilationResult.mocaSqlTokens,
+                                    indentBuf);
+                            if (formattedMocaSqlScript == null) {
+                                buf.append(tokenText);
+                            } else {
+                                buf.append(formattedMocaSqlScript);
+                            }
                         } else {
-                            buf.append(formattedMocaSqlScript);
+                            buf.append(tokenText);
                         }
+
+                        // Increment mocasql compilation result visit count.
+                        mocasqlCompilationResultsVisited++;
+
                     } else {
                         buf.append(tokenText);
                     }

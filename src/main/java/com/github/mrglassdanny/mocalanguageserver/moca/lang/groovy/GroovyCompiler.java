@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
@@ -79,7 +80,14 @@ public class GroovyCompiler {
             // However, for static type checking, we need to go through instruction
             // selection.
             // http://groovy-lang.org/metaprogramming.html#_compilation_phases_guide
-            compilationResult.compilationUnit.compile(Phases.INSTRUCTION_SELECTION);
+
+            // Check if static type checking is enabled via moca lang server options.
+            if (MocaLanguageServer.mocaLanguageServerOptions.groovyStaticTypeCheckingEnabled) {
+                compilationResult.compilationUnit.compile(Phases.INSTRUCTION_SELECTION);
+            } else {
+                compilationResult.compilationUnit.compile(Phases.CANONICALIZATION);
+            }
+
         } catch (MultipleCompilationErrorsException e) {
             // ignore
         } catch (GroovyBugError e) {

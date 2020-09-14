@@ -43,6 +43,9 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
     // passed in.
     public static String globalStoragePath = null;
 
+    // Single instance of moca language server options given to us from client.
+    public static MocaLanguageServerOptions mocaLanguageServerOptions = new MocaLanguageServerOptions();
+
     public static void main(String[] args) {
         MocaLanguageServer server = new MocaLanguageServer();
         Launcher<LanguageClient> launcher = Launcher.createLauncher(server, LanguageClient.class, System.in,

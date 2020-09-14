@@ -43,8 +43,8 @@ public class DiagnosticManager {
     private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_SUBQUERY_WARNING = "SQL: Column '%s' does not exist on Subquery '%s'";
     private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_ANON_SUBQUERY_WARNING = "SQL: Column '%s' does not exist on anonymous Subquery";
     private static final String MOCASQL_MULTIPLE_TABLES_FOR_COLUMN_WARNING = "SQL: Multiple tables detected; please specify table for column '%s'";
-    private static final String GROOVY_SYNTAX_ERROR = "GROOVY: %s";
-    private static final String GROOVY_WARNING = "GROOVY: %s";
+    private static final String GROOVY_MESSAGE = "GROOVY: %s";
+    private static final String GROOVY_ERROR = "GROOVY: %s";
 
     private static final String[] MOCASQL_RESERVED_COLUMN_NAMES = { "rownum", "sysdate" };
 
@@ -90,16 +90,23 @@ public class DiagnosticManager {
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
         // MOCA.
-        diagnostics.addAll(handleMocaSyntaxErrors(uriStr, mocaCompiler.currentCompilationResult));
+        // Check moca error diagnostics enabled.
+        if (MocaLanguageServer.mocaLanguageServerOptions.mocaErrorDiagnosticsEnabled) {
+            diagnostics.addAll(handleMocaSyntaxErrors(uriStr, mocaCompiler.currentCompilationResult));
+        }
 
         // SQL.
-        for (int i = 0; i < mocaCompiler.mocaSqlRanges.size(); i++) {
-            diagnostics.addAll(handleMocaSqlSyntaxErrors(uriStr,
-                    mocaCompiler.currentCompilationResult.mocaSqlCompilationResults.get(i),
-                    mocaCompiler.mocaSqlRanges.get(i)));
+        // Check mocasql error diagnostics enabled.
+        if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlErrorDiagnosticsEnabled) {
+            for (int i = 0; i < mocaCompiler.mocaSqlRanges.size(); i++) {
+                diagnostics.addAll(handleMocaSqlSyntaxErrors(uriStr,
+                        mocaCompiler.currentCompilationResult.mocaSqlCompilationResults.get(i),
+                        mocaCompiler.mocaSqlRanges.get(i)));
+            }
         }
 
         // GROOVY.
+        // Moca language server options check(s) occur in 'handleGroovyAll' function.
         for (int i = 0; i < mocaCompiler.groovyRanges.size(); i++) {
             diagnostics.addAll(
                     handleGroovyAll(uriStr, mocaCompiler.currentCompilationResult.groovyCompilationResults.get(i),
@@ -116,18 +123,23 @@ public class DiagnosticManager {
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
         // MOCA.
-
-        diagnostics.addAll(handleMocaCommandMayNotExistWarnings(uriStr, script, mocaCompiler));
+        // Check moca warning diagnostics enabled.
+        if (MocaLanguageServer.mocaLanguageServerOptions.mocaWarningDiagnosticsEnabled) {
+            diagnostics.addAll(handleMocaCommandMayNotExistWarnings(uriStr, script, mocaCompiler));
+        }
 
         // SQL.
-        for (int i = 0; i < mocaCompiler.mocaSqlRanges.size(); i++) {
-            MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
-                    .get(i);
-            Range sqlRange = mocaCompiler.mocaSqlRanges.get(i);
-            diagnostics.addAll(handleMocaSqlTableMayNotExistWarnings(uriStr, script,
-                    sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
-            diagnostics.addAll(handleMocaSqlColumnsMayNotExistInTableWarnings(uriStr, script,
-                    sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
+        // Check mocasql warning diagnostics enabled.
+        if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlWarningDiagnosticsEnabled) {
+            for (int i = 0; i < mocaCompiler.mocaSqlRanges.size(); i++) {
+                MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
+                        .get(i);
+                Range sqlRange = mocaCompiler.mocaSqlRanges.get(i);
+                diagnostics.addAll(handleMocaSqlTableMayNotExistWarnings(uriStr, script,
+                        sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
+                diagnostics.addAll(handleMocaSqlColumnsMayNotExistInTableWarnings(uriStr, script,
+                        sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
+            }
         }
 
         return diagnostics;
@@ -556,33 +568,64 @@ public class DiagnosticManager {
                 if (message instanceof SyntaxErrorMessage) {
                     SyntaxErrorMessage syntaxErrorMessage = (SyntaxErrorMessage) message;
                     SyntaxException cause = syntaxErrorMessage.getCause();
-                    Range range = GroovyLanguageUtils.syntaxExceptionToRange(cause, groovyScriptRange);
-                    Diagnostic diagnostic = new Diagnostic();
-                    diagnostic.setRange(range);
-                    diagnostic.setSeverity(cause.isFatal() ? DiagnosticSeverity.Error : DiagnosticSeverity.Warning);
-                    String errMsg = cause.getMessage();
-                    diagnostic.setMessage(String.format(GROOVY_SYNTAX_ERROR, errMsg));
 
-                    // Check to see if we have already add message.
-                    if (!alreadyAddedMessages.contains(errMsg)) {
-                        diagnostics.add(diagnostic);
-                        // Add to existing messages list.
-                        alreadyAddedMessages.add(errMsg);
+                    if (cause.isFatal()) {
+                        // Is error.
+                        // Check moca lang server options before we add diagnostic.
+                        if (MocaLanguageServer.mocaLanguageServerOptions.groovyErrorDiagnosticsEnabled) {
+                            Range range = GroovyLanguageUtils.syntaxExceptionToRange(cause, groovyScriptRange);
+                            Diagnostic diagnostic = new Diagnostic();
+                            diagnostic.setRange(range);
+                            diagnostic.setSeverity(DiagnosticSeverity.Error);
+
+                            String msg = cause.getMessage();
+                            diagnostic.setMessage(String.format(GROOVY_MESSAGE, msg));
+
+                            // Check to see if we have already add message.
+                            if (!alreadyAddedMessages.contains(msg)) {
+                                diagnostics.add(diagnostic);
+                                // Add to existing messages list.
+                                alreadyAddedMessages.add(msg);
+                            }
+                        }
+                    } else {
+                        // Is warning.
+                        // Check moca lang server options before we add diagnostic.
+                        if (MocaLanguageServer.mocaLanguageServerOptions.groovyWarningDiagnosticsEnabled) {
+                            Range range = GroovyLanguageUtils.syntaxExceptionToRange(cause, groovyScriptRange);
+                            Diagnostic diagnostic = new Diagnostic();
+                            diagnostic.setRange(range);
+                            diagnostic.setSeverity(DiagnosticSeverity.Warning);
+
+                            String msg = cause.getMessage();
+                            diagnostic.setMessage(String.format(GROOVY_MESSAGE, msg));
+
+                            // Check to see if we have already add message.
+                            if (!alreadyAddedMessages.contains(msg)) {
+                                diagnostics.add(diagnostic);
+                                // Add to existing messages list.
+                                alreadyAddedMessages.add(msg);
+                            }
+                        }
                     }
+
                 } else if (message instanceof ExceptionMessage) {
                     // Only time I have seen this is if we imported a library that is missing one of
                     // it's dependencies. If this happens, we want the user to be aware. We will not
                     // really have a range, so lets just point to the top of the current groovy
                     // context.
+
+                    // Do not worry about checking moca lang server options -- let's return message
+                    // regardless.
                     ExceptionMessage exceptionMessage = (ExceptionMessage) message;
                     Exception cause = exceptionMessage.getCause();
                     Position pos = GroovyLanguageUtils.createMocaPosition(0, 0, groovyScriptRange);
                     Range range = new Range(pos, pos);
                     Diagnostic diagnostic = new Diagnostic();
                     diagnostic.setRange(range);
-                    diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                    diagnostic.setSeverity(DiagnosticSeverity.Error);
                     String errMsg = cause.getMessage();
-                    diagnostic.setMessage(String.format(GROOVY_WARNING, errMsg));
+                    diagnostic.setMessage(String.format(GROOVY_ERROR, errMsg));
                 }
 
             });
