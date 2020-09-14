@@ -20,6 +20,7 @@ public class MocaSqlFormatter {
             switch (token.getType()) {
                 case MocaSqlLexer.STRING:
                 case MocaSqlLexer.MOCA_AT_STAR:
+                case MocaSqlLexer.AT:
                     return true;
                 default:
                     return false;
