@@ -8,12 +8,14 @@ import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaCommandLookupRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaConnectionRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaLanguageServerActivateRequest;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaLanguageServerOptionsRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaResultsRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaTraceRequest;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.LoadCacheResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaCommandLookupResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaConnectionResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaLanguageServerActivateResponse;
+import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaLanguageServerOptionsResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaResultsResponse;
 import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaTraceResponse;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
@@ -35,7 +37,7 @@ public class ExecuteCommandProvider {
     public static final String EXECUTE = "mocalanguageserver.execute";
     public static final String TRACE = "mocalanguageserver.trace";
     public static final String COMMAND_LOOKUP = "mocalanguageserver.commandLookup";
-    public static final String TRAIN_FORMATTERS = "mocalanguageserver.trainFormatters";
+    public static final String SET_LANGUAGE_SERVER_OPTIONS = "mocalanguageserver.setLanguageServerOptions";
 
     public static ArrayList<String> mocaLanguageServerCommands = new ArrayList<>();
     static {
@@ -45,7 +47,7 @@ public class ExecuteCommandProvider {
         mocaLanguageServerCommands.add(EXECUTE);
         mocaLanguageServerCommands.add(TRACE);
         mocaLanguageServerCommands.add(COMMAND_LOOKUP);
-        mocaLanguageServerCommands.add(TRAIN_FORMATTERS);
+        mocaLanguageServerCommands.add(SET_LANGUAGE_SERVER_OPTIONS);
     }
 
     public static CompletableFuture<Object> provideCommandExecution(ExecuteCommandParams params,
@@ -61,7 +63,9 @@ public class ExecuteCommandProvider {
                     }
                     MocaLanguageServerActivateRequest mocaLanguageServerActivateRequest = new MocaLanguageServerActivateRequest(
                             args);
+
                     MocaLanguageServer.globalStoragePath = mocaLanguageServerActivateRequest.globalStoragePath;
+                    MocaLanguageServer.mocaLanguageServerOptions = mocaLanguageServerActivateRequest.mocaLanguageServerOptionsRequest.mocaLanguageServerOptions;
 
                     return CompletableFuture.completedFuture(new Object());
                 } catch (Exception exception) {
@@ -271,6 +275,19 @@ public class ExecuteCommandProvider {
                             .completedFuture(new MocaCommandLookupResponse(null, null, null, exception));
                 }
 
+            case SET_LANGUAGE_SERVER_OPTIONS:
+                try {
+                    List<Object> args = params.getArguments();
+
+                    MocaLanguageServerOptionsRequest mocaLanguageServerOptionsRequest = new MocaLanguageServerOptionsRequest(
+                            args);
+
+                    MocaLanguageServer.mocaLanguageServerOptions = mocaLanguageServerOptionsRequest.mocaLanguageServerOptions;
+
+                    return CompletableFuture.completedFuture(new Object());
+                } catch (Exception exception) {
+                    return CompletableFuture.completedFuture(new MocaLanguageServerOptionsResponse(exception));
+                }
             default:
                 break;
 
