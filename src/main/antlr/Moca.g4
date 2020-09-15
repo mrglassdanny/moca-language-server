@@ -4,9 +4,6 @@ grammar Moca;
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 }
 
-// UNIMPLEMENTED: Annotations, SQL Hints, Special command arguments
-
-
 moca_script: sequence EOF;
 
 sequence: stream (SEMI_COLON stream)* SEMI_COLON?;
@@ -52,14 +49,16 @@ verb_noun_clause_arg:
 	| SPECIAL_COMMAND_ARG_DUMMY_ARG
 	| groovy_script
 	| SINGLE_BRACKET_STRING
-	| (at_star | at_plus_variables)
+	| (at_star | at_plus_variable)
 	| WORD ((IS NOT? NULL) | (NOT? LIKE | LESS | GREATER | LESS_EQUAL | GREATER_EQUAL | EQUAL | NOT_EQUAL) verb_noun_clause_arg_expr);
 
 // Very similar to expr, but minor tweaks due to verb noun clause arg goofyness.
 verb_noun_clause_arg_expr:
 	literal_value
 	| WORD
-	| at_variables
+	| at_variable
+    | environment_variable
+    | integration_variable
 	| at_bang
 	| at_question
 	| at_star
@@ -70,7 +69,9 @@ verb_noun_clause_arg_expr:
 		BANG (
 			literal_value
 			| WORD
-			| at_variables
+			| at_variable
+            | environment_variable
+            | integration_variable
 			| at_bang
 			| at_question
 			| at_star
@@ -121,7 +122,9 @@ suppress_warnings_expr:
 expr:
 	literal_value
 	| WORD
-	| at_variables
+	| at_variable
+    | environment_variable
+    | integration_variable
 	| at_bang
 	| at_question
 	| at_star
@@ -132,7 +135,9 @@ expr:
 		BANG (
 			literal_value
 			| WORD
-			| at_variables
+			| at_variable
+            | environment_variable
+           	| integration_variable
 			| at_bang
 			| at_question
 			| at_star
@@ -163,75 +168,15 @@ literal_value:
 	| STRING_LITERAL
 	| NULL;
 
-/*
-Variable clarification:
-	When I group variables together under 1 parse rule, I am considering '@' & '@-' as at variables/directives
-		and '@+' & '@%' as at_plus variables/directives. Grouped variable parse rules will also have an 's' at
-		the end to make it clear that it applies to more than 1 variable/directive.
- */
 
-at_variables:
-	at_variable
-	| at_minus_variable
-	| environment_variable
-	| at_keep_directives
-	| at_onstack_directive
-	| at_type_cast_variable
-	| integration_variable;
+at_variable: AT (MINUS)? WORD ((COLON WORD) | ((POUND KEEP) | (POUND ONSTACK)))?;
+environment_variable: AT AT WORD;
+at_plus_variable: AT (PLUS | MOD) WORD ((COLON WORD) | (CARET WORD))?;
 
-at_plus_variables:
-	at_plus_variable
-	| at_mod_variable
-	| at_plus_keep_directive
-	| at_mod_keep_directive
-	| at_plus_oldvar_directives
-	| at_plus_type_cast_variable
-	| at_plus_database_qualifier_variable
-	| at_mod_database_qualifier_variable;
+at_star: AT STAR;
+at_question: AT QUESTION;
+at_bang: AT BANG;
 
-at_variable: AT WORD; // @variable
-environment_variable: AT AT WORD; // @@variable
-at_minus_variable: AT MINUS WORD; // @-variable
-at_plus_variable: AT PLUS WORD; // @+variable
-at_mod_variable: AT MOD WORD; // @%variable
-at_star: AT STAR; // @*
-at_question: AT QUESTION; // @?
-at_bang: AT BANG; //@!
-
-at_keep_directives:
-	at_keep_directive
-	| at_minus_keep_directive;
-at_keep_directive:
-	at_variable POUND KEEP; // @variable#keep
-at_minus_keep_directive:
-	at_minus_variable POUND KEEP; // @-variable#keep
-at_plus_keep_directive:
-	at_plus_variable POUND KEEP; // @+variable#keep
-at_mod_keep_directive:
-	at_mod_variable POUND KEEP; // @%variable#keep
-
-at_onstack_directive:
-	at_variable POUND ONSTACK
-	| at_minus_variable POUND ONSTACK; // @variable#onstack
-
-at_plus_oldvar_directives:
-	at_plus_oldvar_directive
-	| at_mod_oldvar_directive;
-at_plus_oldvar_directive:
-	at_plus_variable CARET WORD; // @+newvariable^oldvariable
-at_mod_oldvar_directive:
-	at_mod_variable CARET WORD; // @%newvariable^oldvariable
-
-at_type_cast_variable:
-	at_variable COLON WORD; // @variable:raw
-
-at_plus_type_cast_variable:
-    at_plus_variable COLON WORD; //@+variable:raw
-
-at_plus_database_qualifier_variable:
-	at_plus_variable DOT WORD; // @+tablename.variable
-at_mod_database_qualifier_variable:
-	at_mod_variable DOT WORD; // @%tablename.variable
 
 integration_variable: COLON WORD;
 

@@ -3097,8 +3097,10 @@ constant_LOCAL_ID: constant | LOCAL_ID;
 // precendence:
 // https://docs.microsoft.com/en-us/sql/t-sql/language-elements/operator-precedence-transact-sql
 expression:
-    moca_at_variables
-	| moca_at_plus_variables
+    moca_at_variable
+    | moca_at_minus_variable
+    | moca_environment_variable
+    | moca_integration_variable
 	| primitive_expression
 	| function_call
 	| expression COLLATE id
@@ -3113,77 +3115,14 @@ expression:
 	| over_clause;
 
 
-/*
-MOCA variable clarification:
-	When I group moca variables together under 1 parse rule, I am considering '@' & '@-' as moca_at variables/directives
-		and '@+' & '@%' as moca_at_plus variables/directives. Grouped moca variable parse rules will also have an 's' at
-		the end to make it clear that it applies to more than 1 variable/directive.
- */
+moca_at_variable: LOCAL_ID (DOT simple_id)?  ((COLON simple_id) | ((SHARP MOCA_KEEP) | (SHARP MOCA_ONSTACK) | (SHARP MOCA_IGNORE)))?;
+moca_environment_variable: MOCA_ENVIRONMENT_VARIABLE;
+moca_at_minus_variable: MOCA_AT_MINUS_VARIABLE (DOT simple_id)? ((COLON simple_id) | ((SHARP MOCA_KEEP) | (SHARP MOCA_ONSTACK) | (SHARP MOCA_IGNORE)))?;
+moca_at_plus_variable: MOCA_AT_PLUS_VARIABLE (DOT simple_id)? ((COLON simple_id) | (BIT_XOR simple_id))?;
 
-moca_at_variables:
-	moca_at_variable
-	| moca_at_minus_variable
-	| moca_environment_variable
-	| moca_at_keep_directives
-	| moca_at_ignore_directive
-	| moca_at_onstack_directive
-	| moca_at_type_cast_variable
-	| moca_integration_variable;
+moca_at_star: MOCA_AT_STAR;
 
-moca_at_plus_variables:
-	moca_at_plus_variable
-	| moca_at_star
-	| moca_at_mod_variable
-	| moca_at_plus_keep_directive
-	| moca_at_mod_keep_directive
-	| moca_at_plus_oldvar_directives
-	| moca_at_plus_type_cast_variable
-	| moca_at_plus_database_qualifier_variable
-	| moca_at_mod_database_qualifier_variable;
-
-moca_at_variable: LOCAL_ID; // @variable -- can use existing adjusted LOCALE_ID.
-moca_environment_variable: MOCA_ENVIRONMENT_VARIABLE; // @@variable
-moca_at_minus_variable: MOCA_AT_MINUS_VARIABLE; // @-variable
-moca_at_plus_variable: MOCA_AT_PLUS_VARIABLE; // @+variable
-moca_at_mod_variable: MOCA_AT_MOD_VARIABLE; // @%variable
-moca_at_star: MOCA_AT_STAR; // @*
-
-moca_at_keep_directives:
-	moca_at_keep_directive
-	| moca_at_minus_keep_directive;
-moca_at_keep_directive:
-	moca_at_variable SHARP MOCA_KEEP; // @variable#keep
-moca_at_minus_keep_directive:
-	moca_at_minus_variable SHARP MOCA_KEEP; // @-variable#keep
-moca_at_plus_keep_directive:
-	moca_at_plus_variable SHARP MOCA_KEEP; // @+variable#keep
-moca_at_mod_keep_directive:
-	moca_at_mod_variable SHARP MOCA_KEEP; // @%variable#keep
-
-moca_at_onstack_directive:
-	moca_at_variable SHARP MOCA_ONSTACK; // @variable#onstack
-moca_at_ignore_directive:
-	moca_at_variable SHARP MOCA_IGNORE; // @variable#ignore
-
-moca_at_plus_oldvar_directives:
-	moca_at_plus_oldvar_directive
-	| moca_at_mod_oldvar_directive;
-moca_at_plus_oldvar_directive:
-	moca_at_plus_variable BIT_XOR simple_id; // @+newvariable^oldvariable
-moca_at_mod_oldvar_directive:
-	moca_at_mod_variable BIT_XOR simple_id; // @%newvariable^oldvariable
-
-moca_at_type_cast_variable:
-	moca_at_variable COLON simple_id; //@variable:raw
-moca_at_plus_type_cast_variable:
-	moca_at_plus_variable COLON simple_id; //@+variable:raw
-
-moca_at_plus_database_qualifier_variable:
-	moca_at_plus_variable DOT simple_id; // @+tablename.variable
-moca_at_mod_database_qualifier_variable:
-	moca_at_mod_variable DOT simple_id; // @%tablename.variable
-
-moca_integration_variable: (':i_' | ':I_') simple_id;
+moca_integration_variable: ':I_' simple_id;
 
 primitive_expression: DEFAULT | NULL | LOCAL_ID | constant;
 
@@ -3248,7 +3187,10 @@ predicate:
 	| expression NOT? IN '(' (subquery | expression_list) ')'
 	| expression NOT? LIKE expression (ESCAPE expression)?
 	| expression IS null_notnull
-	| moca_at_plus_variables
+	| moca_at_plus_variable
+    | moca_at_star
+	| (LOCAL_ID (DOT simple_id)? COLON 'RAW') // allowing a normal moca var is not correct here; has to be followed by a RAW type cast.
+	| (MOCA_AT_MINUS_VARIABLE (DOT simple_id)? COLON 'RAW') // allowing a normal moca minus var is not correct here; has to be followed by a RAW type cast.
 	| '(' search_condition ')';
 
 // Changed union rule to sql_union to avoid union construct with C++ target.  Issue reported by person who generates into C++.  This individual reports change causes generated code to work
@@ -4695,7 +4637,7 @@ UNPIVOT: 'UNPIVOT';
 UNSAFE: 'UNSAFE';
 UPDATE: 'UPDATE';
 UPDATETEXT: 'UPDATETEXT';
-RL: 'URL'; // moca - Could be id
+URL: 'URL'; // moca - Could be id
 USE: 'USE';
 USED: 'USED';
 USER: 'USER'; // moca - Could be id
@@ -5137,9 +5079,9 @@ XSINIL: 'XSINIL';
 
 DOLLAR_ACTION: '$ACTION';
 
-MOCA_KEEP: 'keep';
-MOCA_ONSTACK: 'onstack';
-MOCA_IGNORE: 'ignore';
+MOCA_KEEP: 'KEEP';
+MOCA_ONSTACK: 'ONSTACK';
+MOCA_IGNORE: 'IGNORE';
 
 
 
@@ -5157,9 +5099,8 @@ SQUARE_BRACKET_ID: '[' ~']'+ ']';
 // NOTE: not including possibility for '.' in regex due to how mocasql behaves differently regarding '.'s in vars than moca does.
 LOCAL_ID: AT [a-zA-Z_0-9]+;
 MOCA_ENVIRONMENT_VARIABLE: AT AT [a-zA-Z_0-9]+;
-MOCA_AT_MINUS_VARIABLE:AT MINUS [a-zA-Z_0-9]+;
-MOCA_AT_PLUS_VARIABLE: AT PLUS [a-zA-Z_0-9]+;
-MOCA_AT_MOD_VARIABLE: AT MODULE [a-zA-Z_0-9]+;
+MOCA_AT_MINUS_VARIABLE: AT MINUS [a-zA-Z_0-9]+;
+MOCA_AT_PLUS_VARIABLE: AT (PLUS | MODULE) [a-zA-Z_0-9]+;
 MOCA_AT_STAR: AT STAR;
 
 

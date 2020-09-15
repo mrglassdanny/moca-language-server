@@ -3650,26 +3650,6 @@ public interface MocaSqlListener extends ParseTreeListener {
 	 */
 	void exitExpression(MocaSqlParser.ExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_variables}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_variables(MocaSqlParser.Moca_at_variablesContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_variables}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_variables(MocaSqlParser.Moca_at_variablesContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_plus_variables}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_plus_variables(MocaSqlParser.Moca_at_plus_variablesContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_plus_variables}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_plus_variables(MocaSqlParser.Moca_at_plus_variablesContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_variable}.
 	 * @param ctx the parse tree
 	 */
@@ -3710,16 +3690,6 @@ public interface MocaSqlListener extends ParseTreeListener {
 	 */
 	void exitMoca_at_plus_variable(MocaSqlParser.Moca_at_plus_variableContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_mod_variable}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_mod_variable(MocaSqlParser.Moca_at_mod_variableContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_mod_variable}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_mod_variable(MocaSqlParser.Moca_at_mod_variableContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_star}.
 	 * @param ctx the parse tree
 	 */
@@ -3729,146 +3699,6 @@ public interface MocaSqlListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMoca_at_star(MocaSqlParser.Moca_at_starContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_keep_directives}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_keep_directives(MocaSqlParser.Moca_at_keep_directivesContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_keep_directives}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_keep_directives(MocaSqlParser.Moca_at_keep_directivesContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_keep_directive}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_keep_directive(MocaSqlParser.Moca_at_keep_directiveContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_keep_directive}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_keep_directive(MocaSqlParser.Moca_at_keep_directiveContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_minus_keep_directive}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_minus_keep_directive(MocaSqlParser.Moca_at_minus_keep_directiveContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_minus_keep_directive}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_minus_keep_directive(MocaSqlParser.Moca_at_minus_keep_directiveContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_plus_keep_directive}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_plus_keep_directive(MocaSqlParser.Moca_at_plus_keep_directiveContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_plus_keep_directive}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_plus_keep_directive(MocaSqlParser.Moca_at_plus_keep_directiveContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_mod_keep_directive}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_mod_keep_directive(MocaSqlParser.Moca_at_mod_keep_directiveContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_mod_keep_directive}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_mod_keep_directive(MocaSqlParser.Moca_at_mod_keep_directiveContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_onstack_directive}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_onstack_directive(MocaSqlParser.Moca_at_onstack_directiveContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_onstack_directive}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_onstack_directive(MocaSqlParser.Moca_at_onstack_directiveContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_ignore_directive}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_ignore_directive(MocaSqlParser.Moca_at_ignore_directiveContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_ignore_directive}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_ignore_directive(MocaSqlParser.Moca_at_ignore_directiveContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_plus_oldvar_directives}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_plus_oldvar_directives(MocaSqlParser.Moca_at_plus_oldvar_directivesContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_plus_oldvar_directives}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_plus_oldvar_directives(MocaSqlParser.Moca_at_plus_oldvar_directivesContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_plus_oldvar_directive}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_plus_oldvar_directive(MocaSqlParser.Moca_at_plus_oldvar_directiveContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_plus_oldvar_directive}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_plus_oldvar_directive(MocaSqlParser.Moca_at_plus_oldvar_directiveContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_mod_oldvar_directive}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_mod_oldvar_directive(MocaSqlParser.Moca_at_mod_oldvar_directiveContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_mod_oldvar_directive}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_mod_oldvar_directive(MocaSqlParser.Moca_at_mod_oldvar_directiveContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_type_cast_variable}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_type_cast_variable(MocaSqlParser.Moca_at_type_cast_variableContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_type_cast_variable}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_type_cast_variable(MocaSqlParser.Moca_at_type_cast_variableContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_plus_type_cast_variable}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_plus_type_cast_variable(MocaSqlParser.Moca_at_plus_type_cast_variableContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_plus_type_cast_variable}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_plus_type_cast_variable(MocaSqlParser.Moca_at_plus_type_cast_variableContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_plus_database_qualifier_variable}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_plus_database_qualifier_variable(MocaSqlParser.Moca_at_plus_database_qualifier_variableContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_plus_database_qualifier_variable}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_plus_database_qualifier_variable(MocaSqlParser.Moca_at_plus_database_qualifier_variableContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link MocaSqlParser#moca_at_mod_database_qualifier_variable}.
-	 * @param ctx the parse tree
-	 */
-	void enterMoca_at_mod_database_qualifier_variable(MocaSqlParser.Moca_at_mod_database_qualifier_variableContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MocaSqlParser#moca_at_mod_database_qualifier_variable}.
-	 * @param ctx the parse tree
-	 */
-	void exitMoca_at_mod_database_qualifier_variable(MocaSqlParser.Moca_at_mod_database_qualifier_variableContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MocaSqlParser#moca_integration_variable}.
 	 * @param ctx the parse tree
