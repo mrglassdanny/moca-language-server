@@ -64,8 +64,28 @@ public class HoverProvider {
                     MocaFunction mocaFunction = MocaLanguageServer.currentMocaConnection.cache.mocaCache.functions
                             .get(mocaWord);
                     if (mocaFunction != null) {
-                        String content = getMocaFunctionContent(mocaFunction);
-                        contents.add(Either.forRight(new MarkedString("plaintext", content)));
+                        // Add name and description first.
+                        contents.add(Either.forRight(new MarkedString("plaintext",
+                                String.format("function '%s'\n%s", mocaFunction.name, mocaFunction.description))));
+
+                        // Now let's add the usage, but do so with the moca grammar.
+                        StringBuilder argBuf = new StringBuilder();
+                        for (String argName : mocaFunction.argumentNames) {
+                            if (argName.compareTo(MocaFunction.VARIABLE_LENGTH_ARGUMENT) == 0) {
+                                argBuf.append("...");
+                                argBuf.append(",");
+                            } else {
+                                argBuf.append(argName);
+                                argBuf.append(",");
+                            }
+                        }
+
+                        // Remove last comma from argument buffer.
+                        if (argBuf.length() > 0) {
+                            argBuf.deleteCharAt(argBuf.length() - 1);
+                        }
+                        contents.add(Either.forRight(new MarkedString("moca",
+                                String.format("%s(%s)", mocaFunction.name, argBuf.toString()))));
                         return CompletableFuture.completedFuture(hover);
                     }
 
@@ -229,27 +249,6 @@ public class HoverProvider {
 
         return contents;
 
-    }
-
-    private static String getMocaFunctionContent(MocaFunction function) {
-        StringBuilder argBuf = new StringBuilder();
-        for (String argName : function.argumentNames) {
-            if (argName.compareTo(MocaFunction.VARIABLE_LENGTH_ARGUMENT) == 0) {
-                argBuf.append("...");
-                argBuf.append(",");
-            } else {
-                argBuf.append(argName);
-                argBuf.append(",");
-            }
-        }
-
-        // Remove last comma from argument buffer.
-        if (argBuf.length() > 0) {
-            argBuf.deleteCharAt(argBuf.length() - 1);
-        }
-
-        return String.format("function '%s'\n%s(%s)\n\n%s", function.name, function.name, argBuf.toString(),
-                function.description);
     }
 
     // MOCA SQL.
