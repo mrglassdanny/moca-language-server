@@ -2296,7 +2296,8 @@ MOCA_AT_STAR: AT STAR;
 
 
 DECIMAL: DEC_DIGIT+;
-ID: ([A-Z_#] | FullWidthLetter) ([A-Z_#$@0-9] | FullWidthLetter)*;
+// ID: ([A-Z_#] | FullWidthLetter) ([A-Z_#$@0-9] | FullWidthLetter)*; -- see adjusted version for moca below!
+ID: ([A-Z_] | FullWidthLetter) ([A-Z_$@0-9] | FullWidthLetter)*;
 QUOTED_URL:
 	'\'' ([A-Z][A-Z]+ [:]) '//' (
 		([A-Z]+ [.] | [A-Z]+)
