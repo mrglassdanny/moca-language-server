@@ -308,7 +308,7 @@ public class MocaSqlFormatter {
 
                 case MocaSqlLexer.AND:
 
-                    if (!inCaseWhen) {
+                    if (!inCaseWhen && curQuery.parenCounterState == parenCounter) {
                         curQuery.clauseIndentBuf.setLength(0);
                         curQuery.clauseIndentBuf.append(' ');
                         curQuery.clauseIndentBuf.append(' ');
@@ -327,7 +327,7 @@ public class MocaSqlFormatter {
                     break;
                 case MocaSqlLexer.OR:
 
-                    if (!inCaseWhen) {
+                    if (!inCaseWhen && curQuery.parenCounterState == parenCounter) {
                         curQuery.clauseIndentBuf.setLength(0);
                         curQuery.clauseIndentBuf.append(' ');
                         curQuery.clauseIndentBuf.append(' ');
