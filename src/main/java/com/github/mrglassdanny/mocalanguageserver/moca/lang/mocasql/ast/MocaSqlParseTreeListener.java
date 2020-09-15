@@ -9,6 +9,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlBaseListener;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Derived_tableContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Dml_clauseContext;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Expression_elemContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.IdContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Insert_statementContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Query_specificationContext;
@@ -232,6 +233,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     }
 
     // WHERE & SET clauses.
+    // Could also be in expression in SELECT clause.
     @Override
     public void enterFull_column_name(MocaSqlParser.Full_column_nameContext ctx) {
 
@@ -301,6 +303,46 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                         // Assume we have a table here.
                         tableName = dmlClauseCtx.delete_statement().delete_statement_from().ddl_object()
                                 .full_table_name().getStop().getText();
+                    }
+                }
+            }
+        }
+
+        // Now the goal is to see if this full column name is inside an expression_elem
+        // inside of a subquery.
+        // Let's try to find a subquery context parent and go from there.
+        SubqueryContext subqueryCtx = (SubqueryContext) getParentRuleContext(ctx, SubqueryContext.class);
+        if (subqueryCtx != null) {
+
+            // Looks like we are in a subquery. Now let's try to get the expression_elem
+            // parent.
+            Expression_elemContext expression_elemContext = (Expression_elemContext) getParentRuleContext(ctx,
+                    Expression_elemContext.class);
+            if (expression_elemContext != null) {
+                // Nice -- we have an expression elem parent. Now let's see if it has a column
+                // alias indicated. If so, we will add it to subquery columns.
+
+                if (expression_elemContext.as_column_alias() != null) {
+                    Token subqueryColumnToken = expression_elemContext.as_column_alias().getStop();
+
+                    // Check subquery columns map first.
+                    if (this.subqueryColumns.containsKey(subqueryCtx)) {
+                        this.subqueryColumns.get(subqueryCtx).add(subqueryColumnToken);
+                    } else {
+                        // Let's see if we have an value in the subquery map that matches.
+                        if (this.subqueries.values().contains(subqueryCtx)) {
+                            // We need to put in a new sub query column map entry.
+                            ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
+                            subqueryColumnTokens.add(subqueryColumnToken);
+                            this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
+                        } else {
+                            // Looks like subquery context does not exist in subqueries map yet. Let's go
+                            // ahead and still add to subquery columns map.
+                            // We need to put in a new sub query column map entry.
+                            ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
+                            subqueryColumnTokens.add(subqueryColumnToken);
+                            this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
+                        }
                     }
                 }
             }
