@@ -90,14 +90,14 @@ public class DiagnosticManager {
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
         // MOCA.
-        // Check moca error diagnostics enabled.
-        if (MocaLanguageServer.mocaLanguageServerOptions.mocaErrorDiagnosticsEnabled) {
+        // Check moca diagnostics enabled.
+        if (MocaLanguageServer.mocaLanguageServerOptions.mocaDiagnosticsEnabled) {
             diagnostics.addAll(handleMocaSyntaxErrors(uriStr, mocaCompiler.currentCompilationResult));
         }
 
         // SQL.
-        // Check mocasql error diagnostics enabled.
-        if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlErrorDiagnosticsEnabled) {
+        // Check mocasql diagnostics enabled.
+        if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlDiagnosticsEnabled) {
             for (int i = 0; i < mocaCompiler.mocaSqlRanges.size(); i++) {
                 diagnostics.addAll(handleMocaSqlSyntaxErrors(uriStr,
                         mocaCompiler.currentCompilationResult.mocaSqlCompilationResults.get(i),
@@ -106,11 +106,13 @@ public class DiagnosticManager {
         }
 
         // GROOVY.
-        // Moca language server options check(s) occur in 'handleGroovyAll' function.
-        for (int i = 0; i < mocaCompiler.groovyRanges.size(); i++) {
-            diagnostics.addAll(
-                    handleGroovyAll(uriStr, mocaCompiler.currentCompilationResult.groovyCompilationResults.get(i),
-                            mocaCompiler.groovyRanges.get(i), languageClient));
+        // Check groovy diagnostics enabled.
+        if (MocaLanguageServer.mocaLanguageServerOptions.groovyDiagnosticsEnabled) {
+            for (int i = 0; i < mocaCompiler.groovyRanges.size(); i++) {
+                diagnostics.addAll(
+                        handleGroovyAll(uriStr, mocaCompiler.currentCompilationResult.groovyCompilationResults.get(i),
+                                mocaCompiler.groovyRanges.get(i), languageClient));
+            }
         }
 
         return diagnostics;
@@ -124,13 +126,13 @@ public class DiagnosticManager {
 
         // MOCA.
         // Check moca warning diagnostics enabled.
-        if (MocaLanguageServer.mocaLanguageServerOptions.mocaWarningDiagnosticsEnabled) {
+        if (MocaLanguageServer.mocaLanguageServerOptions.mocaDiagnosticsEnabled) {
             diagnostics.addAll(handleMocaCommandMayNotExistWarnings(uriStr, script, mocaCompiler));
         }
 
         // SQL.
         // Check mocasql warning diagnostics enabled.
-        if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlWarningDiagnosticsEnabled) {
+        if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlDiagnosticsEnabled) {
             for (int i = 0; i < mocaCompiler.mocaSqlRanges.size(); i++) {
                 MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
                         .get(i);
@@ -568,45 +570,17 @@ public class DiagnosticManager {
                 if (message instanceof SyntaxErrorMessage) {
                     SyntaxErrorMessage syntaxErrorMessage = (SyntaxErrorMessage) message;
                     SyntaxException cause = syntaxErrorMessage.getCause();
-
-                    if (cause.isFatal()) {
-                        // Is error.
-                        // Check moca lang server options before we add diagnostic.
-                        if (MocaLanguageServer.mocaLanguageServerOptions.groovyErrorDiagnosticsEnabled) {
-                            Range range = GroovyLanguageUtils.syntaxExceptionToRange(cause, groovyScriptRange);
-                            Diagnostic diagnostic = new Diagnostic();
-                            diagnostic.setRange(range);
-                            diagnostic.setSeverity(DiagnosticSeverity.Error);
-
-                            String msg = cause.getMessage();
-                            diagnostic.setMessage(String.format(GROOVY_MESSAGE, msg));
-
-                            // Check to see if we have already add message.
-                            if (!alreadyAddedMessages.contains(msg)) {
-                                diagnostics.add(diagnostic);
-                                // Add to existing messages list.
-                                alreadyAddedMessages.add(msg);
-                            }
-                        }
-                    } else {
-                        // Is warning.
-                        // Check moca lang server options before we add diagnostic.
-                        if (MocaLanguageServer.mocaLanguageServerOptions.groovyWarningDiagnosticsEnabled) {
-                            Range range = GroovyLanguageUtils.syntaxExceptionToRange(cause, groovyScriptRange);
-                            Diagnostic diagnostic = new Diagnostic();
-                            diagnostic.setRange(range);
-                            diagnostic.setSeverity(DiagnosticSeverity.Warning);
-
-                            String msg = cause.getMessage();
-                            diagnostic.setMessage(String.format(GROOVY_MESSAGE, msg));
-
-                            // Check to see if we have already add message.
-                            if (!alreadyAddedMessages.contains(msg)) {
-                                diagnostics.add(diagnostic);
-                                // Add to existing messages list.
-                                alreadyAddedMessages.add(msg);
-                            }
-                        }
+                    Range range = GroovyLanguageUtils.syntaxExceptionToRange(cause, groovyScriptRange);
+                    Diagnostic diagnostic = new Diagnostic();
+                    diagnostic.setRange(range);
+                    diagnostic.setSeverity(cause.isFatal() ? DiagnosticSeverity.Error : DiagnosticSeverity.Warning);
+                    String msg = cause.getMessage();
+                    diagnostic.setMessage(String.format(GROOVY_MESSAGE, msg));
+                    // Check to see if we have already add message.
+                    if (!alreadyAddedMessages.contains(msg)) {
+                        diagnostics.add(diagnostic);
+                        // Add to existing messages list.
+                        alreadyAddedMessages.add(msg);
                     }
 
                 } else if (message instanceof ExceptionMessage) {

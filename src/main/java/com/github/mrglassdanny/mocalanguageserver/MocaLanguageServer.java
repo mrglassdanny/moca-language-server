@@ -150,7 +150,6 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
             additionalOnTypeFormattingTriggerChars.add("7");
             additionalOnTypeFormattingTriggerChars.add("8");
             additionalOnTypeFormattingTriggerChars.add("9");
-            additionalOnTypeFormattingTriggerChars.add("@");
         }
         documentOnTypeFormattingProvider.setMoreTriggerCharacter(additionalOnTypeFormattingTriggerChars);
         serverCapabilities.setDocumentOnTypeFormattingProvider(documentOnTypeFormattingProvider);
