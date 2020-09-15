@@ -5,8 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaFunction;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser.Function_exprContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyASTUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
@@ -28,15 +31,88 @@ import org.eclipse.lsp4j.TextDocumentIdentifier;
 public class SignatureHelpProvider {
 
     public static CompletableFuture<SignatureHelp> provideSignatureHelp(TextDocumentIdentifier textDocument,
-            Position position, MocaCompiler mocaCompiler) {
+            String textDocumentContents, Position position, MocaCompiler mocaCompiler) {
 
         // Analyze context id for position.
         MocaLanguageContext ctx = mocaCompiler.getMocaLanguageContextFromPosition(position);
 
         switch (ctx.id) {
             case Moca:
-                // Maybe for moca commands and their required args?
-                break;
+                // Looking for moca functions.
+
+                org.antlr.v4.runtime.Token curMocaToken = mocaCompiler.getMocaTokenAtPosition(textDocumentContents,
+                        position);
+
+                if (curMocaToken != null) {
+
+                    // Now let's see if token exists in our moca functions list.
+                    // One way we can check is by seeing if current moca token is between start and
+                    // stop tokens of function expression.
+                    for (Function_exprContext mocaFuncExpr : mocaCompiler.currentCompilationResult.mocaParseTreeListener.functions) {
+                        org.antlr.v4.runtime.Token startFuncToken = mocaFuncExpr.getStart();
+                        org.antlr.v4.runtime.Token stopFuncToken = mocaFuncExpr.getStop();
+
+                        if (startFuncToken.getStartIndex() <= curMocaToken.getStartIndex()
+                                && stopFuncToken.getStopIndex() >= curMocaToken.getStopIndex()) {
+                            // Looks like we have our function expression.
+                            MocaFunction mocaFunction = MocaLanguageServer.currentMocaConnection.cache.mocaCache.functions
+                                    .get(mocaFuncExpr.WORD().getText());
+                            if (mocaFunction != null) {
+                                // One thing to note -- we do not have to worry about overloads with moca
+                                // functions.
+                                List<SignatureInformation> sigInfos = new ArrayList<>();
+                                List<ParameterInformation> parameters = new ArrayList<>();
+                                StringBuilder mocaFunctionSigInfoLabelBuf = new StringBuilder();
+                                mocaFunctionSigInfoLabelBuf.append(mocaFunction.name);
+                                mocaFunctionSigInfoLabelBuf.append('(');
+
+                                for (String argName : mocaFunction.argumentNames) {
+                                    ParameterInformation paramInfo = new ParameterInformation();
+                                    paramInfo.setLabel(
+                                            argName.compareTo(MocaFunction.VARIABLE_LENGTH_ARGUMENT) == 0 ? "..."
+                                                    : argName);
+                                    parameters.add(paramInfo);
+                                    mocaFunctionSigInfoLabelBuf.append(
+                                            argName.compareTo(MocaFunction.VARIABLE_LENGTH_ARGUMENT) == 0 ? "..."
+                                                    : argName);
+                                    mocaFunctionSigInfoLabelBuf.append(',');
+                                }
+
+                                // Remove last comma so that the signature looks nice!
+                                if (mocaFunctionSigInfoLabelBuf
+                                        .charAt(mocaFunctionSigInfoLabelBuf.length() - 1) == ',') {
+                                    mocaFunctionSigInfoLabelBuf.deleteCharAt(mocaFunctionSigInfoLabelBuf.length() - 1);
+                                }
+
+                                mocaFunctionSigInfoLabelBuf.append(')');
+
+                                SignatureInformation sigInfo = new SignatureInformation();
+                                sigInfo.setLabel(mocaFunctionSigInfoLabelBuf.toString());
+                                sigInfo.setParameters(parameters);
+                                sigInfos.add(sigInfo);
+
+                                // Get active parameter index.
+                                // We know that comma tokens in the function expr will delmit args. So all we
+                                // have to do is figure out how many comma tokens are to the left of our current
+                                // token.
+                                // Let's just assume the comma tokens are in 'ascending' order.
+                                int currentCommaTokenIdx = 0;
+                                for (org.antlr.v4.runtime.tree.TerminalNode commaNode : mocaFuncExpr.COMMA()) {
+                                    org.antlr.v4.runtime.Token commaNodeToken = commaNode.getSymbol();
+                                    if (commaNodeToken.getStopIndex() <= curMocaToken.getStartIndex()) {
+                                        currentCommaTokenIdx++;
+                                    } else {
+                                        break;
+                                    }
+                                }
+
+                                return CompletableFuture
+                                        .completedFuture(new SignatureHelp(sigInfos, 0, currentCommaTokenIdx));
+                            }
+                        }
+                    }
+
+                }
             case MocaSql:
                 // Only thing we could do here would be functions...
                 break;

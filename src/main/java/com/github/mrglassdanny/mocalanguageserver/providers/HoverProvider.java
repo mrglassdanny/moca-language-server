@@ -8,6 +8,7 @@ import java.util.concurrent.CompletableFuture;
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommand;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommandArgument;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaFunction;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaTrigger;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.Table;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
@@ -53,10 +54,20 @@ public class HoverProvider {
                     return CompletableFuture.completedFuture(hover);
                 }
 
-                String mocaWord = Positions.getWordAtPosition(textDocumentContents, position).toLowerCase();
+                String mocaWord = Positions.getWordAtPosition(textDocumentContents, position);
 
                 if (mocaWord != null) {
+
                     mocaWord = mocaWord.toLowerCase();
+
+                    // First check if this is a moca function.
+                    MocaFunction mocaFunction = MocaLanguageServer.currentMocaConnection.cache.mocaCache.functions
+                            .get(mocaWord);
+                    if (mocaFunction != null) {
+                        String content = getMocaFunctionContent(mocaFunction);
+                        contents.add(Either.forRight(new MarkedString("plaintext", content)));
+                        return CompletableFuture.completedFuture(hover);
+                    }
 
                     // Get current moca token at position.
                     org.antlr.v4.runtime.Token curMocaToken = mocaCompiler.getMocaTokenAtPosition(textDocumentContents,
@@ -85,7 +96,7 @@ public class HoverProvider {
                                 ArrayList<MocaCommand> mcmds = MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
                                         .get(verbNounClause.toString());
                                 if (mcmds != null) {
-                                    String content = getMocaContent(verbNounClause.toString(), mcmds);
+                                    String content = getMocaCommandContent(verbNounClause.toString(), mcmds);
 
                                     contents.add(Either.forRight(new MarkedString("plaintext", content)));
                                     return CompletableFuture.completedFuture(hover);
@@ -114,13 +125,15 @@ public class HoverProvider {
                     // Check first to see if mocasql word is table/view in database.
                     Table table = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.get(mocaSqlWord);
                     if (table != null) {
-                        contents.add(Either.forRight(new MarkedString("plaintext", getMocaSqlContent(table, false))));
+                        contents.add(
+                                Either.forRight(new MarkedString("plaintext", getMocaSqlTableContent(table, false))));
                         return CompletableFuture.completedFuture(hover);
                     }
 
                     Table view = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.get(mocaSqlWord);
                     if (view != null) {
-                        contents.add(Either.forRight(new MarkedString("plaintext", getMocaSqlContent(view, true))));
+                        contents.add(
+                                Either.forRight(new MarkedString("plaintext", getMocaSqlTableContent(view, true))));
                         return CompletableFuture.completedFuture(hover);
                     }
 
@@ -179,7 +192,7 @@ public class HoverProvider {
     }
 
     // MOCA.
-    private static String getMocaContent(String commandName, ArrayList<MocaCommand> mcmds) {
+    private static String getMocaCommandContent(String commandName, ArrayList<MocaCommand> mcmds) {
 
         String contents = "command '" + commandName + "'\n";
         for (MocaCommand mcmd : mcmds) {
@@ -218,8 +231,29 @@ public class HoverProvider {
 
     }
 
+    private static String getMocaFunctionContent(MocaFunction function) {
+        StringBuilder argBuf = new StringBuilder();
+        for (String argName : function.argumentNames) {
+            if (argName.compareTo(MocaFunction.VARIABLE_LENGTH_ARGUMENT) == 0) {
+                argBuf.append("...");
+                argBuf.append(",");
+            } else {
+                argBuf.append(argName);
+                argBuf.append(",");
+            }
+        }
+
+        // Remove last comma from argument buffer.
+        if (argBuf.length() > 0) {
+            argBuf.deleteCharAt(argBuf.length() - 1);
+        }
+
+        return String.format("function '%s'\n%s(%s)\n\n%s", function.name, function.name, argBuf.toString(),
+                function.description);
+    }
+
     // MOCA SQL.
-    private static String getMocaSqlContent(Table table, boolean isView) {
+    private static String getMocaSqlTableContent(Table table, boolean isView) {
 
         if (isView) {
             return "view '" + table.table_name + "'\n" + (table.description == null ? "" : table.description);

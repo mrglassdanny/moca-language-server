@@ -49,9 +49,10 @@ public class DefinitionProvider {
                     return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
                 }
 
-                String mocaWord = Positions.getWordAtPosition(textDocumentContents, position).toLowerCase();
+                String mocaWord = Positions.getWordAtPosition(textDocumentContents, position);
 
                 if (mocaWord != null) {
+
                     mocaWord = mocaWord.toLowerCase();
 
                     // Get current moca token at position.

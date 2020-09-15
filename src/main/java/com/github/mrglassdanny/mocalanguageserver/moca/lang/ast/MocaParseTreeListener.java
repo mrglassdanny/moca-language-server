@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaBaseListener;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser.Function_exprContext;
 
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Token;
@@ -17,9 +18,12 @@ public class MocaParseTreeListener extends MocaBaseListener {
     // that way duplicate verb noun clauses will not get put on top of each other.
     public HashMap<StringBuilder, ArrayList<Token>> verbNounClauses;
 
+    public ArrayList<Function_exprContext> functions;
+
     public MocaParseTreeListener() {
         this.redirects = new HashMap<>();
         this.verbNounClauses = new HashMap<>();
+        this.functions = new ArrayList<>();
     }
 
     @Override
@@ -72,6 +76,18 @@ public class MocaParseTreeListener extends MocaBaseListener {
         // data to fill hashmap.
         Token redirectWord = ctx.getStop();
         this.redirects.put(redirectWord, redirectWord.getText());
+
+    }
+
+    @Override
+    public void enterFunction_expr(MocaParser.Function_exprContext ctx) {
+
+        // Make sure context is not null.
+        if (ctx == null) {
+            return;
+        }
+
+        this.functions.add(ctx);
 
     }
 }

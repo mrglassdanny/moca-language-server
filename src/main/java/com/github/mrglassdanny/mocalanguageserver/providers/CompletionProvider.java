@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommand;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommandArgument;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaFunction;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaTrigger;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.Table;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
@@ -165,6 +166,8 @@ public class CompletionProvider {
                                     char firstTypedLetter = Positions.getCharacterAtPosition(textDocumentContents,
                                             new Position(position.getLine(), position.getCharacter() - 1));
                                     populateMocaCommandArguments(verbNounClause.toString(), items, firstTypedLetter);
+                                    // Also populate functions.
+                                    populateMocaFunctions(items);
                                     return CompletableFuture.completedFuture(Either.forLeft(items));
                                 }
                             }
@@ -189,8 +192,9 @@ public class CompletionProvider {
                             break;
                     }
                 }
-                // Just return moca commands if we get here.
+                // Just return moca commands/functions if we get here.
                 populateMocaCommands(items);
+                populateMocaFunctions(items);
                 return CompletableFuture.completedFuture(Either.forLeft(items));
             case MocaSql:
 
@@ -422,6 +426,33 @@ public class CompletionProvider {
             }
         }
 
+    }
+
+    private static void populateMocaFunctions(List<CompletionItem> items) {
+        for (Map.Entry<String, MocaFunction> entry : MocaLanguageServer.currentMocaConnection.cache.mocaCache.functions
+                .entrySet()) {
+            MocaFunction func = entry.getValue();
+            CompletionItem item = new CompletionItem(func.name);
+            StringBuilder argBuf = new StringBuilder();
+            for (String argName : func.argumentNames) {
+                if (argName.compareTo(MocaFunction.VARIABLE_LENGTH_ARGUMENT) == 0) {
+                    argBuf.append("...");
+                    argBuf.append(",");
+                } else {
+                    argBuf.append(argName);
+                    argBuf.append(",");
+                }
+            }
+
+            // Remove last comma from argument buffer.
+            if (argBuf.length() > 0) {
+                argBuf.deleteCharAt(argBuf.length() - 1);
+            }
+
+            item.setDocumentation(String.format("%s(%s)\n\n%s", func.name, argBuf.toString(), func.description));
+            item.setKind(CompletionItemKind.Function);
+            items.add(item);
+        }
     }
 
     // MOCA SQL.

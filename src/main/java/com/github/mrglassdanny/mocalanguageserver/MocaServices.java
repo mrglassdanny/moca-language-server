@@ -227,6 +227,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     public CompletableFuture<SignatureHelp> signatureHelp(TextDocumentPositionParams params) {
         URI uri = URI.create(params.getTextDocument().getUri());
         TextDocumentIdentifier textDocument = params.getTextDocument();
+        String textDocumentContents = this.fileManager.getContents(uri);
         Position position = params.getPosition();
 
         // Perform preprocessing for each context before we go to provider.
@@ -273,8 +274,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                 }
 
                 try {
-                    return SignatureHelpProvider.provideSignatureHelp(params.getTextDocument(), params.getPosition(),
-                            this.mocaCompiler);
+                    return SignatureHelpProvider.provideSignatureHelp(params.getTextDocument(), textDocumentContents,
+                            params.getPosition(), this.mocaCompiler);
                 } finally {
                     if (originalSource != null) {
                         VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
@@ -289,8 +290,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         }
 
         // Now provide signature help.
-        return SignatureHelpProvider.provideSignatureHelp(params.getTextDocument(), params.getPosition(),
-                this.mocaCompiler);
+        return SignatureHelpProvider.provideSignatureHelp(params.getTextDocument(), textDocumentContents,
+                params.getPosition(), this.mocaCompiler);
     }
 
     @Override
