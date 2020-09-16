@@ -26,6 +26,7 @@ import org.codehaus.groovy.ast.ASTNode;
 import org.eclipse.lsp4j.CompletionItem;
 import org.eclipse.lsp4j.CompletionList;
 import org.eclipse.lsp4j.CompletionParams;
+import org.eclipse.lsp4j.DefinitionParams;
 import org.eclipse.lsp4j.DidChangeConfigurationParams;
 import org.eclipse.lsp4j.DidChangeTextDocumentParams;
 import org.eclipse.lsp4j.DidChangeWatchedFilesParams;
@@ -37,14 +38,15 @@ import org.eclipse.lsp4j.DocumentOnTypeFormattingParams;
 import org.eclipse.lsp4j.DocumentRangeFormattingParams;
 import org.eclipse.lsp4j.ExecuteCommandParams;
 import org.eclipse.lsp4j.Hover;
+import org.eclipse.lsp4j.HoverParams;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.LocationLink;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SignatureHelp;
+import org.eclipse.lsp4j.SignatureHelpParams;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
-import org.eclipse.lsp4j.TextDocumentPositionParams;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.VersionedTextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
@@ -133,7 +135,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     }
 
     @Override
-    public CompletableFuture<Hover> hover(TextDocumentPositionParams params) {
+    public CompletableFuture<Hover> hover(HoverParams params) {
 
         // Need to compile on hover for the following reason:
         // When the user has 2 or more opened MOCA files and they make a change to file
@@ -224,7 +226,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     }
 
     @Override
-    public CompletableFuture<SignatureHelp> signatureHelp(TextDocumentPositionParams params) {
+    public CompletableFuture<SignatureHelp> signatureHelp(SignatureHelpParams params) {
         URI uri = URI.create(params.getTextDocument().getUri());
         TextDocumentIdentifier textDocument = params.getTextDocument();
         String textDocumentContents = this.fileManager.getContents(uri);
@@ -345,7 +347,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
     @Override
     public CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> definition(
-            TextDocumentPositionParams params) {
+            DefinitionParams params) {
 
         // Need to compile on definition provide for the same reason as on hover ^.
         String uriStr = params.getTextDocument().getUri();
