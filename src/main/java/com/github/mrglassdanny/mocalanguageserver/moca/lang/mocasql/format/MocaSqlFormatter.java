@@ -133,7 +133,7 @@ public class MocaSqlFormatter {
             }
         }
 
-        // Whitespace and comments dealt with; process formatting.
+        // Whitespace dealt with; process formatting.
         // Code is pretty self-explanatory -- just look at each condition for specifics.
         for (int i = 0; i < tokens.size(); i++) {
 
@@ -672,7 +672,14 @@ public class MocaSqlFormatter {
                     if (isWord(token)) {
 
                         if (prevToken != null && isWord(prevToken)) {
-                            buf.append(' ');
+
+                            // Not ideal, but we are having some issues formatting moca integration
+                            // variables.
+                            // In order to deal with this, let's explictly check for a word with a ":i_" in
+                            // front of it.
+                            if (prevToken.getText().compareToIgnoreCase(":i_") != 0) {
+                                buf.append(' ');
+                            }
                         }
 
                         buf.append(tokenText);
