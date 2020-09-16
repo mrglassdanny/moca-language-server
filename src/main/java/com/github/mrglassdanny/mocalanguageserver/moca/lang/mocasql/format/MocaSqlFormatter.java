@@ -228,11 +228,13 @@ public class MocaSqlFormatter {
                 case MocaSqlLexer.MINUS:
                     if (nextToken != null && isWord(nextToken)) {
                         if (prevToken != null
-                                && (isOperator(prevToken) || prevToken.getType() == MocaSqlLexer.LR_BRACKET)) {
+                                && (isOperator(prevToken) || prevToken.getType() == MocaSqlLexer.LR_BRACKET
+                                        || prevToken.getType() == MocaSqlLexer.COMMA)) {
                             buf.append(tokenText);
                         } else {
                             buf.append(' ');
                             buf.append(tokenText);
+                            buf.append(' ');
                         }
                     } else {
                         buf.append(' ');

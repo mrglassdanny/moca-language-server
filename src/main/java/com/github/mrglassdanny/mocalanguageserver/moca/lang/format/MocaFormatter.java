@@ -220,6 +220,7 @@ public class MocaFormatter {
                         } else {
                             buf.append(' ');
                             buf.append(tokenText);
+                            buf.append(' ');
                         }
                     } else if (prevToken != null && prevToken.getType() == MocaLexer.AT) {
                         buf.append(tokenText);
