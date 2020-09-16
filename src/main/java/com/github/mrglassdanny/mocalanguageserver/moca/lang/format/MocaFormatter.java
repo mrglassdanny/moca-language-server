@@ -22,8 +22,9 @@ public class MocaFormatter {
             case MocaLexer.SPECIAL_COMMAND_ARG_DUMMY_ARG:
             case MocaLexer.ONSTACK:
             case MocaLexer.KEEP:
-            case MocaLexer.NUMERIC_LITERAL:
-            case MocaLexer.STRING_LITERAL:
+                // Not sure that I need these 2...
+                // case MocaLexer.NUMERIC_LITERAL:
+                // case MocaLexer.STRING_LITERAL:
             case MocaLexer.LIKE:
             case MocaLexer.IS:
             case MocaLexer.NOT:

@@ -15,10 +15,21 @@ public class MocaSqlFormatter {
 
     private static boolean isWord(Token token) {
 
+        // Since our word pattern above is not very strict, we need to make sure token
+        // is not explicitly a string type token.
+        switch (token.getType()) {
+            case MocaSqlLexer.STRING:
+            case MocaSqlLexer.DOUBLE_QUOTE_ID:
+                return false;
+            default:
+                break;
+        }
+
+        // Not a string type; carry on with normal analysis.
+
         Matcher wordMatcher = WORD_PATTERN.matcher(token.getText());
         if (!wordMatcher.find()) {
             switch (token.getType()) {
-                case MocaSqlLexer.STRING:
                 case MocaSqlLexer.MOCA_AT_STAR:
                 case MocaSqlLexer.AT:
                     return true;
