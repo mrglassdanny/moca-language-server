@@ -92,7 +92,7 @@ public class MocaFormatter {
         int mocasqlCompilationResultsVisited = 0;
         int groovyCompilationResultsVisited = 0;
 
-        // Whitespace and comments dealt with; process formatting.
+        // Whitespace dealt with; process formatting.
         // Code is pretty self-explanatory -- just look at each condition for specifics.
         for (int i = 0; i < tokens.size(); i++) {
 
