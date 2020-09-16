@@ -22,9 +22,7 @@ public class MocaFormatter {
             case MocaLexer.SPECIAL_COMMAND_ARG_DUMMY_ARG:
             case MocaLexer.ONSTACK:
             case MocaLexer.KEEP:
-                // Not sure that I need these 2...
-                // case MocaLexer.NUMERIC_LITERAL:
-                // case MocaLexer.STRING_LITERAL:
+            case MocaLexer.NUMERIC_LITERAL:
             case MocaLexer.LIKE:
             case MocaLexer.IS:
             case MocaLexer.NOT:
@@ -215,9 +213,9 @@ public class MocaFormatter {
 
                 case MocaLexer.MINUS:
 
-                    if (nextToken != null && isWord(nextToken)) {
-                        if (prevToken != null
-                                && (isOperator(prevToken) || prevToken.getType() == MocaLexer.LEFT_PAREN)) {
+                    if (nextToken != null && (isWord(nextToken))) {
+                        if (prevToken != null && (isOperator(prevToken) || prevToken.getType() == MocaLexer.LEFT_PAREN
+                                || prevToken.getType() == MocaLexer.COMMA)) {
                             buf.append(tokenText);
                         } else {
                             buf.append(' ');
