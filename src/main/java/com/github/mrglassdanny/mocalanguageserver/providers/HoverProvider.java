@@ -41,9 +41,9 @@ public class HoverProvider {
         hover.setContents(contents);
 
         // Analyze context id for position.
-        MocaLanguageContext ctx = mocaCompiler.getMocaLanguageContextFromPosition(position);
+        MocaLanguageContext mocaLanguageContext = mocaCompiler.getMocaLanguageContextFromPosition(position);
 
-        switch (ctx.id) {
+        switch (mocaLanguageContext.id) {
             case Moca:
 
                 // For hover, we need to make sure the moca compiliation result we are
@@ -133,7 +133,7 @@ public class HoverProvider {
                 // For hover, we need to make sure the moca sql compiliation result we are
                 // looking at has no errors.
                 MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
-                        .get(ctx.rangeIdx);
+                        .get(mocaLanguageContext.rangeIdx);
 
                 // Tables, views, aliases, and subqueries - oh my!
                 String mocaSqlWord = Positions.getWordAtPosition(textDocumentContents, position);
@@ -182,7 +182,7 @@ public class HoverProvider {
             case Groovy:
 
                 GroovyCompilationResult groovyCompilationResult = mocaCompiler.currentCompilationResult.groovyCompilationResults
-                        .get(ctx.rangeIdx);
+                        .get(mocaLanguageContext.rangeIdx);
 
                 if (groovyCompilationResult.astVisitor == null) {
                     // This shouldn't happen, but let's avoid an exception if something
@@ -191,7 +191,7 @@ public class HoverProvider {
                 }
 
                 ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
-                        position.getCharacter(), mocaCompiler.groovyRanges.get(ctx.rangeIdx));
+                        position.getCharacter(), mocaCompiler.groovyRanges.get(mocaLanguageContext.rangeIdx));
 
                 ASTNode definitionNode = GroovyASTUtils.getDefinition(offsetNode, false,
                         groovyCompilationResult.astVisitor);

@@ -159,22 +159,22 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         // Perform preprocessing for each context before we go to provider.
         // Analyze context id for position.
-        MocaLanguageContext ctx = this.mocaCompiler.getMocaLanguageContextFromPosition(position);
-        switch (ctx.id) {
+        MocaLanguageContext mocaLanguageContext = this.mocaCompiler.getMocaLanguageContextFromPosition(position);
+        switch (mocaLanguageContext.id) {
             case Moca:
                 return CompletionProvider.provideCompletion(params.getTextDocument(), params.getPosition(),
                         this.fileManager.getContents(URI.create(params.getTextDocument().getUri())),
-                        params.getContext(), this.mocaCompiler);
+                        params.getContext(), this.mocaCompiler, mocaLanguageContext);
             case MocaSql:
                 return CompletionProvider.provideCompletion(params.getTextDocument(), params.getPosition(),
                         this.fileManager.getContents(URI.create(params.getTextDocument().getUri())),
-                        params.getContext(), this.mocaCompiler);
+                        params.getContext(), this.mocaCompiler, mocaLanguageContext);
             case Groovy:
                 String originalSource = null;
                 GroovyCompilationResult groovyCompilationResult = this.mocaCompiler.currentCompilationResult.groovyCompilationResults
-                        .get(ctx.rangeIdx);
+                        .get(mocaLanguageContext.rangeIdx);
 
-                Range groovyScriptRange = this.mocaCompiler.groovyRanges.get(ctx.rangeIdx);
+                Range groovyScriptRange = this.mocaCompiler.groovyRanges.get(mocaLanguageContext.rangeIdx);
 
                 ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(
                         params.getPosition().getLine(), params.getPosition().getCharacter(), groovyScriptRange);
@@ -202,7 +202,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                     completionItems = CompletionProvider.provideCompletion(params.getTextDocument(),
                             params.getPosition(),
                             this.fileManager.getContents(URI.create(params.getTextDocument().getUri())),
-                            params.getContext(), this.mocaCompiler);
+                            params.getContext(), this.mocaCompiler, mocaLanguageContext);
                 } finally {
                     if (originalSource != null) {
                         VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
@@ -220,7 +220,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         // Shouldnt get here, but just in case we get here.
         return CompletionProvider.provideCompletion(params.getTextDocument(), params.getPosition(),
                 this.fileManager.getContents(URI.create(params.getTextDocument().getUri())), params.getContext(),
-                this.mocaCompiler);
+                this.mocaCompiler, mocaLanguageContext);
     }
 
     @Override
@@ -232,8 +232,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         // Perform preprocessing for each context before we go to provider.
         // Analyze context id for position.
-        MocaLanguageContext ctx = this.mocaCompiler.getMocaLanguageContextFromPosition(position);
-        switch (ctx.id) {
+        MocaLanguageContext mocaLanguageContext = this.mocaCompiler.getMocaLanguageContextFromPosition(position);
+        switch (mocaLanguageContext.id) {
             case Moca:
                 break;
             case MocaSql:
@@ -241,9 +241,9 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
             case Groovy:
                 String originalSource = null;
                 GroovyCompilationResult groovyCompilationResult = this.mocaCompiler.currentCompilationResult.groovyCompilationResults
-                        .get(ctx.rangeIdx);
+                        .get(mocaLanguageContext.rangeIdx);
 
-                Range groovyScriptRange = this.mocaCompiler.groovyRanges.get(ctx.rangeIdx);
+                Range groovyScriptRange = this.mocaCompiler.groovyRanges.get(mocaLanguageContext.rangeIdx);
 
                 ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(
                         params.getPosition().getLine(), params.getPosition().getCharacter(), groovyScriptRange);
@@ -275,7 +275,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
                 try {
                     return SignatureHelpProvider.provideSignatureHelp(params.getTextDocument(), textDocumentContents,
-                            params.getPosition(), this.mocaCompiler);
+                            params.getPosition(), this.mocaCompiler, mocaLanguageContext);
                 } finally {
                     if (originalSource != null) {
                         VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
@@ -291,7 +291,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         // Now provide signature help.
         return SignatureHelpProvider.provideSignatureHelp(params.getTextDocument(), textDocumentContents,
-                params.getPosition(), this.mocaCompiler);
+                params.getPosition(), this.mocaCompiler, mocaLanguageContext);
     }
 
     @Override

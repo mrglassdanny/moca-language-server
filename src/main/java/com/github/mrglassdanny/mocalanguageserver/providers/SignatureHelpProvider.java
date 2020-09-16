@@ -31,12 +31,10 @@ import org.eclipse.lsp4j.TextDocumentIdentifier;
 public class SignatureHelpProvider {
 
     public static CompletableFuture<SignatureHelp> provideSignatureHelp(TextDocumentIdentifier textDocument,
-            String textDocumentContents, Position position, MocaCompiler mocaCompiler) {
+            String textDocumentContents, Position position, MocaCompiler mocaCompiler,
+            MocaLanguageContext mocaLanguageContext) {
 
-        // Analyze context id for position.
-        MocaLanguageContext ctx = mocaCompiler.getMocaLanguageContextFromPosition(position);
-
-        switch (ctx.id) {
+        switch (mocaLanguageContext.id) {
             case Moca:
                 // Looking for moca functions.
 
@@ -111,16 +109,15 @@ public class SignatureHelpProvider {
                             }
                         }
                     }
-
                 }
             case MocaSql:
                 // Only thing we could do here would be functions...
                 break;
             case Groovy:
                 GroovyCompilationResult groovyCompilationResult = mocaCompiler.currentCompilationResult.groovyCompilationResults
-                        .get(ctx.rangeIdx);
+                        .get(mocaLanguageContext.rangeIdx);
 
-                Range groovyScriptRange = mocaCompiler.groovyRanges.get(ctx.rangeIdx);
+                Range groovyScriptRange = mocaCompiler.groovyRanges.get(mocaLanguageContext.rangeIdx);
 
                 if (groovyCompilationResult.astVisitor == null) {
                     // this shouldn't happen, but let's avoid an exception if something

@@ -36,9 +36,9 @@ public class DefinitionProvider {
             MocaCompiler mocaCompiler) {
 
         // Analyze context id for position.
-        MocaLanguageContext ctx = mocaCompiler.getMocaLanguageContextFromPosition(position);
+        MocaLanguageContext mocaLanguageContext = mocaCompiler.getMocaLanguageContextFromPosition(position);
 
-        switch (ctx.id) {
+        switch (mocaLanguageContext.id) {
             case Moca:
 
                 // For hover, we need to make sure the moca compiliation result we are
@@ -122,9 +122,9 @@ public class DefinitionProvider {
             case Groovy:
 
                 GroovyCompilationResult groovyCompilationResult = mocaCompiler.currentCompilationResult.groovyCompilationResults
-                        .get(ctx.rangeIdx);
+                        .get(mocaLanguageContext.rangeIdx);
 
-                Range groovyScriptRange = mocaCompiler.groovyRanges.get(ctx.rangeIdx);
+                Range groovyScriptRange = mocaCompiler.groovyRanges.get(mocaLanguageContext.rangeIdx);
 
                 if (groovyCompilationResult.astVisitor == null) {
                     // This shouldn't happen, but let's avoid an exception if something

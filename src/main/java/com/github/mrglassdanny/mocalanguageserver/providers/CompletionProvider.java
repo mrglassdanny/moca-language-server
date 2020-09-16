@@ -65,14 +65,11 @@ public class CompletionProvider {
 
     public static CompletableFuture<Either<List<CompletionItem>, CompletionList>> provideCompletion(
             TextDocumentIdentifier textDocument, Position position, String textDocumentContents,
-            CompletionContext context, MocaCompiler mocaCompiler) {
+            CompletionContext context, MocaCompiler mocaCompiler, MocaLanguageContext mocaLanguageContext) {
 
         List<CompletionItem> items = new ArrayList<>();
 
-        // Analyze context id for position.
-        MocaLanguageContext ctx = mocaCompiler.getMocaLanguageContextFromPosition(position);
-
-        switch (ctx.id) {
+        switch (mocaLanguageContext.id) {
             case Moca:
 
                 // For completion, we need to make sure the moca compiliation result we are
@@ -201,7 +198,7 @@ public class CompletionProvider {
                 // For completion, we need to make sure the mocasql compiliation result we are
                 // looking at has no errors.
                 MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
-                        .get(ctx.rangeIdx);
+                        .get(mocaLanguageContext.rangeIdx);
 
                 // If we do not have one, we need to quit now.
                 if (mocaSqlCompilationResult != null) {
@@ -292,9 +289,9 @@ public class CompletionProvider {
             case Groovy:
 
                 GroovyCompilationResult groovyCompilationResult = mocaCompiler.currentCompilationResult.groovyCompilationResults
-                        .get(ctx.rangeIdx);
+                        .get(mocaLanguageContext.rangeIdx);
 
-                Range groovyScriptRange = mocaCompiler.groovyRanges.get(ctx.rangeIdx);
+                Range groovyScriptRange = mocaCompiler.groovyRanges.get(mocaLanguageContext.rangeIdx);
 
                 if (groovyCompilationResult.astVisitor == null) {
                     // this shouldn't happen, but let's avoid an exception if something
