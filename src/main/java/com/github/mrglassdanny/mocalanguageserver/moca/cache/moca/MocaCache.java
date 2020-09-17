@@ -87,9 +87,8 @@ public class MocaCache {
                                         new String[] { "expr", "search1", "return1", "search2", "return2",
                                                         MocaFunction.VARIABLE_LENGTH_ARGUMENT, "default" },
                                         "If expr equals any search, it returns the corresponding return; if not, it returns default");
-                        MocaFunction iifFunc = new MocaFunction("iif",
-                                        new String[] { "expr", "true_expr", "false_expr" },
-                                        "If expr is true, it returns true_expr; if not, it returns false_expr");
+                        MocaFunction iifFunc = new MocaFunction("iif", new String[] { "expr", "trueExpr", "falseExpr" },
+                                        "If expr is true, it returns trueExpr; if not, it returns falseExpr");
                         MocaFunction nvlFunc = new MocaFunction("nvl", new String[] { "expr1", "expr2" },
                                         "If expr1 is not null, it returns expr1; otherwise, it returns expr2");
                         MocaFunction rowcountFunc = new MocaFunction("rowcount", new String[] { "resultset" },
