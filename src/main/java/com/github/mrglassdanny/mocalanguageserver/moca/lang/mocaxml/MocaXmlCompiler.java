@@ -8,7 +8,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlrutil.CaseChangi
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocaxml.ast.MocaXmlParseTreeListener;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocaxml.ast.MocaXmlSyntaxErrorListener;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ConsoleErrorListener;
 import org.antlr.v4.runtime.Token;
@@ -24,9 +24,9 @@ public class MocaXmlCompiler {
         MocaXmlCompilationResult compilationResult = new MocaXmlCompilationResult();
 
         compilationResult.mocaXmlTokens = new MocaXmlLexer(
-                new CaseChangingCharStream(new ANTLRInputStream(script), true)).getAllTokens();
+                new CaseChangingCharStream(CharStreams.fromString(script), true)).getAllTokens();
         compilationResult.mocaXmlParser = new MocaXmlParser(new CommonTokenStream(
-                new MocaXmlLexer(new CaseChangingCharStream(new ANTLRInputStream(script), true))));
+                new MocaXmlLexer(new CaseChangingCharStream(CharStreams.fromString(script), true))));
         compilationResult.mocaXmlSyntaxErrorListener = new MocaXmlSyntaxErrorListener();
         compilationResult.mocaXmlParser.addErrorListener(compilationResult.mocaXmlSyntaxErrorListener);
         // Since we do not want errors printing to the console, remove this

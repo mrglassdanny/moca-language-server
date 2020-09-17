@@ -1,4 +1,4 @@
-// Generated from Moca.g4 by ANTLR 4.5.3
+// Generated from Moca.g4 by ANTLR 4.8
 
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class MocaParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.5.3", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -42,36 +42,45 @@ public class MocaParser extends Parser {
 		RULE_environment_variable = 27, RULE_at_plus_variable = 28, RULE_at_star = 29, 
 		RULE_at_question = 30, RULE_at_bang = 31, RULE_integration_variable = 32, 
 		RULE_remote_keyword = 33, RULE_groovy_script = 34, RULE_sql_script = 35;
-	public static final String[] ruleNames = {
-		"moca_script", "sequence", "stream", "group", "statement", "block", "command", 
-		"verb_noun_clause", "verb_noun_clause_arg", "verb_noun_clause_arg_expr", 
-		"sub_sequence", "if_expr", "if_statement", "else_if_statement", "else_statement", 
-		"try_block", "catch_single_expr", "catch_multi_expr", "catch_sequence", 
-		"finally_sequence", "redirect_expr", "remote_expr", "suppress_warnings_expr", 
-		"expr", "function_expr", "literal_value", "at_variable", "environment_variable", 
-		"at_plus_variable", "at_star", "at_question", "at_bang", "integration_variable", 
-		"remote_keyword", "groovy_script", "sql_script"
-	};
+	private static String[] makeRuleNames() {
+		return new String[] {
+			"moca_script", "sequence", "stream", "group", "statement", "block", "command", 
+			"verb_noun_clause", "verb_noun_clause_arg", "verb_noun_clause_arg_expr", 
+			"sub_sequence", "if_expr", "if_statement", "else_if_statement", "else_statement", 
+			"try_block", "catch_single_expr", "catch_multi_expr", "catch_sequence", 
+			"finally_sequence", "redirect_expr", "remote_expr", "suppress_warnings_expr", 
+			"expr", "function_expr", "literal_value", "at_variable", "environment_variable", 
+			"at_plus_variable", "at_star", "at_question", "at_bang", "integration_variable", 
+			"remote_keyword", "groovy_script", "sql_script"
+		};
+	}
+	public static final String[] ruleNames = makeRuleNames();
 
-	private static final String[] _LITERAL_NAMES = {
-		null, null, null, "'('", "')'", "'{'", "'}'", "'['", "']'", "'<'", "'>'", 
-		"'<='", "'>='", "'<<'", "'>>'", "'+'", "'-'", "'*'", "'/'", "'%'", "'\\'", 
-		"'&'", "'^'", "'!'", "'?'", "':'", "';'", "','", "'|'", "'||'", "'#'", 
-		"'@'", "'='", null, "'.'", "'<<OVERSTACKED_ARGS>>'", "'#NO_ROWS'", "'#DUMMY_ARG'", 
-		"'@SuppressWarnings'"
-	};
-	private static final String[] _SYMBOLIC_NAMES = {
-		null, "DOUBLE_BRACKET_STRING", "SINGLE_BRACKET_STRING", "LEFT_PAREN", 
-		"RIGHT_PAREN", "LEFT_BRACE", "RIGHT_BRACE", "LEFT_BRACKET", "RIGHT_BRACKET", 
-		"LESS", "GREATER", "LESS_EQUAL", "GREATER_EQUAL", "DOUBLE_LESS", "DOUBLE_GREATER", 
-		"PLUS", "MINUS", "STAR", "DIV", "MOD", "BACKSLASH", "AMPERSAND", "CARET", 
-		"BANG", "QUESTION", "COLON", "SEMI_COLON", "COMMA", "PIPE", "DOUBLE_PIPE", 
-		"POUND", "AT", "EQUAL", "NOT_EQUAL", "DOT", "OVERSTACKED_ARGS", "SPECIAL_COMMAND_ARG_NO_ROWS", 
-		"SPECIAL_COMMAND_ARG_DUMMY_ARG", "SUPPRESS_WARNINGS", "WHERE", "AND", 
-		"LIKE", "OR", "IS", "NOT", "NULL", "IF", "ELSE", "TRY", "CATCH", "FINALLY", 
-		"REMOTE", "PARALLEL", "INPARALLEL", "ONSTACK", "KEEP", "NUMERIC_LITERAL", 
-		"STRING_LITERAL", "WORD", "BLOCK_COMMENT", "WHITESPACE", "NEWLINE"
-	};
+	private static String[] makeLiteralNames() {
+		return new String[] {
+			null, null, null, "'('", "')'", "'{'", "'}'", "'['", "']'", "'<'", "'>'", 
+			"'<='", "'>='", "'<<'", "'>>'", "'+'", "'-'", "'*'", "'/'", "'%'", "'\\'", 
+			"'&'", "'^'", "'!'", "'?'", "':'", "';'", "','", "'|'", "'||'", "'#'", 
+			"'@'", "'='", null, "'.'", "'<<OVERSTACKED_ARGS>>'", "'#NO_ROWS'", "'#DUMMY_ARG'", 
+			"'@SuppressWarnings'"
+		};
+	}
+	private static final String[] _LITERAL_NAMES = makeLiteralNames();
+	private static String[] makeSymbolicNames() {
+		return new String[] {
+			null, "DOUBLE_BRACKET_STRING", "SINGLE_BRACKET_STRING", "LEFT_PAREN", 
+			"RIGHT_PAREN", "LEFT_BRACE", "RIGHT_BRACE", "LEFT_BRACKET", "RIGHT_BRACKET", 
+			"LESS", "GREATER", "LESS_EQUAL", "GREATER_EQUAL", "DOUBLE_LESS", "DOUBLE_GREATER", 
+			"PLUS", "MINUS", "STAR", "DIV", "MOD", "BACKSLASH", "AMPERSAND", "CARET", 
+			"BANG", "QUESTION", "COLON", "SEMI_COLON", "COMMA", "PIPE", "DOUBLE_PIPE", 
+			"POUND", "AT", "EQUAL", "NOT_EQUAL", "DOT", "OVERSTACKED_ARGS", "SPECIAL_COMMAND_ARG_NO_ROWS", 
+			"SPECIAL_COMMAND_ARG_DUMMY_ARG", "SUPPRESS_WARNINGS", "WHERE", "AND", 
+			"LIKE", "OR", "IS", "NOT", "NULL", "IF", "ELSE", "TRY", "CATCH", "FINALLY", 
+			"REMOTE", "PARALLEL", "INPARALLEL", "ONSTACK", "KEEP", "NUMERIC_LITERAL", 
+			"STRING_LITERAL", "WORD", "BLOCK_COMMENT", "WHITESPACE", "NEWLINE"
+		};
+	}
+	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
 	/**
@@ -121,6 +130,7 @@ public class MocaParser extends Parser {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
+
 	public static class Moca_scriptContext extends ParserRuleContext {
 		public SequenceContext sequence() {
 			return getRuleContext(SequenceContext.class,0);
@@ -227,6 +237,7 @@ public class MocaParser extends Parser {
 				_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
 			}
 			setState(84);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==SEMI_COLON) {
 				{
@@ -453,6 +464,7 @@ public class MocaParser extends Parser {
 				setState(102);
 				block();
 				setState(104);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==CATCH) {
 					{
@@ -462,6 +474,7 @@ public class MocaParser extends Parser {
 				}
 
 				setState(107);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==DOUBLE_GREATER) {
 					{
@@ -523,6 +536,7 @@ public class MocaParser extends Parser {
 					_la = _input.LA(1);
 				}
 				setState(127);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==FINALLY) {
 					{
@@ -532,6 +546,7 @@ public class MocaParser extends Parser {
 				}
 
 				setState(130);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==DOUBLE_GREATER) {
 					{
@@ -619,6 +634,7 @@ public class MocaParser extends Parser {
 				case 2:
 					{
 					setState(138);
+					_errHandler.sync(this);
 					_la = _input.LA(1);
 					if (_la==SUPPRESS_WARNINGS) {
 						{
@@ -643,6 +659,7 @@ public class MocaParser extends Parser {
 				case 1:
 					{
 					setState(144);
+					_errHandler.sync(this);
 					_la = _input.LA(1);
 					if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LEFT_PAREN) | (1L << REMOTE) | (1L << PARALLEL) | (1L << INPARALLEL))) != 0)) {
 						{
@@ -656,6 +673,7 @@ public class MocaParser extends Parser {
 				case 2:
 					{
 					setState(147);
+					_errHandler.sync(this);
 					_la = _input.LA(1);
 					if (_la==SUPPRESS_WARNINGS) {
 						{
@@ -718,6 +736,7 @@ public class MocaParser extends Parser {
 		enterRule(_localctx, 12, RULE_command);
 		try {
 			setState(157);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case DOUBLE_BRACKET_STRING:
 				enterOuterAlt(_localctx, 1);
@@ -877,6 +896,7 @@ public class MocaParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(160);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==CARET) {
 				{
@@ -897,7 +917,10 @@ public class MocaParser extends Parser {
 					_la = _input.LA(1);
 					if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << AND) | (1L << LIKE) | (1L << OR) | (1L << IS) | (1L << NOT) | (1L << NULL) | (1L << IF) | (1L << ELSE) | (1L << TRY) | (1L << CATCH) | (1L << FINALLY) | (1L << REMOTE) | (1L << PARALLEL) | (1L << INPARALLEL) | (1L << ONSTACK) | (1L << KEEP) | (1L << WORD))) != 0)) ) {
 					_errHandler.recoverInline(this);
-					} else {
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
 						consume();
 					}
 					}
@@ -911,6 +934,7 @@ public class MocaParser extends Parser {
 				_alt = getInterpreter().adaptivePredict(_input,21,_ctx);
 			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 			setState(176);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WHERE) {
 				{
@@ -1003,6 +1027,7 @@ public class MocaParser extends Parser {
 		int _la;
 		try {
 			setState(208);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case OVERSTACKED_ARGS:
 				enterOuterAlt(_localctx, 1);
@@ -1066,6 +1091,7 @@ public class MocaParser extends Parser {
 				setState(187);
 				match(WORD);
 				setState(206);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case IS:
 					{
@@ -1073,6 +1099,7 @@ public class MocaParser extends Parser {
 					setState(188);
 					match(IS);
 					setState(190);
+					_errHandler.sync(this);
 					_la = _input.LA(1);
 					if (_la==NOT) {
 						{
@@ -1096,11 +1123,13 @@ public class MocaParser extends Parser {
 				case NOT:
 					{
 					setState(203);
+					_errHandler.sync(this);
 					switch (_input.LA(1)) {
 					case LIKE:
 					case NOT:
 						{
 						setState(194);
+						_errHandler.sync(this);
 						_la = _input.LA(1);
 						if (_la==NOT) {
 							{
@@ -1466,6 +1495,7 @@ public class MocaParser extends Parser {
 				setState(254);
 				verb_noun_clause_arg_expr(0);
 				setState(256);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==NOT) {
 					{
@@ -1491,6 +1521,7 @@ public class MocaParser extends Parser {
 				setState(263);
 				verb_noun_clause_arg_expr(0);
 				setState(268);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case IS:
 					{
@@ -1528,6 +1559,7 @@ public class MocaParser extends Parser {
 				setState(274);
 				match(IS);
 				setState(276);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==NOT) {
 					{
@@ -1577,7 +1609,10 @@ public class MocaParser extends Parser {
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << STAR) | (1L << DIV) | (1L << MOD))) != 0)) ) {
 						_errHandler.recoverInline(this);
-						} else {
+						}
+						else {
+							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+							_errHandler.reportMatch(this);
 							consume();
 						}
 						setState(288);
@@ -1594,7 +1629,10 @@ public class MocaParser extends Parser {
 						_la = _input.LA(1);
 						if ( !(_la==PLUS || _la==MINUS) ) {
 						_errHandler.recoverInline(this);
-						} else {
+						}
+						else {
+							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+							_errHandler.reportMatch(this);
 							consume();
 						}
 						setState(291);
@@ -1611,7 +1649,10 @@ public class MocaParser extends Parser {
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LESS) | (1L << GREATER) | (1L << LESS_EQUAL) | (1L << GREATER_EQUAL))) != 0)) ) {
 						_errHandler.recoverInline(this);
-						} else {
+						}
+						else {
+							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+							_errHandler.reportMatch(this);
 							consume();
 						}
 						setState(294);
@@ -2183,6 +2224,7 @@ public class MocaParser extends Parser {
 			setState(360);
 			match(LEFT_BRACE);
 			setState(362);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DOUBLE_BRACKET_STRING) | (1L << SINGLE_BRACKET_STRING) | (1L << LEFT_PAREN) | (1L << LEFT_BRACE) | (1L << CARET) | (1L << SUPPRESS_WARNINGS) | (1L << AND) | (1L << LIKE) | (1L << OR) | (1L << IS) | (1L << NOT) | (1L << NULL) | (1L << IF) | (1L << ELSE) | (1L << TRY) | (1L << CATCH) | (1L << FINALLY) | (1L << REMOTE) | (1L << PARALLEL) | (1L << INPARALLEL) | (1L << ONSTACK) | (1L << KEEP) | (1L << WORD))) != 0)) {
 				{
@@ -2702,7 +2744,10 @@ public class MocaParser extends Parser {
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << STAR) | (1L << DIV) | (1L << MOD))) != 0)) ) {
 						_errHandler.recoverInline(this);
-						} else {
+						}
+						else {
+							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+							_errHandler.reportMatch(this);
 							consume();
 						}
 						setState(422);
@@ -2719,7 +2764,10 @@ public class MocaParser extends Parser {
 						_la = _input.LA(1);
 						if ( !(_la==PLUS || _la==MINUS) ) {
 						_errHandler.recoverInline(this);
-						} else {
+						}
+						else {
+							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+							_errHandler.reportMatch(this);
 							consume();
 						}
 						setState(425);
@@ -2736,7 +2784,10 @@ public class MocaParser extends Parser {
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LESS) | (1L << GREATER) | (1L << LESS_EQUAL) | (1L << GREATER_EQUAL))) != 0)) ) {
 						_errHandler.recoverInline(this);
-						} else {
+						}
+						else {
+							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+							_errHandler.reportMatch(this);
 							consume();
 						}
 						setState(428);
@@ -2820,6 +2871,7 @@ public class MocaParser extends Parser {
 						setState(445);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
 						setState(447);
+						_errHandler.sync(this);
 						_la = _input.LA(1);
 						if (_la==NOT) {
 							{
@@ -2845,6 +2897,7 @@ public class MocaParser extends Parser {
 						setState(452);
 						match(IS);
 						setState(454);
+						_errHandler.sync(this);
 						_la = _input.LA(1);
 						if (_la==NOT) {
 							{
@@ -2864,6 +2917,7 @@ public class MocaParser extends Parser {
 						setState(457);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
 						setState(462);
+						_errHandler.sync(this);
 						switch (_input.LA(1)) {
 						case IS:
 							{
@@ -2955,6 +3009,7 @@ public class MocaParser extends Parser {
 			setState(470);
 			match(LEFT_PAREN);
 			setState(479);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DOUBLE_BRACKET_STRING) | (1L << SINGLE_BRACKET_STRING) | (1L << LEFT_PAREN) | (1L << MINUS) | (1L << BANG) | (1L << COLON) | (1L << AT) | (1L << NULL) | (1L << NUMERIC_LITERAL) | (1L << STRING_LITERAL) | (1L << WORD))) != 0)) {
 				{
@@ -3023,6 +3078,7 @@ public class MocaParser extends Parser {
 		enterRule(_localctx, 50, RULE_literal_value);
 		try {
 			setState(488);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case MINUS:
 				enterOuterAlt(_localctx, 1);
@@ -3109,6 +3165,7 @@ public class MocaParser extends Parser {
 			setState(490);
 			match(AT);
 			setState(492);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==MINUS) {
 				{
@@ -3266,12 +3323,16 @@ public class MocaParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==PLUS || _la==MOD) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			setState(511);
 			match(WORD);
 			setState(516);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case COLON:
 				{
@@ -3305,7 +3366,7 @@ public class MocaParser extends Parser {
 			case FINALLY:
 				break;
 			default:
-				throw new NoViableAltException(this);
+				break;
 			}
 			}
 		}
@@ -3528,6 +3589,7 @@ public class MocaParser extends Parser {
 		enterRule(_localctx, 66, RULE_remote_keyword);
 		try {
 			setState(534);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case LEFT_PAREN:
 				enterOuterAlt(_localctx, 1);
@@ -3705,7 +3767,7 @@ public class MocaParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3?\u021f\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3?\u021f\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -3748,11 +3810,11 @@ public class MocaParser extends Parser {
 		"\3\36\5\36\u0207\n\36\3\37\3\37\3\37\3 \3 \3 \3!\3!\3!\3\"\3\"\3\"\3#"+
 		"\3#\3#\3#\5#\u0219\n#\3$\3$\3%\3%\3%\2\4\24\60&\2\4\6\b\n\f\16\20\22\24"+
 		"\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>@BDFH\2\7\4\2*9<<\3\2\23\25\3"+
-		"\2\21\22\3\2\13\16\4\2\21\21\25\25\u0288\2J\3\2\2\2\4M\3\2\2\2\6X\3\2"+
-		"\2\2\b`\3\2\2\2\n\u0086\3\2\2\2\f\u009a\3\2\2\2\16\u009f\3\2\2\2\20\u00a2"+
-		"\3\2\2\2\22\u00d2\3\2\2\2\24\u011b\3\2\2\2\26\u0140\3\2\2\2\30\u0142\3"+
-		"\2\2\2\32\u014c\3\2\2\2\34\u014f\3\2\2\2\36\u0152\3\2\2\2 \u0155\3\2\2"+
-		"\2\"\u0158\3\2\2\2$\u015d\3\2\2\2&\u0169\3\2\2\2(\u0170\3\2\2\2*\u0175"+
+		"\2\21\22\3\2\13\16\4\2\21\21\25\25\2\u0288\2J\3\2\2\2\4M\3\2\2\2\6X\3"+
+		"\2\2\2\b`\3\2\2\2\n\u0086\3\2\2\2\f\u009a\3\2\2\2\16\u009f\3\2\2\2\20"+
+		"\u00a2\3\2\2\2\22\u00d2\3\2\2\2\24\u011b\3\2\2\2\26\u0140\3\2\2\2\30\u0142"+
+		"\3\2\2\2\32\u014c\3\2\2\2\34\u014f\3\2\2\2\36\u0152\3\2\2\2 \u0155\3\2"+
+		"\2\2\"\u0158\3\2\2\2$\u015d\3\2\2\2&\u0169\3\2\2\2(\u0170\3\2\2\2*\u0175"+
 		"\3\2\2\2,\u0178\3\2\2\2.\u017d\3\2\2\2\60\u01a1\3\2\2\2\62\u01d7\3\2\2"+
 		"\2\64\u01ea\3\2\2\2\66\u01ec\3\2\2\28\u01fb\3\2\2\2:\u01ff\3\2\2\2<\u0208"+
 		"\3\2\2\2>\u020b\3\2\2\2@\u020e\3\2\2\2B\u0211\3\2\2\2D\u0218\3\2\2\2F"+

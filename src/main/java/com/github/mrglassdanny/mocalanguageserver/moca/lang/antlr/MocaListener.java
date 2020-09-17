@@ -1,4 +1,4 @@
-// Generated from Moca.g4 by ANTLR 4.5.3
+// Generated from Moca.g4 by ANTLR 4.8
 
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 

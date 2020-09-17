@@ -1,4 +1,4 @@
-// Generated from MocaSql.g4 by ANTLR 4.5.3
+// Generated from MocaSql.g4 by ANTLR 4.8
 
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr;
 
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class MocaSqlParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.5.3", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -239,358 +239,371 @@ public class MocaSqlParser extends Parser {
 		RULE_null_or_default = 153, RULE_scalar_function_name = 154, RULE_data_type = 155, 
 		RULE_constant = 156, RULE_sign = 157, RULE_id = 158, RULE_simple_id = 159, 
 		RULE_comparison_operator = 160, RULE_assignment_operator = 161;
-	public static final String[] ruleNames = {
-		"moca_sql_script", "sql_clauses", "sql_clause", "dml_clause", "ddl_clause", 
-		"empty_statement", "drop_sequence", "alter_sequence", "create_sequence", 
-		"merge_statement", "merge_matched", "merge_not_matched", "delete_statement", 
-		"delete_statement_from", "insert_statement", "insert_statement_value", 
-		"select_statement", "update_statement", "output_clause", "output_dml_list_elem", 
-		"output_column_name", "create_index", "create_table", "table_options", 
-		"create_view", "view_attribute", "alter_table", "host", "drop_index", 
-		"drop_relational_or_xml_or_spatial_index", "drop_backward_compatible_index", 
-		"drop_table", "drop_view", "rowset_function_limited", "openquery", "opendatasource", 
-		"execute_statement", "execute_body", "execute_statement_arg", "execute_var_string", 
-		"column_def_table_constraints", "column_def_table_constraint", "column_definition", 
-		"materialized_column_definition", "column_constraint", "table_constraint", 
-		"on_delete", "on_update", "index_options", "index_option", "constant_LOCAL_ID", 
-		"expression", "moca_at_variable", "moca_environment_variable", "moca_at_minus_variable", 
-		"moca_at_plus_variable", "moca_at_star", "moca_integration_variable", 
-		"primitive_expression", "case_expression", "unary_operator_expression", 
-		"bracket_expression", "constant_expression", "subquery", "with_expression", 
-		"common_table_expression", "update_elem", "search_condition_list", "search_condition", 
-		"search_condition_and", "search_condition_not", "predicate", "query_expression", 
-		"sql_union", "query_specification", "top_clause", "top_percent", "top_count", 
-		"order_by_clause", "for_clause", "xml_common_directives", "order_by_expression", 
-		"group_by_item", "option_clause", "option", "optimize_for_arg", "select_list", 
-		"udt_method_arguments", "asterisk", "column_elem", "udt_elem", "expression_elem", 
-		"select_list_elem", "table_sources", "table_source", "table_source_item_joined", 
-		"table_source_item", "open_xml", "schema_declaration", "column_declaration", 
-		"change_table", "join_part", "pivot_clause", "unpivot_clause", "full_column_name_list", 
-		"table_name_with_hint", "rowset_function", "bulk_option", "derived_table", 
-		"function_call", "xml_data_type_methods", "value_method", "query_method", 
-		"exist_method", "modify_method", "nodes_method", "switch_section", "switch_search_condition_section", 
-		"as_column_alias", "as_table_alias", "table_alias", "with_table_hints", 
-		"insert_with_table_hints", "table_hint", "index_value", "column_alias_list", 
-		"column_alias", "table_value_constructor", "expression_list", "ranking_windowed_function", 
-		"aggregate_windowed_function", "analytic_windowed_function", "all_distinct_expression", 
-		"over_clause", "row_or_range_clause", "window_frame_extent", "window_frame_bound", 
-		"window_frame_preceding", "window_frame_following", "full_table_name", 
-		"table_name", "simple_name", "func_proc_name_schema", "func_proc_name_database_schema", 
-		"func_proc_name_server_database_schema", "ddl_object", "full_column_name", 
-		"column_name_list_with_order", "column_name_list", "cursor_name", "on_off", 
-		"clustered", "null_notnull", "null_or_default", "scalar_function_name", 
-		"data_type", "constant", "sign", "id", "simple_id", "comparison_operator", 
-		"assignment_operator"
-	};
+	private static String[] makeRuleNames() {
+		return new String[] {
+			"moca_sql_script", "sql_clauses", "sql_clause", "dml_clause", "ddl_clause", 
+			"empty_statement", "drop_sequence", "alter_sequence", "create_sequence", 
+			"merge_statement", "merge_matched", "merge_not_matched", "delete_statement", 
+			"delete_statement_from", "insert_statement", "insert_statement_value", 
+			"select_statement", "update_statement", "output_clause", "output_dml_list_elem", 
+			"output_column_name", "create_index", "create_table", "table_options", 
+			"create_view", "view_attribute", "alter_table", "host", "drop_index", 
+			"drop_relational_or_xml_or_spatial_index", "drop_backward_compatible_index", 
+			"drop_table", "drop_view", "rowset_function_limited", "openquery", "opendatasource", 
+			"execute_statement", "execute_body", "execute_statement_arg", "execute_var_string", 
+			"column_def_table_constraints", "column_def_table_constraint", "column_definition", 
+			"materialized_column_definition", "column_constraint", "table_constraint", 
+			"on_delete", "on_update", "index_options", "index_option", "constant_LOCAL_ID", 
+			"expression", "moca_at_variable", "moca_environment_variable", "moca_at_minus_variable", 
+			"moca_at_plus_variable", "moca_at_star", "moca_integration_variable", 
+			"primitive_expression", "case_expression", "unary_operator_expression", 
+			"bracket_expression", "constant_expression", "subquery", "with_expression", 
+			"common_table_expression", "update_elem", "search_condition_list", "search_condition", 
+			"search_condition_and", "search_condition_not", "predicate", "query_expression", 
+			"sql_union", "query_specification", "top_clause", "top_percent", "top_count", 
+			"order_by_clause", "for_clause", "xml_common_directives", "order_by_expression", 
+			"group_by_item", "option_clause", "option", "optimize_for_arg", "select_list", 
+			"udt_method_arguments", "asterisk", "column_elem", "udt_elem", "expression_elem", 
+			"select_list_elem", "table_sources", "table_source", "table_source_item_joined", 
+			"table_source_item", "open_xml", "schema_declaration", "column_declaration", 
+			"change_table", "join_part", "pivot_clause", "unpivot_clause", "full_column_name_list", 
+			"table_name_with_hint", "rowset_function", "bulk_option", "derived_table", 
+			"function_call", "xml_data_type_methods", "value_method", "query_method", 
+			"exist_method", "modify_method", "nodes_method", "switch_section", "switch_search_condition_section", 
+			"as_column_alias", "as_table_alias", "table_alias", "with_table_hints", 
+			"insert_with_table_hints", "table_hint", "index_value", "column_alias_list", 
+			"column_alias", "table_value_constructor", "expression_list", "ranking_windowed_function", 
+			"aggregate_windowed_function", "analytic_windowed_function", "all_distinct_expression", 
+			"over_clause", "row_or_range_clause", "window_frame_extent", "window_frame_bound", 
+			"window_frame_preceding", "window_frame_following", "full_table_name", 
+			"table_name", "simple_name", "func_proc_name_schema", "func_proc_name_database_schema", 
+			"func_proc_name_server_database_schema", "ddl_object", "full_column_name", 
+			"column_name_list_with_order", "column_name_list", "cursor_name", "on_off", 
+			"clustered", "null_notnull", "null_or_default", "scalar_function_name", 
+			"data_type", "constant", "sign", "id", "simple_id", "comparison_operator", 
+			"assignment_operator"
+		};
+	}
+	public static final String[] ruleNames = makeRuleNames();
 
-	private static final String[] _LITERAL_NAMES = {
-		null, "':I_'", "'ABSENT'", "'ADD'", "'AES'", "'ALL'", "'ALLOW_CONNECTIONS'", 
-		"'ALLOW_MULTIPLE_EVENT_LOSS'", "'ALLOW_SINGLE_EVENT_LOSS'", "'ALTER'", 
-		"'AND'", "'ANONYMOUS'", "'ANY'", "'APPEND'", "'APPLICATION'", "'AS'", 
-		"'ASC'", "'ASYMMETRIC'", "'ASYNCHRONOUS_COMMIT'", "'AUTHORIZATION'", "'AUTHENTICATION'", 
-		"'AUTOMATED_BACKUP_PREFERENCE'", "'AUTOMATIC'", "'AVAILABILITY_MODE'", 
-		"'\\'", "'BACKUP'", "'BEFORE'", "'BEGIN'", "'BETWEEN'", "'BLOCK'", "'BLOCKSIZE'", 
-		"'BLOCKING_HIERARCHY'", "'BREAK'", "'BROWSE'", "'BUFFER'", "'BUFFERCOUNT'", 
-		"'BULK'", "'BY'", "'CACHE'", "'CALLED'", "'CASCADE'", "'CASE'", "'CERTIFICATE'", 
-		"'CHANGETABLE'", "'CHANGES'", "'CHECK'", "'CHECKPOINT'", "'CHECK_POLICY'", 
-		"'CHECK_EXPIRATION'", "'CLASSIFIER_FUNCTION'", "'CLOSE'", "'CLUSTER'", 
-		"'CLUSTERED'", "'COALESCE'", "'COLLATE'", "'COLUMN'", "'COMPRESSION'", 
-		"'COMMIT'", "'COMPUTE'", "'CONFIGURATION'", "'CONSTRAINT'", "'CONTAINMENT'", 
-		"'CONTAINS'", "'CONTAINSTABLE'", "'CONTEXT'", "'CONTINUE'", "'CONTINUE_AFTER_ERROR'", 
-		"'CONTRACT'", "'CONTRACT_NAME'", "'CONVERSATION'", null, "'COPY_ONLY'", 
-		"'CREATE'", "'CROSS'", "'CURRENT'", "'CURRENT_DATE'", "'CURRENT_TIME'", 
-		"'CURRENT_TIMESTAMP'", "'CURRENT_USER'", "'CURSOR'", "'CYCLE'", "'DATA_COMPRESSION'", 
-		"'DATA_SOURCE'", "'DATABASE'", "'DATABASE_MIRRORING'", "'DBCC'", "'DEALLOCATE'", 
-		"'DECLARE'", "'DEFAULT'", "'DEFAULT_DATABASE'", "'DEFAULT_SCHEMA'", "'DELETE'", 
-		"'DENY'", "'DESC'", "'DIAGNOSTICS'", "'DIFFERENTIAL'", "'DISK'", "'DISTINCT'", 
-		"'DISTRIBUTED'", "'DOUBLE'", "'\\\\'", "'//'", "'DROP'", "'DTC_SUPPORT'", 
-		"'DUMP'", "'ELSE'", "'ENABLED'", "'END'", "'ENDPOINT'", "'ERRLVL'", "'ESCAPE'", 
-		"'ERROR'", "'EVENT'", null, "'EVENT_RETENTION_MODE'", "'EXCEPT'", "'EXECUTABLE_FILE'", 
-		null, "'EXISTS'", "'EXPIREDATE'", "'EXIT'", "'EXTENSION'", "'EXTERNAL'", 
-		"'EXTERNAL_ACCESS'", "'FAILOVER'", "'FAILURECONDITIONLEVEL'", "'FAN_IN'", 
-		"'FETCH'", "'FILE'", "'FILENAME'", "'FILLFACTOR'", "'FILE_SNAPSHOT'", 
-		"'FOR'", "'FORCESEEK'", "'FORCE_SERVICE_ALLOW_DATA_LOSS'", "'FOREIGN'", 
-		"'FREETEXT'", "'FREETEXTTABLE'", "'FROM'", "'FULL'", "'FUNCTION'", "'GET'", 
-		"'GOTO'", "'GOVERNOR'", "'GRANT'", "'GROUP'", "'HAVING'", "'HASHED'", 
-		"'HEALTHCHECKTIMEOUT'", "'IDENTITY'", "'IDENTITYCOL'", "'IDENTITY_INSERT'", 
-		"'IF'", "'IIF'", "'IN'", "'INCLUDE'", "'INCREMENT'", "'INDEX'", "'INFINITE'", 
-		"'INIT'", "'INNER'", "'INSERT'", "'INSTEAD'", "'INTERSECT'", "'INTO'", 
-		null, null, "'IS'", "'ISNULL'", "'JOIN'", "'KERBEROS'", "'KEY'", "'KEY_PATH'", 
-		"'KEY_STORE_PROVIDER_NAME'", "'KILL'", "'LANGUAGE'", "'LEFT'", "'LIBRARY'", 
-		"'LIFETIME'", "'LIKE'", "'LINENO'", "'LINUX'", "'LISTENER_IP'", "'LISTENER_PORT'", 
-		"'LOAD'", "'LOCAL_SERVICE_NAME'", "'LOG'", "'MATCHED'", "'MASTER'", "'MAX_MEMORY'", 
-		"'MAXTRANSFER'", "'MAXVALUE'", "'MAX_DISPATCH_LATENCY'", "'MAX_EVENT_SIZE'", 
-		"'MAX_SIZE'", "'MAX_OUTSTANDING_IO_PER_VOLUME'", "'MEDIADESCRIPTION'", 
-		"'MEDIANAME'", "'MEMBER'", "'MEMORY_PARTITION_MODE'", "'MERGE'", "'MESSAGE_FORWARDING'", 
-		"'MESSAGE_FORWARD_SIZE'", "'MINVALUE'", "'MIRROR'", "'MUST_CHANGE'", "'NATIONAL'", 
-		"'NEGOTIATE'", "'NOCHECK'", "'NOFORMAT'", "'NOINIT'", "'NONCLUSTERED'", 
-		"'NONE'", "'NOREWIND'", "'NOSKIP'", "'NOUNLOAD'", "'NO_CHECKSUM'", "'NO_COMPRESSION'", 
-		"'NO_EVENT_LOSS'", "'NOT'", "'NOTIFICATION'", "'NTLM'", "'NULL'", "'NULLIF'", 
-		"'OF'", "'OFF'", "'OFFSETS'", "'OLD_PASSWORD'", "'ON'", "'ON_FAILURE'", 
-		"'OPEN'", "'OPENDATASOURCE'", "'OPENQUERY'", "'OPENROWSET'", "'OPENXML'", 
-		"'OPTION'", "'OR'", "'ORDER'", "'OUTER'", "'OVER'", "'PAGE'", "'PARAM_NODE'", 
-		"'PARTIAL'", "'PASSWORD'", "'PERCENT'", "'PERMISSION_SET'", "'PER_CPU'", 
-		"'PER_DB'", "'PER_NODE'", "'PIVOT'", "'PLAN'", "'PLATFORM'", "'POLICY'", 
-		"'PRECISION'", "'PREDICATE'", "'PRIMARY'", "'PRINT'", "'PROC'", "'PROCEDURE'", 
-		"'PROCESS'", "'PUBLIC'", "'PYTHON'", "'R'", "'RAISERROR'", "'RAW'", "'READ'", 
-		"'READTEXT'", "'READ_WRITE_FILEGROUPS'", "'RECONFIGURE'", "'REFERENCES'", 
-		"'REGENERATE'", "'RELATED_CONVERSATION'", "'RELATED_CONVERSATION_GROUP'", 
-		"'REPLICATION'", "'REQUIRED'", "'RESET'", "'RESTART'", "'RESTORE'", "'RESTRICT'", 
-		"'RESUME'", "'RETAINDAYS'", "'RETURN'", "'RETURNS'", "'REVERT'", "'REVOKE'", 
-		"'REWIND'", "'RIGHT'", "'ROLLBACK'", "'ROLE'", "'ROWCOUNT'", "'ROWGUIDCOL'", 
-		"'RSA_512'", "'RSA_1024'", "'RSA_2048'", "'RSA_3072'", "'RSA_4096'", "'SAFETY'", 
-		"'RULE'", "'SAFE'", "'SAVE'", "'SCHEDULER'", "'SCHEMA'", "'SCHEME'", "'SECURITYAUDIT'", 
-		"'SELECT'", "'SEMANTICKEYPHRASETABLE'", "'SEMANTICSIMILARITYDETAILSTABLE'", 
-		"'SEMANTICSIMILARITYTABLE'", "'SERVER'", "'SERVICE'", "'SERVICE_BROKER'", 
-		"'SERVICE_NAME'", "'SESSION'", "'SESSION_USER'", "'SET'", "'SETUSER'", 
-		"'SHUTDOWN'", "'SID'", "'SKIP'", "'SOFTNUMA'", "'SOME'", "'SOURCE'", "'SPECIFICATION'", 
-		"'SPLIT'", "'SQLDUMPERFLAGS'", "'SQLDUMPERPATH'", "'SQLDUMPERTIMEOUTS'", 
-		"'STATISTICS'", "'STATE'", "'STATS'", "'START'", "'STARTED'", "'STARTUP_STATE'", 
-		"'STOP'", "'STOPPED'", "'STOP_ON_ERROR'", "'SUPPORTED'", "'SYSTEM_USER'", 
-		"'TABLE'", "'TABLESAMPLE'", "'TAPE'", "'TARGET'", "'TCP'", "'TEXTSIZE'", 
-		"'THEN'", "'TO'", "'TOP'", "'TRACK_CAUSALITY'", "'TRAN'", "'TRANSACTION'", 
-		"'TRANSFER'", "'TRIGGER'", "'TRUNCATE'", "'TSEQUAL'", "'UNCHECKED'", "'UNION'", 
-		"'UNIQUE'", "'UNLOCK'", "'UNPIVOT'", "'UNSAFE'", "'UPDATE'", "'UPDATETEXT'", 
-		"'URL'", "'USE'", "'USED'", "'USER'", "'VALUES'", "'VARYING'", "'VERBOSELOGGING'", 
-		"'VIEW'", "'VISIBILITY'", "'WAITFOR'", "'WHEN'", "'WHERE'", "'WHILE'", 
-		"'WINDOWS'", "'WITH'", "'WITHIN'", "'WITHOUT'", "'WITNESS'", "'WRITETEXT'", 
-		"'ABSOLUTE'", "'ACCENT_SENSITIVITY'", "'ACTION'", "'ACTIVATION'", "'ACTIVE'", 
-		"'ADDRESS'", "'AES_128'", "'AES_192'", "'AES_256'", "'AFFINITY'", "'AFTER'", 
-		"'AGGREGATE'", "'ALGORITHM'", "'ALLOW_ENCRYPTED_VALUE_MODIFICATIONS'", 
-		"'ALLOW_SNAPSHOT_ISOLATION'", "'ALLOWED'", "'ANSI_NULL_DEFAULT'", "'ANSI_NULLS'", 
-		"'ANSI_PADDING'", "'ANSI_WARNINGS'", "'APPLICATION_LOG'", "'APPLY'", "'ARITHABORT'", 
-		"'ASSEMBLY'", "'AUDIT'", "'AUDIT_GUID'", "'AUTO'", "'AUTO_CLEANUP'", "'AUTO_CLOSE'", 
-		"'AUTO_CREATE_STATISTICS'", "'AUTO_SHRINK'", "'AUTO_UPDATE_STATISTICS'", 
-		"'AUTO_UPDATE_STATISTICS_ASYNC'", "'AVAILABILITY'", "'AVG'", "'BACKUP_PRIORITY'", 
-		"'BEGIN_DIALOG'", "'BIGINT'", "'BINARY BASE64'", "'BINARY_CHECKSUM'", 
-		"'BINDING'", "'BLOB_STORAGE'", "'BROKER'", "'BROKER_INSTANCE'", "'BULK_LOGGED'", 
-		"'CALLER'", "'CAP_CPU_PERCENT'", null, "'CATALOG'", "'CATCH'", "'CHANGE_RETENTION'", 
-		"'CHANGE_TRACKING'", "'CHECKSUM'", "'CHECKSUM_AGG'", "'CLEANUP'", "'COLLECTION'", 
-		"'COLUMN_MASTER_KEY'", "'COMMITTED'", "'COMPATIBILITY_LEVEL'", "'CONCAT'", 
-		"'CONCAT_NULL_YIELDS_NULL'", "'CONTENT'", "'CONTROL'", "'COOKIE'", "'COUNT'", 
-		"'COUNT_BIG'", "'COUNTER'", "'CPU'", "'CREATE_NEW'", "'CREATION_DISPOSITION'", 
-		"'CREDENTIAL'", "'CRYPTOGRAPHIC'", "'CURSOR_CLOSE_ON_COMMIT'", "'CURSOR_DEFAULT'", 
-		"'DATA'", "'DATE_CORRELATION_OPTIMIZATION'", "'DATEADD'", "'DATEDIFF'", 
-		"'DATENAME'", "'DATEPART'", "'DAYS'", "'DB_CHAINING'", "'DB_FAILOVER'", 
-		"'DECRYPTION'", null, "'DEFAULT_FULLTEXT_LANGUAGE'", "'DEFAULT_LANGUAGE'", 
-		"'DELAY'", "'DELAYED_DURABILITY'", "'DELETED'", "'DENSE_RANK'", "'DEPENDENTS'", 
-		"'DES'", "'DESCRIPTION'", "'DESX'", "'DHCP'", "'DIALOG'", "'DIRECTORY_NAME'", 
-		"'DISABLE'", "'DISABLE_BROKER'", "'DISABLED'", null, "'DOCUMENT'", "'DYNAMIC'", 
-		"'ELEMENTS'", "'EMERGENCY'", "'EMPTY'", "'ENABLE'", "'ENABLE_BROKER'", 
-		"'ENCRYPTED_VALUE'", "'ENCRYPTION'", "'ENDPOINT_URL'", "'ERROR_BROKER_CONVERSATIONS'", 
-		"'EXCLUSIVE'", "'EXECUTABLE'", "'EXIST'", "'EXPAND'", "'EXPIRY_DATE'", 
-		"'EXPLICIT'", "'FAIL_OPERATION'", "'FAILOVER_MODE'", "'FAILURE'", "'FAILURE_CONDITION_LEVEL'", 
-		"'FAST'", "'FAST_FORWARD'", "'FILEGROUP'", "'FILEGROWTH'", "'FILEPATH'", 
-		"'FILESTREAM'", "'FILTER'", "'FIRST'", "'FIRST_VALUE'", "'FOLLOWING'", 
-		"'FORCE'", "'FORCE_FAILOVER_ALLOW_DATA_LOSS'", "'FORCED'", "'FORMAT'", 
-		"'FORWARD_ONLY'", "'FULLSCAN'", "'FULLTEXT'", "'GB'", "'GETDATE'", "'GETUTCDATE'", 
-		"'GLOBAL'", "'GO'", "'GROUP_MAX_REQUESTS'", "'GROUPING'", "'GROUPING_ID'", 
-		"'HADR'", "'HASH'", "'HEALTH_CHECK_TIMEOUT'", "'HIGH'", "'HONOR_BROKER_PRIORITY'", 
-		"'HOURS'", "'IDENTITY_VALUE'", "'IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX'", 
-		"'IMMEDIATE'", "'IMPERSONATE'", "'IMPORTANCE'", "'INCLUDE_NULL_VALUES'", 
-		"'INCREMENTAL'", "'INITIATOR'", "'INPUT'", "'INSENSITIVE'", "'INSERTED'", 
-		"'INT'", "'IP'", "'ISOLATION'", "'JOB'", "'JSON'", "'KB'", "'KEEP'", "'KEEPFIXED'", 
-		"'KEY_SOURCE'", "'KEYS'", "'KEYSET'", "'LAG'", "'LAST'", "'LAST_VALUE'", 
-		"'LEAD'", "'LEVEL'", "'LIST'", "'LISTENER'", "'LISTENER_URL'", "'LOB_COMPACTION'", 
-		"'LOCAL'", "'LOCATION'", "'LOCK'", "'LOCK_ESCALATION'", "'LOGIN'", "'LOOP'", 
-		"'LOW'", "'MANUAL'", "'MARK'", "'MATERIALIZED'", "'MAX'", "'MAX_CPU_PERCENT'", 
-		"'MAX_DOP'", "'MAX_FILES'", "'MAX_IOPS_PER_VOLUME'", "'MAX_MEMORY_PERCENT'", 
-		"'MAX_PROCESSES'", "'MAX_QUEUE_READERS'", "'MAX_ROLLOVER_FILES'", "'MAXDOP'", 
-		"'MAXRECURSION'", "'MAXSIZE'", "'MB'", "'MEDIUM'", "'MEMORY_OPTIMIZED_DATA'", 
-		"'MESSAGE'", "'MIN'", "'MIN_ACTIVE_ROWVERSION'", "'MIN_CPU_PERCENT'", 
-		"'MIN_IOPS_PER_VOLUME'", "'MIN_MEMORY_PERCENT'", "'MINUTES'", "'MIRROR_ADDRESS'", 
-		"'MIXED_PAGE_ALLOCATION'", "'MODE'", "'MODIFY'", "'MOVE'", "'MULTI_USER'", 
-		"'NAME'", "'NESTED_TRIGGERS'", "'NEW_ACCOUNT'", "'NEW_BROKER'", "'NEW_PASSWORD'", 
-		"'NEXT'", "'NO'", "'NO_TRUNCATE'", "'NO_WAIT'", "'NOCOUNT'", "'NODES'", 
-		"'NOEXPAND'", "'NON_TRANSACTED_ACCESS'", "'NORECOMPUTE'", "'NORECOVERY'", 
-		"'NOWAIT'", "'NTILE'", "'NUMANODE'", "'NUMBER'", "'NUMERIC_ROUNDABORT'", 
-		"'OBJECT'", "'OFFLINE'", "'OFFSET'", "'OLD_ACCOUNT'", "'ONLINE'", "'ONLY'", 
-		"'OPEN_EXISTING'", "'OPTIMISTIC'", "'OPTIMIZE'", "'OUT'", "'OUTPUT'", 
-		"'OVERRIDE'", "'OWNER'", "'PAGE_VERIFY'", "'PARAMETERIZATION'", "'PARTITION'", 
-		"'PARTITIONS'", "'PARTNER'", "'PATH'", "'POISON_MESSAGE_HANDLING'", "'POOL'", 
-		"'PORT'", "'PRECEDING'", "'PRIMARY_ROLE'", "'PRIOR'", "'PRIORITY'", "'PRIORITY_LEVEL'", 
-		"'PRIVATE'", "'PRIVATE_KEY'", "'PRIVILEGES'", "'PROCEDURE_NAME'", "'PROPERTY'", 
-		"'PROVIDER'", "'PROVIDER_KEY_NAME'", "'QUERY'", "'QUEUE'", "'QUEUE_DELAY'", 
-		"'QUOTED_IDENTIFIER'", "'RANGE'", "'RANK'", "'RC2'", "'RC4'", "'RC4_128'", 
-		"'READ_COMMITTED_SNAPSHOT'", "'READ_ONLY'", "'READ_ONLY_ROUTING_LIST'", 
-		"'READ_WRITE'", "'READONLY'", "'REBUILD'", "'RECEIVE'", "'RECOMPILE'", 
-		"'RECOVERY'", "'RECURSIVE_TRIGGERS'", "'RELATIVE'", "'REMOTE'", "'REMOTE_SERVICE_NAME'", 
-		"'REMOVE'", "'REORGANIZE'", "'REPEATABLE'", "'REPLICA'", "'REQUEST_MAX_CPU_TIME_SEC'", 
-		"'REQUEST_MAX_MEMORY_GRANT_PERCENT'", "'REQUEST_MEMORY_GRANT_TIMEOUT_SEC'", 
-		"'REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT'", "'RESERVE_DISK_SPACE'", 
-		"'RESOURCE'", "'RESOURCE_MANAGER_LOCATION'", "'RESTRICTED_USER'", "'RETENTION'", 
-		"'ROBUST'", "'ROOT'", "'ROUTE'", "'ROW'", "'ROW_NUMBER'", "'ROWGUID'", 
-		"'ROWS'", "'SAMPLE'", "'SCHEMABINDING'", "'SCOPED'", "'SCROLL'", "'SCROLL_LOCKS'", 
-		"'SEARCH'", "'SECONDARY'", "'SECONDARY_ONLY'", "'SECONDARY_ROLE'", "'SECONDS'", 
-		"'SECRET'", "'SECURITY'", "'SECURITY_LOG'", "'SEEDING_MODE'", "'SELF'", 
-		"'SEMI_SENSITIVE'", "'SEND'", "'SENT'", "'SEQUENCE'", "'SERIALIZABLE'", 
-		"'SESSION_TIMEOUT'", "'SETERROR'", "'SHARE'", "'SHOWPLAN'", "'SIGNATURE'", 
-		"'SIMPLE'", "'SINGLE_USER'", "'SIZE'", "'SMALLINT'", "'SNAPSHOT'", "'SPATIAL_WINDOW_MAX_CELLS'", 
-		"'STANDBY'", "'START_DATE'", "'STATIC'", "'STATS_STREAM'", "'STATUS'", 
-		"'STATUSONLY'", "'STDEV'", "'STDEVP'", "'STOPLIST'", "'STRING_AGG'", "'STUFF'", 
-		"'SUBJECT'", "'SUBSCRIPTION'", "'SUM'", "'SUSPEND'", "'SYMMETRIC'", "'SYNCHRONOUS_COMMIT'", 
-		"'SYNONYM'", "'SYSTEM'", "'TAKE'", "'TARGET_RECOVERY_TIME'", "'TB'", "'TEXTIMAGE_ON'", 
-		"'THROW'", "'TIES'", "'TIME'", "'TIMEOUT'", "'TIMER'", "'TINYINT'", "'TORN_PAGE_DETECTION'", 
-		"'TRANSFORM_NOISE_WORDS'", "'TRIPLE_DES'", "'TRIPLE_DES_3KEY'", "'TRUSTWORTHY'", 
-		"'TRY'", "'TSQL'", "'TWO_DIGIT_YEAR_CUTOFF'", "'TYPE'", "'TYPE_WARNING'", 
-		"'UNBOUNDED'", "'UNCOMMITTED'", "'UNKNOWN'", "'UNLIMITED'", "'UOW'", "'USING'", 
-		"'VALID_XML'", "'VALIDATION'", "'VALUE'", "'VAR'", "'VARP'", "'VIEW_METADATA'", 
-		"'VIEWS'", "'WAIT'", "'WELL_FORMED_XML'", "'WITHOUT_ARRAY_WRAPPER'", "'WORK'", 
-		"'WORKLOAD'", "'XML'", "'XMLDATA'", "'XMLNAMESPACES'", "'XMLSCHEMA'", 
-		"'XSINIL'", "'$ACTION'", "'ONSTACK'", "'IGNORE'", null, null, null, null, 
-		"'''", null, null, null, null, null, null, null, null, null, null, null, 
-		null, null, null, "'='", null, "'>'", "'<'", "'>='", "'<='", "'!'", "'+='", 
-		"'-='", "'*='", "'/='", "'%='", "'&='", "'^='", "'|='", "'||'", "'.'", 
-		"'_'", "'@'", "'#'", "'$'", "'('", "')'", "','", "';'", "':'", "'*'", 
-		"'/'", "'%'", "'+'", "'-'", "'~'", "'|'", "'&'", "'^'"
-	};
-	private static final String[] _SYMBOLIC_NAMES = {
-		null, null, "ABSENT", "ADD", "AES", "ALL", "ALLOW_CONNECTIONS", "ALLOW_MULTIPLE_EVENT_LOSS", 
-		"ALLOW_SINGLE_EVENT_LOSS", "ALTER", "AND", "ANONYMOUS", "ANY", "APPEND", 
-		"APPLICATION", "AS", "ASC", "ASYMMETRIC", "ASYNCHRONOUS_COMMIT", "AUTHORIZATION", 
-		"AUTHENTICATION", "AUTOMATED_BACKUP_PREFERENCE", "AUTOMATIC", "AVAILABILITY_MODE", 
-		"BACKSLASH", "BACKUP", "BEFORE", "BEGIN", "BETWEEN", "BLOCK", "BLOCKSIZE", 
-		"BLOCKING_HIERARCHY", "BREAK", "BROWSE", "BUFFER", "BUFFERCOUNT", "BULK", 
-		"BY", "CACHE", "CALLED", "CASCADE", "CASE", "CERTIFICATE", "CHANGETABLE", 
-		"CHANGES", "CHECK", "CHECKPOINT", "CHECK_POLICY", "CHECK_EXPIRATION", 
-		"CLASSIFIER_FUNCTION", "CLOSE", "CLUSTER", "CLUSTERED", "COALESCE", "COLLATE", 
-		"COLUMN", "COMPRESSION", "COMMIT", "COMPUTE", "CONFIGURATION", "CONSTRAINT", 
-		"CONTAINMENT", "CONTAINS", "CONTAINSTABLE", "CONTEXT", "CONTINUE", "CONTINUE_AFTER_ERROR", 
-		"CONTRACT", "CONTRACT_NAME", "CONVERSATION", "CONVERT", "COPY_ONLY", "CREATE", 
-		"CROSS", "CURRENT", "CURRENT_DATE", "CURRENT_TIME", "CURRENT_TIMESTAMP", 
-		"CURRENT_USER", "CURSOR", "CYCLE", "DATA_COMPRESSION", "DATA_SOURCE", 
-		"DATABASE", "DATABASE_MIRRORING", "DBCC", "DEALLOCATE", "DECLARE", "DEFAULT", 
-		"DEFAULT_DATABASE", "DEFAULT_SCHEMA", "DELETE", "DENY", "DESC", "DIAGNOSTICS", 
-		"DIFFERENTIAL", "DISK", "DISTINCT", "DISTRIBUTED", "DOUBLE", "DOUBLE_BACK_SLASH", 
-		"DOUBLE_FORWARD_SLASH", "DROP", "DTC_SUPPORT", "DUMP", "ELSE", "ENABLED", 
-		"END", "ENDPOINT", "ERRLVL", "ESCAPE", "ERROR", "EVENT", "EVENTDATA", 
-		"EVENT_RETENTION_MODE", "EXCEPT", "EXECUTABLE_FILE", "EXECUTE", "EXISTS", 
-		"EXPIREDATE", "EXIT", "EXTENSION", "EXTERNAL", "EXTERNAL_ACCESS", "FAILOVER", 
-		"FAILURECONDITIONLEVEL", "FAN_IN", "FETCH", "FILE", "FILENAME", "FILLFACTOR", 
-		"FILE_SNAPSHOT", "FOR", "FORCESEEK", "FORCE_SERVICE_ALLOW_DATA_LOSS", 
-		"FOREIGN", "FREETEXT", "FREETEXTTABLE", "FROM", "FULL", "FUNCTION", "GET", 
-		"GOTO", "GOVERNOR", "GRANT", "GROUP", "HAVING", "HASHED", "HEALTHCHECKTIMEOUT", 
-		"IDENTITY", "IDENTITYCOL", "IDENTITY_INSERT", "IF", "IIF", "IN", "INCLUDE", 
-		"INCREMENT", "INDEX", "INFINITE", "INIT", "INNER", "INSERT", "INSTEAD", 
-		"INTERSECT", "INTO", "IPV4_ADDR", "IPV6_ADDR", "IS", "ISNULL", "JOIN", 
-		"KERBEROS", "KEY", "KEY_PATH", "KEY_STORE_PROVIDER_NAME", "KILL", "LANGUAGE", 
-		"LEFT", "LIBRARY", "LIFETIME", "LIKE", "LINENO", "LINUX", "LISTENER_IP", 
-		"LISTENER_PORT", "LOAD", "LOCAL_SERVICE_NAME", "LOG", "MATCHED", "MASTER", 
-		"MAX_MEMORY", "MAXTRANSFER", "MAXVALUE", "MAX_DISPATCH_LATENCY", "MAX_EVENT_SIZE", 
-		"MAX_SIZE", "MAX_OUTSTANDING_IO_PER_VOLUME", "MEDIADESCRIPTION", "MEDIANAME", 
-		"MEMBER", "MEMORY_PARTITION_MODE", "MERGE", "MESSAGE_FORWARDING", "MESSAGE_FORWARD_SIZE", 
-		"MINVALUE", "MIRROR", "MUST_CHANGE", "NATIONAL", "NEGOTIATE", "NOCHECK", 
-		"NOFORMAT", "NOINIT", "NONCLUSTERED", "NONE", "NOREWIND", "NOSKIP", "NOUNLOAD", 
-		"NO_CHECKSUM", "NO_COMPRESSION", "NO_EVENT_LOSS", "NOT", "NOTIFICATION", 
-		"NTLM", "NULL", "NULLIF", "OF", "OFF", "OFFSETS", "OLD_PASSWORD", "ON", 
-		"ON_FAILURE", "OPEN", "OPENDATASOURCE", "OPENQUERY", "OPENROWSET", "OPENXML", 
-		"OPTION", "OR", "ORDER", "OUTER", "OVER", "PAGE", "PARAM_NODE", "PARTIAL", 
-		"PASSWORD", "PERCENT", "PERMISSION_SET", "PER_CPU", "PER_DB", "PER_NODE", 
-		"PIVOT", "PLAN", "PLATFORM", "POLICY", "PRECISION", "PREDICATE", "PRIMARY", 
-		"PRINT", "PROC", "PROCEDURE", "PROCESS", "PUBLIC", "PYTHON", "R", "RAISERROR", 
-		"RAW", "READ", "READTEXT", "READ_WRITE_FILEGROUPS", "RECONFIGURE", "REFERENCES", 
-		"REGENERATE", "RELATED_CONVERSATION", "RELATED_CONVERSATION_GROUP", "REPLICATION", 
-		"REQUIRED", "RESET", "RESTART", "RESTORE", "RESTRICT", "RESUME", "RETAINDAYS", 
-		"RETURN", "RETURNS", "REVERT", "REVOKE", "REWIND", "RIGHT", "ROLLBACK", 
-		"ROLE", "ROWCOUNT", "ROWGUIDCOL", "RSA_512", "RSA_1024", "RSA_2048", "RSA_3072", 
-		"RSA_4096", "SAFETY", "RULE", "SAFE", "SAVE", "SCHEDULER", "SCHEMA", "SCHEME", 
-		"SECURITYAUDIT", "SELECT", "SEMANTICKEYPHRASETABLE", "SEMANTICSIMILARITYDETAILSTABLE", 
-		"SEMANTICSIMILARITYTABLE", "SERVER", "SERVICE", "SERVICE_BROKER", "SERVICE_NAME", 
-		"SESSION", "SESSION_USER", "SET", "SETUSER", "SHUTDOWN", "SID", "SKIP_KEYWORD", 
-		"SOFTNUMA", "SOME", "SOURCE", "SPECIFICATION", "SPLIT", "SQLDUMPERFLAGS", 
-		"SQLDUMPERPATH", "SQLDUMPERTIMEOUT", "STATISTICS", "STATE", "STATS", "START", 
-		"STARTED", "STARTUP_STATE", "STOP", "STOPPED", "STOP_ON_ERROR", "SUPPORTED", 
-		"SYSTEM_USER", "TABLE", "TABLESAMPLE", "TAPE", "TARGET", "TCP", "TEXTSIZE", 
-		"THEN", "TO", "TOP", "TRACK_CAUSALITY", "TRAN", "TRANSACTION", "TRANSFER", 
-		"TRIGGER", "TRUNCATE", "TSEQUAL", "UNCHECKED", "UNION", "UNIQUE", "UNLOCK", 
-		"UNPIVOT", "UNSAFE", "UPDATE", "UPDATETEXT", "URL", "USE", "USED", "USER", 
-		"VALUES", "VARYING", "VERBOSELOGGING", "VIEW", "VISIBILITY", "WAITFOR", 
-		"WHEN", "WHERE", "WHILE", "WINDOWS", "WITH", "WITHIN", "WITHOUT", "WITNESS", 
-		"WRITETEXT", "ABSOLUTE", "ACCENT_SENSITIVITY", "ACTION", "ACTIVATION", 
-		"ACTIVE", "ADDRESS", "AES_128", "AES_192", "AES_256", "AFFINITY", "AFTER", 
-		"AGGREGATE", "ALGORITHM", "ALLOW_ENCRYPTED_VALUE_MODIFICATIONS", "ALLOW_SNAPSHOT_ISOLATION", 
-		"ALLOWED", "ANSI_NULL_DEFAULT", "ANSI_NULLS", "ANSI_PADDING", "ANSI_WARNINGS", 
-		"APPLICATION_LOG", "APPLY", "ARITHABORT", "ASSEMBLY", "AUDIT", "AUDIT_GUID", 
-		"AUTO", "AUTO_CLEANUP", "AUTO_CLOSE", "AUTO_CREATE_STATISTICS", "AUTO_SHRINK", 
-		"AUTO_UPDATE_STATISTICS", "AUTO_UPDATE_STATISTICS_ASYNC", "AVAILABILITY", 
-		"AVG", "BACKUP_PRIORITY", "BEGIN_DIALOG", "BIGINT", "BINARY_BASE64", "BINARY_CHECKSUM", 
-		"BINDING", "BLOB_STORAGE", "BROKER", "BROKER_INSTANCE", "BULK_LOGGED", 
-		"CALLER", "CAP_CPU_PERCENT", "CAST", "CATALOG", "CATCH", "CHANGE_RETENTION", 
-		"CHANGE_TRACKING", "CHECKSUM", "CHECKSUM_AGG", "CLEANUP", "COLLECTION", 
-		"COLUMN_MASTER_KEY", "COMMITTED", "COMPATIBILITY_LEVEL", "CONCAT", "CONCAT_NULL_YIELDS_NULL", 
-		"CONTENT", "CONTROL", "COOKIE", "COUNT", "COUNT_BIG", "COUNTER", "CPU", 
-		"CREATE_NEW", "CREATION_DISPOSITION", "CREDENTIAL", "CRYPTOGRAPHIC", "CURSOR_CLOSE_ON_COMMIT", 
-		"CURSOR_DEFAULT", "DATA", "DATE_CORRELATION_OPTIMIZATION", "DATEADD", 
-		"DATEDIFF", "DATENAME", "DATEPART", "DAYS", "DB_CHAINING", "DB_FAILOVER", 
-		"DECRYPTION", "DEFAULT_DOUBLE_QUOTE", "DEFAULT_FULLTEXT_LANGUAGE", "DEFAULT_LANGUAGE", 
-		"DELAY", "DELAYED_DURABILITY", "DELETED", "DENSE_RANK", "DEPENDENTS", 
-		"DES", "DESCRIPTION", "DESX", "DHCP", "DIALOG", "DIRECTORY_NAME", "DISABLE", 
-		"DISABLE_BROKER", "DISABLED", "DISK_DRIVE", "DOCUMENT", "DYNAMIC", "ELEMENTS", 
-		"EMERGENCY", "EMPTY", "ENABLE", "ENABLE_BROKER", "ENCRYPTED_VALUE", "ENCRYPTION", 
-		"ENDPOINT_URL", "ERROR_BROKER_CONVERSATIONS", "EXCLUSIVE", "EXECUTABLE", 
-		"EXIST", "EXPAND", "EXPIRY_DATE", "EXPLICIT", "FAIL_OPERATION", "FAILOVER_MODE", 
-		"FAILURE", "FAILURE_CONDITION_LEVEL", "FAST", "FAST_FORWARD", "FILEGROUP", 
-		"FILEGROWTH", "FILEPATH", "FILESTREAM", "FILTER", "FIRST", "FIRST_VALUE", 
-		"FOLLOWING", "FORCE", "FORCE_FAILOVER_ALLOW_DATA_LOSS", "FORCED", "FORMAT", 
-		"FORWARD_ONLY", "FULLSCAN", "FULLTEXT", "GB", "GETDATE", "GETUTCDATE", 
-		"GLOBAL", "GO", "GROUP_MAX_REQUESTS", "GROUPING", "GROUPING_ID", "HADR", 
-		"HASH", "HEALTH_CHECK_TIMEOUT", "HIGH", "HONOR_BROKER_PRIORITY", "HOURS", 
-		"IDENTITY_VALUE", "IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX", "IMMEDIATE", 
-		"IMPERSONATE", "IMPORTANCE", "INCLUDE_NULL_VALUES", "INCREMENTAL", "INITIATOR", 
-		"INPUT", "INSENSITIVE", "INSERTED", "INT", "IP", "ISOLATION", "JOB", "JSON", 
-		"KB", "KEEP", "KEEPFIXED", "KEY_SOURCE", "KEYS", "KEYSET", "LAG", "LAST", 
-		"LAST_VALUE", "LEAD", "LEVEL", "LIST", "LISTENER", "LISTENER_URL", "LOB_COMPACTION", 
-		"LOCAL", "LOCATION", "LOCK", "LOCK_ESCALATION", "LOGIN", "LOOP", "LOW", 
-		"MANUAL", "MARK", "MATERIALIZED", "MAX", "MAX_CPU_PERCENT", "MAX_DOP", 
-		"MAX_FILES", "MAX_IOPS_PER_VOLUME", "MAX_MEMORY_PERCENT", "MAX_PROCESSES", 
-		"MAX_QUEUE_READERS", "MAX_ROLLOVER_FILES", "MAXDOP", "MAXRECURSION", "MAXSIZE", 
-		"MB", "MEDIUM", "MEMORY_OPTIMIZED_DATA", "MESSAGE", "MIN", "MIN_ACTIVE_ROWVERSION", 
-		"MIN_CPU_PERCENT", "MIN_IOPS_PER_VOLUME", "MIN_MEMORY_PERCENT", "MINUTES", 
-		"MIRROR_ADDRESS", "MIXED_PAGE_ALLOCATION", "MODE", "MODIFY", "MOVE", "MULTI_USER", 
-		"NAME", "NESTED_TRIGGERS", "NEW_ACCOUNT", "NEW_BROKER", "NEW_PASSWORD", 
-		"NEXT", "NO", "NO_TRUNCATE", "NO_WAIT", "NOCOUNT", "NODES", "NOEXPAND", 
-		"NON_TRANSACTED_ACCESS", "NORECOMPUTE", "NORECOVERY", "NOWAIT", "NTILE", 
-		"NUMANODE", "NUMBER", "NUMERIC_ROUNDABORT", "OBJECT", "OFFLINE", "OFFSET", 
-		"OLD_ACCOUNT", "ONLINE", "ONLY", "OPEN_EXISTING", "OPTIMISTIC", "OPTIMIZE", 
-		"OUT", "OUTPUT", "OVERRIDE", "OWNER", "PAGE_VERIFY", "PARAMETERIZATION", 
-		"PARTITION", "PARTITIONS", "PARTNER", "PATH", "POISON_MESSAGE_HANDLING", 
-		"POOL", "PORT", "PRECEDING", "PRIMARY_ROLE", "PRIOR", "PRIORITY", "PRIORITY_LEVEL", 
-		"PRIVATE", "PRIVATE_KEY", "PRIVILEGES", "PROCEDURE_NAME", "PROPERTY", 
-		"PROVIDER", "PROVIDER_KEY_NAME", "QUERY", "QUEUE", "QUEUE_DELAY", "QUOTED_IDENTIFIER", 
-		"RANGE", "RANK", "RC2", "RC4", "RC4_128", "READ_COMMITTED_SNAPSHOT", "READ_ONLY", 
-		"READ_ONLY_ROUTING_LIST", "READ_WRITE", "READONLY", "REBUILD", "RECEIVE", 
-		"RECOMPILE", "RECOVERY", "RECURSIVE_TRIGGERS", "RELATIVE", "REMOTE", "REMOTE_SERVICE_NAME", 
-		"REMOVE", "REORGANIZE", "REPEATABLE", "REPLICA", "REQUEST_MAX_CPU_TIME_SEC", 
-		"REQUEST_MAX_MEMORY_GRANT_PERCENT", "REQUEST_MEMORY_GRANT_TIMEOUT_SEC", 
-		"REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT", "RESERVE_DISK_SPACE", "RESOURCE", 
-		"RESOURCE_MANAGER_LOCATION", "RESTRICTED_USER", "RETENTION", "ROBUST", 
-		"ROOT", "ROUTE", "ROW", "ROW_NUMBER", "ROWGUID", "ROWS", "SAMPLE", "SCHEMABINDING", 
-		"SCOPED", "SCROLL", "SCROLL_LOCKS", "SEARCH", "SECONDARY", "SECONDARY_ONLY", 
-		"SECONDARY_ROLE", "SECONDS", "SECRET", "SECURITY", "SECURITY_LOG", "SEEDING_MODE", 
-		"SELF", "SEMI_SENSITIVE", "SEND", "SENT", "SEQUENCE", "SERIALIZABLE", 
-		"SESSION_TIMEOUT", "SETERROR", "SHARE", "SHOWPLAN", "SIGNATURE", "SIMPLE", 
-		"SINGLE_USER", "SIZE", "SMALLINT", "SNAPSHOT", "SPATIAL_WINDOW_MAX_CELLS", 
-		"STANDBY", "START_DATE", "STATIC", "STATS_STREAM", "STATUS", "STATUSONLY", 
-		"STDEV", "STDEVP", "STOPLIST", "STRING_AGG", "STUFF", "SUBJECT", "SUBSCRIPTION", 
-		"SUM", "SUSPEND", "SYMMETRIC", "SYNCHRONOUS_COMMIT", "SYNONYM", "SYSTEM", 
-		"TAKE", "TARGET_RECOVERY_TIME", "TB", "TEXTIMAGE_ON", "THROW", "TIES", 
-		"TIME", "TIMEOUT", "TIMER", "TINYINT", "TORN_PAGE_DETECTION", "TRANSFORM_NOISE_WORDS", 
-		"TRIPLE_DES", "TRIPLE_DES_3KEY", "TRUSTWORTHY", "TRY", "TSQL", "TWO_DIGIT_YEAR_CUTOFF", 
-		"TYPE", "TYPE_WARNING", "UNBOUNDED", "UNCOMMITTED", "UNKNOWN", "UNLIMITED", 
-		"UOW", "USING", "VALID_XML", "VALIDATION", "VALUE", "VAR", "VARP", "VIEW_METADATA", 
-		"VIEWS", "WAIT", "WELL_FORMED_XML", "WITHOUT_ARRAY_WRAPPER", "WORK", "WORKLOAD", 
-		"XML", "XMLDATA", "XMLNAMESPACES", "XMLSCHEMA", "XSINIL", "DOLLAR_ACTION", 
-		"MOCA_ONSTACK", "MOCA_IGNORE", "SPACE", "COMMENT", "LINE_COMMENT", "DOUBLE_QUOTE_ID", 
-		"SINGLE_QUOTE", "SQUARE_BRACKET_ID", "LOCAL_ID", "MOCA_ENVIRONMENT_VARIABLE", 
-		"MOCA_AT_MINUS_VARIABLE", "MOCA_AT_PLUS_VARIABLE", "MOCA_AT_STAR", "DECIMAL", 
-		"ID", "QUOTED_URL", "QUOTED_HOST_AND_PORT", "STRING", "BINARY", "FLOAT", 
-		"REAL", "EQUAL", "NOT_EQUAL", "GREATER", "LESS", "GREATER_EQUAL", "LESS_EQUAL", 
-		"EXCLAMATION", "PLUS_ASSIGN", "MINUS_ASSIGN", "MULT_ASSIGN", "DIV_ASSIGN", 
-		"MOD_ASSIGN", "AND_ASSIGN", "XOR_ASSIGN", "OR_ASSIGN", "DOUBLE_BAR", "DOT", 
-		"UNDERLINE", "AT", "SHARP", "DOLLAR", "LR_BRACKET", "RR_BRACKET", "COMMA", 
-		"SEMI", "COLON", "STAR", "DIVIDE", "MODULE", "PLUS", "MINUS", "BIT_NOT", 
-		"BIT_OR", "BIT_AND", "BIT_XOR", "IPV4_OCTECT"
-	};
+	private static String[] makeLiteralNames() {
+		return new String[] {
+			null, "':I_'", "'ABSENT'", "'ADD'", "'AES'", "'ALL'", "'ALLOW_CONNECTIONS'", 
+			"'ALLOW_MULTIPLE_EVENT_LOSS'", "'ALLOW_SINGLE_EVENT_LOSS'", "'ALTER'", 
+			"'AND'", "'ANONYMOUS'", "'ANY'", "'APPEND'", "'APPLICATION'", "'AS'", 
+			"'ASC'", "'ASYMMETRIC'", "'ASYNCHRONOUS_COMMIT'", "'AUTHORIZATION'", 
+			"'AUTHENTICATION'", "'AUTOMATED_BACKUP_PREFERENCE'", "'AUTOMATIC'", "'AVAILABILITY_MODE'", 
+			"'\\'", "'BACKUP'", "'BEFORE'", "'BEGIN'", "'BETWEEN'", "'BLOCK'", "'BLOCKSIZE'", 
+			"'BLOCKING_HIERARCHY'", "'BREAK'", "'BROWSE'", "'BUFFER'", "'BUFFERCOUNT'", 
+			"'BULK'", "'BY'", "'CACHE'", "'CALLED'", "'CASCADE'", "'CASE'", "'CERTIFICATE'", 
+			"'CHANGETABLE'", "'CHANGES'", "'CHECK'", "'CHECKPOINT'", "'CHECK_POLICY'", 
+			"'CHECK_EXPIRATION'", "'CLASSIFIER_FUNCTION'", "'CLOSE'", "'CLUSTER'", 
+			"'CLUSTERED'", "'COALESCE'", "'COLLATE'", "'COLUMN'", "'COMPRESSION'", 
+			"'COMMIT'", "'COMPUTE'", "'CONFIGURATION'", "'CONSTRAINT'", "'CONTAINMENT'", 
+			"'CONTAINS'", "'CONTAINSTABLE'", "'CONTEXT'", "'CONTINUE'", "'CONTINUE_AFTER_ERROR'", 
+			"'CONTRACT'", "'CONTRACT_NAME'", "'CONVERSATION'", null, "'COPY_ONLY'", 
+			"'CREATE'", "'CROSS'", "'CURRENT'", "'CURRENT_DATE'", "'CURRENT_TIME'", 
+			"'CURRENT_TIMESTAMP'", "'CURRENT_USER'", "'CURSOR'", "'CYCLE'", "'DATA_COMPRESSION'", 
+			"'DATA_SOURCE'", "'DATABASE'", "'DATABASE_MIRRORING'", "'DBCC'", "'DEALLOCATE'", 
+			"'DECLARE'", "'DEFAULT'", "'DEFAULT_DATABASE'", "'DEFAULT_SCHEMA'", "'DELETE'", 
+			"'DENY'", "'DESC'", "'DIAGNOSTICS'", "'DIFFERENTIAL'", "'DISK'", "'DISTINCT'", 
+			"'DISTRIBUTED'", "'DOUBLE'", "'\\\\'", "'//'", "'DROP'", "'DTC_SUPPORT'", 
+			"'DUMP'", "'ELSE'", "'ENABLED'", "'END'", "'ENDPOINT'", "'ERRLVL'", "'ESCAPE'", 
+			"'ERROR'", "'EVENT'", null, "'EVENT_RETENTION_MODE'", "'EXCEPT'", "'EXECUTABLE_FILE'", 
+			null, "'EXISTS'", "'EXPIREDATE'", "'EXIT'", "'EXTENSION'", "'EXTERNAL'", 
+			"'EXTERNAL_ACCESS'", "'FAILOVER'", "'FAILURECONDITIONLEVEL'", "'FAN_IN'", 
+			"'FETCH'", "'FILE'", "'FILENAME'", "'FILLFACTOR'", "'FILE_SNAPSHOT'", 
+			"'FOR'", "'FORCESEEK'", "'FORCE_SERVICE_ALLOW_DATA_LOSS'", "'FOREIGN'", 
+			"'FREETEXT'", "'FREETEXTTABLE'", "'FROM'", "'FULL'", "'FUNCTION'", "'GET'", 
+			"'GOTO'", "'GOVERNOR'", "'GRANT'", "'GROUP'", "'HAVING'", "'HASHED'", 
+			"'HEALTHCHECKTIMEOUT'", "'IDENTITY'", "'IDENTITYCOL'", "'IDENTITY_INSERT'", 
+			"'IF'", "'IIF'", "'IN'", "'INCLUDE'", "'INCREMENT'", "'INDEX'", "'INFINITE'", 
+			"'INIT'", "'INNER'", "'INSERT'", "'INSTEAD'", "'INTERSECT'", "'INTO'", 
+			null, null, "'IS'", "'ISNULL'", "'JOIN'", "'KERBEROS'", "'KEY'", "'KEY_PATH'", 
+			"'KEY_STORE_PROVIDER_NAME'", "'KILL'", "'LANGUAGE'", "'LEFT'", "'LIBRARY'", 
+			"'LIFETIME'", "'LIKE'", "'LINENO'", "'LINUX'", "'LISTENER_IP'", "'LISTENER_PORT'", 
+			"'LOAD'", "'LOCAL_SERVICE_NAME'", "'LOG'", "'MATCHED'", "'MASTER'", "'MAX_MEMORY'", 
+			"'MAXTRANSFER'", "'MAXVALUE'", "'MAX_DISPATCH_LATENCY'", "'MAX_EVENT_SIZE'", 
+			"'MAX_SIZE'", "'MAX_OUTSTANDING_IO_PER_VOLUME'", "'MEDIADESCRIPTION'", 
+			"'MEDIANAME'", "'MEMBER'", "'MEMORY_PARTITION_MODE'", "'MERGE'", "'MESSAGE_FORWARDING'", 
+			"'MESSAGE_FORWARD_SIZE'", "'MINVALUE'", "'MIRROR'", "'MUST_CHANGE'", 
+			"'NATIONAL'", "'NEGOTIATE'", "'NOCHECK'", "'NOFORMAT'", "'NOINIT'", "'NONCLUSTERED'", 
+			"'NONE'", "'NOREWIND'", "'NOSKIP'", "'NOUNLOAD'", "'NO_CHECKSUM'", "'NO_COMPRESSION'", 
+			"'NO_EVENT_LOSS'", "'NOT'", "'NOTIFICATION'", "'NTLM'", "'NULL'", "'NULLIF'", 
+			"'OF'", "'OFF'", "'OFFSETS'", "'OLD_PASSWORD'", "'ON'", "'ON_FAILURE'", 
+			"'OPEN'", "'OPENDATASOURCE'", "'OPENQUERY'", "'OPENROWSET'", "'OPENXML'", 
+			"'OPTION'", "'OR'", "'ORDER'", "'OUTER'", "'OVER'", "'PAGE'", "'PARAM_NODE'", 
+			"'PARTIAL'", "'PASSWORD'", "'PERCENT'", "'PERMISSION_SET'", "'PER_CPU'", 
+			"'PER_DB'", "'PER_NODE'", "'PIVOT'", "'PLAN'", "'PLATFORM'", "'POLICY'", 
+			"'PRECISION'", "'PREDICATE'", "'PRIMARY'", "'PRINT'", "'PROC'", "'PROCEDURE'", 
+			"'PROCESS'", "'PUBLIC'", "'PYTHON'", "'R'", "'RAISERROR'", "'RAW'", "'READ'", 
+			"'READTEXT'", "'READ_WRITE_FILEGROUPS'", "'RECONFIGURE'", "'REFERENCES'", 
+			"'REGENERATE'", "'RELATED_CONVERSATION'", "'RELATED_CONVERSATION_GROUP'", 
+			"'REPLICATION'", "'REQUIRED'", "'RESET'", "'RESTART'", "'RESTORE'", "'RESTRICT'", 
+			"'RESUME'", "'RETAINDAYS'", "'RETURN'", "'RETURNS'", "'REVERT'", "'REVOKE'", 
+			"'REWIND'", "'RIGHT'", "'ROLLBACK'", "'ROLE'", "'ROWCOUNT'", "'ROWGUIDCOL'", 
+			"'RSA_512'", "'RSA_1024'", "'RSA_2048'", "'RSA_3072'", "'RSA_4096'", 
+			"'SAFETY'", "'RULE'", "'SAFE'", "'SAVE'", "'SCHEDULER'", "'SCHEMA'", 
+			"'SCHEME'", "'SECURITYAUDIT'", "'SELECT'", "'SEMANTICKEYPHRASETABLE'", 
+			"'SEMANTICSIMILARITYDETAILSTABLE'", "'SEMANTICSIMILARITYTABLE'", "'SERVER'", 
+			"'SERVICE'", "'SERVICE_BROKER'", "'SERVICE_NAME'", "'SESSION'", "'SESSION_USER'", 
+			"'SET'", "'SETUSER'", "'SHUTDOWN'", "'SID'", "'SKIP'", "'SOFTNUMA'", 
+			"'SOME'", "'SOURCE'", "'SPECIFICATION'", "'SPLIT'", "'SQLDUMPERFLAGS'", 
+			"'SQLDUMPERPATH'", "'SQLDUMPERTIMEOUTS'", "'STATISTICS'", "'STATE'", 
+			"'STATS'", "'START'", "'STARTED'", "'STARTUP_STATE'", "'STOP'", "'STOPPED'", 
+			"'STOP_ON_ERROR'", "'SUPPORTED'", "'SYSTEM_USER'", "'TABLE'", "'TABLESAMPLE'", 
+			"'TAPE'", "'TARGET'", "'TCP'", "'TEXTSIZE'", "'THEN'", "'TO'", "'TOP'", 
+			"'TRACK_CAUSALITY'", "'TRAN'", "'TRANSACTION'", "'TRANSFER'", "'TRIGGER'", 
+			"'TRUNCATE'", "'TSEQUAL'", "'UNCHECKED'", "'UNION'", "'UNIQUE'", "'UNLOCK'", 
+			"'UNPIVOT'", "'UNSAFE'", "'UPDATE'", "'UPDATETEXT'", "'URL'", "'USE'", 
+			"'USED'", "'USER'", "'VALUES'", "'VARYING'", "'VERBOSELOGGING'", "'VIEW'", 
+			"'VISIBILITY'", "'WAITFOR'", "'WHEN'", "'WHERE'", "'WHILE'", "'WINDOWS'", 
+			"'WITH'", "'WITHIN'", "'WITHOUT'", "'WITNESS'", "'WRITETEXT'", "'ABSOLUTE'", 
+			"'ACCENT_SENSITIVITY'", "'ACTION'", "'ACTIVATION'", "'ACTIVE'", "'ADDRESS'", 
+			"'AES_128'", "'AES_192'", "'AES_256'", "'AFFINITY'", "'AFTER'", "'AGGREGATE'", 
+			"'ALGORITHM'", "'ALLOW_ENCRYPTED_VALUE_MODIFICATIONS'", "'ALLOW_SNAPSHOT_ISOLATION'", 
+			"'ALLOWED'", "'ANSI_NULL_DEFAULT'", "'ANSI_NULLS'", "'ANSI_PADDING'", 
+			"'ANSI_WARNINGS'", "'APPLICATION_LOG'", "'APPLY'", "'ARITHABORT'", "'ASSEMBLY'", 
+			"'AUDIT'", "'AUDIT_GUID'", "'AUTO'", "'AUTO_CLEANUP'", "'AUTO_CLOSE'", 
+			"'AUTO_CREATE_STATISTICS'", "'AUTO_SHRINK'", "'AUTO_UPDATE_STATISTICS'", 
+			"'AUTO_UPDATE_STATISTICS_ASYNC'", "'AVAILABILITY'", "'AVG'", "'BACKUP_PRIORITY'", 
+			"'BEGIN_DIALOG'", "'BIGINT'", "'BINARY BASE64'", "'BINARY_CHECKSUM'", 
+			"'BINDING'", "'BLOB_STORAGE'", "'BROKER'", "'BROKER_INSTANCE'", "'BULK_LOGGED'", 
+			"'CALLER'", "'CAP_CPU_PERCENT'", null, "'CATALOG'", "'CATCH'", "'CHANGE_RETENTION'", 
+			"'CHANGE_TRACKING'", "'CHECKSUM'", "'CHECKSUM_AGG'", "'CLEANUP'", "'COLLECTION'", 
+			"'COLUMN_MASTER_KEY'", "'COMMITTED'", "'COMPATIBILITY_LEVEL'", "'CONCAT'", 
+			"'CONCAT_NULL_YIELDS_NULL'", "'CONTENT'", "'CONTROL'", "'COOKIE'", "'COUNT'", 
+			"'COUNT_BIG'", "'COUNTER'", "'CPU'", "'CREATE_NEW'", "'CREATION_DISPOSITION'", 
+			"'CREDENTIAL'", "'CRYPTOGRAPHIC'", "'CURSOR_CLOSE_ON_COMMIT'", "'CURSOR_DEFAULT'", 
+			"'DATA'", "'DATE_CORRELATION_OPTIMIZATION'", "'DATEADD'", "'DATEDIFF'", 
+			"'DATENAME'", "'DATEPART'", "'DAYS'", "'DB_CHAINING'", "'DB_FAILOVER'", 
+			"'DECRYPTION'", null, "'DEFAULT_FULLTEXT_LANGUAGE'", "'DEFAULT_LANGUAGE'", 
+			"'DELAY'", "'DELAYED_DURABILITY'", "'DELETED'", "'DENSE_RANK'", "'DEPENDENTS'", 
+			"'DES'", "'DESCRIPTION'", "'DESX'", "'DHCP'", "'DIALOG'", "'DIRECTORY_NAME'", 
+			"'DISABLE'", "'DISABLE_BROKER'", "'DISABLED'", null, "'DOCUMENT'", "'DYNAMIC'", 
+			"'ELEMENTS'", "'EMERGENCY'", "'EMPTY'", "'ENABLE'", "'ENABLE_BROKER'", 
+			"'ENCRYPTED_VALUE'", "'ENCRYPTION'", "'ENDPOINT_URL'", "'ERROR_BROKER_CONVERSATIONS'", 
+			"'EXCLUSIVE'", "'EXECUTABLE'", "'EXIST'", "'EXPAND'", "'EXPIRY_DATE'", 
+			"'EXPLICIT'", "'FAIL_OPERATION'", "'FAILOVER_MODE'", "'FAILURE'", "'FAILURE_CONDITION_LEVEL'", 
+			"'FAST'", "'FAST_FORWARD'", "'FILEGROUP'", "'FILEGROWTH'", "'FILEPATH'", 
+			"'FILESTREAM'", "'FILTER'", "'FIRST'", "'FIRST_VALUE'", "'FOLLOWING'", 
+			"'FORCE'", "'FORCE_FAILOVER_ALLOW_DATA_LOSS'", "'FORCED'", "'FORMAT'", 
+			"'FORWARD_ONLY'", "'FULLSCAN'", "'FULLTEXT'", "'GB'", "'GETDATE'", "'GETUTCDATE'", 
+			"'GLOBAL'", "'GO'", "'GROUP_MAX_REQUESTS'", "'GROUPING'", "'GROUPING_ID'", 
+			"'HADR'", "'HASH'", "'HEALTH_CHECK_TIMEOUT'", "'HIGH'", "'HONOR_BROKER_PRIORITY'", 
+			"'HOURS'", "'IDENTITY_VALUE'", "'IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX'", 
+			"'IMMEDIATE'", "'IMPERSONATE'", "'IMPORTANCE'", "'INCLUDE_NULL_VALUES'", 
+			"'INCREMENTAL'", "'INITIATOR'", "'INPUT'", "'INSENSITIVE'", "'INSERTED'", 
+			"'INT'", "'IP'", "'ISOLATION'", "'JOB'", "'JSON'", "'KB'", "'KEEP'", 
+			"'KEEPFIXED'", "'KEY_SOURCE'", "'KEYS'", "'KEYSET'", "'LAG'", "'LAST'", 
+			"'LAST_VALUE'", "'LEAD'", "'LEVEL'", "'LIST'", "'LISTENER'", "'LISTENER_URL'", 
+			"'LOB_COMPACTION'", "'LOCAL'", "'LOCATION'", "'LOCK'", "'LOCK_ESCALATION'", 
+			"'LOGIN'", "'LOOP'", "'LOW'", "'MANUAL'", "'MARK'", "'MATERIALIZED'", 
+			"'MAX'", "'MAX_CPU_PERCENT'", "'MAX_DOP'", "'MAX_FILES'", "'MAX_IOPS_PER_VOLUME'", 
+			"'MAX_MEMORY_PERCENT'", "'MAX_PROCESSES'", "'MAX_QUEUE_READERS'", "'MAX_ROLLOVER_FILES'", 
+			"'MAXDOP'", "'MAXRECURSION'", "'MAXSIZE'", "'MB'", "'MEDIUM'", "'MEMORY_OPTIMIZED_DATA'", 
+			"'MESSAGE'", "'MIN'", "'MIN_ACTIVE_ROWVERSION'", "'MIN_CPU_PERCENT'", 
+			"'MIN_IOPS_PER_VOLUME'", "'MIN_MEMORY_PERCENT'", "'MINUTES'", "'MIRROR_ADDRESS'", 
+			"'MIXED_PAGE_ALLOCATION'", "'MODE'", "'MODIFY'", "'MOVE'", "'MULTI_USER'", 
+			"'NAME'", "'NESTED_TRIGGERS'", "'NEW_ACCOUNT'", "'NEW_BROKER'", "'NEW_PASSWORD'", 
+			"'NEXT'", "'NO'", "'NO_TRUNCATE'", "'NO_WAIT'", "'NOCOUNT'", "'NODES'", 
+			"'NOEXPAND'", "'NON_TRANSACTED_ACCESS'", "'NORECOMPUTE'", "'NORECOVERY'", 
+			"'NOWAIT'", "'NTILE'", "'NUMANODE'", "'NUMBER'", "'NUMERIC_ROUNDABORT'", 
+			"'OBJECT'", "'OFFLINE'", "'OFFSET'", "'OLD_ACCOUNT'", "'ONLINE'", "'ONLY'", 
+			"'OPEN_EXISTING'", "'OPTIMISTIC'", "'OPTIMIZE'", "'OUT'", "'OUTPUT'", 
+			"'OVERRIDE'", "'OWNER'", "'PAGE_VERIFY'", "'PARAMETERIZATION'", "'PARTITION'", 
+			"'PARTITIONS'", "'PARTNER'", "'PATH'", "'POISON_MESSAGE_HANDLING'", "'POOL'", 
+			"'PORT'", "'PRECEDING'", "'PRIMARY_ROLE'", "'PRIOR'", "'PRIORITY'", "'PRIORITY_LEVEL'", 
+			"'PRIVATE'", "'PRIVATE_KEY'", "'PRIVILEGES'", "'PROCEDURE_NAME'", "'PROPERTY'", 
+			"'PROVIDER'", "'PROVIDER_KEY_NAME'", "'QUERY'", "'QUEUE'", "'QUEUE_DELAY'", 
+			"'QUOTED_IDENTIFIER'", "'RANGE'", "'RANK'", "'RC2'", "'RC4'", "'RC4_128'", 
+			"'READ_COMMITTED_SNAPSHOT'", "'READ_ONLY'", "'READ_ONLY_ROUTING_LIST'", 
+			"'READ_WRITE'", "'READONLY'", "'REBUILD'", "'RECEIVE'", "'RECOMPILE'", 
+			"'RECOVERY'", "'RECURSIVE_TRIGGERS'", "'RELATIVE'", "'REMOTE'", "'REMOTE_SERVICE_NAME'", 
+			"'REMOVE'", "'REORGANIZE'", "'REPEATABLE'", "'REPLICA'", "'REQUEST_MAX_CPU_TIME_SEC'", 
+			"'REQUEST_MAX_MEMORY_GRANT_PERCENT'", "'REQUEST_MEMORY_GRANT_TIMEOUT_SEC'", 
+			"'REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT'", "'RESERVE_DISK_SPACE'", 
+			"'RESOURCE'", "'RESOURCE_MANAGER_LOCATION'", "'RESTRICTED_USER'", "'RETENTION'", 
+			"'ROBUST'", "'ROOT'", "'ROUTE'", "'ROW'", "'ROW_NUMBER'", "'ROWGUID'", 
+			"'ROWS'", "'SAMPLE'", "'SCHEMABINDING'", "'SCOPED'", "'SCROLL'", "'SCROLL_LOCKS'", 
+			"'SEARCH'", "'SECONDARY'", "'SECONDARY_ONLY'", "'SECONDARY_ROLE'", "'SECONDS'", 
+			"'SECRET'", "'SECURITY'", "'SECURITY_LOG'", "'SEEDING_MODE'", "'SELF'", 
+			"'SEMI_SENSITIVE'", "'SEND'", "'SENT'", "'SEQUENCE'", "'SERIALIZABLE'", 
+			"'SESSION_TIMEOUT'", "'SETERROR'", "'SHARE'", "'SHOWPLAN'", "'SIGNATURE'", 
+			"'SIMPLE'", "'SINGLE_USER'", "'SIZE'", "'SMALLINT'", "'SNAPSHOT'", "'SPATIAL_WINDOW_MAX_CELLS'", 
+			"'STANDBY'", "'START_DATE'", "'STATIC'", "'STATS_STREAM'", "'STATUS'", 
+			"'STATUSONLY'", "'STDEV'", "'STDEVP'", "'STOPLIST'", "'STRING_AGG'", 
+			"'STUFF'", "'SUBJECT'", "'SUBSCRIPTION'", "'SUM'", "'SUSPEND'", "'SYMMETRIC'", 
+			"'SYNCHRONOUS_COMMIT'", "'SYNONYM'", "'SYSTEM'", "'TAKE'", "'TARGET_RECOVERY_TIME'", 
+			"'TB'", "'TEXTIMAGE_ON'", "'THROW'", "'TIES'", "'TIME'", "'TIMEOUT'", 
+			"'TIMER'", "'TINYINT'", "'TORN_PAGE_DETECTION'", "'TRANSFORM_NOISE_WORDS'", 
+			"'TRIPLE_DES'", "'TRIPLE_DES_3KEY'", "'TRUSTWORTHY'", "'TRY'", "'TSQL'", 
+			"'TWO_DIGIT_YEAR_CUTOFF'", "'TYPE'", "'TYPE_WARNING'", "'UNBOUNDED'", 
+			"'UNCOMMITTED'", "'UNKNOWN'", "'UNLIMITED'", "'UOW'", "'USING'", "'VALID_XML'", 
+			"'VALIDATION'", "'VALUE'", "'VAR'", "'VARP'", "'VIEW_METADATA'", "'VIEWS'", 
+			"'WAIT'", "'WELL_FORMED_XML'", "'WITHOUT_ARRAY_WRAPPER'", "'WORK'", "'WORKLOAD'", 
+			"'XML'", "'XMLDATA'", "'XMLNAMESPACES'", "'XMLSCHEMA'", "'XSINIL'", "'$ACTION'", 
+			"'ONSTACK'", "'IGNORE'", null, null, null, null, "'''", null, null, null, 
+			null, null, null, null, null, null, null, null, null, null, null, "'='", 
+			null, "'>'", "'<'", "'>='", "'<='", "'!'", "'+='", "'-='", "'*='", "'/='", 
+			"'%='", "'&='", "'^='", "'|='", "'||'", "'.'", "'_'", "'@'", "'#'", "'$'", 
+			"'('", "')'", "','", "';'", "':'", "'*'", "'/'", "'%'", "'+'", "'-'", 
+			"'~'", "'|'", "'&'", "'^'"
+		};
+	}
+	private static final String[] _LITERAL_NAMES = makeLiteralNames();
+	private static String[] makeSymbolicNames() {
+		return new String[] {
+			null, null, "ABSENT", "ADD", "AES", "ALL", "ALLOW_CONNECTIONS", "ALLOW_MULTIPLE_EVENT_LOSS", 
+			"ALLOW_SINGLE_EVENT_LOSS", "ALTER", "AND", "ANONYMOUS", "ANY", "APPEND", 
+			"APPLICATION", "AS", "ASC", "ASYMMETRIC", "ASYNCHRONOUS_COMMIT", "AUTHORIZATION", 
+			"AUTHENTICATION", "AUTOMATED_BACKUP_PREFERENCE", "AUTOMATIC", "AVAILABILITY_MODE", 
+			"BACKSLASH", "BACKUP", "BEFORE", "BEGIN", "BETWEEN", "BLOCK", "BLOCKSIZE", 
+			"BLOCKING_HIERARCHY", "BREAK", "BROWSE", "BUFFER", "BUFFERCOUNT", "BULK", 
+			"BY", "CACHE", "CALLED", "CASCADE", "CASE", "CERTIFICATE", "CHANGETABLE", 
+			"CHANGES", "CHECK", "CHECKPOINT", "CHECK_POLICY", "CHECK_EXPIRATION", 
+			"CLASSIFIER_FUNCTION", "CLOSE", "CLUSTER", "CLUSTERED", "COALESCE", "COLLATE", 
+			"COLUMN", "COMPRESSION", "COMMIT", "COMPUTE", "CONFIGURATION", "CONSTRAINT", 
+			"CONTAINMENT", "CONTAINS", "CONTAINSTABLE", "CONTEXT", "CONTINUE", "CONTINUE_AFTER_ERROR", 
+			"CONTRACT", "CONTRACT_NAME", "CONVERSATION", "CONVERT", "COPY_ONLY", 
+			"CREATE", "CROSS", "CURRENT", "CURRENT_DATE", "CURRENT_TIME", "CURRENT_TIMESTAMP", 
+			"CURRENT_USER", "CURSOR", "CYCLE", "DATA_COMPRESSION", "DATA_SOURCE", 
+			"DATABASE", "DATABASE_MIRRORING", "DBCC", "DEALLOCATE", "DECLARE", "DEFAULT", 
+			"DEFAULT_DATABASE", "DEFAULT_SCHEMA", "DELETE", "DENY", "DESC", "DIAGNOSTICS", 
+			"DIFFERENTIAL", "DISK", "DISTINCT", "DISTRIBUTED", "DOUBLE", "DOUBLE_BACK_SLASH", 
+			"DOUBLE_FORWARD_SLASH", "DROP", "DTC_SUPPORT", "DUMP", "ELSE", "ENABLED", 
+			"END", "ENDPOINT", "ERRLVL", "ESCAPE", "ERROR", "EVENT", "EVENTDATA", 
+			"EVENT_RETENTION_MODE", "EXCEPT", "EXECUTABLE_FILE", "EXECUTE", "EXISTS", 
+			"EXPIREDATE", "EXIT", "EXTENSION", "EXTERNAL", "EXTERNAL_ACCESS", "FAILOVER", 
+			"FAILURECONDITIONLEVEL", "FAN_IN", "FETCH", "FILE", "FILENAME", "FILLFACTOR", 
+			"FILE_SNAPSHOT", "FOR", "FORCESEEK", "FORCE_SERVICE_ALLOW_DATA_LOSS", 
+			"FOREIGN", "FREETEXT", "FREETEXTTABLE", "FROM", "FULL", "FUNCTION", "GET", 
+			"GOTO", "GOVERNOR", "GRANT", "GROUP", "HAVING", "HASHED", "HEALTHCHECKTIMEOUT", 
+			"IDENTITY", "IDENTITYCOL", "IDENTITY_INSERT", "IF", "IIF", "IN", "INCLUDE", 
+			"INCREMENT", "INDEX", "INFINITE", "INIT", "INNER", "INSERT", "INSTEAD", 
+			"INTERSECT", "INTO", "IPV4_ADDR", "IPV6_ADDR", "IS", "ISNULL", "JOIN", 
+			"KERBEROS", "KEY", "KEY_PATH", "KEY_STORE_PROVIDER_NAME", "KILL", "LANGUAGE", 
+			"LEFT", "LIBRARY", "LIFETIME", "LIKE", "LINENO", "LINUX", "LISTENER_IP", 
+			"LISTENER_PORT", "LOAD", "LOCAL_SERVICE_NAME", "LOG", "MATCHED", "MASTER", 
+			"MAX_MEMORY", "MAXTRANSFER", "MAXVALUE", "MAX_DISPATCH_LATENCY", "MAX_EVENT_SIZE", 
+			"MAX_SIZE", "MAX_OUTSTANDING_IO_PER_VOLUME", "MEDIADESCRIPTION", "MEDIANAME", 
+			"MEMBER", "MEMORY_PARTITION_MODE", "MERGE", "MESSAGE_FORWARDING", "MESSAGE_FORWARD_SIZE", 
+			"MINVALUE", "MIRROR", "MUST_CHANGE", "NATIONAL", "NEGOTIATE", "NOCHECK", 
+			"NOFORMAT", "NOINIT", "NONCLUSTERED", "NONE", "NOREWIND", "NOSKIP", "NOUNLOAD", 
+			"NO_CHECKSUM", "NO_COMPRESSION", "NO_EVENT_LOSS", "NOT", "NOTIFICATION", 
+			"NTLM", "NULL", "NULLIF", "OF", "OFF", "OFFSETS", "OLD_PASSWORD", "ON", 
+			"ON_FAILURE", "OPEN", "OPENDATASOURCE", "OPENQUERY", "OPENROWSET", "OPENXML", 
+			"OPTION", "OR", "ORDER", "OUTER", "OVER", "PAGE", "PARAM_NODE", "PARTIAL", 
+			"PASSWORD", "PERCENT", "PERMISSION_SET", "PER_CPU", "PER_DB", "PER_NODE", 
+			"PIVOT", "PLAN", "PLATFORM", "POLICY", "PRECISION", "PREDICATE", "PRIMARY", 
+			"PRINT", "PROC", "PROCEDURE", "PROCESS", "PUBLIC", "PYTHON", "R", "RAISERROR", 
+			"RAW", "READ", "READTEXT", "READ_WRITE_FILEGROUPS", "RECONFIGURE", "REFERENCES", 
+			"REGENERATE", "RELATED_CONVERSATION", "RELATED_CONVERSATION_GROUP", "REPLICATION", 
+			"REQUIRED", "RESET", "RESTART", "RESTORE", "RESTRICT", "RESUME", "RETAINDAYS", 
+			"RETURN", "RETURNS", "REVERT", "REVOKE", "REWIND", "RIGHT", "ROLLBACK", 
+			"ROLE", "ROWCOUNT", "ROWGUIDCOL", "RSA_512", "RSA_1024", "RSA_2048", 
+			"RSA_3072", "RSA_4096", "SAFETY", "RULE", "SAFE", "SAVE", "SCHEDULER", 
+			"SCHEMA", "SCHEME", "SECURITYAUDIT", "SELECT", "SEMANTICKEYPHRASETABLE", 
+			"SEMANTICSIMILARITYDETAILSTABLE", "SEMANTICSIMILARITYTABLE", "SERVER", 
+			"SERVICE", "SERVICE_BROKER", "SERVICE_NAME", "SESSION", "SESSION_USER", 
+			"SET", "SETUSER", "SHUTDOWN", "SID", "SKIP_KEYWORD", "SOFTNUMA", "SOME", 
+			"SOURCE", "SPECIFICATION", "SPLIT", "SQLDUMPERFLAGS", "SQLDUMPERPATH", 
+			"SQLDUMPERTIMEOUT", "STATISTICS", "STATE", "STATS", "START", "STARTED", 
+			"STARTUP_STATE", "STOP", "STOPPED", "STOP_ON_ERROR", "SUPPORTED", "SYSTEM_USER", 
+			"TABLE", "TABLESAMPLE", "TAPE", "TARGET", "TCP", "TEXTSIZE", "THEN", 
+			"TO", "TOP", "TRACK_CAUSALITY", "TRAN", "TRANSACTION", "TRANSFER", "TRIGGER", 
+			"TRUNCATE", "TSEQUAL", "UNCHECKED", "UNION", "UNIQUE", "UNLOCK", "UNPIVOT", 
+			"UNSAFE", "UPDATE", "UPDATETEXT", "URL", "USE", "USED", "USER", "VALUES", 
+			"VARYING", "VERBOSELOGGING", "VIEW", "VISIBILITY", "WAITFOR", "WHEN", 
+			"WHERE", "WHILE", "WINDOWS", "WITH", "WITHIN", "WITHOUT", "WITNESS", 
+			"WRITETEXT", "ABSOLUTE", "ACCENT_SENSITIVITY", "ACTION", "ACTIVATION", 
+			"ACTIVE", "ADDRESS", "AES_128", "AES_192", "AES_256", "AFFINITY", "AFTER", 
+			"AGGREGATE", "ALGORITHM", "ALLOW_ENCRYPTED_VALUE_MODIFICATIONS", "ALLOW_SNAPSHOT_ISOLATION", 
+			"ALLOWED", "ANSI_NULL_DEFAULT", "ANSI_NULLS", "ANSI_PADDING", "ANSI_WARNINGS", 
+			"APPLICATION_LOG", "APPLY", "ARITHABORT", "ASSEMBLY", "AUDIT", "AUDIT_GUID", 
+			"AUTO", "AUTO_CLEANUP", "AUTO_CLOSE", "AUTO_CREATE_STATISTICS", "AUTO_SHRINK", 
+			"AUTO_UPDATE_STATISTICS", "AUTO_UPDATE_STATISTICS_ASYNC", "AVAILABILITY", 
+			"AVG", "BACKUP_PRIORITY", "BEGIN_DIALOG", "BIGINT", "BINARY_BASE64", 
+			"BINARY_CHECKSUM", "BINDING", "BLOB_STORAGE", "BROKER", "BROKER_INSTANCE", 
+			"BULK_LOGGED", "CALLER", "CAP_CPU_PERCENT", "CAST", "CATALOG", "CATCH", 
+			"CHANGE_RETENTION", "CHANGE_TRACKING", "CHECKSUM", "CHECKSUM_AGG", "CLEANUP", 
+			"COLLECTION", "COLUMN_MASTER_KEY", "COMMITTED", "COMPATIBILITY_LEVEL", 
+			"CONCAT", "CONCAT_NULL_YIELDS_NULL", "CONTENT", "CONTROL", "COOKIE", 
+			"COUNT", "COUNT_BIG", "COUNTER", "CPU", "CREATE_NEW", "CREATION_DISPOSITION", 
+			"CREDENTIAL", "CRYPTOGRAPHIC", "CURSOR_CLOSE_ON_COMMIT", "CURSOR_DEFAULT", 
+			"DATA", "DATE_CORRELATION_OPTIMIZATION", "DATEADD", "DATEDIFF", "DATENAME", 
+			"DATEPART", "DAYS", "DB_CHAINING", "DB_FAILOVER", "DECRYPTION", "DEFAULT_DOUBLE_QUOTE", 
+			"DEFAULT_FULLTEXT_LANGUAGE", "DEFAULT_LANGUAGE", "DELAY", "DELAYED_DURABILITY", 
+			"DELETED", "DENSE_RANK", "DEPENDENTS", "DES", "DESCRIPTION", "DESX", 
+			"DHCP", "DIALOG", "DIRECTORY_NAME", "DISABLE", "DISABLE_BROKER", "DISABLED", 
+			"DISK_DRIVE", "DOCUMENT", "DYNAMIC", "ELEMENTS", "EMERGENCY", "EMPTY", 
+			"ENABLE", "ENABLE_BROKER", "ENCRYPTED_VALUE", "ENCRYPTION", "ENDPOINT_URL", 
+			"ERROR_BROKER_CONVERSATIONS", "EXCLUSIVE", "EXECUTABLE", "EXIST", "EXPAND", 
+			"EXPIRY_DATE", "EXPLICIT", "FAIL_OPERATION", "FAILOVER_MODE", "FAILURE", 
+			"FAILURE_CONDITION_LEVEL", "FAST", "FAST_FORWARD", "FILEGROUP", "FILEGROWTH", 
+			"FILEPATH", "FILESTREAM", "FILTER", "FIRST", "FIRST_VALUE", "FOLLOWING", 
+			"FORCE", "FORCE_FAILOVER_ALLOW_DATA_LOSS", "FORCED", "FORMAT", "FORWARD_ONLY", 
+			"FULLSCAN", "FULLTEXT", "GB", "GETDATE", "GETUTCDATE", "GLOBAL", "GO", 
+			"GROUP_MAX_REQUESTS", "GROUPING", "GROUPING_ID", "HADR", "HASH", "HEALTH_CHECK_TIMEOUT", 
+			"HIGH", "HONOR_BROKER_PRIORITY", "HOURS", "IDENTITY_VALUE", "IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX", 
+			"IMMEDIATE", "IMPERSONATE", "IMPORTANCE", "INCLUDE_NULL_VALUES", "INCREMENTAL", 
+			"INITIATOR", "INPUT", "INSENSITIVE", "INSERTED", "INT", "IP", "ISOLATION", 
+			"JOB", "JSON", "KB", "KEEP", "KEEPFIXED", "KEY_SOURCE", "KEYS", "KEYSET", 
+			"LAG", "LAST", "LAST_VALUE", "LEAD", "LEVEL", "LIST", "LISTENER", "LISTENER_URL", 
+			"LOB_COMPACTION", "LOCAL", "LOCATION", "LOCK", "LOCK_ESCALATION", "LOGIN", 
+			"LOOP", "LOW", "MANUAL", "MARK", "MATERIALIZED", "MAX", "MAX_CPU_PERCENT", 
+			"MAX_DOP", "MAX_FILES", "MAX_IOPS_PER_VOLUME", "MAX_MEMORY_PERCENT", 
+			"MAX_PROCESSES", "MAX_QUEUE_READERS", "MAX_ROLLOVER_FILES", "MAXDOP", 
+			"MAXRECURSION", "MAXSIZE", "MB", "MEDIUM", "MEMORY_OPTIMIZED_DATA", "MESSAGE", 
+			"MIN", "MIN_ACTIVE_ROWVERSION", "MIN_CPU_PERCENT", "MIN_IOPS_PER_VOLUME", 
+			"MIN_MEMORY_PERCENT", "MINUTES", "MIRROR_ADDRESS", "MIXED_PAGE_ALLOCATION", 
+			"MODE", "MODIFY", "MOVE", "MULTI_USER", "NAME", "NESTED_TRIGGERS", "NEW_ACCOUNT", 
+			"NEW_BROKER", "NEW_PASSWORD", "NEXT", "NO", "NO_TRUNCATE", "NO_WAIT", 
+			"NOCOUNT", "NODES", "NOEXPAND", "NON_TRANSACTED_ACCESS", "NORECOMPUTE", 
+			"NORECOVERY", "NOWAIT", "NTILE", "NUMANODE", "NUMBER", "NUMERIC_ROUNDABORT", 
+			"OBJECT", "OFFLINE", "OFFSET", "OLD_ACCOUNT", "ONLINE", "ONLY", "OPEN_EXISTING", 
+			"OPTIMISTIC", "OPTIMIZE", "OUT", "OUTPUT", "OVERRIDE", "OWNER", "PAGE_VERIFY", 
+			"PARAMETERIZATION", "PARTITION", "PARTITIONS", "PARTNER", "PATH", "POISON_MESSAGE_HANDLING", 
+			"POOL", "PORT", "PRECEDING", "PRIMARY_ROLE", "PRIOR", "PRIORITY", "PRIORITY_LEVEL", 
+			"PRIVATE", "PRIVATE_KEY", "PRIVILEGES", "PROCEDURE_NAME", "PROPERTY", 
+			"PROVIDER", "PROVIDER_KEY_NAME", "QUERY", "QUEUE", "QUEUE_DELAY", "QUOTED_IDENTIFIER", 
+			"RANGE", "RANK", "RC2", "RC4", "RC4_128", "READ_COMMITTED_SNAPSHOT", 
+			"READ_ONLY", "READ_ONLY_ROUTING_LIST", "READ_WRITE", "READONLY", "REBUILD", 
+			"RECEIVE", "RECOMPILE", "RECOVERY", "RECURSIVE_TRIGGERS", "RELATIVE", 
+			"REMOTE", "REMOTE_SERVICE_NAME", "REMOVE", "REORGANIZE", "REPEATABLE", 
+			"REPLICA", "REQUEST_MAX_CPU_TIME_SEC", "REQUEST_MAX_MEMORY_GRANT_PERCENT", 
+			"REQUEST_MEMORY_GRANT_TIMEOUT_SEC", "REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT", 
+			"RESERVE_DISK_SPACE", "RESOURCE", "RESOURCE_MANAGER_LOCATION", "RESTRICTED_USER", 
+			"RETENTION", "ROBUST", "ROOT", "ROUTE", "ROW", "ROW_NUMBER", "ROWGUID", 
+			"ROWS", "SAMPLE", "SCHEMABINDING", "SCOPED", "SCROLL", "SCROLL_LOCKS", 
+			"SEARCH", "SECONDARY", "SECONDARY_ONLY", "SECONDARY_ROLE", "SECONDS", 
+			"SECRET", "SECURITY", "SECURITY_LOG", "SEEDING_MODE", "SELF", "SEMI_SENSITIVE", 
+			"SEND", "SENT", "SEQUENCE", "SERIALIZABLE", "SESSION_TIMEOUT", "SETERROR", 
+			"SHARE", "SHOWPLAN", "SIGNATURE", "SIMPLE", "SINGLE_USER", "SIZE", "SMALLINT", 
+			"SNAPSHOT", "SPATIAL_WINDOW_MAX_CELLS", "STANDBY", "START_DATE", "STATIC", 
+			"STATS_STREAM", "STATUS", "STATUSONLY", "STDEV", "STDEVP", "STOPLIST", 
+			"STRING_AGG", "STUFF", "SUBJECT", "SUBSCRIPTION", "SUM", "SUSPEND", "SYMMETRIC", 
+			"SYNCHRONOUS_COMMIT", "SYNONYM", "SYSTEM", "TAKE", "TARGET_RECOVERY_TIME", 
+			"TB", "TEXTIMAGE_ON", "THROW", "TIES", "TIME", "TIMEOUT", "TIMER", "TINYINT", 
+			"TORN_PAGE_DETECTION", "TRANSFORM_NOISE_WORDS", "TRIPLE_DES", "TRIPLE_DES_3KEY", 
+			"TRUSTWORTHY", "TRY", "TSQL", "TWO_DIGIT_YEAR_CUTOFF", "TYPE", "TYPE_WARNING", 
+			"UNBOUNDED", "UNCOMMITTED", "UNKNOWN", "UNLIMITED", "UOW", "USING", "VALID_XML", 
+			"VALIDATION", "VALUE", "VAR", "VARP", "VIEW_METADATA", "VIEWS", "WAIT", 
+			"WELL_FORMED_XML", "WITHOUT_ARRAY_WRAPPER", "WORK", "WORKLOAD", "XML", 
+			"XMLDATA", "XMLNAMESPACES", "XMLSCHEMA", "XSINIL", "DOLLAR_ACTION", "MOCA_ONSTACK", 
+			"MOCA_IGNORE", "SPACE", "COMMENT", "LINE_COMMENT", "DOUBLE_QUOTE_ID", 
+			"SINGLE_QUOTE", "SQUARE_BRACKET_ID", "LOCAL_ID", "MOCA_ENVIRONMENT_VARIABLE", 
+			"MOCA_AT_MINUS_VARIABLE", "MOCA_AT_PLUS_VARIABLE", "MOCA_AT_STAR", "DECIMAL", 
+			"ID", "QUOTED_URL", "QUOTED_HOST_AND_PORT", "STRING", "BINARY", "FLOAT", 
+			"REAL", "EQUAL", "NOT_EQUAL", "GREATER", "LESS", "GREATER_EQUAL", "LESS_EQUAL", 
+			"EXCLAMATION", "PLUS_ASSIGN", "MINUS_ASSIGN", "MULT_ASSIGN", "DIV_ASSIGN", 
+			"MOD_ASSIGN", "AND_ASSIGN", "XOR_ASSIGN", "OR_ASSIGN", "DOUBLE_BAR", 
+			"DOT", "UNDERLINE", "AT", "SHARP", "DOLLAR", "LR_BRACKET", "RR_BRACKET", 
+			"COMMA", "SEMI", "COLON", "STAR", "DIVIDE", "MODULE", "PLUS", "MINUS", 
+			"BIT_NOT", "BIT_OR", "BIT_AND", "BIT_XOR", "IPV4_OCTECT"
+		};
+	}
+	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
 	/**
@@ -640,6 +653,7 @@ public class MocaSqlParser extends Parser {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
+
 	public static class Moca_sql_scriptContext extends ParserRuleContext {
 		public Sql_clausesContext sql_clauses() {
 			return getRuleContext(Sql_clausesContext.class,0);
@@ -792,6 +806,7 @@ public class MocaSqlParser extends Parser {
 		enterRule(_localctx, 4, RULE_sql_clause);
 		try {
 			setState(337);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case DELETE:
 			case INSERT:
@@ -1068,6 +1083,7 @@ public class MocaSqlParser extends Parser {
 	}
 
 	public static class Empty_statementContext extends ParserRuleContext {
+		public TerminalNode SEMI() { return getToken(MocaSqlParser.SEMI, 0); }
 		public Empty_statementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1158,6 +1174,7 @@ public class MocaSqlParser extends Parser {
 			setState(361);
 			match(SEQUENCE);
 			setState(364);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==IF) {
 				{
@@ -1169,10 +1186,12 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(380);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==CALLED || ((((_la - 81)) & ~0x3f) == 0 && ((1L << (_la - 81)) & ((1L << (DATA_COMPRESSION - 81)) | (1L << (EVENTDATA - 81)) | (1L << (EXPIREDATE - 81)) | (1L << (FILENAME - 81)) | (1L << (FILLFACTOR - 81)) | (1L << (FORCESEEK - 81)))) != 0) || ((((_la - 159)) & ~0x3f) == 0 && ((1L << (_la - 159)) & ((1L << (INIT - 159)) | (1L << (KEY - 159)) | (1L << (MASTER - 159)) | (1L << (MAX_MEMORY - 159)))) != 0) || ((((_la - 226)) & ~0x3f) == 0 && ((1L << (_la - 226)) & ((1L << (OFFSETS - 226)) | (1L << (PAGE - 226)) | (1L << (POLICY - 226)) | (1L << (PRECISION - 226)) | (1L << (PUBLIC - 226)) | (1L << (R - 226)) | (1L << (RAW - 226)) | (1L << (RETURN - 226)) | (1L << (RETURNS - 226)) | (1L << (ROLE - 226)) | (1L << (ROWCOUNT - 226)))) != 0) || ((((_la - 296)) & ~0x3f) == 0 && ((1L << (_la - 296)) & ((1L << (SAFETY - 296)) | (1L << (RULE - 296)) | (1L << (SERVER - 296)) | (1L << (SID - 296)) | (1L << (SOURCE - 296)) | (1L << (SPLIT - 296)) | (1L << (STATE - 296)) | (1L << (START - 296)) | (1L << (STOP - 296)) | (1L << (TARGET - 296)) | (1L << (TRAN - 296)))) != 0) || ((((_la - 362)) & ~0x3f) == 0 && ((1L << (_la - 362)) & ((1L << (URL - 362)) | (1L << (USER - 362)) | (1L << (ABSOLUTE - 362)) | (1L << (ACCENT_SENSITIVITY - 362)) | (1L << (ACTION - 362)) | (1L << (ACTIVATION - 362)) | (1L << (ACTIVE - 362)) | (1L << (ADDRESS - 362)) | (1L << (AES_128 - 362)) | (1L << (AES_192 - 362)) | (1L << (AES_256 - 362)) | (1L << (AFFINITY - 362)) | (1L << (AFTER - 362)) | (1L << (AGGREGATE - 362)) | (1L << (ALGORITHM - 362)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 362)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 362)) | (1L << (ALLOWED - 362)) | (1L << (ANSI_NULL_DEFAULT - 362)) | (1L << (ANSI_NULLS - 362)) | (1L << (ANSI_PADDING - 362)) | (1L << (ANSI_WARNINGS - 362)) | (1L << (APPLICATION_LOG - 362)) | (1L << (APPLY - 362)) | (1L << (ARITHABORT - 362)) | (1L << (ASSEMBLY - 362)) | (1L << (AUDIT - 362)) | (1L << (AUDIT_GUID - 362)) | (1L << (AUTO - 362)) | (1L << (AUTO_CLEANUP - 362)) | (1L << (AUTO_CLOSE - 362)) | (1L << (AUTO_CREATE_STATISTICS - 362)) | (1L << (AUTO_SHRINK - 362)) | (1L << (AUTO_UPDATE_STATISTICS - 362)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 362)) | (1L << (AVAILABILITY - 362)) | (1L << (AVG - 362)) | (1L << (BACKUP_PRIORITY - 362)) | (1L << (BEGIN_DIALOG - 362)) | (1L << (BIGINT - 362)) | (1L << (BINARY_BASE64 - 362)) | (1L << (BINARY_CHECKSUM - 362)) | (1L << (BINDING - 362)) | (1L << (BLOB_STORAGE - 362)) | (1L << (BROKER - 362)) | (1L << (BROKER_INSTANCE - 362)) | (1L << (BULK_LOGGED - 362)))) != 0) || ((((_la - 426)) & ~0x3f) == 0 && ((1L << (_la - 426)) & ((1L << (CALLER - 426)) | (1L << (CAP_CPU_PERCENT - 426)) | (1L << (CAST - 426)) | (1L << (CATALOG - 426)) | (1L << (CATCH - 426)) | (1L << (CHANGE_RETENTION - 426)) | (1L << (CHANGE_TRACKING - 426)) | (1L << (CHECKSUM - 426)) | (1L << (CHECKSUM_AGG - 426)) | (1L << (CLEANUP - 426)) | (1L << (COLLECTION - 426)) | (1L << (COLUMN_MASTER_KEY - 426)) | (1L << (COMMITTED - 426)) | (1L << (COMPATIBILITY_LEVEL - 426)) | (1L << (CONCAT - 426)) | (1L << (CONCAT_NULL_YIELDS_NULL - 426)) | (1L << (CONTENT - 426)) | (1L << (CONTROL - 426)) | (1L << (COOKIE - 426)) | (1L << (COUNT - 426)) | (1L << (COUNT_BIG - 426)) | (1L << (COUNTER - 426)) | (1L << (CPU - 426)) | (1L << (CREATE_NEW - 426)) | (1L << (CREATION_DISPOSITION - 426)) | (1L << (CREDENTIAL - 426)) | (1L << (CRYPTOGRAPHIC - 426)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 426)) | (1L << (CURSOR_DEFAULT - 426)) | (1L << (DATA - 426)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 426)) | (1L << (DATEADD - 426)) | (1L << (DATEDIFF - 426)) | (1L << (DATENAME - 426)) | (1L << (DATEPART - 426)) | (1L << (DAYS - 426)) | (1L << (DB_CHAINING - 426)) | (1L << (DB_FAILOVER - 426)) | (1L << (DECRYPTION - 426)) | (1L << (DEFAULT_DOUBLE_QUOTE - 426)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 426)) | (1L << (DEFAULT_LANGUAGE - 426)) | (1L << (DELAY - 426)) | (1L << (DELAYED_DURABILITY - 426)) | (1L << (DELETED - 426)) | (1L << (DENSE_RANK - 426)) | (1L << (DEPENDENTS - 426)) | (1L << (DES - 426)) | (1L << (DESCRIPTION - 426)) | (1L << (DESX - 426)) | (1L << (DHCP - 426)) | (1L << (DIALOG - 426)) | (1L << (DIRECTORY_NAME - 426)) | (1L << (DISABLE - 426)) | (1L << (DISABLE_BROKER - 426)) | (1L << (DISABLED - 426)) | (1L << (DISK_DRIVE - 426)) | (1L << (DOCUMENT - 426)) | (1L << (DYNAMIC - 426)) | (1L << (EMERGENCY - 426)) | (1L << (EMPTY - 426)) | (1L << (ENABLE - 426)) | (1L << (ENABLE_BROKER - 426)))) != 0) || ((((_la - 490)) & ~0x3f) == 0 && ((1L << (_la - 490)) & ((1L << (ENCRYPTED_VALUE - 490)) | (1L << (ENCRYPTION - 490)) | (1L << (ENDPOINT_URL - 490)) | (1L << (ERROR_BROKER_CONVERSATIONS - 490)) | (1L << (EXCLUSIVE - 490)) | (1L << (EXECUTABLE - 490)) | (1L << (EXIST - 490)) | (1L << (EXPAND - 490)) | (1L << (EXPIRY_DATE - 490)) | (1L << (EXPLICIT - 490)) | (1L << (FAIL_OPERATION - 490)) | (1L << (FAILOVER_MODE - 490)) | (1L << (FAILURE - 490)) | (1L << (FAILURE_CONDITION_LEVEL - 490)) | (1L << (FAST - 490)) | (1L << (FAST_FORWARD - 490)) | (1L << (FILEGROUP - 490)) | (1L << (FILEGROWTH - 490)) | (1L << (FILEPATH - 490)) | (1L << (FILESTREAM - 490)) | (1L << (FILTER - 490)) | (1L << (FIRST - 490)) | (1L << (FIRST_VALUE - 490)) | (1L << (FOLLOWING - 490)) | (1L << (FORCE - 490)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 490)) | (1L << (FORCED - 490)) | (1L << (FORMAT - 490)) | (1L << (FORWARD_ONLY - 490)) | (1L << (FULLSCAN - 490)) | (1L << (FULLTEXT - 490)) | (1L << (GB - 490)) | (1L << (GETDATE - 490)) | (1L << (GETUTCDATE - 490)) | (1L << (GLOBAL - 490)) | (1L << (GO - 490)) | (1L << (GROUP_MAX_REQUESTS - 490)) | (1L << (GROUPING - 490)) | (1L << (GROUPING_ID - 490)) | (1L << (HADR - 490)) | (1L << (HASH - 490)) | (1L << (HEALTH_CHECK_TIMEOUT - 490)) | (1L << (HIGH - 490)) | (1L << (HONOR_BROKER_PRIORITY - 490)) | (1L << (HOURS - 490)) | (1L << (IDENTITY_VALUE - 490)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 490)) | (1L << (IMMEDIATE - 490)) | (1L << (IMPERSONATE - 490)) | (1L << (IMPORTANCE - 490)) | (1L << (INCREMENTAL - 490)) | (1L << (INITIATOR - 490)) | (1L << (INPUT - 490)) | (1L << (INSENSITIVE - 490)) | (1L << (INSERTED - 490)) | (1L << (INT - 490)) | (1L << (IP - 490)) | (1L << (ISOLATION - 490)) | (1L << (KB - 490)) | (1L << (KEEP - 490)) | (1L << (KEEPFIXED - 490)))) != 0) || ((((_la - 554)) & ~0x3f) == 0 && ((1L << (_la - 554)) & ((1L << (KEY_SOURCE - 554)) | (1L << (KEYS - 554)) | (1L << (KEYSET - 554)) | (1L << (LAG - 554)) | (1L << (LAST - 554)) | (1L << (LAST_VALUE - 554)) | (1L << (LEAD - 554)) | (1L << (LEVEL - 554)) | (1L << (LIST - 554)) | (1L << (LISTENER - 554)) | (1L << (LISTENER_URL - 554)) | (1L << (LOB_COMPACTION - 554)) | (1L << (LOCAL - 554)) | (1L << (LOCATION - 554)) | (1L << (LOCK - 554)) | (1L << (LOCK_ESCALATION - 554)) | (1L << (LOGIN - 554)) | (1L << (LOOP - 554)) | (1L << (LOW - 554)) | (1L << (MANUAL - 554)) | (1L << (MARK - 554)) | (1L << (MATERIALIZED - 554)) | (1L << (MAX - 554)) | (1L << (MAX_CPU_PERCENT - 554)) | (1L << (MAX_DOP - 554)) | (1L << (MAX_FILES - 554)) | (1L << (MAX_IOPS_PER_VOLUME - 554)) | (1L << (MAX_MEMORY_PERCENT - 554)) | (1L << (MAX_PROCESSES - 554)) | (1L << (MAX_QUEUE_READERS - 554)) | (1L << (MAX_ROLLOVER_FILES - 554)) | (1L << (MAXDOP - 554)) | (1L << (MAXRECURSION - 554)) | (1L << (MAXSIZE - 554)) | (1L << (MB - 554)) | (1L << (MEDIUM - 554)) | (1L << (MEMORY_OPTIMIZED_DATA - 554)) | (1L << (MESSAGE - 554)) | (1L << (MIN - 554)) | (1L << (MIN_ACTIVE_ROWVERSION - 554)) | (1L << (MIN_CPU_PERCENT - 554)) | (1L << (MIN_IOPS_PER_VOLUME - 554)) | (1L << (MIN_MEMORY_PERCENT - 554)) | (1L << (MINUTES - 554)) | (1L << (MIRROR_ADDRESS - 554)) | (1L << (MIXED_PAGE_ALLOCATION - 554)) | (1L << (MODE - 554)) | (1L << (MODIFY - 554)) | (1L << (MOVE - 554)) | (1L << (MULTI_USER - 554)) | (1L << (NAME - 554)) | (1L << (NESTED_TRIGGERS - 554)) | (1L << (NEW_ACCOUNT - 554)) | (1L << (NEW_BROKER - 554)) | (1L << (NEW_PASSWORD - 554)) | (1L << (NEXT - 554)) | (1L << (NO - 554)) | (1L << (NO_TRUNCATE - 554)) | (1L << (NO_WAIT - 554)) | (1L << (NOCOUNT - 554)) | (1L << (NODES - 554)) | (1L << (NOEXPAND - 554)) | (1L << (NON_TRANSACTED_ACCESS - 554)) | (1L << (NORECOMPUTE - 554)))) != 0) || ((((_la - 618)) & ~0x3f) == 0 && ((1L << (_la - 618)) & ((1L << (NORECOVERY - 618)) | (1L << (NOWAIT - 618)) | (1L << (NTILE - 618)) | (1L << (NUMANODE - 618)) | (1L << (NUMBER - 618)) | (1L << (NUMERIC_ROUNDABORT - 618)) | (1L << (OBJECT - 618)) | (1L << (OFFLINE - 618)) | (1L << (OFFSET - 618)) | (1L << (OLD_ACCOUNT - 618)) | (1L << (ONLINE - 618)) | (1L << (ONLY - 618)) | (1L << (OPEN_EXISTING - 618)) | (1L << (OPTIMISTIC - 618)) | (1L << (OPTIMIZE - 618)) | (1L << (OUT - 618)) | (1L << (OUTPUT - 618)) | (1L << (OWNER - 618)) | (1L << (PAGE_VERIFY - 618)) | (1L << (PARAMETERIZATION - 618)) | (1L << (PARTITION - 618)) | (1L << (PARTITIONS - 618)) | (1L << (PARTNER - 618)) | (1L << (PATH - 618)) | (1L << (POISON_MESSAGE_HANDLING - 618)) | (1L << (POOL - 618)) | (1L << (PORT - 618)) | (1L << (PRECEDING - 618)) | (1L << (PRIMARY_ROLE - 618)) | (1L << (PRIOR - 618)) | (1L << (PRIORITY - 618)) | (1L << (PRIORITY_LEVEL - 618)) | (1L << (PRIVATE - 618)) | (1L << (PRIVATE_KEY - 618)) | (1L << (PRIVILEGES - 618)) | (1L << (PROCEDURE_NAME - 618)) | (1L << (PROPERTY - 618)) | (1L << (PROVIDER - 618)) | (1L << (PROVIDER_KEY_NAME - 618)) | (1L << (QUERY - 618)) | (1L << (QUEUE - 618)) | (1L << (QUEUE_DELAY - 618)) | (1L << (QUOTED_IDENTIFIER - 618)) | (1L << (RANGE - 618)) | (1L << (RANK - 618)) | (1L << (RC2 - 618)) | (1L << (RC4 - 618)) | (1L << (RC4_128 - 618)) | (1L << (READ_COMMITTED_SNAPSHOT - 618)) | (1L << (READ_ONLY - 618)) | (1L << (READ_ONLY_ROUTING_LIST - 618)) | (1L << (READ_WRITE - 618)) | (1L << (READONLY - 618)) | (1L << (REBUILD - 618)) | (1L << (RECEIVE - 618)) | (1L << (RECOMPILE - 618)) | (1L << (RECOVERY - 618)) | (1L << (RECURSIVE_TRIGGERS - 618)) | (1L << (RELATIVE - 618)) | (1L << (REMOTE - 618)) | (1L << (REMOTE_SERVICE_NAME - 618)) | (1L << (REMOVE - 618)) | (1L << (REORGANIZE - 618)))) != 0) || ((((_la - 682)) & ~0x3f) == 0 && ((1L << (_la - 682)) & ((1L << (REPEATABLE - 682)) | (1L << (REPLICA - 682)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 682)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 682)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 682)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 682)) | (1L << (RESERVE_DISK_SPACE - 682)) | (1L << (RESOURCE - 682)) | (1L << (RESOURCE_MANAGER_LOCATION - 682)) | (1L << (RESTRICTED_USER - 682)) | (1L << (RETENTION - 682)) | (1L << (ROBUST - 682)) | (1L << (ROOT - 682)) | (1L << (ROUTE - 682)) | (1L << (ROW - 682)) | (1L << (ROW_NUMBER - 682)) | (1L << (ROWGUID - 682)) | (1L << (ROWS - 682)) | (1L << (SAMPLE - 682)) | (1L << (SCHEMABINDING - 682)) | (1L << (SCOPED - 682)) | (1L << (SCROLL - 682)) | (1L << (SCROLL_LOCKS - 682)) | (1L << (SEARCH - 682)) | (1L << (SECONDARY - 682)) | (1L << (SECONDARY_ONLY - 682)) | (1L << (SECONDARY_ROLE - 682)) | (1L << (SECONDS - 682)) | (1L << (SECRET - 682)) | (1L << (SECURITY - 682)) | (1L << (SECURITY_LOG - 682)) | (1L << (SEEDING_MODE - 682)) | (1L << (SELF - 682)) | (1L << (SEMI_SENSITIVE - 682)) | (1L << (SEND - 682)) | (1L << (SENT - 682)) | (1L << (SEQUENCE - 682)) | (1L << (SERIALIZABLE - 682)) | (1L << (SESSION_TIMEOUT - 682)) | (1L << (SETERROR - 682)) | (1L << (SHARE - 682)) | (1L << (SHOWPLAN - 682)) | (1L << (SIGNATURE - 682)) | (1L << (SIMPLE - 682)) | (1L << (SINGLE_USER - 682)) | (1L << (SIZE - 682)) | (1L << (SMALLINT - 682)) | (1L << (SNAPSHOT - 682)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 682)) | (1L << (STANDBY - 682)) | (1L << (START_DATE - 682)) | (1L << (STATIC - 682)) | (1L << (STATS_STREAM - 682)) | (1L << (STATUS - 682)) | (1L << (STDEV - 682)) | (1L << (STDEVP - 682)) | (1L << (STOPLIST - 682)) | (1L << (STRING_AGG - 682)) | (1L << (STUFF - 682)) | (1L << (SUBJECT - 682)) | (1L << (SUM - 682)) | (1L << (SUSPEND - 682)))) != 0) || ((((_la - 746)) & ~0x3f) == 0 && ((1L << (_la - 746)) & ((1L << (SYMMETRIC - 746)) | (1L << (SYNCHRONOUS_COMMIT - 746)) | (1L << (SYNONYM - 746)) | (1L << (SYSTEM - 746)) | (1L << (TAKE - 746)) | (1L << (TARGET_RECOVERY_TIME - 746)) | (1L << (TB - 746)) | (1L << (TEXTIMAGE_ON - 746)) | (1L << (THROW - 746)) | (1L << (TIES - 746)) | (1L << (TIME - 746)) | (1L << (TIMEOUT - 746)) | (1L << (TIMER - 746)) | (1L << (TINYINT - 746)) | (1L << (TORN_PAGE_DETECTION - 746)) | (1L << (TRANSFORM_NOISE_WORDS - 746)) | (1L << (TRIPLE_DES - 746)) | (1L << (TRIPLE_DES_3KEY - 746)) | (1L << (TRUSTWORTHY - 746)) | (1L << (TRY - 746)) | (1L << (TSQL - 746)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 746)) | (1L << (TYPE - 746)) | (1L << (TYPE_WARNING - 746)) | (1L << (UNBOUNDED - 746)) | (1L << (UNCOMMITTED - 746)) | (1L << (UNKNOWN - 746)) | (1L << (UNLIMITED - 746)) | (1L << (USING - 746)) | (1L << (VALID_XML - 746)) | (1L << (VALIDATION - 746)) | (1L << (VALUE - 746)) | (1L << (VAR - 746)) | (1L << (VARP - 746)) | (1L << (VIEW_METADATA - 746)) | (1L << (VIEWS - 746)) | (1L << (WAIT - 746)) | (1L << (WELL_FORMED_XML - 746)) | (1L << (WORK - 746)) | (1L << (WORKLOAD - 746)) | (1L << (XML - 746)) | (1L << (XMLNAMESPACES - 746)) | (1L << (DOUBLE_QUOTE_ID - 746)) | (1L << (SQUARE_BRACKET_ID - 746)) | (1L << (ID - 746)))) != 0) || _la==COMMA) {
 				{
 				setState(367);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==COMMA) {
 					{
@@ -1297,6 +1316,7 @@ public class MocaSqlParser extends Parser {
 			setState(389);
 			((Alter_sequenceContext)_localctx).sequence_name = id();
 			setState(395);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==RESTART) {
 				{
@@ -1318,6 +1338,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(400);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==INCREMENT) {
 				{
@@ -1389,6 +1410,7 @@ public class MocaSqlParser extends Parser {
 				break;
 			}
 			setState(423);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CACHE:
 				{
@@ -1420,7 +1442,7 @@ public class MocaSqlParser extends Parser {
 			case SEMI:
 				break;
 			default:
-				throw new NoViableAltException(this);
+				break;
 			}
 			}
 		}
@@ -1513,6 +1535,7 @@ public class MocaSqlParser extends Parser {
 			setState(432);
 			((Create_sequenceContext)_localctx).sequence_name = id();
 			setState(435);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==AS) {
 				{
@@ -1524,6 +1547,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(440);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==START) {
 				{
@@ -1537,6 +1561,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(448);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==INCREMENT) {
 				{
@@ -1545,6 +1570,7 @@ public class MocaSqlParser extends Parser {
 				setState(443);
 				match(BY);
 				setState(445);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==MINUS) {
 					{
@@ -1566,6 +1592,7 @@ public class MocaSqlParser extends Parser {
 				setState(450);
 				match(MINVALUE);
 				setState(452);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==DECIMAL) {
 					{
@@ -1593,6 +1620,7 @@ public class MocaSqlParser extends Parser {
 				setState(458);
 				match(MAXVALUE);
 				setState(460);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==DECIMAL) {
 					{
@@ -1631,12 +1659,14 @@ public class MocaSqlParser extends Parser {
 				break;
 			}
 			setState(477);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CACHE:
 				{
 				setState(471);
 				match(CACHE);
 				setState(473);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==DECIMAL) {
 					{
@@ -1669,7 +1699,7 @@ public class MocaSqlParser extends Parser {
 			case SEMI:
 				break;
 			default:
-				throw new NoViableAltException(this);
+				break;
 			}
 			}
 		}
@@ -1700,13 +1730,16 @@ public class MocaSqlParser extends Parser {
 		public Search_conditionContext search_condition(int i) {
 			return getRuleContext(Search_conditionContext.class,i);
 		}
+		public TerminalNode SEMI() { return getToken(MocaSqlParser.SEMI, 0); }
 		public With_expressionContext with_expression() {
 			return getRuleContext(With_expressionContext.class,0);
 		}
 		public TerminalNode TOP() { return getToken(MocaSqlParser.TOP, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public TerminalNode INTO() { return getToken(MocaSqlParser.INTO, 0); }
 		public Insert_with_table_hintsContext insert_with_table_hints() {
 			return getRuleContext(Insert_with_table_hintsContext.class,0);
@@ -1787,6 +1820,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(480);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WITH) {
 				{
@@ -1798,6 +1832,7 @@ public class MocaSqlParser extends Parser {
 			setState(482);
 			match(MERGE);
 			setState(490);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==TOP) {
 				{
@@ -1810,6 +1845,7 @@ public class MocaSqlParser extends Parser {
 				setState(486);
 				match(RR_BRACKET);
 				setState(488);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PERCENT) {
 					{
@@ -1822,6 +1858,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(493);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==INTO) {
 				{
@@ -1833,6 +1870,7 @@ public class MocaSqlParser extends Parser {
 			setState(495);
 			ddl_object();
 			setState(497);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WITH) {
 				{
@@ -1871,6 +1909,7 @@ public class MocaSqlParser extends Parser {
 					setState(507);
 					match(MATCHED);
 					setState(510);
+					_errHandler.sync(this);
 					_la = _input.LA(1);
 					if (_la==AND) {
 						{
@@ -1904,6 +1943,7 @@ public class MocaSqlParser extends Parser {
 				setState(521);
 				match(MATCHED);
 				setState(524);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==BY) {
 					{
@@ -1915,6 +1955,7 @@ public class MocaSqlParser extends Parser {
 				}
 
 				setState(528);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==AND) {
 					{
@@ -1949,6 +1990,7 @@ public class MocaSqlParser extends Parser {
 				setState(538);
 				match(SOURCE);
 				setState(541);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==AND) {
 					{
@@ -1970,6 +2012,7 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 			}
 			setState(551);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==OUTPUT) {
 				{
@@ -1979,6 +2022,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(554);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==OPTION) {
 				{
@@ -2011,6 +2055,10 @@ public class MocaSqlParser extends Parser {
 		public Update_elemContext update_elem(int i) {
 			return getRuleContext(Update_elemContext.class,i);
 		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
 		public TerminalNode DELETE() { return getToken(MocaSqlParser.DELETE, 0); }
 		public Merge_matchedContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -2037,6 +2085,7 @@ public class MocaSqlParser extends Parser {
 		int _la;
 		try {
 			setState(569);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case UPDATE:
 				enterOuterAlt(_localctx, 1);
@@ -2094,9 +2143,11 @@ public class MocaSqlParser extends Parser {
 		}
 		public TerminalNode DEFAULT() { return getToken(MocaSqlParser.DEFAULT, 0); }
 		public TerminalNode VALUES() { return getToken(MocaSqlParser.VALUES, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public Column_name_listContext column_name_list() {
 			return getRuleContext(Column_name_listContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public Merge_not_matchedContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2126,6 +2177,7 @@ public class MocaSqlParser extends Parser {
 			setState(571);
 			match(INSERT);
 			setState(576);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==LR_BRACKET) {
 				{
@@ -2139,6 +2191,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(581);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case VALUES:
 				{
@@ -2180,9 +2233,11 @@ public class MocaSqlParser extends Parser {
 			return getRuleContext(With_expressionContext.class,0);
 		}
 		public TerminalNode TOP() { return getToken(MocaSqlParser.TOP, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public TerminalNode DECIMAL() { return getToken(MocaSqlParser.DECIMAL, 0); }
 		public List<TerminalNode> FROM() { return getTokens(MocaSqlParser.FROM); }
 		public TerminalNode FROM(int i) {
@@ -2204,6 +2259,7 @@ public class MocaSqlParser extends Parser {
 		public Option_clauseContext option_clause() {
 			return getRuleContext(Option_clauseContext.class,0);
 		}
+		public TerminalNode SEMI() { return getToken(MocaSqlParser.SEMI, 0); }
 		public Search_conditionContext search_condition() {
 			return getRuleContext(Search_conditionContext.class,0);
 		}
@@ -2242,6 +2298,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(584);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WITH) {
 				{
@@ -2266,6 +2323,7 @@ public class MocaSqlParser extends Parser {
 				setState(590);
 				match(RR_BRACKET);
 				setState(592);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PERCENT) {
 					{
@@ -2286,6 +2344,7 @@ public class MocaSqlParser extends Parser {
 				break;
 			}
 			setState(599);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==FROM) {
 				{
@@ -2307,6 +2366,7 @@ public class MocaSqlParser extends Parser {
 				break;
 			}
 			setState(606);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==OUTPUT) {
 				{
@@ -2316,6 +2376,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(610);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==FROM) {
 				{
@@ -2327,12 +2388,14 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(625);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WHERE) {
 				{
 				setState(612);
 				match(WHERE);
 				setState(623);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case T__0:
 				case BLOCKING_HIERARCHY:
@@ -2853,6 +2916,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(628);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==FOR) {
 				{
@@ -2862,6 +2926,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(631);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==OPTION) {
 				{
@@ -2987,8 +3052,16 @@ public class MocaSqlParser extends Parser {
 			return getRuleContext(With_expressionContext.class,0);
 		}
 		public TerminalNode TOP() { return getToken(MocaSqlParser.TOP, 0); }
+		public List<TerminalNode> LR_BRACKET() { return getTokens(MocaSqlParser.LR_BRACKET); }
+		public TerminalNode LR_BRACKET(int i) {
+			return getToken(MocaSqlParser.LR_BRACKET, i);
+		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
+		}
+		public List<TerminalNode> RR_BRACKET() { return getTokens(MocaSqlParser.RR_BRACKET); }
+		public TerminalNode RR_BRACKET(int i) {
+			return getToken(MocaSqlParser.RR_BRACKET, i);
 		}
 		public TerminalNode INTO() { return getToken(MocaSqlParser.INTO, 0); }
 		public Insert_with_table_hintsContext insert_with_table_hints() {
@@ -3006,6 +3079,7 @@ public class MocaSqlParser extends Parser {
 		public Option_clauseContext option_clause() {
 			return getRuleContext(Option_clauseContext.class,0);
 		}
+		public TerminalNode SEMI() { return getToken(MocaSqlParser.SEMI, 0); }
 		public TerminalNode PERCENT() { return getToken(MocaSqlParser.PERCENT, 0); }
 		public Insert_statementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -3034,6 +3108,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(643);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WITH) {
 				{
@@ -3045,6 +3120,7 @@ public class MocaSqlParser extends Parser {
 			setState(645);
 			match(INSERT);
 			setState(653);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==TOP) {
 				{
@@ -3057,6 +3133,7 @@ public class MocaSqlParser extends Parser {
 				setState(649);
 				match(RR_BRACKET);
 				setState(651);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PERCENT) {
 					{
@@ -3069,6 +3146,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(656);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==INTO) {
 				{
@@ -3078,6 +3156,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(660);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CALLED:
 			case DATA_COMPRESSION:
@@ -3558,6 +3637,7 @@ public class MocaSqlParser extends Parser {
 				break;
 			}
 			setState(672);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==OUTPUT) {
 				{
@@ -3569,6 +3649,7 @@ public class MocaSqlParser extends Parser {
 			setState(674);
 			insert_statement_value();
 			setState(676);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==FOR) {
 				{
@@ -3578,6 +3659,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(679);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==OPTION) {
 				{
@@ -3706,6 +3788,7 @@ public class MocaSqlParser extends Parser {
 		public Option_clauseContext option_clause() {
 			return getRuleContext(Option_clauseContext.class,0);
 		}
+		public TerminalNode SEMI() { return getToken(MocaSqlParser.SEMI, 0); }
 		public Select_statementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -3733,6 +3816,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(692);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WITH) {
 				{
@@ -3816,11 +3900,17 @@ public class MocaSqlParser extends Parser {
 			return getRuleContext(With_expressionContext.class,0);
 		}
 		public TerminalNode TOP() { return getToken(MocaSqlParser.TOP, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public With_table_hintsContext with_table_hints() {
 			return getRuleContext(With_table_hintsContext.class,0);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public Output_clauseContext output_clause() {
 			return getRuleContext(Output_clauseContext.class,0);
@@ -3836,6 +3926,7 @@ public class MocaSqlParser extends Parser {
 		public Option_clauseContext option_clause() {
 			return getRuleContext(Option_clauseContext.class,0);
 		}
+		public TerminalNode SEMI() { return getToken(MocaSqlParser.SEMI, 0); }
 		public Search_condition_listContext search_condition_list() {
 			return getRuleContext(Search_condition_listContext.class,0);
 		}
@@ -3874,6 +3965,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(708);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WITH) {
 				{
@@ -3885,6 +3977,7 @@ public class MocaSqlParser extends Parser {
 			setState(710);
 			match(UPDATE);
 			setState(718);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==TOP) {
 				{
@@ -3897,6 +3990,7 @@ public class MocaSqlParser extends Parser {
 				setState(714);
 				match(RR_BRACKET);
 				setState(716);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PERCENT) {
 					{
@@ -3909,6 +4003,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(722);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CALLED:
 			case DATA_COMPRESSION:
@@ -4365,6 +4460,7 @@ public class MocaSqlParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			setState(725);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WITH || _la==LR_BRACKET) {
 				{
@@ -4394,6 +4490,7 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 			}
 			setState(737);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==OUTPUT) {
 				{
@@ -4403,6 +4500,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(741);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==FROM) {
 				{
@@ -4414,12 +4512,14 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(756);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WHERE) {
 				{
 				setState(743);
 				match(WHERE);
 				setState(754);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case T__0:
 				case BLOCKING_HIERARCHY:
@@ -4940,6 +5040,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(759);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==FOR) {
 				{
@@ -4949,6 +5050,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(762);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==OPTION) {
 				{
@@ -4988,14 +5090,20 @@ public class MocaSqlParser extends Parser {
 		public Output_dml_list_elemContext output_dml_list_elem(int i) {
 			return getRuleContext(Output_dml_list_elemContext.class,i);
 		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
 		public TerminalNode INTO() { return getToken(MocaSqlParser.INTO, 0); }
 		public TerminalNode LOCAL_ID() { return getToken(MocaSqlParser.LOCAL_ID, 0); }
 		public Table_nameContext table_name() {
 			return getRuleContext(Table_nameContext.class,0);
 		}
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public Column_name_listContext column_name_list() {
 			return getRuleContext(Column_name_listContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public Output_clauseContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -5043,12 +5151,14 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 			}
 			setState(787);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==INTO) {
 				{
 				setState(776);
 				match(INTO);
 				setState(779);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case LOCAL_ID:
 					{
@@ -5586,6 +5696,7 @@ public class MocaSqlParser extends Parser {
 				break;
 			}
 			setState(794);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==AS || _la==CALLED || ((((_la - 81)) & ~0x3f) == 0 && ((1L << (_la - 81)) & ((1L << (DATA_COMPRESSION - 81)) | (1L << (EVENTDATA - 81)) | (1L << (EXPIREDATE - 81)) | (1L << (FILENAME - 81)) | (1L << (FILLFACTOR - 81)) | (1L << (FORCESEEK - 81)))) != 0) || ((((_la - 159)) & ~0x3f) == 0 && ((1L << (_la - 159)) & ((1L << (INIT - 159)) | (1L << (KEY - 159)) | (1L << (MASTER - 159)) | (1L << (MAX_MEMORY - 159)))) != 0) || ((((_la - 226)) & ~0x3f) == 0 && ((1L << (_la - 226)) & ((1L << (OFFSETS - 226)) | (1L << (PAGE - 226)) | (1L << (POLICY - 226)) | (1L << (PRECISION - 226)) | (1L << (PUBLIC - 226)) | (1L << (R - 226)) | (1L << (RAW - 226)) | (1L << (RETURN - 226)) | (1L << (RETURNS - 226)) | (1L << (ROLE - 226)) | (1L << (ROWCOUNT - 226)))) != 0) || ((((_la - 296)) & ~0x3f) == 0 && ((1L << (_la - 296)) & ((1L << (SAFETY - 296)) | (1L << (RULE - 296)) | (1L << (SERVER - 296)) | (1L << (SID - 296)) | (1L << (SOURCE - 296)) | (1L << (SPLIT - 296)) | (1L << (STATE - 296)) | (1L << (START - 296)) | (1L << (STOP - 296)) | (1L << (TARGET - 296)) | (1L << (TRAN - 296)))) != 0) || ((((_la - 362)) & ~0x3f) == 0 && ((1L << (_la - 362)) & ((1L << (URL - 362)) | (1L << (USER - 362)) | (1L << (ABSOLUTE - 362)) | (1L << (ACCENT_SENSITIVITY - 362)) | (1L << (ACTION - 362)) | (1L << (ACTIVATION - 362)) | (1L << (ACTIVE - 362)) | (1L << (ADDRESS - 362)) | (1L << (AES_128 - 362)) | (1L << (AES_192 - 362)) | (1L << (AES_256 - 362)) | (1L << (AFFINITY - 362)) | (1L << (AFTER - 362)) | (1L << (AGGREGATE - 362)) | (1L << (ALGORITHM - 362)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 362)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 362)) | (1L << (ALLOWED - 362)) | (1L << (ANSI_NULL_DEFAULT - 362)) | (1L << (ANSI_NULLS - 362)) | (1L << (ANSI_PADDING - 362)) | (1L << (ANSI_WARNINGS - 362)) | (1L << (APPLICATION_LOG - 362)) | (1L << (APPLY - 362)) | (1L << (ARITHABORT - 362)) | (1L << (ASSEMBLY - 362)) | (1L << (AUDIT - 362)) | (1L << (AUDIT_GUID - 362)) | (1L << (AUTO - 362)) | (1L << (AUTO_CLEANUP - 362)) | (1L << (AUTO_CLOSE - 362)) | (1L << (AUTO_CREATE_STATISTICS - 362)) | (1L << (AUTO_SHRINK - 362)) | (1L << (AUTO_UPDATE_STATISTICS - 362)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 362)) | (1L << (AVAILABILITY - 362)) | (1L << (AVG - 362)) | (1L << (BACKUP_PRIORITY - 362)) | (1L << (BEGIN_DIALOG - 362)) | (1L << (BIGINT - 362)) | (1L << (BINARY_BASE64 - 362)) | (1L << (BINARY_CHECKSUM - 362)) | (1L << (BINDING - 362)) | (1L << (BLOB_STORAGE - 362)) | (1L << (BROKER - 362)) | (1L << (BROKER_INSTANCE - 362)) | (1L << (BULK_LOGGED - 362)))) != 0) || ((((_la - 426)) & ~0x3f) == 0 && ((1L << (_la - 426)) & ((1L << (CALLER - 426)) | (1L << (CAP_CPU_PERCENT - 426)) | (1L << (CAST - 426)) | (1L << (CATALOG - 426)) | (1L << (CATCH - 426)) | (1L << (CHANGE_RETENTION - 426)) | (1L << (CHANGE_TRACKING - 426)) | (1L << (CHECKSUM - 426)) | (1L << (CHECKSUM_AGG - 426)) | (1L << (CLEANUP - 426)) | (1L << (COLLECTION - 426)) | (1L << (COLUMN_MASTER_KEY - 426)) | (1L << (COMMITTED - 426)) | (1L << (COMPATIBILITY_LEVEL - 426)) | (1L << (CONCAT - 426)) | (1L << (CONCAT_NULL_YIELDS_NULL - 426)) | (1L << (CONTENT - 426)) | (1L << (CONTROL - 426)) | (1L << (COOKIE - 426)) | (1L << (COUNT - 426)) | (1L << (COUNT_BIG - 426)) | (1L << (COUNTER - 426)) | (1L << (CPU - 426)) | (1L << (CREATE_NEW - 426)) | (1L << (CREATION_DISPOSITION - 426)) | (1L << (CREDENTIAL - 426)) | (1L << (CRYPTOGRAPHIC - 426)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 426)) | (1L << (CURSOR_DEFAULT - 426)) | (1L << (DATA - 426)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 426)) | (1L << (DATEADD - 426)) | (1L << (DATEDIFF - 426)) | (1L << (DATENAME - 426)) | (1L << (DATEPART - 426)) | (1L << (DAYS - 426)) | (1L << (DB_CHAINING - 426)) | (1L << (DB_FAILOVER - 426)) | (1L << (DECRYPTION - 426)) | (1L << (DEFAULT_DOUBLE_QUOTE - 426)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 426)) | (1L << (DEFAULT_LANGUAGE - 426)) | (1L << (DELAY - 426)) | (1L << (DELAYED_DURABILITY - 426)) | (1L << (DELETED - 426)) | (1L << (DENSE_RANK - 426)) | (1L << (DEPENDENTS - 426)) | (1L << (DES - 426)) | (1L << (DESCRIPTION - 426)) | (1L << (DESX - 426)) | (1L << (DHCP - 426)) | (1L << (DIALOG - 426)) | (1L << (DIRECTORY_NAME - 426)) | (1L << (DISABLE - 426)) | (1L << (DISABLE_BROKER - 426)) | (1L << (DISABLED - 426)) | (1L << (DISK_DRIVE - 426)) | (1L << (DOCUMENT - 426)) | (1L << (DYNAMIC - 426)) | (1L << (EMERGENCY - 426)) | (1L << (EMPTY - 426)) | (1L << (ENABLE - 426)) | (1L << (ENABLE_BROKER - 426)))) != 0) || ((((_la - 490)) & ~0x3f) == 0 && ((1L << (_la - 490)) & ((1L << (ENCRYPTED_VALUE - 490)) | (1L << (ENCRYPTION - 490)) | (1L << (ENDPOINT_URL - 490)) | (1L << (ERROR_BROKER_CONVERSATIONS - 490)) | (1L << (EXCLUSIVE - 490)) | (1L << (EXECUTABLE - 490)) | (1L << (EXIST - 490)) | (1L << (EXPAND - 490)) | (1L << (EXPIRY_DATE - 490)) | (1L << (EXPLICIT - 490)) | (1L << (FAIL_OPERATION - 490)) | (1L << (FAILOVER_MODE - 490)) | (1L << (FAILURE - 490)) | (1L << (FAILURE_CONDITION_LEVEL - 490)) | (1L << (FAST - 490)) | (1L << (FAST_FORWARD - 490)) | (1L << (FILEGROUP - 490)) | (1L << (FILEGROWTH - 490)) | (1L << (FILEPATH - 490)) | (1L << (FILESTREAM - 490)) | (1L << (FILTER - 490)) | (1L << (FIRST - 490)) | (1L << (FIRST_VALUE - 490)) | (1L << (FOLLOWING - 490)) | (1L << (FORCE - 490)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 490)) | (1L << (FORCED - 490)) | (1L << (FORMAT - 490)) | (1L << (FORWARD_ONLY - 490)) | (1L << (FULLSCAN - 490)) | (1L << (FULLTEXT - 490)) | (1L << (GB - 490)) | (1L << (GETDATE - 490)) | (1L << (GETUTCDATE - 490)) | (1L << (GLOBAL - 490)) | (1L << (GO - 490)) | (1L << (GROUP_MAX_REQUESTS - 490)) | (1L << (GROUPING - 490)) | (1L << (GROUPING_ID - 490)) | (1L << (HADR - 490)) | (1L << (HASH - 490)) | (1L << (HEALTH_CHECK_TIMEOUT - 490)) | (1L << (HIGH - 490)) | (1L << (HONOR_BROKER_PRIORITY - 490)) | (1L << (HOURS - 490)) | (1L << (IDENTITY_VALUE - 490)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 490)) | (1L << (IMMEDIATE - 490)) | (1L << (IMPERSONATE - 490)) | (1L << (IMPORTANCE - 490)) | (1L << (INCREMENTAL - 490)) | (1L << (INITIATOR - 490)) | (1L << (INPUT - 490)) | (1L << (INSENSITIVE - 490)) | (1L << (INSERTED - 490)) | (1L << (INT - 490)) | (1L << (IP - 490)) | (1L << (ISOLATION - 490)) | (1L << (KB - 490)) | (1L << (KEEP - 490)) | (1L << (KEEPFIXED - 490)))) != 0) || ((((_la - 554)) & ~0x3f) == 0 && ((1L << (_la - 554)) & ((1L << (KEY_SOURCE - 554)) | (1L << (KEYS - 554)) | (1L << (KEYSET - 554)) | (1L << (LAG - 554)) | (1L << (LAST - 554)) | (1L << (LAST_VALUE - 554)) | (1L << (LEAD - 554)) | (1L << (LEVEL - 554)) | (1L << (LIST - 554)) | (1L << (LISTENER - 554)) | (1L << (LISTENER_URL - 554)) | (1L << (LOB_COMPACTION - 554)) | (1L << (LOCAL - 554)) | (1L << (LOCATION - 554)) | (1L << (LOCK - 554)) | (1L << (LOCK_ESCALATION - 554)) | (1L << (LOGIN - 554)) | (1L << (LOOP - 554)) | (1L << (LOW - 554)) | (1L << (MANUAL - 554)) | (1L << (MARK - 554)) | (1L << (MATERIALIZED - 554)) | (1L << (MAX - 554)) | (1L << (MAX_CPU_PERCENT - 554)) | (1L << (MAX_DOP - 554)) | (1L << (MAX_FILES - 554)) | (1L << (MAX_IOPS_PER_VOLUME - 554)) | (1L << (MAX_MEMORY_PERCENT - 554)) | (1L << (MAX_PROCESSES - 554)) | (1L << (MAX_QUEUE_READERS - 554)) | (1L << (MAX_ROLLOVER_FILES - 554)) | (1L << (MAXDOP - 554)) | (1L << (MAXRECURSION - 554)) | (1L << (MAXSIZE - 554)) | (1L << (MB - 554)) | (1L << (MEDIUM - 554)) | (1L << (MEMORY_OPTIMIZED_DATA - 554)) | (1L << (MESSAGE - 554)) | (1L << (MIN - 554)) | (1L << (MIN_ACTIVE_ROWVERSION - 554)) | (1L << (MIN_CPU_PERCENT - 554)) | (1L << (MIN_IOPS_PER_VOLUME - 554)) | (1L << (MIN_MEMORY_PERCENT - 554)) | (1L << (MINUTES - 554)) | (1L << (MIRROR_ADDRESS - 554)) | (1L << (MIXED_PAGE_ALLOCATION - 554)) | (1L << (MODE - 554)) | (1L << (MODIFY - 554)) | (1L << (MOVE - 554)) | (1L << (MULTI_USER - 554)) | (1L << (NAME - 554)) | (1L << (NESTED_TRIGGERS - 554)) | (1L << (NEW_ACCOUNT - 554)) | (1L << (NEW_BROKER - 554)) | (1L << (NEW_PASSWORD - 554)) | (1L << (NEXT - 554)) | (1L << (NO - 554)) | (1L << (NO_TRUNCATE - 554)) | (1L << (NO_WAIT - 554)) | (1L << (NOCOUNT - 554)) | (1L << (NODES - 554)) | (1L << (NOEXPAND - 554)) | (1L << (NON_TRANSACTED_ACCESS - 554)) | (1L << (NORECOMPUTE - 554)))) != 0) || ((((_la - 618)) & ~0x3f) == 0 && ((1L << (_la - 618)) & ((1L << (NORECOVERY - 618)) | (1L << (NOWAIT - 618)) | (1L << (NTILE - 618)) | (1L << (NUMANODE - 618)) | (1L << (NUMBER - 618)) | (1L << (NUMERIC_ROUNDABORT - 618)) | (1L << (OBJECT - 618)) | (1L << (OFFLINE - 618)) | (1L << (OFFSET - 618)) | (1L << (OLD_ACCOUNT - 618)) | (1L << (ONLINE - 618)) | (1L << (ONLY - 618)) | (1L << (OPEN_EXISTING - 618)) | (1L << (OPTIMISTIC - 618)) | (1L << (OPTIMIZE - 618)) | (1L << (OUT - 618)) | (1L << (OUTPUT - 618)) | (1L << (OWNER - 618)) | (1L << (PAGE_VERIFY - 618)) | (1L << (PARAMETERIZATION - 618)) | (1L << (PARTITION - 618)) | (1L << (PARTITIONS - 618)) | (1L << (PARTNER - 618)) | (1L << (PATH - 618)) | (1L << (POISON_MESSAGE_HANDLING - 618)) | (1L << (POOL - 618)) | (1L << (PORT - 618)) | (1L << (PRECEDING - 618)) | (1L << (PRIMARY_ROLE - 618)) | (1L << (PRIOR - 618)) | (1L << (PRIORITY - 618)) | (1L << (PRIORITY_LEVEL - 618)) | (1L << (PRIVATE - 618)) | (1L << (PRIVATE_KEY - 618)) | (1L << (PRIVILEGES - 618)) | (1L << (PROCEDURE_NAME - 618)) | (1L << (PROPERTY - 618)) | (1L << (PROVIDER - 618)) | (1L << (PROVIDER_KEY_NAME - 618)) | (1L << (QUERY - 618)) | (1L << (QUEUE - 618)) | (1L << (QUEUE_DELAY - 618)) | (1L << (QUOTED_IDENTIFIER - 618)) | (1L << (RANGE - 618)) | (1L << (RANK - 618)) | (1L << (RC2 - 618)) | (1L << (RC4 - 618)) | (1L << (RC4_128 - 618)) | (1L << (READ_COMMITTED_SNAPSHOT - 618)) | (1L << (READ_ONLY - 618)) | (1L << (READ_ONLY_ROUTING_LIST - 618)) | (1L << (READ_WRITE - 618)) | (1L << (READONLY - 618)) | (1L << (REBUILD - 618)) | (1L << (RECEIVE - 618)) | (1L << (RECOMPILE - 618)) | (1L << (RECOVERY - 618)) | (1L << (RECURSIVE_TRIGGERS - 618)) | (1L << (RELATIVE - 618)) | (1L << (REMOTE - 618)) | (1L << (REMOTE_SERVICE_NAME - 618)) | (1L << (REMOVE - 618)) | (1L << (REORGANIZE - 618)))) != 0) || ((((_la - 682)) & ~0x3f) == 0 && ((1L << (_la - 682)) & ((1L << (REPEATABLE - 682)) | (1L << (REPLICA - 682)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 682)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 682)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 682)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 682)) | (1L << (RESERVE_DISK_SPACE - 682)) | (1L << (RESOURCE - 682)) | (1L << (RESOURCE_MANAGER_LOCATION - 682)) | (1L << (RESTRICTED_USER - 682)) | (1L << (RETENTION - 682)) | (1L << (ROBUST - 682)) | (1L << (ROOT - 682)) | (1L << (ROUTE - 682)) | (1L << (ROW - 682)) | (1L << (ROW_NUMBER - 682)) | (1L << (ROWGUID - 682)) | (1L << (ROWS - 682)) | (1L << (SAMPLE - 682)) | (1L << (SCHEMABINDING - 682)) | (1L << (SCOPED - 682)) | (1L << (SCROLL - 682)) | (1L << (SCROLL_LOCKS - 682)) | (1L << (SEARCH - 682)) | (1L << (SECONDARY - 682)) | (1L << (SECONDARY_ONLY - 682)) | (1L << (SECONDARY_ROLE - 682)) | (1L << (SECONDS - 682)) | (1L << (SECRET - 682)) | (1L << (SECURITY - 682)) | (1L << (SECURITY_LOG - 682)) | (1L << (SEEDING_MODE - 682)) | (1L << (SELF - 682)) | (1L << (SEMI_SENSITIVE - 682)) | (1L << (SEND - 682)) | (1L << (SENT - 682)) | (1L << (SEQUENCE - 682)) | (1L << (SERIALIZABLE - 682)) | (1L << (SESSION_TIMEOUT - 682)) | (1L << (SETERROR - 682)) | (1L << (SHARE - 682)) | (1L << (SHOWPLAN - 682)) | (1L << (SIGNATURE - 682)) | (1L << (SIMPLE - 682)) | (1L << (SINGLE_USER - 682)) | (1L << (SIZE - 682)) | (1L << (SMALLINT - 682)) | (1L << (SNAPSHOT - 682)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 682)) | (1L << (STANDBY - 682)) | (1L << (START_DATE - 682)) | (1L << (STATIC - 682)) | (1L << (STATS_STREAM - 682)) | (1L << (STATUS - 682)) | (1L << (STDEV - 682)) | (1L << (STDEVP - 682)) | (1L << (STOPLIST - 682)) | (1L << (STRING_AGG - 682)) | (1L << (STUFF - 682)) | (1L << (SUBJECT - 682)) | (1L << (SUM - 682)) | (1L << (SUSPEND - 682)))) != 0) || ((((_la - 746)) & ~0x3f) == 0 && ((1L << (_la - 746)) & ((1L << (SYMMETRIC - 746)) | (1L << (SYNCHRONOUS_COMMIT - 746)) | (1L << (SYNONYM - 746)) | (1L << (SYSTEM - 746)) | (1L << (TAKE - 746)) | (1L << (TARGET_RECOVERY_TIME - 746)) | (1L << (TB - 746)) | (1L << (TEXTIMAGE_ON - 746)) | (1L << (THROW - 746)) | (1L << (TIES - 746)) | (1L << (TIME - 746)) | (1L << (TIMEOUT - 746)) | (1L << (TIMER - 746)) | (1L << (TINYINT - 746)) | (1L << (TORN_PAGE_DETECTION - 746)) | (1L << (TRANSFORM_NOISE_WORDS - 746)) | (1L << (TRIPLE_DES - 746)) | (1L << (TRIPLE_DES_3KEY - 746)) | (1L << (TRUSTWORTHY - 746)) | (1L << (TRY - 746)) | (1L << (TSQL - 746)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 746)) | (1L << (TYPE - 746)) | (1L << (TYPE_WARNING - 746)) | (1L << (UNBOUNDED - 746)) | (1L << (UNCOMMITTED - 746)) | (1L << (UNKNOWN - 746)) | (1L << (UNLIMITED - 746)) | (1L << (USING - 746)) | (1L << (VALID_XML - 746)) | (1L << (VALIDATION - 746)) | (1L << (VALUE - 746)) | (1L << (VAR - 746)) | (1L << (VARP - 746)) | (1L << (VIEW_METADATA - 746)) | (1L << (VIEWS - 746)) | (1L << (WAIT - 746)) | (1L << (WELL_FORMED_XML - 746)) | (1L << (WORK - 746)) | (1L << (WORKLOAD - 746)) | (1L << (XML - 746)) | (1L << (XMLNAMESPACES - 746)) | (1L << (DOUBLE_QUOTE_ID - 746)) | (1L << (SQUARE_BRACKET_ID - 746)) | (1L << (ID - 746)))) != 0) || _la==STRING) {
 				{
@@ -5608,11 +5719,13 @@ public class MocaSqlParser extends Parser {
 	}
 
 	public static class Output_column_nameContext extends ParserRuleContext {
+		public TerminalNode DOT() { return getToken(MocaSqlParser.DOT, 0); }
 		public TerminalNode DELETED() { return getToken(MocaSqlParser.DELETED, 0); }
 		public TerminalNode INSERTED() { return getToken(MocaSqlParser.INSERTED, 0); }
 		public Table_nameContext table_name() {
 			return getRuleContext(Table_nameContext.class,0);
 		}
+		public TerminalNode STAR() { return getToken(MocaSqlParser.STAR, 0); }
 		public IdContext id() {
 			return getRuleContext(IdContext.class,0);
 		}
@@ -5641,6 +5754,7 @@ public class MocaSqlParser extends Parser {
 		enterRule(_localctx, 40, RULE_output_column_name);
 		try {
 			setState(807);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case BLOCKING_HIERARCHY:
 			case CALLED:
@@ -6108,6 +6222,7 @@ public class MocaSqlParser extends Parser {
 				setState(801);
 				match(DOT);
 				setState(804);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case STAR:
 					{
@@ -6602,8 +6717,16 @@ public class MocaSqlParser extends Parser {
 		public Table_name_with_hintContext table_name_with_hint() {
 			return getRuleContext(Table_name_with_hintContext.class,0);
 		}
+		public List<TerminalNode> LR_BRACKET() { return getTokens(MocaSqlParser.LR_BRACKET); }
+		public TerminalNode LR_BRACKET(int i) {
+			return getToken(MocaSqlParser.LR_BRACKET, i);
+		}
 		public Column_name_list_with_orderContext column_name_list_with_order() {
 			return getRuleContext(Column_name_list_with_orderContext.class,0);
+		}
+		public List<TerminalNode> RR_BRACKET() { return getTokens(MocaSqlParser.RR_BRACKET); }
+		public TerminalNode RR_BRACKET(int i) {
+			return getToken(MocaSqlParser.RR_BRACKET, i);
 		}
 		public TerminalNode UNIQUE() { return getToken(MocaSqlParser.UNIQUE, 0); }
 		public ClusteredContext clustered() {
@@ -6617,6 +6740,7 @@ public class MocaSqlParser extends Parser {
 		public Index_optionsContext index_options() {
 			return getRuleContext(Index_optionsContext.class,0);
 		}
+		public TerminalNode SEMI() { return getToken(MocaSqlParser.SEMI, 0); }
 		public Search_conditionContext search_condition() {
 			return getRuleContext(Search_conditionContext.class,0);
 		}
@@ -6649,6 +6773,7 @@ public class MocaSqlParser extends Parser {
 			setState(809);
 			match(CREATE);
 			setState(811);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==UNIQUE) {
 				{
@@ -6658,6 +6783,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(814);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==CLUSTERED || _la==NONCLUSTERED) {
 				{
@@ -6681,6 +6807,7 @@ public class MocaSqlParser extends Parser {
 			setState(822);
 			match(RR_BRACKET);
 			setState(828);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==INCLUDE) {
 				{
@@ -6696,6 +6823,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(832);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WHERE) {
 				{
@@ -6717,6 +6845,7 @@ public class MocaSqlParser extends Parser {
 				break;
 			}
 			setState(839);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==ON) {
 				{
@@ -6756,9 +6885,12 @@ public class MocaSqlParser extends Parser {
 		public Table_nameContext table_name() {
 			return getRuleContext(Table_nameContext.class,0);
 		}
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public Column_def_table_constraintsContext column_def_table_constraints() {
 			return getRuleContext(Column_def_table_constraintsContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
+		public TerminalNode COMMA() { return getToken(MocaSqlParser.COMMA, 0); }
 		public TerminalNode LOCK() { return getToken(MocaSqlParser.LOCK, 0); }
 		public Simple_idContext simple_id() {
 			return getRuleContext(Simple_idContext.class,0);
@@ -6781,6 +6913,7 @@ public class MocaSqlParser extends Parser {
 			return getToken(MocaSqlParser.DEFAULT, i);
 		}
 		public TerminalNode TEXTIMAGE_ON() { return getToken(MocaSqlParser.TEXTIMAGE_ON, 0); }
+		public TerminalNode SEMI() { return getToken(MocaSqlParser.SEMI, 0); }
 		public Create_tableContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -6819,6 +6952,7 @@ public class MocaSqlParser extends Parser {
 			setState(848);
 			column_def_table_constraints();
 			setState(850);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==COMMA) {
 				{
@@ -6830,6 +6964,7 @@ public class MocaSqlParser extends Parser {
 			setState(852);
 			match(RR_BRACKET);
 			setState(855);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==LOCK) {
 				{
@@ -6875,6 +7010,7 @@ public class MocaSqlParser extends Parser {
 				break;
 			}
 			setState(871);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case TEXTIMAGE_ON:
 				{
@@ -6904,7 +7040,7 @@ public class MocaSqlParser extends Parser {
 			case SEMI:
 				break;
 			default:
-				throw new NoViableAltException(this);
+				break;
 			}
 			setState(874);
 			_errHandler.sync(this);
@@ -6931,11 +7067,17 @@ public class MocaSqlParser extends Parser {
 
 	public static class Table_optionsContext extends ParserRuleContext {
 		public TerminalNode WITH() { return getToken(MocaSqlParser.WITH, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public List<Index_optionContext> index_option() {
 			return getRuleContexts(Index_optionContext.class);
 		}
 		public Index_optionContext index_option(int i) {
 			return getRuleContext(Index_optionContext.class,i);
+		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public Table_optionsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -6966,6 +7108,7 @@ public class MocaSqlParser extends Parser {
 			setState(876);
 			match(WITH);
 			setState(896);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case LR_BRACKET:
 				{
@@ -7476,9 +7619,11 @@ public class MocaSqlParser extends Parser {
 		public Select_statementContext select_statement() {
 			return getRuleContext(Select_statementContext.class,0);
 		}
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public Column_name_listContext column_name_list() {
 			return getRuleContext(Column_name_listContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public List<TerminalNode> WITH() { return getTokens(MocaSqlParser.WITH); }
 		public TerminalNode WITH(int i) {
 			return getToken(MocaSqlParser.WITH, i);
@@ -7491,6 +7636,11 @@ public class MocaSqlParser extends Parser {
 		}
 		public TerminalNode CHECK() { return getToken(MocaSqlParser.CHECK, 0); }
 		public TerminalNode OPTION() { return getToken(MocaSqlParser.OPTION, 0); }
+		public TerminalNode SEMI() { return getToken(MocaSqlParser.SEMI, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
 		public Create_viewContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -7524,6 +7674,7 @@ public class MocaSqlParser extends Parser {
 			setState(900);
 			simple_name();
 			setState(905);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==LR_BRACKET) {
 				{
@@ -7537,6 +7688,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(916);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WITH) {
 				{
@@ -7638,7 +7790,10 @@ public class MocaSqlParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==ENCRYPTION || _la==SCHEMABINDING || _la==VIEW_METADATA) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -7673,7 +7828,16 @@ public class MocaSqlParser extends Parser {
 			return getRuleContext(Table_nameContext.class,i);
 		}
 		public TerminalNode SET() { return getToken(MocaSqlParser.SET, 0); }
+		public List<TerminalNode> LR_BRACKET() { return getTokens(MocaSqlParser.LR_BRACKET); }
+		public TerminalNode LR_BRACKET(int i) {
+			return getToken(MocaSqlParser.LR_BRACKET, i);
+		}
 		public TerminalNode LOCK_ESCALATION() { return getToken(MocaSqlParser.LOCK_ESCALATION, 0); }
+		public TerminalNode EQUAL() { return getToken(MocaSqlParser.EQUAL, 0); }
+		public List<TerminalNode> RR_BRACKET() { return getTokens(MocaSqlParser.RR_BRACKET); }
+		public TerminalNode RR_BRACKET(int i) {
+			return getToken(MocaSqlParser.RR_BRACKET, i);
+		}
 		public TerminalNode ADD() { return getToken(MocaSqlParser.ADD, 0); }
 		public Column_def_table_constraintContext column_def_table_constraint() {
 			return getRuleContext(Column_def_table_constraintContext.class,0);
@@ -7706,6 +7870,7 @@ public class MocaSqlParser extends Parser {
 			return getRuleContext(Column_name_listContext.class,i);
 		}
 		public TerminalNode ENABLE() { return getToken(MocaSqlParser.ENABLE, 0); }
+		public TerminalNode SEMI() { return getToken(MocaSqlParser.SEMI, 0); }
 		public Alter_tableContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -7755,7 +7920,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==TABLE || _la==AUTO || _la==DISABLE) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				setState(938);
@@ -7850,12 +8018,16 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==DISABLE || _la==ENABLE) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				setState(970);
 				match(TRIGGER);
 				setState(972);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==CALLED || ((((_la - 81)) & ~0x3f) == 0 && ((1L << (_la - 81)) & ((1L << (DATA_COMPRESSION - 81)) | (1L << (EVENTDATA - 81)) | (1L << (EXPIREDATE - 81)) | (1L << (FILENAME - 81)) | (1L << (FILLFACTOR - 81)) | (1L << (FORCESEEK - 81)))) != 0) || ((((_la - 159)) & ~0x3f) == 0 && ((1L << (_la - 159)) & ((1L << (INIT - 159)) | (1L << (KEY - 159)) | (1L << (MASTER - 159)) | (1L << (MAX_MEMORY - 159)))) != 0) || ((((_la - 226)) & ~0x3f) == 0 && ((1L << (_la - 226)) & ((1L << (OFFSETS - 226)) | (1L << (PAGE - 226)) | (1L << (POLICY - 226)) | (1L << (PRECISION - 226)) | (1L << (PUBLIC - 226)) | (1L << (R - 226)) | (1L << (RAW - 226)) | (1L << (RETURN - 226)) | (1L << (RETURNS - 226)) | (1L << (ROLE - 226)) | (1L << (ROWCOUNT - 226)))) != 0) || ((((_la - 296)) & ~0x3f) == 0 && ((1L << (_la - 296)) & ((1L << (SAFETY - 296)) | (1L << (RULE - 296)) | (1L << (SERVER - 296)) | (1L << (SID - 296)) | (1L << (SOURCE - 296)) | (1L << (SPLIT - 296)) | (1L << (STATE - 296)) | (1L << (START - 296)) | (1L << (STOP - 296)) | (1L << (TARGET - 296)) | (1L << (TRAN - 296)))) != 0) || ((((_la - 362)) & ~0x3f) == 0 && ((1L << (_la - 362)) & ((1L << (URL - 362)) | (1L << (USER - 362)) | (1L << (ABSOLUTE - 362)) | (1L << (ACCENT_SENSITIVITY - 362)) | (1L << (ACTION - 362)) | (1L << (ACTIVATION - 362)) | (1L << (ACTIVE - 362)) | (1L << (ADDRESS - 362)) | (1L << (AES_128 - 362)) | (1L << (AES_192 - 362)) | (1L << (AES_256 - 362)) | (1L << (AFFINITY - 362)) | (1L << (AFTER - 362)) | (1L << (AGGREGATE - 362)) | (1L << (ALGORITHM - 362)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 362)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 362)) | (1L << (ALLOWED - 362)) | (1L << (ANSI_NULL_DEFAULT - 362)) | (1L << (ANSI_NULLS - 362)) | (1L << (ANSI_PADDING - 362)) | (1L << (ANSI_WARNINGS - 362)) | (1L << (APPLICATION_LOG - 362)) | (1L << (APPLY - 362)) | (1L << (ARITHABORT - 362)) | (1L << (ASSEMBLY - 362)) | (1L << (AUDIT - 362)) | (1L << (AUDIT_GUID - 362)) | (1L << (AUTO - 362)) | (1L << (AUTO_CLEANUP - 362)) | (1L << (AUTO_CLOSE - 362)) | (1L << (AUTO_CREATE_STATISTICS - 362)) | (1L << (AUTO_SHRINK - 362)) | (1L << (AUTO_UPDATE_STATISTICS - 362)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 362)) | (1L << (AVAILABILITY - 362)) | (1L << (AVG - 362)) | (1L << (BACKUP_PRIORITY - 362)) | (1L << (BEGIN_DIALOG - 362)) | (1L << (BIGINT - 362)) | (1L << (BINARY_BASE64 - 362)) | (1L << (BINARY_CHECKSUM - 362)) | (1L << (BINDING - 362)) | (1L << (BLOB_STORAGE - 362)) | (1L << (BROKER - 362)) | (1L << (BROKER_INSTANCE - 362)) | (1L << (BULK_LOGGED - 362)))) != 0) || ((((_la - 426)) & ~0x3f) == 0 && ((1L << (_la - 426)) & ((1L << (CALLER - 426)) | (1L << (CAP_CPU_PERCENT - 426)) | (1L << (CAST - 426)) | (1L << (CATALOG - 426)) | (1L << (CATCH - 426)) | (1L << (CHANGE_RETENTION - 426)) | (1L << (CHANGE_TRACKING - 426)) | (1L << (CHECKSUM - 426)) | (1L << (CHECKSUM_AGG - 426)) | (1L << (CLEANUP - 426)) | (1L << (COLLECTION - 426)) | (1L << (COLUMN_MASTER_KEY - 426)) | (1L << (COMMITTED - 426)) | (1L << (COMPATIBILITY_LEVEL - 426)) | (1L << (CONCAT - 426)) | (1L << (CONCAT_NULL_YIELDS_NULL - 426)) | (1L << (CONTENT - 426)) | (1L << (CONTROL - 426)) | (1L << (COOKIE - 426)) | (1L << (COUNT - 426)) | (1L << (COUNT_BIG - 426)) | (1L << (COUNTER - 426)) | (1L << (CPU - 426)) | (1L << (CREATE_NEW - 426)) | (1L << (CREATION_DISPOSITION - 426)) | (1L << (CREDENTIAL - 426)) | (1L << (CRYPTOGRAPHIC - 426)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 426)) | (1L << (CURSOR_DEFAULT - 426)) | (1L << (DATA - 426)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 426)) | (1L << (DATEADD - 426)) | (1L << (DATEDIFF - 426)) | (1L << (DATENAME - 426)) | (1L << (DATEPART - 426)) | (1L << (DAYS - 426)) | (1L << (DB_CHAINING - 426)) | (1L << (DB_FAILOVER - 426)) | (1L << (DECRYPTION - 426)) | (1L << (DEFAULT_DOUBLE_QUOTE - 426)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 426)) | (1L << (DEFAULT_LANGUAGE - 426)) | (1L << (DELAY - 426)) | (1L << (DELAYED_DURABILITY - 426)) | (1L << (DELETED - 426)) | (1L << (DENSE_RANK - 426)) | (1L << (DEPENDENTS - 426)) | (1L << (DES - 426)) | (1L << (DESCRIPTION - 426)) | (1L << (DESX - 426)) | (1L << (DHCP - 426)) | (1L << (DIALOG - 426)) | (1L << (DIRECTORY_NAME - 426)) | (1L << (DISABLE - 426)) | (1L << (DISABLE_BROKER - 426)) | (1L << (DISABLED - 426)) | (1L << (DISK_DRIVE - 426)) | (1L << (DOCUMENT - 426)) | (1L << (DYNAMIC - 426)) | (1L << (EMERGENCY - 426)) | (1L << (EMPTY - 426)) | (1L << (ENABLE - 426)) | (1L << (ENABLE_BROKER - 426)))) != 0) || ((((_la - 490)) & ~0x3f) == 0 && ((1L << (_la - 490)) & ((1L << (ENCRYPTED_VALUE - 490)) | (1L << (ENCRYPTION - 490)) | (1L << (ENDPOINT_URL - 490)) | (1L << (ERROR_BROKER_CONVERSATIONS - 490)) | (1L << (EXCLUSIVE - 490)) | (1L << (EXECUTABLE - 490)) | (1L << (EXIST - 490)) | (1L << (EXPAND - 490)) | (1L << (EXPIRY_DATE - 490)) | (1L << (EXPLICIT - 490)) | (1L << (FAIL_OPERATION - 490)) | (1L << (FAILOVER_MODE - 490)) | (1L << (FAILURE - 490)) | (1L << (FAILURE_CONDITION_LEVEL - 490)) | (1L << (FAST - 490)) | (1L << (FAST_FORWARD - 490)) | (1L << (FILEGROUP - 490)) | (1L << (FILEGROWTH - 490)) | (1L << (FILEPATH - 490)) | (1L << (FILESTREAM - 490)) | (1L << (FILTER - 490)) | (1L << (FIRST - 490)) | (1L << (FIRST_VALUE - 490)) | (1L << (FOLLOWING - 490)) | (1L << (FORCE - 490)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 490)) | (1L << (FORCED - 490)) | (1L << (FORMAT - 490)) | (1L << (FORWARD_ONLY - 490)) | (1L << (FULLSCAN - 490)) | (1L << (FULLTEXT - 490)) | (1L << (GB - 490)) | (1L << (GETDATE - 490)) | (1L << (GETUTCDATE - 490)) | (1L << (GLOBAL - 490)) | (1L << (GO - 490)) | (1L << (GROUP_MAX_REQUESTS - 490)) | (1L << (GROUPING - 490)) | (1L << (GROUPING_ID - 490)) | (1L << (HADR - 490)) | (1L << (HASH - 490)) | (1L << (HEALTH_CHECK_TIMEOUT - 490)) | (1L << (HIGH - 490)) | (1L << (HONOR_BROKER_PRIORITY - 490)) | (1L << (HOURS - 490)) | (1L << (IDENTITY_VALUE - 490)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 490)) | (1L << (IMMEDIATE - 490)) | (1L << (IMPERSONATE - 490)) | (1L << (IMPORTANCE - 490)) | (1L << (INCREMENTAL - 490)) | (1L << (INITIATOR - 490)) | (1L << (INPUT - 490)) | (1L << (INSENSITIVE - 490)) | (1L << (INSERTED - 490)) | (1L << (INT - 490)) | (1L << (IP - 490)) | (1L << (ISOLATION - 490)) | (1L << (KB - 490)) | (1L << (KEEP - 490)) | (1L << (KEEPFIXED - 490)))) != 0) || ((((_la - 554)) & ~0x3f) == 0 && ((1L << (_la - 554)) & ((1L << (KEY_SOURCE - 554)) | (1L << (KEYS - 554)) | (1L << (KEYSET - 554)) | (1L << (LAG - 554)) | (1L << (LAST - 554)) | (1L << (LAST_VALUE - 554)) | (1L << (LEAD - 554)) | (1L << (LEVEL - 554)) | (1L << (LIST - 554)) | (1L << (LISTENER - 554)) | (1L << (LISTENER_URL - 554)) | (1L << (LOB_COMPACTION - 554)) | (1L << (LOCAL - 554)) | (1L << (LOCATION - 554)) | (1L << (LOCK - 554)) | (1L << (LOCK_ESCALATION - 554)) | (1L << (LOGIN - 554)) | (1L << (LOOP - 554)) | (1L << (LOW - 554)) | (1L << (MANUAL - 554)) | (1L << (MARK - 554)) | (1L << (MATERIALIZED - 554)) | (1L << (MAX - 554)) | (1L << (MAX_CPU_PERCENT - 554)) | (1L << (MAX_DOP - 554)) | (1L << (MAX_FILES - 554)) | (1L << (MAX_IOPS_PER_VOLUME - 554)) | (1L << (MAX_MEMORY_PERCENT - 554)) | (1L << (MAX_PROCESSES - 554)) | (1L << (MAX_QUEUE_READERS - 554)) | (1L << (MAX_ROLLOVER_FILES - 554)) | (1L << (MAXDOP - 554)) | (1L << (MAXRECURSION - 554)) | (1L << (MAXSIZE - 554)) | (1L << (MB - 554)) | (1L << (MEDIUM - 554)) | (1L << (MEMORY_OPTIMIZED_DATA - 554)) | (1L << (MESSAGE - 554)) | (1L << (MIN - 554)) | (1L << (MIN_ACTIVE_ROWVERSION - 554)) | (1L << (MIN_CPU_PERCENT - 554)) | (1L << (MIN_IOPS_PER_VOLUME - 554)) | (1L << (MIN_MEMORY_PERCENT - 554)) | (1L << (MINUTES - 554)) | (1L << (MIRROR_ADDRESS - 554)) | (1L << (MIXED_PAGE_ALLOCATION - 554)) | (1L << (MODE - 554)) | (1L << (MODIFY - 554)) | (1L << (MOVE - 554)) | (1L << (MULTI_USER - 554)) | (1L << (NAME - 554)) | (1L << (NESTED_TRIGGERS - 554)) | (1L << (NEW_ACCOUNT - 554)) | (1L << (NEW_BROKER - 554)) | (1L << (NEW_PASSWORD - 554)) | (1L << (NEXT - 554)) | (1L << (NO - 554)) | (1L << (NO_TRUNCATE - 554)) | (1L << (NO_WAIT - 554)) | (1L << (NOCOUNT - 554)) | (1L << (NODES - 554)) | (1L << (NOEXPAND - 554)) | (1L << (NON_TRANSACTED_ACCESS - 554)) | (1L << (NORECOMPUTE - 554)))) != 0) || ((((_la - 618)) & ~0x3f) == 0 && ((1L << (_la - 618)) & ((1L << (NORECOVERY - 618)) | (1L << (NOWAIT - 618)) | (1L << (NTILE - 618)) | (1L << (NUMANODE - 618)) | (1L << (NUMBER - 618)) | (1L << (NUMERIC_ROUNDABORT - 618)) | (1L << (OBJECT - 618)) | (1L << (OFFLINE - 618)) | (1L << (OFFSET - 618)) | (1L << (OLD_ACCOUNT - 618)) | (1L << (ONLINE - 618)) | (1L << (ONLY - 618)) | (1L << (OPEN_EXISTING - 618)) | (1L << (OPTIMISTIC - 618)) | (1L << (OPTIMIZE - 618)) | (1L << (OUT - 618)) | (1L << (OUTPUT - 618)) | (1L << (OWNER - 618)) | (1L << (PAGE_VERIFY - 618)) | (1L << (PARAMETERIZATION - 618)) | (1L << (PARTITION - 618)) | (1L << (PARTITIONS - 618)) | (1L << (PARTNER - 618)) | (1L << (PATH - 618)) | (1L << (POISON_MESSAGE_HANDLING - 618)) | (1L << (POOL - 618)) | (1L << (PORT - 618)) | (1L << (PRECEDING - 618)) | (1L << (PRIMARY_ROLE - 618)) | (1L << (PRIOR - 618)) | (1L << (PRIORITY - 618)) | (1L << (PRIORITY_LEVEL - 618)) | (1L << (PRIVATE - 618)) | (1L << (PRIVATE_KEY - 618)) | (1L << (PRIVILEGES - 618)) | (1L << (PROCEDURE_NAME - 618)) | (1L << (PROPERTY - 618)) | (1L << (PROVIDER - 618)) | (1L << (PROVIDER_KEY_NAME - 618)) | (1L << (QUERY - 618)) | (1L << (QUEUE - 618)) | (1L << (QUEUE_DELAY - 618)) | (1L << (QUOTED_IDENTIFIER - 618)) | (1L << (RANGE - 618)) | (1L << (RANK - 618)) | (1L << (RC2 - 618)) | (1L << (RC4 - 618)) | (1L << (RC4_128 - 618)) | (1L << (READ_COMMITTED_SNAPSHOT - 618)) | (1L << (READ_ONLY - 618)) | (1L << (READ_ONLY_ROUTING_LIST - 618)) | (1L << (READ_WRITE - 618)) | (1L << (READONLY - 618)) | (1L << (REBUILD - 618)) | (1L << (RECEIVE - 618)) | (1L << (RECOMPILE - 618)) | (1L << (RECOVERY - 618)) | (1L << (RECURSIVE_TRIGGERS - 618)) | (1L << (RELATIVE - 618)) | (1L << (REMOTE - 618)) | (1L << (REMOTE_SERVICE_NAME - 618)) | (1L << (REMOVE - 618)) | (1L << (REORGANIZE - 618)))) != 0) || ((((_la - 682)) & ~0x3f) == 0 && ((1L << (_la - 682)) & ((1L << (REPEATABLE - 682)) | (1L << (REPLICA - 682)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 682)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 682)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 682)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 682)) | (1L << (RESERVE_DISK_SPACE - 682)) | (1L << (RESOURCE - 682)) | (1L << (RESOURCE_MANAGER_LOCATION - 682)) | (1L << (RESTRICTED_USER - 682)) | (1L << (RETENTION - 682)) | (1L << (ROBUST - 682)) | (1L << (ROOT - 682)) | (1L << (ROUTE - 682)) | (1L << (ROW - 682)) | (1L << (ROW_NUMBER - 682)) | (1L << (ROWGUID - 682)) | (1L << (ROWS - 682)) | (1L << (SAMPLE - 682)) | (1L << (SCHEMABINDING - 682)) | (1L << (SCOPED - 682)) | (1L << (SCROLL - 682)) | (1L << (SCROLL_LOCKS - 682)) | (1L << (SEARCH - 682)) | (1L << (SECONDARY - 682)) | (1L << (SECONDARY_ONLY - 682)) | (1L << (SECONDARY_ROLE - 682)) | (1L << (SECONDS - 682)) | (1L << (SECRET - 682)) | (1L << (SECURITY - 682)) | (1L << (SECURITY_LOG - 682)) | (1L << (SEEDING_MODE - 682)) | (1L << (SELF - 682)) | (1L << (SEMI_SENSITIVE - 682)) | (1L << (SEND - 682)) | (1L << (SENT - 682)) | (1L << (SEQUENCE - 682)) | (1L << (SERIALIZABLE - 682)) | (1L << (SESSION_TIMEOUT - 682)) | (1L << (SETERROR - 682)) | (1L << (SHARE - 682)) | (1L << (SHOWPLAN - 682)) | (1L << (SIGNATURE - 682)) | (1L << (SIMPLE - 682)) | (1L << (SINGLE_USER - 682)) | (1L << (SIZE - 682)) | (1L << (SMALLINT - 682)) | (1L << (SNAPSHOT - 682)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 682)) | (1L << (STANDBY - 682)) | (1L << (START_DATE - 682)) | (1L << (STATIC - 682)) | (1L << (STATS_STREAM - 682)) | (1L << (STATUS - 682)) | (1L << (STDEV - 682)) | (1L << (STDEVP - 682)) | (1L << (STOPLIST - 682)) | (1L << (STRING_AGG - 682)) | (1L << (STUFF - 682)) | (1L << (SUBJECT - 682)) | (1L << (SUM - 682)) | (1L << (SUSPEND - 682)))) != 0) || ((((_la - 746)) & ~0x3f) == 0 && ((1L << (_la - 746)) & ((1L << (SYMMETRIC - 746)) | (1L << (SYNCHRONOUS_COMMIT - 746)) | (1L << (SYNONYM - 746)) | (1L << (SYSTEM - 746)) | (1L << (TAKE - 746)) | (1L << (TARGET_RECOVERY_TIME - 746)) | (1L << (TB - 746)) | (1L << (TEXTIMAGE_ON - 746)) | (1L << (THROW - 746)) | (1L << (TIES - 746)) | (1L << (TIME - 746)) | (1L << (TIMEOUT - 746)) | (1L << (TIMER - 746)) | (1L << (TINYINT - 746)) | (1L << (TORN_PAGE_DETECTION - 746)) | (1L << (TRANSFORM_NOISE_WORDS - 746)) | (1L << (TRIPLE_DES - 746)) | (1L << (TRIPLE_DES_3KEY - 746)) | (1L << (TRUSTWORTHY - 746)) | (1L << (TRY - 746)) | (1L << (TSQL - 746)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 746)) | (1L << (TYPE - 746)) | (1L << (TYPE_WARNING - 746)) | (1L << (UNBOUNDED - 746)) | (1L << (UNCOMMITTED - 746)) | (1L << (UNKNOWN - 746)) | (1L << (UNLIMITED - 746)) | (1L << (USING - 746)) | (1L << (VALID_XML - 746)) | (1L << (VALIDATION - 746)) | (1L << (VALUE - 746)) | (1L << (VAR - 746)) | (1L << (VARP - 746)) | (1L << (VIEW_METADATA - 746)) | (1L << (VIEWS - 746)) | (1L << (WAIT - 746)) | (1L << (WELL_FORMED_XML - 746)) | (1L << (WORK - 746)) | (1L << (WORKLOAD - 746)) | (1L << (XML - 746)) | (1L << (XMLNAMESPACES - 746)) | (1L << (DOUBLE_QUOTE_ID - 746)) | (1L << (SQUARE_BRACKET_ID - 746)) | (1L << (ID - 746)))) != 0)) {
 					{
@@ -7996,6 +8168,11 @@ public class MocaSqlParser extends Parser {
 		}
 		public TerminalNode IF() { return getToken(MocaSqlParser.IF, 0); }
 		public TerminalNode EXISTS() { return getToken(MocaSqlParser.EXISTS, 0); }
+		public TerminalNode SEMI() { return getToken(MocaSqlParser.SEMI, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
 		public Drop_indexContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -8027,6 +8204,7 @@ public class MocaSqlParser extends Parser {
 			setState(994);
 			match(INDEX);
 			setState(997);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==IF) {
 				{
@@ -8165,6 +8343,10 @@ public class MocaSqlParser extends Parser {
 		public IdContext owner_name;
 		public IdContext table_or_view_name;
 		public IdContext index_name;
+		public List<TerminalNode> DOT() { return getTokens(MocaSqlParser.DOT); }
+		public TerminalNode DOT(int i) {
+			return getToken(MocaSqlParser.DOT, i);
+		}
 		public List<IdContext> id() {
 			return getRuleContexts(IdContext.class);
 		}
@@ -8235,6 +8417,7 @@ public class MocaSqlParser extends Parser {
 		}
 		public TerminalNode IF() { return getToken(MocaSqlParser.IF, 0); }
 		public TerminalNode EXISTS() { return getToken(MocaSqlParser.EXISTS, 0); }
+		public TerminalNode SEMI() { return getToken(MocaSqlParser.SEMI, 0); }
 		public Drop_tableContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -8266,6 +8449,7 @@ public class MocaSqlParser extends Parser {
 			setState(1034);
 			match(TABLE);
 			setState(1037);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==IF) {
 				{
@@ -8312,6 +8496,11 @@ public class MocaSqlParser extends Parser {
 		}
 		public TerminalNode IF() { return getToken(MocaSqlParser.IF, 0); }
 		public TerminalNode EXISTS() { return getToken(MocaSqlParser.EXISTS, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
+		public TerminalNode SEMI() { return getToken(MocaSqlParser.SEMI, 0); }
 		public Drop_viewContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -8343,6 +8532,7 @@ public class MocaSqlParser extends Parser {
 			setState(1044);
 			match(VIEW);
 			setState(1047);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==IF) {
 				{
@@ -8425,6 +8615,7 @@ public class MocaSqlParser extends Parser {
 		enterRule(_localctx, 66, RULE_rowset_function_limited);
 		try {
 			setState(1062);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case OPENQUERY:
 				enterOuterAlt(_localctx, 1);
@@ -8459,6 +8650,9 @@ public class MocaSqlParser extends Parser {
 		public IdContext linked_server;
 		public Token query;
 		public TerminalNode OPENQUERY() { return getToken(MocaSqlParser.OPENQUERY, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode COMMA() { return getToken(MocaSqlParser.COMMA, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public IdContext id() {
 			return getRuleContext(IdContext.class,0);
 		}
@@ -8520,6 +8714,13 @@ public class MocaSqlParser extends Parser {
 		public IdContext scheme;
 		public IdContext table;
 		public TerminalNode OPENDATASOURCE() { return getToken(MocaSqlParser.OPENDATASOURCE, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode COMMA() { return getToken(MocaSqlParser.COMMA, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
+		public List<TerminalNode> DOT() { return getTokens(MocaSqlParser.DOT); }
+		public TerminalNode DOT(int i) {
+			return getToken(MocaSqlParser.DOT, i);
+		}
 		public List<TerminalNode> STRING() { return getTokens(MocaSqlParser.STRING); }
 		public TerminalNode STRING(int i) {
 			return getToken(MocaSqlParser.STRING, i);
@@ -8571,6 +8772,7 @@ public class MocaSqlParser extends Parser {
 			setState(1077);
 			match(DOT);
 			setState(1079);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==CALLED || ((((_la - 81)) & ~0x3f) == 0 && ((1L << (_la - 81)) & ((1L << (DATA_COMPRESSION - 81)) | (1L << (EVENTDATA - 81)) | (1L << (EXPIREDATE - 81)) | (1L << (FILENAME - 81)) | (1L << (FILLFACTOR - 81)) | (1L << (FORCESEEK - 81)))) != 0) || ((((_la - 159)) & ~0x3f) == 0 && ((1L << (_la - 159)) & ((1L << (INIT - 159)) | (1L << (KEY - 159)) | (1L << (MASTER - 159)) | (1L << (MAX_MEMORY - 159)))) != 0) || ((((_la - 226)) & ~0x3f) == 0 && ((1L << (_la - 226)) & ((1L << (OFFSETS - 226)) | (1L << (PAGE - 226)) | (1L << (POLICY - 226)) | (1L << (PRECISION - 226)) | (1L << (PUBLIC - 226)) | (1L << (R - 226)) | (1L << (RAW - 226)) | (1L << (RETURN - 226)) | (1L << (RETURNS - 226)) | (1L << (ROLE - 226)) | (1L << (ROWCOUNT - 226)))) != 0) || ((((_la - 296)) & ~0x3f) == 0 && ((1L << (_la - 296)) & ((1L << (SAFETY - 296)) | (1L << (RULE - 296)) | (1L << (SERVER - 296)) | (1L << (SID - 296)) | (1L << (SOURCE - 296)) | (1L << (SPLIT - 296)) | (1L << (STATE - 296)) | (1L << (START - 296)) | (1L << (STOP - 296)) | (1L << (TARGET - 296)) | (1L << (TRAN - 296)))) != 0) || ((((_la - 362)) & ~0x3f) == 0 && ((1L << (_la - 362)) & ((1L << (URL - 362)) | (1L << (USER - 362)) | (1L << (ABSOLUTE - 362)) | (1L << (ACCENT_SENSITIVITY - 362)) | (1L << (ACTION - 362)) | (1L << (ACTIVATION - 362)) | (1L << (ACTIVE - 362)) | (1L << (ADDRESS - 362)) | (1L << (AES_128 - 362)) | (1L << (AES_192 - 362)) | (1L << (AES_256 - 362)) | (1L << (AFFINITY - 362)) | (1L << (AFTER - 362)) | (1L << (AGGREGATE - 362)) | (1L << (ALGORITHM - 362)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 362)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 362)) | (1L << (ALLOWED - 362)) | (1L << (ANSI_NULL_DEFAULT - 362)) | (1L << (ANSI_NULLS - 362)) | (1L << (ANSI_PADDING - 362)) | (1L << (ANSI_WARNINGS - 362)) | (1L << (APPLICATION_LOG - 362)) | (1L << (APPLY - 362)) | (1L << (ARITHABORT - 362)) | (1L << (ASSEMBLY - 362)) | (1L << (AUDIT - 362)) | (1L << (AUDIT_GUID - 362)) | (1L << (AUTO - 362)) | (1L << (AUTO_CLEANUP - 362)) | (1L << (AUTO_CLOSE - 362)) | (1L << (AUTO_CREATE_STATISTICS - 362)) | (1L << (AUTO_SHRINK - 362)) | (1L << (AUTO_UPDATE_STATISTICS - 362)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 362)) | (1L << (AVAILABILITY - 362)) | (1L << (AVG - 362)) | (1L << (BACKUP_PRIORITY - 362)) | (1L << (BEGIN_DIALOG - 362)) | (1L << (BIGINT - 362)) | (1L << (BINARY_BASE64 - 362)) | (1L << (BINARY_CHECKSUM - 362)) | (1L << (BINDING - 362)) | (1L << (BLOB_STORAGE - 362)) | (1L << (BROKER - 362)) | (1L << (BROKER_INSTANCE - 362)) | (1L << (BULK_LOGGED - 362)))) != 0) || ((((_la - 426)) & ~0x3f) == 0 && ((1L << (_la - 426)) & ((1L << (CALLER - 426)) | (1L << (CAP_CPU_PERCENT - 426)) | (1L << (CAST - 426)) | (1L << (CATALOG - 426)) | (1L << (CATCH - 426)) | (1L << (CHANGE_RETENTION - 426)) | (1L << (CHANGE_TRACKING - 426)) | (1L << (CHECKSUM - 426)) | (1L << (CHECKSUM_AGG - 426)) | (1L << (CLEANUP - 426)) | (1L << (COLLECTION - 426)) | (1L << (COLUMN_MASTER_KEY - 426)) | (1L << (COMMITTED - 426)) | (1L << (COMPATIBILITY_LEVEL - 426)) | (1L << (CONCAT - 426)) | (1L << (CONCAT_NULL_YIELDS_NULL - 426)) | (1L << (CONTENT - 426)) | (1L << (CONTROL - 426)) | (1L << (COOKIE - 426)) | (1L << (COUNT - 426)) | (1L << (COUNT_BIG - 426)) | (1L << (COUNTER - 426)) | (1L << (CPU - 426)) | (1L << (CREATE_NEW - 426)) | (1L << (CREATION_DISPOSITION - 426)) | (1L << (CREDENTIAL - 426)) | (1L << (CRYPTOGRAPHIC - 426)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 426)) | (1L << (CURSOR_DEFAULT - 426)) | (1L << (DATA - 426)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 426)) | (1L << (DATEADD - 426)) | (1L << (DATEDIFF - 426)) | (1L << (DATENAME - 426)) | (1L << (DATEPART - 426)) | (1L << (DAYS - 426)) | (1L << (DB_CHAINING - 426)) | (1L << (DB_FAILOVER - 426)) | (1L << (DECRYPTION - 426)) | (1L << (DEFAULT_DOUBLE_QUOTE - 426)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 426)) | (1L << (DEFAULT_LANGUAGE - 426)) | (1L << (DELAY - 426)) | (1L << (DELAYED_DURABILITY - 426)) | (1L << (DELETED - 426)) | (1L << (DENSE_RANK - 426)) | (1L << (DEPENDENTS - 426)) | (1L << (DES - 426)) | (1L << (DESCRIPTION - 426)) | (1L << (DESX - 426)) | (1L << (DHCP - 426)) | (1L << (DIALOG - 426)) | (1L << (DIRECTORY_NAME - 426)) | (1L << (DISABLE - 426)) | (1L << (DISABLE_BROKER - 426)) | (1L << (DISABLED - 426)) | (1L << (DISK_DRIVE - 426)) | (1L << (DOCUMENT - 426)) | (1L << (DYNAMIC - 426)) | (1L << (EMERGENCY - 426)) | (1L << (EMPTY - 426)) | (1L << (ENABLE - 426)) | (1L << (ENABLE_BROKER - 426)))) != 0) || ((((_la - 490)) & ~0x3f) == 0 && ((1L << (_la - 490)) & ((1L << (ENCRYPTED_VALUE - 490)) | (1L << (ENCRYPTION - 490)) | (1L << (ENDPOINT_URL - 490)) | (1L << (ERROR_BROKER_CONVERSATIONS - 490)) | (1L << (EXCLUSIVE - 490)) | (1L << (EXECUTABLE - 490)) | (1L << (EXIST - 490)) | (1L << (EXPAND - 490)) | (1L << (EXPIRY_DATE - 490)) | (1L << (EXPLICIT - 490)) | (1L << (FAIL_OPERATION - 490)) | (1L << (FAILOVER_MODE - 490)) | (1L << (FAILURE - 490)) | (1L << (FAILURE_CONDITION_LEVEL - 490)) | (1L << (FAST - 490)) | (1L << (FAST_FORWARD - 490)) | (1L << (FILEGROUP - 490)) | (1L << (FILEGROWTH - 490)) | (1L << (FILEPATH - 490)) | (1L << (FILESTREAM - 490)) | (1L << (FILTER - 490)) | (1L << (FIRST - 490)) | (1L << (FIRST_VALUE - 490)) | (1L << (FOLLOWING - 490)) | (1L << (FORCE - 490)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 490)) | (1L << (FORCED - 490)) | (1L << (FORMAT - 490)) | (1L << (FORWARD_ONLY - 490)) | (1L << (FULLSCAN - 490)) | (1L << (FULLTEXT - 490)) | (1L << (GB - 490)) | (1L << (GETDATE - 490)) | (1L << (GETUTCDATE - 490)) | (1L << (GLOBAL - 490)) | (1L << (GO - 490)) | (1L << (GROUP_MAX_REQUESTS - 490)) | (1L << (GROUPING - 490)) | (1L << (GROUPING_ID - 490)) | (1L << (HADR - 490)) | (1L << (HASH - 490)) | (1L << (HEALTH_CHECK_TIMEOUT - 490)) | (1L << (HIGH - 490)) | (1L << (HONOR_BROKER_PRIORITY - 490)) | (1L << (HOURS - 490)) | (1L << (IDENTITY_VALUE - 490)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 490)) | (1L << (IMMEDIATE - 490)) | (1L << (IMPERSONATE - 490)) | (1L << (IMPORTANCE - 490)) | (1L << (INCREMENTAL - 490)) | (1L << (INITIATOR - 490)) | (1L << (INPUT - 490)) | (1L << (INSENSITIVE - 490)) | (1L << (INSERTED - 490)) | (1L << (INT - 490)) | (1L << (IP - 490)) | (1L << (ISOLATION - 490)) | (1L << (KB - 490)) | (1L << (KEEP - 490)) | (1L << (KEEPFIXED - 490)))) != 0) || ((((_la - 554)) & ~0x3f) == 0 && ((1L << (_la - 554)) & ((1L << (KEY_SOURCE - 554)) | (1L << (KEYS - 554)) | (1L << (KEYSET - 554)) | (1L << (LAG - 554)) | (1L << (LAST - 554)) | (1L << (LAST_VALUE - 554)) | (1L << (LEAD - 554)) | (1L << (LEVEL - 554)) | (1L << (LIST - 554)) | (1L << (LISTENER - 554)) | (1L << (LISTENER_URL - 554)) | (1L << (LOB_COMPACTION - 554)) | (1L << (LOCAL - 554)) | (1L << (LOCATION - 554)) | (1L << (LOCK - 554)) | (1L << (LOCK_ESCALATION - 554)) | (1L << (LOGIN - 554)) | (1L << (LOOP - 554)) | (1L << (LOW - 554)) | (1L << (MANUAL - 554)) | (1L << (MARK - 554)) | (1L << (MATERIALIZED - 554)) | (1L << (MAX - 554)) | (1L << (MAX_CPU_PERCENT - 554)) | (1L << (MAX_DOP - 554)) | (1L << (MAX_FILES - 554)) | (1L << (MAX_IOPS_PER_VOLUME - 554)) | (1L << (MAX_MEMORY_PERCENT - 554)) | (1L << (MAX_PROCESSES - 554)) | (1L << (MAX_QUEUE_READERS - 554)) | (1L << (MAX_ROLLOVER_FILES - 554)) | (1L << (MAXDOP - 554)) | (1L << (MAXRECURSION - 554)) | (1L << (MAXSIZE - 554)) | (1L << (MB - 554)) | (1L << (MEDIUM - 554)) | (1L << (MEMORY_OPTIMIZED_DATA - 554)) | (1L << (MESSAGE - 554)) | (1L << (MIN - 554)) | (1L << (MIN_ACTIVE_ROWVERSION - 554)) | (1L << (MIN_CPU_PERCENT - 554)) | (1L << (MIN_IOPS_PER_VOLUME - 554)) | (1L << (MIN_MEMORY_PERCENT - 554)) | (1L << (MINUTES - 554)) | (1L << (MIRROR_ADDRESS - 554)) | (1L << (MIXED_PAGE_ALLOCATION - 554)) | (1L << (MODE - 554)) | (1L << (MODIFY - 554)) | (1L << (MOVE - 554)) | (1L << (MULTI_USER - 554)) | (1L << (NAME - 554)) | (1L << (NESTED_TRIGGERS - 554)) | (1L << (NEW_ACCOUNT - 554)) | (1L << (NEW_BROKER - 554)) | (1L << (NEW_PASSWORD - 554)) | (1L << (NEXT - 554)) | (1L << (NO - 554)) | (1L << (NO_TRUNCATE - 554)) | (1L << (NO_WAIT - 554)) | (1L << (NOCOUNT - 554)) | (1L << (NODES - 554)) | (1L << (NOEXPAND - 554)) | (1L << (NON_TRANSACTED_ACCESS - 554)) | (1L << (NORECOMPUTE - 554)))) != 0) || ((((_la - 618)) & ~0x3f) == 0 && ((1L << (_la - 618)) & ((1L << (NORECOVERY - 618)) | (1L << (NOWAIT - 618)) | (1L << (NTILE - 618)) | (1L << (NUMANODE - 618)) | (1L << (NUMBER - 618)) | (1L << (NUMERIC_ROUNDABORT - 618)) | (1L << (OBJECT - 618)) | (1L << (OFFLINE - 618)) | (1L << (OFFSET - 618)) | (1L << (OLD_ACCOUNT - 618)) | (1L << (ONLINE - 618)) | (1L << (ONLY - 618)) | (1L << (OPEN_EXISTING - 618)) | (1L << (OPTIMISTIC - 618)) | (1L << (OPTIMIZE - 618)) | (1L << (OUT - 618)) | (1L << (OUTPUT - 618)) | (1L << (OWNER - 618)) | (1L << (PAGE_VERIFY - 618)) | (1L << (PARAMETERIZATION - 618)) | (1L << (PARTITION - 618)) | (1L << (PARTITIONS - 618)) | (1L << (PARTNER - 618)) | (1L << (PATH - 618)) | (1L << (POISON_MESSAGE_HANDLING - 618)) | (1L << (POOL - 618)) | (1L << (PORT - 618)) | (1L << (PRECEDING - 618)) | (1L << (PRIMARY_ROLE - 618)) | (1L << (PRIOR - 618)) | (1L << (PRIORITY - 618)) | (1L << (PRIORITY_LEVEL - 618)) | (1L << (PRIVATE - 618)) | (1L << (PRIVATE_KEY - 618)) | (1L << (PRIVILEGES - 618)) | (1L << (PROCEDURE_NAME - 618)) | (1L << (PROPERTY - 618)) | (1L << (PROVIDER - 618)) | (1L << (PROVIDER_KEY_NAME - 618)) | (1L << (QUERY - 618)) | (1L << (QUEUE - 618)) | (1L << (QUEUE_DELAY - 618)) | (1L << (QUOTED_IDENTIFIER - 618)) | (1L << (RANGE - 618)) | (1L << (RANK - 618)) | (1L << (RC2 - 618)) | (1L << (RC4 - 618)) | (1L << (RC4_128 - 618)) | (1L << (READ_COMMITTED_SNAPSHOT - 618)) | (1L << (READ_ONLY - 618)) | (1L << (READ_ONLY_ROUTING_LIST - 618)) | (1L << (READ_WRITE - 618)) | (1L << (READONLY - 618)) | (1L << (REBUILD - 618)) | (1L << (RECEIVE - 618)) | (1L << (RECOMPILE - 618)) | (1L << (RECOVERY - 618)) | (1L << (RECURSIVE_TRIGGERS - 618)) | (1L << (RELATIVE - 618)) | (1L << (REMOTE - 618)) | (1L << (REMOTE_SERVICE_NAME - 618)) | (1L << (REMOVE - 618)) | (1L << (REORGANIZE - 618)))) != 0) || ((((_la - 682)) & ~0x3f) == 0 && ((1L << (_la - 682)) & ((1L << (REPEATABLE - 682)) | (1L << (REPLICA - 682)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 682)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 682)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 682)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 682)) | (1L << (RESERVE_DISK_SPACE - 682)) | (1L << (RESOURCE - 682)) | (1L << (RESOURCE_MANAGER_LOCATION - 682)) | (1L << (RESTRICTED_USER - 682)) | (1L << (RETENTION - 682)) | (1L << (ROBUST - 682)) | (1L << (ROOT - 682)) | (1L << (ROUTE - 682)) | (1L << (ROW - 682)) | (1L << (ROW_NUMBER - 682)) | (1L << (ROWGUID - 682)) | (1L << (ROWS - 682)) | (1L << (SAMPLE - 682)) | (1L << (SCHEMABINDING - 682)) | (1L << (SCOPED - 682)) | (1L << (SCROLL - 682)) | (1L << (SCROLL_LOCKS - 682)) | (1L << (SEARCH - 682)) | (1L << (SECONDARY - 682)) | (1L << (SECONDARY_ONLY - 682)) | (1L << (SECONDARY_ROLE - 682)) | (1L << (SECONDS - 682)) | (1L << (SECRET - 682)) | (1L << (SECURITY - 682)) | (1L << (SECURITY_LOG - 682)) | (1L << (SEEDING_MODE - 682)) | (1L << (SELF - 682)) | (1L << (SEMI_SENSITIVE - 682)) | (1L << (SEND - 682)) | (1L << (SENT - 682)) | (1L << (SEQUENCE - 682)) | (1L << (SERIALIZABLE - 682)) | (1L << (SESSION_TIMEOUT - 682)) | (1L << (SETERROR - 682)) | (1L << (SHARE - 682)) | (1L << (SHOWPLAN - 682)) | (1L << (SIGNATURE - 682)) | (1L << (SIMPLE - 682)) | (1L << (SINGLE_USER - 682)) | (1L << (SIZE - 682)) | (1L << (SMALLINT - 682)) | (1L << (SNAPSHOT - 682)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 682)) | (1L << (STANDBY - 682)) | (1L << (START_DATE - 682)) | (1L << (STATIC - 682)) | (1L << (STATS_STREAM - 682)) | (1L << (STATUS - 682)) | (1L << (STDEV - 682)) | (1L << (STDEVP - 682)) | (1L << (STOPLIST - 682)) | (1L << (STRING_AGG - 682)) | (1L << (STUFF - 682)) | (1L << (SUBJECT - 682)) | (1L << (SUM - 682)) | (1L << (SUSPEND - 682)))) != 0) || ((((_la - 746)) & ~0x3f) == 0 && ((1L << (_la - 746)) & ((1L << (SYMMETRIC - 746)) | (1L << (SYNCHRONOUS_COMMIT - 746)) | (1L << (SYNONYM - 746)) | (1L << (SYSTEM - 746)) | (1L << (TAKE - 746)) | (1L << (TARGET_RECOVERY_TIME - 746)) | (1L << (TB - 746)) | (1L << (TEXTIMAGE_ON - 746)) | (1L << (THROW - 746)) | (1L << (TIES - 746)) | (1L << (TIME - 746)) | (1L << (TIMEOUT - 746)) | (1L << (TIMER - 746)) | (1L << (TINYINT - 746)) | (1L << (TORN_PAGE_DETECTION - 746)) | (1L << (TRANSFORM_NOISE_WORDS - 746)) | (1L << (TRIPLE_DES - 746)) | (1L << (TRIPLE_DES_3KEY - 746)) | (1L << (TRUSTWORTHY - 746)) | (1L << (TRY - 746)) | (1L << (TSQL - 746)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 746)) | (1L << (TYPE - 746)) | (1L << (TYPE_WARNING - 746)) | (1L << (UNBOUNDED - 746)) | (1L << (UNCOMMITTED - 746)) | (1L << (UNKNOWN - 746)) | (1L << (UNLIMITED - 746)) | (1L << (USING - 746)) | (1L << (VALID_XML - 746)) | (1L << (VALIDATION - 746)) | (1L << (VALUE - 746)) | (1L << (VAR - 746)) | (1L << (VARP - 746)) | (1L << (VIEW_METADATA - 746)) | (1L << (VIEWS - 746)) | (1L << (WAIT - 746)) | (1L << (WELL_FORMED_XML - 746)) | (1L << (WORK - 746)) | (1L << (WORKLOAD - 746)) | (1L << (XML - 746)) | (1L << (XMLNAMESPACES - 746)) | (1L << (DOUBLE_QUOTE_ID - 746)) | (1L << (SQUARE_BRACKET_ID - 746)) | (1L << (ID - 746)))) != 0)) {
 				{
@@ -8582,6 +8784,7 @@ public class MocaSqlParser extends Parser {
 			setState(1081);
 			match(DOT);
 			setState(1083);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==CALLED || ((((_la - 81)) & ~0x3f) == 0 && ((1L << (_la - 81)) & ((1L << (DATA_COMPRESSION - 81)) | (1L << (EVENTDATA - 81)) | (1L << (EXPIREDATE - 81)) | (1L << (FILENAME - 81)) | (1L << (FILLFACTOR - 81)) | (1L << (FORCESEEK - 81)))) != 0) || ((((_la - 159)) & ~0x3f) == 0 && ((1L << (_la - 159)) & ((1L << (INIT - 159)) | (1L << (KEY - 159)) | (1L << (MASTER - 159)) | (1L << (MAX_MEMORY - 159)))) != 0) || ((((_la - 226)) & ~0x3f) == 0 && ((1L << (_la - 226)) & ((1L << (OFFSETS - 226)) | (1L << (PAGE - 226)) | (1L << (POLICY - 226)) | (1L << (PRECISION - 226)) | (1L << (PUBLIC - 226)) | (1L << (R - 226)) | (1L << (RAW - 226)) | (1L << (RETURN - 226)) | (1L << (RETURNS - 226)) | (1L << (ROLE - 226)) | (1L << (ROWCOUNT - 226)))) != 0) || ((((_la - 296)) & ~0x3f) == 0 && ((1L << (_la - 296)) & ((1L << (SAFETY - 296)) | (1L << (RULE - 296)) | (1L << (SERVER - 296)) | (1L << (SID - 296)) | (1L << (SOURCE - 296)) | (1L << (SPLIT - 296)) | (1L << (STATE - 296)) | (1L << (START - 296)) | (1L << (STOP - 296)) | (1L << (TARGET - 296)) | (1L << (TRAN - 296)))) != 0) || ((((_la - 362)) & ~0x3f) == 0 && ((1L << (_la - 362)) & ((1L << (URL - 362)) | (1L << (USER - 362)) | (1L << (ABSOLUTE - 362)) | (1L << (ACCENT_SENSITIVITY - 362)) | (1L << (ACTION - 362)) | (1L << (ACTIVATION - 362)) | (1L << (ACTIVE - 362)) | (1L << (ADDRESS - 362)) | (1L << (AES_128 - 362)) | (1L << (AES_192 - 362)) | (1L << (AES_256 - 362)) | (1L << (AFFINITY - 362)) | (1L << (AFTER - 362)) | (1L << (AGGREGATE - 362)) | (1L << (ALGORITHM - 362)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 362)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 362)) | (1L << (ALLOWED - 362)) | (1L << (ANSI_NULL_DEFAULT - 362)) | (1L << (ANSI_NULLS - 362)) | (1L << (ANSI_PADDING - 362)) | (1L << (ANSI_WARNINGS - 362)) | (1L << (APPLICATION_LOG - 362)) | (1L << (APPLY - 362)) | (1L << (ARITHABORT - 362)) | (1L << (ASSEMBLY - 362)) | (1L << (AUDIT - 362)) | (1L << (AUDIT_GUID - 362)) | (1L << (AUTO - 362)) | (1L << (AUTO_CLEANUP - 362)) | (1L << (AUTO_CLOSE - 362)) | (1L << (AUTO_CREATE_STATISTICS - 362)) | (1L << (AUTO_SHRINK - 362)) | (1L << (AUTO_UPDATE_STATISTICS - 362)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 362)) | (1L << (AVAILABILITY - 362)) | (1L << (AVG - 362)) | (1L << (BACKUP_PRIORITY - 362)) | (1L << (BEGIN_DIALOG - 362)) | (1L << (BIGINT - 362)) | (1L << (BINARY_BASE64 - 362)) | (1L << (BINARY_CHECKSUM - 362)) | (1L << (BINDING - 362)) | (1L << (BLOB_STORAGE - 362)) | (1L << (BROKER - 362)) | (1L << (BROKER_INSTANCE - 362)) | (1L << (BULK_LOGGED - 362)))) != 0) || ((((_la - 426)) & ~0x3f) == 0 && ((1L << (_la - 426)) & ((1L << (CALLER - 426)) | (1L << (CAP_CPU_PERCENT - 426)) | (1L << (CAST - 426)) | (1L << (CATALOG - 426)) | (1L << (CATCH - 426)) | (1L << (CHANGE_RETENTION - 426)) | (1L << (CHANGE_TRACKING - 426)) | (1L << (CHECKSUM - 426)) | (1L << (CHECKSUM_AGG - 426)) | (1L << (CLEANUP - 426)) | (1L << (COLLECTION - 426)) | (1L << (COLUMN_MASTER_KEY - 426)) | (1L << (COMMITTED - 426)) | (1L << (COMPATIBILITY_LEVEL - 426)) | (1L << (CONCAT - 426)) | (1L << (CONCAT_NULL_YIELDS_NULL - 426)) | (1L << (CONTENT - 426)) | (1L << (CONTROL - 426)) | (1L << (COOKIE - 426)) | (1L << (COUNT - 426)) | (1L << (COUNT_BIG - 426)) | (1L << (COUNTER - 426)) | (1L << (CPU - 426)) | (1L << (CREATE_NEW - 426)) | (1L << (CREATION_DISPOSITION - 426)) | (1L << (CREDENTIAL - 426)) | (1L << (CRYPTOGRAPHIC - 426)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 426)) | (1L << (CURSOR_DEFAULT - 426)) | (1L << (DATA - 426)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 426)) | (1L << (DATEADD - 426)) | (1L << (DATEDIFF - 426)) | (1L << (DATENAME - 426)) | (1L << (DATEPART - 426)) | (1L << (DAYS - 426)) | (1L << (DB_CHAINING - 426)) | (1L << (DB_FAILOVER - 426)) | (1L << (DECRYPTION - 426)) | (1L << (DEFAULT_DOUBLE_QUOTE - 426)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 426)) | (1L << (DEFAULT_LANGUAGE - 426)) | (1L << (DELAY - 426)) | (1L << (DELAYED_DURABILITY - 426)) | (1L << (DELETED - 426)) | (1L << (DENSE_RANK - 426)) | (1L << (DEPENDENTS - 426)) | (1L << (DES - 426)) | (1L << (DESCRIPTION - 426)) | (1L << (DESX - 426)) | (1L << (DHCP - 426)) | (1L << (DIALOG - 426)) | (1L << (DIRECTORY_NAME - 426)) | (1L << (DISABLE - 426)) | (1L << (DISABLE_BROKER - 426)) | (1L << (DISABLED - 426)) | (1L << (DISK_DRIVE - 426)) | (1L << (DOCUMENT - 426)) | (1L << (DYNAMIC - 426)) | (1L << (EMERGENCY - 426)) | (1L << (EMPTY - 426)) | (1L << (ENABLE - 426)) | (1L << (ENABLE_BROKER - 426)))) != 0) || ((((_la - 490)) & ~0x3f) == 0 && ((1L << (_la - 490)) & ((1L << (ENCRYPTED_VALUE - 490)) | (1L << (ENCRYPTION - 490)) | (1L << (ENDPOINT_URL - 490)) | (1L << (ERROR_BROKER_CONVERSATIONS - 490)) | (1L << (EXCLUSIVE - 490)) | (1L << (EXECUTABLE - 490)) | (1L << (EXIST - 490)) | (1L << (EXPAND - 490)) | (1L << (EXPIRY_DATE - 490)) | (1L << (EXPLICIT - 490)) | (1L << (FAIL_OPERATION - 490)) | (1L << (FAILOVER_MODE - 490)) | (1L << (FAILURE - 490)) | (1L << (FAILURE_CONDITION_LEVEL - 490)) | (1L << (FAST - 490)) | (1L << (FAST_FORWARD - 490)) | (1L << (FILEGROUP - 490)) | (1L << (FILEGROWTH - 490)) | (1L << (FILEPATH - 490)) | (1L << (FILESTREAM - 490)) | (1L << (FILTER - 490)) | (1L << (FIRST - 490)) | (1L << (FIRST_VALUE - 490)) | (1L << (FOLLOWING - 490)) | (1L << (FORCE - 490)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 490)) | (1L << (FORCED - 490)) | (1L << (FORMAT - 490)) | (1L << (FORWARD_ONLY - 490)) | (1L << (FULLSCAN - 490)) | (1L << (FULLTEXT - 490)) | (1L << (GB - 490)) | (1L << (GETDATE - 490)) | (1L << (GETUTCDATE - 490)) | (1L << (GLOBAL - 490)) | (1L << (GO - 490)) | (1L << (GROUP_MAX_REQUESTS - 490)) | (1L << (GROUPING - 490)) | (1L << (GROUPING_ID - 490)) | (1L << (HADR - 490)) | (1L << (HASH - 490)) | (1L << (HEALTH_CHECK_TIMEOUT - 490)) | (1L << (HIGH - 490)) | (1L << (HONOR_BROKER_PRIORITY - 490)) | (1L << (HOURS - 490)) | (1L << (IDENTITY_VALUE - 490)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 490)) | (1L << (IMMEDIATE - 490)) | (1L << (IMPERSONATE - 490)) | (1L << (IMPORTANCE - 490)) | (1L << (INCREMENTAL - 490)) | (1L << (INITIATOR - 490)) | (1L << (INPUT - 490)) | (1L << (INSENSITIVE - 490)) | (1L << (INSERTED - 490)) | (1L << (INT - 490)) | (1L << (IP - 490)) | (1L << (ISOLATION - 490)) | (1L << (KB - 490)) | (1L << (KEEP - 490)) | (1L << (KEEPFIXED - 490)))) != 0) || ((((_la - 554)) & ~0x3f) == 0 && ((1L << (_la - 554)) & ((1L << (KEY_SOURCE - 554)) | (1L << (KEYS - 554)) | (1L << (KEYSET - 554)) | (1L << (LAG - 554)) | (1L << (LAST - 554)) | (1L << (LAST_VALUE - 554)) | (1L << (LEAD - 554)) | (1L << (LEVEL - 554)) | (1L << (LIST - 554)) | (1L << (LISTENER - 554)) | (1L << (LISTENER_URL - 554)) | (1L << (LOB_COMPACTION - 554)) | (1L << (LOCAL - 554)) | (1L << (LOCATION - 554)) | (1L << (LOCK - 554)) | (1L << (LOCK_ESCALATION - 554)) | (1L << (LOGIN - 554)) | (1L << (LOOP - 554)) | (1L << (LOW - 554)) | (1L << (MANUAL - 554)) | (1L << (MARK - 554)) | (1L << (MATERIALIZED - 554)) | (1L << (MAX - 554)) | (1L << (MAX_CPU_PERCENT - 554)) | (1L << (MAX_DOP - 554)) | (1L << (MAX_FILES - 554)) | (1L << (MAX_IOPS_PER_VOLUME - 554)) | (1L << (MAX_MEMORY_PERCENT - 554)) | (1L << (MAX_PROCESSES - 554)) | (1L << (MAX_QUEUE_READERS - 554)) | (1L << (MAX_ROLLOVER_FILES - 554)) | (1L << (MAXDOP - 554)) | (1L << (MAXRECURSION - 554)) | (1L << (MAXSIZE - 554)) | (1L << (MB - 554)) | (1L << (MEDIUM - 554)) | (1L << (MEMORY_OPTIMIZED_DATA - 554)) | (1L << (MESSAGE - 554)) | (1L << (MIN - 554)) | (1L << (MIN_ACTIVE_ROWVERSION - 554)) | (1L << (MIN_CPU_PERCENT - 554)) | (1L << (MIN_IOPS_PER_VOLUME - 554)) | (1L << (MIN_MEMORY_PERCENT - 554)) | (1L << (MINUTES - 554)) | (1L << (MIRROR_ADDRESS - 554)) | (1L << (MIXED_PAGE_ALLOCATION - 554)) | (1L << (MODE - 554)) | (1L << (MODIFY - 554)) | (1L << (MOVE - 554)) | (1L << (MULTI_USER - 554)) | (1L << (NAME - 554)) | (1L << (NESTED_TRIGGERS - 554)) | (1L << (NEW_ACCOUNT - 554)) | (1L << (NEW_BROKER - 554)) | (1L << (NEW_PASSWORD - 554)) | (1L << (NEXT - 554)) | (1L << (NO - 554)) | (1L << (NO_TRUNCATE - 554)) | (1L << (NO_WAIT - 554)) | (1L << (NOCOUNT - 554)) | (1L << (NODES - 554)) | (1L << (NOEXPAND - 554)) | (1L << (NON_TRANSACTED_ACCESS - 554)) | (1L << (NORECOMPUTE - 554)))) != 0) || ((((_la - 618)) & ~0x3f) == 0 && ((1L << (_la - 618)) & ((1L << (NORECOVERY - 618)) | (1L << (NOWAIT - 618)) | (1L << (NTILE - 618)) | (1L << (NUMANODE - 618)) | (1L << (NUMBER - 618)) | (1L << (NUMERIC_ROUNDABORT - 618)) | (1L << (OBJECT - 618)) | (1L << (OFFLINE - 618)) | (1L << (OFFSET - 618)) | (1L << (OLD_ACCOUNT - 618)) | (1L << (ONLINE - 618)) | (1L << (ONLY - 618)) | (1L << (OPEN_EXISTING - 618)) | (1L << (OPTIMISTIC - 618)) | (1L << (OPTIMIZE - 618)) | (1L << (OUT - 618)) | (1L << (OUTPUT - 618)) | (1L << (OWNER - 618)) | (1L << (PAGE_VERIFY - 618)) | (1L << (PARAMETERIZATION - 618)) | (1L << (PARTITION - 618)) | (1L << (PARTITIONS - 618)) | (1L << (PARTNER - 618)) | (1L << (PATH - 618)) | (1L << (POISON_MESSAGE_HANDLING - 618)) | (1L << (POOL - 618)) | (1L << (PORT - 618)) | (1L << (PRECEDING - 618)) | (1L << (PRIMARY_ROLE - 618)) | (1L << (PRIOR - 618)) | (1L << (PRIORITY - 618)) | (1L << (PRIORITY_LEVEL - 618)) | (1L << (PRIVATE - 618)) | (1L << (PRIVATE_KEY - 618)) | (1L << (PRIVILEGES - 618)) | (1L << (PROCEDURE_NAME - 618)) | (1L << (PROPERTY - 618)) | (1L << (PROVIDER - 618)) | (1L << (PROVIDER_KEY_NAME - 618)) | (1L << (QUERY - 618)) | (1L << (QUEUE - 618)) | (1L << (QUEUE_DELAY - 618)) | (1L << (QUOTED_IDENTIFIER - 618)) | (1L << (RANGE - 618)) | (1L << (RANK - 618)) | (1L << (RC2 - 618)) | (1L << (RC4 - 618)) | (1L << (RC4_128 - 618)) | (1L << (READ_COMMITTED_SNAPSHOT - 618)) | (1L << (READ_ONLY - 618)) | (1L << (READ_ONLY_ROUTING_LIST - 618)) | (1L << (READ_WRITE - 618)) | (1L << (READONLY - 618)) | (1L << (REBUILD - 618)) | (1L << (RECEIVE - 618)) | (1L << (RECOMPILE - 618)) | (1L << (RECOVERY - 618)) | (1L << (RECURSIVE_TRIGGERS - 618)) | (1L << (RELATIVE - 618)) | (1L << (REMOTE - 618)) | (1L << (REMOTE_SERVICE_NAME - 618)) | (1L << (REMOVE - 618)) | (1L << (REORGANIZE - 618)))) != 0) || ((((_la - 682)) & ~0x3f) == 0 && ((1L << (_la - 682)) & ((1L << (REPEATABLE - 682)) | (1L << (REPLICA - 682)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 682)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 682)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 682)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 682)) | (1L << (RESERVE_DISK_SPACE - 682)) | (1L << (RESOURCE - 682)) | (1L << (RESOURCE_MANAGER_LOCATION - 682)) | (1L << (RESTRICTED_USER - 682)) | (1L << (RETENTION - 682)) | (1L << (ROBUST - 682)) | (1L << (ROOT - 682)) | (1L << (ROUTE - 682)) | (1L << (ROW - 682)) | (1L << (ROW_NUMBER - 682)) | (1L << (ROWGUID - 682)) | (1L << (ROWS - 682)) | (1L << (SAMPLE - 682)) | (1L << (SCHEMABINDING - 682)) | (1L << (SCOPED - 682)) | (1L << (SCROLL - 682)) | (1L << (SCROLL_LOCKS - 682)) | (1L << (SEARCH - 682)) | (1L << (SECONDARY - 682)) | (1L << (SECONDARY_ONLY - 682)) | (1L << (SECONDARY_ROLE - 682)) | (1L << (SECONDS - 682)) | (1L << (SECRET - 682)) | (1L << (SECURITY - 682)) | (1L << (SECURITY_LOG - 682)) | (1L << (SEEDING_MODE - 682)) | (1L << (SELF - 682)) | (1L << (SEMI_SENSITIVE - 682)) | (1L << (SEND - 682)) | (1L << (SENT - 682)) | (1L << (SEQUENCE - 682)) | (1L << (SERIALIZABLE - 682)) | (1L << (SESSION_TIMEOUT - 682)) | (1L << (SETERROR - 682)) | (1L << (SHARE - 682)) | (1L << (SHOWPLAN - 682)) | (1L << (SIGNATURE - 682)) | (1L << (SIMPLE - 682)) | (1L << (SINGLE_USER - 682)) | (1L << (SIZE - 682)) | (1L << (SMALLINT - 682)) | (1L << (SNAPSHOT - 682)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 682)) | (1L << (STANDBY - 682)) | (1L << (START_DATE - 682)) | (1L << (STATIC - 682)) | (1L << (STATS_STREAM - 682)) | (1L << (STATUS - 682)) | (1L << (STDEV - 682)) | (1L << (STDEVP - 682)) | (1L << (STOPLIST - 682)) | (1L << (STRING_AGG - 682)) | (1L << (STUFF - 682)) | (1L << (SUBJECT - 682)) | (1L << (SUM - 682)) | (1L << (SUSPEND - 682)))) != 0) || ((((_la - 746)) & ~0x3f) == 0 && ((1L << (_la - 746)) & ((1L << (SYMMETRIC - 746)) | (1L << (SYNCHRONOUS_COMMIT - 746)) | (1L << (SYNONYM - 746)) | (1L << (SYSTEM - 746)) | (1L << (TAKE - 746)) | (1L << (TARGET_RECOVERY_TIME - 746)) | (1L << (TB - 746)) | (1L << (TEXTIMAGE_ON - 746)) | (1L << (THROW - 746)) | (1L << (TIES - 746)) | (1L << (TIME - 746)) | (1L << (TIMEOUT - 746)) | (1L << (TIMER - 746)) | (1L << (TINYINT - 746)) | (1L << (TORN_PAGE_DETECTION - 746)) | (1L << (TRANSFORM_NOISE_WORDS - 746)) | (1L << (TRIPLE_DES - 746)) | (1L << (TRIPLE_DES_3KEY - 746)) | (1L << (TRUSTWORTHY - 746)) | (1L << (TRY - 746)) | (1L << (TSQL - 746)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 746)) | (1L << (TYPE - 746)) | (1L << (TYPE_WARNING - 746)) | (1L << (UNBOUNDED - 746)) | (1L << (UNCOMMITTED - 746)) | (1L << (UNKNOWN - 746)) | (1L << (UNLIMITED - 746)) | (1L << (USING - 746)) | (1L << (VALID_XML - 746)) | (1L << (VALIDATION - 746)) | (1L << (VALUE - 746)) | (1L << (VAR - 746)) | (1L << (VARP - 746)) | (1L << (VIEW_METADATA - 746)) | (1L << (VIEWS - 746)) | (1L << (WAIT - 746)) | (1L << (WELL_FORMED_XML - 746)) | (1L << (WORK - 746)) | (1L << (WORKLOAD - 746)) | (1L << (XML - 746)) | (1L << (XMLNAMESPACES - 746)) | (1L << (DOUBLE_QUOTE_ID - 746)) | (1L << (SQUARE_BRACKET_ID - 746)) | (1L << (ID - 746)))) != 0)) {
 				{
@@ -8664,18 +8867,30 @@ public class MocaSqlParser extends Parser {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode EQUAL() { return getToken(MocaSqlParser.EQUAL, 0); }
 		public List<Execute_statement_argContext> execute_statement_arg() {
 			return getRuleContexts(Execute_statement_argContext.class);
 		}
 		public Execute_statement_argContext execute_statement_arg(int i) {
 			return getRuleContext(Execute_statement_argContext.class,i);
 		}
+		public TerminalNode SEMI() { return getToken(MocaSqlParser.SEMI, 0); }
 		public TerminalNode LOCAL_ID() { return getToken(MocaSqlParser.LOCAL_ID, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public List<Execute_var_stringContext> execute_var_string() {
 			return getRuleContexts(Execute_var_stringContext.class);
 		}
 		public Execute_var_stringContext execute_var_string(int i) {
 			return getRuleContext(Execute_var_stringContext.class,i);
+		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
+		public List<TerminalNode> PLUS() { return getTokens(MocaSqlParser.PLUS); }
+		public TerminalNode PLUS(int i) {
+			return getToken(MocaSqlParser.PLUS, i);
 		}
 		public TerminalNode STRING() { return getToken(MocaSqlParser.STRING, 0); }
 		public TerminalNode LOGIN() { return getToken(MocaSqlParser.LOGIN, 0); }
@@ -8740,6 +8955,7 @@ public class MocaSqlParser extends Parser {
 					break;
 				}
 				setState(1107);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==CALLED || ((((_la - 81)) & ~0x3f) == 0 && ((1L << (_la - 81)) & ((1L << (DATA_COMPRESSION - 81)) | (1L << (DEFAULT - 81)) | (1L << (EVENTDATA - 81)) | (1L << (EXPIREDATE - 81)) | (1L << (FILENAME - 81)) | (1L << (FILLFACTOR - 81)) | (1L << (FORCESEEK - 81)))) != 0) || ((((_la - 159)) & ~0x3f) == 0 && ((1L << (_la - 159)) & ((1L << (INIT - 159)) | (1L << (KEY - 159)) | (1L << (MASTER - 159)) | (1L << (MAX_MEMORY - 159)) | (1L << (NULL - 159)))) != 0) || ((((_la - 226)) & ~0x3f) == 0 && ((1L << (_la - 226)) & ((1L << (OFFSETS - 226)) | (1L << (PAGE - 226)) | (1L << (POLICY - 226)) | (1L << (PRECISION - 226)) | (1L << (PUBLIC - 226)) | (1L << (R - 226)) | (1L << (RAW - 226)) | (1L << (RETURN - 226)) | (1L << (RETURNS - 226)) | (1L << (ROLE - 226)) | (1L << (ROWCOUNT - 226)))) != 0) || ((((_la - 296)) & ~0x3f) == 0 && ((1L << (_la - 296)) & ((1L << (SAFETY - 296)) | (1L << (RULE - 296)) | (1L << (SERVER - 296)) | (1L << (SID - 296)) | (1L << (SOURCE - 296)) | (1L << (SPLIT - 296)) | (1L << (STATE - 296)) | (1L << (START - 296)) | (1L << (STOP - 296)) | (1L << (TARGET - 296)) | (1L << (TRAN - 296)))) != 0) || ((((_la - 362)) & ~0x3f) == 0 && ((1L << (_la - 362)) & ((1L << (URL - 362)) | (1L << (USER - 362)) | (1L << (ABSOLUTE - 362)) | (1L << (ACCENT_SENSITIVITY - 362)) | (1L << (ACTION - 362)) | (1L << (ACTIVATION - 362)) | (1L << (ACTIVE - 362)) | (1L << (ADDRESS - 362)) | (1L << (AES_128 - 362)) | (1L << (AES_192 - 362)) | (1L << (AES_256 - 362)) | (1L << (AFFINITY - 362)) | (1L << (AFTER - 362)) | (1L << (AGGREGATE - 362)) | (1L << (ALGORITHM - 362)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 362)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 362)) | (1L << (ALLOWED - 362)) | (1L << (ANSI_NULL_DEFAULT - 362)) | (1L << (ANSI_NULLS - 362)) | (1L << (ANSI_PADDING - 362)) | (1L << (ANSI_WARNINGS - 362)) | (1L << (APPLICATION_LOG - 362)) | (1L << (APPLY - 362)) | (1L << (ARITHABORT - 362)) | (1L << (ASSEMBLY - 362)) | (1L << (AUDIT - 362)) | (1L << (AUDIT_GUID - 362)) | (1L << (AUTO - 362)) | (1L << (AUTO_CLEANUP - 362)) | (1L << (AUTO_CLOSE - 362)) | (1L << (AUTO_CREATE_STATISTICS - 362)) | (1L << (AUTO_SHRINK - 362)) | (1L << (AUTO_UPDATE_STATISTICS - 362)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 362)) | (1L << (AVAILABILITY - 362)) | (1L << (AVG - 362)) | (1L << (BACKUP_PRIORITY - 362)) | (1L << (BEGIN_DIALOG - 362)) | (1L << (BIGINT - 362)) | (1L << (BINARY_BASE64 - 362)) | (1L << (BINARY_CHECKSUM - 362)) | (1L << (BINDING - 362)) | (1L << (BLOB_STORAGE - 362)) | (1L << (BROKER - 362)) | (1L << (BROKER_INSTANCE - 362)) | (1L << (BULK_LOGGED - 362)))) != 0) || ((((_la - 426)) & ~0x3f) == 0 && ((1L << (_la - 426)) & ((1L << (CALLER - 426)) | (1L << (CAP_CPU_PERCENT - 426)) | (1L << (CAST - 426)) | (1L << (CATALOG - 426)) | (1L << (CATCH - 426)) | (1L << (CHANGE_RETENTION - 426)) | (1L << (CHANGE_TRACKING - 426)) | (1L << (CHECKSUM - 426)) | (1L << (CHECKSUM_AGG - 426)) | (1L << (CLEANUP - 426)) | (1L << (COLLECTION - 426)) | (1L << (COLUMN_MASTER_KEY - 426)) | (1L << (COMMITTED - 426)) | (1L << (COMPATIBILITY_LEVEL - 426)) | (1L << (CONCAT - 426)) | (1L << (CONCAT_NULL_YIELDS_NULL - 426)) | (1L << (CONTENT - 426)) | (1L << (CONTROL - 426)) | (1L << (COOKIE - 426)) | (1L << (COUNT - 426)) | (1L << (COUNT_BIG - 426)) | (1L << (COUNTER - 426)) | (1L << (CPU - 426)) | (1L << (CREATE_NEW - 426)) | (1L << (CREATION_DISPOSITION - 426)) | (1L << (CREDENTIAL - 426)) | (1L << (CRYPTOGRAPHIC - 426)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 426)) | (1L << (CURSOR_DEFAULT - 426)) | (1L << (DATA - 426)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 426)) | (1L << (DATEADD - 426)) | (1L << (DATEDIFF - 426)) | (1L << (DATENAME - 426)) | (1L << (DATEPART - 426)) | (1L << (DAYS - 426)) | (1L << (DB_CHAINING - 426)) | (1L << (DB_FAILOVER - 426)) | (1L << (DECRYPTION - 426)) | (1L << (DEFAULT_DOUBLE_QUOTE - 426)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 426)) | (1L << (DEFAULT_LANGUAGE - 426)) | (1L << (DELAY - 426)) | (1L << (DELAYED_DURABILITY - 426)) | (1L << (DELETED - 426)) | (1L << (DENSE_RANK - 426)) | (1L << (DEPENDENTS - 426)) | (1L << (DES - 426)) | (1L << (DESCRIPTION - 426)) | (1L << (DESX - 426)) | (1L << (DHCP - 426)) | (1L << (DIALOG - 426)) | (1L << (DIRECTORY_NAME - 426)) | (1L << (DISABLE - 426)) | (1L << (DISABLE_BROKER - 426)) | (1L << (DISABLED - 426)) | (1L << (DISK_DRIVE - 426)) | (1L << (DOCUMENT - 426)) | (1L << (DYNAMIC - 426)) | (1L << (EMERGENCY - 426)) | (1L << (EMPTY - 426)) | (1L << (ENABLE - 426)) | (1L << (ENABLE_BROKER - 426)))) != 0) || ((((_la - 490)) & ~0x3f) == 0 && ((1L << (_la - 490)) & ((1L << (ENCRYPTED_VALUE - 490)) | (1L << (ENCRYPTION - 490)) | (1L << (ENDPOINT_URL - 490)) | (1L << (ERROR_BROKER_CONVERSATIONS - 490)) | (1L << (EXCLUSIVE - 490)) | (1L << (EXECUTABLE - 490)) | (1L << (EXIST - 490)) | (1L << (EXPAND - 490)) | (1L << (EXPIRY_DATE - 490)) | (1L << (EXPLICIT - 490)) | (1L << (FAIL_OPERATION - 490)) | (1L << (FAILOVER_MODE - 490)) | (1L << (FAILURE - 490)) | (1L << (FAILURE_CONDITION_LEVEL - 490)) | (1L << (FAST - 490)) | (1L << (FAST_FORWARD - 490)) | (1L << (FILEGROUP - 490)) | (1L << (FILEGROWTH - 490)) | (1L << (FILEPATH - 490)) | (1L << (FILESTREAM - 490)) | (1L << (FILTER - 490)) | (1L << (FIRST - 490)) | (1L << (FIRST_VALUE - 490)) | (1L << (FOLLOWING - 490)) | (1L << (FORCE - 490)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 490)) | (1L << (FORCED - 490)) | (1L << (FORMAT - 490)) | (1L << (FORWARD_ONLY - 490)) | (1L << (FULLSCAN - 490)) | (1L << (FULLTEXT - 490)) | (1L << (GB - 490)) | (1L << (GETDATE - 490)) | (1L << (GETUTCDATE - 490)) | (1L << (GLOBAL - 490)) | (1L << (GO - 490)) | (1L << (GROUP_MAX_REQUESTS - 490)) | (1L << (GROUPING - 490)) | (1L << (GROUPING_ID - 490)) | (1L << (HADR - 490)) | (1L << (HASH - 490)) | (1L << (HEALTH_CHECK_TIMEOUT - 490)) | (1L << (HIGH - 490)) | (1L << (HONOR_BROKER_PRIORITY - 490)) | (1L << (HOURS - 490)) | (1L << (IDENTITY_VALUE - 490)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 490)) | (1L << (IMMEDIATE - 490)) | (1L << (IMPERSONATE - 490)) | (1L << (IMPORTANCE - 490)) | (1L << (INCREMENTAL - 490)) | (1L << (INITIATOR - 490)) | (1L << (INPUT - 490)) | (1L << (INSENSITIVE - 490)) | (1L << (INSERTED - 490)) | (1L << (INT - 490)) | (1L << (IP - 490)) | (1L << (ISOLATION - 490)) | (1L << (KB - 490)) | (1L << (KEEP - 490)) | (1L << (KEEPFIXED - 490)))) != 0) || ((((_la - 554)) & ~0x3f) == 0 && ((1L << (_la - 554)) & ((1L << (KEY_SOURCE - 554)) | (1L << (KEYS - 554)) | (1L << (KEYSET - 554)) | (1L << (LAG - 554)) | (1L << (LAST - 554)) | (1L << (LAST_VALUE - 554)) | (1L << (LEAD - 554)) | (1L << (LEVEL - 554)) | (1L << (LIST - 554)) | (1L << (LISTENER - 554)) | (1L << (LISTENER_URL - 554)) | (1L << (LOB_COMPACTION - 554)) | (1L << (LOCAL - 554)) | (1L << (LOCATION - 554)) | (1L << (LOCK - 554)) | (1L << (LOCK_ESCALATION - 554)) | (1L << (LOGIN - 554)) | (1L << (LOOP - 554)) | (1L << (LOW - 554)) | (1L << (MANUAL - 554)) | (1L << (MARK - 554)) | (1L << (MATERIALIZED - 554)) | (1L << (MAX - 554)) | (1L << (MAX_CPU_PERCENT - 554)) | (1L << (MAX_DOP - 554)) | (1L << (MAX_FILES - 554)) | (1L << (MAX_IOPS_PER_VOLUME - 554)) | (1L << (MAX_MEMORY_PERCENT - 554)) | (1L << (MAX_PROCESSES - 554)) | (1L << (MAX_QUEUE_READERS - 554)) | (1L << (MAX_ROLLOVER_FILES - 554)) | (1L << (MAXDOP - 554)) | (1L << (MAXRECURSION - 554)) | (1L << (MAXSIZE - 554)) | (1L << (MB - 554)) | (1L << (MEDIUM - 554)) | (1L << (MEMORY_OPTIMIZED_DATA - 554)) | (1L << (MESSAGE - 554)) | (1L << (MIN - 554)) | (1L << (MIN_ACTIVE_ROWVERSION - 554)) | (1L << (MIN_CPU_PERCENT - 554)) | (1L << (MIN_IOPS_PER_VOLUME - 554)) | (1L << (MIN_MEMORY_PERCENT - 554)) | (1L << (MINUTES - 554)) | (1L << (MIRROR_ADDRESS - 554)) | (1L << (MIXED_PAGE_ALLOCATION - 554)) | (1L << (MODE - 554)) | (1L << (MODIFY - 554)) | (1L << (MOVE - 554)) | (1L << (MULTI_USER - 554)) | (1L << (NAME - 554)) | (1L << (NESTED_TRIGGERS - 554)) | (1L << (NEW_ACCOUNT - 554)) | (1L << (NEW_BROKER - 554)) | (1L << (NEW_PASSWORD - 554)) | (1L << (NEXT - 554)) | (1L << (NO - 554)) | (1L << (NO_TRUNCATE - 554)) | (1L << (NO_WAIT - 554)) | (1L << (NOCOUNT - 554)) | (1L << (NODES - 554)) | (1L << (NOEXPAND - 554)) | (1L << (NON_TRANSACTED_ACCESS - 554)) | (1L << (NORECOMPUTE - 554)))) != 0) || ((((_la - 618)) & ~0x3f) == 0 && ((1L << (_la - 618)) & ((1L << (NORECOVERY - 618)) | (1L << (NOWAIT - 618)) | (1L << (NTILE - 618)) | (1L << (NUMANODE - 618)) | (1L << (NUMBER - 618)) | (1L << (NUMERIC_ROUNDABORT - 618)) | (1L << (OBJECT - 618)) | (1L << (OFFLINE - 618)) | (1L << (OFFSET - 618)) | (1L << (OLD_ACCOUNT - 618)) | (1L << (ONLINE - 618)) | (1L << (ONLY - 618)) | (1L << (OPEN_EXISTING - 618)) | (1L << (OPTIMISTIC - 618)) | (1L << (OPTIMIZE - 618)) | (1L << (OUT - 618)) | (1L << (OUTPUT - 618)) | (1L << (OWNER - 618)) | (1L << (PAGE_VERIFY - 618)) | (1L << (PARAMETERIZATION - 618)) | (1L << (PARTITION - 618)) | (1L << (PARTITIONS - 618)) | (1L << (PARTNER - 618)) | (1L << (PATH - 618)) | (1L << (POISON_MESSAGE_HANDLING - 618)) | (1L << (POOL - 618)) | (1L << (PORT - 618)) | (1L << (PRECEDING - 618)) | (1L << (PRIMARY_ROLE - 618)) | (1L << (PRIOR - 618)) | (1L << (PRIORITY - 618)) | (1L << (PRIORITY_LEVEL - 618)) | (1L << (PRIVATE - 618)) | (1L << (PRIVATE_KEY - 618)) | (1L << (PRIVILEGES - 618)) | (1L << (PROCEDURE_NAME - 618)) | (1L << (PROPERTY - 618)) | (1L << (PROVIDER - 618)) | (1L << (PROVIDER_KEY_NAME - 618)) | (1L << (QUERY - 618)) | (1L << (QUEUE - 618)) | (1L << (QUEUE_DELAY - 618)) | (1L << (QUOTED_IDENTIFIER - 618)) | (1L << (RANGE - 618)) | (1L << (RANK - 618)) | (1L << (RC2 - 618)) | (1L << (RC4 - 618)) | (1L << (RC4_128 - 618)) | (1L << (READ_COMMITTED_SNAPSHOT - 618)) | (1L << (READ_ONLY - 618)) | (1L << (READ_ONLY_ROUTING_LIST - 618)) | (1L << (READ_WRITE - 618)) | (1L << (READONLY - 618)) | (1L << (REBUILD - 618)) | (1L << (RECEIVE - 618)) | (1L << (RECOMPILE - 618)) | (1L << (RECOVERY - 618)) | (1L << (RECURSIVE_TRIGGERS - 618)) | (1L << (RELATIVE - 618)) | (1L << (REMOTE - 618)) | (1L << (REMOTE_SERVICE_NAME - 618)) | (1L << (REMOVE - 618)) | (1L << (REORGANIZE - 618)))) != 0) || ((((_la - 682)) & ~0x3f) == 0 && ((1L << (_la - 682)) & ((1L << (REPEATABLE - 682)) | (1L << (REPLICA - 682)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 682)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 682)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 682)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 682)) | (1L << (RESERVE_DISK_SPACE - 682)) | (1L << (RESOURCE - 682)) | (1L << (RESOURCE_MANAGER_LOCATION - 682)) | (1L << (RESTRICTED_USER - 682)) | (1L << (RETENTION - 682)) | (1L << (ROBUST - 682)) | (1L << (ROOT - 682)) | (1L << (ROUTE - 682)) | (1L << (ROW - 682)) | (1L << (ROW_NUMBER - 682)) | (1L << (ROWGUID - 682)) | (1L << (ROWS - 682)) | (1L << (SAMPLE - 682)) | (1L << (SCHEMABINDING - 682)) | (1L << (SCOPED - 682)) | (1L << (SCROLL - 682)) | (1L << (SCROLL_LOCKS - 682)) | (1L << (SEARCH - 682)) | (1L << (SECONDARY - 682)) | (1L << (SECONDARY_ONLY - 682)) | (1L << (SECONDARY_ROLE - 682)) | (1L << (SECONDS - 682)) | (1L << (SECRET - 682)) | (1L << (SECURITY - 682)) | (1L << (SECURITY_LOG - 682)) | (1L << (SEEDING_MODE - 682)) | (1L << (SELF - 682)) | (1L << (SEMI_SENSITIVE - 682)) | (1L << (SEND - 682)) | (1L << (SENT - 682)) | (1L << (SEQUENCE - 682)) | (1L << (SERIALIZABLE - 682)) | (1L << (SESSION_TIMEOUT - 682)) | (1L << (SETERROR - 682)) | (1L << (SHARE - 682)) | (1L << (SHOWPLAN - 682)) | (1L << (SIGNATURE - 682)) | (1L << (SIMPLE - 682)) | (1L << (SINGLE_USER - 682)) | (1L << (SIZE - 682)) | (1L << (SMALLINT - 682)) | (1L << (SNAPSHOT - 682)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 682)) | (1L << (STANDBY - 682)) | (1L << (START_DATE - 682)) | (1L << (STATIC - 682)) | (1L << (STATS_STREAM - 682)) | (1L << (STATUS - 682)) | (1L << (STDEV - 682)) | (1L << (STDEVP - 682)) | (1L << (STOPLIST - 682)) | (1L << (STRING_AGG - 682)) | (1L << (STUFF - 682)) | (1L << (SUBJECT - 682)) | (1L << (SUM - 682)) | (1L << (SUSPEND - 682)))) != 0) || ((((_la - 746)) & ~0x3f) == 0 && ((1L << (_la - 746)) & ((1L << (SYMMETRIC - 746)) | (1L << (SYNCHRONOUS_COMMIT - 746)) | (1L << (SYNONYM - 746)) | (1L << (SYSTEM - 746)) | (1L << (TAKE - 746)) | (1L << (TARGET_RECOVERY_TIME - 746)) | (1L << (TB - 746)) | (1L << (TEXTIMAGE_ON - 746)) | (1L << (THROW - 746)) | (1L << (TIES - 746)) | (1L << (TIME - 746)) | (1L << (TIMEOUT - 746)) | (1L << (TIMER - 746)) | (1L << (TINYINT - 746)) | (1L << (TORN_PAGE_DETECTION - 746)) | (1L << (TRANSFORM_NOISE_WORDS - 746)) | (1L << (TRIPLE_DES - 746)) | (1L << (TRIPLE_DES_3KEY - 746)) | (1L << (TRUSTWORTHY - 746)) | (1L << (TRY - 746)) | (1L << (TSQL - 746)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 746)) | (1L << (TYPE - 746)) | (1L << (TYPE_WARNING - 746)) | (1L << (UNBOUNDED - 746)) | (1L << (UNCOMMITTED - 746)) | (1L << (UNKNOWN - 746)) | (1L << (UNLIMITED - 746)) | (1L << (USING - 746)) | (1L << (VALID_XML - 746)) | (1L << (VALIDATION - 746)) | (1L << (VALUE - 746)) | (1L << (VAR - 746)) | (1L << (VARP - 746)) | (1L << (VIEW_METADATA - 746)) | (1L << (VIEWS - 746)) | (1L << (WAIT - 746)) | (1L << (WELL_FORMED_XML - 746)) | (1L << (WORK - 746)) | (1L << (WORKLOAD - 746)) | (1L << (XML - 746)) | (1L << (XMLNAMESPACES - 746)) | (1L << (DOUBLE_QUOTE_ID - 746)) | (1L << (SQUARE_BRACKET_ID - 746)) | (1L << (LOCAL_ID - 746)) | (1L << (DECIMAL - 746)) | (1L << (ID - 746)))) != 0) || ((((_la - 811)) & ~0x3f) == 0 && ((1L << (_la - 811)) & ((1L << (STRING - 811)) | (1L << (BINARY - 811)) | (1L << (FLOAT - 811)) | (1L << (REAL - 811)) | (1L << (DOLLAR - 811)) | (1L << (PLUS - 811)) | (1L << (MINUS - 811)))) != 0)) {
 					{
@@ -8802,10 +9018,12 @@ public class MocaSqlParser extends Parser {
 				setState(1121);
 				match(RR_BRACKET);
 				setState(1128);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==AS || _la==USER || _la==LOGIN) {
 					{
 					setState(1123);
+					_errHandler.sync(this);
 					_la = _input.LA(1);
 					if (_la==AS) {
 						{
@@ -8818,7 +9036,10 @@ public class MocaSqlParser extends Parser {
 					_la = _input.LA(1);
 					if ( !(_la==USER || _la==LOGIN) ) {
 					_errHandler.recoverInline(this);
-					} else {
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
 						consume();
 					}
 					setState(1126);
@@ -8857,6 +9078,7 @@ public class MocaSqlParser extends Parser {
 		public Token parameter;
 		public TerminalNode DEFAULT() { return getToken(MocaSqlParser.DEFAULT, 0); }
 		public TerminalNode NULL() { return getToken(MocaSqlParser.NULL, 0); }
+		public TerminalNode EQUAL() { return getToken(MocaSqlParser.EQUAL, 0); }
 		public TerminalNode LOCAL_ID() { return getToken(MocaSqlParser.LOCAL_ID, 0); }
 		public Constant_LOCAL_IDContext constant_LOCAL_ID() {
 			return getRuleContext(Constant_LOCAL_IDContext.class,0);
@@ -8905,6 +9127,7 @@ public class MocaSqlParser extends Parser {
 				break;
 			}
 			setState(1148);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CALLED:
 			case DATA_COMPRESSION:
@@ -9355,6 +9578,7 @@ public class MocaSqlParser extends Parser {
 			case MINUS:
 				{
 				setState(1141);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case LOCAL_ID:
 				case DECIMAL:
@@ -9817,6 +10041,7 @@ public class MocaSqlParser extends Parser {
 					throw new NoViableAltException(this);
 				}
 				setState(1144);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==OUT || _la==OUTPUT) {
 					{
@@ -9824,7 +10049,10 @@ public class MocaSqlParser extends Parser {
 					_la = _input.LA(1);
 					if ( !(_la==OUT || _la==OUTPUT) ) {
 					_errHandler.recoverInline(this);
-					} else {
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
 						consume();
 					}
 					}
@@ -9893,7 +10121,10 @@ public class MocaSqlParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==LOCAL_ID || _la==STRING) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -9915,6 +10146,10 @@ public class MocaSqlParser extends Parser {
 		}
 		public Column_def_table_constraintContext column_def_table_constraint(int i) {
 			return getRuleContext(Column_def_table_constraintContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public Column_def_table_constraintsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -9953,6 +10188,7 @@ public class MocaSqlParser extends Parser {
 					{
 					{
 					setState(1154);
+					_errHandler.sync(this);
 					_la = _input.LA(1);
 					if (_la==COMMA) {
 						{
@@ -10089,6 +10325,9 @@ public class MocaSqlParser extends Parser {
 			return getRuleContext(Column_constraintContext.class,i);
 		}
 		public TerminalNode CONSTRAINT() { return getToken(MocaSqlParser.CONSTRAINT, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode COMMA() { return getToken(MocaSqlParser.COMMA, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public TerminalNode NOT() { return getToken(MocaSqlParser.NOT, 0); }
 		public TerminalNode FOR() { return getToken(MocaSqlParser.FOR, 0); }
 		public TerminalNode REPLICATION() { return getToken(MocaSqlParser.REPLICATION, 0); }
@@ -10126,6 +10365,7 @@ public class MocaSqlParser extends Parser {
 			setState(1167);
 			id();
 			setState(1171);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CALLED:
 			case DATA_COMPRESSION:
@@ -10583,6 +10823,7 @@ public class MocaSqlParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			setState(1175);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==COLLATE) {
 				{
@@ -10609,6 +10850,7 @@ public class MocaSqlParser extends Parser {
 			case 1:
 				{
 				setState(1182);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==CONSTRAINT) {
 					{
@@ -10673,6 +10915,7 @@ public class MocaSqlParser extends Parser {
 				break;
 			}
 			setState(1204);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==ROWGUIDCOL) {
 				{
@@ -10753,7 +10996,10 @@ public class MocaSqlParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==AS || _la==COMPUTE) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			setState(1214);
@@ -10793,9 +11039,11 @@ public class MocaSqlParser extends Parser {
 		public IdContext constraint;
 		public Column_name_listContext pk;
 		public TerminalNode CHECK() { return getToken(MocaSqlParser.CHECK, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public Search_conditionContext search_condition() {
 			return getRuleContext(Search_conditionContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public TerminalNode REFERENCES() { return getToken(MocaSqlParser.REFERENCES, 0); }
 		public Table_nameContext table_name() {
 			return getRuleContext(Table_nameContext.class,0);
@@ -10856,6 +11104,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(1222);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==CONSTRAINT) {
 				{
@@ -10867,11 +11116,13 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(1261);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case PRIMARY:
 			case UNIQUE:
 				{
 				setState(1227);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case PRIMARY:
 					{
@@ -10891,6 +11142,7 @@ public class MocaSqlParser extends Parser {
 					throw new NoViableAltException(this);
 				}
 				setState(1230);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==CLUSTERED || _la==NONCLUSTERED) {
 					{
@@ -10916,6 +11168,7 @@ public class MocaSqlParser extends Parser {
 				setState(1235);
 				match(CHECK);
 				setState(1239);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==NOT) {
 					{
@@ -10940,6 +11193,7 @@ public class MocaSqlParser extends Parser {
 			case REFERENCES:
 				{
 				setState(1247);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==FOREIGN) {
 					{
@@ -10971,6 +11225,7 @@ public class MocaSqlParser extends Parser {
 					break;
 				}
 				setState(1258);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==ON) {
 					{
@@ -11008,8 +11263,16 @@ public class MocaSqlParser extends Parser {
 		public IdContext constraint;
 		public Column_name_listContext fk;
 		public Column_name_listContext pk;
+		public List<TerminalNode> LR_BRACKET() { return getTokens(MocaSqlParser.LR_BRACKET); }
+		public TerminalNode LR_BRACKET(int i) {
+			return getToken(MocaSqlParser.LR_BRACKET, i);
+		}
 		public Column_name_list_with_orderContext column_name_list_with_order() {
 			return getRuleContext(Column_name_list_with_orderContext.class,0);
+		}
+		public List<TerminalNode> RR_BRACKET() { return getTokens(MocaSqlParser.RR_BRACKET); }
+		public TerminalNode RR_BRACKET(int i) {
+			return getToken(MocaSqlParser.RR_BRACKET, i);
 		}
 		public TerminalNode CHECK() { return getToken(MocaSqlParser.CHECK, 0); }
 		public Search_conditionContext search_condition() {
@@ -11098,6 +11361,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(1265);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==CONSTRAINT) {
 				{
@@ -11109,11 +11373,13 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(1331);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case PRIMARY:
 			case UNIQUE:
 				{
 				setState(1270);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case PRIMARY:
 					{
@@ -11133,6 +11399,7 @@ public class MocaSqlParser extends Parser {
 					throw new NoViableAltException(this);
 				}
 				setState(1273);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==CLUSTERED || _la==NONCLUSTERED) {
 					{
@@ -11158,6 +11425,7 @@ public class MocaSqlParser extends Parser {
 					break;
 				}
 				setState(1283);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==ON) {
 					{
@@ -11175,6 +11443,7 @@ public class MocaSqlParser extends Parser {
 				setState(1285);
 				match(CHECK);
 				setState(1289);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==NOT) {
 					{
@@ -11200,6 +11469,7 @@ public class MocaSqlParser extends Parser {
 				setState(1295);
 				match(DEFAULT);
 				setState(1297);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==LR_BRACKET) {
 					{
@@ -11214,6 +11484,7 @@ public class MocaSqlParser extends Parser {
 				do {
 					{
 					setState(1303);
+					_errHandler.sync(this);
 					switch (_input.LA(1)) {
 					case STRING:
 						{
@@ -11698,6 +11969,7 @@ public class MocaSqlParser extends Parser {
 					_la = _input.LA(1);
 				} while ( _la==CALLED || _la==COALESCE || ((((_la - 70)) & ~0x3f) == 0 && ((1L << (_la - 70)) & ((1L << (CONVERT - 70)) | (1L << (CURRENT_TIMESTAMP - 70)) | (1L << (CURRENT_USER - 70)) | (1L << (DATA_COMPRESSION - 70)) | (1L << (EVENTDATA - 70)) | (1L << (EXPIREDATE - 70)) | (1L << (FILENAME - 70)) | (1L << (FILLFACTOR - 70)) | (1L << (FORCESEEK - 70)))) != 0) || ((((_la - 149)) & ~0x3f) == 0 && ((1L << (_la - 149)) & ((1L << (IDENTITY - 149)) | (1L << (IIF - 149)) | (1L << (INIT - 149)) | (1L << (ISNULL - 149)) | (1L << (KEY - 149)) | (1L << (LEFT - 149)) | (1L << (MASTER - 149)) | (1L << (MAX_MEMORY - 149)))) != 0) || ((((_la - 223)) & ~0x3f) == 0 && ((1L << (_la - 223)) & ((1L << (NULLIF - 223)) | (1L << (OFFSETS - 223)) | (1L << (PAGE - 223)) | (1L << (POLICY - 223)) | (1L << (PRECISION - 223)) | (1L << (PUBLIC - 223)) | (1L << (R - 223)) | (1L << (RAW - 223)) | (1L << (RETURN - 223)) | (1L << (RETURNS - 223)) | (1L << (RIGHT - 223)))) != 0) || ((((_la - 288)) & ~0x3f) == 0 && ((1L << (_la - 288)) & ((1L << (ROLE - 288)) | (1L << (ROWCOUNT - 288)) | (1L << (SAFETY - 288)) | (1L << (RULE - 288)) | (1L << (SERVER - 288)) | (1L << (SESSION_USER - 288)) | (1L << (SID - 288)) | (1L << (SOURCE - 288)) | (1L << (SPLIT - 288)) | (1L << (STATE - 288)) | (1L << (START - 288)) | (1L << (STOP - 288)) | (1L << (SYSTEM_USER - 288)) | (1L << (TARGET - 288)) | (1L << (TRAN - 288)))) != 0) || ((((_la - 362)) & ~0x3f) == 0 && ((1L << (_la - 362)) & ((1L << (URL - 362)) | (1L << (USER - 362)) | (1L << (ABSOLUTE - 362)) | (1L << (ACCENT_SENSITIVITY - 362)) | (1L << (ACTION - 362)) | (1L << (ACTIVATION - 362)) | (1L << (ACTIVE - 362)) | (1L << (ADDRESS - 362)) | (1L << (AES_128 - 362)) | (1L << (AES_192 - 362)) | (1L << (AES_256 - 362)) | (1L << (AFFINITY - 362)) | (1L << (AFTER - 362)) | (1L << (AGGREGATE - 362)) | (1L << (ALGORITHM - 362)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 362)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 362)) | (1L << (ALLOWED - 362)) | (1L << (ANSI_NULL_DEFAULT - 362)) | (1L << (ANSI_NULLS - 362)) | (1L << (ANSI_PADDING - 362)) | (1L << (ANSI_WARNINGS - 362)) | (1L << (APPLICATION_LOG - 362)) | (1L << (APPLY - 362)) | (1L << (ARITHABORT - 362)) | (1L << (ASSEMBLY - 362)) | (1L << (AUDIT - 362)) | (1L << (AUDIT_GUID - 362)) | (1L << (AUTO - 362)) | (1L << (AUTO_CLEANUP - 362)) | (1L << (AUTO_CLOSE - 362)) | (1L << (AUTO_CREATE_STATISTICS - 362)) | (1L << (AUTO_SHRINK - 362)) | (1L << (AUTO_UPDATE_STATISTICS - 362)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 362)) | (1L << (AVAILABILITY - 362)) | (1L << (AVG - 362)) | (1L << (BACKUP_PRIORITY - 362)) | (1L << (BEGIN_DIALOG - 362)) | (1L << (BIGINT - 362)) | (1L << (BINARY_BASE64 - 362)) | (1L << (BINARY_CHECKSUM - 362)) | (1L << (BINDING - 362)) | (1L << (BLOB_STORAGE - 362)) | (1L << (BROKER - 362)) | (1L << (BROKER_INSTANCE - 362)) | (1L << (BULK_LOGGED - 362)))) != 0) || ((((_la - 426)) & ~0x3f) == 0 && ((1L << (_la - 426)) & ((1L << (CALLER - 426)) | (1L << (CAP_CPU_PERCENT - 426)) | (1L << (CAST - 426)) | (1L << (CATALOG - 426)) | (1L << (CATCH - 426)) | (1L << (CHANGE_RETENTION - 426)) | (1L << (CHANGE_TRACKING - 426)) | (1L << (CHECKSUM - 426)) | (1L << (CHECKSUM_AGG - 426)) | (1L << (CLEANUP - 426)) | (1L << (COLLECTION - 426)) | (1L << (COLUMN_MASTER_KEY - 426)) | (1L << (COMMITTED - 426)) | (1L << (COMPATIBILITY_LEVEL - 426)) | (1L << (CONCAT - 426)) | (1L << (CONCAT_NULL_YIELDS_NULL - 426)) | (1L << (CONTENT - 426)) | (1L << (CONTROL - 426)) | (1L << (COOKIE - 426)) | (1L << (COUNT - 426)) | (1L << (COUNT_BIG - 426)) | (1L << (COUNTER - 426)) | (1L << (CPU - 426)) | (1L << (CREATE_NEW - 426)) | (1L << (CREATION_DISPOSITION - 426)) | (1L << (CREDENTIAL - 426)) | (1L << (CRYPTOGRAPHIC - 426)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 426)) | (1L << (CURSOR_DEFAULT - 426)) | (1L << (DATA - 426)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 426)) | (1L << (DATEADD - 426)) | (1L << (DATEDIFF - 426)) | (1L << (DATENAME - 426)) | (1L << (DATEPART - 426)) | (1L << (DAYS - 426)) | (1L << (DB_CHAINING - 426)) | (1L << (DB_FAILOVER - 426)) | (1L << (DECRYPTION - 426)) | (1L << (DEFAULT_DOUBLE_QUOTE - 426)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 426)) | (1L << (DEFAULT_LANGUAGE - 426)) | (1L << (DELAY - 426)) | (1L << (DELAYED_DURABILITY - 426)) | (1L << (DELETED - 426)) | (1L << (DENSE_RANK - 426)) | (1L << (DEPENDENTS - 426)) | (1L << (DES - 426)) | (1L << (DESCRIPTION - 426)) | (1L << (DESX - 426)) | (1L << (DHCP - 426)) | (1L << (DIALOG - 426)) | (1L << (DIRECTORY_NAME - 426)) | (1L << (DISABLE - 426)) | (1L << (DISABLE_BROKER - 426)) | (1L << (DISABLED - 426)) | (1L << (DISK_DRIVE - 426)) | (1L << (DOCUMENT - 426)) | (1L << (DYNAMIC - 426)) | (1L << (EMERGENCY - 426)) | (1L << (EMPTY - 426)) | (1L << (ENABLE - 426)) | (1L << (ENABLE_BROKER - 426)))) != 0) || ((((_la - 490)) & ~0x3f) == 0 && ((1L << (_la - 490)) & ((1L << (ENCRYPTED_VALUE - 490)) | (1L << (ENCRYPTION - 490)) | (1L << (ENDPOINT_URL - 490)) | (1L << (ERROR_BROKER_CONVERSATIONS - 490)) | (1L << (EXCLUSIVE - 490)) | (1L << (EXECUTABLE - 490)) | (1L << (EXIST - 490)) | (1L << (EXPAND - 490)) | (1L << (EXPIRY_DATE - 490)) | (1L << (EXPLICIT - 490)) | (1L << (FAIL_OPERATION - 490)) | (1L << (FAILOVER_MODE - 490)) | (1L << (FAILURE - 490)) | (1L << (FAILURE_CONDITION_LEVEL - 490)) | (1L << (FAST - 490)) | (1L << (FAST_FORWARD - 490)) | (1L << (FILEGROUP - 490)) | (1L << (FILEGROWTH - 490)) | (1L << (FILEPATH - 490)) | (1L << (FILESTREAM - 490)) | (1L << (FILTER - 490)) | (1L << (FIRST - 490)) | (1L << (FIRST_VALUE - 490)) | (1L << (FOLLOWING - 490)) | (1L << (FORCE - 490)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 490)) | (1L << (FORCED - 490)) | (1L << (FORMAT - 490)) | (1L << (FORWARD_ONLY - 490)) | (1L << (FULLSCAN - 490)) | (1L << (FULLTEXT - 490)) | (1L << (GB - 490)) | (1L << (GETDATE - 490)) | (1L << (GETUTCDATE - 490)) | (1L << (GLOBAL - 490)) | (1L << (GO - 490)) | (1L << (GROUP_MAX_REQUESTS - 490)) | (1L << (GROUPING - 490)) | (1L << (GROUPING_ID - 490)) | (1L << (HADR - 490)) | (1L << (HASH - 490)) | (1L << (HEALTH_CHECK_TIMEOUT - 490)) | (1L << (HIGH - 490)) | (1L << (HONOR_BROKER_PRIORITY - 490)) | (1L << (HOURS - 490)) | (1L << (IDENTITY_VALUE - 490)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 490)) | (1L << (IMMEDIATE - 490)) | (1L << (IMPERSONATE - 490)) | (1L << (IMPORTANCE - 490)) | (1L << (INCREMENTAL - 490)) | (1L << (INITIATOR - 490)) | (1L << (INPUT - 490)) | (1L << (INSENSITIVE - 490)) | (1L << (INSERTED - 490)) | (1L << (INT - 490)) | (1L << (IP - 490)) | (1L << (ISOLATION - 490)) | (1L << (KB - 490)) | (1L << (KEEP - 490)) | (1L << (KEEPFIXED - 490)))) != 0) || ((((_la - 554)) & ~0x3f) == 0 && ((1L << (_la - 554)) & ((1L << (KEY_SOURCE - 554)) | (1L << (KEYS - 554)) | (1L << (KEYSET - 554)) | (1L << (LAG - 554)) | (1L << (LAST - 554)) | (1L << (LAST_VALUE - 554)) | (1L << (LEAD - 554)) | (1L << (LEVEL - 554)) | (1L << (LIST - 554)) | (1L << (LISTENER - 554)) | (1L << (LISTENER_URL - 554)) | (1L << (LOB_COMPACTION - 554)) | (1L << (LOCAL - 554)) | (1L << (LOCATION - 554)) | (1L << (LOCK - 554)) | (1L << (LOCK_ESCALATION - 554)) | (1L << (LOGIN - 554)) | (1L << (LOOP - 554)) | (1L << (LOW - 554)) | (1L << (MANUAL - 554)) | (1L << (MARK - 554)) | (1L << (MATERIALIZED - 554)) | (1L << (MAX - 554)) | (1L << (MAX_CPU_PERCENT - 554)) | (1L << (MAX_DOP - 554)) | (1L << (MAX_FILES - 554)) | (1L << (MAX_IOPS_PER_VOLUME - 554)) | (1L << (MAX_MEMORY_PERCENT - 554)) | (1L << (MAX_PROCESSES - 554)) | (1L << (MAX_QUEUE_READERS - 554)) | (1L << (MAX_ROLLOVER_FILES - 554)) | (1L << (MAXDOP - 554)) | (1L << (MAXRECURSION - 554)) | (1L << (MAXSIZE - 554)) | (1L << (MB - 554)) | (1L << (MEDIUM - 554)) | (1L << (MEMORY_OPTIMIZED_DATA - 554)) | (1L << (MESSAGE - 554)) | (1L << (MIN - 554)) | (1L << (MIN_ACTIVE_ROWVERSION - 554)) | (1L << (MIN_CPU_PERCENT - 554)) | (1L << (MIN_IOPS_PER_VOLUME - 554)) | (1L << (MIN_MEMORY_PERCENT - 554)) | (1L << (MINUTES - 554)) | (1L << (MIRROR_ADDRESS - 554)) | (1L << (MIXED_PAGE_ALLOCATION - 554)) | (1L << (MODE - 554)) | (1L << (MODIFY - 554)) | (1L << (MOVE - 554)) | (1L << (MULTI_USER - 554)) | (1L << (NAME - 554)) | (1L << (NESTED_TRIGGERS - 554)) | (1L << (NEW_ACCOUNT - 554)) | (1L << (NEW_BROKER - 554)) | (1L << (NEW_PASSWORD - 554)) | (1L << (NEXT - 554)) | (1L << (NO - 554)) | (1L << (NO_TRUNCATE - 554)) | (1L << (NO_WAIT - 554)) | (1L << (NOCOUNT - 554)) | (1L << (NODES - 554)) | (1L << (NOEXPAND - 554)) | (1L << (NON_TRANSACTED_ACCESS - 554)) | (1L << (NORECOMPUTE - 554)))) != 0) || ((((_la - 618)) & ~0x3f) == 0 && ((1L << (_la - 618)) & ((1L << (NORECOVERY - 618)) | (1L << (NOWAIT - 618)) | (1L << (NTILE - 618)) | (1L << (NUMANODE - 618)) | (1L << (NUMBER - 618)) | (1L << (NUMERIC_ROUNDABORT - 618)) | (1L << (OBJECT - 618)) | (1L << (OFFLINE - 618)) | (1L << (OFFSET - 618)) | (1L << (OLD_ACCOUNT - 618)) | (1L << (ONLINE - 618)) | (1L << (ONLY - 618)) | (1L << (OPEN_EXISTING - 618)) | (1L << (OPTIMISTIC - 618)) | (1L << (OPTIMIZE - 618)) | (1L << (OUT - 618)) | (1L << (OUTPUT - 618)) | (1L << (OWNER - 618)) | (1L << (PAGE_VERIFY - 618)) | (1L << (PARAMETERIZATION - 618)) | (1L << (PARTITION - 618)) | (1L << (PARTITIONS - 618)) | (1L << (PARTNER - 618)) | (1L << (PATH - 618)) | (1L << (POISON_MESSAGE_HANDLING - 618)) | (1L << (POOL - 618)) | (1L << (PORT - 618)) | (1L << (PRECEDING - 618)) | (1L << (PRIMARY_ROLE - 618)) | (1L << (PRIOR - 618)) | (1L << (PRIORITY - 618)) | (1L << (PRIORITY_LEVEL - 618)) | (1L << (PRIVATE - 618)) | (1L << (PRIVATE_KEY - 618)) | (1L << (PRIVILEGES - 618)) | (1L << (PROCEDURE_NAME - 618)) | (1L << (PROPERTY - 618)) | (1L << (PROVIDER - 618)) | (1L << (PROVIDER_KEY_NAME - 618)) | (1L << (QUERY - 618)) | (1L << (QUEUE - 618)) | (1L << (QUEUE_DELAY - 618)) | (1L << (QUOTED_IDENTIFIER - 618)) | (1L << (RANGE - 618)) | (1L << (RANK - 618)) | (1L << (RC2 - 618)) | (1L << (RC4 - 618)) | (1L << (RC4_128 - 618)) | (1L << (READ_COMMITTED_SNAPSHOT - 618)) | (1L << (READ_ONLY - 618)) | (1L << (READ_ONLY_ROUTING_LIST - 618)) | (1L << (READ_WRITE - 618)) | (1L << (READONLY - 618)) | (1L << (REBUILD - 618)) | (1L << (RECEIVE - 618)) | (1L << (RECOMPILE - 618)) | (1L << (RECOVERY - 618)) | (1L << (RECURSIVE_TRIGGERS - 618)) | (1L << (RELATIVE - 618)) | (1L << (REMOTE - 618)) | (1L << (REMOTE_SERVICE_NAME - 618)) | (1L << (REMOVE - 618)) | (1L << (REORGANIZE - 618)))) != 0) || ((((_la - 682)) & ~0x3f) == 0 && ((1L << (_la - 682)) & ((1L << (REPEATABLE - 682)) | (1L << (REPLICA - 682)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 682)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 682)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 682)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 682)) | (1L << (RESERVE_DISK_SPACE - 682)) | (1L << (RESOURCE - 682)) | (1L << (RESOURCE_MANAGER_LOCATION - 682)) | (1L << (RESTRICTED_USER - 682)) | (1L << (RETENTION - 682)) | (1L << (ROBUST - 682)) | (1L << (ROOT - 682)) | (1L << (ROUTE - 682)) | (1L << (ROW - 682)) | (1L << (ROW_NUMBER - 682)) | (1L << (ROWGUID - 682)) | (1L << (ROWS - 682)) | (1L << (SAMPLE - 682)) | (1L << (SCHEMABINDING - 682)) | (1L << (SCOPED - 682)) | (1L << (SCROLL - 682)) | (1L << (SCROLL_LOCKS - 682)) | (1L << (SEARCH - 682)) | (1L << (SECONDARY - 682)) | (1L << (SECONDARY_ONLY - 682)) | (1L << (SECONDARY_ROLE - 682)) | (1L << (SECONDS - 682)) | (1L << (SECRET - 682)) | (1L << (SECURITY - 682)) | (1L << (SECURITY_LOG - 682)) | (1L << (SEEDING_MODE - 682)) | (1L << (SELF - 682)) | (1L << (SEMI_SENSITIVE - 682)) | (1L << (SEND - 682)) | (1L << (SENT - 682)) | (1L << (SEQUENCE - 682)) | (1L << (SERIALIZABLE - 682)) | (1L << (SESSION_TIMEOUT - 682)) | (1L << (SETERROR - 682)) | (1L << (SHARE - 682)) | (1L << (SHOWPLAN - 682)) | (1L << (SIGNATURE - 682)) | (1L << (SIMPLE - 682)) | (1L << (SINGLE_USER - 682)) | (1L << (SIZE - 682)) | (1L << (SMALLINT - 682)) | (1L << (SNAPSHOT - 682)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 682)) | (1L << (STANDBY - 682)) | (1L << (START_DATE - 682)) | (1L << (STATIC - 682)) | (1L << (STATS_STREAM - 682)) | (1L << (STATUS - 682)) | (1L << (STDEV - 682)) | (1L << (STDEVP - 682)) | (1L << (STOPLIST - 682)) | (1L << (STRING_AGG - 682)) | (1L << (STUFF - 682)) | (1L << (SUBJECT - 682)) | (1L << (SUM - 682)) | (1L << (SUSPEND - 682)))) != 0) || ((((_la - 746)) & ~0x3f) == 0 && ((1L << (_la - 746)) & ((1L << (SYMMETRIC - 746)) | (1L << (SYNCHRONOUS_COMMIT - 746)) | (1L << (SYNONYM - 746)) | (1L << (SYSTEM - 746)) | (1L << (TAKE - 746)) | (1L << (TARGET_RECOVERY_TIME - 746)) | (1L << (TB - 746)) | (1L << (TEXTIMAGE_ON - 746)) | (1L << (THROW - 746)) | (1L << (TIES - 746)) | (1L << (TIME - 746)) | (1L << (TIMEOUT - 746)) | (1L << (TIMER - 746)) | (1L << (TINYINT - 746)) | (1L << (TORN_PAGE_DETECTION - 746)) | (1L << (TRANSFORM_NOISE_WORDS - 746)) | (1L << (TRIPLE_DES - 746)) | (1L << (TRIPLE_DES_3KEY - 746)) | (1L << (TRUSTWORTHY - 746)) | (1L << (TRY - 746)) | (1L << (TSQL - 746)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 746)) | (1L << (TYPE - 746)) | (1L << (TYPE_WARNING - 746)) | (1L << (UNBOUNDED - 746)) | (1L << (UNCOMMITTED - 746)) | (1L << (UNKNOWN - 746)) | (1L << (UNLIMITED - 746)) | (1L << (USING - 746)) | (1L << (VALID_XML - 746)) | (1L << (VALIDATION - 746)) | (1L << (VALUE - 746)) | (1L << (VAR - 746)) | (1L << (VARP - 746)) | (1L << (VIEW_METADATA - 746)) | (1L << (VIEWS - 746)) | (1L << (WAIT - 746)) | (1L << (WELL_FORMED_XML - 746)) | (1L << (WORK - 746)) | (1L << (WORKLOAD - 746)) | (1L << (XML - 746)) | (1L << (XMLNAMESPACES - 746)) | (1L << (DOUBLE_QUOTE_ID - 746)) | (1L << (SQUARE_BRACKET_ID - 746)) | (1L << (LOCAL_ID - 746)) | (1L << (DECIMAL - 746)) | (1L << (ID - 746)))) != 0) || _la==STRING || _la==PLUS );
 				setState(1308);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==RR_BRACKET) {
 					{
@@ -11753,6 +12025,7 @@ public class MocaSqlParser extends Parser {
 					break;
 				}
 				setState(1329);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==ON) {
 					{
@@ -11951,11 +12224,17 @@ public class MocaSqlParser extends Parser {
 
 	public static class Index_optionsContext extends ParserRuleContext {
 		public TerminalNode WITH() { return getToken(MocaSqlParser.WITH, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public List<Index_optionContext> index_option() {
 			return getRuleContexts(Index_optionContext.class);
 		}
 		public Index_optionContext index_option(int i) {
 			return getRuleContext(Index_optionContext.class,i);
+		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public Index_optionsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -12027,6 +12306,7 @@ public class MocaSqlParser extends Parser {
 		public Simple_idContext simple_id(int i) {
 			return getRuleContext(Simple_idContext.class,i);
 		}
+		public TerminalNode EQUAL() { return getToken(MocaSqlParser.EQUAL, 0); }
 		public On_offContext on_off() {
 			return getRuleContext(On_offContext.class,0);
 		}
@@ -12061,6 +12341,7 @@ public class MocaSqlParser extends Parser {
 			setState(1368);
 			match(EQUAL);
 			setState(1372);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CALLED:
 			case DATA_COMPRESSION:
@@ -12561,6 +12842,7 @@ public class MocaSqlParser extends Parser {
 		enterRule(_localctx, 100, RULE_constant_LOCAL_ID);
 		try {
 			setState(1376);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case DECIMAL:
 			case STRING:
@@ -12639,6 +12921,15 @@ public class MocaSqlParser extends Parser {
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
+		public TerminalNode STAR() { return getToken(MocaSqlParser.STAR, 0); }
+		public TerminalNode DIVIDE() { return getToken(MocaSqlParser.DIVIDE, 0); }
+		public TerminalNode MODULE() { return getToken(MocaSqlParser.MODULE, 0); }
+		public TerminalNode PLUS() { return getToken(MocaSqlParser.PLUS, 0); }
+		public TerminalNode MINUS() { return getToken(MocaSqlParser.MINUS, 0); }
+		public TerminalNode BIT_AND() { return getToken(MocaSqlParser.BIT_AND, 0); }
+		public TerminalNode BIT_XOR() { return getToken(MocaSqlParser.BIT_XOR, 0); }
+		public TerminalNode BIT_OR() { return getToken(MocaSqlParser.BIT_OR, 0); }
+		public TerminalNode DOUBLE_BAR() { return getToken(MocaSqlParser.DOUBLE_BAR, 0); }
 		public Comparison_operatorContext comparison_operator() {
 			return getRuleContext(Comparison_operatorContext.class,0);
 		}
@@ -12777,7 +13068,10 @@ public class MocaSqlParser extends Parser {
 						_la = _input.LA(1);
 						if ( !(((((_la - 841)) & ~0x3f) == 0 && ((1L << (_la - 841)) & ((1L << (STAR - 841)) | (1L << (DIVIDE - 841)) | (1L << (MODULE - 841)))) != 0)) ) {
 							((ExpressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
-						} else {
+						}
+						else {
+							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+							_errHandler.reportMatch(this);
 							consume();
 						}
 						setState(1394);
@@ -12795,7 +13089,10 @@ public class MocaSqlParser extends Parser {
 						_la = _input.LA(1);
 						if ( !(((((_la - 830)) & ~0x3f) == 0 && ((1L << (_la - 830)) & ((1L << (DOUBLE_BAR - 830)) | (1L << (PLUS - 830)) | (1L << (MINUS - 830)) | (1L << (BIT_OR - 830)) | (1L << (BIT_AND - 830)) | (1L << (BIT_XOR - 830)))) != 0)) ) {
 							((ExpressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
-						} else {
+						}
+						else {
+							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+							_errHandler.reportMatch(this);
 							consume();
 						}
 						setState(1397);
@@ -13176,6 +13473,7 @@ public class MocaSqlParser extends Parser {
 			setState(1450);
 			match(MOCA_AT_PLUS_VARIABLE);
 			setState(1453);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==DOT) {
 				{
@@ -13187,6 +13485,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(1459);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case COLON:
 				{
@@ -13686,7 +13985,7 @@ public class MocaSqlParser extends Parser {
 			case SEMI:
 				break;
 			default:
-				throw new NoViableAltException(this);
+				break;
 			}
 			}
 		}
@@ -13820,6 +14119,7 @@ public class MocaSqlParser extends Parser {
 		enterRule(_localctx, 116, RULE_primitive_expression);
 		try {
 			setState(1470);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case DEFAULT:
 				enterOuterAlt(_localctx, 1);
@@ -13944,6 +14244,7 @@ public class MocaSqlParser extends Parser {
 					_la = _input.LA(1);
 				} while ( _la==WHEN );
 				setState(1481);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==ELSE) {
 					{
@@ -13978,6 +14279,7 @@ public class MocaSqlParser extends Parser {
 					_la = _input.LA(1);
 				} while ( _la==WHEN );
 				setState(1493);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==ELSE) {
 					{
@@ -14007,9 +14309,12 @@ public class MocaSqlParser extends Parser {
 
 	public static class Unary_operator_expressionContext extends ParserRuleContext {
 		public Token op;
+		public TerminalNode BIT_NOT() { return getToken(MocaSqlParser.BIT_NOT, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode PLUS() { return getToken(MocaSqlParser.PLUS, 0); }
+		public TerminalNode MINUS() { return getToken(MocaSqlParser.MINUS, 0); }
 		public Unary_operator_expressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -14035,6 +14340,7 @@ public class MocaSqlParser extends Parser {
 		int _la;
 		try {
 			setState(1503);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case BIT_NOT:
 				enterOuterAlt(_localctx, 1);
@@ -14054,7 +14360,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==PLUS || _la==MINUS) ) {
 					((Unary_operator_expressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				setState(1502);
@@ -14077,9 +14386,11 @@ public class MocaSqlParser extends Parser {
 	}
 
 	public static class Bracket_expressionContext extends ParserRuleContext {
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public SubqueryContext subquery() {
 			return getRuleContext(SubqueryContext.class,0);
 		}
@@ -14153,9 +14464,11 @@ public class MocaSqlParser extends Parser {
 			return getRuleContext(Function_callContext.class,0);
 		}
 		public TerminalNode LOCAL_ID() { return getToken(MocaSqlParser.LOCAL_ID, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public Constant_expressionContext constant_expression() {
 			return getRuleContext(Constant_expressionContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public Constant_expressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -14287,10 +14600,22 @@ public class MocaSqlParser extends Parser {
 			return getRuleContext(Common_table_expressionContext.class,i);
 		}
 		public TerminalNode XMLNAMESPACES() { return getToken(MocaSqlParser.XMLNAMESPACES, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
 		public TerminalNode BLOCKING_HIERARCHY() { return getToken(MocaSqlParser.BLOCKING_HIERARCHY, 0); }
 		public TerminalNode AS() { return getToken(MocaSqlParser.AS, 0); }
+		public List<TerminalNode> LR_BRACKET() { return getTokens(MocaSqlParser.LR_BRACKET); }
+		public TerminalNode LR_BRACKET(int i) {
+			return getToken(MocaSqlParser.LR_BRACKET, i);
+		}
 		public Select_statementContext select_statement() {
 			return getRuleContext(Select_statementContext.class,0);
+		}
+		public List<TerminalNode> RR_BRACKET() { return getTokens(MocaSqlParser.RR_BRACKET); }
+		public TerminalNode RR_BRACKET(int i) {
+			return getToken(MocaSqlParser.RR_BRACKET, i);
 		}
 		public Full_column_name_listContext full_column_name_list() {
 			return getRuleContext(Full_column_name_listContext.class,0);
@@ -14367,6 +14692,7 @@ public class MocaSqlParser extends Parser {
 				setState(1541);
 				match(BLOCKING_HIERARCHY);
 				setState(1546);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==LR_BRACKET) {
 					{
@@ -14405,8 +14731,16 @@ public class MocaSqlParser extends Parser {
 	public static class Common_table_expressionContext extends ParserRuleContext {
 		public IdContext expression_name;
 		public TerminalNode AS() { return getToken(MocaSqlParser.AS, 0); }
+		public List<TerminalNode> LR_BRACKET() { return getTokens(MocaSqlParser.LR_BRACKET); }
+		public TerminalNode LR_BRACKET(int i) {
+			return getToken(MocaSqlParser.LR_BRACKET, i);
+		}
 		public Select_statementContext select_statement() {
 			return getRuleContext(Select_statementContext.class,0);
+		}
+		public List<TerminalNode> RR_BRACKET() { return getTokens(MocaSqlParser.RR_BRACKET); }
+		public TerminalNode RR_BRACKET(int i) {
+			return getToken(MocaSqlParser.RR_BRACKET, i);
 		}
 		public IdContext id() {
 			return getRuleContext(IdContext.class,0);
@@ -14443,6 +14777,7 @@ public class MocaSqlParser extends Parser {
 			setState(1555);
 			((Common_table_expressionContext)_localctx).expression_name = id();
 			setState(1560);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==LR_BRACKET) {
 				{
@@ -14486,12 +14821,16 @@ public class MocaSqlParser extends Parser {
 			return getRuleContext(Full_column_nameContext.class,0);
 		}
 		public TerminalNode LOCAL_ID() { return getToken(MocaSqlParser.LOCAL_ID, 0); }
+		public TerminalNode EQUAL() { return getToken(MocaSqlParser.EQUAL, 0); }
 		public Assignment_operatorContext assignment_operator() {
 			return getRuleContext(Assignment_operatorContext.class,0);
 		}
+		public TerminalNode DOT() { return getToken(MocaSqlParser.DOT, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public Expression_listContext expression_list() {
 			return getRuleContext(Expression_listContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public List<IdContext> id() {
 			return getRuleContexts(IdContext.class);
 		}
@@ -14528,6 +14867,7 @@ public class MocaSqlParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(1569);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case BLOCKING_HIERARCHY:
 				case CALLED:
@@ -14983,6 +15323,7 @@ public class MocaSqlParser extends Parser {
 					throw new NoViableAltException(this);
 				}
 				setState(1573);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case EQUAL:
 					{
@@ -15046,6 +15387,10 @@ public class MocaSqlParser extends Parser {
 		}
 		public Search_conditionContext search_condition(int i) {
 			return getRuleContext(Search_conditionContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public Search_condition_listContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -15272,6 +15617,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(1610);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==NOT) {
 				{
@@ -15297,9 +15643,11 @@ public class MocaSqlParser extends Parser {
 
 	public static class PredicateContext extends ParserRuleContext {
 		public TerminalNode EXISTS() { return getToken(MocaSqlParser.EXISTS, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public SubqueryContext subquery() {
 			return getRuleContext(SubqueryContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
@@ -15333,6 +15681,7 @@ public class MocaSqlParser extends Parser {
 		}
 		public TerminalNode LOCAL_ID() { return getToken(MocaSqlParser.LOCAL_ID, 0); }
 		public TerminalNode COLON() { return getToken(MocaSqlParser.COLON, 0); }
+		public TerminalNode RAW() { return getToken(MocaSqlParser.RAW, 0); }
 		public TerminalNode DOT() { return getToken(MocaSqlParser.DOT, 0); }
 		public Simple_idContext simple_id() {
 			return getRuleContext(Simple_idContext.class,0);
@@ -15403,7 +15752,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==ALL || _la==ANY || _la==SOME) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				setState(1626);
@@ -15420,6 +15772,7 @@ public class MocaSqlParser extends Parser {
 				setState(1630);
 				expression(0);
 				setState(1632);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==NOT) {
 					{
@@ -15444,6 +15797,7 @@ public class MocaSqlParser extends Parser {
 				setState(1639);
 				expression(0);
 				setState(1641);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==NOT) {
 					{
@@ -15482,6 +15836,7 @@ public class MocaSqlParser extends Parser {
 				setState(1651);
 				expression(0);
 				setState(1653);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==NOT) {
 					{
@@ -15495,6 +15850,7 @@ public class MocaSqlParser extends Parser {
 				setState(1656);
 				expression(0);
 				setState(1659);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==ESCAPE) {
 					{
@@ -15539,6 +15895,7 @@ public class MocaSqlParser extends Parser {
 				setState(1667);
 				match(LOCAL_ID);
 				setState(1670);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==DOT) {
 					{
@@ -15563,6 +15920,7 @@ public class MocaSqlParser extends Parser {
 				setState(1674);
 				match(MOCA_AT_MINUS_VARIABLE);
 				setState(1677);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==DOT) {
 					{
@@ -15608,9 +15966,11 @@ public class MocaSqlParser extends Parser {
 		public Query_specificationContext query_specification() {
 			return getRuleContext(Query_specificationContext.class,0);
 		}
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public Query_expressionContext query_expression() {
 			return getRuleContext(Query_expressionContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public List<Sql_unionContext> sql_union() {
 			return getRuleContexts(Sql_unionContext.class);
 		}
@@ -15644,6 +16004,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(1692);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case SELECT:
 				{
@@ -15700,9 +16061,11 @@ public class MocaSqlParser extends Parser {
 		public Query_specificationContext query_specification() {
 			return getRuleContext(Query_specificationContext.class,0);
 		}
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public Query_expressionContext query_expression() {
 			return getRuleContext(Query_expressionContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public TerminalNode ALL() { return getToken(MocaSqlParser.ALL, 0); }
 		public Sql_unionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -15731,12 +16094,14 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(1706);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case UNION:
 				{
 				setState(1700);
 				match(UNION);
 				setState(1702);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==ALL) {
 					{
@@ -15763,6 +16128,7 @@ public class MocaSqlParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			setState(1713);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case SELECT:
 				{
@@ -15837,6 +16203,10 @@ public class MocaSqlParser extends Parser {
 		public Search_conditionContext search_condition(int i) {
 			return getRuleContext(Search_conditionContext.class,i);
 		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
 		public Query_specificationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -15867,6 +16237,7 @@ public class MocaSqlParser extends Parser {
 			setState(1715);
 			match(SELECT);
 			setState(1717);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==ALL || _la==DISTINCT) {
 				{
@@ -15874,13 +16245,17 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==ALL || _la==DISTINCT) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				}
 			}
 
 			setState(1720);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==TOP) {
 				{
@@ -15892,6 +16267,7 @@ public class MocaSqlParser extends Parser {
 			setState(1722);
 			select_list();
 			setState(1725);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==INTO) {
 				{
@@ -15903,6 +16279,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(1729);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==FROM) {
 				{
@@ -15935,6 +16312,7 @@ public class MocaSqlParser extends Parser {
 				setState(1736);
 				match(BY);
 				setState(1738);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==ALL) {
 					{
@@ -16046,6 +16424,7 @@ public class MocaSqlParser extends Parser {
 				break;
 			}
 			setState(1761);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WITH) {
 				{
@@ -16073,9 +16452,11 @@ public class MocaSqlParser extends Parser {
 		public TerminalNode PERCENT() { return getToken(MocaSqlParser.PERCENT, 0); }
 		public TerminalNode REAL() { return getToken(MocaSqlParser.REAL, 0); }
 		public TerminalNode FLOAT() { return getToken(MocaSqlParser.FLOAT, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public Top_percentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -16101,6 +16482,7 @@ public class MocaSqlParser extends Parser {
 		int _la;
 		try {
 			setState(1770);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case FLOAT:
 			case REAL:
@@ -16110,7 +16492,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==FLOAT || _la==REAL) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				setState(1764);
@@ -16147,9 +16532,11 @@ public class MocaSqlParser extends Parser {
 
 	public static class Top_countContext extends ParserRuleContext {
 		public TerminalNode DECIMAL() { return getToken(MocaSqlParser.DECIMAL, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public Top_countContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -16174,6 +16561,7 @@ public class MocaSqlParser extends Parser {
 		enterRule(_localctx, 154, RULE_top_count);
 		try {
 			setState(1777);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case DECIMAL:
 				enterOuterAlt(_localctx, 1);
@@ -16216,6 +16604,10 @@ public class MocaSqlParser extends Parser {
 		}
 		public Order_by_expressionContext order_by_expression(int i) {
 			return getRuleContext(Order_by_expressionContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public TerminalNode OFFSET() { return getToken(MocaSqlParser.OFFSET, 0); }
 		public List<ExpressionContext> expression() {
@@ -16300,10 +16692,14 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==ROW || _la==ROWS) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				setState(1798);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==FETCH) {
 					{
@@ -16313,7 +16709,10 @@ public class MocaSqlParser extends Parser {
 					_la = _input.LA(1);
 					if ( !(_la==FIRST || _la==NEXT) ) {
 					_errHandler.recoverInline(this);
-					} else {
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
 						consume();
 					}
 					setState(1794);
@@ -16322,7 +16721,10 @@ public class MocaSqlParser extends Parser {
 					_la = _input.LA(1);
 					if ( !(_la==ROW || _la==ROWS) ) {
 					_errHandler.recoverInline(this);
-					} else {
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
 						consume();
 					}
 					setState(1796);
@@ -16365,9 +16767,17 @@ public class MocaSqlParser extends Parser {
 		public TerminalNode ELEMENTS() { return getToken(MocaSqlParser.ELEMENTS, 0); }
 		public TerminalNode XSINIL() { return getToken(MocaSqlParser.XSINIL, 0); }
 		public TerminalNode ABSENT() { return getToken(MocaSqlParser.ABSENT, 0); }
+		public List<TerminalNode> LR_BRACKET() { return getTokens(MocaSqlParser.LR_BRACKET); }
+		public TerminalNode LR_BRACKET(int i) {
+			return getToken(MocaSqlParser.LR_BRACKET, i);
+		}
 		public List<TerminalNode> STRING() { return getTokens(MocaSqlParser.STRING); }
 		public TerminalNode STRING(int i) {
 			return getToken(MocaSqlParser.STRING, i);
+		}
+		public List<TerminalNode> RR_BRACKET() { return getTokens(MocaSqlParser.RR_BRACKET); }
+		public TerminalNode RR_BRACKET(int i) {
+			return getToken(MocaSqlParser.RR_BRACKET, i);
 		}
 		public TerminalNode XMLDATA() { return getToken(MocaSqlParser.XMLDATA, 0); }
 		public TerminalNode XMLSCHEMA() { return getToken(MocaSqlParser.XMLSCHEMA, 0); }
@@ -16422,6 +16832,7 @@ public class MocaSqlParser extends Parser {
 				setState(1805);
 				match(XML);
 				setState(1813);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case RAW:
 					{
@@ -16476,6 +16887,7 @@ public class MocaSqlParser extends Parser {
 					setState(1821);
 					match(COMMA);
 					setState(1829);
+					_errHandler.sync(this);
 					switch (_input.LA(1)) {
 					case XMLDATA:
 						{
@@ -16522,7 +16934,10 @@ public class MocaSqlParser extends Parser {
 					_la = _input.LA(1);
 					if ( !(_la==ABSENT || _la==XSINIL) ) {
 					_errHandler.recoverInline(this);
-					} else {
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
 						consume();
 					}
 					}
@@ -16621,7 +17036,10 @@ public class MocaSqlParser extends Parser {
 					_la = _input.LA(1);
 					if ( !(_la==ABSENT || _la==XSINIL) ) {
 					_errHandler.recoverInline(this);
-					} else {
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
 						consume();
 					}
 					}
@@ -16640,7 +17058,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==AUTO || _la==PATH) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				setState(1880);
@@ -16709,10 +17130,13 @@ public class MocaSqlParser extends Parser {
 	}
 
 	public static class Xml_common_directivesContext extends ParserRuleContext {
+		public TerminalNode COMMA() { return getToken(MocaSqlParser.COMMA, 0); }
 		public TerminalNode BINARY_BASE64() { return getToken(MocaSqlParser.BINARY_BASE64, 0); }
 		public TerminalNode TYPE() { return getToken(MocaSqlParser.TYPE, 0); }
 		public TerminalNode ROOT() { return getToken(MocaSqlParser.ROOT, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public TerminalNode STRING() { return getToken(MocaSqlParser.STRING, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public Xml_common_directivesContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -16741,6 +17165,7 @@ public class MocaSqlParser extends Parser {
 			setState(1892);
 			match(COMMA);
 			setState(1901);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case BINARY_BASE64:
 				{
@@ -16825,6 +17250,7 @@ public class MocaSqlParser extends Parser {
 			setState(1903);
 			expression(0);
 			setState(1905);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==ASC || _la==DESC) {
 				{
@@ -16832,7 +17258,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==ASC || _la==DESC) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				}
@@ -16897,11 +17326,17 @@ public class MocaSqlParser extends Parser {
 
 	public static class Option_clauseContext extends ParserRuleContext {
 		public TerminalNode OPTION() { return getToken(MocaSqlParser.OPTION, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public List<OptionContext> option() {
 			return getRuleContexts(OptionContext.class);
 		}
 		public OptionContext option(int i) {
 			return getRuleContext(OptionContext.class,i);
+		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public Option_clauseContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -16991,11 +17426,17 @@ public class MocaSqlParser extends Parser {
 		public TerminalNode MAXRECURSION() { return getToken(MocaSqlParser.MAXRECURSION, 0); }
 		public TerminalNode OPTIMIZE() { return getToken(MocaSqlParser.OPTIMIZE, 0); }
 		public TerminalNode FOR() { return getToken(MocaSqlParser.FOR, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public List<Optimize_for_argContext> optimize_for_arg() {
 			return getRuleContexts(Optimize_for_argContext.class);
 		}
 		public Optimize_for_argContext optimize_for_arg(int i) {
 			return getRuleContext(Optimize_for_argContext.class,i);
+		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public TerminalNode UNKNOWN() { return getToken(MocaSqlParser.UNKNOWN, 0); }
 		public TerminalNode PARAMETERIZATION() { return getToken(MocaSqlParser.PARAMETERIZATION, 0); }
@@ -17048,7 +17489,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==ORDER || _la==HASH) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				setState(1924);
@@ -17062,7 +17506,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==MERGE || _la==CONCAT || _la==HASH) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				setState(1926);
@@ -17076,7 +17523,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==MERGE || _la==HASH || _la==LOOP) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				setState(1928);
@@ -17195,7 +17645,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==FORCED || _la==SIMPLE) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				}
@@ -17243,6 +17696,7 @@ public class MocaSqlParser extends Parser {
 	public static class Optimize_for_argContext extends ParserRuleContext {
 		public TerminalNode LOCAL_ID() { return getToken(MocaSqlParser.LOCAL_ID, 0); }
 		public TerminalNode UNKNOWN() { return getToken(MocaSqlParser.UNKNOWN, 0); }
+		public TerminalNode EQUAL() { return getToken(MocaSqlParser.EQUAL, 0); }
 		public ConstantContext constant() {
 			return getRuleContext(ConstantContext.class,0);
 		}
@@ -17275,6 +17729,7 @@ public class MocaSqlParser extends Parser {
 			setState(1968);
 			match(LOCAL_ID);
 			setState(1975);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case UNKNOWN:
 				{
@@ -17287,6 +17742,7 @@ public class MocaSqlParser extends Parser {
 				setState(1970);
 				match(EQUAL);
 				setState(1973);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case DECIMAL:
 				case STRING:
@@ -17334,6 +17790,10 @@ public class MocaSqlParser extends Parser {
 		}
 		public Select_list_elemContext select_list_elem(int i) {
 			return getRuleContext(Select_list_elemContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public Select_listContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -17395,11 +17855,17 @@ public class MocaSqlParser extends Parser {
 	}
 
 	public static class Udt_method_argumentsContext extends ParserRuleContext {
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public List<Execute_var_stringContext> execute_var_string() {
 			return getRuleContexts(Execute_var_stringContext.class);
 		}
 		public Execute_var_stringContext execute_var_string(int i) {
 			return getRuleContext(Execute_var_stringContext.class,i);
+		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public Udt_method_argumentsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -17463,9 +17929,11 @@ public class MocaSqlParser extends Parser {
 	}
 
 	public static class AsteriskContext extends ParserRuleContext {
+		public TerminalNode STAR() { return getToken(MocaSqlParser.STAR, 0); }
 		public Table_nameContext table_name() {
 			return getRuleContext(Table_nameContext.class,0);
 		}
+		public TerminalNode DOT() { return getToken(MocaSqlParser.DOT, 0); }
 		public AsteriskContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -17493,6 +17961,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(1999);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==BLOCKING_HIERARCHY || _la==CALLED || ((((_la - 81)) & ~0x3f) == 0 && ((1L << (_la - 81)) & ((1L << (DATA_COMPRESSION - 81)) | (1L << (EVENTDATA - 81)) | (1L << (EXPIREDATE - 81)) | (1L << (FILENAME - 81)) | (1L << (FILLFACTOR - 81)) | (1L << (FORCESEEK - 81)))) != 0) || ((((_la - 159)) & ~0x3f) == 0 && ((1L << (_la - 159)) & ((1L << (INIT - 159)) | (1L << (KEY - 159)) | (1L << (MASTER - 159)) | (1L << (MAX_MEMORY - 159)))) != 0) || ((((_la - 226)) & ~0x3f) == 0 && ((1L << (_la - 226)) & ((1L << (OFFSETS - 226)) | (1L << (PAGE - 226)) | (1L << (POLICY - 226)) | (1L << (PRECISION - 226)) | (1L << (PUBLIC - 226)) | (1L << (R - 226)) | (1L << (RAW - 226)) | (1L << (RETURN - 226)) | (1L << (RETURNS - 226)) | (1L << (ROLE - 226)) | (1L << (ROWCOUNT - 226)))) != 0) || ((((_la - 296)) & ~0x3f) == 0 && ((1L << (_la - 296)) & ((1L << (SAFETY - 296)) | (1L << (RULE - 296)) | (1L << (SERVER - 296)) | (1L << (SID - 296)) | (1L << (SOURCE - 296)) | (1L << (SPLIT - 296)) | (1L << (STATE - 296)) | (1L << (START - 296)) | (1L << (STOP - 296)) | (1L << (TARGET - 296)) | (1L << (TRAN - 296)))) != 0) || ((((_la - 362)) & ~0x3f) == 0 && ((1L << (_la - 362)) & ((1L << (URL - 362)) | (1L << (USER - 362)) | (1L << (ABSOLUTE - 362)) | (1L << (ACCENT_SENSITIVITY - 362)) | (1L << (ACTION - 362)) | (1L << (ACTIVATION - 362)) | (1L << (ACTIVE - 362)) | (1L << (ADDRESS - 362)) | (1L << (AES_128 - 362)) | (1L << (AES_192 - 362)) | (1L << (AES_256 - 362)) | (1L << (AFFINITY - 362)) | (1L << (AFTER - 362)) | (1L << (AGGREGATE - 362)) | (1L << (ALGORITHM - 362)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 362)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 362)) | (1L << (ALLOWED - 362)) | (1L << (ANSI_NULL_DEFAULT - 362)) | (1L << (ANSI_NULLS - 362)) | (1L << (ANSI_PADDING - 362)) | (1L << (ANSI_WARNINGS - 362)) | (1L << (APPLICATION_LOG - 362)) | (1L << (APPLY - 362)) | (1L << (ARITHABORT - 362)) | (1L << (ASSEMBLY - 362)) | (1L << (AUDIT - 362)) | (1L << (AUDIT_GUID - 362)) | (1L << (AUTO - 362)) | (1L << (AUTO_CLEANUP - 362)) | (1L << (AUTO_CLOSE - 362)) | (1L << (AUTO_CREATE_STATISTICS - 362)) | (1L << (AUTO_SHRINK - 362)) | (1L << (AUTO_UPDATE_STATISTICS - 362)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 362)) | (1L << (AVAILABILITY - 362)) | (1L << (AVG - 362)) | (1L << (BACKUP_PRIORITY - 362)) | (1L << (BEGIN_DIALOG - 362)) | (1L << (BIGINT - 362)) | (1L << (BINARY_BASE64 - 362)) | (1L << (BINARY_CHECKSUM - 362)) | (1L << (BINDING - 362)) | (1L << (BLOB_STORAGE - 362)) | (1L << (BROKER - 362)) | (1L << (BROKER_INSTANCE - 362)) | (1L << (BULK_LOGGED - 362)))) != 0) || ((((_la - 426)) & ~0x3f) == 0 && ((1L << (_la - 426)) & ((1L << (CALLER - 426)) | (1L << (CAP_CPU_PERCENT - 426)) | (1L << (CAST - 426)) | (1L << (CATALOG - 426)) | (1L << (CATCH - 426)) | (1L << (CHANGE_RETENTION - 426)) | (1L << (CHANGE_TRACKING - 426)) | (1L << (CHECKSUM - 426)) | (1L << (CHECKSUM_AGG - 426)) | (1L << (CLEANUP - 426)) | (1L << (COLLECTION - 426)) | (1L << (COLUMN_MASTER_KEY - 426)) | (1L << (COMMITTED - 426)) | (1L << (COMPATIBILITY_LEVEL - 426)) | (1L << (CONCAT - 426)) | (1L << (CONCAT_NULL_YIELDS_NULL - 426)) | (1L << (CONTENT - 426)) | (1L << (CONTROL - 426)) | (1L << (COOKIE - 426)) | (1L << (COUNT - 426)) | (1L << (COUNT_BIG - 426)) | (1L << (COUNTER - 426)) | (1L << (CPU - 426)) | (1L << (CREATE_NEW - 426)) | (1L << (CREATION_DISPOSITION - 426)) | (1L << (CREDENTIAL - 426)) | (1L << (CRYPTOGRAPHIC - 426)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 426)) | (1L << (CURSOR_DEFAULT - 426)) | (1L << (DATA - 426)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 426)) | (1L << (DATEADD - 426)) | (1L << (DATEDIFF - 426)) | (1L << (DATENAME - 426)) | (1L << (DATEPART - 426)) | (1L << (DAYS - 426)) | (1L << (DB_CHAINING - 426)) | (1L << (DB_FAILOVER - 426)) | (1L << (DECRYPTION - 426)) | (1L << (DEFAULT_DOUBLE_QUOTE - 426)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 426)) | (1L << (DEFAULT_LANGUAGE - 426)) | (1L << (DELAY - 426)) | (1L << (DELAYED_DURABILITY - 426)) | (1L << (DELETED - 426)) | (1L << (DENSE_RANK - 426)) | (1L << (DEPENDENTS - 426)) | (1L << (DES - 426)) | (1L << (DESCRIPTION - 426)) | (1L << (DESX - 426)) | (1L << (DHCP - 426)) | (1L << (DIALOG - 426)) | (1L << (DIRECTORY_NAME - 426)) | (1L << (DISABLE - 426)) | (1L << (DISABLE_BROKER - 426)) | (1L << (DISABLED - 426)) | (1L << (DISK_DRIVE - 426)) | (1L << (DOCUMENT - 426)) | (1L << (DYNAMIC - 426)) | (1L << (EMERGENCY - 426)) | (1L << (EMPTY - 426)) | (1L << (ENABLE - 426)) | (1L << (ENABLE_BROKER - 426)))) != 0) || ((((_la - 490)) & ~0x3f) == 0 && ((1L << (_la - 490)) & ((1L << (ENCRYPTED_VALUE - 490)) | (1L << (ENCRYPTION - 490)) | (1L << (ENDPOINT_URL - 490)) | (1L << (ERROR_BROKER_CONVERSATIONS - 490)) | (1L << (EXCLUSIVE - 490)) | (1L << (EXECUTABLE - 490)) | (1L << (EXIST - 490)) | (1L << (EXPAND - 490)) | (1L << (EXPIRY_DATE - 490)) | (1L << (EXPLICIT - 490)) | (1L << (FAIL_OPERATION - 490)) | (1L << (FAILOVER_MODE - 490)) | (1L << (FAILURE - 490)) | (1L << (FAILURE_CONDITION_LEVEL - 490)) | (1L << (FAST - 490)) | (1L << (FAST_FORWARD - 490)) | (1L << (FILEGROUP - 490)) | (1L << (FILEGROWTH - 490)) | (1L << (FILEPATH - 490)) | (1L << (FILESTREAM - 490)) | (1L << (FILTER - 490)) | (1L << (FIRST - 490)) | (1L << (FIRST_VALUE - 490)) | (1L << (FOLLOWING - 490)) | (1L << (FORCE - 490)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 490)) | (1L << (FORCED - 490)) | (1L << (FORMAT - 490)) | (1L << (FORWARD_ONLY - 490)) | (1L << (FULLSCAN - 490)) | (1L << (FULLTEXT - 490)) | (1L << (GB - 490)) | (1L << (GETDATE - 490)) | (1L << (GETUTCDATE - 490)) | (1L << (GLOBAL - 490)) | (1L << (GO - 490)) | (1L << (GROUP_MAX_REQUESTS - 490)) | (1L << (GROUPING - 490)) | (1L << (GROUPING_ID - 490)) | (1L << (HADR - 490)) | (1L << (HASH - 490)) | (1L << (HEALTH_CHECK_TIMEOUT - 490)) | (1L << (HIGH - 490)) | (1L << (HONOR_BROKER_PRIORITY - 490)) | (1L << (HOURS - 490)) | (1L << (IDENTITY_VALUE - 490)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 490)) | (1L << (IMMEDIATE - 490)) | (1L << (IMPERSONATE - 490)) | (1L << (IMPORTANCE - 490)) | (1L << (INCREMENTAL - 490)) | (1L << (INITIATOR - 490)) | (1L << (INPUT - 490)) | (1L << (INSENSITIVE - 490)) | (1L << (INSERTED - 490)) | (1L << (INT - 490)) | (1L << (IP - 490)) | (1L << (ISOLATION - 490)) | (1L << (KB - 490)) | (1L << (KEEP - 490)) | (1L << (KEEPFIXED - 490)))) != 0) || ((((_la - 554)) & ~0x3f) == 0 && ((1L << (_la - 554)) & ((1L << (KEY_SOURCE - 554)) | (1L << (KEYS - 554)) | (1L << (KEYSET - 554)) | (1L << (LAG - 554)) | (1L << (LAST - 554)) | (1L << (LAST_VALUE - 554)) | (1L << (LEAD - 554)) | (1L << (LEVEL - 554)) | (1L << (LIST - 554)) | (1L << (LISTENER - 554)) | (1L << (LISTENER_URL - 554)) | (1L << (LOB_COMPACTION - 554)) | (1L << (LOCAL - 554)) | (1L << (LOCATION - 554)) | (1L << (LOCK - 554)) | (1L << (LOCK_ESCALATION - 554)) | (1L << (LOGIN - 554)) | (1L << (LOOP - 554)) | (1L << (LOW - 554)) | (1L << (MANUAL - 554)) | (1L << (MARK - 554)) | (1L << (MATERIALIZED - 554)) | (1L << (MAX - 554)) | (1L << (MAX_CPU_PERCENT - 554)) | (1L << (MAX_DOP - 554)) | (1L << (MAX_FILES - 554)) | (1L << (MAX_IOPS_PER_VOLUME - 554)) | (1L << (MAX_MEMORY_PERCENT - 554)) | (1L << (MAX_PROCESSES - 554)) | (1L << (MAX_QUEUE_READERS - 554)) | (1L << (MAX_ROLLOVER_FILES - 554)) | (1L << (MAXDOP - 554)) | (1L << (MAXRECURSION - 554)) | (1L << (MAXSIZE - 554)) | (1L << (MB - 554)) | (1L << (MEDIUM - 554)) | (1L << (MEMORY_OPTIMIZED_DATA - 554)) | (1L << (MESSAGE - 554)) | (1L << (MIN - 554)) | (1L << (MIN_ACTIVE_ROWVERSION - 554)) | (1L << (MIN_CPU_PERCENT - 554)) | (1L << (MIN_IOPS_PER_VOLUME - 554)) | (1L << (MIN_MEMORY_PERCENT - 554)) | (1L << (MINUTES - 554)) | (1L << (MIRROR_ADDRESS - 554)) | (1L << (MIXED_PAGE_ALLOCATION - 554)) | (1L << (MODE - 554)) | (1L << (MODIFY - 554)) | (1L << (MOVE - 554)) | (1L << (MULTI_USER - 554)) | (1L << (NAME - 554)) | (1L << (NESTED_TRIGGERS - 554)) | (1L << (NEW_ACCOUNT - 554)) | (1L << (NEW_BROKER - 554)) | (1L << (NEW_PASSWORD - 554)) | (1L << (NEXT - 554)) | (1L << (NO - 554)) | (1L << (NO_TRUNCATE - 554)) | (1L << (NO_WAIT - 554)) | (1L << (NOCOUNT - 554)) | (1L << (NODES - 554)) | (1L << (NOEXPAND - 554)) | (1L << (NON_TRANSACTED_ACCESS - 554)) | (1L << (NORECOMPUTE - 554)))) != 0) || ((((_la - 618)) & ~0x3f) == 0 && ((1L << (_la - 618)) & ((1L << (NORECOVERY - 618)) | (1L << (NOWAIT - 618)) | (1L << (NTILE - 618)) | (1L << (NUMANODE - 618)) | (1L << (NUMBER - 618)) | (1L << (NUMERIC_ROUNDABORT - 618)) | (1L << (OBJECT - 618)) | (1L << (OFFLINE - 618)) | (1L << (OFFSET - 618)) | (1L << (OLD_ACCOUNT - 618)) | (1L << (ONLINE - 618)) | (1L << (ONLY - 618)) | (1L << (OPEN_EXISTING - 618)) | (1L << (OPTIMISTIC - 618)) | (1L << (OPTIMIZE - 618)) | (1L << (OUT - 618)) | (1L << (OUTPUT - 618)) | (1L << (OWNER - 618)) | (1L << (PAGE_VERIFY - 618)) | (1L << (PARAMETERIZATION - 618)) | (1L << (PARTITION - 618)) | (1L << (PARTITIONS - 618)) | (1L << (PARTNER - 618)) | (1L << (PATH - 618)) | (1L << (POISON_MESSAGE_HANDLING - 618)) | (1L << (POOL - 618)) | (1L << (PORT - 618)) | (1L << (PRECEDING - 618)) | (1L << (PRIMARY_ROLE - 618)) | (1L << (PRIOR - 618)) | (1L << (PRIORITY - 618)) | (1L << (PRIORITY_LEVEL - 618)) | (1L << (PRIVATE - 618)) | (1L << (PRIVATE_KEY - 618)) | (1L << (PRIVILEGES - 618)) | (1L << (PROCEDURE_NAME - 618)) | (1L << (PROPERTY - 618)) | (1L << (PROVIDER - 618)) | (1L << (PROVIDER_KEY_NAME - 618)) | (1L << (QUERY - 618)) | (1L << (QUEUE - 618)) | (1L << (QUEUE_DELAY - 618)) | (1L << (QUOTED_IDENTIFIER - 618)) | (1L << (RANGE - 618)) | (1L << (RANK - 618)) | (1L << (RC2 - 618)) | (1L << (RC4 - 618)) | (1L << (RC4_128 - 618)) | (1L << (READ_COMMITTED_SNAPSHOT - 618)) | (1L << (READ_ONLY - 618)) | (1L << (READ_ONLY_ROUTING_LIST - 618)) | (1L << (READ_WRITE - 618)) | (1L << (READONLY - 618)) | (1L << (REBUILD - 618)) | (1L << (RECEIVE - 618)) | (1L << (RECOMPILE - 618)) | (1L << (RECOVERY - 618)) | (1L << (RECURSIVE_TRIGGERS - 618)) | (1L << (RELATIVE - 618)) | (1L << (REMOTE - 618)) | (1L << (REMOTE_SERVICE_NAME - 618)) | (1L << (REMOVE - 618)) | (1L << (REORGANIZE - 618)))) != 0) || ((((_la - 682)) & ~0x3f) == 0 && ((1L << (_la - 682)) & ((1L << (REPEATABLE - 682)) | (1L << (REPLICA - 682)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 682)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 682)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 682)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 682)) | (1L << (RESERVE_DISK_SPACE - 682)) | (1L << (RESOURCE - 682)) | (1L << (RESOURCE_MANAGER_LOCATION - 682)) | (1L << (RESTRICTED_USER - 682)) | (1L << (RETENTION - 682)) | (1L << (ROBUST - 682)) | (1L << (ROOT - 682)) | (1L << (ROUTE - 682)) | (1L << (ROW - 682)) | (1L << (ROW_NUMBER - 682)) | (1L << (ROWGUID - 682)) | (1L << (ROWS - 682)) | (1L << (SAMPLE - 682)) | (1L << (SCHEMABINDING - 682)) | (1L << (SCOPED - 682)) | (1L << (SCROLL - 682)) | (1L << (SCROLL_LOCKS - 682)) | (1L << (SEARCH - 682)) | (1L << (SECONDARY - 682)) | (1L << (SECONDARY_ONLY - 682)) | (1L << (SECONDARY_ROLE - 682)) | (1L << (SECONDS - 682)) | (1L << (SECRET - 682)) | (1L << (SECURITY - 682)) | (1L << (SECURITY_LOG - 682)) | (1L << (SEEDING_MODE - 682)) | (1L << (SELF - 682)) | (1L << (SEMI_SENSITIVE - 682)) | (1L << (SEND - 682)) | (1L << (SENT - 682)) | (1L << (SEQUENCE - 682)) | (1L << (SERIALIZABLE - 682)) | (1L << (SESSION_TIMEOUT - 682)) | (1L << (SETERROR - 682)) | (1L << (SHARE - 682)) | (1L << (SHOWPLAN - 682)) | (1L << (SIGNATURE - 682)) | (1L << (SIMPLE - 682)) | (1L << (SINGLE_USER - 682)) | (1L << (SIZE - 682)) | (1L << (SMALLINT - 682)) | (1L << (SNAPSHOT - 682)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 682)) | (1L << (STANDBY - 682)) | (1L << (START_DATE - 682)) | (1L << (STATIC - 682)) | (1L << (STATS_STREAM - 682)) | (1L << (STATUS - 682)) | (1L << (STDEV - 682)) | (1L << (STDEVP - 682)) | (1L << (STOPLIST - 682)) | (1L << (STRING_AGG - 682)) | (1L << (STUFF - 682)) | (1L << (SUBJECT - 682)) | (1L << (SUM - 682)) | (1L << (SUSPEND - 682)))) != 0) || ((((_la - 746)) & ~0x3f) == 0 && ((1L << (_la - 746)) & ((1L << (SYMMETRIC - 746)) | (1L << (SYNCHRONOUS_COMMIT - 746)) | (1L << (SYNONYM - 746)) | (1L << (SYSTEM - 746)) | (1L << (TAKE - 746)) | (1L << (TARGET_RECOVERY_TIME - 746)) | (1L << (TB - 746)) | (1L << (TEXTIMAGE_ON - 746)) | (1L << (THROW - 746)) | (1L << (TIES - 746)) | (1L << (TIME - 746)) | (1L << (TIMEOUT - 746)) | (1L << (TIMER - 746)) | (1L << (TINYINT - 746)) | (1L << (TORN_PAGE_DETECTION - 746)) | (1L << (TRANSFORM_NOISE_WORDS - 746)) | (1L << (TRIPLE_DES - 746)) | (1L << (TRIPLE_DES_3KEY - 746)) | (1L << (TRUSTWORTHY - 746)) | (1L << (TRY - 746)) | (1L << (TSQL - 746)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 746)) | (1L << (TYPE - 746)) | (1L << (TYPE_WARNING - 746)) | (1L << (UNBOUNDED - 746)) | (1L << (UNCOMMITTED - 746)) | (1L << (UNKNOWN - 746)) | (1L << (UNLIMITED - 746)) | (1L << (USING - 746)) | (1L << (VALID_XML - 746)) | (1L << (VALIDATION - 746)) | (1L << (VALUE - 746)) | (1L << (VAR - 746)) | (1L << (VARP - 746)) | (1L << (VIEW_METADATA - 746)) | (1L << (VIEWS - 746)) | (1L << (WAIT - 746)) | (1L << (WELL_FORMED_XML - 746)) | (1L << (WORK - 746)) | (1L << (WORKLOAD - 746)) | (1L << (XML - 746)) | (1L << (XMLNAMESPACES - 746)) | (1L << (DOUBLE_QUOTE_ID - 746)) | (1L << (SQUARE_BRACKET_ID - 746)) | (1L << (ID - 746)))) != 0)) {
 				{
@@ -17524,11 +17993,13 @@ public class MocaSqlParser extends Parser {
 		public As_column_aliasContext as_column_alias() {
 			return getRuleContext(As_column_aliasContext.class,0);
 		}
+		public TerminalNode DOLLAR() { return getToken(MocaSqlParser.DOLLAR, 0); }
 		public TerminalNode IDENTITY() { return getToken(MocaSqlParser.IDENTITY, 0); }
 		public TerminalNode ROWGUID() { return getToken(MocaSqlParser.ROWGUID, 0); }
 		public Table_nameContext table_name() {
 			return getRuleContext(Table_nameContext.class,0);
 		}
+		public TerminalNode DOT() { return getToken(MocaSqlParser.DOT, 0); }
 		public IdContext id() {
 			return getRuleContext(IdContext.class,0);
 		}
@@ -17558,6 +18029,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(2016);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case BLOCKING_HIERARCHY:
 			case CALLED:
@@ -18076,6 +18548,7 @@ public class MocaSqlParser extends Parser {
 		public IdContext udt_column_name;
 		public IdContext non_static_attr;
 		public IdContext static_attr;
+		public TerminalNode DOT() { return getToken(MocaSqlParser.DOT, 0); }
 		public Udt_method_argumentsContext udt_method_arguments() {
 			return getRuleContext(Udt_method_argumentsContext.class,0);
 		}
@@ -18087,6 +18560,10 @@ public class MocaSqlParser extends Parser {
 		}
 		public As_column_aliasContext as_column_alias() {
 			return getRuleContext(As_column_aliasContext.class,0);
+		}
+		public List<TerminalNode> COLON() { return getTokens(MocaSqlParser.COLON); }
+		public TerminalNode COLON(int i) {
+			return getToken(MocaSqlParser.COLON, i);
 		}
 		public Udt_elemContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -18191,6 +18668,7 @@ public class MocaSqlParser extends Parser {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode EQUAL() { return getToken(MocaSqlParser.EQUAL, 0); }
 		public As_column_aliasContext as_column_alias() {
 			return getRuleContext(As_column_aliasContext.class,0);
 		}
@@ -18348,6 +18826,10 @@ public class MocaSqlParser extends Parser {
 		public Table_sourceContext table_source(int i) {
 			return getRuleContext(Table_sourceContext.class,i);
 		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
 		public Table_sourcesContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -18411,6 +18893,8 @@ public class MocaSqlParser extends Parser {
 		public Table_source_item_joinedContext table_source_item_joined() {
 			return getRuleContext(Table_source_item_joinedContext.class,0);
 		}
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public Table_sourceContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -18561,8 +19045,13 @@ public class MocaSqlParser extends Parser {
 			return getRuleContext(Function_callContext.class,0);
 		}
 		public TerminalNode LOCAL_ID() { return getToken(MocaSqlParser.LOCAL_ID, 0); }
+		public TerminalNode DOT() { return getToken(MocaSqlParser.DOT, 0); }
 		public Open_xmlContext open_xml() {
 			return getRuleContext(Open_xmlContext.class,0);
+		}
+		public List<TerminalNode> COLON() { return getTokens(MocaSqlParser.COLON); }
+		public TerminalNode COLON(int i) {
+			return getToken(MocaSqlParser.COLON, i);
 		}
 		public Table_source_itemContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -18795,11 +19284,23 @@ public class MocaSqlParser extends Parser {
 
 	public static class Open_xmlContext extends ParserRuleContext {
 		public TerminalNode OPENXML() { return getToken(MocaSqlParser.OPENXML, 0); }
+		public List<TerminalNode> LR_BRACKET() { return getTokens(MocaSqlParser.LR_BRACKET); }
+		public TerminalNode LR_BRACKET(int i) {
+			return getToken(MocaSqlParser.LR_BRACKET, i);
+		}
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
+		public List<TerminalNode> RR_BRACKET() { return getTokens(MocaSqlParser.RR_BRACKET); }
+		public TerminalNode RR_BRACKET(int i) {
+			return getToken(MocaSqlParser.RR_BRACKET, i);
 		}
 		public TerminalNode WITH() { return getToken(MocaSqlParser.WITH, 0); }
 		public Schema_declarationContext schema_declaration() {
@@ -18842,6 +19343,7 @@ public class MocaSqlParser extends Parser {
 			setState(2133);
 			expression(0);
 			setState(2136);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==COMMA) {
 				{
@@ -18889,6 +19391,10 @@ public class MocaSqlParser extends Parser {
 		}
 		public Column_declarationContext column_declaration(int i) {
 			return getRuleContext(Column_declarationContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public Schema_declarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -18984,6 +19490,7 @@ public class MocaSqlParser extends Parser {
 			setState(2155);
 			data_type();
 			setState(2157);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==STRING) {
 				{
@@ -19007,10 +19514,13 @@ public class MocaSqlParser extends Parser {
 
 	public static class Change_tableContext extends ParserRuleContext {
 		public TerminalNode CHANGETABLE() { return getToken(MocaSqlParser.CHANGETABLE, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public TerminalNode CHANGES() { return getToken(MocaSqlParser.CHANGES, 0); }
 		public Table_nameContext table_name() {
 			return getRuleContext(Table_nameContext.class,0);
 		}
+		public TerminalNode COMMA() { return getToken(MocaSqlParser.COMMA, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public TerminalNode NULL() { return getToken(MocaSqlParser.NULL, 0); }
 		public TerminalNode DECIMAL() { return getToken(MocaSqlParser.DECIMAL, 0); }
 		public TerminalNode LOCAL_ID() { return getToken(MocaSqlParser.LOCAL_ID, 0); }
@@ -19054,7 +19564,10 @@ public class MocaSqlParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==NULL || _la==LOCAL_ID || _la==DECIMAL) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			setState(2165);
@@ -19136,6 +19649,7 @@ public class MocaSqlParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(2174);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case INNER:
 				case JOIN:
@@ -19145,6 +19659,7 @@ public class MocaSqlParser extends Parser {
 				case REMOTE:
 					{
 					setState(2168);
+					_errHandler.sync(this);
 					_la = _input.LA(1);
 					if (_la==INNER) {
 						{
@@ -19164,10 +19679,14 @@ public class MocaSqlParser extends Parser {
 					_la = _input.LA(1);
 					if ( !(_la==FULL || _la==LEFT || _la==RIGHT) ) {
 						((Join_partContext)_localctx).join_type = (Token)_errHandler.recoverInline(this);
-					} else {
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
 						consume();
 					}
 					setState(2172);
+					_errHandler.sync(this);
 					_la = _input.LA(1);
 					if (_la==OUTER) {
 						{
@@ -19182,6 +19701,7 @@ public class MocaSqlParser extends Parser {
 					throw new NoViableAltException(this);
 				}
 				setState(2177);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==MERGE || _la==HASH || _la==LOOP || _la==REMOTE) {
 					{
@@ -19190,7 +19710,10 @@ public class MocaSqlParser extends Parser {
 					_la = _input.LA(1);
 					if ( !(_la==MERGE || _la==HASH || _la==LOOP || _la==REMOTE) ) {
 						((Join_partContext)_localctx).join_hint = (Token)_errHandler.recoverInline(this);
-					} else {
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
 						consume();
 					}
 					}
@@ -19275,6 +19798,7 @@ public class MocaSqlParser extends Parser {
 	}
 
 	public static class Pivot_clauseContext extends ParserRuleContext {
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public Aggregate_windowed_functionContext aggregate_windowed_function() {
 			return getRuleContext(Aggregate_windowed_functionContext.class,0);
 		}
@@ -19286,6 +19810,7 @@ public class MocaSqlParser extends Parser {
 		public Column_alias_listContext column_alias_list() {
 			return getRuleContext(Column_alias_listContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public Pivot_clauseContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -19339,6 +19864,10 @@ public class MocaSqlParser extends Parser {
 	}
 
 	public static class Unpivot_clauseContext extends ParserRuleContext {
+		public List<TerminalNode> LR_BRACKET() { return getTokens(MocaSqlParser.LR_BRACKET); }
+		public TerminalNode LR_BRACKET(int i) {
+			return getToken(MocaSqlParser.LR_BRACKET, i);
+		}
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
@@ -19349,6 +19878,10 @@ public class MocaSqlParser extends Parser {
 		public TerminalNode IN() { return getToken(MocaSqlParser.IN, 0); }
 		public Full_column_name_listContext full_column_name_list() {
 			return getRuleContext(Full_column_name_listContext.class,0);
+		}
+		public List<TerminalNode> RR_BRACKET() { return getTokens(MocaSqlParser.RR_BRACKET); }
+		public TerminalNode RR_BRACKET(int i) {
+			return getToken(MocaSqlParser.RR_BRACKET, i);
 		}
 		public Unpivot_clauseContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -19412,6 +19945,10 @@ public class MocaSqlParser extends Parser {
 		}
 		public Full_column_nameContext full_column_name(int i) {
 			return getRuleContext(Full_column_nameContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public Full_column_name_listContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -19672,6 +20209,7 @@ public class MocaSqlParser extends Parser {
 		public IdContext id() {
 			return getRuleContext(IdContext.class,0);
 		}
+		public TerminalNode EQUAL() { return getToken(MocaSqlParser.EQUAL, 0); }
 		public TerminalNode DECIMAL() { return getToken(MocaSqlParser.DECIMAL, 0); }
 		public TerminalNode STRING() { return getToken(MocaSqlParser.STRING, 0); }
 		public Bulk_optionContext(ParserRuleContext parent, int invokingState) {
@@ -19709,7 +20247,10 @@ public class MocaSqlParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==DECIMAL || _la==STRING) ) {
 				((Bulk_optionContext)_localctx).bulk_option_value = (Token)_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -19729,6 +20270,8 @@ public class MocaSqlParser extends Parser {
 		public SubqueryContext subquery() {
 			return getRuleContext(SubqueryContext.class,0);
 		}
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public Table_value_constructorContext table_value_constructor() {
 			return getRuleContext(Table_value_constructorContext.class,0);
 		}
@@ -19837,13 +20380,19 @@ public class MocaSqlParser extends Parser {
 	}
 	public static class DATEADDContext extends Function_callContext {
 		public TerminalNode DATEADD() { return getToken(MocaSqlParser.DATEADD, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public TerminalNode ID() { return getToken(MocaSqlParser.ID, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public DATEADDContext(Function_callContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -19861,6 +20410,9 @@ public class MocaSqlParser extends Parser {
 	}
 	public static class CHECKSUMContext extends Function_callContext {
 		public TerminalNode CHECKSUM() { return getToken(MocaSqlParser.CHECKSUM, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode STAR() { return getToken(MocaSqlParser.STAR, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public CHECKSUMContext(Function_callContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -19895,6 +20447,9 @@ public class MocaSqlParser extends Parser {
 	}
 	public static class BINARY_CHECKSUMContext extends Function_callContext {
 		public TerminalNode BINARY_CHECKSUM() { return getToken(MocaSqlParser.BINARY_CHECKSUM, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode STAR() { return getToken(MocaSqlParser.STAR, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public BINARY_CHECKSUMContext(Function_callContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -19912,8 +20467,13 @@ public class MocaSqlParser extends Parser {
 	}
 	public static class IFFContext extends Function_callContext {
 		public TerminalNode IIF() { return getToken(MocaSqlParser.IIF, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public Search_conditionContext search_condition() {
 			return getRuleContext(Search_conditionContext.class,0);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -19921,6 +20481,7 @@ public class MocaSqlParser extends Parser {
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public IFFContext(Function_callContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -19955,12 +20516,15 @@ public class MocaSqlParser extends Parser {
 	}
 	public static class NULLIFContext extends Function_callContext {
 		public TerminalNode NULLIF() { return getToken(MocaSqlParser.NULLIF, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
+		public TerminalNode COMMA() { return getToken(MocaSqlParser.COMMA, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public NULLIFContext(Function_callContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -19998,6 +20562,12 @@ public class MocaSqlParser extends Parser {
 		public ExpressionContext convert_expression;
 		public ExpressionContext style;
 		public TerminalNode CONVERT() { return getToken(MocaSqlParser.CONVERT, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public Data_typeContext data_type() {
 			return getRuleContext(Data_typeContext.class,0);
 		}
@@ -20043,9 +20613,11 @@ public class MocaSqlParser extends Parser {
 	}
 	public static class COALESCEContext extends Function_callContext {
 		public TerminalNode COALESCE() { return getToken(MocaSqlParser.COALESCE, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public Expression_listContext expression_list() {
 			return getRuleContext(Expression_listContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public COALESCEContext(Function_callContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -20063,6 +20635,7 @@ public class MocaSqlParser extends Parser {
 	}
 	public static class CASTContext extends Function_callContext {
 		public TerminalNode CAST() { return getToken(MocaSqlParser.CAST, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
@@ -20070,6 +20643,7 @@ public class MocaSqlParser extends Parser {
 		public Data_typeContext data_type() {
 			return getRuleContext(Data_typeContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public CASTContext(Function_callContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -20106,6 +20680,8 @@ public class MocaSqlParser extends Parser {
 		public Scalar_function_nameContext scalar_function_name() {
 			return getRuleContext(Scalar_function_nameContext.class,0);
 		}
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public Expression_listContext expression_list() {
 			return getRuleContext(Expression_listContext.class,0);
 		}
@@ -20126,10 +20702,13 @@ public class MocaSqlParser extends Parser {
 	}
 	public static class DATEPARTContext extends Function_callContext {
 		public TerminalNode DATEPART() { return getToken(MocaSqlParser.DATEPART, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public TerminalNode ID() { return getToken(MocaSqlParser.ID, 0); }
+		public TerminalNode COMMA() { return getToken(MocaSqlParser.COMMA, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public DATEPARTContext(Function_callContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -20147,16 +20726,22 @@ public class MocaSqlParser extends Parser {
 	}
 	public static class STUFFContext extends Function_callContext {
 		public TerminalNode STUFF() { return getToken(MocaSqlParser.STUFF, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
 		public List<TerminalNode> DECIMAL() { return getTokens(MocaSqlParser.DECIMAL); }
 		public TerminalNode DECIMAL(int i) {
 			return getToken(MocaSqlParser.DECIMAL, i);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public STUFFContext(Function_callContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -20195,8 +20780,14 @@ public class MocaSqlParser extends Parser {
 		public Token seed;
 		public Token increment;
 		public TerminalNode IDENTITY() { return getToken(MocaSqlParser.IDENTITY, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public Data_typeContext data_type() {
 			return getRuleContext(Data_typeContext.class,0);
+		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public List<TerminalNode> DECIMAL() { return getTokens(MocaSqlParser.DECIMAL); }
 		public TerminalNode DECIMAL(int i) {
@@ -20238,10 +20829,13 @@ public class MocaSqlParser extends Parser {
 	}
 	public static class DATENAMEContext extends Function_callContext {
 		public TerminalNode DATENAME() { return getToken(MocaSqlParser.DATENAME, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public TerminalNode ID() { return getToken(MocaSqlParser.ID, 0); }
+		public TerminalNode COMMA() { return getToken(MocaSqlParser.COMMA, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public DATENAMEContext(Function_callContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -20259,6 +20853,8 @@ public class MocaSqlParser extends Parser {
 	}
 	public static class GETUTCDATEContext extends Function_callContext {
 		public TerminalNode GETUTCDATE() { return getToken(MocaSqlParser.GETUTCDATE, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public GETUTCDATEContext(Function_callContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -20295,12 +20891,15 @@ public class MocaSqlParser extends Parser {
 	}
 	public static class ISNULLContext extends Function_callContext {
 		public TerminalNode ISNULL() { return getToken(MocaSqlParser.ISNULL, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
+		public TerminalNode COMMA() { return getToken(MocaSqlParser.COMMA, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public ISNULLContext(Function_callContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -20318,13 +20917,19 @@ public class MocaSqlParser extends Parser {
 	}
 	public static class DATEDIFFContext extends Function_callContext {
 		public TerminalNode DATEDIFF() { return getToken(MocaSqlParser.DATEDIFF, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public TerminalNode ID() { return getToken(MocaSqlParser.ID, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public DATEDIFFContext(Function_callContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -20342,6 +20947,8 @@ public class MocaSqlParser extends Parser {
 	}
 	public static class GETDATEContext extends Function_callContext {
 		public TerminalNode GETDATE() { return getToken(MocaSqlParser.GETDATE, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public GETDATEContext(Function_callContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -20361,6 +20968,15 @@ public class MocaSqlParser extends Parser {
 		public ExpressionContext expr;
 		public ExpressionContext separator;
 		public TerminalNode STRING_AGG() { return getToken(MocaSqlParser.STRING_AGG, 0); }
+		public List<TerminalNode> LR_BRACKET() { return getTokens(MocaSqlParser.LR_BRACKET); }
+		public TerminalNode LR_BRACKET(int i) {
+			return getToken(MocaSqlParser.LR_BRACKET, i);
+		}
+		public TerminalNode COMMA() { return getToken(MocaSqlParser.COMMA, 0); }
+		public List<TerminalNode> RR_BRACKET() { return getTokens(MocaSqlParser.RR_BRACKET); }
+		public TerminalNode RR_BRACKET(int i) {
+			return getToken(MocaSqlParser.RR_BRACKET, i);
+		}
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
@@ -20443,6 +21059,7 @@ public class MocaSqlParser extends Parser {
 				setState(2292);
 				((CONVERTContext)_localctx).convert_expression = expression(0);
 				setState(2295);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==COMMA) {
 					{
@@ -20628,6 +21245,7 @@ public class MocaSqlParser extends Parser {
 					break;
 				}
 				setState(2357);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==COMMA) {
 					{
@@ -20791,6 +21409,7 @@ public class MocaSqlParser extends Parser {
 				setState(2403);
 				match(LR_BRACKET);
 				setState(2405);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << BLOCKING_HIERARCHY) | (1L << CALLED) | (1L << CASE) | (1L << COALESCE))) != 0) || ((((_la - 70)) & ~0x3f) == 0 && ((1L << (_la - 70)) & ((1L << (CONVERT - 70)) | (1L << (CURRENT_TIMESTAMP - 70)) | (1L << (CURRENT_USER - 70)) | (1L << (DATA_COMPRESSION - 70)) | (1L << (DEFAULT - 70)) | (1L << (EVENTDATA - 70)) | (1L << (EXPIREDATE - 70)) | (1L << (FILENAME - 70)) | (1L << (FILLFACTOR - 70)) | (1L << (FORCESEEK - 70)))) != 0) || ((((_la - 149)) & ~0x3f) == 0 && ((1L << (_la - 149)) & ((1L << (IDENTITY - 149)) | (1L << (IIF - 149)) | (1L << (INIT - 149)) | (1L << (ISNULL - 149)) | (1L << (KEY - 149)) | (1L << (LEFT - 149)) | (1L << (MASTER - 149)) | (1L << (MAX_MEMORY - 149)))) != 0) || ((((_la - 222)) & ~0x3f) == 0 && ((1L << (_la - 222)) & ((1L << (NULL - 222)) | (1L << (NULLIF - 222)) | (1L << (OFFSETS - 222)) | (1L << (OVER - 222)) | (1L << (PAGE - 222)) | (1L << (POLICY - 222)) | (1L << (PRECISION - 222)) | (1L << (PUBLIC - 222)) | (1L << (R - 222)) | (1L << (RAW - 222)) | (1L << (RETURN - 222)) | (1L << (RETURNS - 222)))) != 0) || ((((_la - 286)) & ~0x3f) == 0 && ((1L << (_la - 286)) & ((1L << (RIGHT - 286)) | (1L << (ROLE - 286)) | (1L << (ROWCOUNT - 286)) | (1L << (SAFETY - 286)) | (1L << (RULE - 286)) | (1L << (SERVER - 286)) | (1L << (SESSION_USER - 286)) | (1L << (SID - 286)) | (1L << (SOURCE - 286)) | (1L << (SPLIT - 286)) | (1L << (STATE - 286)) | (1L << (START - 286)) | (1L << (STOP - 286)) | (1L << (SYSTEM_USER - 286)) | (1L << (TARGET - 286)) | (1L << (TRAN - 286)))) != 0) || ((((_la - 362)) & ~0x3f) == 0 && ((1L << (_la - 362)) & ((1L << (URL - 362)) | (1L << (USER - 362)) | (1L << (ABSOLUTE - 362)) | (1L << (ACCENT_SENSITIVITY - 362)) | (1L << (ACTION - 362)) | (1L << (ACTIVATION - 362)) | (1L << (ACTIVE - 362)) | (1L << (ADDRESS - 362)) | (1L << (AES_128 - 362)) | (1L << (AES_192 - 362)) | (1L << (AES_256 - 362)) | (1L << (AFFINITY - 362)) | (1L << (AFTER - 362)) | (1L << (AGGREGATE - 362)) | (1L << (ALGORITHM - 362)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 362)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 362)) | (1L << (ALLOWED - 362)) | (1L << (ANSI_NULL_DEFAULT - 362)) | (1L << (ANSI_NULLS - 362)) | (1L << (ANSI_PADDING - 362)) | (1L << (ANSI_WARNINGS - 362)) | (1L << (APPLICATION_LOG - 362)) | (1L << (APPLY - 362)) | (1L << (ARITHABORT - 362)) | (1L << (ASSEMBLY - 362)) | (1L << (AUDIT - 362)) | (1L << (AUDIT_GUID - 362)) | (1L << (AUTO - 362)) | (1L << (AUTO_CLEANUP - 362)) | (1L << (AUTO_CLOSE - 362)) | (1L << (AUTO_CREATE_STATISTICS - 362)) | (1L << (AUTO_SHRINK - 362)) | (1L << (AUTO_UPDATE_STATISTICS - 362)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 362)) | (1L << (AVAILABILITY - 362)) | (1L << (AVG - 362)) | (1L << (BACKUP_PRIORITY - 362)) | (1L << (BEGIN_DIALOG - 362)) | (1L << (BIGINT - 362)) | (1L << (BINARY_BASE64 - 362)) | (1L << (BINARY_CHECKSUM - 362)) | (1L << (BINDING - 362)) | (1L << (BLOB_STORAGE - 362)) | (1L << (BROKER - 362)) | (1L << (BROKER_INSTANCE - 362)) | (1L << (BULK_LOGGED - 362)))) != 0) || ((((_la - 426)) & ~0x3f) == 0 && ((1L << (_la - 426)) & ((1L << (CALLER - 426)) | (1L << (CAP_CPU_PERCENT - 426)) | (1L << (CAST - 426)) | (1L << (CATALOG - 426)) | (1L << (CATCH - 426)) | (1L << (CHANGE_RETENTION - 426)) | (1L << (CHANGE_TRACKING - 426)) | (1L << (CHECKSUM - 426)) | (1L << (CHECKSUM_AGG - 426)) | (1L << (CLEANUP - 426)) | (1L << (COLLECTION - 426)) | (1L << (COLUMN_MASTER_KEY - 426)) | (1L << (COMMITTED - 426)) | (1L << (COMPATIBILITY_LEVEL - 426)) | (1L << (CONCAT - 426)) | (1L << (CONCAT_NULL_YIELDS_NULL - 426)) | (1L << (CONTENT - 426)) | (1L << (CONTROL - 426)) | (1L << (COOKIE - 426)) | (1L << (COUNT - 426)) | (1L << (COUNT_BIG - 426)) | (1L << (COUNTER - 426)) | (1L << (CPU - 426)) | (1L << (CREATE_NEW - 426)) | (1L << (CREATION_DISPOSITION - 426)) | (1L << (CREDENTIAL - 426)) | (1L << (CRYPTOGRAPHIC - 426)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 426)) | (1L << (CURSOR_DEFAULT - 426)) | (1L << (DATA - 426)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 426)) | (1L << (DATEADD - 426)) | (1L << (DATEDIFF - 426)) | (1L << (DATENAME - 426)) | (1L << (DATEPART - 426)) | (1L << (DAYS - 426)) | (1L << (DB_CHAINING - 426)) | (1L << (DB_FAILOVER - 426)) | (1L << (DECRYPTION - 426)) | (1L << (DEFAULT_DOUBLE_QUOTE - 426)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 426)) | (1L << (DEFAULT_LANGUAGE - 426)) | (1L << (DELAY - 426)) | (1L << (DELAYED_DURABILITY - 426)) | (1L << (DELETED - 426)) | (1L << (DENSE_RANK - 426)) | (1L << (DEPENDENTS - 426)) | (1L << (DES - 426)) | (1L << (DESCRIPTION - 426)) | (1L << (DESX - 426)) | (1L << (DHCP - 426)) | (1L << (DIALOG - 426)) | (1L << (DIRECTORY_NAME - 426)) | (1L << (DISABLE - 426)) | (1L << (DISABLE_BROKER - 426)) | (1L << (DISABLED - 426)) | (1L << (DISK_DRIVE - 426)) | (1L << (DOCUMENT - 426)) | (1L << (DYNAMIC - 426)) | (1L << (EMERGENCY - 426)) | (1L << (EMPTY - 426)) | (1L << (ENABLE - 426)) | (1L << (ENABLE_BROKER - 426)))) != 0) || ((((_la - 490)) & ~0x3f) == 0 && ((1L << (_la - 490)) & ((1L << (ENCRYPTED_VALUE - 490)) | (1L << (ENCRYPTION - 490)) | (1L << (ENDPOINT_URL - 490)) | (1L << (ERROR_BROKER_CONVERSATIONS - 490)) | (1L << (EXCLUSIVE - 490)) | (1L << (EXECUTABLE - 490)) | (1L << (EXIST - 490)) | (1L << (EXPAND - 490)) | (1L << (EXPIRY_DATE - 490)) | (1L << (EXPLICIT - 490)) | (1L << (FAIL_OPERATION - 490)) | (1L << (FAILOVER_MODE - 490)) | (1L << (FAILURE - 490)) | (1L << (FAILURE_CONDITION_LEVEL - 490)) | (1L << (FAST - 490)) | (1L << (FAST_FORWARD - 490)) | (1L << (FILEGROUP - 490)) | (1L << (FILEGROWTH - 490)) | (1L << (FILEPATH - 490)) | (1L << (FILESTREAM - 490)) | (1L << (FILTER - 490)) | (1L << (FIRST - 490)) | (1L << (FIRST_VALUE - 490)) | (1L << (FOLLOWING - 490)) | (1L << (FORCE - 490)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 490)) | (1L << (FORCED - 490)) | (1L << (FORMAT - 490)) | (1L << (FORWARD_ONLY - 490)) | (1L << (FULLSCAN - 490)) | (1L << (FULLTEXT - 490)) | (1L << (GB - 490)) | (1L << (GETDATE - 490)) | (1L << (GETUTCDATE - 490)) | (1L << (GLOBAL - 490)) | (1L << (GO - 490)) | (1L << (GROUP_MAX_REQUESTS - 490)) | (1L << (GROUPING - 490)) | (1L << (GROUPING_ID - 490)) | (1L << (HADR - 490)) | (1L << (HASH - 490)) | (1L << (HEALTH_CHECK_TIMEOUT - 490)) | (1L << (HIGH - 490)) | (1L << (HONOR_BROKER_PRIORITY - 490)) | (1L << (HOURS - 490)) | (1L << (IDENTITY_VALUE - 490)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 490)) | (1L << (IMMEDIATE - 490)) | (1L << (IMPERSONATE - 490)) | (1L << (IMPORTANCE - 490)) | (1L << (INCREMENTAL - 490)) | (1L << (INITIATOR - 490)) | (1L << (INPUT - 490)) | (1L << (INSENSITIVE - 490)) | (1L << (INSERTED - 490)) | (1L << (INT - 490)) | (1L << (IP - 490)) | (1L << (ISOLATION - 490)) | (1L << (KB - 490)) | (1L << (KEEP - 490)) | (1L << (KEEPFIXED - 490)))) != 0) || ((((_la - 554)) & ~0x3f) == 0 && ((1L << (_la - 554)) & ((1L << (KEY_SOURCE - 554)) | (1L << (KEYS - 554)) | (1L << (KEYSET - 554)) | (1L << (LAG - 554)) | (1L << (LAST - 554)) | (1L << (LAST_VALUE - 554)) | (1L << (LEAD - 554)) | (1L << (LEVEL - 554)) | (1L << (LIST - 554)) | (1L << (LISTENER - 554)) | (1L << (LISTENER_URL - 554)) | (1L << (LOB_COMPACTION - 554)) | (1L << (LOCAL - 554)) | (1L << (LOCATION - 554)) | (1L << (LOCK - 554)) | (1L << (LOCK_ESCALATION - 554)) | (1L << (LOGIN - 554)) | (1L << (LOOP - 554)) | (1L << (LOW - 554)) | (1L << (MANUAL - 554)) | (1L << (MARK - 554)) | (1L << (MATERIALIZED - 554)) | (1L << (MAX - 554)) | (1L << (MAX_CPU_PERCENT - 554)) | (1L << (MAX_DOP - 554)) | (1L << (MAX_FILES - 554)) | (1L << (MAX_IOPS_PER_VOLUME - 554)) | (1L << (MAX_MEMORY_PERCENT - 554)) | (1L << (MAX_PROCESSES - 554)) | (1L << (MAX_QUEUE_READERS - 554)) | (1L << (MAX_ROLLOVER_FILES - 554)) | (1L << (MAXDOP - 554)) | (1L << (MAXRECURSION - 554)) | (1L << (MAXSIZE - 554)) | (1L << (MB - 554)) | (1L << (MEDIUM - 554)) | (1L << (MEMORY_OPTIMIZED_DATA - 554)) | (1L << (MESSAGE - 554)) | (1L << (MIN - 554)) | (1L << (MIN_ACTIVE_ROWVERSION - 554)) | (1L << (MIN_CPU_PERCENT - 554)) | (1L << (MIN_IOPS_PER_VOLUME - 554)) | (1L << (MIN_MEMORY_PERCENT - 554)) | (1L << (MINUTES - 554)) | (1L << (MIRROR_ADDRESS - 554)) | (1L << (MIXED_PAGE_ALLOCATION - 554)) | (1L << (MODE - 554)) | (1L << (MODIFY - 554)) | (1L << (MOVE - 554)) | (1L << (MULTI_USER - 554)) | (1L << (NAME - 554)) | (1L << (NESTED_TRIGGERS - 554)) | (1L << (NEW_ACCOUNT - 554)) | (1L << (NEW_BROKER - 554)) | (1L << (NEW_PASSWORD - 554)) | (1L << (NEXT - 554)) | (1L << (NO - 554)) | (1L << (NO_TRUNCATE - 554)) | (1L << (NO_WAIT - 554)) | (1L << (NOCOUNT - 554)) | (1L << (NODES - 554)) | (1L << (NOEXPAND - 554)) | (1L << (NON_TRANSACTED_ACCESS - 554)) | (1L << (NORECOMPUTE - 554)))) != 0) || ((((_la - 618)) & ~0x3f) == 0 && ((1L << (_la - 618)) & ((1L << (NORECOVERY - 618)) | (1L << (NOWAIT - 618)) | (1L << (NTILE - 618)) | (1L << (NUMANODE - 618)) | (1L << (NUMBER - 618)) | (1L << (NUMERIC_ROUNDABORT - 618)) | (1L << (OBJECT - 618)) | (1L << (OFFLINE - 618)) | (1L << (OFFSET - 618)) | (1L << (OLD_ACCOUNT - 618)) | (1L << (ONLINE - 618)) | (1L << (ONLY - 618)) | (1L << (OPEN_EXISTING - 618)) | (1L << (OPTIMISTIC - 618)) | (1L << (OPTIMIZE - 618)) | (1L << (OUT - 618)) | (1L << (OUTPUT - 618)) | (1L << (OWNER - 618)) | (1L << (PAGE_VERIFY - 618)) | (1L << (PARAMETERIZATION - 618)) | (1L << (PARTITION - 618)) | (1L << (PARTITIONS - 618)) | (1L << (PARTNER - 618)) | (1L << (PATH - 618)) | (1L << (POISON_MESSAGE_HANDLING - 618)) | (1L << (POOL - 618)) | (1L << (PORT - 618)) | (1L << (PRECEDING - 618)) | (1L << (PRIMARY_ROLE - 618)) | (1L << (PRIOR - 618)) | (1L << (PRIORITY - 618)) | (1L << (PRIORITY_LEVEL - 618)) | (1L << (PRIVATE - 618)) | (1L << (PRIVATE_KEY - 618)) | (1L << (PRIVILEGES - 618)) | (1L << (PROCEDURE_NAME - 618)) | (1L << (PROPERTY - 618)) | (1L << (PROVIDER - 618)) | (1L << (PROVIDER_KEY_NAME - 618)) | (1L << (QUERY - 618)) | (1L << (QUEUE - 618)) | (1L << (QUEUE_DELAY - 618)) | (1L << (QUOTED_IDENTIFIER - 618)) | (1L << (RANGE - 618)) | (1L << (RANK - 618)) | (1L << (RC2 - 618)) | (1L << (RC4 - 618)) | (1L << (RC4_128 - 618)) | (1L << (READ_COMMITTED_SNAPSHOT - 618)) | (1L << (READ_ONLY - 618)) | (1L << (READ_ONLY_ROUTING_LIST - 618)) | (1L << (READ_WRITE - 618)) | (1L << (READONLY - 618)) | (1L << (REBUILD - 618)) | (1L << (RECEIVE - 618)) | (1L << (RECOMPILE - 618)) | (1L << (RECOVERY - 618)) | (1L << (RECURSIVE_TRIGGERS - 618)) | (1L << (RELATIVE - 618)) | (1L << (REMOTE - 618)) | (1L << (REMOTE_SERVICE_NAME - 618)) | (1L << (REMOVE - 618)) | (1L << (REORGANIZE - 618)))) != 0) || ((((_la - 682)) & ~0x3f) == 0 && ((1L << (_la - 682)) & ((1L << (REPEATABLE - 682)) | (1L << (REPLICA - 682)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 682)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 682)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 682)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 682)) | (1L << (RESERVE_DISK_SPACE - 682)) | (1L << (RESOURCE - 682)) | (1L << (RESOURCE_MANAGER_LOCATION - 682)) | (1L << (RESTRICTED_USER - 682)) | (1L << (RETENTION - 682)) | (1L << (ROBUST - 682)) | (1L << (ROOT - 682)) | (1L << (ROUTE - 682)) | (1L << (ROW - 682)) | (1L << (ROW_NUMBER - 682)) | (1L << (ROWGUID - 682)) | (1L << (ROWS - 682)) | (1L << (SAMPLE - 682)) | (1L << (SCHEMABINDING - 682)) | (1L << (SCOPED - 682)) | (1L << (SCROLL - 682)) | (1L << (SCROLL_LOCKS - 682)) | (1L << (SEARCH - 682)) | (1L << (SECONDARY - 682)) | (1L << (SECONDARY_ONLY - 682)) | (1L << (SECONDARY_ROLE - 682)) | (1L << (SECONDS - 682)) | (1L << (SECRET - 682)) | (1L << (SECURITY - 682)) | (1L << (SECURITY_LOG - 682)) | (1L << (SEEDING_MODE - 682)) | (1L << (SELF - 682)) | (1L << (SEMI_SENSITIVE - 682)) | (1L << (SEND - 682)) | (1L << (SENT - 682)) | (1L << (SEQUENCE - 682)) | (1L << (SERIALIZABLE - 682)) | (1L << (SESSION_TIMEOUT - 682)) | (1L << (SETERROR - 682)) | (1L << (SHARE - 682)) | (1L << (SHOWPLAN - 682)) | (1L << (SIGNATURE - 682)) | (1L << (SIMPLE - 682)) | (1L << (SINGLE_USER - 682)) | (1L << (SIZE - 682)) | (1L << (SMALLINT - 682)) | (1L << (SNAPSHOT - 682)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 682)) | (1L << (STANDBY - 682)) | (1L << (START_DATE - 682)) | (1L << (STATIC - 682)) | (1L << (STATS_STREAM - 682)) | (1L << (STATUS - 682)) | (1L << (STDEV - 682)) | (1L << (STDEVP - 682)) | (1L << (STOPLIST - 682)) | (1L << (STRING_AGG - 682)) | (1L << (STUFF - 682)) | (1L << (SUBJECT - 682)) | (1L << (SUM - 682)) | (1L << (SUSPEND - 682)))) != 0) || ((((_la - 746)) & ~0x3f) == 0 && ((1L << (_la - 746)) & ((1L << (SYMMETRIC - 746)) | (1L << (SYNCHRONOUS_COMMIT - 746)) | (1L << (SYNONYM - 746)) | (1L << (SYSTEM - 746)) | (1L << (TAKE - 746)) | (1L << (TARGET_RECOVERY_TIME - 746)) | (1L << (TB - 746)) | (1L << (TEXTIMAGE_ON - 746)) | (1L << (THROW - 746)) | (1L << (TIES - 746)) | (1L << (TIME - 746)) | (1L << (TIMEOUT - 746)) | (1L << (TIMER - 746)) | (1L << (TINYINT - 746)) | (1L << (TORN_PAGE_DETECTION - 746)) | (1L << (TRANSFORM_NOISE_WORDS - 746)) | (1L << (TRIPLE_DES - 746)) | (1L << (TRIPLE_DES_3KEY - 746)) | (1L << (TRUSTWORTHY - 746)) | (1L << (TRY - 746)) | (1L << (TSQL - 746)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 746)) | (1L << (TYPE - 746)) | (1L << (TYPE_WARNING - 746)) | (1L << (UNBOUNDED - 746)) | (1L << (UNCOMMITTED - 746)) | (1L << (UNKNOWN - 746)) | (1L << (UNLIMITED - 746)) | (1L << (USING - 746)) | (1L << (VALID_XML - 746)) | (1L << (VALIDATION - 746)) | (1L << (VALUE - 746)) | (1L << (VAR - 746)) | (1L << (VARP - 746)) | (1L << (VIEW_METADATA - 746)) | (1L << (VIEWS - 746)) | (1L << (WAIT - 746)) | (1L << (WELL_FORMED_XML - 746)) | (1L << (WORK - 746)) | (1L << (WORKLOAD - 746)) | (1L << (XML - 746)) | (1L << (XMLNAMESPACES - 746)) | (1L << (DOUBLE_QUOTE_ID - 746)) | (1L << (SQUARE_BRACKET_ID - 746)) | (1L << (LOCAL_ID - 746)) | (1L << (MOCA_ENVIRONMENT_VARIABLE - 746)) | (1L << (MOCA_AT_MINUS_VARIABLE - 746)) | (1L << (DECIMAL - 746)) | (1L << (ID - 746)))) != 0) || ((((_la - 811)) & ~0x3f) == 0 && ((1L << (_la - 811)) & ((1L << (STRING - 811)) | (1L << (BINARY - 811)) | (1L << (FLOAT - 811)) | (1L << (REAL - 811)) | (1L << (DOLLAR - 811)) | (1L << (LR_BRACKET - 811)) | (1L << (PLUS - 811)) | (1L << (MINUS - 811)) | (1L << (BIT_NOT - 811)))) != 0)) {
 					{
@@ -20945,7 +21564,14 @@ public class MocaSqlParser extends Parser {
 	public static class Value_methodContext extends ParserRuleContext {
 		public Token xquery;
 		public Token sqltype;
+		public List<TerminalNode> DOT() { return getTokens(MocaSqlParser.DOT); }
+		public TerminalNode DOT(int i) {
+			return getToken(MocaSqlParser.DOT, i);
+		}
 		public TerminalNode VALUE() { return getToken(MocaSqlParser.VALUE, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode COMMA() { return getToken(MocaSqlParser.COMMA, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public List<TerminalNode> STRING() { return getTokens(MocaSqlParser.STRING); }
 		public TerminalNode STRING(int i) {
 			return getToken(MocaSqlParser.STRING, i);
@@ -21148,7 +21774,13 @@ public class MocaSqlParser extends Parser {
 
 	public static class Query_methodContext extends ParserRuleContext {
 		public Token xquery;
+		public List<TerminalNode> DOT() { return getTokens(MocaSqlParser.DOT); }
+		public TerminalNode DOT(int i) {
+			return getToken(MocaSqlParser.DOT, i);
+		}
 		public TerminalNode QUERY() { return getToken(MocaSqlParser.QUERY, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public TerminalNode STRING() { return getToken(MocaSqlParser.STRING, 0); }
 		public TerminalNode LOCAL_ID() { return getToken(MocaSqlParser.LOCAL_ID, 0); }
 		public TerminalNode ID() { return getToken(MocaSqlParser.ID, 0); }
@@ -21275,7 +21907,10 @@ public class MocaSqlParser extends Parser {
 
 	public static class Exist_methodContext extends ParserRuleContext {
 		public Token xquery;
+		public TerminalNode DOT() { return getToken(MocaSqlParser.DOT, 0); }
 		public TerminalNode EXIST() { return getToken(MocaSqlParser.EXIST, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public TerminalNode LOCAL_ID() { return getToken(MocaSqlParser.LOCAL_ID, 0); }
 		public TerminalNode ID() { return getToken(MocaSqlParser.ID, 0); }
 		public TerminalNode STRING() { return getToken(MocaSqlParser.STRING, 0); }
@@ -21309,7 +21944,10 @@ public class MocaSqlParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==LOCAL_ID || _la==ID) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			setState(2502);
@@ -21337,7 +21975,10 @@ public class MocaSqlParser extends Parser {
 
 	public static class Modify_methodContext extends ParserRuleContext {
 		public Token xml_dml;
+		public TerminalNode DOT() { return getToken(MocaSqlParser.DOT, 0); }
 		public TerminalNode MODIFY() { return getToken(MocaSqlParser.MODIFY, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public TerminalNode LOCAL_ID() { return getToken(MocaSqlParser.LOCAL_ID, 0); }
 		public TerminalNode ID() { return getToken(MocaSqlParser.ID, 0); }
 		public TerminalNode STRING() { return getToken(MocaSqlParser.STRING, 0); }
@@ -21371,7 +22012,10 @@ public class MocaSqlParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==LOCAL_ID || _la==ID) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			setState(2509);
@@ -21399,7 +22043,10 @@ public class MocaSqlParser extends Parser {
 
 	public static class Nodes_methodContext extends ParserRuleContext {
 		public Token xquery;
+		public TerminalNode DOT() { return getToken(MocaSqlParser.DOT, 0); }
 		public TerminalNode NODES() { return getToken(MocaSqlParser.NODES, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public TerminalNode LOCAL_ID() { return getToken(MocaSqlParser.LOCAL_ID, 0); }
 		public TerminalNode ID() { return getToken(MocaSqlParser.ID, 0); }
 		public TerminalNode STRING() { return getToken(MocaSqlParser.STRING, 0); }
@@ -21433,7 +22080,10 @@ public class MocaSqlParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==LOCAL_ID || _la==ID) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			setState(2516);
@@ -21601,6 +22251,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(2533);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==AS) {
 				{
@@ -21656,6 +22307,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(2538);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==AS) {
 				{
@@ -21737,13 +22389,19 @@ public class MocaSqlParser extends Parser {
 	}
 
 	public static class With_table_hintsContext extends ParserRuleContext {
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public List<Table_hintContext> table_hint() {
 			return getRuleContexts(Table_hintContext.class);
 		}
 		public Table_hintContext table_hint(int i) {
 			return getRuleContext(Table_hintContext.class,i);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public TerminalNode WITH() { return getToken(MocaSqlParser.WITH, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
 		public With_table_hintsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -21771,6 +22429,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(2547);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WITH) {
 				{
@@ -21790,6 +22449,7 @@ public class MocaSqlParser extends Parser {
 				{
 				{
 				setState(2552);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==COMMA) {
 					{
@@ -21823,11 +22483,17 @@ public class MocaSqlParser extends Parser {
 
 	public static class Insert_with_table_hintsContext extends ParserRuleContext {
 		public TerminalNode WITH() { return getToken(MocaSqlParser.WITH, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public List<Table_hintContext> table_hint() {
 			return getRuleContexts(Table_hintContext.class);
 		}
 		public Table_hintContext table_hint(int i) {
 			return getRuleContext(Table_hintContext.class,i);
+		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public Insert_with_table_hintsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -21868,6 +22534,7 @@ public class MocaSqlParser extends Parser {
 				{
 				{
 				setState(2566);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==COMMA) {
 					{
@@ -21901,6 +22568,7 @@ public class MocaSqlParser extends Parser {
 
 	public static class Table_hintContext extends ParserRuleContext {
 		public TerminalNode INDEX() { return getToken(MocaSqlParser.INDEX, 0); }
+		public TerminalNode EQUAL() { return getToken(MocaSqlParser.EQUAL, 0); }
 		public List<Index_valueContext> index_value() {
 			return getRuleContexts(Index_valueContext.class);
 		}
@@ -21917,6 +22585,18 @@ public class MocaSqlParser extends Parser {
 			return getToken(MocaSqlParser.ID, i);
 		}
 		public TerminalNode NOEXPAND() { return getToken(MocaSqlParser.NOEXPAND, 0); }
+		public List<TerminalNode> LR_BRACKET() { return getTokens(MocaSqlParser.LR_BRACKET); }
+		public TerminalNode LR_BRACKET(int i) {
+			return getToken(MocaSqlParser.LR_BRACKET, i);
+		}
+		public List<TerminalNode> RR_BRACKET() { return getTokens(MocaSqlParser.RR_BRACKET); }
+		public TerminalNode RR_BRACKET(int i) {
+			return getToken(MocaSqlParser.RR_BRACKET, i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
 		public Table_hintContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -21945,6 +22625,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(2577);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==NOEXPAND) {
 				{
@@ -21961,6 +22642,7 @@ public class MocaSqlParser extends Parser {
 				setState(2579);
 				match(INDEX);
 				setState(2599);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case LR_BRACKET:
 					{
@@ -22470,6 +23152,7 @@ public class MocaSqlParser extends Parser {
 				setState(2604);
 				match(FORCESEEK);
 				setState(2619);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==LR_BRACKET) {
 					{
@@ -22577,6 +23260,7 @@ public class MocaSqlParser extends Parser {
 		enterRule(_localctx, 248, RULE_index_value);
 		try {
 			setState(2631);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CALLED:
 			case DATA_COMPRESSION:
@@ -23045,11 +23729,17 @@ public class MocaSqlParser extends Parser {
 	}
 
 	public static class Column_alias_listContext extends ParserRuleContext {
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public List<Column_aliasContext> column_alias() {
 			return getRuleContexts(Column_aliasContext.class);
 		}
 		public Column_aliasContext column_alias(int i) {
 			return getRuleContext(Column_aliasContext.class,i);
+		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public Column_alias_listContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -23141,6 +23831,7 @@ public class MocaSqlParser extends Parser {
 		enterRule(_localctx, 252, RULE_column_alias);
 		try {
 			setState(2646);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CALLED:
 			case DATA_COMPRESSION:
@@ -23610,11 +24301,23 @@ public class MocaSqlParser extends Parser {
 
 	public static class Table_value_constructorContext extends ParserRuleContext {
 		public TerminalNode VALUES() { return getToken(MocaSqlParser.VALUES, 0); }
+		public List<TerminalNode> LR_BRACKET() { return getTokens(MocaSqlParser.LR_BRACKET); }
+		public TerminalNode LR_BRACKET(int i) {
+			return getToken(MocaSqlParser.LR_BRACKET, i);
+		}
 		public List<Expression_listContext> expression_list() {
 			return getRuleContexts(Expression_listContext.class);
 		}
 		public Expression_listContext expression_list(int i) {
 			return getRuleContext(Expression_listContext.class,i);
+		}
+		public List<TerminalNode> RR_BRACKET() { return getTokens(MocaSqlParser.RR_BRACKET); }
+		public TerminalNode RR_BRACKET(int i) {
+			return getToken(MocaSqlParser.RR_BRACKET, i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public Table_value_constructorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -23692,6 +24395,10 @@ public class MocaSqlParser extends Parser {
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
 		public Expression_listContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -23750,6 +24457,8 @@ public class MocaSqlParser extends Parser {
 	}
 
 	public static class Ranking_windowed_functionContext extends ParserRuleContext {
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public Over_clauseContext over_clause() {
 			return getRuleContext(Over_clauseContext.class,0);
 		}
@@ -23785,6 +24494,7 @@ public class MocaSqlParser extends Parser {
 		int _la;
 		try {
 			setState(2680);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case DENSE_RANK:
 			case RANK:
@@ -23795,7 +24505,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==DENSE_RANK || _la==RANK || _la==ROW_NUMBER) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				setState(2671);
@@ -23837,9 +24550,11 @@ public class MocaSqlParser extends Parser {
 	}
 
 	public static class Aggregate_windowed_functionContext extends ParserRuleContext {
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public All_distinct_expressionContext all_distinct_expression() {
 			return getRuleContext(All_distinct_expressionContext.class,0);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public TerminalNode AVG() { return getToken(MocaSqlParser.AVG, 0); }
 		public TerminalNode MAX() { return getToken(MocaSqlParser.MAX, 0); }
 		public TerminalNode MIN() { return getToken(MocaSqlParser.MIN, 0); }
@@ -23853,6 +24568,7 @@ public class MocaSqlParser extends Parser {
 		}
 		public TerminalNode COUNT() { return getToken(MocaSqlParser.COUNT, 0); }
 		public TerminalNode COUNT_BIG() { return getToken(MocaSqlParser.COUNT_BIG, 0); }
+		public TerminalNode STAR() { return getToken(MocaSqlParser.STAR, 0); }
 		public TerminalNode CHECKSUM_AGG() { return getToken(MocaSqlParser.CHECKSUM_AGG, 0); }
 		public TerminalNode GROUPING() { return getToken(MocaSqlParser.GROUPING, 0); }
 		public ExpressionContext expression() {
@@ -23887,6 +24603,7 @@ public class MocaSqlParser extends Parser {
 		int _la;
 		try {
 			setState(2714);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case AVG:
 			case MAX:
@@ -23902,7 +24619,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==AVG || _la==MAX || _la==MIN || ((((_la - 737)) & ~0x3f) == 0 && ((1L << (_la - 737)) & ((1L << (STDEV - 737)) | (1L << (STDEVP - 737)) | (1L << (SUM - 737)) | (1L << (VAR - 737)) | (1L << (VARP - 737)))) != 0)) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				setState(2683);
@@ -23931,12 +24651,16 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==COUNT || _la==COUNT_BIG) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				setState(2690);
 				match(LR_BRACKET);
 				setState(2693);
+				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case STAR:
 					{
@@ -24492,12 +25216,14 @@ public class MocaSqlParser extends Parser {
 	}
 
 	public static class Analytic_windowed_functionContext extends ParserRuleContext {
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public Over_clauseContext over_clause() {
 			return getRuleContext(Over_clauseContext.class,0);
 		}
@@ -24505,6 +25231,10 @@ public class MocaSqlParser extends Parser {
 		public TerminalNode LAST_VALUE() { return getToken(MocaSqlParser.LAST_VALUE, 0); }
 		public TerminalNode LAG() { return getToken(MocaSqlParser.LAG, 0); }
 		public TerminalNode LEAD() { return getToken(MocaSqlParser.LEAD, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
 		public Analytic_windowed_functionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -24530,6 +25260,7 @@ public class MocaSqlParser extends Parser {
 		int _la;
 		try {
 			setState(2736);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case FIRST_VALUE:
 			case LAST_VALUE:
@@ -24539,7 +25270,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==FIRST_VALUE || _la==LAST_VALUE) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				setState(2717);
@@ -24560,7 +25294,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==LAG || _la==LEAD) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				setState(2723);
@@ -24568,6 +25305,7 @@ public class MocaSqlParser extends Parser {
 				setState(2724);
 				expression(0);
 				setState(2731);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==COMMA) {
 					{
@@ -24576,6 +25314,7 @@ public class MocaSqlParser extends Parser {
 					setState(2726);
 					expression(0);
 					setState(2729);
+					_errHandler.sync(this);
 					_la = _input.LA(1);
 					if (_la==COMMA) {
 						{
@@ -24643,6 +25382,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(2739);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==ALL || _la==DISTINCT) {
 				{
@@ -24650,7 +25390,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==ALL || _la==DISTINCT) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				}
@@ -24673,6 +25416,8 @@ public class MocaSqlParser extends Parser {
 
 	public static class Over_clauseContext extends ParserRuleContext {
 		public TerminalNode OVER() { return getToken(MocaSqlParser.OVER, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public TerminalNode PARTITION() { return getToken(MocaSqlParser.PARTITION, 0); }
 		public TerminalNode BY() { return getToken(MocaSqlParser.BY, 0); }
 		public Expression_listContext expression_list() {
@@ -24715,6 +25460,7 @@ public class MocaSqlParser extends Parser {
 			setState(2744);
 			match(LR_BRACKET);
 			setState(2748);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==PARTITION) {
 				{
@@ -24728,6 +25474,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(2751);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==ORDER) {
 				{
@@ -24737,6 +25484,7 @@ public class MocaSqlParser extends Parser {
 			}
 
 			setState(2754);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==RANGE || _la==ROWS) {
 				{
@@ -24796,7 +25544,10 @@ public class MocaSqlParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==RANGE || _la==ROWS) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			setState(2759);
@@ -24850,6 +25601,7 @@ public class MocaSqlParser extends Parser {
 		enterRule(_localctx, 270, RULE_window_frame_extent);
 		try {
 			setState(2767);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CURRENT:
 			case UNBOUNDED:
@@ -24978,6 +25730,7 @@ public class MocaSqlParser extends Parser {
 		enterRule(_localctx, 274, RULE_window_frame_preceding);
 		try {
 			setState(2779);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case UNBOUNDED:
 				enterOuterAlt(_localctx, 1);
@@ -25049,6 +25802,7 @@ public class MocaSqlParser extends Parser {
 		enterRule(_localctx, 276, RULE_window_frame_following);
 		try {
 			setState(2785);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case UNBOUNDED:
 				enterOuterAlt(_localctx, 1);
@@ -25093,6 +25847,10 @@ public class MocaSqlParser extends Parser {
 		}
 		public IdContext id(int i) {
 			return getRuleContext(IdContext.class,i);
+		}
+		public List<TerminalNode> DOT() { return getTokens(MocaSqlParser.DOT); }
+		public TerminalNode DOT(int i) {
+			return getToken(MocaSqlParser.DOT, i);
 		}
 		public Full_table_nameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -25146,6 +25904,7 @@ public class MocaSqlParser extends Parser {
 				setState(2795);
 				match(DOT);
 				setState(2797);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==CALLED || ((((_la - 81)) & ~0x3f) == 0 && ((1L << (_la - 81)) & ((1L << (DATA_COMPRESSION - 81)) | (1L << (EVENTDATA - 81)) | (1L << (EXPIREDATE - 81)) | (1L << (FILENAME - 81)) | (1L << (FILLFACTOR - 81)) | (1L << (FORCESEEK - 81)))) != 0) || ((((_la - 159)) & ~0x3f) == 0 && ((1L << (_la - 159)) & ((1L << (INIT - 159)) | (1L << (KEY - 159)) | (1L << (MASTER - 159)) | (1L << (MAX_MEMORY - 159)))) != 0) || ((((_la - 226)) & ~0x3f) == 0 && ((1L << (_la - 226)) & ((1L << (OFFSETS - 226)) | (1L << (PAGE - 226)) | (1L << (POLICY - 226)) | (1L << (PRECISION - 226)) | (1L << (PUBLIC - 226)) | (1L << (R - 226)) | (1L << (RAW - 226)) | (1L << (RETURN - 226)) | (1L << (RETURNS - 226)) | (1L << (ROLE - 226)) | (1L << (ROWCOUNT - 226)))) != 0) || ((((_la - 296)) & ~0x3f) == 0 && ((1L << (_la - 296)) & ((1L << (SAFETY - 296)) | (1L << (RULE - 296)) | (1L << (SERVER - 296)) | (1L << (SID - 296)) | (1L << (SOURCE - 296)) | (1L << (SPLIT - 296)) | (1L << (STATE - 296)) | (1L << (START - 296)) | (1L << (STOP - 296)) | (1L << (TARGET - 296)) | (1L << (TRAN - 296)))) != 0) || ((((_la - 362)) & ~0x3f) == 0 && ((1L << (_la - 362)) & ((1L << (URL - 362)) | (1L << (USER - 362)) | (1L << (ABSOLUTE - 362)) | (1L << (ACCENT_SENSITIVITY - 362)) | (1L << (ACTION - 362)) | (1L << (ACTIVATION - 362)) | (1L << (ACTIVE - 362)) | (1L << (ADDRESS - 362)) | (1L << (AES_128 - 362)) | (1L << (AES_192 - 362)) | (1L << (AES_256 - 362)) | (1L << (AFFINITY - 362)) | (1L << (AFTER - 362)) | (1L << (AGGREGATE - 362)) | (1L << (ALGORITHM - 362)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 362)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 362)) | (1L << (ALLOWED - 362)) | (1L << (ANSI_NULL_DEFAULT - 362)) | (1L << (ANSI_NULLS - 362)) | (1L << (ANSI_PADDING - 362)) | (1L << (ANSI_WARNINGS - 362)) | (1L << (APPLICATION_LOG - 362)) | (1L << (APPLY - 362)) | (1L << (ARITHABORT - 362)) | (1L << (ASSEMBLY - 362)) | (1L << (AUDIT - 362)) | (1L << (AUDIT_GUID - 362)) | (1L << (AUTO - 362)) | (1L << (AUTO_CLEANUP - 362)) | (1L << (AUTO_CLOSE - 362)) | (1L << (AUTO_CREATE_STATISTICS - 362)) | (1L << (AUTO_SHRINK - 362)) | (1L << (AUTO_UPDATE_STATISTICS - 362)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 362)) | (1L << (AVAILABILITY - 362)) | (1L << (AVG - 362)) | (1L << (BACKUP_PRIORITY - 362)) | (1L << (BEGIN_DIALOG - 362)) | (1L << (BIGINT - 362)) | (1L << (BINARY_BASE64 - 362)) | (1L << (BINARY_CHECKSUM - 362)) | (1L << (BINDING - 362)) | (1L << (BLOB_STORAGE - 362)) | (1L << (BROKER - 362)) | (1L << (BROKER_INSTANCE - 362)) | (1L << (BULK_LOGGED - 362)))) != 0) || ((((_la - 426)) & ~0x3f) == 0 && ((1L << (_la - 426)) & ((1L << (CALLER - 426)) | (1L << (CAP_CPU_PERCENT - 426)) | (1L << (CAST - 426)) | (1L << (CATALOG - 426)) | (1L << (CATCH - 426)) | (1L << (CHANGE_RETENTION - 426)) | (1L << (CHANGE_TRACKING - 426)) | (1L << (CHECKSUM - 426)) | (1L << (CHECKSUM_AGG - 426)) | (1L << (CLEANUP - 426)) | (1L << (COLLECTION - 426)) | (1L << (COLUMN_MASTER_KEY - 426)) | (1L << (COMMITTED - 426)) | (1L << (COMPATIBILITY_LEVEL - 426)) | (1L << (CONCAT - 426)) | (1L << (CONCAT_NULL_YIELDS_NULL - 426)) | (1L << (CONTENT - 426)) | (1L << (CONTROL - 426)) | (1L << (COOKIE - 426)) | (1L << (COUNT - 426)) | (1L << (COUNT_BIG - 426)) | (1L << (COUNTER - 426)) | (1L << (CPU - 426)) | (1L << (CREATE_NEW - 426)) | (1L << (CREATION_DISPOSITION - 426)) | (1L << (CREDENTIAL - 426)) | (1L << (CRYPTOGRAPHIC - 426)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 426)) | (1L << (CURSOR_DEFAULT - 426)) | (1L << (DATA - 426)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 426)) | (1L << (DATEADD - 426)) | (1L << (DATEDIFF - 426)) | (1L << (DATENAME - 426)) | (1L << (DATEPART - 426)) | (1L << (DAYS - 426)) | (1L << (DB_CHAINING - 426)) | (1L << (DB_FAILOVER - 426)) | (1L << (DECRYPTION - 426)) | (1L << (DEFAULT_DOUBLE_QUOTE - 426)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 426)) | (1L << (DEFAULT_LANGUAGE - 426)) | (1L << (DELAY - 426)) | (1L << (DELAYED_DURABILITY - 426)) | (1L << (DELETED - 426)) | (1L << (DENSE_RANK - 426)) | (1L << (DEPENDENTS - 426)) | (1L << (DES - 426)) | (1L << (DESCRIPTION - 426)) | (1L << (DESX - 426)) | (1L << (DHCP - 426)) | (1L << (DIALOG - 426)) | (1L << (DIRECTORY_NAME - 426)) | (1L << (DISABLE - 426)) | (1L << (DISABLE_BROKER - 426)) | (1L << (DISABLED - 426)) | (1L << (DISK_DRIVE - 426)) | (1L << (DOCUMENT - 426)) | (1L << (DYNAMIC - 426)) | (1L << (EMERGENCY - 426)) | (1L << (EMPTY - 426)) | (1L << (ENABLE - 426)) | (1L << (ENABLE_BROKER - 426)))) != 0) || ((((_la - 490)) & ~0x3f) == 0 && ((1L << (_la - 490)) & ((1L << (ENCRYPTED_VALUE - 490)) | (1L << (ENCRYPTION - 490)) | (1L << (ENDPOINT_URL - 490)) | (1L << (ERROR_BROKER_CONVERSATIONS - 490)) | (1L << (EXCLUSIVE - 490)) | (1L << (EXECUTABLE - 490)) | (1L << (EXIST - 490)) | (1L << (EXPAND - 490)) | (1L << (EXPIRY_DATE - 490)) | (1L << (EXPLICIT - 490)) | (1L << (FAIL_OPERATION - 490)) | (1L << (FAILOVER_MODE - 490)) | (1L << (FAILURE - 490)) | (1L << (FAILURE_CONDITION_LEVEL - 490)) | (1L << (FAST - 490)) | (1L << (FAST_FORWARD - 490)) | (1L << (FILEGROUP - 490)) | (1L << (FILEGROWTH - 490)) | (1L << (FILEPATH - 490)) | (1L << (FILESTREAM - 490)) | (1L << (FILTER - 490)) | (1L << (FIRST - 490)) | (1L << (FIRST_VALUE - 490)) | (1L << (FOLLOWING - 490)) | (1L << (FORCE - 490)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 490)) | (1L << (FORCED - 490)) | (1L << (FORMAT - 490)) | (1L << (FORWARD_ONLY - 490)) | (1L << (FULLSCAN - 490)) | (1L << (FULLTEXT - 490)) | (1L << (GB - 490)) | (1L << (GETDATE - 490)) | (1L << (GETUTCDATE - 490)) | (1L << (GLOBAL - 490)) | (1L << (GO - 490)) | (1L << (GROUP_MAX_REQUESTS - 490)) | (1L << (GROUPING - 490)) | (1L << (GROUPING_ID - 490)) | (1L << (HADR - 490)) | (1L << (HASH - 490)) | (1L << (HEALTH_CHECK_TIMEOUT - 490)) | (1L << (HIGH - 490)) | (1L << (HONOR_BROKER_PRIORITY - 490)) | (1L << (HOURS - 490)) | (1L << (IDENTITY_VALUE - 490)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 490)) | (1L << (IMMEDIATE - 490)) | (1L << (IMPERSONATE - 490)) | (1L << (IMPORTANCE - 490)) | (1L << (INCREMENTAL - 490)) | (1L << (INITIATOR - 490)) | (1L << (INPUT - 490)) | (1L << (INSENSITIVE - 490)) | (1L << (INSERTED - 490)) | (1L << (INT - 490)) | (1L << (IP - 490)) | (1L << (ISOLATION - 490)) | (1L << (KB - 490)) | (1L << (KEEP - 490)) | (1L << (KEEPFIXED - 490)))) != 0) || ((((_la - 554)) & ~0x3f) == 0 && ((1L << (_la - 554)) & ((1L << (KEY_SOURCE - 554)) | (1L << (KEYS - 554)) | (1L << (KEYSET - 554)) | (1L << (LAG - 554)) | (1L << (LAST - 554)) | (1L << (LAST_VALUE - 554)) | (1L << (LEAD - 554)) | (1L << (LEVEL - 554)) | (1L << (LIST - 554)) | (1L << (LISTENER - 554)) | (1L << (LISTENER_URL - 554)) | (1L << (LOB_COMPACTION - 554)) | (1L << (LOCAL - 554)) | (1L << (LOCATION - 554)) | (1L << (LOCK - 554)) | (1L << (LOCK_ESCALATION - 554)) | (1L << (LOGIN - 554)) | (1L << (LOOP - 554)) | (1L << (LOW - 554)) | (1L << (MANUAL - 554)) | (1L << (MARK - 554)) | (1L << (MATERIALIZED - 554)) | (1L << (MAX - 554)) | (1L << (MAX_CPU_PERCENT - 554)) | (1L << (MAX_DOP - 554)) | (1L << (MAX_FILES - 554)) | (1L << (MAX_IOPS_PER_VOLUME - 554)) | (1L << (MAX_MEMORY_PERCENT - 554)) | (1L << (MAX_PROCESSES - 554)) | (1L << (MAX_QUEUE_READERS - 554)) | (1L << (MAX_ROLLOVER_FILES - 554)) | (1L << (MAXDOP - 554)) | (1L << (MAXRECURSION - 554)) | (1L << (MAXSIZE - 554)) | (1L << (MB - 554)) | (1L << (MEDIUM - 554)) | (1L << (MEMORY_OPTIMIZED_DATA - 554)) | (1L << (MESSAGE - 554)) | (1L << (MIN - 554)) | (1L << (MIN_ACTIVE_ROWVERSION - 554)) | (1L << (MIN_CPU_PERCENT - 554)) | (1L << (MIN_IOPS_PER_VOLUME - 554)) | (1L << (MIN_MEMORY_PERCENT - 554)) | (1L << (MINUTES - 554)) | (1L << (MIRROR_ADDRESS - 554)) | (1L << (MIXED_PAGE_ALLOCATION - 554)) | (1L << (MODE - 554)) | (1L << (MODIFY - 554)) | (1L << (MOVE - 554)) | (1L << (MULTI_USER - 554)) | (1L << (NAME - 554)) | (1L << (NESTED_TRIGGERS - 554)) | (1L << (NEW_ACCOUNT - 554)) | (1L << (NEW_BROKER - 554)) | (1L << (NEW_PASSWORD - 554)) | (1L << (NEXT - 554)) | (1L << (NO - 554)) | (1L << (NO_TRUNCATE - 554)) | (1L << (NO_WAIT - 554)) | (1L << (NOCOUNT - 554)) | (1L << (NODES - 554)) | (1L << (NOEXPAND - 554)) | (1L << (NON_TRANSACTED_ACCESS - 554)) | (1L << (NORECOMPUTE - 554)))) != 0) || ((((_la - 618)) & ~0x3f) == 0 && ((1L << (_la - 618)) & ((1L << (NORECOVERY - 618)) | (1L << (NOWAIT - 618)) | (1L << (NTILE - 618)) | (1L << (NUMANODE - 618)) | (1L << (NUMBER - 618)) | (1L << (NUMERIC_ROUNDABORT - 618)) | (1L << (OBJECT - 618)) | (1L << (OFFLINE - 618)) | (1L << (OFFSET - 618)) | (1L << (OLD_ACCOUNT - 618)) | (1L << (ONLINE - 618)) | (1L << (ONLY - 618)) | (1L << (OPEN_EXISTING - 618)) | (1L << (OPTIMISTIC - 618)) | (1L << (OPTIMIZE - 618)) | (1L << (OUT - 618)) | (1L << (OUTPUT - 618)) | (1L << (OWNER - 618)) | (1L << (PAGE_VERIFY - 618)) | (1L << (PARAMETERIZATION - 618)) | (1L << (PARTITION - 618)) | (1L << (PARTITIONS - 618)) | (1L << (PARTNER - 618)) | (1L << (PATH - 618)) | (1L << (POISON_MESSAGE_HANDLING - 618)) | (1L << (POOL - 618)) | (1L << (PORT - 618)) | (1L << (PRECEDING - 618)) | (1L << (PRIMARY_ROLE - 618)) | (1L << (PRIOR - 618)) | (1L << (PRIORITY - 618)) | (1L << (PRIORITY_LEVEL - 618)) | (1L << (PRIVATE - 618)) | (1L << (PRIVATE_KEY - 618)) | (1L << (PRIVILEGES - 618)) | (1L << (PROCEDURE_NAME - 618)) | (1L << (PROPERTY - 618)) | (1L << (PROVIDER - 618)) | (1L << (PROVIDER_KEY_NAME - 618)) | (1L << (QUERY - 618)) | (1L << (QUEUE - 618)) | (1L << (QUEUE_DELAY - 618)) | (1L << (QUOTED_IDENTIFIER - 618)) | (1L << (RANGE - 618)) | (1L << (RANK - 618)) | (1L << (RC2 - 618)) | (1L << (RC4 - 618)) | (1L << (RC4_128 - 618)) | (1L << (READ_COMMITTED_SNAPSHOT - 618)) | (1L << (READ_ONLY - 618)) | (1L << (READ_ONLY_ROUTING_LIST - 618)) | (1L << (READ_WRITE - 618)) | (1L << (READONLY - 618)) | (1L << (REBUILD - 618)) | (1L << (RECEIVE - 618)) | (1L << (RECOMPILE - 618)) | (1L << (RECOVERY - 618)) | (1L << (RECURSIVE_TRIGGERS - 618)) | (1L << (RELATIVE - 618)) | (1L << (REMOTE - 618)) | (1L << (REMOTE_SERVICE_NAME - 618)) | (1L << (REMOVE - 618)) | (1L << (REORGANIZE - 618)))) != 0) || ((((_la - 682)) & ~0x3f) == 0 && ((1L << (_la - 682)) & ((1L << (REPEATABLE - 682)) | (1L << (REPLICA - 682)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 682)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 682)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 682)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 682)) | (1L << (RESERVE_DISK_SPACE - 682)) | (1L << (RESOURCE - 682)) | (1L << (RESOURCE_MANAGER_LOCATION - 682)) | (1L << (RESTRICTED_USER - 682)) | (1L << (RETENTION - 682)) | (1L << (ROBUST - 682)) | (1L << (ROOT - 682)) | (1L << (ROUTE - 682)) | (1L << (ROW - 682)) | (1L << (ROW_NUMBER - 682)) | (1L << (ROWGUID - 682)) | (1L << (ROWS - 682)) | (1L << (SAMPLE - 682)) | (1L << (SCHEMABINDING - 682)) | (1L << (SCOPED - 682)) | (1L << (SCROLL - 682)) | (1L << (SCROLL_LOCKS - 682)) | (1L << (SEARCH - 682)) | (1L << (SECONDARY - 682)) | (1L << (SECONDARY_ONLY - 682)) | (1L << (SECONDARY_ROLE - 682)) | (1L << (SECONDS - 682)) | (1L << (SECRET - 682)) | (1L << (SECURITY - 682)) | (1L << (SECURITY_LOG - 682)) | (1L << (SEEDING_MODE - 682)) | (1L << (SELF - 682)) | (1L << (SEMI_SENSITIVE - 682)) | (1L << (SEND - 682)) | (1L << (SENT - 682)) | (1L << (SEQUENCE - 682)) | (1L << (SERIALIZABLE - 682)) | (1L << (SESSION_TIMEOUT - 682)) | (1L << (SETERROR - 682)) | (1L << (SHARE - 682)) | (1L << (SHOWPLAN - 682)) | (1L << (SIGNATURE - 682)) | (1L << (SIMPLE - 682)) | (1L << (SINGLE_USER - 682)) | (1L << (SIZE - 682)) | (1L << (SMALLINT - 682)) | (1L << (SNAPSHOT - 682)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 682)) | (1L << (STANDBY - 682)) | (1L << (START_DATE - 682)) | (1L << (STATIC - 682)) | (1L << (STATS_STREAM - 682)) | (1L << (STATUS - 682)) | (1L << (STDEV - 682)) | (1L << (STDEVP - 682)) | (1L << (STOPLIST - 682)) | (1L << (STRING_AGG - 682)) | (1L << (STUFF - 682)) | (1L << (SUBJECT - 682)) | (1L << (SUM - 682)) | (1L << (SUSPEND - 682)))) != 0) || ((((_la - 746)) & ~0x3f) == 0 && ((1L << (_la - 746)) & ((1L << (SYMMETRIC - 746)) | (1L << (SYNCHRONOUS_COMMIT - 746)) | (1L << (SYNONYM - 746)) | (1L << (SYSTEM - 746)) | (1L << (TAKE - 746)) | (1L << (TARGET_RECOVERY_TIME - 746)) | (1L << (TB - 746)) | (1L << (TEXTIMAGE_ON - 746)) | (1L << (THROW - 746)) | (1L << (TIES - 746)) | (1L << (TIME - 746)) | (1L << (TIMEOUT - 746)) | (1L << (TIMER - 746)) | (1L << (TINYINT - 746)) | (1L << (TORN_PAGE_DETECTION - 746)) | (1L << (TRANSFORM_NOISE_WORDS - 746)) | (1L << (TRIPLE_DES - 746)) | (1L << (TRIPLE_DES_3KEY - 746)) | (1L << (TRUSTWORTHY - 746)) | (1L << (TRY - 746)) | (1L << (TSQL - 746)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 746)) | (1L << (TYPE - 746)) | (1L << (TYPE_WARNING - 746)) | (1L << (UNBOUNDED - 746)) | (1L << (UNCOMMITTED - 746)) | (1L << (UNKNOWN - 746)) | (1L << (UNLIMITED - 746)) | (1L << (USING - 746)) | (1L << (VALID_XML - 746)) | (1L << (VALIDATION - 746)) | (1L << (VALUE - 746)) | (1L << (VAR - 746)) | (1L << (VARP - 746)) | (1L << (VIEW_METADATA - 746)) | (1L << (VIEWS - 746)) | (1L << (WAIT - 746)) | (1L << (WELL_FORMED_XML - 746)) | (1L << (WORK - 746)) | (1L << (WORKLOAD - 746)) | (1L << (XML - 746)) | (1L << (XMLNAMESPACES - 746)) | (1L << (DOUBLE_QUOTE_ID - 746)) | (1L << (SQUARE_BRACKET_ID - 746)) | (1L << (ID - 746)))) != 0)) {
 					{
@@ -25192,6 +25951,10 @@ public class MocaSqlParser extends Parser {
 		public IdContext id(int i) {
 			return getRuleContext(IdContext.class,i);
 		}
+		public List<TerminalNode> DOT() { return getTokens(MocaSqlParser.DOT); }
+		public TerminalNode DOT(int i) {
+			return getToken(MocaSqlParser.DOT, i);
+		}
 		public TerminalNode BLOCKING_HIERARCHY() { return getToken(MocaSqlParser.BLOCKING_HIERARCHY, 0); }
 		public Table_nameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -25233,6 +25996,7 @@ public class MocaSqlParser extends Parser {
 					setState(2809);
 					match(DOT);
 					setState(2811);
+					_errHandler.sync(this);
 					_la = _input.LA(1);
 					if (_la==CALLED || ((((_la - 81)) & ~0x3f) == 0 && ((1L << (_la - 81)) & ((1L << (DATA_COMPRESSION - 81)) | (1L << (EVENTDATA - 81)) | (1L << (EXPIREDATE - 81)) | (1L << (FILENAME - 81)) | (1L << (FILLFACTOR - 81)) | (1L << (FORCESEEK - 81)))) != 0) || ((((_la - 159)) & ~0x3f) == 0 && ((1L << (_la - 159)) & ((1L << (INIT - 159)) | (1L << (KEY - 159)) | (1L << (MASTER - 159)) | (1L << (MAX_MEMORY - 159)))) != 0) || ((((_la - 226)) & ~0x3f) == 0 && ((1L << (_la - 226)) & ((1L << (OFFSETS - 226)) | (1L << (PAGE - 226)) | (1L << (POLICY - 226)) | (1L << (PRECISION - 226)) | (1L << (PUBLIC - 226)) | (1L << (R - 226)) | (1L << (RAW - 226)) | (1L << (RETURN - 226)) | (1L << (RETURNS - 226)) | (1L << (ROLE - 226)) | (1L << (ROWCOUNT - 226)))) != 0) || ((((_la - 296)) & ~0x3f) == 0 && ((1L << (_la - 296)) & ((1L << (SAFETY - 296)) | (1L << (RULE - 296)) | (1L << (SERVER - 296)) | (1L << (SID - 296)) | (1L << (SOURCE - 296)) | (1L << (SPLIT - 296)) | (1L << (STATE - 296)) | (1L << (START - 296)) | (1L << (STOP - 296)) | (1L << (TARGET - 296)) | (1L << (TRAN - 296)))) != 0) || ((((_la - 362)) & ~0x3f) == 0 && ((1L << (_la - 362)) & ((1L << (URL - 362)) | (1L << (USER - 362)) | (1L << (ABSOLUTE - 362)) | (1L << (ACCENT_SENSITIVITY - 362)) | (1L << (ACTION - 362)) | (1L << (ACTIVATION - 362)) | (1L << (ACTIVE - 362)) | (1L << (ADDRESS - 362)) | (1L << (AES_128 - 362)) | (1L << (AES_192 - 362)) | (1L << (AES_256 - 362)) | (1L << (AFFINITY - 362)) | (1L << (AFTER - 362)) | (1L << (AGGREGATE - 362)) | (1L << (ALGORITHM - 362)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 362)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 362)) | (1L << (ALLOWED - 362)) | (1L << (ANSI_NULL_DEFAULT - 362)) | (1L << (ANSI_NULLS - 362)) | (1L << (ANSI_PADDING - 362)) | (1L << (ANSI_WARNINGS - 362)) | (1L << (APPLICATION_LOG - 362)) | (1L << (APPLY - 362)) | (1L << (ARITHABORT - 362)) | (1L << (ASSEMBLY - 362)) | (1L << (AUDIT - 362)) | (1L << (AUDIT_GUID - 362)) | (1L << (AUTO - 362)) | (1L << (AUTO_CLEANUP - 362)) | (1L << (AUTO_CLOSE - 362)) | (1L << (AUTO_CREATE_STATISTICS - 362)) | (1L << (AUTO_SHRINK - 362)) | (1L << (AUTO_UPDATE_STATISTICS - 362)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 362)) | (1L << (AVAILABILITY - 362)) | (1L << (AVG - 362)) | (1L << (BACKUP_PRIORITY - 362)) | (1L << (BEGIN_DIALOG - 362)) | (1L << (BIGINT - 362)) | (1L << (BINARY_BASE64 - 362)) | (1L << (BINARY_CHECKSUM - 362)) | (1L << (BINDING - 362)) | (1L << (BLOB_STORAGE - 362)) | (1L << (BROKER - 362)) | (1L << (BROKER_INSTANCE - 362)) | (1L << (BULK_LOGGED - 362)))) != 0) || ((((_la - 426)) & ~0x3f) == 0 && ((1L << (_la - 426)) & ((1L << (CALLER - 426)) | (1L << (CAP_CPU_PERCENT - 426)) | (1L << (CAST - 426)) | (1L << (CATALOG - 426)) | (1L << (CATCH - 426)) | (1L << (CHANGE_RETENTION - 426)) | (1L << (CHANGE_TRACKING - 426)) | (1L << (CHECKSUM - 426)) | (1L << (CHECKSUM_AGG - 426)) | (1L << (CLEANUP - 426)) | (1L << (COLLECTION - 426)) | (1L << (COLUMN_MASTER_KEY - 426)) | (1L << (COMMITTED - 426)) | (1L << (COMPATIBILITY_LEVEL - 426)) | (1L << (CONCAT - 426)) | (1L << (CONCAT_NULL_YIELDS_NULL - 426)) | (1L << (CONTENT - 426)) | (1L << (CONTROL - 426)) | (1L << (COOKIE - 426)) | (1L << (COUNT - 426)) | (1L << (COUNT_BIG - 426)) | (1L << (COUNTER - 426)) | (1L << (CPU - 426)) | (1L << (CREATE_NEW - 426)) | (1L << (CREATION_DISPOSITION - 426)) | (1L << (CREDENTIAL - 426)) | (1L << (CRYPTOGRAPHIC - 426)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 426)) | (1L << (CURSOR_DEFAULT - 426)) | (1L << (DATA - 426)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 426)) | (1L << (DATEADD - 426)) | (1L << (DATEDIFF - 426)) | (1L << (DATENAME - 426)) | (1L << (DATEPART - 426)) | (1L << (DAYS - 426)) | (1L << (DB_CHAINING - 426)) | (1L << (DB_FAILOVER - 426)) | (1L << (DECRYPTION - 426)) | (1L << (DEFAULT_DOUBLE_QUOTE - 426)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 426)) | (1L << (DEFAULT_LANGUAGE - 426)) | (1L << (DELAY - 426)) | (1L << (DELAYED_DURABILITY - 426)) | (1L << (DELETED - 426)) | (1L << (DENSE_RANK - 426)) | (1L << (DEPENDENTS - 426)) | (1L << (DES - 426)) | (1L << (DESCRIPTION - 426)) | (1L << (DESX - 426)) | (1L << (DHCP - 426)) | (1L << (DIALOG - 426)) | (1L << (DIRECTORY_NAME - 426)) | (1L << (DISABLE - 426)) | (1L << (DISABLE_BROKER - 426)) | (1L << (DISABLED - 426)) | (1L << (DISK_DRIVE - 426)) | (1L << (DOCUMENT - 426)) | (1L << (DYNAMIC - 426)) | (1L << (EMERGENCY - 426)) | (1L << (EMPTY - 426)) | (1L << (ENABLE - 426)) | (1L << (ENABLE_BROKER - 426)))) != 0) || ((((_la - 490)) & ~0x3f) == 0 && ((1L << (_la - 490)) & ((1L << (ENCRYPTED_VALUE - 490)) | (1L << (ENCRYPTION - 490)) | (1L << (ENDPOINT_URL - 490)) | (1L << (ERROR_BROKER_CONVERSATIONS - 490)) | (1L << (EXCLUSIVE - 490)) | (1L << (EXECUTABLE - 490)) | (1L << (EXIST - 490)) | (1L << (EXPAND - 490)) | (1L << (EXPIRY_DATE - 490)) | (1L << (EXPLICIT - 490)) | (1L << (FAIL_OPERATION - 490)) | (1L << (FAILOVER_MODE - 490)) | (1L << (FAILURE - 490)) | (1L << (FAILURE_CONDITION_LEVEL - 490)) | (1L << (FAST - 490)) | (1L << (FAST_FORWARD - 490)) | (1L << (FILEGROUP - 490)) | (1L << (FILEGROWTH - 490)) | (1L << (FILEPATH - 490)) | (1L << (FILESTREAM - 490)) | (1L << (FILTER - 490)) | (1L << (FIRST - 490)) | (1L << (FIRST_VALUE - 490)) | (1L << (FOLLOWING - 490)) | (1L << (FORCE - 490)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 490)) | (1L << (FORCED - 490)) | (1L << (FORMAT - 490)) | (1L << (FORWARD_ONLY - 490)) | (1L << (FULLSCAN - 490)) | (1L << (FULLTEXT - 490)) | (1L << (GB - 490)) | (1L << (GETDATE - 490)) | (1L << (GETUTCDATE - 490)) | (1L << (GLOBAL - 490)) | (1L << (GO - 490)) | (1L << (GROUP_MAX_REQUESTS - 490)) | (1L << (GROUPING - 490)) | (1L << (GROUPING_ID - 490)) | (1L << (HADR - 490)) | (1L << (HASH - 490)) | (1L << (HEALTH_CHECK_TIMEOUT - 490)) | (1L << (HIGH - 490)) | (1L << (HONOR_BROKER_PRIORITY - 490)) | (1L << (HOURS - 490)) | (1L << (IDENTITY_VALUE - 490)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 490)) | (1L << (IMMEDIATE - 490)) | (1L << (IMPERSONATE - 490)) | (1L << (IMPORTANCE - 490)) | (1L << (INCREMENTAL - 490)) | (1L << (INITIATOR - 490)) | (1L << (INPUT - 490)) | (1L << (INSENSITIVE - 490)) | (1L << (INSERTED - 490)) | (1L << (INT - 490)) | (1L << (IP - 490)) | (1L << (ISOLATION - 490)) | (1L << (KB - 490)) | (1L << (KEEP - 490)) | (1L << (KEEPFIXED - 490)))) != 0) || ((((_la - 554)) & ~0x3f) == 0 && ((1L << (_la - 554)) & ((1L << (KEY_SOURCE - 554)) | (1L << (KEYS - 554)) | (1L << (KEYSET - 554)) | (1L << (LAG - 554)) | (1L << (LAST - 554)) | (1L << (LAST_VALUE - 554)) | (1L << (LEAD - 554)) | (1L << (LEVEL - 554)) | (1L << (LIST - 554)) | (1L << (LISTENER - 554)) | (1L << (LISTENER_URL - 554)) | (1L << (LOB_COMPACTION - 554)) | (1L << (LOCAL - 554)) | (1L << (LOCATION - 554)) | (1L << (LOCK - 554)) | (1L << (LOCK_ESCALATION - 554)) | (1L << (LOGIN - 554)) | (1L << (LOOP - 554)) | (1L << (LOW - 554)) | (1L << (MANUAL - 554)) | (1L << (MARK - 554)) | (1L << (MATERIALIZED - 554)) | (1L << (MAX - 554)) | (1L << (MAX_CPU_PERCENT - 554)) | (1L << (MAX_DOP - 554)) | (1L << (MAX_FILES - 554)) | (1L << (MAX_IOPS_PER_VOLUME - 554)) | (1L << (MAX_MEMORY_PERCENT - 554)) | (1L << (MAX_PROCESSES - 554)) | (1L << (MAX_QUEUE_READERS - 554)) | (1L << (MAX_ROLLOVER_FILES - 554)) | (1L << (MAXDOP - 554)) | (1L << (MAXRECURSION - 554)) | (1L << (MAXSIZE - 554)) | (1L << (MB - 554)) | (1L << (MEDIUM - 554)) | (1L << (MEMORY_OPTIMIZED_DATA - 554)) | (1L << (MESSAGE - 554)) | (1L << (MIN - 554)) | (1L << (MIN_ACTIVE_ROWVERSION - 554)) | (1L << (MIN_CPU_PERCENT - 554)) | (1L << (MIN_IOPS_PER_VOLUME - 554)) | (1L << (MIN_MEMORY_PERCENT - 554)) | (1L << (MINUTES - 554)) | (1L << (MIRROR_ADDRESS - 554)) | (1L << (MIXED_PAGE_ALLOCATION - 554)) | (1L << (MODE - 554)) | (1L << (MODIFY - 554)) | (1L << (MOVE - 554)) | (1L << (MULTI_USER - 554)) | (1L << (NAME - 554)) | (1L << (NESTED_TRIGGERS - 554)) | (1L << (NEW_ACCOUNT - 554)) | (1L << (NEW_BROKER - 554)) | (1L << (NEW_PASSWORD - 554)) | (1L << (NEXT - 554)) | (1L << (NO - 554)) | (1L << (NO_TRUNCATE - 554)) | (1L << (NO_WAIT - 554)) | (1L << (NOCOUNT - 554)) | (1L << (NODES - 554)) | (1L << (NOEXPAND - 554)) | (1L << (NON_TRANSACTED_ACCESS - 554)) | (1L << (NORECOMPUTE - 554)))) != 0) || ((((_la - 618)) & ~0x3f) == 0 && ((1L << (_la - 618)) & ((1L << (NORECOVERY - 618)) | (1L << (NOWAIT - 618)) | (1L << (NTILE - 618)) | (1L << (NUMANODE - 618)) | (1L << (NUMBER - 618)) | (1L << (NUMERIC_ROUNDABORT - 618)) | (1L << (OBJECT - 618)) | (1L << (OFFLINE - 618)) | (1L << (OFFSET - 618)) | (1L << (OLD_ACCOUNT - 618)) | (1L << (ONLINE - 618)) | (1L << (ONLY - 618)) | (1L << (OPEN_EXISTING - 618)) | (1L << (OPTIMISTIC - 618)) | (1L << (OPTIMIZE - 618)) | (1L << (OUT - 618)) | (1L << (OUTPUT - 618)) | (1L << (OWNER - 618)) | (1L << (PAGE_VERIFY - 618)) | (1L << (PARAMETERIZATION - 618)) | (1L << (PARTITION - 618)) | (1L << (PARTITIONS - 618)) | (1L << (PARTNER - 618)) | (1L << (PATH - 618)) | (1L << (POISON_MESSAGE_HANDLING - 618)) | (1L << (POOL - 618)) | (1L << (PORT - 618)) | (1L << (PRECEDING - 618)) | (1L << (PRIMARY_ROLE - 618)) | (1L << (PRIOR - 618)) | (1L << (PRIORITY - 618)) | (1L << (PRIORITY_LEVEL - 618)) | (1L << (PRIVATE - 618)) | (1L << (PRIVATE_KEY - 618)) | (1L << (PRIVILEGES - 618)) | (1L << (PROCEDURE_NAME - 618)) | (1L << (PROPERTY - 618)) | (1L << (PROVIDER - 618)) | (1L << (PROVIDER_KEY_NAME - 618)) | (1L << (QUERY - 618)) | (1L << (QUEUE - 618)) | (1L << (QUEUE_DELAY - 618)) | (1L << (QUOTED_IDENTIFIER - 618)) | (1L << (RANGE - 618)) | (1L << (RANK - 618)) | (1L << (RC2 - 618)) | (1L << (RC4 - 618)) | (1L << (RC4_128 - 618)) | (1L << (READ_COMMITTED_SNAPSHOT - 618)) | (1L << (READ_ONLY - 618)) | (1L << (READ_ONLY_ROUTING_LIST - 618)) | (1L << (READ_WRITE - 618)) | (1L << (READONLY - 618)) | (1L << (REBUILD - 618)) | (1L << (RECEIVE - 618)) | (1L << (RECOMPILE - 618)) | (1L << (RECOVERY - 618)) | (1L << (RECURSIVE_TRIGGERS - 618)) | (1L << (RELATIVE - 618)) | (1L << (REMOTE - 618)) | (1L << (REMOTE_SERVICE_NAME - 618)) | (1L << (REMOVE - 618)) | (1L << (REORGANIZE - 618)))) != 0) || ((((_la - 682)) & ~0x3f) == 0 && ((1L << (_la - 682)) & ((1L << (REPEATABLE - 682)) | (1L << (REPLICA - 682)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 682)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 682)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 682)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 682)) | (1L << (RESERVE_DISK_SPACE - 682)) | (1L << (RESOURCE - 682)) | (1L << (RESOURCE_MANAGER_LOCATION - 682)) | (1L << (RESTRICTED_USER - 682)) | (1L << (RETENTION - 682)) | (1L << (ROBUST - 682)) | (1L << (ROOT - 682)) | (1L << (ROUTE - 682)) | (1L << (ROW - 682)) | (1L << (ROW_NUMBER - 682)) | (1L << (ROWGUID - 682)) | (1L << (ROWS - 682)) | (1L << (SAMPLE - 682)) | (1L << (SCHEMABINDING - 682)) | (1L << (SCOPED - 682)) | (1L << (SCROLL - 682)) | (1L << (SCROLL_LOCKS - 682)) | (1L << (SEARCH - 682)) | (1L << (SECONDARY - 682)) | (1L << (SECONDARY_ONLY - 682)) | (1L << (SECONDARY_ROLE - 682)) | (1L << (SECONDS - 682)) | (1L << (SECRET - 682)) | (1L << (SECURITY - 682)) | (1L << (SECURITY_LOG - 682)) | (1L << (SEEDING_MODE - 682)) | (1L << (SELF - 682)) | (1L << (SEMI_SENSITIVE - 682)) | (1L << (SEND - 682)) | (1L << (SENT - 682)) | (1L << (SEQUENCE - 682)) | (1L << (SERIALIZABLE - 682)) | (1L << (SESSION_TIMEOUT - 682)) | (1L << (SETERROR - 682)) | (1L << (SHARE - 682)) | (1L << (SHOWPLAN - 682)) | (1L << (SIGNATURE - 682)) | (1L << (SIMPLE - 682)) | (1L << (SINGLE_USER - 682)) | (1L << (SIZE - 682)) | (1L << (SMALLINT - 682)) | (1L << (SNAPSHOT - 682)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 682)) | (1L << (STANDBY - 682)) | (1L << (START_DATE - 682)) | (1L << (STATIC - 682)) | (1L << (STATS_STREAM - 682)) | (1L << (STATUS - 682)) | (1L << (STDEV - 682)) | (1L << (STDEVP - 682)) | (1L << (STOPLIST - 682)) | (1L << (STRING_AGG - 682)) | (1L << (STUFF - 682)) | (1L << (SUBJECT - 682)) | (1L << (SUM - 682)) | (1L << (SUSPEND - 682)))) != 0) || ((((_la - 746)) & ~0x3f) == 0 && ((1L << (_la - 746)) & ((1L << (SYMMETRIC - 746)) | (1L << (SYNCHRONOUS_COMMIT - 746)) | (1L << (SYNONYM - 746)) | (1L << (SYSTEM - 746)) | (1L << (TAKE - 746)) | (1L << (TARGET_RECOVERY_TIME - 746)) | (1L << (TB - 746)) | (1L << (TEXTIMAGE_ON - 746)) | (1L << (THROW - 746)) | (1L << (TIES - 746)) | (1L << (TIME - 746)) | (1L << (TIMEOUT - 746)) | (1L << (TIMER - 746)) | (1L << (TINYINT - 746)) | (1L << (TORN_PAGE_DETECTION - 746)) | (1L << (TRANSFORM_NOISE_WORDS - 746)) | (1L << (TRIPLE_DES - 746)) | (1L << (TRIPLE_DES_3KEY - 746)) | (1L << (TRUSTWORTHY - 746)) | (1L << (TRY - 746)) | (1L << (TSQL - 746)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 746)) | (1L << (TYPE - 746)) | (1L << (TYPE_WARNING - 746)) | (1L << (UNBOUNDED - 746)) | (1L << (UNCOMMITTED - 746)) | (1L << (UNKNOWN - 746)) | (1L << (UNLIMITED - 746)) | (1L << (USING - 746)) | (1L << (VALID_XML - 746)) | (1L << (VALIDATION - 746)) | (1L << (VALUE - 746)) | (1L << (VAR - 746)) | (1L << (VARP - 746)) | (1L << (VIEW_METADATA - 746)) | (1L << (VIEWS - 746)) | (1L << (WAIT - 746)) | (1L << (WELL_FORMED_XML - 746)) | (1L << (WORK - 746)) | (1L << (WORKLOAD - 746)) | (1L << (XML - 746)) | (1L << (XMLNAMESPACES - 746)) | (1L << (DOUBLE_QUOTE_ID - 746)) | (1L << (SQUARE_BRACKET_ID - 746)) | (1L << (ID - 746)))) != 0)) {
 						{
@@ -25271,6 +26035,7 @@ public class MocaSqlParser extends Parser {
 					setState(2822);
 					match(DOT);
 					setState(2824);
+					_errHandler.sync(this);
 					_la = _input.LA(1);
 					if (_la==CALLED || ((((_la - 81)) & ~0x3f) == 0 && ((1L << (_la - 81)) & ((1L << (DATA_COMPRESSION - 81)) | (1L << (EVENTDATA - 81)) | (1L << (EXPIREDATE - 81)) | (1L << (FILENAME - 81)) | (1L << (FILLFACTOR - 81)) | (1L << (FORCESEEK - 81)))) != 0) || ((((_la - 159)) & ~0x3f) == 0 && ((1L << (_la - 159)) & ((1L << (INIT - 159)) | (1L << (KEY - 159)) | (1L << (MASTER - 159)) | (1L << (MAX_MEMORY - 159)))) != 0) || ((((_la - 226)) & ~0x3f) == 0 && ((1L << (_la - 226)) & ((1L << (OFFSETS - 226)) | (1L << (PAGE - 226)) | (1L << (POLICY - 226)) | (1L << (PRECISION - 226)) | (1L << (PUBLIC - 226)) | (1L << (R - 226)) | (1L << (RAW - 226)) | (1L << (RETURN - 226)) | (1L << (RETURNS - 226)) | (1L << (ROLE - 226)) | (1L << (ROWCOUNT - 226)))) != 0) || ((((_la - 296)) & ~0x3f) == 0 && ((1L << (_la - 296)) & ((1L << (SAFETY - 296)) | (1L << (RULE - 296)) | (1L << (SERVER - 296)) | (1L << (SID - 296)) | (1L << (SOURCE - 296)) | (1L << (SPLIT - 296)) | (1L << (STATE - 296)) | (1L << (START - 296)) | (1L << (STOP - 296)) | (1L << (TARGET - 296)) | (1L << (TRAN - 296)))) != 0) || ((((_la - 362)) & ~0x3f) == 0 && ((1L << (_la - 362)) & ((1L << (URL - 362)) | (1L << (USER - 362)) | (1L << (ABSOLUTE - 362)) | (1L << (ACCENT_SENSITIVITY - 362)) | (1L << (ACTION - 362)) | (1L << (ACTIVATION - 362)) | (1L << (ACTIVE - 362)) | (1L << (ADDRESS - 362)) | (1L << (AES_128 - 362)) | (1L << (AES_192 - 362)) | (1L << (AES_256 - 362)) | (1L << (AFFINITY - 362)) | (1L << (AFTER - 362)) | (1L << (AGGREGATE - 362)) | (1L << (ALGORITHM - 362)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 362)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 362)) | (1L << (ALLOWED - 362)) | (1L << (ANSI_NULL_DEFAULT - 362)) | (1L << (ANSI_NULLS - 362)) | (1L << (ANSI_PADDING - 362)) | (1L << (ANSI_WARNINGS - 362)) | (1L << (APPLICATION_LOG - 362)) | (1L << (APPLY - 362)) | (1L << (ARITHABORT - 362)) | (1L << (ASSEMBLY - 362)) | (1L << (AUDIT - 362)) | (1L << (AUDIT_GUID - 362)) | (1L << (AUTO - 362)) | (1L << (AUTO_CLEANUP - 362)) | (1L << (AUTO_CLOSE - 362)) | (1L << (AUTO_CREATE_STATISTICS - 362)) | (1L << (AUTO_SHRINK - 362)) | (1L << (AUTO_UPDATE_STATISTICS - 362)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 362)) | (1L << (AVAILABILITY - 362)) | (1L << (AVG - 362)) | (1L << (BACKUP_PRIORITY - 362)) | (1L << (BEGIN_DIALOG - 362)) | (1L << (BIGINT - 362)) | (1L << (BINARY_BASE64 - 362)) | (1L << (BINARY_CHECKSUM - 362)) | (1L << (BINDING - 362)) | (1L << (BLOB_STORAGE - 362)) | (1L << (BROKER - 362)) | (1L << (BROKER_INSTANCE - 362)) | (1L << (BULK_LOGGED - 362)))) != 0) || ((((_la - 426)) & ~0x3f) == 0 && ((1L << (_la - 426)) & ((1L << (CALLER - 426)) | (1L << (CAP_CPU_PERCENT - 426)) | (1L << (CAST - 426)) | (1L << (CATALOG - 426)) | (1L << (CATCH - 426)) | (1L << (CHANGE_RETENTION - 426)) | (1L << (CHANGE_TRACKING - 426)) | (1L << (CHECKSUM - 426)) | (1L << (CHECKSUM_AGG - 426)) | (1L << (CLEANUP - 426)) | (1L << (COLLECTION - 426)) | (1L << (COLUMN_MASTER_KEY - 426)) | (1L << (COMMITTED - 426)) | (1L << (COMPATIBILITY_LEVEL - 426)) | (1L << (CONCAT - 426)) | (1L << (CONCAT_NULL_YIELDS_NULL - 426)) | (1L << (CONTENT - 426)) | (1L << (CONTROL - 426)) | (1L << (COOKIE - 426)) | (1L << (COUNT - 426)) | (1L << (COUNT_BIG - 426)) | (1L << (COUNTER - 426)) | (1L << (CPU - 426)) | (1L << (CREATE_NEW - 426)) | (1L << (CREATION_DISPOSITION - 426)) | (1L << (CREDENTIAL - 426)) | (1L << (CRYPTOGRAPHIC - 426)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 426)) | (1L << (CURSOR_DEFAULT - 426)) | (1L << (DATA - 426)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 426)) | (1L << (DATEADD - 426)) | (1L << (DATEDIFF - 426)) | (1L << (DATENAME - 426)) | (1L << (DATEPART - 426)) | (1L << (DAYS - 426)) | (1L << (DB_CHAINING - 426)) | (1L << (DB_FAILOVER - 426)) | (1L << (DECRYPTION - 426)) | (1L << (DEFAULT_DOUBLE_QUOTE - 426)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 426)) | (1L << (DEFAULT_LANGUAGE - 426)) | (1L << (DELAY - 426)) | (1L << (DELAYED_DURABILITY - 426)) | (1L << (DELETED - 426)) | (1L << (DENSE_RANK - 426)) | (1L << (DEPENDENTS - 426)) | (1L << (DES - 426)) | (1L << (DESCRIPTION - 426)) | (1L << (DESX - 426)) | (1L << (DHCP - 426)) | (1L << (DIALOG - 426)) | (1L << (DIRECTORY_NAME - 426)) | (1L << (DISABLE - 426)) | (1L << (DISABLE_BROKER - 426)) | (1L << (DISABLED - 426)) | (1L << (DISK_DRIVE - 426)) | (1L << (DOCUMENT - 426)) | (1L << (DYNAMIC - 426)) | (1L << (EMERGENCY - 426)) | (1L << (EMPTY - 426)) | (1L << (ENABLE - 426)) | (1L << (ENABLE_BROKER - 426)))) != 0) || ((((_la - 490)) & ~0x3f) == 0 && ((1L << (_la - 490)) & ((1L << (ENCRYPTED_VALUE - 490)) | (1L << (ENCRYPTION - 490)) | (1L << (ENDPOINT_URL - 490)) | (1L << (ERROR_BROKER_CONVERSATIONS - 490)) | (1L << (EXCLUSIVE - 490)) | (1L << (EXECUTABLE - 490)) | (1L << (EXIST - 490)) | (1L << (EXPAND - 490)) | (1L << (EXPIRY_DATE - 490)) | (1L << (EXPLICIT - 490)) | (1L << (FAIL_OPERATION - 490)) | (1L << (FAILOVER_MODE - 490)) | (1L << (FAILURE - 490)) | (1L << (FAILURE_CONDITION_LEVEL - 490)) | (1L << (FAST - 490)) | (1L << (FAST_FORWARD - 490)) | (1L << (FILEGROUP - 490)) | (1L << (FILEGROWTH - 490)) | (1L << (FILEPATH - 490)) | (1L << (FILESTREAM - 490)) | (1L << (FILTER - 490)) | (1L << (FIRST - 490)) | (1L << (FIRST_VALUE - 490)) | (1L << (FOLLOWING - 490)) | (1L << (FORCE - 490)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 490)) | (1L << (FORCED - 490)) | (1L << (FORMAT - 490)) | (1L << (FORWARD_ONLY - 490)) | (1L << (FULLSCAN - 490)) | (1L << (FULLTEXT - 490)) | (1L << (GB - 490)) | (1L << (GETDATE - 490)) | (1L << (GETUTCDATE - 490)) | (1L << (GLOBAL - 490)) | (1L << (GO - 490)) | (1L << (GROUP_MAX_REQUESTS - 490)) | (1L << (GROUPING - 490)) | (1L << (GROUPING_ID - 490)) | (1L << (HADR - 490)) | (1L << (HASH - 490)) | (1L << (HEALTH_CHECK_TIMEOUT - 490)) | (1L << (HIGH - 490)) | (1L << (HONOR_BROKER_PRIORITY - 490)) | (1L << (HOURS - 490)) | (1L << (IDENTITY_VALUE - 490)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 490)) | (1L << (IMMEDIATE - 490)) | (1L << (IMPERSONATE - 490)) | (1L << (IMPORTANCE - 490)) | (1L << (INCREMENTAL - 490)) | (1L << (INITIATOR - 490)) | (1L << (INPUT - 490)) | (1L << (INSENSITIVE - 490)) | (1L << (INSERTED - 490)) | (1L << (INT - 490)) | (1L << (IP - 490)) | (1L << (ISOLATION - 490)) | (1L << (KB - 490)) | (1L << (KEEP - 490)) | (1L << (KEEPFIXED - 490)))) != 0) || ((((_la - 554)) & ~0x3f) == 0 && ((1L << (_la - 554)) & ((1L << (KEY_SOURCE - 554)) | (1L << (KEYS - 554)) | (1L << (KEYSET - 554)) | (1L << (LAG - 554)) | (1L << (LAST - 554)) | (1L << (LAST_VALUE - 554)) | (1L << (LEAD - 554)) | (1L << (LEVEL - 554)) | (1L << (LIST - 554)) | (1L << (LISTENER - 554)) | (1L << (LISTENER_URL - 554)) | (1L << (LOB_COMPACTION - 554)) | (1L << (LOCAL - 554)) | (1L << (LOCATION - 554)) | (1L << (LOCK - 554)) | (1L << (LOCK_ESCALATION - 554)) | (1L << (LOGIN - 554)) | (1L << (LOOP - 554)) | (1L << (LOW - 554)) | (1L << (MANUAL - 554)) | (1L << (MARK - 554)) | (1L << (MATERIALIZED - 554)) | (1L << (MAX - 554)) | (1L << (MAX_CPU_PERCENT - 554)) | (1L << (MAX_DOP - 554)) | (1L << (MAX_FILES - 554)) | (1L << (MAX_IOPS_PER_VOLUME - 554)) | (1L << (MAX_MEMORY_PERCENT - 554)) | (1L << (MAX_PROCESSES - 554)) | (1L << (MAX_QUEUE_READERS - 554)) | (1L << (MAX_ROLLOVER_FILES - 554)) | (1L << (MAXDOP - 554)) | (1L << (MAXRECURSION - 554)) | (1L << (MAXSIZE - 554)) | (1L << (MB - 554)) | (1L << (MEDIUM - 554)) | (1L << (MEMORY_OPTIMIZED_DATA - 554)) | (1L << (MESSAGE - 554)) | (1L << (MIN - 554)) | (1L << (MIN_ACTIVE_ROWVERSION - 554)) | (1L << (MIN_CPU_PERCENT - 554)) | (1L << (MIN_IOPS_PER_VOLUME - 554)) | (1L << (MIN_MEMORY_PERCENT - 554)) | (1L << (MINUTES - 554)) | (1L << (MIRROR_ADDRESS - 554)) | (1L << (MIXED_PAGE_ALLOCATION - 554)) | (1L << (MODE - 554)) | (1L << (MODIFY - 554)) | (1L << (MOVE - 554)) | (1L << (MULTI_USER - 554)) | (1L << (NAME - 554)) | (1L << (NESTED_TRIGGERS - 554)) | (1L << (NEW_ACCOUNT - 554)) | (1L << (NEW_BROKER - 554)) | (1L << (NEW_PASSWORD - 554)) | (1L << (NEXT - 554)) | (1L << (NO - 554)) | (1L << (NO_TRUNCATE - 554)) | (1L << (NO_WAIT - 554)) | (1L << (NOCOUNT - 554)) | (1L << (NODES - 554)) | (1L << (NOEXPAND - 554)) | (1L << (NON_TRANSACTED_ACCESS - 554)) | (1L << (NORECOMPUTE - 554)))) != 0) || ((((_la - 618)) & ~0x3f) == 0 && ((1L << (_la - 618)) & ((1L << (NORECOVERY - 618)) | (1L << (NOWAIT - 618)) | (1L << (NTILE - 618)) | (1L << (NUMANODE - 618)) | (1L << (NUMBER - 618)) | (1L << (NUMERIC_ROUNDABORT - 618)) | (1L << (OBJECT - 618)) | (1L << (OFFLINE - 618)) | (1L << (OFFSET - 618)) | (1L << (OLD_ACCOUNT - 618)) | (1L << (ONLINE - 618)) | (1L << (ONLY - 618)) | (1L << (OPEN_EXISTING - 618)) | (1L << (OPTIMISTIC - 618)) | (1L << (OPTIMIZE - 618)) | (1L << (OUT - 618)) | (1L << (OUTPUT - 618)) | (1L << (OWNER - 618)) | (1L << (PAGE_VERIFY - 618)) | (1L << (PARAMETERIZATION - 618)) | (1L << (PARTITION - 618)) | (1L << (PARTITIONS - 618)) | (1L << (PARTNER - 618)) | (1L << (PATH - 618)) | (1L << (POISON_MESSAGE_HANDLING - 618)) | (1L << (POOL - 618)) | (1L << (PORT - 618)) | (1L << (PRECEDING - 618)) | (1L << (PRIMARY_ROLE - 618)) | (1L << (PRIOR - 618)) | (1L << (PRIORITY - 618)) | (1L << (PRIORITY_LEVEL - 618)) | (1L << (PRIVATE - 618)) | (1L << (PRIVATE_KEY - 618)) | (1L << (PRIVILEGES - 618)) | (1L << (PROCEDURE_NAME - 618)) | (1L << (PROPERTY - 618)) | (1L << (PROVIDER - 618)) | (1L << (PROVIDER_KEY_NAME - 618)) | (1L << (QUERY - 618)) | (1L << (QUEUE - 618)) | (1L << (QUEUE_DELAY - 618)) | (1L << (QUOTED_IDENTIFIER - 618)) | (1L << (RANGE - 618)) | (1L << (RANK - 618)) | (1L << (RC2 - 618)) | (1L << (RC4 - 618)) | (1L << (RC4_128 - 618)) | (1L << (READ_COMMITTED_SNAPSHOT - 618)) | (1L << (READ_ONLY - 618)) | (1L << (READ_ONLY_ROUTING_LIST - 618)) | (1L << (READ_WRITE - 618)) | (1L << (READONLY - 618)) | (1L << (REBUILD - 618)) | (1L << (RECEIVE - 618)) | (1L << (RECOMPILE - 618)) | (1L << (RECOVERY - 618)) | (1L << (RECURSIVE_TRIGGERS - 618)) | (1L << (RELATIVE - 618)) | (1L << (REMOTE - 618)) | (1L << (REMOTE_SERVICE_NAME - 618)) | (1L << (REMOVE - 618)) | (1L << (REORGANIZE - 618)))) != 0) || ((((_la - 682)) & ~0x3f) == 0 && ((1L << (_la - 682)) & ((1L << (REPEATABLE - 682)) | (1L << (REPLICA - 682)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 682)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 682)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 682)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 682)) | (1L << (RESERVE_DISK_SPACE - 682)) | (1L << (RESOURCE - 682)) | (1L << (RESOURCE_MANAGER_LOCATION - 682)) | (1L << (RESTRICTED_USER - 682)) | (1L << (RETENTION - 682)) | (1L << (ROBUST - 682)) | (1L << (ROOT - 682)) | (1L << (ROUTE - 682)) | (1L << (ROW - 682)) | (1L << (ROW_NUMBER - 682)) | (1L << (ROWGUID - 682)) | (1L << (ROWS - 682)) | (1L << (SAMPLE - 682)) | (1L << (SCHEMABINDING - 682)) | (1L << (SCOPED - 682)) | (1L << (SCROLL - 682)) | (1L << (SCROLL_LOCKS - 682)) | (1L << (SEARCH - 682)) | (1L << (SECONDARY - 682)) | (1L << (SECONDARY_ONLY - 682)) | (1L << (SECONDARY_ROLE - 682)) | (1L << (SECONDS - 682)) | (1L << (SECRET - 682)) | (1L << (SECURITY - 682)) | (1L << (SECURITY_LOG - 682)) | (1L << (SEEDING_MODE - 682)) | (1L << (SELF - 682)) | (1L << (SEMI_SENSITIVE - 682)) | (1L << (SEND - 682)) | (1L << (SENT - 682)) | (1L << (SEQUENCE - 682)) | (1L << (SERIALIZABLE - 682)) | (1L << (SESSION_TIMEOUT - 682)) | (1L << (SETERROR - 682)) | (1L << (SHARE - 682)) | (1L << (SHOWPLAN - 682)) | (1L << (SIGNATURE - 682)) | (1L << (SIMPLE - 682)) | (1L << (SINGLE_USER - 682)) | (1L << (SIZE - 682)) | (1L << (SMALLINT - 682)) | (1L << (SNAPSHOT - 682)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 682)) | (1L << (STANDBY - 682)) | (1L << (START_DATE - 682)) | (1L << (STATIC - 682)) | (1L << (STATS_STREAM - 682)) | (1L << (STATUS - 682)) | (1L << (STDEV - 682)) | (1L << (STDEVP - 682)) | (1L << (STOPLIST - 682)) | (1L << (STRING_AGG - 682)) | (1L << (STUFF - 682)) | (1L << (SUBJECT - 682)) | (1L << (SUM - 682)) | (1L << (SUSPEND - 682)))) != 0) || ((((_la - 746)) & ~0x3f) == 0 && ((1L << (_la - 746)) & ((1L << (SYMMETRIC - 746)) | (1L << (SYNCHRONOUS_COMMIT - 746)) | (1L << (SYNONYM - 746)) | (1L << (SYSTEM - 746)) | (1L << (TAKE - 746)) | (1L << (TARGET_RECOVERY_TIME - 746)) | (1L << (TB - 746)) | (1L << (TEXTIMAGE_ON - 746)) | (1L << (THROW - 746)) | (1L << (TIES - 746)) | (1L << (TIME - 746)) | (1L << (TIMEOUT - 746)) | (1L << (TIMER - 746)) | (1L << (TINYINT - 746)) | (1L << (TORN_PAGE_DETECTION - 746)) | (1L << (TRANSFORM_NOISE_WORDS - 746)) | (1L << (TRIPLE_DES - 746)) | (1L << (TRIPLE_DES_3KEY - 746)) | (1L << (TRUSTWORTHY - 746)) | (1L << (TRY - 746)) | (1L << (TSQL - 746)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 746)) | (1L << (TYPE - 746)) | (1L << (TYPE_WARNING - 746)) | (1L << (UNBOUNDED - 746)) | (1L << (UNCOMMITTED - 746)) | (1L << (UNKNOWN - 746)) | (1L << (UNLIMITED - 746)) | (1L << (USING - 746)) | (1L << (VALID_XML - 746)) | (1L << (VALIDATION - 746)) | (1L << (VALUE - 746)) | (1L << (VAR - 746)) | (1L << (VARP - 746)) | (1L << (VIEW_METADATA - 746)) | (1L << (VIEWS - 746)) | (1L << (WAIT - 746)) | (1L << (WELL_FORMED_XML - 746)) | (1L << (WORK - 746)) | (1L << (WORKLOAD - 746)) | (1L << (XML - 746)) | (1L << (XMLNAMESPACES - 746)) | (1L << (DOUBLE_QUOTE_ID - 746)) | (1L << (SQUARE_BRACKET_ID - 746)) | (1L << (ID - 746)))) != 0)) {
 						{
@@ -25318,6 +26083,7 @@ public class MocaSqlParser extends Parser {
 		public IdContext id(int i) {
 			return getRuleContext(IdContext.class,i);
 		}
+		public TerminalNode DOT() { return getToken(MocaSqlParser.DOT, 0); }
 		public Simple_nameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -25379,6 +26145,7 @@ public class MocaSqlParser extends Parser {
 		public IdContext id(int i) {
 			return getRuleContext(IdContext.class,i);
 		}
+		public TerminalNode DOT() { return getToken(MocaSqlParser.DOT, 0); }
 		public Func_proc_name_schemaContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -25446,6 +26213,10 @@ public class MocaSqlParser extends Parser {
 		public IdContext id(int i) {
 			return getRuleContext(IdContext.class,i);
 		}
+		public List<TerminalNode> DOT() { return getTokens(MocaSqlParser.DOT); }
+		public TerminalNode DOT(int i) {
+			return getToken(MocaSqlParser.DOT, i);
+		}
 		public Func_proc_name_database_schemaContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -25493,6 +26264,7 @@ public class MocaSqlParser extends Parser {
 					setState(2852);
 					match(DOT);
 					setState(2854);
+					_errHandler.sync(this);
 					_la = _input.LA(1);
 					if (_la==CALLED || ((((_la - 81)) & ~0x3f) == 0 && ((1L << (_la - 81)) & ((1L << (DATA_COMPRESSION - 81)) | (1L << (EVENTDATA - 81)) | (1L << (EXPIREDATE - 81)) | (1L << (FILENAME - 81)) | (1L << (FILLFACTOR - 81)) | (1L << (FORCESEEK - 81)))) != 0) || ((((_la - 159)) & ~0x3f) == 0 && ((1L << (_la - 159)) & ((1L << (INIT - 159)) | (1L << (KEY - 159)) | (1L << (MASTER - 159)) | (1L << (MAX_MEMORY - 159)))) != 0) || ((((_la - 226)) & ~0x3f) == 0 && ((1L << (_la - 226)) & ((1L << (OFFSETS - 226)) | (1L << (PAGE - 226)) | (1L << (POLICY - 226)) | (1L << (PRECISION - 226)) | (1L << (PUBLIC - 226)) | (1L << (R - 226)) | (1L << (RAW - 226)) | (1L << (RETURN - 226)) | (1L << (RETURNS - 226)) | (1L << (ROLE - 226)) | (1L << (ROWCOUNT - 226)))) != 0) || ((((_la - 296)) & ~0x3f) == 0 && ((1L << (_la - 296)) & ((1L << (SAFETY - 296)) | (1L << (RULE - 296)) | (1L << (SERVER - 296)) | (1L << (SID - 296)) | (1L << (SOURCE - 296)) | (1L << (SPLIT - 296)) | (1L << (STATE - 296)) | (1L << (START - 296)) | (1L << (STOP - 296)) | (1L << (TARGET - 296)) | (1L << (TRAN - 296)))) != 0) || ((((_la - 362)) & ~0x3f) == 0 && ((1L << (_la - 362)) & ((1L << (URL - 362)) | (1L << (USER - 362)) | (1L << (ABSOLUTE - 362)) | (1L << (ACCENT_SENSITIVITY - 362)) | (1L << (ACTION - 362)) | (1L << (ACTIVATION - 362)) | (1L << (ACTIVE - 362)) | (1L << (ADDRESS - 362)) | (1L << (AES_128 - 362)) | (1L << (AES_192 - 362)) | (1L << (AES_256 - 362)) | (1L << (AFFINITY - 362)) | (1L << (AFTER - 362)) | (1L << (AGGREGATE - 362)) | (1L << (ALGORITHM - 362)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 362)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 362)) | (1L << (ALLOWED - 362)) | (1L << (ANSI_NULL_DEFAULT - 362)) | (1L << (ANSI_NULLS - 362)) | (1L << (ANSI_PADDING - 362)) | (1L << (ANSI_WARNINGS - 362)) | (1L << (APPLICATION_LOG - 362)) | (1L << (APPLY - 362)) | (1L << (ARITHABORT - 362)) | (1L << (ASSEMBLY - 362)) | (1L << (AUDIT - 362)) | (1L << (AUDIT_GUID - 362)) | (1L << (AUTO - 362)) | (1L << (AUTO_CLEANUP - 362)) | (1L << (AUTO_CLOSE - 362)) | (1L << (AUTO_CREATE_STATISTICS - 362)) | (1L << (AUTO_SHRINK - 362)) | (1L << (AUTO_UPDATE_STATISTICS - 362)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 362)) | (1L << (AVAILABILITY - 362)) | (1L << (AVG - 362)) | (1L << (BACKUP_PRIORITY - 362)) | (1L << (BEGIN_DIALOG - 362)) | (1L << (BIGINT - 362)) | (1L << (BINARY_BASE64 - 362)) | (1L << (BINARY_CHECKSUM - 362)) | (1L << (BINDING - 362)) | (1L << (BLOB_STORAGE - 362)) | (1L << (BROKER - 362)) | (1L << (BROKER_INSTANCE - 362)) | (1L << (BULK_LOGGED - 362)))) != 0) || ((((_la - 426)) & ~0x3f) == 0 && ((1L << (_la - 426)) & ((1L << (CALLER - 426)) | (1L << (CAP_CPU_PERCENT - 426)) | (1L << (CAST - 426)) | (1L << (CATALOG - 426)) | (1L << (CATCH - 426)) | (1L << (CHANGE_RETENTION - 426)) | (1L << (CHANGE_TRACKING - 426)) | (1L << (CHECKSUM - 426)) | (1L << (CHECKSUM_AGG - 426)) | (1L << (CLEANUP - 426)) | (1L << (COLLECTION - 426)) | (1L << (COLUMN_MASTER_KEY - 426)) | (1L << (COMMITTED - 426)) | (1L << (COMPATIBILITY_LEVEL - 426)) | (1L << (CONCAT - 426)) | (1L << (CONCAT_NULL_YIELDS_NULL - 426)) | (1L << (CONTENT - 426)) | (1L << (CONTROL - 426)) | (1L << (COOKIE - 426)) | (1L << (COUNT - 426)) | (1L << (COUNT_BIG - 426)) | (1L << (COUNTER - 426)) | (1L << (CPU - 426)) | (1L << (CREATE_NEW - 426)) | (1L << (CREATION_DISPOSITION - 426)) | (1L << (CREDENTIAL - 426)) | (1L << (CRYPTOGRAPHIC - 426)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 426)) | (1L << (CURSOR_DEFAULT - 426)) | (1L << (DATA - 426)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 426)) | (1L << (DATEADD - 426)) | (1L << (DATEDIFF - 426)) | (1L << (DATENAME - 426)) | (1L << (DATEPART - 426)) | (1L << (DAYS - 426)) | (1L << (DB_CHAINING - 426)) | (1L << (DB_FAILOVER - 426)) | (1L << (DECRYPTION - 426)) | (1L << (DEFAULT_DOUBLE_QUOTE - 426)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 426)) | (1L << (DEFAULT_LANGUAGE - 426)) | (1L << (DELAY - 426)) | (1L << (DELAYED_DURABILITY - 426)) | (1L << (DELETED - 426)) | (1L << (DENSE_RANK - 426)) | (1L << (DEPENDENTS - 426)) | (1L << (DES - 426)) | (1L << (DESCRIPTION - 426)) | (1L << (DESX - 426)) | (1L << (DHCP - 426)) | (1L << (DIALOG - 426)) | (1L << (DIRECTORY_NAME - 426)) | (1L << (DISABLE - 426)) | (1L << (DISABLE_BROKER - 426)) | (1L << (DISABLED - 426)) | (1L << (DISK_DRIVE - 426)) | (1L << (DOCUMENT - 426)) | (1L << (DYNAMIC - 426)) | (1L << (EMERGENCY - 426)) | (1L << (EMPTY - 426)) | (1L << (ENABLE - 426)) | (1L << (ENABLE_BROKER - 426)))) != 0) || ((((_la - 490)) & ~0x3f) == 0 && ((1L << (_la - 490)) & ((1L << (ENCRYPTED_VALUE - 490)) | (1L << (ENCRYPTION - 490)) | (1L << (ENDPOINT_URL - 490)) | (1L << (ERROR_BROKER_CONVERSATIONS - 490)) | (1L << (EXCLUSIVE - 490)) | (1L << (EXECUTABLE - 490)) | (1L << (EXIST - 490)) | (1L << (EXPAND - 490)) | (1L << (EXPIRY_DATE - 490)) | (1L << (EXPLICIT - 490)) | (1L << (FAIL_OPERATION - 490)) | (1L << (FAILOVER_MODE - 490)) | (1L << (FAILURE - 490)) | (1L << (FAILURE_CONDITION_LEVEL - 490)) | (1L << (FAST - 490)) | (1L << (FAST_FORWARD - 490)) | (1L << (FILEGROUP - 490)) | (1L << (FILEGROWTH - 490)) | (1L << (FILEPATH - 490)) | (1L << (FILESTREAM - 490)) | (1L << (FILTER - 490)) | (1L << (FIRST - 490)) | (1L << (FIRST_VALUE - 490)) | (1L << (FOLLOWING - 490)) | (1L << (FORCE - 490)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 490)) | (1L << (FORCED - 490)) | (1L << (FORMAT - 490)) | (1L << (FORWARD_ONLY - 490)) | (1L << (FULLSCAN - 490)) | (1L << (FULLTEXT - 490)) | (1L << (GB - 490)) | (1L << (GETDATE - 490)) | (1L << (GETUTCDATE - 490)) | (1L << (GLOBAL - 490)) | (1L << (GO - 490)) | (1L << (GROUP_MAX_REQUESTS - 490)) | (1L << (GROUPING - 490)) | (1L << (GROUPING_ID - 490)) | (1L << (HADR - 490)) | (1L << (HASH - 490)) | (1L << (HEALTH_CHECK_TIMEOUT - 490)) | (1L << (HIGH - 490)) | (1L << (HONOR_BROKER_PRIORITY - 490)) | (1L << (HOURS - 490)) | (1L << (IDENTITY_VALUE - 490)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 490)) | (1L << (IMMEDIATE - 490)) | (1L << (IMPERSONATE - 490)) | (1L << (IMPORTANCE - 490)) | (1L << (INCREMENTAL - 490)) | (1L << (INITIATOR - 490)) | (1L << (INPUT - 490)) | (1L << (INSENSITIVE - 490)) | (1L << (INSERTED - 490)) | (1L << (INT - 490)) | (1L << (IP - 490)) | (1L << (ISOLATION - 490)) | (1L << (KB - 490)) | (1L << (KEEP - 490)) | (1L << (KEEPFIXED - 490)))) != 0) || ((((_la - 554)) & ~0x3f) == 0 && ((1L << (_la - 554)) & ((1L << (KEY_SOURCE - 554)) | (1L << (KEYS - 554)) | (1L << (KEYSET - 554)) | (1L << (LAG - 554)) | (1L << (LAST - 554)) | (1L << (LAST_VALUE - 554)) | (1L << (LEAD - 554)) | (1L << (LEVEL - 554)) | (1L << (LIST - 554)) | (1L << (LISTENER - 554)) | (1L << (LISTENER_URL - 554)) | (1L << (LOB_COMPACTION - 554)) | (1L << (LOCAL - 554)) | (1L << (LOCATION - 554)) | (1L << (LOCK - 554)) | (1L << (LOCK_ESCALATION - 554)) | (1L << (LOGIN - 554)) | (1L << (LOOP - 554)) | (1L << (LOW - 554)) | (1L << (MANUAL - 554)) | (1L << (MARK - 554)) | (1L << (MATERIALIZED - 554)) | (1L << (MAX - 554)) | (1L << (MAX_CPU_PERCENT - 554)) | (1L << (MAX_DOP - 554)) | (1L << (MAX_FILES - 554)) | (1L << (MAX_IOPS_PER_VOLUME - 554)) | (1L << (MAX_MEMORY_PERCENT - 554)) | (1L << (MAX_PROCESSES - 554)) | (1L << (MAX_QUEUE_READERS - 554)) | (1L << (MAX_ROLLOVER_FILES - 554)) | (1L << (MAXDOP - 554)) | (1L << (MAXRECURSION - 554)) | (1L << (MAXSIZE - 554)) | (1L << (MB - 554)) | (1L << (MEDIUM - 554)) | (1L << (MEMORY_OPTIMIZED_DATA - 554)) | (1L << (MESSAGE - 554)) | (1L << (MIN - 554)) | (1L << (MIN_ACTIVE_ROWVERSION - 554)) | (1L << (MIN_CPU_PERCENT - 554)) | (1L << (MIN_IOPS_PER_VOLUME - 554)) | (1L << (MIN_MEMORY_PERCENT - 554)) | (1L << (MINUTES - 554)) | (1L << (MIRROR_ADDRESS - 554)) | (1L << (MIXED_PAGE_ALLOCATION - 554)) | (1L << (MODE - 554)) | (1L << (MODIFY - 554)) | (1L << (MOVE - 554)) | (1L << (MULTI_USER - 554)) | (1L << (NAME - 554)) | (1L << (NESTED_TRIGGERS - 554)) | (1L << (NEW_ACCOUNT - 554)) | (1L << (NEW_BROKER - 554)) | (1L << (NEW_PASSWORD - 554)) | (1L << (NEXT - 554)) | (1L << (NO - 554)) | (1L << (NO_TRUNCATE - 554)) | (1L << (NO_WAIT - 554)) | (1L << (NOCOUNT - 554)) | (1L << (NODES - 554)) | (1L << (NOEXPAND - 554)) | (1L << (NON_TRANSACTED_ACCESS - 554)) | (1L << (NORECOMPUTE - 554)))) != 0) || ((((_la - 618)) & ~0x3f) == 0 && ((1L << (_la - 618)) & ((1L << (NORECOVERY - 618)) | (1L << (NOWAIT - 618)) | (1L << (NTILE - 618)) | (1L << (NUMANODE - 618)) | (1L << (NUMBER - 618)) | (1L << (NUMERIC_ROUNDABORT - 618)) | (1L << (OBJECT - 618)) | (1L << (OFFLINE - 618)) | (1L << (OFFSET - 618)) | (1L << (OLD_ACCOUNT - 618)) | (1L << (ONLINE - 618)) | (1L << (ONLY - 618)) | (1L << (OPEN_EXISTING - 618)) | (1L << (OPTIMISTIC - 618)) | (1L << (OPTIMIZE - 618)) | (1L << (OUT - 618)) | (1L << (OUTPUT - 618)) | (1L << (OWNER - 618)) | (1L << (PAGE_VERIFY - 618)) | (1L << (PARAMETERIZATION - 618)) | (1L << (PARTITION - 618)) | (1L << (PARTITIONS - 618)) | (1L << (PARTNER - 618)) | (1L << (PATH - 618)) | (1L << (POISON_MESSAGE_HANDLING - 618)) | (1L << (POOL - 618)) | (1L << (PORT - 618)) | (1L << (PRECEDING - 618)) | (1L << (PRIMARY_ROLE - 618)) | (1L << (PRIOR - 618)) | (1L << (PRIORITY - 618)) | (1L << (PRIORITY_LEVEL - 618)) | (1L << (PRIVATE - 618)) | (1L << (PRIVATE_KEY - 618)) | (1L << (PRIVILEGES - 618)) | (1L << (PROCEDURE_NAME - 618)) | (1L << (PROPERTY - 618)) | (1L << (PROVIDER - 618)) | (1L << (PROVIDER_KEY_NAME - 618)) | (1L << (QUERY - 618)) | (1L << (QUEUE - 618)) | (1L << (QUEUE_DELAY - 618)) | (1L << (QUOTED_IDENTIFIER - 618)) | (1L << (RANGE - 618)) | (1L << (RANK - 618)) | (1L << (RC2 - 618)) | (1L << (RC4 - 618)) | (1L << (RC4_128 - 618)) | (1L << (READ_COMMITTED_SNAPSHOT - 618)) | (1L << (READ_ONLY - 618)) | (1L << (READ_ONLY_ROUTING_LIST - 618)) | (1L << (READ_WRITE - 618)) | (1L << (READONLY - 618)) | (1L << (REBUILD - 618)) | (1L << (RECEIVE - 618)) | (1L << (RECOMPILE - 618)) | (1L << (RECOVERY - 618)) | (1L << (RECURSIVE_TRIGGERS - 618)) | (1L << (RELATIVE - 618)) | (1L << (REMOTE - 618)) | (1L << (REMOTE_SERVICE_NAME - 618)) | (1L << (REMOVE - 618)) | (1L << (REORGANIZE - 618)))) != 0) || ((((_la - 682)) & ~0x3f) == 0 && ((1L << (_la - 682)) & ((1L << (REPEATABLE - 682)) | (1L << (REPLICA - 682)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 682)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 682)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 682)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 682)) | (1L << (RESERVE_DISK_SPACE - 682)) | (1L << (RESOURCE - 682)) | (1L << (RESOURCE_MANAGER_LOCATION - 682)) | (1L << (RESTRICTED_USER - 682)) | (1L << (RETENTION - 682)) | (1L << (ROBUST - 682)) | (1L << (ROOT - 682)) | (1L << (ROUTE - 682)) | (1L << (ROW - 682)) | (1L << (ROW_NUMBER - 682)) | (1L << (ROWGUID - 682)) | (1L << (ROWS - 682)) | (1L << (SAMPLE - 682)) | (1L << (SCHEMABINDING - 682)) | (1L << (SCOPED - 682)) | (1L << (SCROLL - 682)) | (1L << (SCROLL_LOCKS - 682)) | (1L << (SEARCH - 682)) | (1L << (SECONDARY - 682)) | (1L << (SECONDARY_ONLY - 682)) | (1L << (SECONDARY_ROLE - 682)) | (1L << (SECONDS - 682)) | (1L << (SECRET - 682)) | (1L << (SECURITY - 682)) | (1L << (SECURITY_LOG - 682)) | (1L << (SEEDING_MODE - 682)) | (1L << (SELF - 682)) | (1L << (SEMI_SENSITIVE - 682)) | (1L << (SEND - 682)) | (1L << (SENT - 682)) | (1L << (SEQUENCE - 682)) | (1L << (SERIALIZABLE - 682)) | (1L << (SESSION_TIMEOUT - 682)) | (1L << (SETERROR - 682)) | (1L << (SHARE - 682)) | (1L << (SHOWPLAN - 682)) | (1L << (SIGNATURE - 682)) | (1L << (SIMPLE - 682)) | (1L << (SINGLE_USER - 682)) | (1L << (SIZE - 682)) | (1L << (SMALLINT - 682)) | (1L << (SNAPSHOT - 682)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 682)) | (1L << (STANDBY - 682)) | (1L << (START_DATE - 682)) | (1L << (STATIC - 682)) | (1L << (STATS_STREAM - 682)) | (1L << (STATUS - 682)) | (1L << (STDEV - 682)) | (1L << (STDEVP - 682)) | (1L << (STOPLIST - 682)) | (1L << (STRING_AGG - 682)) | (1L << (STUFF - 682)) | (1L << (SUBJECT - 682)) | (1L << (SUM - 682)) | (1L << (SUSPEND - 682)))) != 0) || ((((_la - 746)) & ~0x3f) == 0 && ((1L << (_la - 746)) & ((1L << (SYMMETRIC - 746)) | (1L << (SYNCHRONOUS_COMMIT - 746)) | (1L << (SYNONYM - 746)) | (1L << (SYSTEM - 746)) | (1L << (TAKE - 746)) | (1L << (TARGET_RECOVERY_TIME - 746)) | (1L << (TB - 746)) | (1L << (TEXTIMAGE_ON - 746)) | (1L << (THROW - 746)) | (1L << (TIES - 746)) | (1L << (TIME - 746)) | (1L << (TIMEOUT - 746)) | (1L << (TIMER - 746)) | (1L << (TINYINT - 746)) | (1L << (TORN_PAGE_DETECTION - 746)) | (1L << (TRANSFORM_NOISE_WORDS - 746)) | (1L << (TRIPLE_DES - 746)) | (1L << (TRIPLE_DES_3KEY - 746)) | (1L << (TRUSTWORTHY - 746)) | (1L << (TRY - 746)) | (1L << (TSQL - 746)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 746)) | (1L << (TYPE - 746)) | (1L << (TYPE_WARNING - 746)) | (1L << (UNBOUNDED - 746)) | (1L << (UNCOMMITTED - 746)) | (1L << (UNKNOWN - 746)) | (1L << (UNLIMITED - 746)) | (1L << (USING - 746)) | (1L << (VALID_XML - 746)) | (1L << (VALIDATION - 746)) | (1L << (VALUE - 746)) | (1L << (VAR - 746)) | (1L << (VARP - 746)) | (1L << (VIEW_METADATA - 746)) | (1L << (VIEWS - 746)) | (1L << (WAIT - 746)) | (1L << (WELL_FORMED_XML - 746)) | (1L << (WORK - 746)) | (1L << (WORKLOAD - 746)) | (1L << (XML - 746)) | (1L << (XMLNAMESPACES - 746)) | (1L << (DOUBLE_QUOTE_ID - 746)) | (1L << (SQUARE_BRACKET_ID - 746)) | (1L << (ID - 746)))) != 0)) {
 						{
@@ -25536,6 +26308,10 @@ public class MocaSqlParser extends Parser {
 		}
 		public IdContext id(int i) {
 			return getRuleContext(IdContext.class,i);
+		}
+		public List<TerminalNode> DOT() { return getTokens(MocaSqlParser.DOT); }
+		public TerminalNode DOT(int i) {
+			return getToken(MocaSqlParser.DOT, i);
 		}
 		public Func_proc_name_server_database_schemaContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -25588,6 +26364,7 @@ public class MocaSqlParser extends Parser {
 					setState(2867);
 					match(DOT);
 					setState(2869);
+					_errHandler.sync(this);
 					_la = _input.LA(1);
 					if (_la==CALLED || ((((_la - 81)) & ~0x3f) == 0 && ((1L << (_la - 81)) & ((1L << (DATA_COMPRESSION - 81)) | (1L << (EVENTDATA - 81)) | (1L << (EXPIREDATE - 81)) | (1L << (FILENAME - 81)) | (1L << (FILLFACTOR - 81)) | (1L << (FORCESEEK - 81)))) != 0) || ((((_la - 159)) & ~0x3f) == 0 && ((1L << (_la - 159)) & ((1L << (INIT - 159)) | (1L << (KEY - 159)) | (1L << (MASTER - 159)) | (1L << (MAX_MEMORY - 159)))) != 0) || ((((_la - 226)) & ~0x3f) == 0 && ((1L << (_la - 226)) & ((1L << (OFFSETS - 226)) | (1L << (PAGE - 226)) | (1L << (POLICY - 226)) | (1L << (PRECISION - 226)) | (1L << (PUBLIC - 226)) | (1L << (R - 226)) | (1L << (RAW - 226)) | (1L << (RETURN - 226)) | (1L << (RETURNS - 226)) | (1L << (ROLE - 226)) | (1L << (ROWCOUNT - 226)))) != 0) || ((((_la - 296)) & ~0x3f) == 0 && ((1L << (_la - 296)) & ((1L << (SAFETY - 296)) | (1L << (RULE - 296)) | (1L << (SERVER - 296)) | (1L << (SID - 296)) | (1L << (SOURCE - 296)) | (1L << (SPLIT - 296)) | (1L << (STATE - 296)) | (1L << (START - 296)) | (1L << (STOP - 296)) | (1L << (TARGET - 296)) | (1L << (TRAN - 296)))) != 0) || ((((_la - 362)) & ~0x3f) == 0 && ((1L << (_la - 362)) & ((1L << (URL - 362)) | (1L << (USER - 362)) | (1L << (ABSOLUTE - 362)) | (1L << (ACCENT_SENSITIVITY - 362)) | (1L << (ACTION - 362)) | (1L << (ACTIVATION - 362)) | (1L << (ACTIVE - 362)) | (1L << (ADDRESS - 362)) | (1L << (AES_128 - 362)) | (1L << (AES_192 - 362)) | (1L << (AES_256 - 362)) | (1L << (AFFINITY - 362)) | (1L << (AFTER - 362)) | (1L << (AGGREGATE - 362)) | (1L << (ALGORITHM - 362)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 362)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 362)) | (1L << (ALLOWED - 362)) | (1L << (ANSI_NULL_DEFAULT - 362)) | (1L << (ANSI_NULLS - 362)) | (1L << (ANSI_PADDING - 362)) | (1L << (ANSI_WARNINGS - 362)) | (1L << (APPLICATION_LOG - 362)) | (1L << (APPLY - 362)) | (1L << (ARITHABORT - 362)) | (1L << (ASSEMBLY - 362)) | (1L << (AUDIT - 362)) | (1L << (AUDIT_GUID - 362)) | (1L << (AUTO - 362)) | (1L << (AUTO_CLEANUP - 362)) | (1L << (AUTO_CLOSE - 362)) | (1L << (AUTO_CREATE_STATISTICS - 362)) | (1L << (AUTO_SHRINK - 362)) | (1L << (AUTO_UPDATE_STATISTICS - 362)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 362)) | (1L << (AVAILABILITY - 362)) | (1L << (AVG - 362)) | (1L << (BACKUP_PRIORITY - 362)) | (1L << (BEGIN_DIALOG - 362)) | (1L << (BIGINT - 362)) | (1L << (BINARY_BASE64 - 362)) | (1L << (BINARY_CHECKSUM - 362)) | (1L << (BINDING - 362)) | (1L << (BLOB_STORAGE - 362)) | (1L << (BROKER - 362)) | (1L << (BROKER_INSTANCE - 362)) | (1L << (BULK_LOGGED - 362)))) != 0) || ((((_la - 426)) & ~0x3f) == 0 && ((1L << (_la - 426)) & ((1L << (CALLER - 426)) | (1L << (CAP_CPU_PERCENT - 426)) | (1L << (CAST - 426)) | (1L << (CATALOG - 426)) | (1L << (CATCH - 426)) | (1L << (CHANGE_RETENTION - 426)) | (1L << (CHANGE_TRACKING - 426)) | (1L << (CHECKSUM - 426)) | (1L << (CHECKSUM_AGG - 426)) | (1L << (CLEANUP - 426)) | (1L << (COLLECTION - 426)) | (1L << (COLUMN_MASTER_KEY - 426)) | (1L << (COMMITTED - 426)) | (1L << (COMPATIBILITY_LEVEL - 426)) | (1L << (CONCAT - 426)) | (1L << (CONCAT_NULL_YIELDS_NULL - 426)) | (1L << (CONTENT - 426)) | (1L << (CONTROL - 426)) | (1L << (COOKIE - 426)) | (1L << (COUNT - 426)) | (1L << (COUNT_BIG - 426)) | (1L << (COUNTER - 426)) | (1L << (CPU - 426)) | (1L << (CREATE_NEW - 426)) | (1L << (CREATION_DISPOSITION - 426)) | (1L << (CREDENTIAL - 426)) | (1L << (CRYPTOGRAPHIC - 426)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 426)) | (1L << (CURSOR_DEFAULT - 426)) | (1L << (DATA - 426)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 426)) | (1L << (DATEADD - 426)) | (1L << (DATEDIFF - 426)) | (1L << (DATENAME - 426)) | (1L << (DATEPART - 426)) | (1L << (DAYS - 426)) | (1L << (DB_CHAINING - 426)) | (1L << (DB_FAILOVER - 426)) | (1L << (DECRYPTION - 426)) | (1L << (DEFAULT_DOUBLE_QUOTE - 426)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 426)) | (1L << (DEFAULT_LANGUAGE - 426)) | (1L << (DELAY - 426)) | (1L << (DELAYED_DURABILITY - 426)) | (1L << (DELETED - 426)) | (1L << (DENSE_RANK - 426)) | (1L << (DEPENDENTS - 426)) | (1L << (DES - 426)) | (1L << (DESCRIPTION - 426)) | (1L << (DESX - 426)) | (1L << (DHCP - 426)) | (1L << (DIALOG - 426)) | (1L << (DIRECTORY_NAME - 426)) | (1L << (DISABLE - 426)) | (1L << (DISABLE_BROKER - 426)) | (1L << (DISABLED - 426)) | (1L << (DISK_DRIVE - 426)) | (1L << (DOCUMENT - 426)) | (1L << (DYNAMIC - 426)) | (1L << (EMERGENCY - 426)) | (1L << (EMPTY - 426)) | (1L << (ENABLE - 426)) | (1L << (ENABLE_BROKER - 426)))) != 0) || ((((_la - 490)) & ~0x3f) == 0 && ((1L << (_la - 490)) & ((1L << (ENCRYPTED_VALUE - 490)) | (1L << (ENCRYPTION - 490)) | (1L << (ENDPOINT_URL - 490)) | (1L << (ERROR_BROKER_CONVERSATIONS - 490)) | (1L << (EXCLUSIVE - 490)) | (1L << (EXECUTABLE - 490)) | (1L << (EXIST - 490)) | (1L << (EXPAND - 490)) | (1L << (EXPIRY_DATE - 490)) | (1L << (EXPLICIT - 490)) | (1L << (FAIL_OPERATION - 490)) | (1L << (FAILOVER_MODE - 490)) | (1L << (FAILURE - 490)) | (1L << (FAILURE_CONDITION_LEVEL - 490)) | (1L << (FAST - 490)) | (1L << (FAST_FORWARD - 490)) | (1L << (FILEGROUP - 490)) | (1L << (FILEGROWTH - 490)) | (1L << (FILEPATH - 490)) | (1L << (FILESTREAM - 490)) | (1L << (FILTER - 490)) | (1L << (FIRST - 490)) | (1L << (FIRST_VALUE - 490)) | (1L << (FOLLOWING - 490)) | (1L << (FORCE - 490)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 490)) | (1L << (FORCED - 490)) | (1L << (FORMAT - 490)) | (1L << (FORWARD_ONLY - 490)) | (1L << (FULLSCAN - 490)) | (1L << (FULLTEXT - 490)) | (1L << (GB - 490)) | (1L << (GETDATE - 490)) | (1L << (GETUTCDATE - 490)) | (1L << (GLOBAL - 490)) | (1L << (GO - 490)) | (1L << (GROUP_MAX_REQUESTS - 490)) | (1L << (GROUPING - 490)) | (1L << (GROUPING_ID - 490)) | (1L << (HADR - 490)) | (1L << (HASH - 490)) | (1L << (HEALTH_CHECK_TIMEOUT - 490)) | (1L << (HIGH - 490)) | (1L << (HONOR_BROKER_PRIORITY - 490)) | (1L << (HOURS - 490)) | (1L << (IDENTITY_VALUE - 490)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 490)) | (1L << (IMMEDIATE - 490)) | (1L << (IMPERSONATE - 490)) | (1L << (IMPORTANCE - 490)) | (1L << (INCREMENTAL - 490)) | (1L << (INITIATOR - 490)) | (1L << (INPUT - 490)) | (1L << (INSENSITIVE - 490)) | (1L << (INSERTED - 490)) | (1L << (INT - 490)) | (1L << (IP - 490)) | (1L << (ISOLATION - 490)) | (1L << (KB - 490)) | (1L << (KEEP - 490)) | (1L << (KEEPFIXED - 490)))) != 0) || ((((_la - 554)) & ~0x3f) == 0 && ((1L << (_la - 554)) & ((1L << (KEY_SOURCE - 554)) | (1L << (KEYS - 554)) | (1L << (KEYSET - 554)) | (1L << (LAG - 554)) | (1L << (LAST - 554)) | (1L << (LAST_VALUE - 554)) | (1L << (LEAD - 554)) | (1L << (LEVEL - 554)) | (1L << (LIST - 554)) | (1L << (LISTENER - 554)) | (1L << (LISTENER_URL - 554)) | (1L << (LOB_COMPACTION - 554)) | (1L << (LOCAL - 554)) | (1L << (LOCATION - 554)) | (1L << (LOCK - 554)) | (1L << (LOCK_ESCALATION - 554)) | (1L << (LOGIN - 554)) | (1L << (LOOP - 554)) | (1L << (LOW - 554)) | (1L << (MANUAL - 554)) | (1L << (MARK - 554)) | (1L << (MATERIALIZED - 554)) | (1L << (MAX - 554)) | (1L << (MAX_CPU_PERCENT - 554)) | (1L << (MAX_DOP - 554)) | (1L << (MAX_FILES - 554)) | (1L << (MAX_IOPS_PER_VOLUME - 554)) | (1L << (MAX_MEMORY_PERCENT - 554)) | (1L << (MAX_PROCESSES - 554)) | (1L << (MAX_QUEUE_READERS - 554)) | (1L << (MAX_ROLLOVER_FILES - 554)) | (1L << (MAXDOP - 554)) | (1L << (MAXRECURSION - 554)) | (1L << (MAXSIZE - 554)) | (1L << (MB - 554)) | (1L << (MEDIUM - 554)) | (1L << (MEMORY_OPTIMIZED_DATA - 554)) | (1L << (MESSAGE - 554)) | (1L << (MIN - 554)) | (1L << (MIN_ACTIVE_ROWVERSION - 554)) | (1L << (MIN_CPU_PERCENT - 554)) | (1L << (MIN_IOPS_PER_VOLUME - 554)) | (1L << (MIN_MEMORY_PERCENT - 554)) | (1L << (MINUTES - 554)) | (1L << (MIRROR_ADDRESS - 554)) | (1L << (MIXED_PAGE_ALLOCATION - 554)) | (1L << (MODE - 554)) | (1L << (MODIFY - 554)) | (1L << (MOVE - 554)) | (1L << (MULTI_USER - 554)) | (1L << (NAME - 554)) | (1L << (NESTED_TRIGGERS - 554)) | (1L << (NEW_ACCOUNT - 554)) | (1L << (NEW_BROKER - 554)) | (1L << (NEW_PASSWORD - 554)) | (1L << (NEXT - 554)) | (1L << (NO - 554)) | (1L << (NO_TRUNCATE - 554)) | (1L << (NO_WAIT - 554)) | (1L << (NOCOUNT - 554)) | (1L << (NODES - 554)) | (1L << (NOEXPAND - 554)) | (1L << (NON_TRANSACTED_ACCESS - 554)) | (1L << (NORECOMPUTE - 554)))) != 0) || ((((_la - 618)) & ~0x3f) == 0 && ((1L << (_la - 618)) & ((1L << (NORECOVERY - 618)) | (1L << (NOWAIT - 618)) | (1L << (NTILE - 618)) | (1L << (NUMANODE - 618)) | (1L << (NUMBER - 618)) | (1L << (NUMERIC_ROUNDABORT - 618)) | (1L << (OBJECT - 618)) | (1L << (OFFLINE - 618)) | (1L << (OFFSET - 618)) | (1L << (OLD_ACCOUNT - 618)) | (1L << (ONLINE - 618)) | (1L << (ONLY - 618)) | (1L << (OPEN_EXISTING - 618)) | (1L << (OPTIMISTIC - 618)) | (1L << (OPTIMIZE - 618)) | (1L << (OUT - 618)) | (1L << (OUTPUT - 618)) | (1L << (OWNER - 618)) | (1L << (PAGE_VERIFY - 618)) | (1L << (PARAMETERIZATION - 618)) | (1L << (PARTITION - 618)) | (1L << (PARTITIONS - 618)) | (1L << (PARTNER - 618)) | (1L << (PATH - 618)) | (1L << (POISON_MESSAGE_HANDLING - 618)) | (1L << (POOL - 618)) | (1L << (PORT - 618)) | (1L << (PRECEDING - 618)) | (1L << (PRIMARY_ROLE - 618)) | (1L << (PRIOR - 618)) | (1L << (PRIORITY - 618)) | (1L << (PRIORITY_LEVEL - 618)) | (1L << (PRIVATE - 618)) | (1L << (PRIVATE_KEY - 618)) | (1L << (PRIVILEGES - 618)) | (1L << (PROCEDURE_NAME - 618)) | (1L << (PROPERTY - 618)) | (1L << (PROVIDER - 618)) | (1L << (PROVIDER_KEY_NAME - 618)) | (1L << (QUERY - 618)) | (1L << (QUEUE - 618)) | (1L << (QUEUE_DELAY - 618)) | (1L << (QUOTED_IDENTIFIER - 618)) | (1L << (RANGE - 618)) | (1L << (RANK - 618)) | (1L << (RC2 - 618)) | (1L << (RC4 - 618)) | (1L << (RC4_128 - 618)) | (1L << (READ_COMMITTED_SNAPSHOT - 618)) | (1L << (READ_ONLY - 618)) | (1L << (READ_ONLY_ROUTING_LIST - 618)) | (1L << (READ_WRITE - 618)) | (1L << (READONLY - 618)) | (1L << (REBUILD - 618)) | (1L << (RECEIVE - 618)) | (1L << (RECOMPILE - 618)) | (1L << (RECOVERY - 618)) | (1L << (RECURSIVE_TRIGGERS - 618)) | (1L << (RELATIVE - 618)) | (1L << (REMOTE - 618)) | (1L << (REMOTE_SERVICE_NAME - 618)) | (1L << (REMOVE - 618)) | (1L << (REORGANIZE - 618)))) != 0) || ((((_la - 682)) & ~0x3f) == 0 && ((1L << (_la - 682)) & ((1L << (REPEATABLE - 682)) | (1L << (REPLICA - 682)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 682)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 682)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 682)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 682)) | (1L << (RESERVE_DISK_SPACE - 682)) | (1L << (RESOURCE - 682)) | (1L << (RESOURCE_MANAGER_LOCATION - 682)) | (1L << (RESTRICTED_USER - 682)) | (1L << (RETENTION - 682)) | (1L << (ROBUST - 682)) | (1L << (ROOT - 682)) | (1L << (ROUTE - 682)) | (1L << (ROW - 682)) | (1L << (ROW_NUMBER - 682)) | (1L << (ROWGUID - 682)) | (1L << (ROWS - 682)) | (1L << (SAMPLE - 682)) | (1L << (SCHEMABINDING - 682)) | (1L << (SCOPED - 682)) | (1L << (SCROLL - 682)) | (1L << (SCROLL_LOCKS - 682)) | (1L << (SEARCH - 682)) | (1L << (SECONDARY - 682)) | (1L << (SECONDARY_ONLY - 682)) | (1L << (SECONDARY_ROLE - 682)) | (1L << (SECONDS - 682)) | (1L << (SECRET - 682)) | (1L << (SECURITY - 682)) | (1L << (SECURITY_LOG - 682)) | (1L << (SEEDING_MODE - 682)) | (1L << (SELF - 682)) | (1L << (SEMI_SENSITIVE - 682)) | (1L << (SEND - 682)) | (1L << (SENT - 682)) | (1L << (SEQUENCE - 682)) | (1L << (SERIALIZABLE - 682)) | (1L << (SESSION_TIMEOUT - 682)) | (1L << (SETERROR - 682)) | (1L << (SHARE - 682)) | (1L << (SHOWPLAN - 682)) | (1L << (SIGNATURE - 682)) | (1L << (SIMPLE - 682)) | (1L << (SINGLE_USER - 682)) | (1L << (SIZE - 682)) | (1L << (SMALLINT - 682)) | (1L << (SNAPSHOT - 682)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 682)) | (1L << (STANDBY - 682)) | (1L << (START_DATE - 682)) | (1L << (STATIC - 682)) | (1L << (STATS_STREAM - 682)) | (1L << (STATUS - 682)) | (1L << (STDEV - 682)) | (1L << (STDEVP - 682)) | (1L << (STOPLIST - 682)) | (1L << (STRING_AGG - 682)) | (1L << (STUFF - 682)) | (1L << (SUBJECT - 682)) | (1L << (SUM - 682)) | (1L << (SUSPEND - 682)))) != 0) || ((((_la - 746)) & ~0x3f) == 0 && ((1L << (_la - 746)) & ((1L << (SYMMETRIC - 746)) | (1L << (SYNCHRONOUS_COMMIT - 746)) | (1L << (SYNONYM - 746)) | (1L << (SYSTEM - 746)) | (1L << (TAKE - 746)) | (1L << (TARGET_RECOVERY_TIME - 746)) | (1L << (TB - 746)) | (1L << (TEXTIMAGE_ON - 746)) | (1L << (THROW - 746)) | (1L << (TIES - 746)) | (1L << (TIME - 746)) | (1L << (TIMEOUT - 746)) | (1L << (TIMER - 746)) | (1L << (TINYINT - 746)) | (1L << (TORN_PAGE_DETECTION - 746)) | (1L << (TRANSFORM_NOISE_WORDS - 746)) | (1L << (TRIPLE_DES - 746)) | (1L << (TRIPLE_DES_3KEY - 746)) | (1L << (TRUSTWORTHY - 746)) | (1L << (TRY - 746)) | (1L << (TSQL - 746)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 746)) | (1L << (TYPE - 746)) | (1L << (TYPE_WARNING - 746)) | (1L << (UNBOUNDED - 746)) | (1L << (UNCOMMITTED - 746)) | (1L << (UNKNOWN - 746)) | (1L << (UNLIMITED - 746)) | (1L << (USING - 746)) | (1L << (VALID_XML - 746)) | (1L << (VALIDATION - 746)) | (1L << (VALUE - 746)) | (1L << (VAR - 746)) | (1L << (VARP - 746)) | (1L << (VIEW_METADATA - 746)) | (1L << (VIEWS - 746)) | (1L << (WAIT - 746)) | (1L << (WELL_FORMED_XML - 746)) | (1L << (WORK - 746)) | (1L << (WORKLOAD - 746)) | (1L << (XML - 746)) | (1L << (XMLNAMESPACES - 746)) | (1L << (DOUBLE_QUOTE_ID - 746)) | (1L << (SQUARE_BRACKET_ID - 746)) | (1L << (ID - 746)))) != 0)) {
 						{
@@ -25647,6 +26424,7 @@ public class MocaSqlParser extends Parser {
 		enterRule(_localctx, 290, RULE_ddl_object);
 		try {
 			setState(2880);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CALLED:
 			case DATA_COMPRESSION:
@@ -26122,6 +26900,7 @@ public class MocaSqlParser extends Parser {
 		public Table_nameContext table_name() {
 			return getRuleContext(Table_nameContext.class,0);
 		}
+		public TerminalNode DOT() { return getToken(MocaSqlParser.DOT, 0); }
 		public TerminalNode COMPATIBILITY_LEVEL() { return getToken(MocaSqlParser.COMPATIBILITY_LEVEL, 0); }
 		public TerminalNode STATUS() { return getToken(MocaSqlParser.STATUS, 0); }
 		public TerminalNode QUOTED_IDENTIFIER() { return getToken(MocaSqlParser.QUOTED_IDENTIFIER, 0); }
@@ -26327,6 +27106,10 @@ public class MocaSqlParser extends Parser {
 		public IdContext id(int i) {
 			return getRuleContext(IdContext.class,i);
 		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
+		}
 		public List<TerminalNode> ASC() { return getTokens(MocaSqlParser.ASC); }
 		public TerminalNode ASC(int i) {
 			return getToken(MocaSqlParser.ASC, i);
@@ -26364,6 +27147,7 @@ public class MocaSqlParser extends Parser {
 			setState(2932);
 			id();
 			setState(2934);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==ASC || _la==DESC) {
 				{
@@ -26371,7 +27155,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==ASC || _la==DESC) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				}
@@ -26388,6 +27175,7 @@ public class MocaSqlParser extends Parser {
 				setState(2937);
 				id();
 				setState(2939);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==ASC || _la==DESC) {
 					{
@@ -26395,7 +27183,10 @@ public class MocaSqlParser extends Parser {
 					_la = _input.LA(1);
 					if ( !(_la==ASC || _la==DESC) ) {
 					_errHandler.recoverInline(this);
-					} else {
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
 						consume();
 					}
 					}
@@ -26426,6 +27217,10 @@ public class MocaSqlParser extends Parser {
 		}
 		public IdContext id(int i) {
 			return getRuleContext(IdContext.class,i);
+		}
+		public List<TerminalNode> COMMA() { return getTokens(MocaSqlParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(MocaSqlParser.COMMA, i);
 		}
 		public Column_name_listContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -26513,6 +27308,7 @@ public class MocaSqlParser extends Parser {
 		enterRule(_localctx, 298, RULE_cursor_name);
 		try {
 			setState(2956);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CALLED:
 			case DATA_COMPRESSION:
@@ -27013,7 +27809,10 @@ public class MocaSqlParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==OFF || _la==ON) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -27062,7 +27861,10 @@ public class MocaSqlParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==CLUSTERED || _la==NONCLUSTERED) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -27108,6 +27910,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(2963);
+			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==NOT) {
 				{
@@ -27167,6 +27970,7 @@ public class MocaSqlParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(2974);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case NOT:
 			case NULL:
@@ -27298,11 +28102,14 @@ public class MocaSqlParser extends Parser {
 			return getRuleContext(IdContext.class,0);
 		}
 		public TerminalNode IDENTITY() { return getToken(MocaSqlParser.IDENTITY, 0); }
+		public TerminalNode LR_BRACKET() { return getToken(MocaSqlParser.LR_BRACKET, 0); }
+		public TerminalNode RR_BRACKET() { return getToken(MocaSqlParser.RR_BRACKET, 0); }
 		public List<TerminalNode> DECIMAL() { return getTokens(MocaSqlParser.DECIMAL); }
 		public TerminalNode DECIMAL(int i) {
 			return getToken(MocaSqlParser.DECIMAL, i);
 		}
 		public TerminalNode MAX() { return getToken(MocaSqlParser.MAX, 0); }
+		public TerminalNode COMMA() { return getToken(MocaSqlParser.COMMA, 0); }
 		public TerminalNode DOUBLE() { return getToken(MocaSqlParser.DOUBLE, 0); }
 		public TerminalNode PRECISION() { return getToken(MocaSqlParser.PRECISION, 0); }
 		public TerminalNode INT() { return getToken(MocaSqlParser.INT, 0); }
@@ -27362,10 +28169,14 @@ public class MocaSqlParser extends Parser {
 					_la = _input.LA(1);
 					if ( !(_la==MAX || _la==DECIMAL) ) {
 					_errHandler.recoverInline(this);
-					} else {
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
 						consume();
 					}
 					setState(2991);
+					_errHandler.sync(this);
 					_la = _input.LA(1);
 					if (_la==COMMA) {
 						{
@@ -27451,6 +28262,7 @@ public class MocaSqlParser extends Parser {
 		}
 		public TerminalNode REAL() { return getToken(MocaSqlParser.REAL, 0); }
 		public TerminalNode FLOAT() { return getToken(MocaSqlParser.FLOAT, 0); }
+		public TerminalNode DOLLAR() { return getToken(MocaSqlParser.DOLLAR, 0); }
 		public ConstantContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -27496,6 +28308,7 @@ public class MocaSqlParser extends Parser {
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(3009);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PLUS || _la==MINUS) {
 					{
@@ -27512,6 +28325,7 @@ public class MocaSqlParser extends Parser {
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(3013);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PLUS || _la==MINUS) {
 					{
@@ -27524,7 +28338,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==FLOAT || _la==REAL) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				}
@@ -27533,6 +28350,7 @@ public class MocaSqlParser extends Parser {
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(3017);
+				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==PLUS || _la==MINUS) {
 					{
@@ -27547,7 +28365,10 @@ public class MocaSqlParser extends Parser {
 				_la = _input.LA(1);
 				if ( !(_la==DECIMAL || _la==FLOAT) ) {
 				_errHandler.recoverInline(this);
-				} else {
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
 					consume();
 				}
 				}
@@ -27566,6 +28387,8 @@ public class MocaSqlParser extends Parser {
 	}
 
 	public static class SignContext extends ParserRuleContext {
+		public TerminalNode PLUS() { return getToken(MocaSqlParser.PLUS, 0); }
+		public TerminalNode MINUS() { return getToken(MocaSqlParser.MINUS, 0); }
 		public SignContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -27596,7 +28419,10 @@ public class MocaSqlParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==PLUS || _la==MINUS) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -27642,6 +28468,7 @@ public class MocaSqlParser extends Parser {
 		enterRule(_localctx, 316, RULE_id);
 		try {
 			setState(3028);
+			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case CALLED:
 			case DATA_COMPRESSION:
@@ -28292,10 +29119,7 @@ public class MocaSqlParser extends Parser {
 		public TerminalNode KB() { return getToken(MocaSqlParser.KB, 0); }
 		public TerminalNode KEEP() { return getToken(MocaSqlParser.KEEP, 0); }
 		public TerminalNode KEEPFIXED() { return getToken(MocaSqlParser.KEEPFIXED, 0); }
-		public List<TerminalNode> KEY() { return getTokens(MocaSqlParser.KEY); }
-		public TerminalNode KEY(int i) {
-			return getToken(MocaSqlParser.KEY, i);
-		}
+		public TerminalNode KEY() { return getToken(MocaSqlParser.KEY, 0); }
 		public TerminalNode KEY_SOURCE() { return getToken(MocaSqlParser.KEY_SOURCE, 0); }
 		public TerminalNode KEYS() { return getToken(MocaSqlParser.KEYS, 0); }
 		public TerminalNode KEYSET() { return getToken(MocaSqlParser.KEYSET, 0); }
@@ -28408,16 +29232,10 @@ public class MocaSqlParser extends Parser {
 		public TerminalNode QUEUE() { return getToken(MocaSqlParser.QUEUE, 0); }
 		public TerminalNode QUEUE_DELAY() { return getToken(MocaSqlParser.QUEUE_DELAY, 0); }
 		public TerminalNode QUOTED_IDENTIFIER() { return getToken(MocaSqlParser.QUOTED_IDENTIFIER, 0); }
-		public List<TerminalNode> R() { return getTokens(MocaSqlParser.R); }
-		public TerminalNode R(int i) {
-			return getToken(MocaSqlParser.R, i);
-		}
+		public TerminalNode R() { return getToken(MocaSqlParser.R, 0); }
 		public TerminalNode RANGE() { return getToken(MocaSqlParser.RANGE, 0); }
 		public TerminalNode RANK() { return getToken(MocaSqlParser.RANK, 0); }
-		public List<TerminalNode> RAW() { return getTokens(MocaSqlParser.RAW); }
-		public TerminalNode RAW(int i) {
-			return getToken(MocaSqlParser.RAW, i);
-		}
+		public TerminalNode RAW() { return getToken(MocaSqlParser.RAW, 0); }
 		public TerminalNode RC2() { return getToken(MocaSqlParser.RC2, 0); }
 		public TerminalNode RC4() { return getToken(MocaSqlParser.RC4, 0); }
 		public TerminalNode RC4_128() { return getToken(MocaSqlParser.RC4_128, 0); }
@@ -28483,10 +29301,7 @@ public class MocaSqlParser extends Parser {
 		public TerminalNode SETERROR() { return getToken(MocaSqlParser.SETERROR, 0); }
 		public TerminalNode SHARE() { return getToken(MocaSqlParser.SHARE, 0); }
 		public TerminalNode SHOWPLAN() { return getToken(MocaSqlParser.SHOWPLAN, 0); }
-		public List<TerminalNode> SID() { return getTokens(MocaSqlParser.SID); }
-		public TerminalNode SID(int i) {
-			return getToken(MocaSqlParser.SID, i);
-		}
+		public TerminalNode SID() { return getToken(MocaSqlParser.SID, 0); }
 		public TerminalNode SIGNATURE() { return getToken(MocaSqlParser.SIGNATURE, 0); }
 		public TerminalNode SIMPLE() { return getToken(MocaSqlParser.SIMPLE, 0); }
 		public TerminalNode SINGLE_USER() { return getToken(MocaSqlParser.SINGLE_USER, 0); }
@@ -28593,7 +29408,10 @@ public class MocaSqlParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(_la==CALLED || ((((_la - 81)) & ~0x3f) == 0 && ((1L << (_la - 81)) & ((1L << (DATA_COMPRESSION - 81)) | (1L << (EVENTDATA - 81)) | (1L << (EXPIREDATE - 81)) | (1L << (FILENAME - 81)) | (1L << (FILLFACTOR - 81)) | (1L << (FORCESEEK - 81)))) != 0) || ((((_la - 159)) & ~0x3f) == 0 && ((1L << (_la - 159)) & ((1L << (INIT - 159)) | (1L << (KEY - 159)) | (1L << (MASTER - 159)) | (1L << (MAX_MEMORY - 159)))) != 0) || ((((_la - 226)) & ~0x3f) == 0 && ((1L << (_la - 226)) & ((1L << (OFFSETS - 226)) | (1L << (PAGE - 226)) | (1L << (POLICY - 226)) | (1L << (PRECISION - 226)) | (1L << (PUBLIC - 226)) | (1L << (R - 226)) | (1L << (RAW - 226)) | (1L << (RETURN - 226)) | (1L << (RETURNS - 226)) | (1L << (ROLE - 226)) | (1L << (ROWCOUNT - 226)))) != 0) || ((((_la - 296)) & ~0x3f) == 0 && ((1L << (_la - 296)) & ((1L << (SAFETY - 296)) | (1L << (RULE - 296)) | (1L << (SERVER - 296)) | (1L << (SID - 296)) | (1L << (SOURCE - 296)) | (1L << (SPLIT - 296)) | (1L << (STATE - 296)) | (1L << (START - 296)) | (1L << (STOP - 296)) | (1L << (TARGET - 296)) | (1L << (TRAN - 296)))) != 0) || ((((_la - 362)) & ~0x3f) == 0 && ((1L << (_la - 362)) & ((1L << (URL - 362)) | (1L << (USER - 362)) | (1L << (ABSOLUTE - 362)) | (1L << (ACCENT_SENSITIVITY - 362)) | (1L << (ACTION - 362)) | (1L << (ACTIVATION - 362)) | (1L << (ACTIVE - 362)) | (1L << (ADDRESS - 362)) | (1L << (AES_128 - 362)) | (1L << (AES_192 - 362)) | (1L << (AES_256 - 362)) | (1L << (AFFINITY - 362)) | (1L << (AFTER - 362)) | (1L << (AGGREGATE - 362)) | (1L << (ALGORITHM - 362)) | (1L << (ALLOW_ENCRYPTED_VALUE_MODIFICATIONS - 362)) | (1L << (ALLOW_SNAPSHOT_ISOLATION - 362)) | (1L << (ALLOWED - 362)) | (1L << (ANSI_NULL_DEFAULT - 362)) | (1L << (ANSI_NULLS - 362)) | (1L << (ANSI_PADDING - 362)) | (1L << (ANSI_WARNINGS - 362)) | (1L << (APPLICATION_LOG - 362)) | (1L << (APPLY - 362)) | (1L << (ARITHABORT - 362)) | (1L << (ASSEMBLY - 362)) | (1L << (AUDIT - 362)) | (1L << (AUDIT_GUID - 362)) | (1L << (AUTO - 362)) | (1L << (AUTO_CLEANUP - 362)) | (1L << (AUTO_CLOSE - 362)) | (1L << (AUTO_CREATE_STATISTICS - 362)) | (1L << (AUTO_SHRINK - 362)) | (1L << (AUTO_UPDATE_STATISTICS - 362)) | (1L << (AUTO_UPDATE_STATISTICS_ASYNC - 362)) | (1L << (AVAILABILITY - 362)) | (1L << (AVG - 362)) | (1L << (BACKUP_PRIORITY - 362)) | (1L << (BEGIN_DIALOG - 362)) | (1L << (BIGINT - 362)) | (1L << (BINARY_BASE64 - 362)) | (1L << (BINARY_CHECKSUM - 362)) | (1L << (BINDING - 362)) | (1L << (BLOB_STORAGE - 362)) | (1L << (BROKER - 362)) | (1L << (BROKER_INSTANCE - 362)) | (1L << (BULK_LOGGED - 362)))) != 0) || ((((_la - 426)) & ~0x3f) == 0 && ((1L << (_la - 426)) & ((1L << (CALLER - 426)) | (1L << (CAP_CPU_PERCENT - 426)) | (1L << (CAST - 426)) | (1L << (CATALOG - 426)) | (1L << (CATCH - 426)) | (1L << (CHANGE_RETENTION - 426)) | (1L << (CHANGE_TRACKING - 426)) | (1L << (CHECKSUM - 426)) | (1L << (CHECKSUM_AGG - 426)) | (1L << (CLEANUP - 426)) | (1L << (COLLECTION - 426)) | (1L << (COLUMN_MASTER_KEY - 426)) | (1L << (COMMITTED - 426)) | (1L << (COMPATIBILITY_LEVEL - 426)) | (1L << (CONCAT - 426)) | (1L << (CONCAT_NULL_YIELDS_NULL - 426)) | (1L << (CONTENT - 426)) | (1L << (CONTROL - 426)) | (1L << (COOKIE - 426)) | (1L << (COUNT - 426)) | (1L << (COUNT_BIG - 426)) | (1L << (COUNTER - 426)) | (1L << (CPU - 426)) | (1L << (CREATE_NEW - 426)) | (1L << (CREATION_DISPOSITION - 426)) | (1L << (CREDENTIAL - 426)) | (1L << (CRYPTOGRAPHIC - 426)) | (1L << (CURSOR_CLOSE_ON_COMMIT - 426)) | (1L << (CURSOR_DEFAULT - 426)) | (1L << (DATA - 426)) | (1L << (DATE_CORRELATION_OPTIMIZATION - 426)) | (1L << (DATEADD - 426)) | (1L << (DATEDIFF - 426)) | (1L << (DATENAME - 426)) | (1L << (DATEPART - 426)) | (1L << (DAYS - 426)) | (1L << (DB_CHAINING - 426)) | (1L << (DB_FAILOVER - 426)) | (1L << (DECRYPTION - 426)) | (1L << (DEFAULT_DOUBLE_QUOTE - 426)) | (1L << (DEFAULT_FULLTEXT_LANGUAGE - 426)) | (1L << (DEFAULT_LANGUAGE - 426)) | (1L << (DELAY - 426)) | (1L << (DELAYED_DURABILITY - 426)) | (1L << (DELETED - 426)) | (1L << (DENSE_RANK - 426)) | (1L << (DEPENDENTS - 426)) | (1L << (DES - 426)) | (1L << (DESCRIPTION - 426)) | (1L << (DESX - 426)) | (1L << (DHCP - 426)) | (1L << (DIALOG - 426)) | (1L << (DIRECTORY_NAME - 426)) | (1L << (DISABLE - 426)) | (1L << (DISABLE_BROKER - 426)) | (1L << (DISABLED - 426)) | (1L << (DISK_DRIVE - 426)) | (1L << (DOCUMENT - 426)) | (1L << (DYNAMIC - 426)) | (1L << (EMERGENCY - 426)) | (1L << (EMPTY - 426)) | (1L << (ENABLE - 426)) | (1L << (ENABLE_BROKER - 426)))) != 0) || ((((_la - 490)) & ~0x3f) == 0 && ((1L << (_la - 490)) & ((1L << (ENCRYPTED_VALUE - 490)) | (1L << (ENCRYPTION - 490)) | (1L << (ENDPOINT_URL - 490)) | (1L << (ERROR_BROKER_CONVERSATIONS - 490)) | (1L << (EXCLUSIVE - 490)) | (1L << (EXECUTABLE - 490)) | (1L << (EXIST - 490)) | (1L << (EXPAND - 490)) | (1L << (EXPIRY_DATE - 490)) | (1L << (EXPLICIT - 490)) | (1L << (FAIL_OPERATION - 490)) | (1L << (FAILOVER_MODE - 490)) | (1L << (FAILURE - 490)) | (1L << (FAILURE_CONDITION_LEVEL - 490)) | (1L << (FAST - 490)) | (1L << (FAST_FORWARD - 490)) | (1L << (FILEGROUP - 490)) | (1L << (FILEGROWTH - 490)) | (1L << (FILEPATH - 490)) | (1L << (FILESTREAM - 490)) | (1L << (FILTER - 490)) | (1L << (FIRST - 490)) | (1L << (FIRST_VALUE - 490)) | (1L << (FOLLOWING - 490)) | (1L << (FORCE - 490)) | (1L << (FORCE_FAILOVER_ALLOW_DATA_LOSS - 490)) | (1L << (FORCED - 490)) | (1L << (FORMAT - 490)) | (1L << (FORWARD_ONLY - 490)) | (1L << (FULLSCAN - 490)) | (1L << (FULLTEXT - 490)) | (1L << (GB - 490)) | (1L << (GETDATE - 490)) | (1L << (GETUTCDATE - 490)) | (1L << (GLOBAL - 490)) | (1L << (GO - 490)) | (1L << (GROUP_MAX_REQUESTS - 490)) | (1L << (GROUPING - 490)) | (1L << (GROUPING_ID - 490)) | (1L << (HADR - 490)) | (1L << (HASH - 490)) | (1L << (HEALTH_CHECK_TIMEOUT - 490)) | (1L << (HIGH - 490)) | (1L << (HONOR_BROKER_PRIORITY - 490)) | (1L << (HOURS - 490)) | (1L << (IDENTITY_VALUE - 490)) | (1L << (IGNORE_NONCLUSTERED_COLUMNSTORE_INDEX - 490)) | (1L << (IMMEDIATE - 490)) | (1L << (IMPERSONATE - 490)) | (1L << (IMPORTANCE - 490)) | (1L << (INCREMENTAL - 490)) | (1L << (INITIATOR - 490)) | (1L << (INPUT - 490)) | (1L << (INSENSITIVE - 490)) | (1L << (INSERTED - 490)) | (1L << (INT - 490)) | (1L << (IP - 490)) | (1L << (ISOLATION - 490)) | (1L << (KB - 490)) | (1L << (KEEP - 490)) | (1L << (KEEPFIXED - 490)))) != 0) || ((((_la - 554)) & ~0x3f) == 0 && ((1L << (_la - 554)) & ((1L << (KEY_SOURCE - 554)) | (1L << (KEYS - 554)) | (1L << (KEYSET - 554)) | (1L << (LAG - 554)) | (1L << (LAST - 554)) | (1L << (LAST_VALUE - 554)) | (1L << (LEAD - 554)) | (1L << (LEVEL - 554)) | (1L << (LIST - 554)) | (1L << (LISTENER - 554)) | (1L << (LISTENER_URL - 554)) | (1L << (LOB_COMPACTION - 554)) | (1L << (LOCAL - 554)) | (1L << (LOCATION - 554)) | (1L << (LOCK - 554)) | (1L << (LOCK_ESCALATION - 554)) | (1L << (LOGIN - 554)) | (1L << (LOOP - 554)) | (1L << (LOW - 554)) | (1L << (MANUAL - 554)) | (1L << (MARK - 554)) | (1L << (MATERIALIZED - 554)) | (1L << (MAX - 554)) | (1L << (MAX_CPU_PERCENT - 554)) | (1L << (MAX_DOP - 554)) | (1L << (MAX_FILES - 554)) | (1L << (MAX_IOPS_PER_VOLUME - 554)) | (1L << (MAX_MEMORY_PERCENT - 554)) | (1L << (MAX_PROCESSES - 554)) | (1L << (MAX_QUEUE_READERS - 554)) | (1L << (MAX_ROLLOVER_FILES - 554)) | (1L << (MAXDOP - 554)) | (1L << (MAXRECURSION - 554)) | (1L << (MAXSIZE - 554)) | (1L << (MB - 554)) | (1L << (MEDIUM - 554)) | (1L << (MEMORY_OPTIMIZED_DATA - 554)) | (1L << (MESSAGE - 554)) | (1L << (MIN - 554)) | (1L << (MIN_ACTIVE_ROWVERSION - 554)) | (1L << (MIN_CPU_PERCENT - 554)) | (1L << (MIN_IOPS_PER_VOLUME - 554)) | (1L << (MIN_MEMORY_PERCENT - 554)) | (1L << (MINUTES - 554)) | (1L << (MIRROR_ADDRESS - 554)) | (1L << (MIXED_PAGE_ALLOCATION - 554)) | (1L << (MODE - 554)) | (1L << (MODIFY - 554)) | (1L << (MOVE - 554)) | (1L << (MULTI_USER - 554)) | (1L << (NAME - 554)) | (1L << (NESTED_TRIGGERS - 554)) | (1L << (NEW_ACCOUNT - 554)) | (1L << (NEW_BROKER - 554)) | (1L << (NEW_PASSWORD - 554)) | (1L << (NEXT - 554)) | (1L << (NO - 554)) | (1L << (NO_TRUNCATE - 554)) | (1L << (NO_WAIT - 554)) | (1L << (NOCOUNT - 554)) | (1L << (NODES - 554)) | (1L << (NOEXPAND - 554)) | (1L << (NON_TRANSACTED_ACCESS - 554)) | (1L << (NORECOMPUTE - 554)))) != 0) || ((((_la - 618)) & ~0x3f) == 0 && ((1L << (_la - 618)) & ((1L << (NORECOVERY - 618)) | (1L << (NOWAIT - 618)) | (1L << (NTILE - 618)) | (1L << (NUMANODE - 618)) | (1L << (NUMBER - 618)) | (1L << (NUMERIC_ROUNDABORT - 618)) | (1L << (OBJECT - 618)) | (1L << (OFFLINE - 618)) | (1L << (OFFSET - 618)) | (1L << (OLD_ACCOUNT - 618)) | (1L << (ONLINE - 618)) | (1L << (ONLY - 618)) | (1L << (OPEN_EXISTING - 618)) | (1L << (OPTIMISTIC - 618)) | (1L << (OPTIMIZE - 618)) | (1L << (OUT - 618)) | (1L << (OUTPUT - 618)) | (1L << (OWNER - 618)) | (1L << (PAGE_VERIFY - 618)) | (1L << (PARAMETERIZATION - 618)) | (1L << (PARTITION - 618)) | (1L << (PARTITIONS - 618)) | (1L << (PARTNER - 618)) | (1L << (PATH - 618)) | (1L << (POISON_MESSAGE_HANDLING - 618)) | (1L << (POOL - 618)) | (1L << (PORT - 618)) | (1L << (PRECEDING - 618)) | (1L << (PRIMARY_ROLE - 618)) | (1L << (PRIOR - 618)) | (1L << (PRIORITY - 618)) | (1L << (PRIORITY_LEVEL - 618)) | (1L << (PRIVATE - 618)) | (1L << (PRIVATE_KEY - 618)) | (1L << (PRIVILEGES - 618)) | (1L << (PROCEDURE_NAME - 618)) | (1L << (PROPERTY - 618)) | (1L << (PROVIDER - 618)) | (1L << (PROVIDER_KEY_NAME - 618)) | (1L << (QUERY - 618)) | (1L << (QUEUE - 618)) | (1L << (QUEUE_DELAY - 618)) | (1L << (QUOTED_IDENTIFIER - 618)) | (1L << (RANGE - 618)) | (1L << (RANK - 618)) | (1L << (RC2 - 618)) | (1L << (RC4 - 618)) | (1L << (RC4_128 - 618)) | (1L << (READ_COMMITTED_SNAPSHOT - 618)) | (1L << (READ_ONLY - 618)) | (1L << (READ_ONLY_ROUTING_LIST - 618)) | (1L << (READ_WRITE - 618)) | (1L << (READONLY - 618)) | (1L << (REBUILD - 618)) | (1L << (RECEIVE - 618)) | (1L << (RECOMPILE - 618)) | (1L << (RECOVERY - 618)) | (1L << (RECURSIVE_TRIGGERS - 618)) | (1L << (RELATIVE - 618)) | (1L << (REMOTE - 618)) | (1L << (REMOTE_SERVICE_NAME - 618)) | (1L << (REMOVE - 618)) | (1L << (REORGANIZE - 618)))) != 0) || ((((_la - 682)) & ~0x3f) == 0 && ((1L << (_la - 682)) & ((1L << (REPEATABLE - 682)) | (1L << (REPLICA - 682)) | (1L << (REQUEST_MAX_CPU_TIME_SEC - 682)) | (1L << (REQUEST_MAX_MEMORY_GRANT_PERCENT - 682)) | (1L << (REQUEST_MEMORY_GRANT_TIMEOUT_SEC - 682)) | (1L << (REQUIRED_SYNCHRONIZED_SECONDARIES_TO_COMMIT - 682)) | (1L << (RESERVE_DISK_SPACE - 682)) | (1L << (RESOURCE - 682)) | (1L << (RESOURCE_MANAGER_LOCATION - 682)) | (1L << (RESTRICTED_USER - 682)) | (1L << (RETENTION - 682)) | (1L << (ROBUST - 682)) | (1L << (ROOT - 682)) | (1L << (ROUTE - 682)) | (1L << (ROW - 682)) | (1L << (ROW_NUMBER - 682)) | (1L << (ROWGUID - 682)) | (1L << (ROWS - 682)) | (1L << (SAMPLE - 682)) | (1L << (SCHEMABINDING - 682)) | (1L << (SCOPED - 682)) | (1L << (SCROLL - 682)) | (1L << (SCROLL_LOCKS - 682)) | (1L << (SEARCH - 682)) | (1L << (SECONDARY - 682)) | (1L << (SECONDARY_ONLY - 682)) | (1L << (SECONDARY_ROLE - 682)) | (1L << (SECONDS - 682)) | (1L << (SECRET - 682)) | (1L << (SECURITY - 682)) | (1L << (SECURITY_LOG - 682)) | (1L << (SEEDING_MODE - 682)) | (1L << (SELF - 682)) | (1L << (SEMI_SENSITIVE - 682)) | (1L << (SEND - 682)) | (1L << (SENT - 682)) | (1L << (SEQUENCE - 682)) | (1L << (SERIALIZABLE - 682)) | (1L << (SESSION_TIMEOUT - 682)) | (1L << (SETERROR - 682)) | (1L << (SHARE - 682)) | (1L << (SHOWPLAN - 682)) | (1L << (SIGNATURE - 682)) | (1L << (SIMPLE - 682)) | (1L << (SINGLE_USER - 682)) | (1L << (SIZE - 682)) | (1L << (SMALLINT - 682)) | (1L << (SNAPSHOT - 682)) | (1L << (SPATIAL_WINDOW_MAX_CELLS - 682)) | (1L << (STANDBY - 682)) | (1L << (START_DATE - 682)) | (1L << (STATIC - 682)) | (1L << (STATS_STREAM - 682)) | (1L << (STATUS - 682)) | (1L << (STDEV - 682)) | (1L << (STDEVP - 682)) | (1L << (STOPLIST - 682)) | (1L << (STRING_AGG - 682)) | (1L << (STUFF - 682)) | (1L << (SUBJECT - 682)) | (1L << (SUM - 682)) | (1L << (SUSPEND - 682)))) != 0) || ((((_la - 746)) & ~0x3f) == 0 && ((1L << (_la - 746)) & ((1L << (SYMMETRIC - 746)) | (1L << (SYNCHRONOUS_COMMIT - 746)) | (1L << (SYNONYM - 746)) | (1L << (SYSTEM - 746)) | (1L << (TAKE - 746)) | (1L << (TARGET_RECOVERY_TIME - 746)) | (1L << (TB - 746)) | (1L << (TEXTIMAGE_ON - 746)) | (1L << (THROW - 746)) | (1L << (TIES - 746)) | (1L << (TIME - 746)) | (1L << (TIMEOUT - 746)) | (1L << (TIMER - 746)) | (1L << (TINYINT - 746)) | (1L << (TORN_PAGE_DETECTION - 746)) | (1L << (TRANSFORM_NOISE_WORDS - 746)) | (1L << (TRIPLE_DES - 746)) | (1L << (TRIPLE_DES_3KEY - 746)) | (1L << (TRUSTWORTHY - 746)) | (1L << (TRY - 746)) | (1L << (TSQL - 746)) | (1L << (TWO_DIGIT_YEAR_CUTOFF - 746)) | (1L << (TYPE - 746)) | (1L << (TYPE_WARNING - 746)) | (1L << (UNBOUNDED - 746)) | (1L << (UNCOMMITTED - 746)) | (1L << (UNKNOWN - 746)) | (1L << (UNLIMITED - 746)) | (1L << (USING - 746)) | (1L << (VALID_XML - 746)) | (1L << (VALIDATION - 746)) | (1L << (VALUE - 746)) | (1L << (VAR - 746)) | (1L << (VARP - 746)) | (1L << (VIEW_METADATA - 746)) | (1L << (VIEWS - 746)) | (1L << (WAIT - 746)) | (1L << (WELL_FORMED_XML - 746)) | (1L << (WORK - 746)) | (1L << (WORKLOAD - 746)) | (1L << (XML - 746)) | (1L << (XMLNAMESPACES - 746)) | (1L << (ID - 746)))) != 0)) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -28616,6 +29434,7 @@ public class MocaSqlParser extends Parser {
 		public TerminalNode LESS_EQUAL() { return getToken(MocaSqlParser.LESS_EQUAL, 0); }
 		public TerminalNode GREATER_EQUAL() { return getToken(MocaSqlParser.GREATER_EQUAL, 0); }
 		public TerminalNode NOT_EQUAL() { return getToken(MocaSqlParser.NOT_EQUAL, 0); }
+		public TerminalNode EXCLAMATION() { return getToken(MocaSqlParser.EXCLAMATION, 0); }
 		public Comparison_operatorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -28721,6 +29540,9 @@ public class MocaSqlParser extends Parser {
 		public TerminalNode MULT_ASSIGN() { return getToken(MocaSqlParser.MULT_ASSIGN, 0); }
 		public TerminalNode DIV_ASSIGN() { return getToken(MocaSqlParser.DIV_ASSIGN, 0); }
 		public TerminalNode MOD_ASSIGN() { return getToken(MocaSqlParser.MOD_ASSIGN, 0); }
+		public TerminalNode AND_ASSIGN() { return getToken(MocaSqlParser.AND_ASSIGN, 0); }
+		public TerminalNode XOR_ASSIGN() { return getToken(MocaSqlParser.XOR_ASSIGN, 0); }
+		public TerminalNode OR_ASSIGN() { return getToken(MocaSqlParser.OR_ASSIGN, 0); }
 		public Assignment_operatorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -28751,7 +29573,10 @@ public class MocaSqlParser extends Parser {
 			_la = _input.LA(1);
 			if ( !(((((_la - 822)) & ~0x3f) == 0 && ((1L << (_la - 822)) & ((1L << (PLUS_ASSIGN - 822)) | (1L << (MINUS_ASSIGN - 822)) | (1L << (MULT_ASSIGN - 822)) | (1L << (DIV_ASSIGN - 822)) | (1L << (MOD_ASSIGN - 822)) | (1L << (AND_ASSIGN - 822)) | (1L << (XOR_ASSIGN - 822)) | (1L << (OR_ASSIGN - 822)))) != 0)) ) {
 			_errHandler.recoverInline(this);
-			} else {
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
 				consume();
 			}
 			}
@@ -28792,7 +29617,7 @@ public class MocaSqlParser extends Parser {
 
 	private static final int _serializedATNSegments = 2;
 	private static final String _serializedATNSegment0 =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\u0354\u0be9\4\2\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\u0354\u0be9\4\2\t"+
 		"\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -29054,8 +29879,8 @@ public class MocaSqlParser extends Parser {
 		"\u0143\u0145\u0145\u014a\u014a\u014c\u014c\u014f\u014f\u0157\u0157\u015e"+
 		"\u015e\u016c\u016c\u016f\u016f\u017f\u01e6\u01e8\u021d\u021f\u0226\u0229"+
 		"\u027c\u027e\u02e1\u02e3\u02e8\u02ea\u0307\u0309\u0312\u0314\u0316\u0318"+
-		"\u0318\u032a\u032a\3\2\u0338\u033f\u0db0\2\u0146\3\2\2\2\4\u014c\3\2\2"+
-		"\2\6\u0153\3\2\2\2\b\u015a\3\2\2\2\n\u0166\3\2\2\2\f\u0168\3\2\2\2\16"+
+		"\u0318\u032a\u032a\3\2\u0338\u033f\2\u0db0\2\u0146\3\2\2\2\4\u014c\3\2"+
+		"\2\2\6\u0153\3\2\2\2\b\u015a\3\2\2\2\n\u0166\3\2\2\2\f\u0168\3\2\2\2\16"+
 		"\u016a\3\2\2\2\20\u0180\3\2\2\2\22\u01ab\3\2\2\2\24\u01e2\3\2\2\2\26\u023b"+
 		"\3\2\2\2\30\u023d\3\2\2\2\32\u024a\3\2\2\2\34\u0282\3\2\2\2\36\u0285\3"+
 		"\2\2\2 \u02b3\3\2\2\2\"\u02b6\3\2\2\2$\u02c6\3\2\2\2&\u0301\3\2\2\2(\u0319"+
@@ -29787,19 +30612,19 @@ public class MocaSqlParser extends Parser {
 		"\u0884\t\32\2\2\u0883\u0882\3\2\2\2\u0883\u0884\3\2\2\2\u0884\u0885\3"+
 		"\2\2\2\u0885\u0886\7\u00ab\2\2\u0886\u0887\5\u00be`\2\u0887\u0888\7\u00e6"+
 		"\2\2\u0888\u0889\5\u008aF\2\u0889\u089c\3\2\2\2\u088a\u088b\7K\2\2\u088b"+
-		"\u088c\7\u00ab\2\2\u088c";
+		"\u088c\7\u00ab\2\2";
 	private static final String _serializedATNSegment1 =
-		"\u089c\5\u00be`\2\u088d\u088e\7K\2\2\u088e\u088f\7\u0194\2\2\u088f\u089c"+
-		"\5\u00be`\2\u0890\u0891\7\u00f0\2\2\u0891\u0892\7\u0194\2\2\u0892\u089c"+
-		"\5\u00be`\2\u0893\u0894\7\u00fb\2\2\u0894\u0895\5\u00ceh\2\u0895\u0896"+
-		"\5\u00f0y\2\u0896\u089c\3\2\2\2\u0897\u0898\7\u0168\2\2\u0898\u0899\5"+
-		"\u00d0i\2\u0899\u089a\5\u00f0y\2\u089a\u089c\3\2\2\2\u089b\u0880\3\2\2"+
-		"\2\u089b\u088a\3\2\2\2\u089b\u088d\3\2\2\2\u089b\u0890\3\2\2\2\u089b\u0893"+
-		"\3\2\2\2\u089b\u0897\3\2\2\2\u089c\u00cd\3\2\2\2\u089d\u089e\7\u0346\2"+
-		"\2\u089e\u089f\5\u0106\u0084\2\u089f\u08a0\7\u0086\2\2\u08a0\u08a1\5\u0126"+
-		"\u0094\2\u08a1\u08a2\7\u009c\2\2\u08a2\u08a3\5\u00fc\177\2\u08a3\u08a4"+
-		"\7\u0347\2\2\u08a4\u00cf\3\2\2\2\u08a5\u08a6\7\u0346\2\2\u08a6\u08a7\5"+
-		"h\65\2\u08a7\u08a8\7\u0086\2\2\u08a8\u08a9\5\u0126\u0094\2\u08a9\u08aa"+
+		"\u088c\u089c\5\u00be`\2\u088d\u088e\7K\2\2\u088e\u088f\7\u0194\2\2\u088f"+
+		"\u089c\5\u00be`\2\u0890\u0891\7\u00f0\2\2\u0891\u0892\7\u0194\2\2\u0892"+
+		"\u089c\5\u00be`\2\u0893\u0894\7\u00fb\2\2\u0894\u0895\5\u00ceh\2\u0895"+
+		"\u0896\5\u00f0y\2\u0896\u089c\3\2\2\2\u0897\u0898\7\u0168\2\2\u0898\u0899"+
+		"\5\u00d0i\2\u0899\u089a\5\u00f0y\2\u089a\u089c\3\2\2\2\u089b\u0880\3\2"+
+		"\2\2\u089b\u088a\3\2\2\2\u089b\u088d\3\2\2\2\u089b\u0890\3\2\2\2\u089b"+
+		"\u0893\3\2\2\2\u089b\u0897\3\2\2\2\u089c\u00cd\3\2\2\2\u089d\u089e\7\u0346"+
+		"\2\2\u089e\u089f\5\u0106\u0084\2\u089f\u08a0\7\u0086\2\2\u08a0\u08a1\5"+
+		"\u0126\u0094\2\u08a1\u08a2\7\u009c\2\2\u08a2\u08a3\5\u00fc\177\2\u08a3"+
+		"\u08a4\7\u0347\2\2\u08a4\u00cf\3\2\2\2\u08a5\u08a6\7\u0346\2\2\u08a6\u08a7"+
+		"\5h\65\2\u08a7\u08a8\7\u0086\2\2\u08a8\u08a9\5\u0126\u0094\2\u08a9\u08aa"+
 		"\7\u009c\2\2\u08aa\u08ab\7\u0346\2\2\u08ab\u08ac\5\u00d2j\2\u08ac\u08ad"+
 		"\7\u0347\2\2\u08ad\u08ae\7\u0347\2\2\u08ae\u00d1\3\2\2\2\u08af\u08b4\5"+
 		"\u0126\u0094\2\u08b0\u08b1\7\u0348\2\2\u08b1\u08b3\5\u0126\u0094\2\u08b2"+

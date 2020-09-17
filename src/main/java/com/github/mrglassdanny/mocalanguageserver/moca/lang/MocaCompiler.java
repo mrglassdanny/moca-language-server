@@ -10,11 +10,12 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocaxml.MocaXmlCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ConsoleErrorListener;
 import org.antlr.v4.runtime.Token;
@@ -28,6 +29,8 @@ public class MocaCompiler {
     public List<? extends Token> mocaTokens;
     public MocaCompilationResult currentCompilationResult;
 
+    public MocaXmlCompiler mocaXmlCompiler;
+
     public ArrayList<Range> mocaSqlRanges;
     public ArrayList<Range> groovyRanges;
 
@@ -37,6 +40,8 @@ public class MocaCompiler {
     public MocaCompiler() {
         this.mocaTokens = null;
         this.currentCompilationResult = null;
+
+        this.mocaXmlCompiler = null;
 
         this.mocaSqlRanges = new ArrayList<>();
         this.groovyRanges = new ArrayList<>();
@@ -50,11 +55,11 @@ public class MocaCompiler {
         MocaCompilationResult compilationResult = new MocaCompilationResult();
         this.currentCompilationResult = compilationResult;
 
+
         // If error, no exception will be thrown -- we will use the
         // MocaSyntaxErrorListener.
-
         compilationResult.mocaParser = new MocaParser(
-                new CommonTokenStream(new MocaLexer(new ANTLRInputStream(mocaScript))));
+                new CommonTokenStream(new MocaLexer(CharStreams.fromString(mocaScript))));
 
         compilationResult.mocaSyntaxErrorListener = new MocaSyntaxErrorListener();
         compilationResult.mocaParser.addErrorListener(compilationResult.mocaSyntaxErrorListener);
@@ -65,7 +70,7 @@ public class MocaCompiler {
         compilationResult.mocaParseTreeListener = new MocaParseTreeListener();
         new ParseTreeWalker().walk(compilationResult.mocaParseTreeListener, parseTree);
 
-        this.mocaTokens = new MocaLexer(new ANTLRInputStream(mocaScript)).getAllTokens();
+        this.mocaTokens = new MocaLexer(CharStreams.fromString(mocaScript)).getAllTokens();
 
         // Update embedded lang ranges, then compile them.
 

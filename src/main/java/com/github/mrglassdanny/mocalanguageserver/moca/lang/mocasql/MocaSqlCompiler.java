@@ -8,7 +8,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlP
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlSyntaxErrorListener;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlLexer;
 
-import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ConsoleErrorListener;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -26,9 +26,9 @@ public class MocaSqlCompiler {
         MocaSqlCompilationResult compilationResult = new MocaSqlCompilationResult();
 
         compilationResult.mocaSqlTokens = new MocaSqlLexer(
-                new CaseChangingCharStream(new ANTLRInputStream(script), true)).getAllTokens();
+                new CaseChangingCharStream(CharStreams.fromString(script), true)).getAllTokens();
         compilationResult.mocaSqlParser = new MocaSqlParser(new CommonTokenStream(
-                new MocaSqlLexer(new CaseChangingCharStream(new ANTLRInputStream(script), true))));
+                new MocaSqlLexer(new CaseChangingCharStream(CharStreams.fromString(script), true))));
         compilationResult.mocaSqlSyntaxErrorListener = new MocaSqlSyntaxErrorListener();
         compilationResult.mocaSqlParser.addErrorListener(compilationResult.mocaSqlSyntaxErrorListener);
         // Since we do not want errors printing to the console, remove this
