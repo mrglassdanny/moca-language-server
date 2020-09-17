@@ -62,6 +62,7 @@ public class MocaSqlFormatter {
             case MocaSqlLexer.AND_ASSIGN:
             case MocaSqlLexer.XOR_ASSIGN:
             case MocaSqlLexer.OR_ASSIGN:
+            case MocaSqlLexer.LIKE:
                 return true;
             default:
                 return false;
@@ -220,6 +221,7 @@ public class MocaSqlFormatter {
                 case MocaSqlLexer.GREATER:
                 case MocaSqlLexer.LESS_EQUAL:
                 case MocaSqlLexer.GREATER_EQUAL:
+                case MocaSqlLexer.LIKE:
                     buf.append(' ');
                     buf.append(tokenText);
                     buf.append(' ');
