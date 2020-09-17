@@ -10,7 +10,6 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocaxml.MocaXmlCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
@@ -29,8 +28,6 @@ public class MocaCompiler {
     public List<? extends Token> mocaTokens;
     public MocaCompilationResult currentCompilationResult;
 
-    public MocaXmlCompiler mocaXmlCompiler;
-
     public ArrayList<Range> mocaSqlRanges;
     public ArrayList<Range> groovyRanges;
 
@@ -40,8 +37,6 @@ public class MocaCompiler {
     public MocaCompiler() {
         this.mocaTokens = null;
         this.currentCompilationResult = null;
-
-        this.mocaXmlCompiler = null;
 
         this.mocaSqlRanges = new ArrayList<>();
         this.groovyRanges = new ArrayList<>();
