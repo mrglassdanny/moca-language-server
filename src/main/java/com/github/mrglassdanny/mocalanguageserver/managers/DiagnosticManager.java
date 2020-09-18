@@ -125,14 +125,16 @@ public class DiagnosticManager {
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
         // MOCA.
-        // Check moca warning diagnostics enabled.
-        if (MocaLanguageServer.mocaLanguageServerOptions.mocaDiagnosticsEnabled) {
+        // Check moca diagnostics and warning diagnostics enabled.
+        if (MocaLanguageServer.mocaLanguageServerOptions.mocaDiagnosticsEnabled
+                && MocaLanguageServer.mocaLanguageServerOptions.mocaWarningDiagnosticsEnabled) {
             diagnostics.addAll(handleMocaCommandMayNotExistWarnings(uriStr, script, mocaCompiler));
         }
 
         // SQL.
-        // Check mocasql warning diagnostics enabled.
-        if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlDiagnosticsEnabled) {
+        // Check mocasql diagnostics and warning diagnostics enabled.
+        if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlDiagnosticsEnabled
+                && MocaLanguageServer.mocaLanguageServerOptions.mocasqlWarningDiagnosticsEnabled) {
             for (int i = 0; i < mocaCompiler.mocaSqlRanges.size(); i++) {
                 MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
                         .get(i);
@@ -573,14 +575,19 @@ public class DiagnosticManager {
                     Range range = GroovyLanguageUtils.syntaxExceptionToRange(cause, groovyScriptRange);
                     Diagnostic diagnostic = new Diagnostic();
                     diagnostic.setRange(range);
-                    diagnostic.setSeverity(cause.isFatal() ? DiagnosticSeverity.Error : DiagnosticSeverity.Warning);
-                    String msg = cause.getMessage();
-                    diagnostic.setMessage(String.format(GROOVY_MESSAGE, msg));
-                    // Check to see if we have already add message.
-                    if (!alreadyAddedMessages.contains(msg)) {
-                        diagnostics.add(diagnostic);
-                        // Add to existing messages list.
-                        alreadyAddedMessages.add(msg);
+                    // We know diagnostics are on, but let's also check for warning
+                    // diagnostics if cause is not fatal.
+                    if (cause.isFatal() || (!cause.isFatal()
+                            && MocaLanguageServer.mocaLanguageServerOptions.groovyWarningDiagnosticsEnabled)) {
+                        diagnostic.setSeverity(cause.isFatal() ? DiagnosticSeverity.Error : DiagnosticSeverity.Warning);
+                        String msg = cause.getMessage();
+                        diagnostic.setMessage(String.format(GROOVY_MESSAGE, msg));
+                        // Check to see if we have already add message.
+                        if (!alreadyAddedMessages.contains(msg)) {
+                            diagnostics.add(diagnostic);
+                            // Add to existing messages list.
+                            alreadyAddedMessages.add(msg);
+                        }
                     }
 
                 } else if (message instanceof ExceptionMessage) {
