@@ -27,7 +27,7 @@ dependencies {
 
 generateGrammarSource {
     outputDirectory = file('src/main/java/com/github/mrglassdanny/mocalanguageserver/moca/lang/antlr')
-    arguments += ["-visitor", "-listener"]
+    arguments += ["-listener"]
 }
 
 tasks.build.dependsOn tasks.shadowJar

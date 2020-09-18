@@ -61,8 +61,7 @@ public class FileManager {
             StringBuilder builder = new StringBuilder();
             builder.append(oldText.substring(0, offset));
             builder.append(change.getText());
-            int rangeLen = change.getText().length();
-            builder.append(oldText.substring(offset + rangeLen));
+            builder.append(oldText.substring(offset + change.getRangeLength()));
             openFiles.put(uri, builder.toString());
         }
         changedFiles.add(uri);
