@@ -14,7 +14,6 @@ import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommand;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommandArgument;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaFunction;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaTrigger;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.Table;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
