@@ -90,7 +90,7 @@ public class MocaFormatter {
         }
 
         int mocasqlCompilationResultsVisited = 0;
-        int groovyCompilationResultsVisited = 0;
+        // Commenting out for now -- int groovyCompilationResultsVisited = 0;
 
         // Whitespace dealt with; process formatting.
         // Code is pretty self-explanatory -- just look at each condition for specifics.
@@ -121,7 +121,7 @@ public class MocaFormatter {
                     }
 
                     // Increment groovy compilation result visit count.
-                    groovyCompilationResultsVisited++;
+                    // Commenting out for now -- groovyCompilationResultsVisited++;
 
                     break;
                 case MocaLexer.SINGLE_BRACKET_STRING:
