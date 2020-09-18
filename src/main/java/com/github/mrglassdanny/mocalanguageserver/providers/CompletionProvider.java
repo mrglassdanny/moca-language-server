@@ -347,24 +347,24 @@ public class CompletionProvider {
                 .entrySet()) {
             CompletionItem item = new CompletionItem(entry.getKey());
             ArrayList<MocaCommand> mcmds = entry.getValue();
-            String docStr = "";
+            String levelsStr = "";
             for (MocaCommand mcmd : mcmds) {
-                docStr += mcmd.cmplvl + " - " + mcmd.type + "\n";
+                levelsStr += mcmd.cmplvl + " - " + mcmd.type + "\n";
             }
             if (mcmds.size() > 0 && mcmds.get(0).desc != null) {
-                docStr += mcmds.get(0).desc;
+                levelsStr += mcmds.get(0).desc;
             }
 
             // Add required args to documentation if there are any.
-            docStr += "\n\nRequired Arguments:\n";
+            String requiredArgumentsStr = "";
             ArrayList<MocaCommandArgument> args = MocaLanguageServer.currentMocaConnection.cache.mocaCache.commandArguments
                     .get(mcmds.get(0).command);
             if (args != null) {
                 for (MocaCommandArgument arg : args) {
                     if (arg.argreq) {
                         // Have to make sure we are not adding an argnam that has already been added!
-                        if (!docStr.contains(arg.argtyp + " " + arg.argnam)) {
-                            docStr += (arg.argtyp + " " + arg.argnam
+                        if (!requiredArgumentsStr.contains(arg.argtyp + " " + arg.argnam)) {
+                            requiredArgumentsStr += (arg.argtyp + " " + arg.argnam
                                     + (arg.altnam != null && !arg.altnam.isEmpty() ? " (" + arg.altnam + ")" : ""))
                                     + "\n";
                         }
@@ -373,16 +373,18 @@ public class CompletionProvider {
             }
 
             // Go ahead and add triggers to documentation if there are any.
-            docStr += "\nTriggers:\n";
+            String triggersStr = "";
             ArrayList<MocaTrigger> triggers = MocaLanguageServer.currentMocaConnection.cache.mocaCache.triggers
                     .get(mcmds.get(0).command);
             if (triggers != null) {
                 for (MocaTrigger trg : triggers) {
-                    docStr += (trg.trgseq + " - " + trg.name) + "\n";
+                    triggersStr += (trg.trgseq + " - " + trg.name) + "\n";
                 }
             }
 
-            item.setDocumentation(docStr);
+            item.setDocumentation(String.format("%s\n\n%s%s\n\n%s%s", levelsStr,
+                    (requiredArgumentsStr.isEmpty() ? "" : "Required Arguments\n"), requiredArgumentsStr,
+                    (triggersStr.isEmpty() ? "" : "Triggers\n"), triggersStr));
             item.setKind(CompletionItemKind.Function);
             items.add(item);
         }
@@ -484,7 +486,7 @@ public class CompletionProvider {
 
         for (Map.Entry<String, String> entry : aliasedTableNames.entrySet()) {
             CompletionItem item = new CompletionItem(entry.getKey());
-            item.setDocumentation("(alias) " + entry.getValue());
+            item.setDocumentation("alias for " + entry.getValue());
             item.setKind(CompletionItemKind.Struct);
             items.add(item);
         }
