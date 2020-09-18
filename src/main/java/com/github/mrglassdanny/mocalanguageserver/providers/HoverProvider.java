@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommand;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaFunction;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.Table;
@@ -63,7 +62,7 @@ public class HoverProvider {
                             .get(mocaWord);
                     if (mocaFunction != null) {
 
-                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, mocaFunction.getMarkdown()));
+                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, mocaFunction.getMarkdownStr()));
 
                         return CompletableFuture.completedFuture(hover);
                     }
@@ -95,7 +94,7 @@ public class HoverProvider {
                                 ArrayList<MocaCommand> mcmds = MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
                                         .get(verbNounClause.toString());
                                 if (mcmds != null) {
-                                    String content = MocaCache.getMocaCommandMarkdown(verbNounClause.toString(), mcmds);
+                                    String content = MocaCommand.getMarkdownStr(verbNounClause.toString(), mcmds);
 
                                     hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, content));
                                     return CompletableFuture.completedFuture(hover);
@@ -124,13 +123,13 @@ public class HoverProvider {
                     // Check first to see if mocasql word is table/view in database.
                     Table table = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.get(mocaSqlWord);
                     if (table != null) {
-                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, table.getMarkdown()));
+                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, table.getMarkdownStr()));
                         return CompletableFuture.completedFuture(hover);
                     }
 
                     Table view = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.get(mocaSqlWord);
                     if (view != null) {
-                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, view.getMarkdown()));
+                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, view.getMarkdownStr()));
                         return CompletableFuture.completedFuture(hover);
                     }
 
@@ -139,7 +138,7 @@ public class HoverProvider {
                             && mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames != null
                             && mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
                                     .containsKey(mocaSqlWord)) {
-                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, String.format("alias for **%s**",
+                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, Table.getMarkdownStrForAlias(
                                 mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames.get(mocaSqlWord))));
                         return CompletableFuture.completedFuture(hover);
                     }
@@ -147,7 +146,7 @@ public class HoverProvider {
                             && mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries != null
                             && mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries.containsKey(mocaSqlWord)) {
                         hover.setContents(
-                                new MarkupContent(MarkupKind.MARKDOWN, String.format("subquery **%s**", mocaSqlWord)));
+                                new MarkupContent(MarkupKind.MARKDOWN, Table.getMarkdownStrForSubquery(mocaSqlWord)));
                         return CompletableFuture.completedFuture(hover);
                     }
 

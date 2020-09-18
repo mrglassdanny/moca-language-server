@@ -49,6 +49,8 @@ import org.eclipse.lsp4j.CompletionContext;
 import org.eclipse.lsp4j.CompletionItem;
 import org.eclipse.lsp4j.CompletionItemKind;
 import org.eclipse.lsp4j.CompletionList;
+import org.eclipse.lsp4j.MarkupContent;
+import org.eclipse.lsp4j.MarkupKind;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextDocumentIdentifier;
@@ -346,45 +348,8 @@ public class CompletionProvider {
         for (Map.Entry<String, ArrayList<MocaCommand>> entry : MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
                 .entrySet()) {
             CompletionItem item = new CompletionItem(entry.getKey());
-            ArrayList<MocaCommand> mcmds = entry.getValue();
-            String levelsStr = "";
-            for (MocaCommand mcmd : mcmds) {
-                levelsStr += mcmd.cmplvl + " - " + mcmd.type + "\n";
-            }
-            if (mcmds.size() > 0 && mcmds.get(0).desc != null) {
-                levelsStr += mcmds.get(0).desc;
-            }
-
-            // Add required args to documentation if there are any.
-            String requiredArgumentsStr = "";
-            ArrayList<MocaCommandArgument> args = MocaLanguageServer.currentMocaConnection.cache.mocaCache.commandArguments
-                    .get(mcmds.get(0).command);
-            if (args != null) {
-                for (MocaCommandArgument arg : args) {
-                    if (arg.argreq) {
-                        // Have to make sure we are not adding an argnam that has already been added!
-                        if (!requiredArgumentsStr.contains(arg.argtyp + " " + arg.argnam)) {
-                            requiredArgumentsStr += (arg.argtyp + " " + arg.argnam
-                                    + (arg.altnam != null && !arg.altnam.isEmpty() ? " (" + arg.altnam + ")" : ""))
-                                    + "\n";
-                        }
-                    }
-                }
-            }
-
-            // Go ahead and add triggers to documentation if there are any.
-            String triggersStr = "";
-            ArrayList<MocaTrigger> triggers = MocaLanguageServer.currentMocaConnection.cache.mocaCache.triggers
-                    .get(mcmds.get(0).command);
-            if (triggers != null) {
-                for (MocaTrigger trg : triggers) {
-                    triggersStr += (trg.trgseq + " - " + trg.name) + "\n";
-                }
-            }
-
-            item.setDocumentation(String.format("%s\n\n%s%s\n\n%s%s", levelsStr,
-                    (requiredArgumentsStr.isEmpty() ? "" : "Required Arguments\n"), requiredArgumentsStr,
-                    (triggersStr.isEmpty() ? "" : "Triggers\n"), triggersStr));
+            item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN,
+                    MocaCommand.getMarkdownStr(entry.getKey(), entry.getValue())));
             item.setKind(CompletionItemKind.Function);
             items.add(item);
         }
@@ -412,8 +377,7 @@ public class CompletionProvider {
 
             if (!argAlreadyInList) {
                 CompletionItem item = new CompletionItem(arg.argnam);
-                item.setDocumentation(arg.argtyp + " " + arg.argnam + (arg.argreq ? "\t(Required)" : "") + "\n"
-                        + (arg.altnam != null && !arg.altnam.isEmpty() ? "alias - " + arg.altnam : ""));
+                item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, arg.getMarkdownStr()));
                 // HACK - we want the user typing the args to see all possiblities. LextEdit
                 // does this by using the space character as a trigger character.
                 // Instead of doing that, we will pre-pend the first letter the user types in
@@ -430,25 +394,9 @@ public class CompletionProvider {
     private static void populateMocaFunctions(List<CompletionItem> items) {
         for (Map.Entry<String, MocaFunction> entry : MocaLanguageServer.currentMocaConnection.cache.mocaCache.functions
                 .entrySet()) {
-            MocaFunction func = entry.getValue();
-            CompletionItem item = new CompletionItem(func.name);
-            StringBuilder argBuf = new StringBuilder();
-            for (String argName : func.argumentNames) {
-                if (argName.compareTo(MocaFunction.VARIABLE_LENGTH_ARGUMENT) == 0) {
-                    argBuf.append("...");
-                    argBuf.append(",");
-                } else {
-                    argBuf.append(argName);
-                    argBuf.append(",");
-                }
-            }
-
-            // Remove last comma from argument buffer.
-            if (argBuf.length() > 0) {
-                argBuf.deleteCharAt(argBuf.length() - 1);
-            }
-
-            item.setDocumentation(String.format("%s(%s)\n\n%s", func.name, argBuf.toString(), func.description));
+            MocaFunction mocaFunction = entry.getValue();
+            CompletionItem item = new CompletionItem(mocaFunction.name);
+            item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, mocaFunction.getMarkdownStr()));
             item.setKind(CompletionItemKind.Function);
             items.add(item);
         }
@@ -462,7 +410,7 @@ public class CompletionProvider {
                 .entrySet()) {
             Table tbl = tableEntry.getValue();
             CompletionItem item = new CompletionItem(tbl.table_name);
-            item.setDocumentation(tbl.description);
+            item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, tbl.getMarkdownStr()));
             item.setKind(CompletionItemKind.Struct);
             items.add(item);
         }
@@ -471,7 +419,7 @@ public class CompletionProvider {
                 .entrySet()) {
             Table view = viewEntry.getValue();
             CompletionItem item = new CompletionItem(view.table_name);
-            item.setDocumentation(view.description);
+            item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, view.getMarkdownStr()));
             item.setKind(CompletionItemKind.Enum);
             items.add(item);
         }
@@ -486,7 +434,7 @@ public class CompletionProvider {
 
         for (Map.Entry<String, String> entry : aliasedTableNames.entrySet()) {
             CompletionItem item = new CompletionItem(entry.getKey());
-            item.setDocumentation("alias for " + entry.getValue());
+            item.setDocumentation(Table.getMarkdownStrForAlias(entry.getValue()));
             item.setKind(CompletionItemKind.Struct);
             items.add(item);
         }
@@ -501,7 +449,7 @@ public class CompletionProvider {
 
         for (String subqueryName : subqueries.keySet()) {
             CompletionItem item = new CompletionItem(subqueryName);
-            item.setDocumentation("subquery");
+            item.setDocumentation(Table.getMarkdownStrForSubquery(subqueryName));
             item.setKind(CompletionItemKind.Class);
             items.add(item);
         }
@@ -539,7 +487,7 @@ public class CompletionProvider {
         // Now add table columns.
         for (TableColumn col : cols) {
             CompletionItem item = new CompletionItem(col.column_name);
-            item.setDocumentation(col.documentationStr);
+            item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, col.getMarkdownStr()));
             item.setKind(CompletionItemKind.Field);
             items.add(item);
         }

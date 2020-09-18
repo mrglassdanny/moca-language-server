@@ -13,10 +13,10 @@ public class TableColumn {
         this.data_type = data_type;
         this.max_length = max_length;
 
-        this.setDocumentationString();
     }
 
-    private void setDocumentationString() {
-        this.documentationStr = String.format("Data Type: %s\tMax Length: %d", this.data_type.toUpperCase(), this.max_length);
+    public String getMarkdownStr() {
+        return String.format("column **%s**\n\nType: %s\n\nLength: %s", this.column_name, this.data_type.toUpperCase(),
+                this.max_length);
     }
 }

@@ -21,4 +21,10 @@ public class MocaCommandArgument {
         this.argidx = argidx;
         this.argreq = argreq;
     }
+
+    public String getMarkdownStr() {
+        return String.format("argument **%s**\n\nType: %s\n\n%s\n\n%s", this.argnam, this.argtyp,
+                (this.altnam == null || this.altnam.isEmpty() ? "" : String.format("Alias: %s", this.altnam)),
+                (this.argreq ? "**REQUIRED**" : ""));
+    }
 }

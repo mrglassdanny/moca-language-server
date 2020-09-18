@@ -14,7 +14,7 @@ public class MocaFunction {
         this.description = description;
     }
 
-    public String getMarkdown() {
+    public String getMarkdownStr() {
         // Build out function signature.
         StringBuilder argBuf = new StringBuilder();
         for (String argName : this.argumentNames) {

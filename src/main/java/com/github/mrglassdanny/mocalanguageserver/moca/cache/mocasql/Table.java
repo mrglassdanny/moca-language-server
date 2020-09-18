@@ -9,10 +9,18 @@ public class Table {
         this.description = description;
     }
 
-    public String getMarkdown() {
+    public String getMarkdownStr() {
         return String.format("table **%s**\n\n%s", this.table_name,
                 (this.description == null || this.description.isEmpty() ? ""
                         : String.format("*%s*", this.description)));
+    }
+
+    public static String getMarkdownStrForAlias(String aliasedTableName) {
+        return String.format("alias for **%s**", aliasedTableName);
+    }
+
+    public static String getMarkdownStrForSubquery(String subqueryName) {
+        return String.format("subquery **%s**", subqueryName);
     }
 
 }
