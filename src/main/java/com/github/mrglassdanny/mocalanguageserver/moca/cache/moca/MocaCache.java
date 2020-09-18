@@ -267,4 +267,51 @@ public class MocaCache {
                 }
         }
 
+        // Have to generate moca command markdown here due to list of commands
+        // requirement.
+        public static String getMocaCommandMarkdown(String commandName, ArrayList<MocaCommand> mcmds) {
+                String headerStr = String.format("command **%s**", commandName);
+                String descriptionStr = "";
+                if (mcmds.get(0).desc != null) {
+                        descriptionStr = String.format("*%s*", mcmds.get(0).desc);
+                }
+
+                String levelsStr = "";
+                for (MocaCommand mcmd : mcmds) {
+                        levelsStr += String.format("* %s - %s\n", mcmd.cmplvl, mcmd.type);
+                }
+
+                // Add required args to documentation if there are any.
+                String requiredArgumentsStr = "";
+                ArrayList<MocaCommandArgument> args = MocaLanguageServer.currentMocaConnection.cache.mocaCache.commandArguments
+                                .get(mcmds.get(0).command);
+                if (args != null) {
+                        for (MocaCommandArgument arg : args) {
+                                if (arg.argreq) {
+                                        // Have to make sure we are not adding an argnam that has already been added!
+                                        if (!requiredArgumentsStr.contains(arg.argtyp + " " + arg.argnam)) {
+                                                requiredArgumentsStr += String.format("* %s %s%s\n", arg.argtyp,
+                                                                arg.argnam,
+                                                                (arg.altnam != null && !arg.altnam.isEmpty()
+                                                                                ? " (" + arg.altnam + ")"
+                                                                                : ""));
+                                        }
+                                }
+                        }
+                }
+                // Go ahead and add triggers to documentation if there are any.
+                String triggersStr = "";
+                ArrayList<MocaTrigger> triggers = MocaLanguageServer.currentMocaConnection.cache.mocaCache.triggers
+                                .get(mcmds.get(0).command);
+                if (triggers != null) {
+                        for (MocaTrigger trg : triggers) {
+                                triggersStr += String.format("* %d: %s\n", trg.trgseq, trg.name);
+                        }
+                }
+
+                return String.format("%s\n\n%s\n%s\n\n%s\n%s\n\n%s\n%s", headerStr, descriptionStr, levelsStr,
+                                (requiredArgumentsStr.isEmpty() ? "" : "Required Arguments"), requiredArgumentsStr,
+                                (triggersStr.isEmpty() ? "" : "Triggers"), triggersStr);
+        }
+
 }

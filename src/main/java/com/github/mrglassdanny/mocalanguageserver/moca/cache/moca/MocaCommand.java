@@ -23,4 +23,7 @@ public class MocaCommand {
         this.syntax = syntax;
         this.desc = desc;
     }
+
+    // Cannot generate moca command markdown here due to list of commands
+    // requirement.
 }

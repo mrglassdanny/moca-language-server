@@ -13,4 +13,26 @@ public class MocaFunction {
         this.argumentNames = argumentNames;
         this.description = description;
     }
+
+    public String getMarkdown() {
+        // Build out function signature.
+        StringBuilder argBuf = new StringBuilder();
+        for (String argName : this.argumentNames) {
+            if (argName.compareTo(MocaFunction.VARIABLE_LENGTH_ARGUMENT) == 0) {
+                argBuf.append("...");
+                argBuf.append(",");
+            } else {
+                argBuf.append(argName);
+                argBuf.append(",");
+            }
+        }
+
+        // Remove last comma from argument buffer.
+        if (argBuf.length() > 0) {
+            argBuf.deleteCharAt(argBuf.length() - 1);
+        }
+        return String.format("function **%s**\n\n*%s*\n\n```moca\n%s(%s)\n```", this.name, this.description, this.name,
+                argBuf.toString());
+    }
+
 }

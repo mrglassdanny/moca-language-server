@@ -5,10 +5,9 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommand;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommandArgument;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaFunction;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaTrigger;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.Table;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
@@ -64,25 +63,7 @@ public class HoverProvider {
                             .get(mocaWord);
                     if (mocaFunction != null) {
 
-                        // Build out function signature.
-                        StringBuilder argBuf = new StringBuilder();
-                        for (String argName : mocaFunction.argumentNames) {
-                            if (argName.compareTo(MocaFunction.VARIABLE_LENGTH_ARGUMENT) == 0) {
-                                argBuf.append("...");
-                                argBuf.append(",");
-                            } else {
-                                argBuf.append(argName);
-                                argBuf.append(",");
-                            }
-                        }
-
-                        // Remove last comma from argument buffer.
-                        if (argBuf.length() > 0) {
-                            argBuf.deleteCharAt(argBuf.length() - 1);
-                        }
-                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN,
-                                String.format("function **%s**\n\n*%s*\n\n```moca\n%s(%s)\n```", mocaFunction.name,
-                                        mocaFunction.description, mocaFunction.name, argBuf.toString())));
+                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, mocaFunction.getMarkdown()));
 
                         return CompletableFuture.completedFuture(hover);
                     }
@@ -114,7 +95,7 @@ public class HoverProvider {
                                 ArrayList<MocaCommand> mcmds = MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
                                         .get(verbNounClause.toString());
                                 if (mcmds != null) {
-                                    String content = getMocaCommandContent(verbNounClause.toString(), mcmds);
+                                    String content = MocaCache.getMocaCommandMarkdown(verbNounClause.toString(), mcmds);
 
                                     hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, content));
                                     return CompletableFuture.completedFuture(hover);
@@ -143,19 +124,13 @@ public class HoverProvider {
                     // Check first to see if mocasql word is table/view in database.
                     Table table = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.get(mocaSqlWord);
                     if (table != null) {
-                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN,
-                                String.format("table **%s**\n\n%s", table.table_name,
-                                        (table.description == null || table.description.isEmpty() ? ""
-                                                : String.format("*%s*", table.description)))));
+                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, table.getMarkdown()));
                         return CompletableFuture.completedFuture(hover);
                     }
 
                     Table view = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.get(mocaSqlWord);
                     if (view != null) {
-                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN,
-                                String.format("view **%s**\n\n%s", view.table_name,
-                                        (view.description == null || view.description.isEmpty() ? ""
-                                                : String.format("*%s*", view.description)))));
+                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, view.getMarkdown()));
                         return CompletableFuture.completedFuture(hover);
                     }
 
@@ -199,74 +174,28 @@ public class HoverProvider {
                     return CompletableFuture.completedFuture(hover);
                 }
 
-                String content = getGroovyContent(groovyCompilationResult.astVisitor, definitionNode);
+                String content = getGroovyMarkdown(groovyCompilationResult.astVisitor, definitionNode);
                 if (content == null) {
                     return CompletableFuture.completedFuture(hover);
                 }
 
-                hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, String.format("```groovy\n%s\n```", content)));
+                hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, content));
                 return CompletableFuture.completedFuture(hover);
         }
 
         return CompletableFuture.completedFuture(hover);
     }
 
-    // MOCA.
-    private static String getMocaCommandContent(String commandName, ArrayList<MocaCommand> mcmds) {
-
-        String headerStr = String.format("command **%s**", commandName);
-        String descriptionStr = "";
-        if (mcmds.get(0).desc != null) {
-            descriptionStr = String.format("*%s*", mcmds.get(0).desc);
-        }
-
-        String levelsStr = "";
-        for (MocaCommand mcmd : mcmds) {
-            levelsStr += String.format("* %s - %s\n", mcmd.cmplvl, mcmd.type);
-        }
-
-        // Add required args to documentation if there are any.
-        String requiredArgumentsStr = "";
-        ArrayList<MocaCommandArgument> args = MocaLanguageServer.currentMocaConnection.cache.mocaCache.commandArguments
-                .get(mcmds.get(0).command);
-        if (args != null) {
-            for (MocaCommandArgument arg : args) {
-                if (arg.argreq) {
-                    // Have to make sure we are not adding an argnam that has already been added!
-                    if (!requiredArgumentsStr.contains(arg.argtyp + " " + arg.argnam)) {
-                        requiredArgumentsStr += String.format("* %s %s%s\n", arg.argtyp, arg.argnam,
-                                (arg.altnam != null && !arg.altnam.isEmpty() ? " (" + arg.altnam + ")" : ""));
-                    }
-                }
-            }
-        }
-        // Go ahead and add triggers to documentation if there are any.
-        String triggersStr = "";
-        ArrayList<MocaTrigger> triggers = MocaLanguageServer.currentMocaConnection.cache.mocaCache.triggers
-                .get(mcmds.get(0).command);
-        if (triggers != null) {
-            for (MocaTrigger trg : triggers) {
-                triggersStr += String.format("* %d: %s\n", trg.trgseq, trg.name);
-            }
-        }
-
-        return String.format("%s\n\n%s\n%s\n\n%s\n%s\n\n%s\n%s", headerStr, descriptionStr, levelsStr,
-                (requiredArgumentsStr.isEmpty() ? "" : "Required Arguments"), requiredArgumentsStr,
-                (triggersStr.isEmpty() ? "" : "Triggers"), triggersStr);
-
-    }
-
-    // GROOVY.
-    private static String getGroovyContent(GroovyASTNodeVisitor ast, ASTNode hoverNode) {
+    private static String getGroovyMarkdown(GroovyASTNodeVisitor ast, ASTNode hoverNode) {
         if (hoverNode instanceof ClassNode) {
             ClassNode classNode = (ClassNode) hoverNode;
-            return GroovyNodeToStringUtils.classToString(classNode, ast);
+            return String.format("```groovy\n%s\n```", GroovyNodeToStringUtils.classToString(classNode, ast));
         } else if (hoverNode instanceof MethodNode) {
             MethodNode methodNode = (MethodNode) hoverNode;
-            return GroovyNodeToStringUtils.methodToString(methodNode, ast);
+            return String.format("```groovy\n%s\n```", GroovyNodeToStringUtils.methodToString(methodNode, ast));
         } else if (hoverNode instanceof Variable) {
             Variable varNode = (Variable) hoverNode;
-            return GroovyNodeToStringUtils.variableToString(varNode, ast);
+            return String.format("```groovy\n%s\n```", GroovyNodeToStringUtils.variableToString(varNode, ast));
         }
         return null;
     }
