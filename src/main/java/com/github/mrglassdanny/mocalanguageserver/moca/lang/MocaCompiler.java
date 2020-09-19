@@ -45,16 +45,13 @@ public class MocaCompiler {
         this.groovyCompiler = new GroovyCompiler();
     }
 
-    public MocaCompilationResult compileScript(final String mocaScript) {
+    public MocaCompilationResult compileScript(String finalMocaScript) {
 
         MocaCompilationResult compilationResult = new MocaCompilationResult();
         this.currentCompilationResult = compilationResult;
 
-
-        // If error, no exception will be thrown -- we will use the
-        // MocaSyntaxErrorListener.
         compilationResult.mocaParser = new MocaParser(
-                new CommonTokenStream(new MocaLexer(CharStreams.fromString(mocaScript))));
+                new CommonTokenStream(new MocaLexer(CharStreams.fromString(finalMocaScript))));
 
         compilationResult.mocaSyntaxErrorListener = new MocaSyntaxErrorListener();
         compilationResult.mocaParser.addErrorListener(compilationResult.mocaSyntaxErrorListener);
@@ -65,7 +62,7 @@ public class MocaCompiler {
         compilationResult.mocaParseTreeListener = new MocaParseTreeListener();
         new ParseTreeWalker().walk(compilationResult.mocaParseTreeListener, parseTree);
 
-        this.mocaTokens = new MocaLexer(CharStreams.fromString(mocaScript)).getAllTokens();
+        this.mocaTokens = new MocaLexer(CharStreams.fromString(finalMocaScript)).getAllTokens();
 
         // Update embedded lang ranges, then compile them.
 
@@ -76,7 +73,7 @@ public class MocaCompiler {
         // function -- that way we know that all other processes in language server can
         // read compilation output without worrying about concurrency issues.
 
-        this.updateEmbeddedLanguageRanges(mocaScript);
+        this.updateEmbeddedLanguageRanges(finalMocaScript);
 
         // Before setting up infrastructure to compile mocasql and groovy, make sure
         // there
@@ -99,7 +96,7 @@ public class MocaCompiler {
                     // Compiling moca sql ranges via another thread.
                     Thread mocaSqlThread = new Thread(() -> {
                         // Remove first and last characters('[', ']').
-                        String mocaSqlScript = Ranges.getText(mocaScript, this.mocaSqlRanges.get(rangeIdx));
+                        String mocaSqlScript = Ranges.getText(finalMocaScript, this.mocaSqlRanges.get(rangeIdx));
                         mocaSqlScript = mocaSqlScript.substring(1, mocaSqlScript.length() - 1);
                         this.mocaSqlCompiler.compileScript(rangeIdx, mocaSqlScript);
                     });
@@ -138,10 +135,10 @@ public class MocaCompiler {
                     // Compiling groovy ranges via another thread.
                     Thread groovyThread = new Thread(() -> {
                         // Remove '[[]]'.
-                        String groovyScript = Ranges.getText(mocaScript, this.groovyRanges.get(rangeIdx));
+                        String groovyScript = Ranges.getText(finalMocaScript, this.groovyRanges.get(rangeIdx));
                         groovyScript = groovyScript.substring(2, groovyScript.length() - 2);
 
-                        this.groovyCompiler.compileScript(rangeIdx, groovyScript, this, mocaScript);
+                        this.groovyCompiler.compileScript(rangeIdx, groovyScript, this, finalMocaScript);
                     });
 
                     groovyThread.start();

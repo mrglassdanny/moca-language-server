@@ -18,7 +18,8 @@ statement: (
 		| try_block catch_sequence* finally_sequence? redirect_expr?
 	);
 
-block: (remote_expr? | suppress_warnings_expr?) command | (remote_expr? | suppress_warnings_expr?) sub_sequence;
+block: (remote_expr? | suppress_warnings_expr?) command
+	| (remote_expr? | suppress_warnings_expr?) sub_sequence;
 
 command: groovy_script | sql_script | verb_noun_clause;
 
@@ -50,47 +51,69 @@ verb_noun_clause_arg:
 	| groovy_script
 	| SINGLE_BRACKET_STRING
 	| (at_star | at_plus_variable)
-	| WORD ((IS NOT? NULL) | (NOT? LIKE | LESS | GREATER | LESS_EQUAL | GREATER_EQUAL | EQUAL | NOT_EQUAL) verb_noun_clause_arg_expr);
+	| WORD (
+		(IS NOT? NULL)
+		| (
+			NOT? LIKE
+			| LESS
+			| GREATER
+			| LESS_EQUAL
+			| GREATER_EQUAL
+			| EQUAL
+			| NOT_EQUAL
+		) verb_noun_clause_arg_expr
+	);
 
 // Very similar to expr, but minor tweaks due to verb noun clause arg goofyness.
 verb_noun_clause_arg_expr:
 	literal_value
 	| WORD
 	| at_variable
-    | environment_variable
-    | integration_variable
+	| environment_variable
+	| integration_variable
 	| at_bang
 	| at_question
 	| at_star
 	| function_expr
 	| groovy_script
-    | SINGLE_BRACKET_STRING
+	| SINGLE_BRACKET_STRING
 	| (
 		BANG (
 			literal_value
 			| WORD
 			| at_variable
-            | environment_variable
-            | integration_variable
+			| environment_variable
+			| integration_variable
 			| at_bang
 			| at_question
 			| at_star
 			| function_expr
 			| groovy_script
-            | SINGLE_BRACKET_STRING
+			| SINGLE_BRACKET_STRING
 			| verb_noun_clause_arg_expr
 		)
 	)
 	| verb_noun_clause_arg_expr DOUBLE_PIPE verb_noun_clause_arg_expr
-	| verb_noun_clause_arg_expr ( STAR | DIV | MOD) verb_noun_clause_arg_expr
-	| verb_noun_clause_arg_expr ( PLUS | MINUS) verb_noun_clause_arg_expr
-	| verb_noun_clause_arg_expr (LESS | LESS_EQUAL | GREATER | GREATER_EQUAL) verb_noun_clause_arg_expr
-	| verb_noun_clause_arg_expr ( EQUAL | NOT_EQUAL | IS | IS NOT | LIKE) verb_noun_clause_arg_expr
+	| verb_noun_clause_arg_expr (STAR | DIV | MOD) verb_noun_clause_arg_expr
+	| verb_noun_clause_arg_expr (PLUS | MINUS) verb_noun_clause_arg_expr
+	| verb_noun_clause_arg_expr (
+		LESS
+		| LESS_EQUAL
+		| GREATER
+		| GREATER_EQUAL
+	) verb_noun_clause_arg_expr
+	| verb_noun_clause_arg_expr (
+		EQUAL
+		| NOT_EQUAL
+		| IS
+		| IS NOT
+		| LIKE
+	) verb_noun_clause_arg_expr
 	| LEFT_PAREN verb_noun_clause_arg_expr AND verb_noun_clause_arg_expr RIGHT_PAREN
 	| LEFT_PAREN verb_noun_clause_arg_expr OR verb_noun_clause_arg_expr RIGHT_PAREN
 	| LEFT_PAREN verb_noun_clause_arg_expr RIGHT_PAREN
 	| LEFT_PAREN verb_noun_clause_arg_expr NOT? (LIKE) verb_noun_clause_arg_expr RIGHT_PAREN
-	| LEFT_PAREN verb_noun_clause_arg_expr ( IS | NULL | NOT NULL) RIGHT_PAREN
+	| LEFT_PAREN verb_noun_clause_arg_expr (IS | NULL | NOT NULL) RIGHT_PAREN
 	| LEFT_PAREN verb_noun_clause_arg_expr IS NOT? verb_noun_clause_arg_expr RIGHT_PAREN;
 
 sub_sequence:
@@ -103,8 +126,7 @@ else_if_statement: ELSE if_statement;
 else_statement: ELSE statement;
 
 try_block: TRY block;
-catch_single_expr:
-	CATCH LEFT_PAREN expr RIGHT_PAREN;
+catch_single_expr: CATCH LEFT_PAREN expr RIGHT_PAREN;
 catch_multi_expr:
 	CATCH LEFT_PAREN expr (COMMA expr)* RIGHT_PAREN;
 catch_sequence:
@@ -113,8 +135,7 @@ finally_sequence: FINALLY LEFT_BRACE sequence RIGHT_BRACE;
 
 redirect_expr: DOUBLE_GREATER WORD;
 
-remote_expr:
-	remote_keyword LEFT_PAREN expr RIGHT_PAREN;
+remote_expr: remote_keyword LEFT_PAREN expr RIGHT_PAREN;
 
 suppress_warnings_expr:
 	SUPPRESS_WARNINGS LEFT_PAREN expr RIGHT_PAREN;
@@ -123,27 +144,27 @@ expr:
 	literal_value
 	| WORD
 	| at_variable
-    | environment_variable
-    | integration_variable
+	| environment_variable
+	| integration_variable
 	| at_bang
 	| at_question
 	| at_star
 	| function_expr
 	| groovy_script
-    | SINGLE_BRACKET_STRING
+	| SINGLE_BRACKET_STRING
 	| (
 		BANG (
 			literal_value
 			| WORD
 			| at_variable
-            | environment_variable
-           	| integration_variable
+			| environment_variable
+			| integration_variable
 			| at_bang
 			| at_question
 			| at_star
 			| function_expr
 			| groovy_script
-            | SINGLE_BRACKET_STRING
+			| SINGLE_BRACKET_STRING
 			| expr
 		)
 	)
@@ -168,33 +189,33 @@ literal_value:
 	| STRING_LITERAL
 	| NULL;
 
-
-at_variable: AT (MINUS)? WORD ((COLON WORD) | ((POUND KEEP) | (POUND ONSTACK)))?;
+at_variable:
+	AT (MINUS)? WORD (
+		(COLON WORD)
+		| ((POUND KEEP) | (POUND ONSTACK))
+	)?;
 environment_variable: AT AT WORD;
-at_plus_variable: AT (PLUS | MOD) WORD ((COLON WORD) | (CARET WORD))?;
+at_plus_variable:
+	AT (PLUS | MOD) WORD ((COLON WORD) | (CARET WORD))?;
 
 at_star: AT STAR;
 at_question: AT QUESTION;
 at_bang: AT BANG;
 
-
 integration_variable: COLON WORD;
 
 remote_keyword: | REMOTE | PARALLEL | INPARALLEL;
 
-
 groovy_script: DOUBLE_BRACKET_STRING;
 sql_script: SINGLE_BRACKET_STRING;
 
-
-
-DOUBLE_BRACKET_STRING: LEFT_BRACKET FRAGMENT_SINGLE_BRACKET_STRING RIGHT_BRACKET;
+DOUBLE_BRACKET_STRING:
+	LEFT_BRACKET FRAGMENT_SINGLE_BRACKET_STRING RIGHT_BRACKET;
 SINGLE_BRACKET_STRING: FRAGMENT_SINGLE_BRACKET_STRING;
 
 // IMPORTANT: the only thing not accounted for here is a single '[' or ']' in comments or string.
-fragment FRAGMENT_SINGLE_BRACKET_STRING
-  :  LEFT_BRACKET ( ~('[' | ']') | FRAGMENT_SINGLE_BRACKET_STRING )* RIGHT_BRACKET
-  ;
+fragment FRAGMENT_SINGLE_BRACKET_STRING:
+	LEFT_BRACKET (~('[' | ']') | FRAGMENT_SINGLE_BRACKET_STRING)* RIGHT_BRACKET;
 
 LEFT_PAREN: '(';
 RIGHT_PAREN: ')';
@@ -228,6 +249,7 @@ AT: '@';
 EQUAL: '=';
 NOT_EQUAL: '!=' | '<>';
 DOT: '.';
+DOLLAR_SIGN: '$';
 
 OVERSTACKED_ARGS: '<<OVERSTACKED_ARGS>>';
 SPECIAL_COMMAND_ARG_NO_ROWS: '#NO_ROWS';
@@ -256,7 +278,6 @@ KEEP: K E E P;
 NUMERIC_LITERAL:
 	DIGIT+ ('.' DIGIT*)? (E [-+]? DIGIT+)?
 	| '.' DIGIT+ ( E [-+]? DIGIT+)?;
-
 
 STRING_LITERAL: (
 		'\'' ( ~'\'' | '\'\'')* '\''
