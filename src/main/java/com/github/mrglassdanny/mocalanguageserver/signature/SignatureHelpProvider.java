@@ -183,10 +183,6 @@ public class SignatureHelpProvider {
         return CompletableFuture.completedFuture(new SignatureHelp(Collections.emptyList(), -1, -1));
     }
 
-    // MOCA.
-
-    // MOCA SQL.
-
     // GROOVY.
     private static int getActiveParameter(Position position, List<Expression> expressions, Range groovyScriptRange) {
         for (int i = 0; i < expressions.size(); i++) {
