@@ -8,8 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
-import javax.net.ssl.HttpsURLConnection;
-
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.UnsupportedConnectionTypeException;
 import com.google.gson.Gson;
@@ -93,18 +91,9 @@ public class MocaConnection {
 
         // We have to create a new instance of HttpURLConnection every time we send a
         // request to the MOCA server.
-        URLConnection connection = null;
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-        // Make sure to use correct connection type (http/https).
-        String lowerCaseUrlStr = this.urlStr.toLowerCase();
-        if (lowerCaseUrlStr.startsWith("https")) {
-            connection = (HttpsURLConnection) url.openConnection();
-            ((HttpsURLConnection) connection).setRequestMethod("POST");
-        } else {
-            connection = (HttpURLConnection) url.openConnection();
-            ((HttpURLConnection) connection).setRequestMethod("POST");
-        }
-
+        connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type", "application/moca-xml");
         connection.setRequestProperty("Accept", "application/json");
         connection.setRequestProperty("Response-Encoder", "Json");
