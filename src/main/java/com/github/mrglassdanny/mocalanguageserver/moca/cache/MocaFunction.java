@@ -31,7 +31,7 @@ public class MocaFunction {
         if (argBuf.length() > 0) {
             argBuf.deleteCharAt(argBuf.length() - 1);
         }
-        return String.format("function **%s**\n\n*%s*\n\n```moca\n%s(%s)\n```", this.name, this.description, this.name,
+        return String.format("function **%s**\n\n%s\n\n```moca\n%s(%s)\n```", this.name, this.description, this.name,
                 argBuf.toString());
     }
 

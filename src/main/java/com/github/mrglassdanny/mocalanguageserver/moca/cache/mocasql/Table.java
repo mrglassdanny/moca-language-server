@@ -11,8 +11,7 @@ public class Table {
 
     public String getMarkdownStr() {
         return String.format("table **%s**\n\n%s", this.table_name,
-                (this.description == null || this.description.isEmpty() ? ""
-                        : String.format("*%s*", this.description)));
+                (this.description == null || this.description.isEmpty() ? "" : String.format("%s", this.description)));
     }
 
     public static String getMarkdownStrForAlias(String aliasedTableName) {

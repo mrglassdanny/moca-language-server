@@ -30,7 +30,7 @@ public class MocaCommand {
         String headerStr = String.format("command **%s**", commandName);
         String descriptionStr = "";
         if (mcmds.get(0).desc != null) {
-            descriptionStr = String.format("*%s*", mcmds.get(0).desc);
+            descriptionStr = String.format("%s", mcmds.get(0).desc);
         }
 
         String levelsStr = "";
