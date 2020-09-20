@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.languageclient.response;
+package com.github.mrglassdanny.mocalanguageserver.command.response;
 
 public class LoadCacheResponse {
 
@@ -7,5 +7,5 @@ public class LoadCacheResponse {
     public LoadCacheResponse(Exception exception) {
         this.exception = exception;
     }
-    
+
 }

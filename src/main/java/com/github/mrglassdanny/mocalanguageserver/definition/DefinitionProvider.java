@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.providers;
+package com.github.mrglassdanny.mocalanguageserver.definition;
 
 import java.io.BufferedWriter;
 import java.io.File;

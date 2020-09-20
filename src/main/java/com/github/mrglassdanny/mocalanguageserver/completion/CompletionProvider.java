@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.providers;
+package com.github.mrglassdanny.mocalanguageserver.completion;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.languageclient.response;
+package com.github.mrglassdanny.mocalanguageserver.command.response;
 
 public class MocaLanguageServerActivateResponse {
 

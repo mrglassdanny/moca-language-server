@@ -12,13 +12,13 @@ import com.github.mrglassdanny.mocalanguageserver.managers.SemanticHighlightingM
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.providers.CompletionProvider;
-import com.github.mrglassdanny.mocalanguageserver.providers.DefinitionProvider;
-import com.github.mrglassdanny.mocalanguageserver.providers.DocumentFormattingProvider;
-import com.github.mrglassdanny.mocalanguageserver.providers.DocumentOnTypeFormattingProvider;
-import com.github.mrglassdanny.mocalanguageserver.providers.ExecuteCommandProvider;
-import com.github.mrglassdanny.mocalanguageserver.providers.HoverProvider;
-import com.github.mrglassdanny.mocalanguageserver.providers.SignatureHelpProvider;
+import com.github.mrglassdanny.mocalanguageserver.completion.CompletionProvider;
+import com.github.mrglassdanny.mocalanguageserver.definition.DefinitionProvider;
+import com.github.mrglassdanny.mocalanguageserver.format.DocumentFormattingProvider;
+import com.github.mrglassdanny.mocalanguageserver.format.DocumentOnTypeFormattingProvider;
+import com.github.mrglassdanny.mocalanguageserver.command.ExecuteCommandProvider;
+import com.github.mrglassdanny.mocalanguageserver.hover.HoverProvider;
+import com.github.mrglassdanny.mocalanguageserver.signature.SignatureHelpProvider;
 import com.github.mrglassdanny.mocalanguageserver.util.file.FileManager;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 

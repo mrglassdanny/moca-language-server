@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.providers;
+package com.github.mrglassdanny.mocalanguageserver.format;
 
 import java.util.ArrayList;
 import java.util.List;

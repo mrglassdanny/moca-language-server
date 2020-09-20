@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.providers;
+package com.github.mrglassdanny.mocalanguageserver.hover;
 
 import java.util.ArrayList;
 import java.util.Map;

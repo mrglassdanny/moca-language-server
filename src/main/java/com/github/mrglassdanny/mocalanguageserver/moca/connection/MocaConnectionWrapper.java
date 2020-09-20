@@ -1,8 +1,8 @@
 
 package com.github.mrglassdanny.mocalanguageserver.moca.connection;
 
-import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaConnectionResponse;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaResultsResponse;
+import com.github.mrglassdanny.mocalanguageserver.command.response.MocaConnectionResponse;
+import com.github.mrglassdanny.mocalanguageserver.command.response.MocaResultsResponse;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.Cache;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.UnsupportedConnectionTypeException;

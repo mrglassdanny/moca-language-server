@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.providers;
+package com.github.mrglassdanny.mocalanguageserver.signature;
 
 import java.util.ArrayList;
 import java.util.Collections;

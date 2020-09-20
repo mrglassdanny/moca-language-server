@@ -1,23 +1,23 @@
-package com.github.mrglassdanny.mocalanguageserver.providers;
+package com.github.mrglassdanny.mocalanguageserver.command;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaCommandLookupRequest;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaConnectionRequest;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaLanguageServerActivateRequest;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaLanguageServerOptionsRequest;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaResultsRequest;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.request.MocaTraceRequest;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.response.LoadCacheResponse;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaCommandLookupResponse;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaConnectionResponse;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaLanguageServerActivateResponse;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaLanguageServerOptionsResponse;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaResultsResponse;
-import com.github.mrglassdanny.mocalanguageserver.languageclient.response.MocaTraceResponse;
+import com.github.mrglassdanny.mocalanguageserver.command.request.MocaCommandLookupRequest;
+import com.github.mrglassdanny.mocalanguageserver.command.request.MocaConnectionRequest;
+import com.github.mrglassdanny.mocalanguageserver.command.request.MocaLanguageServerActivateRequest;
+import com.github.mrglassdanny.mocalanguageserver.command.request.MocaLanguageServerOptionsRequest;
+import com.github.mrglassdanny.mocalanguageserver.command.request.MocaResultsRequest;
+import com.github.mrglassdanny.mocalanguageserver.command.request.MocaTraceRequest;
+import com.github.mrglassdanny.mocalanguageserver.command.response.LoadCacheResponse;
+import com.github.mrglassdanny.mocalanguageserver.command.response.MocaCommandLookupResponse;
+import com.github.mrglassdanny.mocalanguageserver.command.response.MocaConnectionResponse;
+import com.github.mrglassdanny.mocalanguageserver.command.response.MocaLanguageServerActivateResponse;
+import com.github.mrglassdanny.mocalanguageserver.command.response.MocaLanguageServerOptionsResponse;
+import com.github.mrglassdanny.mocalanguageserver.command.response.MocaResultsResponse;
+import com.github.mrglassdanny.mocalanguageserver.command.response.MocaTraceResponse;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
