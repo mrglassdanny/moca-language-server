@@ -10,10 +10,10 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommand;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommandArgument;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaFunction;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommand;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommandArgument;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaFunction;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.Table;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
@@ -156,7 +156,7 @@ public class CompletionProvider {
                             }
                             // Now we can get the verb noun clause's data from our distinct commands list!
                             if (verbNounClause != null) {
-                                if (MocaLanguageServer.currentMocaConnection.cache.mocaCache.distinctCommands
+                                if (MocaCache.getGlobalMocaCache().distinctCommands
                                         .contains(verbNounClause.toString())) {
 
                                     // HACK - getting the first letter typed for command arg population; see
@@ -344,8 +344,7 @@ public class CompletionProvider {
     // MOCA.
     private static void populateMocaCommands(List<CompletionItem> items) {
 
-        for (Map.Entry<String, ArrayList<MocaCommand>> entry : MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
-                .entrySet()) {
+        for (Map.Entry<String, ArrayList<MocaCommand>> entry : MocaCache.getGlobalMocaCache().commands.entrySet()) {
             CompletionItem item = new CompletionItem(entry.getKey());
             item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN,
                     MocaCommand.getMarkdownStr(entry.getKey(), entry.getValue())));
@@ -358,8 +357,7 @@ public class CompletionProvider {
     private static void populateMocaCommandArguments(String mocaCommandName, List<CompletionItem> items,
             char firstTypedLetter) {
 
-        ArrayList<MocaCommandArgument> cmdArgs = MocaLanguageServer.currentMocaConnection.cache.mocaCache.commandArguments
-                .get(mocaCommandName);
+        ArrayList<MocaCommandArgument> cmdArgs = MocaCache.getGlobalMocaCache().commandArguments.get(mocaCommandName);
         if (cmdArgs == null) {
             return;
         }
@@ -391,8 +389,7 @@ public class CompletionProvider {
     }
 
     private static void populateMocaFunctions(List<CompletionItem> items) {
-        for (Map.Entry<String, MocaFunction> entry : MocaLanguageServer.currentMocaConnection.cache.mocaCache.functions
-                .entrySet()) {
+        for (Map.Entry<String, MocaFunction> entry : MocaCache.getGlobalMocaCache().functions.entrySet()) {
             MocaFunction mocaFunction = entry.getValue();
             CompletionItem item = new CompletionItem(mocaFunction.name);
             item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, mocaFunction.getMarkdownStr()));
@@ -405,8 +402,7 @@ public class CompletionProvider {
     // Includes views.
     private static void populateMocaSqlTables(List<CompletionItem> items) {
 
-        for (Map.Entry<String, Table> tableEntry : MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables
-                .entrySet()) {
+        for (Map.Entry<String, Table> tableEntry : MocaCache.getGlobalMocaCache().mocaSqlCache.tables.entrySet()) {
             Table tbl = tableEntry.getValue();
             CompletionItem item = new CompletionItem(tbl.table_name);
             item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, tbl.getMarkdownStr()));
@@ -414,8 +410,7 @@ public class CompletionProvider {
             items.add(item);
         }
 
-        for (Map.Entry<String, Table> viewEntry : MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views
-                .entrySet()) {
+        for (Map.Entry<String, Table> viewEntry : MocaCache.getGlobalMocaCache().mocaSqlCache.views.entrySet()) {
             Table view = viewEntry.getValue();
             CompletionItem item = new CompletionItem(view.table_name);
             item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, view.getMarkdownStr()));
@@ -456,8 +451,7 @@ public class CompletionProvider {
 
     private static void populateMocaSqlColumnsFromTableName(String tableName, String aliasName,
             boolean excludeColPrefixForFirstForAllCols, List<CompletionItem> items) {
-        ArrayList<TableColumn> cols = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
-                .getColumnsForTable(tableName);
+        ArrayList<TableColumn> cols = MocaCache.getGlobalMocaCache().mocaSqlCache.getColumnsForTable(tableName);
 
         // Could be null.
         if (cols == null) {

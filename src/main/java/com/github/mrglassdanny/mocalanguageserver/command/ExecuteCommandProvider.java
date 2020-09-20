@@ -18,7 +18,8 @@ import com.github.mrglassdanny.mocalanguageserver.command.response.MocaLanguageS
 import com.github.mrglassdanny.mocalanguageserver.command.response.MocaLanguageServerOptionsResponse;
 import com.github.mrglassdanny.mocalanguageserver.command.response.MocaResultsResponse;
 import com.github.mrglassdanny.mocalanguageserver.command.response.MocaTraceResponse;
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnection;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
 
@@ -83,19 +84,18 @@ public class ExecuteCommandProvider {
 
                     MocaConnectionRequest mocaConnectionRequest = new MocaConnectionRequest(args);
 
-                    if (mocaConnectionRequest.useExistingRepository
-                            && MocaLanguageServer.currentMocaConnection != null) {
-                        MocaLanguageServer.currentMocaConnection = new MocaConnectionWrapper(mocaConnectionRequest.url,
-                                mocaConnectionRequest.userId, mocaConnectionRequest.password,
-                                MocaLanguageServer.currentMocaConnection.cache);
-                    } else {
-                        MocaLanguageServer.currentMocaConnection = new MocaConnectionWrapper(mocaConnectionRequest.url,
-                                mocaConnectionRequest.userId, mocaConnectionRequest.password);
-                    }
-
                     GroovyCompiler.classpathList = mocaConnectionRequest.classpathList;
 
-                    MocaConnectionResponse mocaConnectionResponse = MocaLanguageServer.currentMocaConnection.connect();
+                    MocaConnectionResponse mocaConnectionResponse = new MocaConnectionResponse();
+                    try {
+                        MocaConnection.getGlobalMocaConnection().connect(mocaConnectionRequest.url,
+                                mocaConnectionRequest.userId, mocaConnectionRequest.password);
+                        mocaConnectionResponse.eOk = true;
+                        mocaConnectionResponse.exception = null;
+                    } catch (Exception e) {
+                        mocaConnectionResponse.eOk = false;
+                        mocaConnectionResponse.exception = e;
+                    }
 
                     return CompletableFuture.completedFuture(mocaConnectionResponse);
                 } catch (Exception exception) {
@@ -108,8 +108,8 @@ public class ExecuteCommandProvider {
                 // No need to do anything special with request; we are not expecting any
                 // arguments.
 
-                // Make sure connection has url.
-                if (MocaLanguageServer.currentMocaConnection.urlStr == null) {
+                // Make sure connection is valid.
+                if (!MocaConnection.getGlobalMocaConnection().isValid()) {
                     LoadCacheResponse loadCacheResponse = new LoadCacheResponse(
                             new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER));
                     return CompletableFuture.completedFuture(loadCacheResponse);
@@ -121,31 +121,31 @@ public class ExecuteCommandProvider {
                 // will be run async.
 
                 CompletableFuture.runAsync(() -> {
-                    MocaLanguageServer.currentMocaConnection.cache.mocaCache.loadCommandArguments();
+                    MocaCache.getGlobalMocaCache().loadCommandArguments();
                 });
 
                 CompletableFuture.runAsync(() -> {
-                    MocaLanguageServer.currentMocaConnection.cache.mocaCache.loadTriggers();
+                    MocaCache.getGlobalMocaCache().loadTriggers();
                 });
 
                 CompletableFuture.runAsync(() -> {
-                    MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.loadTables();
+                    MocaCache.getGlobalMocaCache().mocaSqlCache.loadTables();
                 });
 
                 CompletableFuture.runAsync(() -> {
-                    MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.loadViews();
+                    MocaCache.getGlobalMocaCache().mocaSqlCache.loadViews();
                 });
 
                 CompletableFuture.runAsync(() -> {
-                    MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.loadColumns();
+                    MocaCache.getGlobalMocaCache().mocaSqlCache.loadColumns();
                 });
 
-                MocaLanguageServer.currentMocaConnection.cache.mocaCache.loadCommands();
+                MocaCache.getGlobalMocaCache().loadCommands();
 
                 return CompletableFuture.completedFuture(new LoadCacheResponse(null));
             case EXECUTE:
 
-                if (MocaLanguageServer.currentMocaConnection.urlStr == null) {
+                if (!MocaConnection.getGlobalMocaConnection().isValid()) {
                     MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null,
                             new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER));
                     return CompletableFuture.completedFuture(mocaResultsResponse);
@@ -162,8 +162,15 @@ public class ExecuteCommandProvider {
                     // Adding elapsed time console logging.
                     long start = System.currentTimeMillis();
 
-                    MocaResultsResponse mocaResultsResponse = MocaLanguageServer.currentMocaConnection
-                            .executeCommand(mocaResultsRequest.script);
+                    MocaResultsResponse mocaResultsResponse = new MocaResultsResponse();
+                    try {
+                        mocaResultsResponse.results = MocaConnection.getGlobalMocaConnection()
+                                .executeCommand(mocaResultsRequest.script);
+                        mocaResultsResponse.exception = null;
+                    } catch (Exception e) {
+                        mocaResultsResponse.results = null;
+                        mocaResultsResponse.exception = e;
+                    }
 
                     // Check to see if our connection timed out. We will know whether or not this is
                     // the case based on the error message in the mocaResultsResponse.
@@ -175,18 +182,34 @@ public class ExecuteCommandProvider {
                         if (curSts == 301 || curSts == 203 || curSts == 523) {
                             // If connection timed out, we need to quitely try to reconnect and rerun the
                             // script.
-                            MocaConnectionResponse reconnectResponse = MocaLanguageServer.currentMocaConnection
-                                    .connect();
+                            MocaConnectionResponse reconnectResponse = new MocaConnectionResponse();
+                            try {
+                                MocaConnection.getGlobalMocaConnection().connect(
+                                        MocaConnection.getGlobalMocaConnection().getUrlStr(),
+                                        MocaConnection.getGlobalMocaConnection().getUserId(),
+                                        MocaConnection.getGlobalMocaConnection().getPassword());
+                                reconnectResponse.eOk = true;
+                                reconnectResponse.exception = null;
+                            } catch (Exception e) {
+                                reconnectResponse.eOk = false;
+                                reconnectResponse.exception = e;
+                            }
 
                             // If reconnect response has exception, we need to return the message to the
                             // user. Otherwise, rerun the script. We should be able to reuse
                             // mocaResultsResponse initialized above in either case.
                             if (!reconnectResponse.eOk) {
-                                mocaResultsResponse.exception = reconnectResponse.exception;
                                 mocaResultsResponse.results = null;
+                                mocaResultsResponse.exception = reconnectResponse.exception;
                             } else {
-                                mocaResultsResponse = MocaLanguageServer.currentMocaConnection
-                                        .executeCommand(mocaResultsRequest.script);
+                                try {
+                                    mocaResultsResponse.results = MocaConnection.getGlobalMocaConnection()
+                                            .executeCommand(mocaResultsRequest.script);
+                                    mocaResultsResponse.exception = null;
+                                } catch (Exception e) {
+                                    mocaResultsResponse.results = null;
+                                    mocaResultsResponse.exception = e;
+                                }
                             }
                         }
                     }
@@ -214,7 +237,7 @@ public class ExecuteCommandProvider {
 
             case TRACE:
 
-                if (MocaLanguageServer.currentMocaConnection.urlStr == null) {
+                if (!MocaConnection.getGlobalMocaConnection().isValid()) {
                     MocaTraceResponse mocaTraceResponse = new MocaTraceResponse(
                             new MocaResultsResponse(null, new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER)));
                     return CompletableFuture.completedFuture(mocaTraceResponse);
@@ -229,17 +252,30 @@ public class ExecuteCommandProvider {
                     MocaTraceRequest mocaTraceRequest = new MocaTraceRequest(args);
 
                     if (mocaTraceRequest.fileName.isEmpty()) {
-                        mocaTraceRequest.fileName = MocaLanguageServer.currentMocaConnection.userId;
+                        mocaTraceRequest.fileName = MocaConnection.getGlobalMocaConnection().getUserId();
                     }
 
-                    MocaResultsResponse resResponse = null;
+                    MocaResultsResponse resResponse = new MocaResultsResponse();
                     if (mocaTraceRequest.startTrace) {
-                        resResponse = MocaLanguageServer.currentMocaConnection.executeCommand(
-                                "set trace where activate = 1 and filename = '" + mocaTraceRequest.fileName
-                                        + ".log' and trcmod = '" + mocaTraceRequest.mode + "'");
+                        try {
+                            resResponse.results = MocaConnection.getGlobalMocaConnection()
+                                    .executeCommand(String.format(
+                                            "set trace where activate = 1 and filename = '%s.log' and trcmod = '%s'",
+                                            mocaTraceRequest.fileName, mocaTraceRequest.mode));
+                            resResponse.exception = null;
+                        } catch (Exception e) {
+                            resResponse.results = null;
+                            resResponse.exception = e;
+                        }
                     } else {
-                        resResponse = MocaLanguageServer.currentMocaConnection
-                                .executeCommand("set trace where activate = 0");
+                        try {
+                            resResponse.results = MocaConnection.getGlobalMocaConnection()
+                                    .executeCommand("set trace where activate = 0");
+                            resResponse.exception = null;
+                        } catch (Exception e) {
+                            resResponse.results = null;
+                            resResponse.exception = e;
+                        }
                     }
 
                     return CompletableFuture.completedFuture(new MocaTraceResponse(resResponse));
@@ -258,13 +294,12 @@ public class ExecuteCommandProvider {
                     MocaCommandLookupResponse mocaCommandLookupResponse;
                     if (mocaCommandLookupRequest.requestedMocaCommand == null) {
                         mocaCommandLookupResponse = new MocaCommandLookupResponse(
-                                MocaLanguageServer.currentMocaConnection.cache.mocaCache.distinctCommands, null, null,
-                                null);
+                                MocaCache.getGlobalMocaCache().distinctCommands, null, null, null);
                     } else {
                         mocaCommandLookupResponse = new MocaCommandLookupResponse(null,
-                                MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
+                                MocaCache.getGlobalMocaCache().commands
                                         .get(mocaCommandLookupRequest.requestedMocaCommand),
-                                MocaLanguageServer.currentMocaConnection.cache.mocaCache.triggers
+                                MocaCache.getGlobalMocaCache().triggers
                                         .get(mocaCommandLookupRequest.requestedMocaCommand),
                                 null);
                     }

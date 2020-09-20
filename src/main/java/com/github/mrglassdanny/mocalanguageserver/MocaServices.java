@@ -7,8 +7,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.github.mrglassdanny.mocalanguageserver.managers.DiagnosticManager;
-import com.github.mrglassdanny.mocalanguageserver.managers.SemanticHighlightingManager;
+import com.github.mrglassdanny.mocalanguageserver.diagnostics.DiagnosticManager;
+import com.github.mrglassdanny.mocalanguageserver.highlight.SemanticHighlightingManager;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;

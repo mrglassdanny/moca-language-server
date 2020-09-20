@@ -11,23 +11,40 @@ import java.net.URLConnection;
 import javax.net.ssl.HttpsURLConnection;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.UnsupportedConnectionTypeException;
 import com.google.gson.Gson;
 
 public class MocaConnection {
 
+    // Using singleton pattern to manage single global moca connection instance.
+    private static MocaConnection globalMocaConnection;
+
+    public static MocaConnection getGlobalMocaConnection() {
+        if (globalMocaConnection == null) {
+            MocaConnection.globalMocaConnection = new MocaConnection();
+            return MocaConnection.globalMocaConnection;
+        } else {
+            return MocaConnection.globalMocaConnection;
+        }
+    }
+
     private String urlStr;
+    private String userId;
+    private String password;
     private String sessionId;
     private String environmentVariablesXmlStr;
 
-    public MocaConnection(String urlStr) {
-        this.urlStr = urlStr;
-        this.sessionId = "";
-        this.environmentVariablesXmlStr = "";
+    private MocaConnection() {
+        this.urlStr = null;
+        this.userId = null;
+        this.password = null;
+        this.sessionId = null;
+        this.environmentVariablesXmlStr = null;
     }
 
-    public void login(String userId, String password) throws IOException, MocaException, Exception {
-        MocaResults res = this
-                .executeCommand(String.format("login user where usr_id = '%s' and usr_pswd = '%s'", userId, password));
+    private void login() throws IOException, MocaException, Exception {
+        MocaResults res = this.executeCommand(
+                String.format("login user where usr_id = '%s' and usr_pswd = '%s'", this.userId, this.password));
 
         String localeId = res.getString(0, "locale_id");
         String usrId = res.getString(0, "usr_id");
@@ -38,7 +55,31 @@ public class MocaConnection {
                 localeId, usrId, sessionKey);
     }
 
+    public void connect(String urlStr, String userId, String password) throws Exception {
+
+        this.urlStr = urlStr;
+        this.userId = userId;
+        this.password = password;
+        this.sessionId = "";
+        this.environmentVariablesXmlStr = "";
+
+        // Test to see if url is correct type -- we will only support http and https.
+        String lowerCaseUrlStr = this.urlStr.toLowerCase();
+        if (!lowerCaseUrlStr.startsWith("http") && !lowerCaseUrlStr.startsWith("https")) {
+            throw new UnsupportedConnectionTypeException(
+                    "MOCA Language Server only supports 'http' and 'https' connections!");
+        }
+
+        this.login();
+
+    }
+
     public MocaResults executeCommand(String command) throws IOException, MocaException, Exception {
+
+        // Validate instance.
+        if (!this.isValid()) {
+            return null;
+        }
 
         // Setup connection object(s).
         // Add session id to url string if it is not null.
@@ -124,6 +165,24 @@ public class MocaConnection {
         return new Gson().fromJson(responseJsonStr, MocaResults.class);
     }
 
+    public final String getUrlStr() {
+        return this.urlStr;
+    }
+
+    public final String getUserId() {
+        return this.userId;
+    }
+
+    public final String getPassword() {
+        return this.password;
+    }
+
+    public boolean isValid() {
+        return this.urlStr != null && this.userId != null && this.password != null
+                && this.environmentVariablesXmlStr != null;
+    }
+
+    // Utilies.
     private static String escapeXml(String str) {
 
         StringBuilder buf = new StringBuilder();

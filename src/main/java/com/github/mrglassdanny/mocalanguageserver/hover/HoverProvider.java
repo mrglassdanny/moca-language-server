@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommand;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaFunction;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommand;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaFunction;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.Table;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
@@ -58,8 +58,7 @@ public class HoverProvider {
                     mocaWord = mocaWord.toLowerCase();
 
                     // First check if this is a moca function.
-                    MocaFunction mocaFunction = MocaLanguageServer.currentMocaConnection.cache.mocaCache.functions
-                            .get(mocaWord);
+                    MocaFunction mocaFunction = MocaCache.getGlobalMocaCache().functions.get(mocaWord);
                     if (mocaFunction != null) {
 
                         hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, mocaFunction.getMarkdownStr()));
@@ -91,7 +90,7 @@ public class HoverProvider {
 
                                 verbNounClause = entry.getKey();
 
-                                ArrayList<MocaCommand> mcmds = MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
+                                ArrayList<MocaCommand> mcmds = MocaCache.getGlobalMocaCache().commands
                                         .get(verbNounClause.toString());
                                 if (mcmds != null) {
                                     String content = MocaCommand.getMarkdownStr(verbNounClause.toString(), mcmds);
@@ -121,13 +120,13 @@ public class HoverProvider {
                     mocaSqlWord = mocaSqlWord.toLowerCase();
 
                     // Check first to see if mocasql word is table/view in database.
-                    Table table = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.get(mocaSqlWord);
+                    Table table = MocaCache.getGlobalMocaCache().mocaSqlCache.tables.get(mocaSqlWord);
                     if (table != null) {
                         hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, table.getMarkdownStr()));
                         return CompletableFuture.completedFuture(hover);
                     }
 
-                    Table view = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.get(mocaSqlWord);
+                    Table view = MocaCache.getGlobalMocaCache().mocaSqlCache.views.get(mocaSqlWord);
                     if (view != null) {
                         hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, view.getMarkdownStr()));
                         return CompletableFuture.completedFuture(hover);

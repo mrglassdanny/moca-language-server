@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.moca.MocaCommand;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommand;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
@@ -74,7 +75,7 @@ public class DefinitionProvider {
 
                                 verbNounClause = entry.getKey();
 
-                                ArrayList<MocaCommand> mcmds = MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
+                                ArrayList<MocaCommand> mcmds = MocaCache.getGlobalMocaCache().commands
                                         .get(verbNounClause.toString());
                                 if (mcmds != null) {
 

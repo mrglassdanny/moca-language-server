@@ -1,14 +1,26 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.cache.moca;
+package com.github.mrglassdanny.mocalanguageserver.moca.cache;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.MocaSqlCache;
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnection;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
 
 public class MocaCache {
+
+        // Using singleton pattern to manage single global cache instance.
+        private static MocaCache globalMocaCache = null;
+
+        public static MocaCache getGlobalMocaCache() {
+                if (MocaCache.globalMocaCache == null) {
+                        MocaCache.globalMocaCache = new MocaCache();
+                        return MocaCache.globalMocaCache;
+                } else {
+                        return MocaCache.globalMocaCache;
+                }
+        }
 
         private static final String COMMANDS_SCRIPT = "list active commands";
         private static final String COMMAND_ARGUMENTS_SCRIPT = "list active command arguments";
@@ -20,11 +32,15 @@ public class MocaCache {
         public HashMap<String, ArrayList<MocaTrigger>> triggers;
         public HashMap<String, MocaFunction> functions;
 
+        public MocaSqlCache mocaSqlCache;
+
         public MocaCache() {
                 this.distinctCommands = new ArrayList<>();
                 this.commands = new HashMap<>();
                 this.commandArguments = new HashMap<>();
                 this.triggers = new HashMap<>();
+
+                this.mocaSqlCache = new MocaSqlCache();
 
                 // Moca functions can be hardcoded.
                 {
@@ -132,40 +148,45 @@ public class MocaCache {
 
         public void loadCommands() {
 
-                MocaConnectionWrapper conn = MocaLanguageServer.currentMocaConnection;
-
                 this.distinctCommands.clear();
                 this.commands.clear();
 
-                MocaResults res = conn.executeCommand(MocaCache.COMMANDS_SCRIPT).results;
-                if (res != null) {
+                try {
+                        MocaResults res = MocaConnection.getGlobalMocaConnection()
+                                        .executeCommand(MocaCache.COMMANDS_SCRIPT);
+                        if (res != null) {
 
-                        for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
-                                String command = res.getString(rowIdx, "command");
-                                if (this.commands.containsKey(command)) {
+                                for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
+                                        String command = res.getString(rowIdx, "command");
+                                        if (this.commands.containsKey(command)) {
 
-                                        // Do not add to distinct mcmd list.
+                                                // Do not add to distinct mcmd list.
 
-                                        ArrayList<MocaCommand> cmds = this.commands.get(command);
+                                                ArrayList<MocaCommand> cmds = this.commands.get(command);
 
-                                        cmds.add(new MocaCommand(res.getString(rowIdx, "cmplvl"),
-                                                        res.getInt(rowIdx, "cmplvlseq"), command,
-                                                        res.getString(rowIdx, "type"), res.getString(rowIdx, "syntax"),
-                                                        res.getString(rowIdx, "desc")));
-                                } else {
+                                                cmds.add(new MocaCommand(res.getString(rowIdx, "cmplvl"),
+                                                                res.getInt(rowIdx, "cmplvlseq"), command,
+                                                                res.getString(rowIdx, "type"),
+                                                                res.getString(rowIdx, "syntax"),
+                                                                res.getString(rowIdx, "desc")));
+                                        } else {
 
-                                        ArrayList<MocaCommand> cmds = new ArrayList<>();
-                                        cmds.add(new MocaCommand(res.getString(rowIdx, "cmplvl"),
-                                                        res.getInt(rowIdx, "cmplvlseq"), command,
-                                                        res.getString(rowIdx, "type"), res.getString(rowIdx, "syntax"),
-                                                        res.getString(rowIdx, "desc")));
+                                                ArrayList<MocaCommand> cmds = new ArrayList<>();
+                                                cmds.add(new MocaCommand(res.getString(rowIdx, "cmplvl"),
+                                                                res.getInt(rowIdx, "cmplvlseq"), command,
+                                                                res.getString(rowIdx, "type"),
+                                                                res.getString(rowIdx, "syntax"),
+                                                                res.getString(rowIdx, "desc")));
 
-                                        this.commands.put(command, cmds);
+                                                this.commands.put(command, cmds);
 
-                                        // Add to distinct mcmd list.
-                                        this.distinctCommands.add(command);
+                                                // Add to distinct mcmd list.
+                                                this.distinctCommands.add(command);
+                                        }
                                 }
                         }
+                } catch (Exception e) {
+                        // ignore
                 }
 
                 // Add built in commands..
@@ -202,69 +223,83 @@ public class MocaCache {
 
         public void loadCommandArguments() {
 
-                MocaConnectionWrapper conn = MocaLanguageServer.currentMocaConnection;
-
                 this.commandArguments.clear();
 
-                MocaResults res = conn.executeCommand(MocaCache.COMMAND_ARGUMENTS_SCRIPT).results;
+                try {
+                        MocaResults res = MocaConnection.getGlobalMocaConnection()
+                                        .executeCommand(MocaCache.COMMAND_ARGUMENTS_SCRIPT);
 
-                if (res != null) {
+                        if (res != null) {
 
-                        for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
-                                String command = res.getString(rowIdx, "command");
-                                if (this.commandArguments.containsKey(command)) {
+                                for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
+                                        String command = res.getString(rowIdx, "command");
+                                        if (this.commandArguments.containsKey(command)) {
 
-                                        ArrayList<MocaCommandArgument> cmdArgs = this.commandArguments.get(command);
-                                        cmdArgs.add(new MocaCommandArgument(res.getString(rowIdx, "cmplvl"),
-                                                        res.getString(rowIdx, "command"),
-                                                        res.getString(rowIdx, "argnam"),
-                                                        res.getString(rowIdx, "altnam"),
-                                                        res.getString(rowIdx, "argtyp"),
-                                                        res.getString(rowIdx, "fixval"), res.getInt(rowIdx, "argidx"),
-                                                        res.getBoolean(rowIdx, "argreq")));
-                                } else {
+                                                ArrayList<MocaCommandArgument> cmdArgs = this.commandArguments
+                                                                .get(command);
+                                                cmdArgs.add(new MocaCommandArgument(res.getString(rowIdx, "cmplvl"),
+                                                                res.getString(rowIdx, "command"),
+                                                                res.getString(rowIdx, "argnam"),
+                                                                res.getString(rowIdx, "altnam"),
+                                                                res.getString(rowIdx, "argtyp"),
+                                                                res.getString(rowIdx, "fixval"),
+                                                                res.getInt(rowIdx, "argidx"),
+                                                                res.getBoolean(rowIdx, "argreq")));
+                                        } else {
 
-                                        ArrayList<MocaCommandArgument> cmdArgs = new ArrayList<>();
-                                        cmdArgs.add(new MocaCommandArgument(res.getString(rowIdx, "cmplvl"),
-                                                        res.getString(rowIdx, "command"),
-                                                        res.getString(rowIdx, "argnam"),
-                                                        res.getString(rowIdx, "altnam"),
-                                                        res.getString(rowIdx, "argtyp"),
-                                                        res.getString(rowIdx, "fixval"), res.getInt(rowIdx, "argidx"),
-                                                        res.getBoolean(rowIdx, "argreq")));
-                                        this.commandArguments.put(command, cmdArgs);
+                                                ArrayList<MocaCommandArgument> cmdArgs = new ArrayList<>();
+                                                cmdArgs.add(new MocaCommandArgument(res.getString(rowIdx, "cmplvl"),
+                                                                res.getString(rowIdx, "command"),
+                                                                res.getString(rowIdx, "argnam"),
+                                                                res.getString(rowIdx, "altnam"),
+                                                                res.getString(rowIdx, "argtyp"),
+                                                                res.getString(rowIdx, "fixval"),
+                                                                res.getInt(rowIdx, "argidx"),
+                                                                res.getBoolean(rowIdx, "argreq")));
+                                                this.commandArguments.put(command, cmdArgs);
+                                        }
                                 }
                         }
+                } catch (Exception e) {
+                        // ignore
                 }
+
         }
 
         public void loadTriggers() {
 
-                MocaConnectionWrapper conn = MocaLanguageServer.currentMocaConnection;
-
                 this.triggers.clear();
 
-                MocaResults res = conn.executeCommand(MocaCache.TRIGGERS_SCRIPT).results;
+                try {
+                        MocaResults res = MocaConnection.getGlobalMocaConnection()
+                                        .executeCommand(MocaCache.TRIGGERS_SCRIPT);
 
-                if (res != null) {
+                        if (res != null) {
 
-                        for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
-                                String command = res.getString(rowIdx, "command");
-                                if (this.triggers.containsKey(command)) {
-                                        // No need to worry about sorting, as the result set is sorted by command,
-                                        // trigger seq!
-                                        ArrayList<MocaTrigger> triggers = this.triggers.get(command);
-                                        triggers.add(new MocaTrigger(res.getString(rowIdx, "name"), command,
-                                                        res.getInt(rowIdx, "trgseq"), res.getString(rowIdx, "syntax")));
-                                } else {
+                                for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
+                                        String command = res.getString(rowIdx, "command");
+                                        if (this.triggers.containsKey(command)) {
+                                                // No need to worry about sorting, as the result set is sorted by
+                                                // command,
+                                                // trigger seq!
+                                                ArrayList<MocaTrigger> triggers = this.triggers.get(command);
+                                                triggers.add(new MocaTrigger(res.getString(rowIdx, "name"), command,
+                                                                res.getInt(rowIdx, "trgseq"),
+                                                                res.getString(rowIdx, "syntax")));
+                                        } else {
 
-                                        ArrayList<MocaTrigger> triggers = new ArrayList<>();
-                                        triggers.add(new MocaTrigger(res.getString(rowIdx, "name"), command,
-                                                        res.getInt(rowIdx, "trgseq"), res.getString(rowIdx, "syntax")));
-                                        this.triggers.put(command, triggers);
+                                                ArrayList<MocaTrigger> triggers = new ArrayList<>();
+                                                triggers.add(new MocaTrigger(res.getString(rowIdx, "name"), command,
+                                                                res.getInt(rowIdx, "trgseq"),
+                                                                res.getString(rowIdx, "syntax")));
+                                                this.triggers.put(command, triggers);
+                                        }
                                 }
                         }
+                } catch (Exception e) {
+                        // ignore
                 }
+
         }
 
 }

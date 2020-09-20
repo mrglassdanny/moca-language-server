@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser;
-import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlBaseListener;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Derived_tableContext;
@@ -473,7 +473,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         // Check table/view cache first.
         if (!processedAsteriskColumns) {
 
-            ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
+            ArrayList<TableColumn> tableColumnsForAsterisk = MocaCache.getGlobalMocaCache().mocaSqlCache
                     .getColumnsForTable(tableName);
 
             if (tableColumnsForAsterisk != null) {
@@ -495,7 +495,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             processedAsteriskColumns = true;
 
             // Get all columns from cache for aliased table.
-            ArrayList<TableColumn> tableColumnsForAsterisk = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
+            ArrayList<TableColumn> tableColumnsForAsterisk = MocaCache.getGlobalMocaCache().mocaSqlCache
                     .getColumnsForTable(this.aliasedTableNames.get(tableName));
 
             if (tableColumnsForAsterisk != null) {

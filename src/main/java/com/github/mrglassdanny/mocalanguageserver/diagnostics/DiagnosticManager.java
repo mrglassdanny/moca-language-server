@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.managers;
+package com.github.mrglassdanny.mocalanguageserver.diagnostics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
@@ -61,12 +62,6 @@ public class DiagnosticManager {
         }
 
         clearDiagnostics(languageClient, uriStr);
-
-        // Make sure nothing we need is null, as exceptions could be thrown.
-        if (MocaLanguageServer.currentMocaConnection == null
-                || MocaLanguageServer.currentMocaConnection.cache == null) {
-            return;
-        }
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
@@ -214,8 +209,7 @@ public class DiagnosticManager {
 
             StringBuilder verbNounClause = entry.getKey();
 
-            if (!MocaLanguageServer.currentMocaConnection.cache.mocaCache.distinctCommands
-                    .contains(verbNounClause.toString())) {
+            if (!MocaCache.getGlobalMocaCache().distinctCommands.contains(verbNounClause.toString())) {
 
                 ArrayList<org.antlr.v4.runtime.Token> mocaTokens = entry.getValue();
                 // No need to validate size -- we can assume that we have
@@ -278,8 +272,8 @@ public class DiagnosticManager {
             String tableTokenText = tableToken.getText().toLowerCase();
 
             // Check tables and views.
-            if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.containsKey(tableTokenText)
-                    || MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.containsKey(tableTokenText)) {
+            if (MocaCache.getGlobalMocaCache().mocaSqlCache.tables.containsKey(tableTokenText)
+                    || MocaCache.getGlobalMocaCache().mocaSqlCache.views.containsKey(tableTokenText)) {
                 foundTable = true;
             }
 
@@ -502,7 +496,7 @@ public class DiagnosticManager {
 
                             String columnTokenText = columnToken.getText();
 
-                            ArrayList<TableColumn> columnsInTable = MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache
+                            ArrayList<TableColumn> columnsInTable = MocaCache.getGlobalMocaCache().mocaSqlCache
                                     .getColumnsForTable(tableName);
 
                             boolean foundColumn = false;

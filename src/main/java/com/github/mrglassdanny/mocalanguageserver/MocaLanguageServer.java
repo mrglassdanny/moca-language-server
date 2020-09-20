@@ -5,8 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.github.mrglassdanny.mocalanguageserver.managers.SemanticHighlightingManager;
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
+import com.github.mrglassdanny.mocalanguageserver.highlight.SemanticHighlightingManager;
 import com.github.mrglassdanny.mocalanguageserver.command.ExecuteCommandProvider;
 
 import org.eclipse.lsp4j.CompletionOptions;
@@ -32,10 +31,6 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
     // Will have global reference to lang client for various purposes -- mainly
     // logging.
     private static LanguageClient languageClient;
-
-    // Will only ever have 1 at a time. We also want it to be easily accessible to
-    // anything that needs it.
-    public static MocaConnectionWrapper currentMocaConnection = new MocaConnectionWrapper();
 
     // Callers will likely crash if this is null. That being said, we want callers
     // to crash if value is null -- it is important that the moca language server's

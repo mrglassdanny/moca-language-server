@@ -3,9 +3,8 @@ package com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnection;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
-import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnectionWrapper;
 
 public class MocaSqlCache {
 
@@ -52,97 +51,104 @@ public class MocaSqlCache {
 
     public void loadTables() {
 
-        MocaConnectionWrapper conn = MocaLanguageServer.currentMocaConnection;
-
         this.tables.clear();
 
-        MocaResults res = conn.executeCommand(MocaSqlCache.TABLES_SCRIPT).results;
+        try {
+            MocaResults res = MocaConnection.getGlobalMocaConnection().executeCommand(MocaSqlCache.TABLES_SCRIPT);
 
-        if (res != null) {
-            for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
-                String tableName = res.getString(rowIdx, "table_name").toLowerCase();
-                String tableDescription = res.getString(rowIdx, "description");
-                String tableComment = res.getString(rowIdx, "table_comment");
-                if (!tableComment.isEmpty()) {
-                    tableDescription += ": " + tableComment;
+            if (res != null) {
+                for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
+                    String tableName = res.getString(rowIdx, "table_name").toLowerCase();
+                    String tableDescription = res.getString(rowIdx, "description");
+                    String tableComment = res.getString(rowIdx, "table_comment");
+                    if (!tableComment.isEmpty()) {
+                        tableDescription += ": " + tableComment;
+                    }
+                    this.tables.put(tableName, new Table(tableName, tableDescription));
                 }
-                this.tables.put(tableName, new Table(tableName, tableDescription));
-            }
 
+            }
+        } catch (Exception e) {
+            // ignore
         }
+
     }
 
     public void loadViews() {
 
-        MocaConnectionWrapper conn = MocaLanguageServer.currentMocaConnection;
-
         this.views.clear();
 
-        MocaResults res = conn.executeCommand(MocaSqlCache.VIEWS_SCRIPT).results;
+        try {
+            MocaResults res = MocaConnection.getGlobalMocaConnection().executeCommand(MocaSqlCache.VIEWS_SCRIPT);
 
-        if (res != null) {
+            if (res != null) {
 
-            for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
-                String viewName = res.getString(rowIdx, "view_name").toLowerCase();
-                this.views.put(viewName, new Table(viewName, ""));
+                for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
+                    String viewName = res.getString(rowIdx, "view_name").toLowerCase();
+                    this.views.put(viewName, new Table(viewName, ""));
+                }
             }
-        }
 
-        // Add 'dual' - lol.
-        this.views.put("dual", new Table("dual", ""));
+            // Add 'dual' - lol.
+            this.views.put("dual", new Table("dual", ""));
+        } catch (Exception e) {
+            // ignore
+        }
 
     }
 
     public void loadColumns() {
 
-        MocaConnectionWrapper conn = MocaLanguageServer.currentMocaConnection;
-
         this.columns.clear();
 
-        MocaResults colRes = conn.executeCommand(MocaSqlCache.COLUMNS_SCRIPT).results;
+        try {
+            MocaResults colRes = MocaConnection.getGlobalMocaConnection().executeCommand(MocaSqlCache.COLUMNS_SCRIPT);
 
-        // Due to how our loop works, we need to save off data here so that we do not
-        // leave out the first column of every table(after the first table).
-        TableColumn firstColumn = null;
+            // Due to how our loop works, we need to save off data here so that we do not
+            // leave out the first column of every table(after the first table).
+            TableColumn firstColumn = null;
 
-        // For table columns and view columns, we can assume that the data is sorted by
-        // table_name, column_id, column_name.
-        if (colRes != null) {
+            // For table columns and view columns, we can assume that the data is sorted by
+            // table_name, column_id, column_name.
+            if (colRes != null) {
 
-            for (int rowIdx = 0; rowIdx < colRes.getRowCount(); rowIdx++) {
-                String tableName = colRes.getString(rowIdx, "table_name");
-                String curRowTableName = tableName; // Gets updated each row.
-                ArrayList<TableColumn> tableCols = new ArrayList<>();
+                for (int rowIdx = 0; rowIdx < colRes.getRowCount(); rowIdx++) {
+                    String tableName = colRes.getString(rowIdx, "table_name");
+                    String curRowTableName = tableName; // Gets updated each row.
+                    ArrayList<TableColumn> tableCols = new ArrayList<>();
 
-                // Check if we have a first column set from below.
-                if (firstColumn != null) {
-                    // If so, add it to the new array then null it out for the next go round.
-                    tableCols.add(firstColumn);
-                    firstColumn = null;
-                }
-
-                while (tableName.compareToIgnoreCase(curRowTableName) == 0) {
-
-                    tableCols.add(new TableColumn(tableName, colRes.getString(rowIdx, "column_name"),
-                            colRes.getString(rowIdx, "data_type"), colRes.getInt(rowIdx, "max_length")));
-
-                    if (rowIdx >= colRes.getRowCount()) {
-                        break;
-                    } else {
-                        rowIdx++;
+                    // Check if we have a first column set from below.
+                    if (firstColumn != null) {
+                        // If so, add it to the new array then null it out for the next go round.
+                        tableCols.add(firstColumn);
+                        firstColumn = null;
                     }
 
-                    curRowTableName = colRes.getString(rowIdx, "table_name");
-                    if (tableName.compareToIgnoreCase(curRowTableName) != 0) {
-                        // New table. Need to save off some info so we dont lose the first column!
-                        firstColumn = new TableColumn(tableName, colRes.getString(rowIdx, "column_name"),
-                                colRes.getString(rowIdx, "data_type"), colRes.getInt(rowIdx, "max_length"));
-                    }
-                }
+                    while (tableName.compareToIgnoreCase(curRowTableName) == 0) {
 
-                // Now add to map.
-                this.columns.put(tableName, tableCols);
+                        tableCols.add(new TableColumn(tableName, colRes.getString(rowIdx, "column_name"),
+                                colRes.getString(rowIdx, "data_type"), colRes.getInt(rowIdx, "max_length")));
+
+                        if (rowIdx >= colRes.getRowCount()) {
+                            break;
+                        } else {
+                            rowIdx++;
+                        }
+
+                        curRowTableName = colRes.getString(rowIdx, "table_name");
+                        if (tableName.compareToIgnoreCase(curRowTableName) != 0) {
+                            // New table. Need to save off some info so we dont lose the first column!
+                            firstColumn = new TableColumn(tableName, colRes.getString(rowIdx, "column_name"),
+                                    colRes.getString(rowIdx, "data_type"), colRes.getInt(rowIdx, "max_length"));
+                        }
+                    }
+
+                    // Now add to map.
+                    this.columns.put(tableName, tableCols);
+                }
             }
+        } catch (Exception e) {
+            // ignore
         }
 
     }

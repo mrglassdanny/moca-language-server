@@ -1,11 +1,11 @@
-package com.github.mrglassdanny.mocalanguageserver.managers;
+package com.github.mrglassdanny.mocalanguageserver.highlight;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
@@ -67,11 +67,6 @@ public class SemanticHighlightingManager {
     }
 
     public static void streamAll(LanguageClient client, String uriStr, String mocaScript, MocaCompiler mocaCompiler) {
-
-        // Make sure we are good to stream.
-        if (MocaLanguageServer.currentMocaConnection == null) {
-            return;
-        }
 
         // Prepare to add new highlights.
         List<SemanticHighlightingInformation> lines = new ArrayList<>();
@@ -250,8 +245,7 @@ public class SemanticHighlightingManager {
                 if (verbNounClause != null) {
 
                     // Make sure command exists before we color it.
-                    if (MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
-                            .containsKey(verbNounClause.toString())) {
+                    if (MocaCache.getGlobalMocaCache().commands.containsKey(verbNounClause.toString())) {
                         Position pos = PositionUtils.getPosition(mocaScript, mocaTokens.get(0).getStartIndex());
 
                         if (pos != null) {
@@ -322,8 +316,8 @@ public class SemanticHighlightingManager {
                     String word = tableToken.getText().toLowerCase();
 
                     // Check if exists in tables/views before we add to map.
-                    if (MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.tables.containsKey(word)
-                            || MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.containsKey(word)) {
+                    if (MocaCache.getGlobalMocaCache().mocaSqlCache.tables.containsKey(word)
+                            || MocaCache.getGlobalMocaCache().mocaSqlCache.views.containsKey(word)) {
 
                         // Let's make sure real quick that this is not a '@' var.
                         int offset = PositionUtils.getOffset(mocaScript, pos);

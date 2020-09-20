@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.cache.moca;
+package com.github.mrglassdanny.mocalanguageserver.moca.cache;
 
 public class MocaTrigger {
 

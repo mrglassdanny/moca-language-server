@@ -14,8 +14,6 @@ public class MocaConnectionRequest {
     public String password;
     public ArrayList<String> classpathList;
 
-    public boolean useExistingRepository;
-
     public MocaConnectionRequest(List<Object> args) throws Exception {
 
         JsonObject connJsonObj = (JsonObject) args.get(0);
@@ -28,10 +26,6 @@ public class MocaConnectionRequest {
         for (JsonElement jsonElem : classpathJsonArr) {
             this.classpathList.add(jsonElem.getAsString());
         }
-
-        // No need to parse out json structure for this -- we know it will always be a
-        // standalone boolean.
-        this.useExistingRepository = ((JsonElement) args.get(1)).getAsBoolean();
 
     }
 

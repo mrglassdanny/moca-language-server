@@ -1,8 +1,6 @@
-package com.github.mrglassdanny.mocalanguageserver.moca.cache.moca;
+package com.github.mrglassdanny.mocalanguageserver.moca.cache;
 
 import java.util.ArrayList;
-
-import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 
 public class MocaCommand {
 
@@ -42,8 +40,7 @@ public class MocaCommand {
 
         // Add required args to documentation if there are any.
         String requiredArgumentsStr = "";
-        ArrayList<MocaCommandArgument> args = MocaLanguageServer.currentMocaConnection.cache.mocaCache.commandArguments
-                .get(mcmds.get(0).command);
+        ArrayList<MocaCommandArgument> args = MocaCache.getGlobalMocaCache().commandArguments.get(mcmds.get(0).command);
         if (args != null) {
             for (MocaCommandArgument arg : args) {
                 if (arg.argreq) {
@@ -57,8 +54,7 @@ public class MocaCommand {
         }
         // Go ahead and add triggers to documentation if there are any.
         String triggersStr = "";
-        ArrayList<MocaTrigger> triggers = MocaLanguageServer.currentMocaConnection.cache.mocaCache.triggers
-                .get(mcmds.get(0).command);
+        ArrayList<MocaTrigger> triggers = MocaCache.getGlobalMocaCache().triggers.get(mcmds.get(0).command);
         if (triggers != null) {
             for (MocaTrigger trg : triggers) {
                 triggersStr += String.format("* %d: %s\n", trg.trgseq, trg.name);
