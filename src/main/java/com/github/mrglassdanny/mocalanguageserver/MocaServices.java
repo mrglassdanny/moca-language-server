@@ -7,13 +7,13 @@ import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.github.mrglassdanny.mocalanguageserver.diagnostics.DiagnosticManager;
 import com.github.mrglassdanny.mocalanguageserver.highlight.SemanticHighlightingManager;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.completion.CompletionProvider;
 import com.github.mrglassdanny.mocalanguageserver.definition.DefinitionProvider;
+import com.github.mrglassdanny.mocalanguageserver.diagnostic.DiagnosticManager;
 import com.github.mrglassdanny.mocalanguageserver.format.DocumentFormattingProvider;
 import com.github.mrglassdanny.mocalanguageserver.format.DocumentOnTypeFormattingProvider;
 import com.github.mrglassdanny.mocalanguageserver.command.ExecuteCommandProvider;

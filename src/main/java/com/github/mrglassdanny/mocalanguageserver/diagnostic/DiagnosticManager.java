@@ -1,4 +1,4 @@
-package com.github.mrglassdanny.mocalanguageserver.diagnostics;
+package com.github.mrglassdanny.mocalanguageserver.diagnostic;
 
 import java.util.ArrayList;
 import java.util.List;
