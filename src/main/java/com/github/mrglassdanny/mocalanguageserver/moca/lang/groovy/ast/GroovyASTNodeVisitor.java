@@ -10,8 +10,8 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
-import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.RangeUtils;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.AnnotatedNode;
@@ -147,7 +147,7 @@ public class GroovyASTNodeVisitor extends ClassCodeVisitorSupport {
                 return false;
             }
             Range range = GroovyLanguageUtils.astNodeToRange(node, groovyScriptRange);
-            boolean result = Ranges.contains(range, position);
+            boolean result = RangeUtils.contains(range, position);
             if (result) {
                 // save the range object to avoid creating it again when we
                 // sort the nodes
@@ -155,12 +155,12 @@ public class GroovyASTNodeVisitor extends ClassCodeVisitorSupport {
             }
             return result;
         }).sorted((n1, n2) -> {
-            int result = Positions.COMPARATOR.reversed().compare(nodeToRange.get(n1).getStart(),
+            int result = PositionUtils.COMPARATOR.reversed().compare(nodeToRange.get(n1).getStart(),
                     nodeToRange.get(n2).getStart());
             if (result != 0) {
                 return result;
             }
-            result = Positions.COMPARATOR.compare(nodeToRange.get(n1).getEnd(), nodeToRange.get(n2).getEnd());
+            result = PositionUtils.COMPARATOR.compare(nodeToRange.get(n1).getEnd(), nodeToRange.get(n2).getEnd());
             if (result != 0) {
                 return result;
             }

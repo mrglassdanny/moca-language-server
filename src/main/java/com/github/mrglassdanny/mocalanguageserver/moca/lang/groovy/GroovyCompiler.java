@@ -9,7 +9,7 @@ import java.util.Map;
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 
 import org.antlr.v4.runtime.Token;
 import org.codehaus.groovy.GroovyBugError;
@@ -51,7 +51,7 @@ public class GroovyCompiler {
         // Need to keep track of what we have added, that way we dont add 2 redirects
         // with the same name(will cause static type checking issue).
         ArrayList<String> addedMocaRedirectNames = new ArrayList<>();
-        int groovyScriptOffset = Positions.getOffset(mocaScript, mocaCompiler.groovyRanges.get(rangeIdx).getStart());
+        int groovyScriptOffset = PositionUtils.getOffset(mocaScript, mocaCompiler.groovyRanges.get(rangeIdx).getStart());
         if (mocaCompiler.currentCompilationResult != null) {
             for (Map.Entry<Token, String> entry : mocaCompiler.currentCompilationResult.mocaParseTreeListener.redirects
                     .entrySet()) {

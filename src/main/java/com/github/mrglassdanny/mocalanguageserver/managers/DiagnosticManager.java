@@ -18,8 +18,8 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlP
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlSyntaxError;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
-import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
-import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.RangeUtils;
 
 import org.antlr.v4.runtime.Token;
 import org.codehaus.groovy.control.messages.ExceptionMessage;
@@ -223,8 +223,8 @@ public class DiagnosticManager {
                 org.antlr.v4.runtime.Token beginToken = mocaTokens.get(0);
                 org.antlr.v4.runtime.Token endToken = mocaTokens.get(mocaTokens.size() - 1);
 
-                Position beginPos = Positions.getPosition(script, beginToken.getStartIndex());
-                Position endPos = Positions.getPosition(script,
+                Position beginPos = PositionUtils.getPosition(script, beginToken.getStartIndex());
+                Position endPos = PositionUtils.getPosition(script,
                         MocaTokenUtils.getAdjustedMocaTokenStopIndex(endToken.getStopIndex()));
 
                 if (beginPos != null && endPos != null) {
@@ -625,15 +625,15 @@ public class DiagnosticManager {
         Pattern todoPattern = Pattern.compile("\\b(?i)(TODO.*)\\b");
         Matcher todoMatcher = todoPattern.matcher(script);
         while (todoMatcher.find()) {
-            Range range = new Range(Positions.getPosition(script, todoMatcher.start()),
-                    Positions.getPosition(script, todoMatcher.end()));
+            Range range = new Range(PositionUtils.getPosition(script, todoMatcher.start()),
+                    PositionUtils.getPosition(script, todoMatcher.end()));
             Diagnostic diagnostic = new Diagnostic();
 
             // Now let's check if todo is in sql or groovy range.
             boolean inSqlRange = false;
             boolean inGroovyRange = false;
             for (Range sqlRange : mocaCompiler.mocaSqlRanges) {
-                if (Ranges.contains(sqlRange, range)) {
+                if (RangeUtils.contains(sqlRange, range)) {
                     inSqlRange = true;
                     break;
                 }
@@ -641,7 +641,7 @@ public class DiagnosticManager {
 
             if (!inSqlRange) {
                 for (Range groovyRange : mocaCompiler.groovyRanges) {
-                    if (Ranges.contains(groovyRange, range)) {
+                    if (RangeUtils.contains(groovyRange, range)) {
                         inGroovyRange = true;
                         break;
                     }

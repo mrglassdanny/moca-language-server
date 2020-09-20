@@ -11,8 +11,8 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompile
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
-import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
-import com.github.mrglassdanny.mocalanguageserver.util.lsp.Ranges;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.RangeUtils;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -96,7 +96,7 @@ public class MocaCompiler {
                     // Compiling moca sql ranges via another thread.
                     Thread mocaSqlThread = new Thread(() -> {
                         // Remove first and last characters('[', ']').
-                        String mocaSqlScript = Ranges.getText(finalMocaScript, this.mocaSqlRanges.get(rangeIdx));
+                        String mocaSqlScript = RangeUtils.getText(finalMocaScript, this.mocaSqlRanges.get(rangeIdx));
                         mocaSqlScript = mocaSqlScript.substring(1, mocaSqlScript.length() - 1);
                         this.mocaSqlCompiler.compileScript(rangeIdx, mocaSqlScript);
                     });
@@ -135,7 +135,7 @@ public class MocaCompiler {
                     // Compiling groovy ranges via another thread.
                     Thread groovyThread = new Thread(() -> {
                         // Remove '[[]]'.
-                        String groovyScript = Ranges.getText(finalMocaScript, this.groovyRanges.get(rangeIdx));
+                        String groovyScript = RangeUtils.getText(finalMocaScript, this.groovyRanges.get(rangeIdx));
                         groovyScript = groovyScript.substring(2, groovyScript.length() - 2);
 
                         this.groovyCompiler.compileScript(rangeIdx, groovyScript, this, finalMocaScript);
@@ -191,13 +191,13 @@ public class MocaCompiler {
         for (Token curMocaToken : this.mocaTokens) {
             if (curMocaToken.getType() == MocaLexer.SINGLE_BRACKET_STRING) {
                 if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(curMocaToken.getText())) {
-                    this.mocaSqlRanges.add(new Range(Positions.getPosition(mocaScript, curMocaToken.getStartIndex()),
-                            Positions.getPosition(mocaScript,
+                    this.mocaSqlRanges.add(new Range(PositionUtils.getPosition(mocaScript, curMocaToken.getStartIndex()),
+                            PositionUtils.getPosition(mocaScript,
                                     MocaTokenUtils.getAdjustedMocaTokenStopIndex(curMocaToken.getStopIndex()))));
                 }
             } else if (curMocaToken.getType() == MocaLexer.DOUBLE_BRACKET_STRING) {
-                this.groovyRanges.add(new Range(Positions.getPosition(mocaScript, curMocaToken.getStartIndex()),
-                        Positions.getPosition(mocaScript,
+                this.groovyRanges.add(new Range(PositionUtils.getPosition(mocaScript, curMocaToken.getStartIndex()),
+                        PositionUtils.getPosition(mocaScript,
                                 MocaTokenUtils.getAdjustedMocaTokenStopIndex(curMocaToken.getStopIndex()))));
             }
         }
@@ -209,7 +209,7 @@ public class MocaCompiler {
         // Check moca sql.
         int mocaSqlCount = 0;
         for (Range range : this.mocaSqlRanges) {
-            if (Ranges.contains(range, position)) {
+            if (RangeUtils.contains(range, position)) {
                 return new MocaLanguageContext(MocaLanguageContext.ContextId.MocaSql, mocaSqlCount);
             }
             mocaSqlCount++;
@@ -218,7 +218,7 @@ public class MocaCompiler {
         // Check groovy.
         int groovyCount = 0;
         for (Range range : this.groovyRanges) {
-            if (Ranges.contains(range, position)) {
+            if (RangeUtils.contains(range, position)) {
                 return new MocaLanguageContext(MocaLanguageContext.ContextId.Groovy, groovyCount);
             }
             groovyCount++;
@@ -234,7 +234,7 @@ public class MocaCompiler {
     }
 
     public int getMocaTokenIndexAtPosition(String mocaScript, Position pos) {
-        int posOffset = Positions.getOffset(mocaScript, pos);
+        int posOffset = PositionUtils.getOffset(mocaScript, pos);
         for (int i = 0; i < this.mocaTokens.size(); i++) {
             Token mocaToken = this.mocaTokens.get(i);
 

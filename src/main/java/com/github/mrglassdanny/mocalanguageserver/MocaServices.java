@@ -20,7 +20,7 @@ import com.github.mrglassdanny.mocalanguageserver.providers.ExecuteCommandProvid
 import com.github.mrglassdanny.mocalanguageserver.providers.HoverProvider;
 import com.github.mrglassdanny.mocalanguageserver.providers.SignatureHelpProvider;
 import com.github.mrglassdanny.mocalanguageserver.util.file.FileManager;
-import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.eclipse.lsp4j.CompletionItem;
@@ -253,7 +253,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                     originalSource = this.fileManager.getContents(uri);
                     VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
                             textDocument.getUri(), 1);
-                    int offset = Positions.getOffset(originalSource, position);
+                    int offset = PositionUtils.getOffset(originalSource, position);
                     String lineBeforeOffset = originalSource.substring(offset - position.getCharacter(), offset);
                     Matcher matcher = Pattern.compile(".*new \\w*$").matcher(lineBeforeOffset);
                     TextDocumentContentChangeEvent changeEvent = null;

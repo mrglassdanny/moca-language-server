@@ -27,7 +27,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLa
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlParseTreeListener;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
-import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ClassNode;
@@ -107,7 +107,7 @@ public class CompletionProvider {
 
                 // Check if the word we are typing resembles "where".
                 // If so, we want nothing for now.
-                String curWord = Positions.getWordAtPosition(textDocumentContents, position);
+                String curWord = PositionUtils.getWordAtPosition(textDocumentContents, position, "([a-zA-Z_0-9.])");
                 boolean matchesWhere = curWord.matches("(?i)\\b(where|wher|whe|wh|w)\\b");
                 if (matchesWhere) {
                     // Return nothing for now.
@@ -161,7 +161,7 @@ public class CompletionProvider {
 
                                     // HACK - getting the first letter typed for command arg population; see
                                     // function for more info.
-                                    char firstTypedLetter = Positions.getCharacterAtPosition(textDocumentContents,
+                                    char firstTypedLetter = PositionUtils.getCharacterAtPosition(textDocumentContents,
                                             new Position(position.getLine(), position.getCharacter() - 1));
                                     populateMocaCommandArguments(verbNounClause.toString(), items, firstTypedLetter);
                                     // Also populate functions.
@@ -207,12 +207,12 @@ public class CompletionProvider {
                     // Checking to see if we pressed '.' - which in an mocasql context would mean
                     // that
                     // we are looking for table columns.
-                    if (Positions.getCharacterAtPosition(textDocumentContents,
+                    if (PositionUtils.getCharacterAtPosition(textDocumentContents,
                             new Position(position.getLine(), position.getCharacter() - 1)) == '.') {
 
                         // Get word on left of '.'.
-                        String word = Positions.getWordAtPosition(textDocumentContents,
-                                new Position(position.getLine(), position.getCharacter() - 2));
+                        String word = PositionUtils.getWordAtPosition(textDocumentContents,
+                                new Position(position.getLine(), position.getCharacter() - 2), "([a-zA-Z_0-9])");
                         if (word != null) {
                             // Make sure case sensitivity will not get in the way.
                             String lowerCaseWord = word.toLowerCase();

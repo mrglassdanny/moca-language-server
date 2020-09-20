@@ -6,7 +6,7 @@ import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.format.MocaFormatter;
-import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 
 import org.eclipse.lsp4j.DocumentFormattingParams;
 import org.eclipse.lsp4j.DocumentRangeFormattingParams;
@@ -59,7 +59,7 @@ public class DocumentFormattingProvider {
                 // Add to text doc edits and return!
                 edits.add(new TextEdit(
                                 new Range(new Position(0, 0),
-                                                Positions.getPosition(textDocumentContents,
+                                                PositionUtils.getPosition(textDocumentContents,
                                                                 textDocumentContents.length())),
                                 formattedTextDocumentContents));
                 return edits;

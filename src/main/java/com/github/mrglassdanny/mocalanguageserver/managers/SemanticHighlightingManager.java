@@ -11,7 +11,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
@@ -252,7 +252,7 @@ public class SemanticHighlightingManager {
                     // Make sure command exists before we color it.
                     if (MocaLanguageServer.currentMocaConnection.cache.mocaCache.commands
                             .containsKey(verbNounClause.toString())) {
-                        Position pos = Positions.getPosition(mocaScript, mocaTokens.get(0).getStartIndex());
+                        Position pos = PositionUtils.getPosition(mocaScript, mocaTokens.get(0).getStartIndex());
 
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
@@ -283,7 +283,7 @@ public class SemanticHighlightingManager {
 
         for (org.antlr.v4.runtime.Token mocaToken : mocaCompiler.mocaTokens) {
             if (mocaToken.getType() == MocaLexer.SEMI_COLON) {
-                Position pos = Positions.getPosition(mocaScript, mocaToken.getStartIndex());
+                Position pos = PositionUtils.getPosition(mocaScript, mocaToken.getStartIndex());
                 int lineNum = pos.getLine();
                 if (preInfos.containsKey(lineNum)) {
                     preInfos.get(lineNum).add(new Token(0, pos.getCharacter(), MOCA_COMMAND_STREAM_END_SCOPES_IDX));
@@ -326,7 +326,7 @@ public class SemanticHighlightingManager {
                             || MocaLanguageServer.currentMocaConnection.cache.mocaSqlCache.views.containsKey(word)) {
 
                         // Let's make sure real quick that this is not a '@' var.
-                        int offset = Positions.getOffset(mocaScript, pos);
+                        int offset = PositionUtils.getOffset(mocaScript, pos);
                         if (offset > 0 && (offset - 1) < mocaScript.length() && mocaScript.charAt(offset - 1) != '@') {
                             if (preInfos.containsKey(pos.getLine())) {
                                 preInfos.get(pos.getLine())

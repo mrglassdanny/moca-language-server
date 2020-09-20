@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 
-public class Positions {
+public class PositionUtils {
 
     public static final Comparator<Position> COMPARATOR = (Position p1, Position p2) -> {
         if (p1.getLine() != p2.getLine()) {
@@ -93,19 +93,19 @@ public class Positions {
         }
     }
 
-    public static Range getWordRangeAtPosition(String string, Position position) {
+    public static Range getWordRangeAtPosition(String string, Position position, String regexStr) {
 
         if (!isValid(position)) {
             return null;
         }
 
-        int curCharNum = Positions.getOffset(string, position);
+        int curCharNum = PositionUtils.getOffset(string, position);
         int left = curCharNum - 1, right = curCharNum;
 
-        while (left >= 0 && Pattern.matches("([a-zA-Z_])", Character.toString(string.charAt(left)))) {
+        while (left >= 0 && Pattern.matches(regexStr, Character.toString(string.charAt(left)))) {
             left--;
         }
-        while (right < string.length() && Pattern.matches("([a-zA-Z_])", Character.toString(string.charAt(right)))) {
+        while (right < string.length() && Pattern.matches(regexStr, Character.toString(string.charAt(right)))) {
             right++;
         }
 
@@ -113,36 +113,28 @@ public class Positions {
         return new Range(new Position(lineNum, left), new Position(lineNum, right));
     }
 
-    public static String getWordAtPosition(String string, Position position) {
+    public static String getWordAtPosition(String string, Position position, String regexStr) {
 
         if (!isValid(position)) {
             return null;
         }
 
-        int curCharNum = Positions.getOffset(string, position);
+        int curCharNum = PositionUtils.getOffset(string, position);
         int left = curCharNum - 1, right = curCharNum;
         String word = "";
 
         String charStr;
-        while (left >= 0 && Pattern.matches("([a-zA-Z_])", charStr = Character.toString(string.charAt(left)))) {
+        while (left >= 0 && Pattern.matches(regexStr, charStr = Character.toString(string.charAt(left)))) {
             word = charStr + word;
             left--;
         }
         while (right < string.length()
-                && Pattern.matches("([a-zA-Z_])", charStr = Character.toString(string.charAt(right)))) {
+                && Pattern.matches(regexStr, charStr = Character.toString(string.charAt(right)))) {
             word += charStr;
             right++;
         }
 
         return word;
-    }
-
-    public static Range getWordRangeAtPosition(String string, Position position, String regex) {
-        return null;
-    }
-
-    public static Range getWordAtPosition(String string, Position position, String regex) {
-        return null;
     }
 
 }

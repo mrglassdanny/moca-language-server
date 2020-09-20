@@ -57,7 +57,7 @@ public class FileManager {
         if (range == null) {
             openFiles.put(uri, change.getText());
         } else {
-            int offset = Positions.getOffset(oldText, change.getRange().getStart());
+            int offset = PositionUtils.getOffset(oldText, change.getRange().getStart());
             StringBuilder builder = new StringBuilder();
             builder.append(oldText.substring(0, offset));
             builder.append(change.getText());

@@ -16,7 +16,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.ast.GroovyAST
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyASTUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyNodeToStringUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ClassNode;
@@ -51,7 +51,7 @@ public class HoverProvider {
                     return CompletableFuture.completedFuture(hover);
                 }
 
-                String mocaWord = Positions.getWordAtPosition(textDocumentContents, position);
+                String mocaWord = PositionUtils.getWordAtPosition(textDocumentContents, position, "([a-zA-Z_0-9.])");
 
                 if (mocaWord != null) {
 
@@ -114,7 +114,7 @@ public class HoverProvider {
                         .get(mocaLanguageContext.rangeIdx);
 
                 // Tables, views, aliases, and subqueries - oh my!
-                String mocaSqlWord = Positions.getWordAtPosition(textDocumentContents, position);
+                String mocaSqlWord = PositionUtils.getWordAtPosition(textDocumentContents, position, "([a-zA-Z_0-9])");
 
                 if (mocaSqlWord != null) {
                     // Convert to lowercase since repo is in lowercase.

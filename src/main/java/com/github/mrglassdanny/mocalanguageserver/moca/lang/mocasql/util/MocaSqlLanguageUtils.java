@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlSyntaxError;
-import com.github.mrglassdanny.mocalanguageserver.util.lsp.Positions;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
@@ -39,7 +39,7 @@ public class MocaSqlLanguageUtils {
 
     public static Position createMocaPosition(String script, int offset, Range scriptRange) {
 
-        Position sqlPos = Positions.getPosition(script, offset + 1); // +1 for '['.
+        Position sqlPos = PositionUtils.getPosition(script, offset + 1); // +1 for '['.
 
         // This probably wont happen..
         if (sqlPos == null) {
