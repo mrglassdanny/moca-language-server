@@ -149,7 +149,7 @@ public class DiagnosticManager {
             MocaCompiler mocaCompiler) {
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
-        diagnostics.addAll(handleTodos(uriStr, script, mocaCompiler));
+
         return diagnostics;
 
     }
@@ -604,57 +604,6 @@ public class DiagnosticManager {
                 }
 
             });
-        }
-
-        return diagnostics;
-    }
-
-    // MISC.
-    private static ArrayList<Diagnostic> handleTodos(String uriStr, String script, MocaCompiler mocaCompiler) {
-
-        // Basically just finding in TODOs and adding them to the list.
-
-        ArrayList<Diagnostic> diagnostics = new ArrayList<>();
-
-        Pattern todoPattern = Pattern.compile("\\b(?i)(TODO.*)\\b");
-        Matcher todoMatcher = todoPattern.matcher(script);
-        while (todoMatcher.find()) {
-            Range range = new Range(PositionUtils.getPosition(script, todoMatcher.start()),
-                    PositionUtils.getPosition(script, todoMatcher.end()));
-            Diagnostic diagnostic = new Diagnostic();
-
-            // Now let's check if todo is in sql or groovy range.
-            boolean inSqlRange = false;
-            boolean inGroovyRange = false;
-            for (Range sqlRange : mocaCompiler.mocaSqlRanges) {
-                if (RangeUtils.contains(sqlRange, range)) {
-                    inSqlRange = true;
-                    break;
-                }
-            }
-
-            if (!inSqlRange) {
-                for (Range groovyRange : mocaCompiler.groovyRanges) {
-                    if (RangeUtils.contains(groovyRange, range)) {
-                        inGroovyRange = true;
-                        break;
-                    }
-                }
-            }
-
-            String prefix = null;
-            if (inSqlRange) {
-                prefix = "SQL: ";
-            } else if (inGroovyRange) {
-                prefix = "GROOVY: ";
-            } else {
-                prefix = "MOCA: ";
-            }
-
-            diagnostic.setRange(range);
-            diagnostic.setSeverity(DiagnosticSeverity.Information);
-            diagnostic.setMessage(prefix + todoMatcher.group());
-            diagnostics.add(diagnostic);
         }
 
         return diagnostics;
