@@ -255,30 +255,30 @@ public class ExecuteCommandProvider {
                         mocaTraceRequest.fileName = MocaConnection.getGlobalMocaConnection().getUserId();
                     }
 
-                    MocaResultsResponse resResponse = new MocaResultsResponse();
+                    MocaResultsResponse mocaResultsResponse = new MocaResultsResponse();
                     if (mocaTraceRequest.startTrace) {
                         try {
-                            resResponse.results = MocaConnection.getGlobalMocaConnection()
+                            mocaResultsResponse.results = MocaConnection.getGlobalMocaConnection()
                                     .executeCommand(String.format(
                                             "set trace where activate = 1 and filename = '%s.log' and trcmod = '%s'",
                                             mocaTraceRequest.fileName, mocaTraceRequest.mode));
-                            resResponse.exception = null;
+                            mocaResultsResponse.exception = null;
                         } catch (Exception e) {
-                            resResponse.results = null;
-                            resResponse.exception = e;
+                            mocaResultsResponse.results = null;
+                            mocaResultsResponse.exception = e;
                         }
                     } else {
                         try {
-                            resResponse.results = MocaConnection.getGlobalMocaConnection()
+                            mocaResultsResponse.results = MocaConnection.getGlobalMocaConnection()
                                     .executeCommand("set trace where activate = 0");
-                            resResponse.exception = null;
+                            mocaResultsResponse.exception = null;
                         } catch (Exception e) {
-                            resResponse.results = null;
-                            resResponse.exception = e;
+                            mocaResultsResponse.results = null;
+                            mocaResultsResponse.exception = e;
                         }
                     }
 
-                    return CompletableFuture.completedFuture(new MocaTraceResponse(resResponse));
+                    return CompletableFuture.completedFuture(new MocaTraceResponse(mocaResultsResponse));
                 } catch (Exception exception) {
                     return CompletableFuture
                             .completedFuture(new MocaTraceResponse(new MocaResultsResponse(null, exception)));
