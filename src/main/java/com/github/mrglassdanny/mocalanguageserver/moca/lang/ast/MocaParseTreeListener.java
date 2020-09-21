@@ -57,7 +57,10 @@ public class MocaParseTreeListener extends MocaBaseListener {
         }
 
         // Remove the last space we added to verb noun clause.
-        verbNounClause.deleteCharAt(verbNounClause.length() - 1);
+        // Make sure that we have enough chars to remove one!
+        if (verbNounClause.length() > 0) {
+            verbNounClause.deleteCharAt(verbNounClause.length() - 1);
+        }
 
         this.verbNounClauses.put(verbNounClause, tokens);
 
