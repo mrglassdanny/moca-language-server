@@ -8,9 +8,16 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
+import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.UnsupportedConnectionTypeException;
 import com.google.gson.Gson;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MocaConnection {
 
@@ -89,42 +96,16 @@ public class MocaConnection {
             url = new URL(this.urlStr);
         }
 
-        // We have to create a new instance of HttpURLConnection every time we send a
-        // request to the MOCA server.
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "application/moca-xml");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setRequestProperty("Response-Encoder", "Json");
-        connection.setDoOutput(true);
-
         // Build moca request.
         String mocaRequest = MocaConnection.generateMocaRequestXmlString(true, this.sessionId,
                 this.environmentVariablesXmlStr, command);
 
-        // Send request.
-        try (OutputStream outputStream = connection.getOutputStream()) {
-            byte[] input = mocaRequest.getBytes();
-            outputStream.write(input, 0, input.length);
-        }
-
-        // Read response.
-        String responseJsonStr = null;
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            StringBuilder responseBuf = new StringBuilder();
-            String responseLine = null;
-            while ((responseLine = bufferedReader.readLine()) != null) {
-                responseBuf.append(responseLine.trim());
-            }
-
-            responseJsonStr = responseBuf.toString();
-        }
-
-        // If response is null, I guess just go ahead and return null.
-        if (responseJsonStr == null) {
-            return null;
-        }
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/moca-xml");
+        RequestBody body = RequestBody.create(mediaType, mocaRequest);
+        Request request = new Request.Builder().url(url).post(body).addHeader("Content-Type", "application/moca-xml")
+                .addHeader("Accept", "application/json").addHeader("Response-Encoder", "Json").build();
+        Response response = client.newCall(request).execute();
 
         // Process headers -- these will tell the story if something went wrong.
         // We also need to extract session id if it is there.
@@ -133,14 +114,15 @@ public class MocaConnection {
         String messageHeader = null;
 
         try {
-            sessionId = connection.getHeaderField("Session-Id");
+            sessionId = response.header("Session-Id");
             // Change session id if it is different than before.
             if (sessionId != null && !sessionId.equals(this.sessionId)) {
                 this.sessionId = sessionId;
             }
 
-            commandStatusHeader = Integer.parseInt(connection.getHeaderField("Command-Status"));
-            messageHeader = connection.getHeaderField("Message");
+            commandStatusHeader = Integer.parseInt(response.header("Command-Status"));
+            messageHeader = response.header("Message");
+
         } catch (Exception headerAnalysisException) {
             // Do not care about doing anything here -- just want to make sure we do not
             // crash.
@@ -151,7 +133,7 @@ public class MocaConnection {
                     commandStatusHeader);
         }
 
-        return new Gson().fromJson(responseJsonStr, MocaResults.class);
+        return new Gson().fromJson(response.body().string(), MocaResults.class);
     }
 
     public final String getUrlStr() {
