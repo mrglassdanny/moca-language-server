@@ -34,7 +34,7 @@ public class MocaParseTreeListener extends MocaBaseListener {
             return;
         }
 
-        StringBuilder verbNounClause = new StringBuilder();
+        StringBuilder verbNounClauseBuf = new StringBuilder();
         ArrayList<Token> tokens = new ArrayList<>();
         for (int i = 0; i < ctx.children.size(); i++) {
             Object child = ctx.children.get(i).getPayload();
@@ -46,9 +46,9 @@ public class MocaParseTreeListener extends MocaBaseListener {
                 // Token could be a CARET if override; let's ignore it.
                 // Let's also ignore WHERE token.
                 if (commonToken.getType() != MocaLexer.CARET && commonToken.getType() != MocaLexer.WHERE) {
-                    verbNounClause.append(commonToken.getText());
+                    verbNounClauseBuf.append(commonToken.getText());
                     // Need to put a space since we skip whitespace in parser!
-                    verbNounClause.append(" ");
+                    verbNounClauseBuf.append(" ");
                     tokens.add(commonToken);
                 }
             } else {
@@ -56,10 +56,15 @@ public class MocaParseTreeListener extends MocaBaseListener {
             }
         }
 
-        // Remove the last space we added to verb noun clause.
-        verbNounClause.deleteCharAt(verbNounClause.length() - 1);
+        // If verb noun clause is empty, do nothing for now.
+        if (verbNounClauseBuf.length() == 0) {
+            return;
+        }
 
-        this.verbNounClauses.put(verbNounClause, tokens);
+        // Remove the last space we added to verb noun clause.
+        verbNounClauseBuf.deleteCharAt(verbNounClauseBuf.length() - 1);
+
+        this.verbNounClauses.put(verbNounClauseBuf, tokens);
 
     }
 
