@@ -3,8 +3,6 @@ package com.github.mrglassdanny.mocalanguageserver.diagnostic;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
@@ -20,7 +18,6 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlS
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
-import com.github.mrglassdanny.mocalanguageserver.util.lsp.RangeUtils;
 
 import org.antlr.v4.runtime.Token;
 import org.codehaus.groovy.control.messages.ExceptionMessage;
