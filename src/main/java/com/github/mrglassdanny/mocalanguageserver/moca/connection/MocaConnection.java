@@ -1,14 +1,9 @@
 package com.github.mrglassdanny.mocalanguageserver.moca.connection;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 
-import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
+import java.net.URL;
+
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.UnsupportedConnectionTypeException;
 import com.google.gson.Gson;
