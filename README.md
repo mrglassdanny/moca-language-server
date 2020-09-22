@@ -49,11 +49,6 @@ Java based implementation of the [Language Server Protocol] for the MOCA languag
 - [vscode-moca-client]
 
 
-## Feedback
-
-Create [issue]
-
-
 ## Contribute
 
 - Contact mrglassdanny@gmail.com
@@ -63,4 +58,3 @@ Create [issue]
 
 [Language Server Protocol]: https://langserver.org
 [vscode-moca-client]: https://github.com/mrglassdanny/vscode-moca-client
-[issue]: https://github.com/mrglassdanny/moca-language-server/issues
