@@ -20,15 +20,18 @@ public class MocaLanguageServerOptionsRequest {
                                 .getAsBoolean();
                 this.mocaLanguageServerOptions.mocaWarningDiagnosticsEnabled = jsonObj
                                 .get("moca-warning-diagnostics-enabled").getAsBoolean();
-                this.mocaLanguageServerOptions.mocasqlDiagnosticsEnabled = jsonObj.get("mocasql-diagnostics-enabled")
+                // Setting in client is sql instead of mocasql.
+                this.mocaLanguageServerOptions.mocasqlDiagnosticsEnabled = jsonObj.get("sql-diagnostics-enabled")
                                 .getAsBoolean();
+                // Setting in client is sql instead of mocasql.
                 this.mocaLanguageServerOptions.mocasqlWarningDiagnosticsEnabled = jsonObj
-                                .get("mocasql-warning-diagnostics-enabled").getAsBoolean();
+                                .get("sql-warning-diagnostics-enabled").getAsBoolean();
                 this.mocaLanguageServerOptions.groovyDiagnosticsEnabled = jsonObj.get("groovy-diagnostics-enabled")
                                 .getAsBoolean();
                 this.mocaLanguageServerOptions.groovyWarningDiagnosticsEnabled = jsonObj
                                 .get("groovy-warning-diagnostics-enabled").getAsBoolean();
-                this.mocaLanguageServerOptions.mocasqlFormattingEnabled = jsonObj.get("mocasql-formatting-enabled")
+                // Setting in client is sql instead of mocasql.
+                this.mocaLanguageServerOptions.mocasqlFormattingEnabled = jsonObj.get("sql-formatting-enabled")
                                 .getAsBoolean();
                 this.mocaLanguageServerOptions.groovyFormattingEnabled = jsonObj.get("groovy-formatting-enabled")
                                 .getAsBoolean();
