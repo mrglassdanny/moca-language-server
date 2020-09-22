@@ -3,6 +3,11 @@
 Java based implementation of the [Language Server Protocol] for the MOCA language.
 
 
+## Requirements
+
+- Minimum Java Version: **1.8**
+
+
 ## Features
 
 ### Intellisense
