@@ -43,7 +43,6 @@ Java based implementation of the [Language Server Protocol] for the MOCA languag
 - Enable/Disable Groovy Static Type Checking
 
 
-
 ## Clients
 
 - [vscode-moca-client]
