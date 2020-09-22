@@ -14,7 +14,7 @@ Java based implementation of the [Language Server Protocol] for the MOCA languag
 | **Definition Lookup**  | commands, triggers  |   | classes, methods/functions, variables  |
 | **Diagnostics**  | errors, warnings  | errors, warnings  | errors, warnings  |
 | **Formatting**  | on save, on paste, on type  | on save, on paste, on type  |   |
-| **Semantic Highlighting**  | commands, streams(;)  | range([..]), tables/views  | range([[..]])  |
+| **Semantic Highlighting**  | commands, streams(;)  | range(```[select..]```), tables/views  | range(```[[..]]```)  |
 | **Signature Help**  | functions  |   | methods/functions  |
 
 
