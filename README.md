@@ -26,7 +26,7 @@ Java based implementation of the [Language Server Protocol] for the MOCA languag
     - [ ] HTTPS
 - [x] MOCA Script Execution
 - [x] MOCA Tracing
-
+- [x] MOCA Command/Trigger Lookup
 
 
 ## Configuration Options
