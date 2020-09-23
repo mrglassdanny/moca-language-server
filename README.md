@@ -1,6 +1,6 @@
 # MOCA Language Server
 
-Java based implementation of the [Language Server Protocol] for the MOCA language.
+Java based implementation of the [Language Server Protocol] for MOCA.
 
 
 ## Requirements
@@ -12,15 +12,15 @@ Java based implementation of the [Language Server Protocol] for the MOCA languag
 
 ### Intellisense
 
-|   | MOCA  | SQL  | Groovy  |
-|---|---|---|---|
-| **Completion**  | commands, arguments, functions,  | tables/views, columns, aliases, subqueries,  | imports, classes, methods/functions  |
-| **Hover**  | commands, functions  | tables/views, aliases, subqueries  | imports, classes, methods/functions, variables  |
-| **Definition Lookup**  | commands, triggers  |   | classes, methods/functions, variables  |
-| **Diagnostics**  | errors, warnings  | errors, warnings  | errors, warnings  |
-| **Formatting**  | on save, on paste, on type  | on save, on paste, on type  |   |
-| **Semantic Highlighting**  | commands, streams(;)  | range(```[select..]```), tables/views  | range(```[[..]]```)  |
-| **Signature Help**  | functions  |   | methods/functions  |
+|                           | MOCA                              | SQL                                           | Groovy                                            |
+|---------------------------|-----------------------------------|-----------------------------------------------|---------------------------------------------------|
+| **Completion**            | commands, arguments, functions,   | tables/views, columns, aliases, subqueries,   | imports, classes, methods/functions               |
+| **Hover**                 | commands, functions               | tables/views, aliases, subqueries             | imports, classes, methods/functions, variables    |
+| **Definition Lookup**     | commands, triggers                |                                               | classes, methods/functions, variables             |
+| **Diagnostics**           | errors, warnings                  | errors, warnings                              | errors, warnings                                  |
+| **Formatting**            | on save, on paste, on type        | on save, on paste, on type                    |                                                   |
+| **Semantic Highlighting** | commands, streams(;)              | range(```[select..]```), tables/views         | range(```[[..]]```)                               |
+| **Signature Help**        | functions                         |                                               | methods/functions                                 |
 
 
 ### Command Execution
@@ -55,8 +55,12 @@ Java based implementation of the [Language Server Protocol] for the MOCA languag
 
 ## Contribute
 
-- Contact mrglassdanny@gmail.com
+Thinking about contributing to the MOCA Language Server?! If you think something is missing or could be improved, please open issues and pull requests. If you'd like to help this project grow, we'd love to have you!
 
+
+## Contact
+
+- mrglassdanny@gmail.com
 
 
 
