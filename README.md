@@ -1,6 +1,6 @@
 # MOCA Language Server
 
-Java based implementation of the [Language Server Protocol] for MOCA.
+Cross-platform Java based implementation of the [Language Server Protocol] for MOCA.
 
 
 ## Requirements
