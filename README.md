@@ -66,7 +66,5 @@ Thinking about contributing to the MOCA Language Server?! If you think something
 
 [Language Server Protocol]: https://langserver.org
 [vscode-moca-client]: https://github.com/mrglassdanny/vscode-moca-client
-<<<<<<< HEAD
 [HTTPS SSLHandshakeException]: https://stackoverflow.com/questions/9619030/resolving-javax-net-ssl-sslhandshakeexception-sun-security-validator-validatore
-=======
->>>>>>> f32cfbc8686fa6f36c4b21609965333e3a99eb55
+
