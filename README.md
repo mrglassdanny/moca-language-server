@@ -60,7 +60,7 @@ Thinking about contributing to the MOCA Language Server?! If you think something
 
 ## Contact
 
-- mrglassdanny@gmail.com
+- Danny Glass - mrglassdanny@gmail.com
 
 
 
