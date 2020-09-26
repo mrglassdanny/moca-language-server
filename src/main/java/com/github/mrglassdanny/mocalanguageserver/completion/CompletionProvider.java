@@ -194,12 +194,10 @@ public class CompletionProvider {
                 return CompletableFuture.completedFuture(Either.forLeft(items));
             case MocaSql:
 
-                // For completion, we need to make sure the mocasql compiliation result we are
-                // looking at has no errors.
                 MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
                         .get(mocaLanguageContext.rangeIdx);
 
-                // If we do not have one, we need to quit now.
+                // If we do not have compilation result, we need to quit now.
                 if (mocaSqlCompilationResult != null) {
 
                     // Checking to see if we pressed '.' - which in an mocasql context would mean
