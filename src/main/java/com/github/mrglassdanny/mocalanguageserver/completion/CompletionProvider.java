@@ -73,8 +73,6 @@ public class CompletionProvider {
         switch (mocaLanguageContext.id) {
             case Moca:
 
-                // For completion, we need to make sure the moca compiliation result we are
-                // looking at has no errors.
                 MocaCompilationResult mocaCompilationResult = mocaCompiler.currentCompilationResult;
 
                 // Validate compilation result.
