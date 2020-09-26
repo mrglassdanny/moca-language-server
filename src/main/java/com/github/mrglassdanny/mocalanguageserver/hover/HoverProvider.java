@@ -105,8 +105,6 @@ public class HoverProvider {
                 break;
             case MocaSql:
 
-                // For hover, we need to make sure the moca sql compiliation result we are
-                // looking at has no errors.
                 MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
                         .get(mocaLanguageContext.rangeIdx);
 
