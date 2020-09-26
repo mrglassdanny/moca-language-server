@@ -42,8 +42,6 @@ public class DefinitionProvider {
         switch (mocaLanguageContext.id) {
             case Moca:
 
-                // For hover, we need to make sure the moca compiliation result we are
-                // looking at has no errors.
                 MocaCompilationResult mocaCompilationResult = mocaCompiler.currentCompilationResult;
 
                 if (mocaCompilationResult == null) {
