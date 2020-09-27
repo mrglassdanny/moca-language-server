@@ -111,7 +111,7 @@ public class SignatureHelpProvider {
                     }
                 }
             case MocaSql:
-                // Only thing we could do here would be functions...
+                // Looking for moca functions -- moca functions are valid in mocasql context.
                 break;
             case Groovy:
                 GroovyCompilationResult groovyCompilationResult = mocaCompiler.currentCompilationResult.groovyCompilationResults

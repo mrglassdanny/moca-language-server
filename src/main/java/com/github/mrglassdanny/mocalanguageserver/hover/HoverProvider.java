@@ -145,6 +145,16 @@ public class HoverProvider {
                         return CompletableFuture.completedFuture(hover);
                     }
 
+                    // Check if this is a moca function -- moca functions are valid in mocasql
+                    // context.
+                    MocaFunction mocaFunction = MocaCache.getGlobalMocaCache().functions.get(mocaSqlWord);
+                    if (mocaFunction != null) {
+
+                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, mocaFunction.getMarkdownStr()));
+
+                        return CompletableFuture.completedFuture(hover);
+                    }
+
                 }
 
                 break;

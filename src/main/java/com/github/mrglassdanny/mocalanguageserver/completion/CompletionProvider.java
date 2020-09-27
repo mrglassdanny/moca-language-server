@@ -278,6 +278,9 @@ public class CompletionProvider {
                         populateMocaSqlSubqueryNames(mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries,
                                 items);
 
+                        // Moca functions are valid in MocaSql context.
+                        populateMocaFunctions(items);
+
                     }
 
                 }
@@ -371,7 +374,8 @@ public class CompletionProvider {
             if (!argAlreadyInList) {
                 CompletionItem item = new CompletionItem(arg.argnam);
                 item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, arg.getMarkdownStr()));
-                // HACK - we want the user typing the args to see all possiblities. Other clients
+                // HACK - we want the user typing the args to see all possiblities. Other
+                // clients
                 // do this by using the space character as a trigger character.
                 // Instead of doing that, we will pre-pend the first letter the user types in
                 // the filter text of the completion item. This will populate all
