@@ -223,7 +223,7 @@ public class DiagnosticManager {
     // MOCASQL.
     private static ArrayList<Diagnostic> handleMocaSqlSyntaxErrors(String uriStr,
             MocaSqlCompilationResult compilationResult, Range sqlScriptRange) {
-        if (!compilationResult.hasSqlErrors()) {
+        if (compilationResult == null || !compilationResult.hasSqlErrors()) {
             return new ArrayList<Diagnostic>();
         } else {
             // Set diagnostics.
