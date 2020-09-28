@@ -431,7 +431,8 @@ public class CompletionProvider {
 
         for (Map.Entry<String, String> entry : aliasedTableNames.entrySet()) {
             CompletionItem item = new CompletionItem(entry.getKey());
-            item.setDocumentation(Table.getMarkdownStrForAlias(entry.getValue()));
+            item.setDocumentation(
+                    new MarkupContent(MarkupKind.MARKDOWN, Table.getMarkdownStrForAlias(entry.getValue())));
             item.setKind(CompletionItemKind.Struct);
             items.add(item);
         }
@@ -446,7 +447,8 @@ public class CompletionProvider {
 
         for (String subqueryName : subqueries.keySet()) {
             CompletionItem item = new CompletionItem(subqueryName);
-            item.setDocumentation(Table.getMarkdownStrForSubquery(subqueryName));
+            item.setDocumentation(
+                    new MarkupContent(MarkupKind.MARKDOWN, Table.getMarkdownStrForSubquery(subqueryName)));
             item.setKind(CompletionItemKind.Class);
             items.add(item);
         }
