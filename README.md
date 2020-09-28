@@ -57,6 +57,8 @@ Cross-platform Java based implementation of the [Language Server Protocol] for M
 
 Thinking about contributing to the MOCA Language Server?! If you think something is missing or could be improved, please open issues and pull requests. If you'd like to help this project grow, we'd love to have you!
 
+This project started out as small and private. Due to the nature of that, there are some areas that need to be refactored and reorganized now that this project is officially open source. My goal is to chip away at these areas in the coming weeks in an effort to make the code base stronger and for it to be more conducive for contributors to get involved!
+
 
 ## Contact
 
