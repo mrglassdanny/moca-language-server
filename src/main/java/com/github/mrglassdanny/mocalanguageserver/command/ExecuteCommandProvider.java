@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
+import com.github.mrglassdanny.mocalanguageserver.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.command.request.MocaCommandLookupRequest;
 import com.github.mrglassdanny.mocalanguageserver.command.request.MocaConnectionRequest;
 import com.github.mrglassdanny.mocalanguageserver.command.request.MocaLanguageServerActivateRequest;
@@ -24,9 +25,6 @@ import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.Moc
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
 
 import org.eclipse.lsp4j.ExecuteCommandParams;
-import org.eclipse.lsp4j.MessageParams;
-import org.eclipse.lsp4j.MessageType;
-import org.eclipse.lsp4j.services.LanguageClient;
 
 public class ExecuteCommandProvider {
 
@@ -51,8 +49,7 @@ public class ExecuteCommandProvider {
         mocaLanguageServerCommands.add(SET_LANGUAGE_SERVER_OPTIONS);
     }
 
-    public static CompletableFuture<Object> provideCommandExecution(ExecuteCommandParams params,
-            LanguageClient languageClient) {
+    public static CompletableFuture<Object> provideCommandExecution(ExecuteCommandParams params) {
         switch (params.getCommand()) {
 
             case ACTIVATE:
@@ -226,8 +223,8 @@ public class ExecuteCommandProvider {
                         rowCount = mocaResultsResponse.results.getRowCount();
                     }
 
-                    languageClient.logMessage(new MessageParams(MessageType.Info, mocaResultsRequest.fileName
-                            + ": Returned " + rowCount + " rows in " + elapsedTime + " seconds"));
+                    MocaServices.logToLanguageClient(String.format("%s: Returned %d rows in %.2f seconds",
+                            mocaResultsRequest.fileName, rowCount, elapsedTime));
 
                     return CompletableFuture.completedFuture(mocaResultsResponse);
                 } catch (Exception exception) {

@@ -8,9 +8,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.highlight.SemanticHighlightingManager;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.completion.CompletionProvider;
 import com.github.mrglassdanny.mocalanguageserver.definition.DefinitionProvider;
 import com.github.mrglassdanny.mocalanguageserver.diagnostic.DiagnosticManager;
@@ -41,6 +43,8 @@ import org.eclipse.lsp4j.Hover;
 import org.eclipse.lsp4j.HoverParams;
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.LocationLink;
+import org.eclipse.lsp4j.MessageParams;
+import org.eclipse.lsp4j.MessageType;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SignatureHelp;
@@ -57,56 +61,51 @@ import org.eclipse.lsp4j.services.WorkspaceService;
 
 public class MocaServices implements TextDocumentService, WorkspaceService, LanguageClientAware {
 
-    private LanguageClient languageClient;
-    private FileManager fileManager;
-    private MocaCompiler mocaCompiler;
-
-    public MocaServices() {
-        this.fileManager = new FileManager();
-        this.mocaCompiler = new MocaCompiler();
-    }
+    public static MocaCompilationResult mocaCompilationResult = null;
+    public static LanguageClient languageClient = null;
+    private static FileManager fileManager = new FileManager();
 
     @Override
     public void connect(LanguageClient client) {
-        this.languageClient = client;
+        MocaServices.languageClient = client;
     }
 
     @Override
     public void didOpen(DidOpenTextDocumentParams params) {
-        this.fileManager.didOpen(params);
+        MocaServices.fileManager.didOpen(params);
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        String script = this.fileManager.getContents(uri);
-        this.mocaCompiler.compileScript(script);
+        String script = MocaServices.fileManager.getContents(uri);
+        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script);
 
-        DiagnosticManager.streamAll(this.languageClient, uriStr, script, this.mocaCompiler);
+        DiagnosticManager.streamAll(uriStr, script);
 
-        SemanticHighlightingManager.streamAll(this.languageClient, uriStr, script, this.mocaCompiler);
+        SemanticHighlightingManager.streamAll(uriStr, script);
     }
 
     @Override
     public void didChange(DidChangeTextDocumentParams params) {
-        this.fileManager.didChange(params);
+        MocaServices.fileManager.didChange(params);
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        String script = this.fileManager.getContents(uri);
-        this.mocaCompiler.compileScript(script);
+        String script = MocaServices.fileManager.getContents(uri);
+        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script);
 
-        DiagnosticManager.streamAll(this.languageClient, uriStr, script, this.mocaCompiler);
+        DiagnosticManager.streamAll(uriStr, script);
 
-        SemanticHighlightingManager.streamAll(this.languageClient, uriStr, script, this.mocaCompiler);
+        SemanticHighlightingManager.streamAll(uriStr, script);
     }
 
     @Override
     public void didClose(DidCloseTextDocumentParams params) {
-        this.fileManager.didClose(params);
+        MocaServices.fileManager.didClose(params);
         String uriStr = params.getTextDocument().getUri();
 
         // Need to clear diagnositics for file we just closed, that way the diagnostics
         // dont linger.
-        DiagnosticManager.clearDiagnostics(this.languageClient, uriStr);
+        DiagnosticManager.clearDiagnostics(uriStr);
 
     }
 
@@ -115,12 +114,12 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        String script = this.fileManager.getContents(uri);
-        this.mocaCompiler.compileScript(script);
+        String script = MocaServices.fileManager.getContents(uri);
+        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script);
 
-        DiagnosticManager.streamAll(this.languageClient, uriStr, script, this.mocaCompiler);
+        DiagnosticManager.streamAll(uriStr, script);
 
-        SemanticHighlightingManager.streamAll(this.languageClient, uriStr, script, this.mocaCompiler);
+        SemanticHighlightingManager.streamAll(uriStr, script);
     }
 
     @Override
@@ -145,11 +144,11 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         // make a change to the file. Therefore, we will add a compile here.
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
-        String script = this.fileManager.getContents(uri);
-        this.mocaCompiler.compileScript(script);
+        String script = MocaServices.fileManager.getContents(uri);
+        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script);
 
         return HoverProvider.provideHover(params.getTextDocument(), params.getPosition(),
-                this.fileManager.getContents(uri), this.mocaCompiler);
+                MocaServices.fileManager.getContents(uri));
     }
 
     @Override
@@ -161,27 +160,29 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         // Perform preprocessing for each context before we go to provider.
         // Analyze context id for position.
-        MocaLanguageContext mocaLanguageContext = this.mocaCompiler.getMocaLanguageContextFromPosition(position);
+        MocaLanguageContext mocaLanguageContext = MocaLanguageUtils.getMocaLanguageContextFromPosition(position,
+                MocaServices.mocaCompilationResult);
         switch (mocaLanguageContext.id) {
             case Moca:
                 return CompletionProvider.provideCompletion(params.getTextDocument(), params.getPosition(),
-                        this.fileManager.getContents(URI.create(params.getTextDocument().getUri())),
-                        params.getContext(), this.mocaCompiler, mocaLanguageContext);
+                        MocaServices.fileManager.getContents(URI.create(params.getTextDocument().getUri())),
+                        params.getContext(), mocaLanguageContext);
             case MocaSql:
                 return CompletionProvider.provideCompletion(params.getTextDocument(), params.getPosition(),
-                        this.fileManager.getContents(URI.create(params.getTextDocument().getUri())),
-                        params.getContext(), this.mocaCompiler, mocaLanguageContext);
+                        MocaServices.fileManager.getContents(URI.create(params.getTextDocument().getUri())),
+                        params.getContext(), mocaLanguageContext);
             case Groovy:
                 String originalSource = null;
-                GroovyCompilationResult groovyCompilationResult = this.mocaCompiler.currentCompilationResult.groovyCompilationResults
+                GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
                         .get(mocaLanguageContext.rangeIdx);
 
-                Range groovyScriptRange = this.mocaCompiler.groovyRanges.get(mocaLanguageContext.rangeIdx);
+                Range groovyScriptRange = MocaServices.mocaCompilationResult.groovyRanges
+                        .get(mocaLanguageContext.rangeIdx);
 
                 ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(
                         params.getPosition().getLine(), params.getPosition().getCharacter(), groovyScriptRange);
                 if (offsetNode == null) {
-                    originalSource = this.fileManager.getContents(uri);
+                    originalSource = MocaServices.fileManager.getContents(uri);
                     VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
                             textDocument.getUri(), 1);
                     TextDocumentContentChangeEvent changeEvent = new TextDocumentContentChangeEvent(
@@ -203,8 +204,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                 try {
                     completionItems = CompletionProvider.provideCompletion(params.getTextDocument(),
                             params.getPosition(),
-                            this.fileManager.getContents(URI.create(params.getTextDocument().getUri())),
-                            params.getContext(), this.mocaCompiler, mocaLanguageContext);
+                            MocaServices.fileManager.getContents(URI.create(params.getTextDocument().getUri())),
+                            params.getContext(), mocaLanguageContext);
                 } finally {
                     if (originalSource != null) {
                         VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
@@ -221,20 +222,21 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         // Shouldnt get here, but just in case we get here.
         return CompletionProvider.provideCompletion(params.getTextDocument(), params.getPosition(),
-                this.fileManager.getContents(URI.create(params.getTextDocument().getUri())), params.getContext(),
-                this.mocaCompiler, mocaLanguageContext);
+                MocaServices.fileManager.getContents(URI.create(params.getTextDocument().getUri())),
+                params.getContext(), mocaLanguageContext);
     }
 
     @Override
     public CompletableFuture<SignatureHelp> signatureHelp(SignatureHelpParams params) {
         URI uri = URI.create(params.getTextDocument().getUri());
         TextDocumentIdentifier textDocument = params.getTextDocument();
-        String textDocumentContents = this.fileManager.getContents(uri);
+        String textDocumentContents = MocaServices.fileManager.getContents(uri);
         Position position = params.getPosition();
 
         // Perform preprocessing for each context before we go to provider.
         // Analyze context id for position.
-        MocaLanguageContext mocaLanguageContext = this.mocaCompiler.getMocaLanguageContextFromPosition(position);
+        MocaLanguageContext mocaLanguageContext = MocaLanguageUtils.getMocaLanguageContextFromPosition(position,
+                MocaServices.mocaCompilationResult);
         switch (mocaLanguageContext.id) {
             case Moca:
                 break;
@@ -242,15 +244,16 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                 break;
             case Groovy:
                 String originalSource = null;
-                GroovyCompilationResult groovyCompilationResult = this.mocaCompiler.currentCompilationResult.groovyCompilationResults
+                GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
                         .get(mocaLanguageContext.rangeIdx);
 
-                Range groovyScriptRange = this.mocaCompiler.groovyRanges.get(mocaLanguageContext.rangeIdx);
+                Range groovyScriptRange = MocaServices.mocaCompilationResult.groovyRanges
+                        .get(mocaLanguageContext.rangeIdx);
 
                 ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(
                         params.getPosition().getLine(), params.getPosition().getCharacter(), groovyScriptRange);
                 if (offsetNode == null) {
-                    originalSource = this.fileManager.getContents(uri);
+                    originalSource = MocaServices.fileManager.getContents(uri);
                     VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
                             textDocument.getUri(), 1);
                     int offset = PositionUtils.getOffset(originalSource, position);
@@ -277,7 +280,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
                 try {
                     return SignatureHelpProvider.provideSignatureHelp(params.getTextDocument(), textDocumentContents,
-                            params.getPosition(), this.mocaCompiler, mocaLanguageContext);
+                            params.getPosition(), mocaLanguageContext);
                 } finally {
                     if (originalSource != null) {
                         VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
@@ -293,7 +296,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         // Now provide signature help.
         return SignatureHelpProvider.provideSignatureHelp(params.getTextDocument(), textDocumentContents,
-                params.getPosition(), this.mocaCompiler, mocaLanguageContext);
+                params.getPosition(), mocaLanguageContext);
     }
 
     @Override
@@ -302,10 +305,10 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         // Need to compile script before we format.
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
-        String script = this.fileManager.getContents(uri);
-        this.mocaCompiler.compileScript(script);
+        String script = MocaServices.fileManager.getContents(uri);
+        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script);
 
-        return DocumentFormattingProvider.provideDocumentFormatting(params, script, this.mocaCompiler);
+        return DocumentFormattingProvider.provideDocumentFormatting(params, script);
     }
 
     @Override
@@ -314,10 +317,10 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         // Need to compile script before we format.
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
-        String script = this.fileManager.getContents(uri);
-        this.mocaCompiler.compileScript(script);
+        String script = MocaServices.fileManager.getContents(uri);
+        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script);
 
-        return DocumentFormattingProvider.provideDocumentRangeFormatting(params, script, this.mocaCompiler);
+        return DocumentFormattingProvider.provideDocumentRangeFormatting(params, script);
     }
 
     @Override
@@ -326,7 +329,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         // No need to compile prior to calling formatting on type func. We know that
         // will each change to file, we are compiling.
         return DocumentOnTypeFormattingProvider.provideDocumentOnTypeFormatting(params,
-                this.fileManager.getContents(URI.create(params.getTextDocument().getUri())), this.mocaCompiler);
+                MocaServices.fileManager.getContents(URI.create(params.getTextDocument().getUri())));
     }
 
     @Override
@@ -338,10 +341,10 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
             case ExecuteCommandProvider.LOAD_CACHE:
             case ExecuteCommandProvider.EXECUTE:
                 return CompletableFuture.supplyAsync(() -> {
-                    return ExecuteCommandProvider.provideCommandExecution(params, this.languageClient).join();
+                    return ExecuteCommandProvider.provideCommandExecution(params).join();
                 });
             default:
-                return ExecuteCommandProvider.provideCommandExecution(params, this.languageClient);
+                return ExecuteCommandProvider.provideCommandExecution(params);
         }
     }
 
@@ -352,10 +355,34 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         // Need to compile on definition provide for the same reason as on hover ^.
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
-        String script = this.fileManager.getContents(uri);
-        this.mocaCompiler.compileScript(script);
+        String script = MocaServices.fileManager.getContents(uri);
+        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script);
 
         return DefinitionProvider.provideDefinition(params.getTextDocument(), params.getPosition(),
-                this.fileManager.getContents(uri), this.mocaCompiler);
+                MocaServices.fileManager.getContents(uri));
+    }
+
+    public static void logToLanguageClient(String msg) {
+        if (MocaServices.languageClient != null) {
+            MocaServices.languageClient.logMessage(new MessageParams(MessageType.Log, msg));
+        }
+    }
+
+    public static void logErrorToLanguageClient(String msg) {
+        if (MocaServices.languageClient != null) {
+            MocaServices.languageClient.logMessage(new MessageParams(MessageType.Error, msg));
+        }
+    }
+
+    public static void logWarningToLanguageClient(String msg) {
+        if (MocaServices.languageClient != null) {
+            MocaServices.languageClient.logMessage(new MessageParams(MessageType.Warning, msg));
+        }
+    }
+
+    public static void logInfoToLanguageClient(String msg) {
+        if (MocaServices.languageClient != null) {
+            MocaServices.languageClient.logMessage(new MessageParams(MessageType.Info, msg));
+        }
     }
 }

@@ -10,7 +10,7 @@ import org.antlr.v4.runtime.Token;
 
 public class MocaSqlCompilationResult {
 
-    public List<? extends Token> mocaSqlTokens; // From lexer.
+    public List<? extends Token> mocaSqlTokens;
     public MocaSqlParser mocaSqlParser;
     public MocaSqlParseTreeListener mocaSqlParseTreeListener;
     public MocaSqlSyntaxErrorListener mocaSqlSyntaxErrorListener;

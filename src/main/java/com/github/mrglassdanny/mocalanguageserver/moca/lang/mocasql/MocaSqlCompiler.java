@@ -1,7 +1,5 @@
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql;
 
-import java.util.HashMap;
-
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlrutil.CaseChangingCharStream;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlParseTreeListener;
@@ -16,13 +14,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 public class MocaSqlCompiler {
 
-    public HashMap<Integer, MocaSqlCompilationResult> compilationResults;
-
-    public MocaSqlCompiler() {
-        this.compilationResults = new HashMap<>();
-    }
-
-    public MocaSqlCompilationResult compileScript(int rangeIdx, String script) {
+    public static MocaSqlCompilationResult compileScript(String script) {
         MocaSqlCompilationResult compilationResult = new MocaSqlCompilationResult();
 
         compilationResult.mocaSqlTokens = new MocaSqlLexer(
@@ -38,7 +30,6 @@ public class MocaSqlCompiler {
         compilationResult.mocaSqlParseTreeListener = new MocaSqlParseTreeListener();
         new ParseTreeWalker().walk(compilationResult.mocaSqlParseTreeListener, parseTree);
 
-        this.compilationResults.put(rangeIdx, compilationResult);
         return compilationResult;
     }
 }

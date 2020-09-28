@@ -12,14 +12,15 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
+import com.github.mrglassdanny.mocalanguageserver.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommand;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyASTUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 
 import org.codehaus.groovy.ast.ASTNode;
@@ -33,16 +34,16 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either;
 public class DefinitionProvider {
 
     public static CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> provideDefinition(
-            TextDocumentIdentifier textDocument, Position position, String textDocumentContents,
-            MocaCompiler mocaCompiler) {
+            TextDocumentIdentifier textDocument, Position position, String textDocumentContents) {
 
         // Analyze context id for position.
-        MocaLanguageContext mocaLanguageContext = mocaCompiler.getMocaLanguageContextFromPosition(position);
+        MocaLanguageContext mocaLanguageContext = MocaLanguageUtils.getMocaLanguageContextFromPosition(position,
+                MocaServices.mocaCompilationResult);
 
         switch (mocaLanguageContext.id) {
             case Moca:
 
-                MocaCompilationResult mocaCompilationResult = mocaCompiler.currentCompilationResult;
+                MocaCompilationResult mocaCompilationResult = MocaServices.mocaCompilationResult;
 
                 if (mocaCompilationResult == null) {
                     return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
@@ -55,8 +56,8 @@ public class DefinitionProvider {
                     mocaWord = mocaWord.toLowerCase();
 
                     // Get current moca token at position.
-                    org.antlr.v4.runtime.Token curMocaToken = mocaCompiler.getMocaTokenAtPosition(textDocumentContents,
-                            position);
+                    org.antlr.v4.runtime.Token curMocaToken = MocaLanguageUtils
+                            .getMocaTokenAtPosition(textDocumentContents, position, MocaServices.mocaCompilationResult);
 
                     // Get verb noun clause current moca token is in.
                     StringBuilder verbNounClause = null;
@@ -120,10 +121,11 @@ public class DefinitionProvider {
                 return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
             case Groovy:
 
-                GroovyCompilationResult groovyCompilationResult = mocaCompiler.currentCompilationResult.groovyCompilationResults
+                GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
                         .get(mocaLanguageContext.rangeIdx);
 
-                Range groovyScriptRange = mocaCompiler.groovyRanges.get(mocaLanguageContext.rangeIdx);
+                Range groovyScriptRange = MocaServices.mocaCompilationResult.groovyRanges
+                        .get(mocaLanguageContext.rangeIdx);
 
                 if (groovyCompilationResult.astVisitor == null) {
                     // This shouldn't happen, but let's avoid an exception if something

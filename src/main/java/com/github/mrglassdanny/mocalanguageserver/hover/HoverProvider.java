@@ -4,18 +4,19 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import com.github.mrglassdanny.mocalanguageserver.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommand;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaFunction;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.Table;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.ast.GroovyASTNodeVisitor;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyASTUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyNodeToStringUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 
 import org.codehaus.groovy.ast.ASTNode;
@@ -31,19 +32,20 @@ import org.eclipse.lsp4j.TextDocumentIdentifier;
 public class HoverProvider {
 
     public static CompletableFuture<Hover> provideHover(TextDocumentIdentifier textDocument, Position position,
-            String textDocumentContents, MocaCompiler mocaCompiler) {
+            String textDocumentContents) {
 
         Hover hover = new Hover();
         // Placeholder contents until we set due to analysis.
         hover.setContents(new MarkupContent(MarkupKind.PLAINTEXT, ""));
 
         // Analyze context id for position.
-        MocaLanguageContext mocaLanguageContext = mocaCompiler.getMocaLanguageContextFromPosition(position);
+        MocaLanguageContext mocaLanguageContext = MocaLanguageUtils.getMocaLanguageContextFromPosition(position,
+                MocaServices.mocaCompilationResult);
 
         switch (mocaLanguageContext.id) {
             case Moca:
 
-                MocaCompilationResult mocaCompilationResult = mocaCompiler.currentCompilationResult;
+                MocaCompilationResult mocaCompilationResult = MocaServices.mocaCompilationResult;
 
                 if (mocaCompilationResult == null) {
                     return CompletableFuture.completedFuture(hover);
@@ -65,8 +67,8 @@ public class HoverProvider {
                     }
 
                     // Get current moca token at position.
-                    org.antlr.v4.runtime.Token curMocaToken = mocaCompiler.getMocaTokenAtPosition(textDocumentContents,
-                            position);
+                    org.antlr.v4.runtime.Token curMocaToken = MocaLanguageUtils
+                            .getMocaTokenAtPosition(textDocumentContents, position, mocaCompilationResult);
 
                     // Validate curMocaToken.
                     if (curMocaToken == null) {
@@ -105,7 +107,7 @@ public class HoverProvider {
                 break;
             case MocaSql:
 
-                MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
+                MocaSqlCompilationResult mocaSqlCompilationResult = MocaServices.mocaCompilationResult.mocaSqlCompilationResults
                         .get(mocaLanguageContext.rangeIdx);
 
                 // Tables, views, aliases, and subqueries - oh my!
@@ -160,7 +162,7 @@ public class HoverProvider {
                 break;
             case Groovy:
 
-                GroovyCompilationResult groovyCompilationResult = mocaCompiler.currentCompilationResult.groovyCompilationResults
+                GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
                         .get(mocaLanguageContext.rangeIdx);
 
                 if (groovyCompilationResult.astVisitor == null) {
@@ -170,7 +172,8 @@ public class HoverProvider {
                 }
 
                 ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
-                        position.getCharacter(), mocaCompiler.groovyRanges.get(mocaLanguageContext.rangeIdx));
+                        position.getCharacter(),
+                        MocaServices.mocaCompilationResult.groovyRanges.get(mocaLanguageContext.rangeIdx));
 
                 ASTNode definitionNode = GroovyASTUtils.getDefinition(offsetNode, false,
                         groovyCompilationResult.astVisitor);

@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+import com.github.mrglassdanny.mocalanguageserver.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommand;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommandArgument;
@@ -17,7 +18,6 @@ import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaFunction;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.Table;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.SubqueryContext;
@@ -26,6 +26,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyAS
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlParseTreeListener;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaTokenUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 
@@ -66,14 +67,14 @@ public class CompletionProvider {
 
     public static CompletableFuture<Either<List<CompletionItem>, CompletionList>> provideCompletion(
             TextDocumentIdentifier textDocument, Position position, String textDocumentContents,
-            CompletionContext context, MocaCompiler mocaCompiler, MocaLanguageContext mocaLanguageContext) {
+            CompletionContext context, MocaLanguageContext mocaLanguageContext) {
 
         List<CompletionItem> items = new ArrayList<>();
 
         switch (mocaLanguageContext.id) {
             case Moca:
 
-                MocaCompilationResult mocaCompilationResult = mocaCompiler.currentCompilationResult;
+                MocaCompilationResult mocaCompilationResult = MocaServices.mocaCompilationResult;
 
                 // Validate compilation result.
                 if (mocaCompilationResult == null) {
@@ -84,7 +85,8 @@ public class CompletionProvider {
 
                 // Now, we need to see where we are in token list based on the position that was
                 // passed in.
-                int curMocaTokenIdx = mocaCompiler.getMocaTokenIndexAtPosition(textDocumentContents, position);
+                int curMocaTokenIdx = MocaLanguageUtils.getMocaTokenIndexAtPosition(textDocumentContents, position,
+                        mocaCompilationResult);
 
                 // Validate we have a valid index.
                 if (curMocaTokenIdx == -1) {
@@ -95,7 +97,7 @@ public class CompletionProvider {
 
                 // Check if bracket string before we do anything else. If so, return nothing for
                 // now.
-                org.antlr.v4.runtime.Token potentialBracketStringMocaToken = mocaCompiler.mocaTokens
+                org.antlr.v4.runtime.Token potentialBracketStringMocaToken = MocaServices.mocaCompilationResult.mocaTokens
                         .get(curMocaTokenIdx);
                 if (potentialBracketStringMocaToken != null
                         && (potentialBracketStringMocaToken.getType() == MocaLexer.SINGLE_BRACKET_STRING
@@ -115,7 +117,7 @@ public class CompletionProvider {
                 // Now we are just going to look backward until we find something that we know
                 // what to do with.
                 for (int i = curMocaTokenIdx; i >= 0; i--) {
-                    org.antlr.v4.runtime.Token curMocaToken = mocaCompiler.mocaTokens.get(i);
+                    org.antlr.v4.runtime.Token curMocaToken = MocaServices.mocaCompilationResult.mocaTokens.get(i);
                     switch (curMocaToken.getType()) {
                         case MocaLexer.WHERE:
                             // Do not look for AND -- we know that we want args here.
@@ -194,7 +196,7 @@ public class CompletionProvider {
                 return CompletableFuture.completedFuture(Either.forLeft(items));
             case MocaSql:
 
-                MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
+                MocaSqlCompilationResult mocaSqlCompilationResult = MocaServices.mocaCompilationResult.mocaSqlCompilationResults
                         .get(mocaLanguageContext.rangeIdx);
 
                 // If we do not have compilation result, we need to quit now.
@@ -288,10 +290,11 @@ public class CompletionProvider {
                 return CompletableFuture.completedFuture(Either.forLeft(items));
             case Groovy:
 
-                GroovyCompilationResult groovyCompilationResult = mocaCompiler.currentCompilationResult.groovyCompilationResults
+                GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
                         .get(mocaLanguageContext.rangeIdx);
 
-                Range groovyScriptRange = mocaCompiler.groovyRanges.get(mocaLanguageContext.rangeIdx);
+                Range groovyScriptRange = MocaServices.mocaCompilationResult.groovyRanges
+                        .get(mocaLanguageContext.rangeIdx);
 
                 if (groovyCompilationResult.astVisitor == null) {
                     // this shouldn't happen, but let's avoid an exception if something
@@ -414,7 +417,7 @@ public class CompletionProvider {
             Table view = viewEntry.getValue();
             CompletionItem item = new CompletionItem(view.table_name);
             item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, view.getMarkdownStr()));
-            item.setKind(CompletionItemKind.Enum);
+            item.setKind(CompletionItemKind.Struct);
             items.add(item);
         }
     }

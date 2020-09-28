@@ -5,7 +5,7 @@ import org.antlr.v4.runtime.Token;
 import java.util.List;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.format.MocaSqlFormatter;
@@ -72,9 +72,9 @@ public class MocaFormatter {
         buf.append(a.toString());
     }
 
-    public static String format(MocaCompiler mocaCompiler) {
+    public static String format(MocaCompilationResult mocaCompilationResult) {
 
-        List<? extends Token> tokens = mocaCompiler.mocaTokens;
+        List<? extends Token> tokens = mocaCompilationResult.mocaTokens;
 
         StringBuilder buf = new StringBuilder(2048);
 
@@ -131,7 +131,7 @@ public class MocaFormatter {
 
                         // Make sure moca language server options allow us to format.
                         if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlFormattingEnabled) {
-                            MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
+                            MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompilationResult.mocaSqlCompilationResults
                                     .get(mocasqlCompilationResultsVisited);
                             String formattedMocaSqlScript = formatMocaSql(mocaSqlCompilationResult.mocaSqlTokens,
                                     indentBuf);

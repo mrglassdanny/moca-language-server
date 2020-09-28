@@ -5,15 +5,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import com.github.mrglassdanny.mocalanguageserver.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaFunction;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser.Function_exprContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyASTUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyNodeToStringUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaLanguageUtils;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.MethodNode;
@@ -31,22 +32,21 @@ import org.eclipse.lsp4j.TextDocumentIdentifier;
 public class SignatureHelpProvider {
 
     public static CompletableFuture<SignatureHelp> provideSignatureHelp(TextDocumentIdentifier textDocument,
-            String textDocumentContents, Position position, MocaCompiler mocaCompiler,
-            MocaLanguageContext mocaLanguageContext) {
+            String textDocumentContents, Position position, MocaLanguageContext mocaLanguageContext) {
 
         switch (mocaLanguageContext.id) {
             case Moca:
                 // Looking for moca functions.
 
-                org.antlr.v4.runtime.Token curMocaToken = mocaCompiler.getMocaTokenAtPosition(textDocumentContents,
-                        position);
+                org.antlr.v4.runtime.Token curMocaToken = MocaLanguageUtils.getMocaTokenAtPosition(textDocumentContents,
+                        position, MocaServices.mocaCompilationResult);
 
                 if (curMocaToken != null) {
 
                     // Now let's see if token exists in our moca functions list.
                     // One way we can check is by seeing if current moca token is between start and
                     // stop tokens of function expression.
-                    for (Function_exprContext mocaFuncExpr : mocaCompiler.currentCompilationResult.mocaParseTreeListener.functions) {
+                    for (Function_exprContext mocaFuncExpr : MocaServices.mocaCompilationResult.mocaParseTreeListener.functions) {
                         org.antlr.v4.runtime.Token startFuncToken = mocaFuncExpr.getStart();
                         org.antlr.v4.runtime.Token stopFuncToken = mocaFuncExpr.getStop();
 
@@ -114,10 +114,11 @@ public class SignatureHelpProvider {
                 // Looking for moca functions -- moca functions are valid in mocasql context.
                 break;
             case Groovy:
-                GroovyCompilationResult groovyCompilationResult = mocaCompiler.currentCompilationResult.groovyCompilationResults
+                GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
                         .get(mocaLanguageContext.rangeIdx);
 
-                Range groovyScriptRange = mocaCompiler.groovyRanges.get(mocaLanguageContext.rangeIdx);
+                Range groovyScriptRange = MocaServices.mocaCompilationResult.groovyRanges
+                        .get(mocaLanguageContext.rangeIdx);
 
                 if (groovyCompilationResult.astVisitor == null) {
                     // this shouldn't happen, but let's avoid an exception if something

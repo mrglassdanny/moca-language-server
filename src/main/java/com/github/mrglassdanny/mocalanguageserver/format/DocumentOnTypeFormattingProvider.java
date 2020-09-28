@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
+import com.github.mrglassdanny.mocalanguageserver.MocaServices;
 
 import org.eclipse.lsp4j.DocumentOnTypeFormattingParams;
 import org.eclipse.lsp4j.TextEdit;
@@ -12,7 +12,7 @@ import org.eclipse.lsp4j.TextEdit;
 public class DocumentOnTypeFormattingProvider {
 
         public static CompletableFuture<List<? extends TextEdit>> provideDocumentOnTypeFormatting(
-                        DocumentOnTypeFormattingParams params, String textDocumentContents, MocaCompiler mocaCompiler) {
+                        DocumentOnTypeFormattingParams params, String textDocumentContents) {
 
                 // Check to see if file extension is marked as read only. If so, do not attempt
                 // to format. This will be the case for any files created by command lookup
@@ -24,7 +24,7 @@ public class DocumentOnTypeFormattingProvider {
                 }
 
                 return CompletableFuture.completedFuture(DocumentFormattingProvider
-                                .processDocumentFormatting(textDocumentContents, mocaCompiler));
+                                .processDocumentFormatting(textDocumentContents, MocaServices.mocaCompilationResult));
         }
 
 }

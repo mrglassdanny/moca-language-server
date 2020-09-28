@@ -5,10 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
+import com.github.mrglassdanny.mocalanguageserver.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaSyntaxError;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
@@ -29,7 +28,6 @@ import org.eclipse.lsp4j.DiagnosticSeverity;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.Range;
-import org.eclipse.lsp4j.services.LanguageClient;
 
 public class DiagnosticManager {
 
@@ -37,7 +35,7 @@ public class DiagnosticManager {
     private static final String MOCA_COMMAND_DOES_NOT_EXIST_WARNING = "MOCA: Command '%s' does not exist";
     private static final String MOCASQL_SYNTAX_ERROR = "SQL: %s";
     private static final String MOCASQL_TABLE_DOES_NOT_EXIST_WARNING = "SQL: Table/View/Subquery '%s' does not exist";
-    private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_TABLE_OR_VIEW_WARNING = "SQL: Column '%s' does not exist on Table/View '%s'";
+    private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_TABLE_OR_VIEW_WARNING = "SQL: Column '%s' does not exist on Table/View/Subquery '%s'";
     private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_SUBQUERY_WARNING = "SQL: Column '%s' does not exist on Subquery '%s'";
     private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_ANON_SUBQUERY_WARNING = "SQL: Column '%s' does not exist on anonymous Subquery";
     private static final String MOCASQL_MULTIPLE_TABLES_FOR_COLUMN_WARNING = "SQL: Multiple tables detected; please specify table for column '%s'";
@@ -46,8 +44,7 @@ public class DiagnosticManager {
 
     private static final String[] MOCASQL_RESERVED_COLUMN_NAMES = { "rownum", "sysdate" };
 
-    public static void streamAll(LanguageClient languageClient, String uriStr, String script,
-            MocaCompiler mocaCompiler) {
+    public static void streamAll(String uriStr, String script) {
 
         // Check to see if file extension is marked as read only. If so, do not publish
         // any diagnostics.
@@ -58,25 +55,24 @@ public class DiagnosticManager {
             return;
         }
 
-        clearDiagnostics(languageClient, uriStr);
+        clearDiagnostics(uriStr);
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
-        diagnostics.addAll(streamErrors(languageClient, uriStr, script, mocaCompiler));
-        diagnostics.addAll(streamWarnings(languageClient, uriStr, script, mocaCompiler));
-        diagnostics.addAll(streamInformation(languageClient, uriStr, script, mocaCompiler));
-        diagnostics.addAll(streamHints(languageClient, uriStr, script, mocaCompiler));
+        diagnostics.addAll(streamErrors(uriStr, script));
+        diagnostics.addAll(streamWarnings(uriStr, script));
+        diagnostics.addAll(streamInformation(uriStr, script));
+        diagnostics.addAll(streamHints(uriStr, script));
 
-        languageClient.publishDiagnostics(new PublishDiagnosticsParams(uriStr, diagnostics));
+        MocaServices.languageClient.publishDiagnostics(new PublishDiagnosticsParams(uriStr, diagnostics));
 
     }
 
-    public static void clearDiagnostics(LanguageClient languageClient, String uriStr) {
-        languageClient.publishDiagnostics(new PublishDiagnosticsParams(uriStr, new ArrayList<>()));
+    public static void clearDiagnostics(String uriStr) {
+        MocaServices.languageClient.publishDiagnostics(new PublishDiagnosticsParams(uriStr, new ArrayList<>()));
     }
 
-    public static ArrayList<Diagnostic> streamErrors(LanguageClient languageClient, String uriStr, String script,
-            MocaCompiler mocaCompiler) {
+    public static ArrayList<Diagnostic> streamErrors(String uriStr, String script) {
 
         // Clear out all existing dianostics by sending empty list.
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
@@ -84,26 +80,26 @@ public class DiagnosticManager {
         // MOCA.
         // Check moca diagnostics enabled.
         if (MocaLanguageServer.mocaLanguageServerOptions.mocaDiagnosticsEnabled) {
-            diagnostics.addAll(handleMocaSyntaxErrors(uriStr, mocaCompiler.currentCompilationResult));
+            diagnostics.addAll(handleMocaSyntaxErrors(uriStr));
         }
 
         // SQL.
         // Check mocasql diagnostics enabled.
         if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlDiagnosticsEnabled) {
-            for (int i = 0; i < mocaCompiler.mocaSqlRanges.size(); i++) {
+            for (int i = 0; i < MocaServices.mocaCompilationResult.mocaSqlRanges.size(); i++) {
                 diagnostics.addAll(handleMocaSqlSyntaxErrors(uriStr,
-                        mocaCompiler.currentCompilationResult.mocaSqlCompilationResults.get(i),
-                        mocaCompiler.mocaSqlRanges.get(i)));
+                        MocaServices.mocaCompilationResult.mocaSqlCompilationResults.get(i),
+                        MocaServices.mocaCompilationResult.mocaSqlRanges.get(i)));
             }
         }
 
         // GROOVY.
         // Check groovy diagnostics enabled.
         if (MocaLanguageServer.mocaLanguageServerOptions.groovyDiagnosticsEnabled) {
-            for (int i = 0; i < mocaCompiler.groovyRanges.size(); i++) {
+            for (int i = 0; i < MocaServices.mocaCompilationResult.groovyRanges.size(); i++) {
                 diagnostics.addAll(
-                        handleGroovyAll(uriStr, mocaCompiler.currentCompilationResult.groovyCompilationResults.get(i),
-                                mocaCompiler.groovyRanges.get(i), languageClient));
+                        handleGroovyAll(uriStr, MocaServices.mocaCompilationResult.groovyCompilationResults.get(i),
+                                MocaServices.mocaCompilationResult.groovyRanges.get(i)));
             }
         }
 
@@ -111,8 +107,7 @@ public class DiagnosticManager {
 
     }
 
-    public static ArrayList<Diagnostic> streamWarnings(LanguageClient languageClient, String uriStr, String script,
-            MocaCompiler mocaCompiler) {
+    public static ArrayList<Diagnostic> streamWarnings(String uriStr, String script) {
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
@@ -120,20 +115,20 @@ public class DiagnosticManager {
         // Check moca diagnostics and warning diagnostics enabled.
         if (MocaLanguageServer.mocaLanguageServerOptions.mocaDiagnosticsEnabled
                 && MocaLanguageServer.mocaLanguageServerOptions.mocaWarningDiagnosticsEnabled) {
-            diagnostics.addAll(handleMocaCommandMayNotExistWarnings(uriStr, script, mocaCompiler));
+            diagnostics.addAll(handleMocaCommandDoesNotExistWarnings(uriStr, script));
         }
 
         // SQL.
         // Check mocasql diagnostics and warning diagnostics enabled.
         if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlDiagnosticsEnabled
                 && MocaLanguageServer.mocaLanguageServerOptions.mocasqlWarningDiagnosticsEnabled) {
-            for (int i = 0; i < mocaCompiler.mocaSqlRanges.size(); i++) {
-                MocaSqlCompilationResult sqlCompilationResult = mocaCompiler.currentCompilationResult.mocaSqlCompilationResults
+            for (int i = 0; i < MocaServices.mocaCompilationResult.mocaSqlRanges.size(); i++) {
+                MocaSqlCompilationResult sqlCompilationResult = MocaServices.mocaCompilationResult.mocaSqlCompilationResults
                         .get(i);
-                Range sqlRange = mocaCompiler.mocaSqlRanges.get(i);
-                diagnostics.addAll(handleMocaSqlTableMayNotExistWarnings(uriStr, script,
+                Range sqlRange = MocaServices.mocaCompilationResult.mocaSqlRanges.get(i);
+                diagnostics.addAll(handleMocaSqlTableDoesNotExistWarnings(uriStr, script,
                         sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
-                diagnostics.addAll(handleMocaSqlColumnsMayNotExistInTableWarnings(uriStr, script,
+                diagnostics.addAll(handleMocaSqlColumnsDoesNotExistInTableWarnings(uriStr, script,
                         sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
             }
         }
@@ -142,8 +137,7 @@ public class DiagnosticManager {
 
     }
 
-    public static ArrayList<Diagnostic> streamInformation(LanguageClient languageClient, String uriStr, String script,
-            MocaCompiler mocaCompiler) {
+    public static ArrayList<Diagnostic> streamInformation(String uriStr, String script) {
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
@@ -151,8 +145,7 @@ public class DiagnosticManager {
 
     }
 
-    public static ArrayList<Diagnostic> streamHints(LanguageClient languageClient, String uriStr, String script,
-            MocaCompiler mocaCompiler) {
+    public static ArrayList<Diagnostic> streamHints(String uriStr, String script) {
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
@@ -161,15 +154,14 @@ public class DiagnosticManager {
     }
 
     // MOCA.
-    private static ArrayList<Diagnostic> handleMocaSyntaxErrors(String uriStr,
-            MocaCompilationResult compilationResult) {
+    private static ArrayList<Diagnostic> handleMocaSyntaxErrors(String uriStr) {
 
-        if (!compilationResult.hasMocaErrors()) {
+        if (!MocaServices.mocaCompilationResult.hasMocaErrors()) {
             return new ArrayList<>();
         } else {
             ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
-            for (MocaSyntaxError mocaSyntaxError : compilationResult.mocaSyntaxErrorListener.mocaSyntaxErrors) {
+            for (MocaSyntaxError mocaSyntaxError : MocaServices.mocaCompilationResult.mocaSyntaxErrorListener.mocaSyntaxErrors) {
                 Position pos = new Position(mocaSyntaxError.line, mocaSyntaxError.charPositionInLine);
                 Range range = new Range(pos, pos);
                 Diagnostic diagnostic = new Diagnostic();
@@ -185,15 +177,11 @@ public class DiagnosticManager {
         }
     }
 
-    private static ArrayList<Diagnostic> handleMocaCommandMayNotExistWarnings(String uriStr, String script,
-            MocaCompiler mocaCompiler) {
+    private static ArrayList<Diagnostic> handleMocaCommandDoesNotExistWarnings(String uriStr, String script) {
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
-        // Need to make sure we have a moca ast.
-        MocaCompilationResult mocaCompilationResult = mocaCompiler.currentCompilationResult;
-
-        if (mocaCompilationResult == null) {
+        if (MocaServices.mocaCompilationResult == null) {
             // Return empty list.
             return diagnostics;
         }
@@ -201,7 +189,7 @@ public class DiagnosticManager {
         // Loop through all verb noun clauses and see if we have any verbNounClauses
         // that do not exist in cache. If so, we will get the range, build the
         // diagnosic, and add it to the list.
-        for (Map.Entry<StringBuilder, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
+        for (Map.Entry<StringBuilder, ArrayList<org.antlr.v4.runtime.Token>> entry : MocaServices.mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                 .entrySet()) {
 
             StringBuilder verbNounClause = entry.getKey();
@@ -254,7 +242,7 @@ public class DiagnosticManager {
         }
     }
 
-    private static ArrayList<Diagnostic> handleMocaSqlTableMayNotExistWarnings(String uriStr, String script,
+    private static ArrayList<Diagnostic> handleMocaSqlTableDoesNotExistWarnings(String uriStr, String script,
             MocaSqlParseTreeListener sqlParseTreeListener, Range sqlScriptRange) {
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
@@ -312,7 +300,7 @@ public class DiagnosticManager {
         return diagnostics;
     }
 
-    private static ArrayList<Diagnostic> handleMocaSqlColumnsMayNotExistInTableWarnings(String uriStr, String script,
+    private static ArrayList<Diagnostic> handleMocaSqlColumnsDoesNotExistInTableWarnings(String uriStr, String script,
             MocaSqlParseTreeListener sqlParseTreeListener, Range sqlScriptRange) {
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
@@ -549,8 +537,12 @@ public class DiagnosticManager {
 
     // GROOVY.
     private static ArrayList<Diagnostic> handleGroovyAll(String uriStr, GroovyCompilationResult compilationResult,
-            Range groovyScriptRange, LanguageClient client) {
+            Range groovyScriptRange) {
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
+
+        if (compilationResult == null) {
+            return diagnostics;
+        }
 
         @SuppressWarnings("unchecked")
         List<Message> errors = compilationResult.compilationUnit.getErrorCollector().getErrors();

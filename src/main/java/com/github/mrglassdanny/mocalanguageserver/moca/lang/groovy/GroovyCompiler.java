@@ -1,19 +1,16 @@
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy;
 
 import java.io.File;
-import java.security.CodeSource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
+import com.github.mrglassdanny.mocalanguageserver.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 
 import org.antlr.v4.runtime.Token;
 import org.codehaus.groovy.GroovyBugError;
-import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.MultipleCompilationErrorsException;
 import org.codehaus.groovy.control.Phases;
@@ -27,22 +24,14 @@ public class GroovyCompiler {
 
     public static ArrayList<String> classpathList = new ArrayList<>();
 
-    // public ArrayList<String> classpathList;
-    public HashMap<Integer, GroovyCompilationResult> compilationResults;
-
-    public GroovyCompiler() {
-        this.compilationResults = new HashMap<>();
-    }
-
-    // Passing in MocaCompiler and moca script so that we can get redirects( >> res)
+    // Passing in moca script so that we can get redirects( >> res)
     // from moca so we can add groovy script prefix. We will initialize these as
     // SimpleResults objects, that way we dont get the static
     // type check warning and we get intellisense!
-    public GroovyCompilationResult compileScript(int rangeIdx, String groovyScript, MocaCompiler mocaCompiler,
-            String mocaScript) {
+    public static GroovyCompilationResult compileScript(final int rangeIdx, String groovyScript, String mocaScript) {
 
         GroovyCompilationResult compilationResult = new GroovyCompilationResult();
-        compilationResult.compilationUnit = this.createCompilationUnit();
+        compilationResult.compilationUnit = createCompilationUnit();
 
         // Add prefixes to script.
         // Also add moca redirects, as long as they were 'declared' above current groovy
@@ -51,9 +40,10 @@ public class GroovyCompiler {
         // Need to keep track of what we have added, that way we dont add 2 redirects
         // with the same name(will cause static type checking issue).
         ArrayList<String> addedMocaRedirectNames = new ArrayList<>();
-        int groovyScriptOffset = PositionUtils.getOffset(mocaScript, mocaCompiler.groovyRanges.get(rangeIdx).getStart());
-        if (mocaCompiler.currentCompilationResult != null) {
-            for (Map.Entry<Token, String> entry : mocaCompiler.currentCompilationResult.mocaParseTreeListener.redirects
+        int groovyScriptOffset = PositionUtils.getOffset(mocaScript,
+                MocaServices.mocaCompilationResult.groovyRanges.get(rangeIdx).getStart());
+        if (MocaServices.mocaCompilationResult != null) {
+            for (Map.Entry<Token, String> entry : MocaServices.mocaCompilationResult.mocaParseTreeListener.redirects
                     .entrySet()) {
                 if (entry.getKey().getStartIndex() <= groovyScriptOffset) {
                     String curMocaRedirectName = entry.getValue();
@@ -100,14 +90,12 @@ public class GroovyCompiler {
 
         // Now visit AST and we should be all good.
         compilationResult.astVisitor.visitCompilationUnit(compilationResult.compilationUnit);
-        // Do not forget to add to hash map.
-        this.compilationResults.put(rangeIdx, compilationResult);
         return compilationResult;
 
     }
 
-    public GroovyCompilationUnit createCompilationUnit() {
-        CompilerConfiguration config = this.getConfiguration();
+    private static GroovyCompilationUnit createCompilationUnit() {
+        CompilerConfiguration config = getConfiguration();
         GroovyClassLoader classLoader = new GroovyClassLoader(ClassLoader.getSystemClassLoader().getParent(), config,
                 true);
 
@@ -117,7 +105,7 @@ public class GroovyCompiler {
 
     }
 
-    public CompilerConfiguration getConfiguration() {
+    private static CompilerConfiguration getConfiguration() {
 
         CompilerConfiguration config = new CompilerConfiguration();
         // Adding type checking - see:
@@ -125,7 +113,7 @@ public class GroovyCompiler {
         config.addCompilationCustomizers(new ASTTransformationCustomizer(TypeChecked.class));
 
         // Make sure not null before trying to set class path list.
-        ArrayList<String> classpathConfig = this.getClasspathListForConfiguration();
+        ArrayList<String> classpathConfig = getClasspathListForConfiguration();
         if (classpathConfig != null) {
             config.setClasspathList(classpathConfig);
         }
@@ -133,7 +121,7 @@ public class GroovyCompiler {
         return config;
     }
 
-    protected ArrayList<String> getClasspathListForConfiguration() {
+    private static ArrayList<String> getClasspathListForConfiguration() {
         if (GroovyCompiler.classpathList == null || GroovyCompiler.classpathList.isEmpty()) {
             return null;
         }
@@ -166,18 +154,6 @@ public class GroovyCompiler {
         }
 
         return classpathListForConfig;
-    }
-
-    public class GroovyCompilationUnit extends CompilationUnit {
-        public GroovyCompilationUnit(CompilerConfiguration config) {
-            this(config, null, null);
-        }
-
-        public GroovyCompilationUnit(CompilerConfiguration config, CodeSource security, GroovyClassLoader loader) {
-            super(config, security, loader);
-            this.errorCollector = new GroovyErrorCollector(config);
-        }
-
     }
 
 }
