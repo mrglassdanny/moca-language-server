@@ -132,7 +132,7 @@ public class MocaSqlCache {
                         tableCols.add(new TableColumn(tableName, colRes.getString(rowIdx, "column_name"),
                                 colRes.getString(rowIdx, "data_type"), colRes.getInt(rowIdx, "max_length")));
 
-                        if (rowIdx >= colRes.getRowCount()) {
+                        if (rowIdx >= colRes.getRowCount() - 1) {
                             break;
                         } else {
                             rowIdx++;
