@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2.0 (September 28, 2020)
+* Reorganization and refactor
+
 ## 1.1.1 (September 27, 2020)
 * Minor bug fix
 
