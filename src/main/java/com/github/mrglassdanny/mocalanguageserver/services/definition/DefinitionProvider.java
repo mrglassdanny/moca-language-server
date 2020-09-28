@@ -15,7 +15,6 @@ import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommand;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyASTUtils;
@@ -28,13 +27,12 @@ import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.LocationLink;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
-import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 
 public class DefinitionProvider {
 
     public static CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> provideDefinition(
-            TextDocumentIdentifier textDocument, Position position, String textDocumentContents) {
+            URI uri, Position position) {
 
         // Analyze context id for position.
         MocaLanguageContext mocaLanguageContext = MocaLanguageUtils.getMocaLanguageContextFromPosition(position,
@@ -43,25 +41,24 @@ public class DefinitionProvider {
         switch (mocaLanguageContext.id) {
             case Moca:
 
-                MocaCompilationResult mocaCompilationResult = MocaServices.mocaCompilationResult;
-
-                if (mocaCompilationResult == null) {
+                if (MocaServices.mocaCompilationResult == null) {
                     return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
                 }
 
-                String mocaWord = PositionUtils.getWordAtPosition(textDocumentContents, position, "([a-zA-Z_0-9.])");
+                String mocaWord = PositionUtils.getWordAtPosition(MocaServices.mocaCompilationResult.script, position,
+                        "([a-zA-Z_0-9.])");
 
                 if (mocaWord != null) {
 
                     mocaWord = mocaWord.toLowerCase();
 
                     // Get current moca token at position.
-                    org.antlr.v4.runtime.Token curMocaToken = MocaLanguageUtils
-                            .getMocaTokenAtPosition(textDocumentContents, position, MocaServices.mocaCompilationResult);
+                    org.antlr.v4.runtime.Token curMocaToken = MocaLanguageUtils.getMocaTokenAtPosition(position,
+                            MocaServices.mocaCompilationResult);
 
                     // Get verb noun clause current moca token is in.
                     StringBuilder verbNounClause = null;
-                    for (Map.Entry<StringBuilder, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
+                    for (Map.Entry<StringBuilder, ArrayList<org.antlr.v4.runtime.Token>> entry : MocaServices.mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                             .entrySet()) {
 
                         // Checking for begin/end match since token objects parsed and lexed will not be
@@ -132,8 +129,6 @@ public class DefinitionProvider {
                     // goes terribly wrong.
                     return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
                 }
-
-                URI uri = URI.create(textDocument.getUri());
 
                 ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
                         position.getCharacter(), groovyScriptRange);

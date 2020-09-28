@@ -17,7 +17,6 @@ import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommandArgument
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaFunction;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.Table;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.SubqueryContext;
@@ -45,7 +44,6 @@ import org.codehaus.groovy.ast.expr.PropertyExpression;
 import org.codehaus.groovy.ast.expr.VariableExpression;
 import org.codehaus.groovy.ast.stmt.BlockStatement;
 import org.codehaus.groovy.ast.stmt.Statement;
-import org.eclipse.lsp4j.CompletionContext;
 import org.eclipse.lsp4j.CompletionItem;
 import org.eclipse.lsp4j.CompletionItemKind;
 import org.eclipse.lsp4j.CompletionList;
@@ -53,7 +51,6 @@ import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.MarkupKind;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
-import org.eclipse.lsp4j.TextDocumentIdentifier;
 import org.eclipse.lsp4j.TextEdit;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 
@@ -65,19 +62,16 @@ import io.github.classgraph.ScanResult;
 
 public class CompletionProvider {
 
-    public static CompletableFuture<Either<List<CompletionItem>, CompletionList>> provideCompletion(
-            TextDocumentIdentifier textDocument, Position position, String textDocumentContents,
-            CompletionContext context, MocaLanguageContext mocaLanguageContext) {
+    public static CompletableFuture<Either<List<CompletionItem>, CompletionList>> provideCompletion(Position position,
+            MocaLanguageContext mocaLanguageContext) {
 
         List<CompletionItem> items = new ArrayList<>();
 
         switch (mocaLanguageContext.id) {
             case Moca:
 
-                MocaCompilationResult mocaCompilationResult = MocaServices.mocaCompilationResult;
-
                 // Validate compilation result.
-                if (mocaCompilationResult == null) {
+                if (MocaServices.mocaCompilationResult == null) {
                     // Can assume user wants commands.
                     populateMocaCommands(items);
                     return CompletableFuture.completedFuture(Either.forLeft(items));
@@ -85,8 +79,8 @@ public class CompletionProvider {
 
                 // Now, we need to see where we are in token list based on the position that was
                 // passed in.
-                int curMocaTokenIdx = MocaLanguageUtils.getMocaTokenIndexAtPosition(textDocumentContents, position,
-                        mocaCompilationResult);
+                int curMocaTokenIdx = MocaLanguageUtils.getMocaTokenIndexAtPosition(position,
+                        MocaServices.mocaCompilationResult);
 
                 // Validate we have a valid index.
                 if (curMocaTokenIdx == -1) {
@@ -107,7 +101,8 @@ public class CompletionProvider {
 
                 // Check if the word we are typing resembles "where".
                 // If so, we want nothing for now.
-                String curWord = PositionUtils.getWordAtPosition(textDocumentContents, position, "([a-zA-Z_0-9.])");
+                String curWord = PositionUtils.getWordAtPosition(MocaServices.mocaCompilationResult.script, position,
+                        "([a-zA-Z_0-9.])");
                 boolean matchesWhere = curWord.matches("(?i)\\b(where|wher|whe|wh|w)\\b");
                 if (matchesWhere) {
                     // Return nothing for now.
@@ -125,7 +120,7 @@ public class CompletionProvider {
                             // Get verb noun clause current moca token is in.
                             StringBuilder verbNounClause = null;
                             boolean foundTokenMatch = false;
-                            for (Map.Entry<StringBuilder, ArrayList<org.antlr.v4.runtime.Token>> entry : mocaCompilationResult.mocaParseTreeListener.verbNounClauses
+                            for (Map.Entry<StringBuilder, ArrayList<org.antlr.v4.runtime.Token>> entry : MocaServices.mocaCompilationResult.mocaParseTreeListener.verbNounClauses
                                     .entrySet()) {
 
                                 // We have a WHERE token match, therefore we know that the token prior to our
@@ -161,7 +156,8 @@ public class CompletionProvider {
 
                                     // HACK - getting the first letter typed for command arg population; see
                                     // function for more info.
-                                    char firstTypedLetter = PositionUtils.getCharacterAtPosition(textDocumentContents,
+                                    char firstTypedLetter = PositionUtils.getCharacterAtPosition(
+                                            MocaServices.mocaCompilationResult.script,
                                             new Position(position.getLine(), position.getCharacter() - 1));
                                     populateMocaCommandArguments(verbNounClause.toString(), items, firstTypedLetter);
                                     // Also populate functions.
@@ -205,11 +201,11 @@ public class CompletionProvider {
                     // Checking to see if we pressed '.' - which in an mocasql context would mean
                     // that
                     // we are looking for table columns.
-                    if (PositionUtils.getCharacterAtPosition(textDocumentContents,
+                    if (PositionUtils.getCharacterAtPosition(MocaServices.mocaCompilationResult.script,
                             new Position(position.getLine(), position.getCharacter() - 1)) == '.') {
 
                         // Get word on left of '.'.
-                        String word = PositionUtils.getWordAtPosition(textDocumentContents,
+                        String word = PositionUtils.getWordAtPosition(MocaServices.mocaCompilationResult.script,
                                 new Position(position.getLine(), position.getCharacter() - 2), "([a-zA-Z_0-9])");
                         if (word != null) {
                             // Make sure case sensitivity will not get in the way.

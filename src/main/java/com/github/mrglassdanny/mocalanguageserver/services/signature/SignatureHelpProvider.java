@@ -27,19 +27,18 @@ import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SignatureHelp;
 import org.eclipse.lsp4j.SignatureInformation;
-import org.eclipse.lsp4j.TextDocumentIdentifier;
 
 public class SignatureHelpProvider {
 
-    public static CompletableFuture<SignatureHelp> provideSignatureHelp(TextDocumentIdentifier textDocument,
-            String textDocumentContents, Position position, MocaLanguageContext mocaLanguageContext) {
+    public static CompletableFuture<SignatureHelp> provideSignatureHelp(Position position,
+            MocaLanguageContext mocaLanguageContext) {
 
         switch (mocaLanguageContext.id) {
             case Moca:
                 // Looking for moca functions.
 
-                org.antlr.v4.runtime.Token curMocaToken = MocaLanguageUtils.getMocaTokenAtPosition(textDocumentContents,
-                        position, MocaServices.mocaCompilationResult);
+                org.antlr.v4.runtime.Token curMocaToken = MocaLanguageUtils.getMocaTokenAtPosition(position,
+                        MocaServices.mocaCompilationResult);
 
                 if (curMocaToken != null) {
 

@@ -20,19 +20,21 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 
 public class MocaCompilationResult {
 
+    public final String script;
+    public final String uriStr;
     public List<? extends Token> mocaTokens;
     public MocaParser mocaParser;
     public MocaParseTreeListener mocaParseTreeListener;
     public MocaSyntaxErrorListener mocaSyntaxErrorListener;
-
     public ArrayList<Range> mocaSqlRanges;
     public ArrayList<Range> groovyRanges;
-
     public HashMap<Integer, MocaSqlCompilationResult> mocaSqlCompilationResults;
     public HashMap<Integer, GroovyCompilationResult> groovyCompilationResults;
 
-    public MocaCompilationResult() {
+    public MocaCompilationResult(final String script, final String uriStr) {
 
+        this.script = script;
+        this.uriStr = uriStr;
         this.mocaTokens = null;
         this.mocaParser = null;
         this.mocaParseTreeListener = null;

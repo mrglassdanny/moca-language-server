@@ -65,16 +65,16 @@ public class SemanticHighlightingManager {
         textmateScopes.add(mocaSqlTableScopes);
     }
 
-    public static void streamAll(String uriStr, String mocaScript) {
+    public static void streamAll() {
 
         // Prepare to add new highlights.
         List<SemanticHighlightingInformation> lines = new ArrayList<>();
-        VersionedTextDocumentIdentifier versionTextDoc = new VersionedTextDocumentIdentifier(uriStr, 1);
+        VersionedTextDocumentIdentifier versionTextDoc = new VersionedTextDocumentIdentifier(
+                MocaServices.mocaCompilationResult.uriStr, 1);
         HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
 
         // Get semantic highlights.
-        HashMap<Integer, ArrayList<Token>> mocaSqlRangePreInfos = getMocaSqlRangeSemanticHighlightings(lines,
-                mocaScript);
+        HashMap<Integer, ArrayList<Token>> mocaSqlRangePreInfos = getMocaSqlRangeSemanticHighlightings();
         for (Map.Entry<Integer, ArrayList<Token>> entry : mocaSqlRangePreInfos.entrySet()) {
 
             int lineNum = entry.getKey();
@@ -86,7 +86,7 @@ public class SemanticHighlightingManager {
                 preInfos.put(lineNum, arr);
             }
         }
-        HashMap<Integer, ArrayList<Token>> groovyRangePreInfos = getGroovyRangeSemanticHighlightings(lines, mocaScript);
+        HashMap<Integer, ArrayList<Token>> groovyRangePreInfos = getGroovyRangeSemanticHighlightings();
         for (Map.Entry<Integer, ArrayList<Token>> entry : groovyRangePreInfos.entrySet()) {
 
             int lineNum = entry.getKey();
@@ -98,7 +98,7 @@ public class SemanticHighlightingManager {
                 preInfos.put(lineNum, arr);
             }
         }
-        HashMap<Integer, ArrayList<Token>> mocaCommandPreInfos = getMocaCommandSemanticHighlightings(lines, mocaScript);
+        HashMap<Integer, ArrayList<Token>> mocaCommandPreInfos = getMocaCommandSemanticHighlightings();
         for (Map.Entry<Integer, ArrayList<Token>> entry : mocaCommandPreInfos.entrySet()) {
 
             int lineNum = entry.getKey();
@@ -110,8 +110,7 @@ public class SemanticHighlightingManager {
                 preInfos.put(lineNum, arr);
             }
         }
-        HashMap<Integer, ArrayList<Token>> mocaCommandStreamEndPreInfos = getMocaCommandStreamEndSemanticHighlightings(
-                lines, mocaScript);
+        HashMap<Integer, ArrayList<Token>> mocaCommandStreamEndPreInfos = getMocaCommandStreamEndSemanticHighlightings();
         for (Map.Entry<Integer, ArrayList<Token>> entry : mocaCommandStreamEndPreInfos.entrySet()) {
 
             int lineNum = entry.getKey();
@@ -123,8 +122,7 @@ public class SemanticHighlightingManager {
                 preInfos.put(lineNum, arr);
             }
         }
-        HashMap<Integer, ArrayList<Token>> mocaSqlTablePreInfos = getMocaSqlTableSemanticHighlightings(lines,
-                mocaScript);
+        HashMap<Integer, ArrayList<Token>> mocaSqlTablePreInfos = getMocaSqlTableSemanticHighlightings();
         for (Map.Entry<Integer, ArrayList<Token>> entry : mocaSqlTablePreInfos.entrySet()) {
 
             int lineNum = entry.getKey();
@@ -149,8 +147,7 @@ public class SemanticHighlightingManager {
         MocaServices.languageClient.semanticHighlighting(params);
     }
 
-    public static HashMap<Integer, ArrayList<Token>> getMocaSqlRangeSemanticHighlightings(
-            List<SemanticHighlightingInformation> lines, String mocaScript) {
+    public static HashMap<Integer, ArrayList<Token>> getMocaSqlRangeSemanticHighlightings() {
 
         // Have to pack all highlights for line into one SemanticHighlightingInformation
         // object.
@@ -186,8 +183,7 @@ public class SemanticHighlightingManager {
 
     }
 
-    public static HashMap<Integer, ArrayList<Token>> getGroovyRangeSemanticHighlightings(
-            List<SemanticHighlightingInformation> lines, String mocaScript) {
+    public static HashMap<Integer, ArrayList<Token>> getGroovyRangeSemanticHighlightings() {
 
         // Have to pack all highlights for line into one SemanticHighlightingInformation
         // object.
@@ -220,8 +216,7 @@ public class SemanticHighlightingManager {
 
     }
 
-    public static HashMap<Integer, ArrayList<Token>> getMocaCommandSemanticHighlightings(
-            List<SemanticHighlightingInformation> lines, String mocaScript) {
+    public static HashMap<Integer, ArrayList<Token>> getMocaCommandSemanticHighlightings() {
 
         // Have to pack all highlights for line into one SemanticHighlightingInformation
         // object.
@@ -240,7 +235,8 @@ public class SemanticHighlightingManager {
 
                     // Make sure command exists before we color it.
                     if (MocaCache.getGlobalMocaCache().commands.containsKey(verbNounClause.toString())) {
-                        Position pos = PositionUtils.getPosition(mocaScript, mocaTokens.get(0).getStartIndex());
+                        Position pos = PositionUtils.getPosition(MocaServices.mocaCompilationResult.script,
+                                mocaTokens.get(0).getStartIndex());
 
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
@@ -261,8 +257,7 @@ public class SemanticHighlightingManager {
         return preInfos;
     }
 
-    public static HashMap<Integer, ArrayList<Token>> getMocaCommandStreamEndSemanticHighlightings(
-            List<SemanticHighlightingInformation> lines, String mocaScript) {
+    public static HashMap<Integer, ArrayList<Token>> getMocaCommandStreamEndSemanticHighlightings() {
 
         // Have to pack all highlights for line into one SemanticHighlightingInformation
         // object.
@@ -270,7 +265,8 @@ public class SemanticHighlightingManager {
 
         for (org.antlr.v4.runtime.Token mocaToken : MocaServices.mocaCompilationResult.mocaTokens) {
             if (mocaToken.getType() == MocaLexer.SEMI_COLON) {
-                Position pos = PositionUtils.getPosition(mocaScript, mocaToken.getStartIndex());
+                Position pos = PositionUtils.getPosition(MocaServices.mocaCompilationResult.script,
+                        mocaToken.getStartIndex());
                 int lineNum = pos.getLine();
                 if (preInfos.containsKey(lineNum)) {
                     preInfos.get(lineNum).add(new Token(0, pos.getCharacter(), MOCA_COMMAND_STREAM_END_SCOPES_IDX));
@@ -285,8 +281,7 @@ public class SemanticHighlightingManager {
         return preInfos;
     }
 
-    public static HashMap<Integer, ArrayList<Token>> getMocaSqlTableSemanticHighlightings(
-            List<SemanticHighlightingInformation> lines, String mocaScript) {
+    public static HashMap<Integer, ArrayList<Token>> getMocaSqlTableSemanticHighlightings() {
 
         // Have to pack all highlights for line into one SemanticHighlightingInformation
         // object.
@@ -313,8 +308,9 @@ public class SemanticHighlightingManager {
                             || MocaCache.getGlobalMocaCache().mocaSqlCache.views.containsKey(word)) {
 
                         // Let's make sure real quick that this is not a '@' var.
-                        int offset = PositionUtils.getOffset(mocaScript, pos);
-                        if (offset > 0 && (offset - 1) < mocaScript.length() && mocaScript.charAt(offset - 1) != '@') {
+                        int offset = PositionUtils.getOffset(MocaServices.mocaCompilationResult.script, pos);
+                        if (offset > 0 && (offset - 1) < MocaServices.mocaCompilationResult.script.length()
+                                && MocaServices.mocaCompilationResult.script.charAt(offset - 1) != '@') {
                             if (preInfos.containsKey(pos.getLine())) {
                                 preInfos.get(pos.getLine())
                                         .add(new Token(pos.getCharacter(), word.length(), MOCASQL_TABLE_SCOPES_IDX));

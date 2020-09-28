@@ -26,12 +26,12 @@ public class MocaCompiler {
     // will utilize a simple thread pool.
     private static ExecutorService embeddedLanguageCompilationThreadPool = Executors.newCachedThreadPool();
 
-    public static MocaCompilationResult compileScript(String finalMocaScript) {
+    public static MocaCompilationResult compileScript(final String mocaScript, final String uriStr) {
 
-        MocaCompilationResult mocaCompilationResult = new MocaCompilationResult();
+        MocaCompilationResult mocaCompilationResult = new MocaCompilationResult(mocaScript, uriStr);
 
         mocaCompilationResult.mocaParser = new MocaParser(
-                new CommonTokenStream(new MocaLexer(CharStreams.fromString(finalMocaScript))));
+                new CommonTokenStream(new MocaLexer(CharStreams.fromString(mocaScript))));
 
         mocaCompilationResult.mocaSyntaxErrorListener = new MocaSyntaxErrorListener();
         mocaCompilationResult.mocaParser.addErrorListener(mocaCompilationResult.mocaSyntaxErrorListener);
@@ -42,10 +42,10 @@ public class MocaCompiler {
         mocaCompilationResult.mocaParseTreeListener = new MocaParseTreeListener();
         new ParseTreeWalker().walk(mocaCompilationResult.mocaParseTreeListener, parseTree);
 
-        mocaCompilationResult.mocaTokens = new MocaLexer(CharStreams.fromString(finalMocaScript)).getAllTokens();
+        mocaCompilationResult.mocaTokens = new MocaLexer(CharStreams.fromString(mocaScript)).getAllTokens();
 
         // Update embedded lang ranges, then compile them.
-        mocaCompilationResult.updateEmbeddedLanguageRanges(finalMocaScript);
+        mocaCompilationResult.updateEmbeddedLanguageRanges(mocaScript);
 
         Collection<Callable<Boolean>> compileTasks = new ArrayList<Callable<Boolean>>();
 
@@ -53,7 +53,7 @@ public class MocaCompiler {
             final int rangeIdx = i;
             compileTasks.add(() -> {
                 // Remove first and last characters('[', ']').
-                String mocaSqlScript = RangeUtils.getText(finalMocaScript,
+                String mocaSqlScript = RangeUtils.getText(mocaScript,
                         mocaCompilationResult.mocaSqlRanges.get(rangeIdx));
                 mocaSqlScript = mocaSqlScript.substring(1, mocaSqlScript.length() - 1);
                 mocaCompilationResult.mocaSqlCompilationResults.put(rangeIdx,
@@ -66,11 +66,10 @@ public class MocaCompiler {
             final int rangeIdx = i;
             compileTasks.add(() -> {
                 // Remove first and last instances of("[[", "]]").
-                String groovyScript = RangeUtils.getText(finalMocaScript,
-                        mocaCompilationResult.groovyRanges.get(rangeIdx));
+                String groovyScript = RangeUtils.getText(mocaScript, mocaCompilationResult.groovyRanges.get(rangeIdx));
                 groovyScript = groovyScript.substring(2, groovyScript.length() - 2);
                 mocaCompilationResult.groovyCompilationResults.put(rangeIdx,
-                        GroovyCompiler.compileScript(rangeIdx, groovyScript, finalMocaScript, mocaCompilationResult));
+                        GroovyCompiler.compileScript(rangeIdx, groovyScript, mocaScript, mocaCompilationResult));
                 return true;
             });
         }
