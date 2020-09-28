@@ -5,8 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.github.mrglassdanny.mocalanguageserver.highlight.SemanticHighlightingManager;
-import com.github.mrglassdanny.mocalanguageserver.command.ExecuteCommandProvider;
+import com.github.mrglassdanny.mocalanguageserver.services.highlight.SemanticHighlightingManager;
+import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
+import com.github.mrglassdanny.mocalanguageserver.services.command.ExecuteCommandProvider;
 
 import org.eclipse.lsp4j.CompletionOptions;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingOptions;

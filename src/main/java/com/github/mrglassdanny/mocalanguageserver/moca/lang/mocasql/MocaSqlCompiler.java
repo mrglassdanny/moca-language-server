@@ -15,21 +15,21 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 public class MocaSqlCompiler {
 
     public static MocaSqlCompilationResult compileScript(String script) {
-        MocaSqlCompilationResult compilationResult = new MocaSqlCompilationResult();
+        MocaSqlCompilationResult mocaSqlCompilationResult = new MocaSqlCompilationResult();
 
-        compilationResult.mocaSqlTokens = new MocaSqlLexer(
+        mocaSqlCompilationResult.mocaSqlTokens = new MocaSqlLexer(
                 new CaseChangingCharStream(CharStreams.fromString(script), true)).getAllTokens();
-        compilationResult.mocaSqlParser = new MocaSqlParser(new CommonTokenStream(
+        mocaSqlCompilationResult.mocaSqlParser = new MocaSqlParser(new CommonTokenStream(
                 new MocaSqlLexer(new CaseChangingCharStream(CharStreams.fromString(script), true))));
-        compilationResult.mocaSqlSyntaxErrorListener = new MocaSqlSyntaxErrorListener();
-        compilationResult.mocaSqlParser.addErrorListener(compilationResult.mocaSqlSyntaxErrorListener);
+        mocaSqlCompilationResult.mocaSqlSyntaxErrorListener = new MocaSqlSyntaxErrorListener();
+        mocaSqlCompilationResult.mocaSqlParser.addErrorListener(mocaSqlCompilationResult.mocaSqlSyntaxErrorListener);
         // Since we do not want errors printing to the console, remove this
         // ConsoleErrorListener.
-        compilationResult.mocaSqlParser.removeErrorListener(ConsoleErrorListener.INSTANCE);
-        ParseTree parseTree = compilationResult.mocaSqlParser.moca_sql_script();
-        compilationResult.mocaSqlParseTreeListener = new MocaSqlParseTreeListener();
-        new ParseTreeWalker().walk(compilationResult.mocaSqlParseTreeListener, parseTree);
+        mocaSqlCompilationResult.mocaSqlParser.removeErrorListener(ConsoleErrorListener.INSTANCE);
+        ParseTree parseTree = mocaSqlCompilationResult.mocaSqlParser.moca_sql_script();
+        mocaSqlCompilationResult.mocaSqlParseTreeListener = new MocaSqlParseTreeListener();
+        new ParseTreeWalker().walk(mocaSqlCompilationResult.mocaSqlParseTreeListener, parseTree);
 
-        return compilationResult;
+        return mocaSqlCompilationResult;
     }
 }

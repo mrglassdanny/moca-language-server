@@ -36,15 +36,13 @@ public class MocaLanguageUtils {
         return new MocaLanguageContext(MocaLanguageContext.ContextId.Moca, 0);
     }
 
-    public static Token getMocaTokenAtPosition(String mocaScript, Position pos,
-            MocaCompilationResult mocaCompilationResult) {
-        int idx = getMocaTokenIndexAtPosition(mocaScript, pos, mocaCompilationResult);
+    public static Token getMocaTokenAtPosition(Position pos, MocaCompilationResult mocaCompilationResult) {
+        int idx = getMocaTokenIndexAtPosition(pos, mocaCompilationResult);
         return idx == -1 ? null : mocaCompilationResult.mocaTokens.get(idx);
     }
 
-    public static int getMocaTokenIndexAtPosition(String mocaScript, Position pos,
-            MocaCompilationResult mocaCompilationResult) {
-        int posOffset = PositionUtils.getOffset(mocaScript, pos);
+    public static int getMocaTokenIndexAtPosition(Position pos, MocaCompilationResult mocaCompilationResult) {
+        int posOffset = PositionUtils.getOffset(mocaCompilationResult.script, pos);
         for (int i = 0; i < mocaCompilationResult.mocaTokens.size(); i++) {
             Token mocaToken = mocaCompilationResult.mocaTokens.get(i);
 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
-import com.github.mrglassdanny.mocalanguageserver.MocaServices;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 
@@ -28,10 +28,11 @@ public class GroovyCompiler {
     // from moca so we can add groovy script prefix. We will initialize these as
     // SimpleResults objects, that way we dont get the static
     // type check warning and we get intellisense!
-    public static GroovyCompilationResult compileScript(final int rangeIdx, String groovyScript, String mocaScript) {
+    public static GroovyCompilationResult compileScript(final int rangeIdx, String groovyScript, String mocaScript,
+            MocaCompilationResult mocaCompilationResult) {
 
-        GroovyCompilationResult compilationResult = new GroovyCompilationResult();
-        compilationResult.compilationUnit = createCompilationUnit();
+        GroovyCompilationResult groovyCompilationResult = new GroovyCompilationResult();
+        groovyCompilationResult.compilationUnit = createCompilationUnit();
 
         // Add prefixes to script.
         // Also add moca redirects, as long as they were 'declared' above current groovy
@@ -41,10 +42,9 @@ public class GroovyCompiler {
         // with the same name(will cause static type checking issue).
         ArrayList<String> addedMocaRedirectNames = new ArrayList<>();
         int groovyScriptOffset = PositionUtils.getOffset(mocaScript,
-                MocaServices.mocaCompilationResult.groovyRanges.get(rangeIdx).getStart());
-        if (MocaServices.mocaCompilationResult != null) {
-            for (Map.Entry<Token, String> entry : MocaServices.mocaCompilationResult.mocaParseTreeListener.redirects
-                    .entrySet()) {
+                mocaCompilationResult.groovyRanges.get(rangeIdx).getStart());
+        if (mocaCompilationResult != null) {
+            for (Map.Entry<Token, String> entry : mocaCompilationResult.mocaParseTreeListener.redirects.entrySet()) {
                 if (entry.getKey().getStartIndex() <= groovyScriptOffset) {
                     String curMocaRedirectName = entry.getValue();
                     if (!addedMocaRedirectNames.contains(curMocaRedirectName)) {
@@ -59,10 +59,10 @@ public class GroovyCompiler {
                 + mocaRedirects + groovyScript;
 
         // Add a source unit to compilation unit and then compile.
-        compilationResult.compilationUnit.addSource(
-                new SourceUnit("script" + rangeIdx, groovyScript, compilationResult.compilationUnit.getConfiguration(),
-                        compilationResult.compilationUnit.getClassLoader(),
-                        compilationResult.compilationUnit.getErrorCollector()));
+        groovyCompilationResult.compilationUnit.addSource(new SourceUnit("script" + rangeIdx, groovyScript,
+                groovyCompilationResult.compilationUnit.getConfiguration(),
+                groovyCompilationResult.compilationUnit.getClassLoader(),
+                groovyCompilationResult.compilationUnit.getErrorCollector()));
 
         try {
             // AST is completely built after the canonicalization phase;
@@ -73,9 +73,9 @@ public class GroovyCompiler {
 
             // Check if static type checking is enabled via moca lang server options.
             if (MocaLanguageServer.mocaLanguageServerOptions.groovyStaticTypeCheckingEnabled) {
-                compilationResult.compilationUnit.compile(Phases.INSTRUCTION_SELECTION);
+                groovyCompilationResult.compilationUnit.compile(Phases.INSTRUCTION_SELECTION);
             } else {
-                compilationResult.compilationUnit.compile(Phases.CANONICALIZATION);
+                groovyCompilationResult.compilationUnit.compile(Phases.CANONICALIZATION);
             }
 
         } catch (MultipleCompilationErrorsException e) {
@@ -89,8 +89,8 @@ public class GroovyCompiler {
         }
 
         // Now visit AST and we should be all good.
-        compilationResult.astVisitor.visitCompilationUnit(compilationResult.compilationUnit);
-        return compilationResult;
+        groovyCompilationResult.astVisitor.visitCompilationUnit(groovyCompilationResult.compilationUnit);
+        return groovyCompilationResult;
 
     }
 
@@ -108,9 +108,13 @@ public class GroovyCompiler {
     private static CompilerConfiguration getConfiguration() {
 
         CompilerConfiguration config = new CompilerConfiguration();
-        // Adding type checking - see:
-        // http://groovy-lang.org/semantics.html#static-type-checking
-        config.addCompilationCustomizers(new ASTTransformationCustomizer(TypeChecked.class));
+
+        // Check if static type checking is enabled via moca lang server options.
+        if (MocaLanguageServer.mocaLanguageServerOptions.groovyStaticTypeCheckingEnabled) {
+            // Adding type checking - see:
+            // http://groovy-lang.org/semantics.html#static-type-checking
+            config.addCompilationCustomizers(new ASTTransformationCustomizer(TypeChecked.class));
+        }
 
         // Make sure not null before trying to set class path list.
         ArrayList<String> classpathConfig = getClasspathListForConfiguration();
