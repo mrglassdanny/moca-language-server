@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2.1 (September 28, 2020)
+* MOCA connection timeout tweak
+
 ## 1.2.0 (September 28, 2020)
 * Reorganization and refactor
 
