@@ -93,9 +93,8 @@ public class HoverProvider {
                                 ArrayList<MocaCommand> mcmds = MocaCache.getGlobalMocaCache().commands
                                         .get(verbNounClause.toString());
                                 if (mcmds != null) {
-                                    String content = MocaCommand.getMarkdownStr(verbNounClause.toString(), mcmds);
-
-                                    hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, content));
+                                    hover.setContents(new MarkupContent(MarkupKind.MARKDOWN,
+                                            MocaCommand.getMarkdownStr(verbNounClause.toString(), mcmds)));
                                     return CompletableFuture.completedFuture(hover);
                                 }
                             }
