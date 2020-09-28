@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnection;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
+import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 
 public class MocaSqlCache {
 
@@ -69,7 +70,8 @@ public class MocaSqlCache {
 
             }
         } catch (Exception e) {
-            // ignore
+            MocaServices
+                    .logWarningToLanguageClient(String.format("MOCA Cache: Failed to load tables: %s", e.getMessage()));
         }
 
     }
@@ -92,7 +94,8 @@ public class MocaSqlCache {
             // Add 'dual' - lol.
             this.views.put("dual", new Table("dual", ""));
         } catch (Exception e) {
-            // ignore
+            MocaServices
+                    .logWarningToLanguageClient(String.format("MOCA Cache: Failed to load views: %s", e.getMessage()));
         }
 
     }
@@ -148,7 +151,8 @@ public class MocaSqlCache {
                 }
             }
         } catch (Exception e) {
-            // ignore
+            MocaServices.logWarningToLanguageClient(
+                    String.format("MOCA Cache: Failed to load columns: %s", e.getMessage()));
         }
 
     }

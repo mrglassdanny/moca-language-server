@@ -7,6 +7,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.MocaSqlCach
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnection;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
+import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 
 public class MocaCache {
 
@@ -186,7 +187,8 @@ public class MocaCache {
                                 }
                         }
                 } catch (Exception e) {
-                        // ignore
+                        MocaServices.logWarningToLanguageClient(
+                                        String.format("MOCA Cache: Failed to load commands: %s", e.getMessage()));
                 }
 
                 // Add built in commands..
@@ -261,7 +263,8 @@ public class MocaCache {
                                 }
                         }
                 } catch (Exception e) {
-                        // ignore
+                        MocaServices.logWarningToLanguageClient(String
+                                        .format("MOCA Cache: Failed to load command arguments: %s", e.getMessage()));
                 }
 
         }
@@ -297,7 +300,8 @@ public class MocaCache {
                                 }
                         }
                 } catch (Exception e) {
-                        // ignore
+                        MocaServices.logWarningToLanguageClient(
+                                        String.format("MOCA Cache: Failed to load triggers: %s", e.getMessage()));
                 }
 
         }
