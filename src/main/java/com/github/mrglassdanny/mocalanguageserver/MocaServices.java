@@ -61,6 +61,7 @@ import org.eclipse.lsp4j.services.WorkspaceService;
 
 public class MocaServices implements TextDocumentService, WorkspaceService, LanguageClientAware {
 
+    // Will only ever have 1 current moca compilation result.
     public static MocaCompilationResult mocaCompilationResult = null;
     public static LanguageClient languageClient = null;
     private static FileManager fileManager = new FileManager();
