@@ -60,7 +60,16 @@ import org.eclipse.lsp4j.services.WorkspaceService;
 
 public class MocaServices implements TextDocumentService, WorkspaceService, LanguageClientAware {
 
-    // Will only ever have 1 current moca compilation result.
+    // Will only ever have 1 current moca compilation result. Reason being is that
+    // moca scripts/files are independent of eachother, and there is no need to keep
+    // track of any compilation results other than the current one for the moca
+    // script/file that the user is focused on. The only caveat to this is when
+    // dealing with semantic highlighting and diagnostics. However, we account for
+    // this simply by not clearing existing highlights/diagnostics when the user
+    // sets focus on another file. These existing highlights/diagnostics will not be
+    // invalidated since the file will not be changed if the user is not focusing on
+    // it. Once the file is focused on and a compile event like change is triggered,
+    // we compile the file and everything is how it should be.
     public static MocaCompilationResult mocaCompilationResult = null;
     public static LanguageClient languageClient = null;
     private static FileManager fileManager = new FileManager();
