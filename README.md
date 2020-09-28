@@ -12,15 +12,15 @@ Cross-platform Java based implementation of the [Language Server Protocol] for M
 
 ### Intellisense
 
-|                           | MOCA                              | SQL                                           | Groovy                                            |
-|---------------------------|-----------------------------------|-----------------------------------------------|---------------------------------------------------|
-| **Completion**            | commands, arguments, functions,   | tables/views, columns, aliases, subqueries,   | imports, classes, methods/functions               |
-| **Hover**                 | commands, functions               | tables/views, aliases, subqueries             | imports, classes, methods/functions, variables    |
-| **Definition Lookup**     | commands, triggers                |                                               | classes, methods/functions, variables             |
-| **Diagnostics**           | errors, warnings                  | errors, warnings                              | errors, warnings                                  |
-| **Formatting**            | on save, on paste, on type        | on save, on paste, on type                    |                                                   |
-| **Semantic Highlighting** | commands, streams(```;```)        | range(```[select..]```), tables/views         | range(```[[..]]```)                               |
-| **Signature Help**        | functions                         |                                               | methods/functions                                 |
+|                           | MOCA                              | SQL                                                   | Groovy                                            |
+|---------------------------|-----------------------------------|-------------------------------------------------------|---------------------------------------------------|
+| **Completion**            | commands, arguments, functions    | tables/views, columns, aliases, subqueries, functions | imports, classes, methods/functions               |
+| **Hover**                 | commands, functions               | tables/views, aliases, subqueries, functions          | imports, classes, methods/functions, variables    |
+| **Definition Lookup**     | commands, triggers                |                                                       | classes, methods/functions, variables             |
+| **Diagnostics**           | errors, warnings                  | errors, warnings                                      | errors, warnings                                  |
+| **Formatting**            | on save, on paste, on type        | on save, on paste, on type                            |                                                   |
+| **Semantic Highlighting** | commands, streams(```;```)        | range(```[select..]```), tables/views                 | range(```[[..]]```)                               |
+| **Signature Help**        | functions                         |                                                       | methods/functions                                 |
 
 
 ### Command Execution
