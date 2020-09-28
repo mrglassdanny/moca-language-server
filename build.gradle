@@ -10,7 +10,7 @@ repositories {
 }
 
 group 'com.github.mrglassdanny.mocalanguageserver'
-version '1.0.1'
+version '1.1.0'
 
 ext.mainClass = 'com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer'
 
