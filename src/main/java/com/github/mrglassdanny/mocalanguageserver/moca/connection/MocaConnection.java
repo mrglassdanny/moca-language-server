@@ -3,6 +3,7 @@ package com.github.mrglassdanny.mocalanguageserver.moca.connection;
 import java.io.IOException;
 
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.UnsupportedConnectionTypeException;
@@ -95,7 +96,9 @@ public class MocaConnection {
         String mocaRequest = MocaConnection.generateMocaRequestXmlString(true, this.sessionId,
                 this.environmentVariablesXmlStr, command);
 
-        OkHttpClient client = new OkHttpClient();
+        // We will keep connect timeout at default 10 secs and read timeout at 3 mins.
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(180, TimeUnit.SECONDS).build();
         MediaType mediaType = MediaType.parse("application/moca-xml");
         RequestBody body = RequestBody.create(mediaType, mocaRequest);
         Request request = new Request.Builder().url(url).post(body).addHeader("Content-Type", "application/moca-xml")
