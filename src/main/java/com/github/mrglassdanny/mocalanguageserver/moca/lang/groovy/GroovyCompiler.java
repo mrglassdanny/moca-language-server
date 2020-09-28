@@ -31,8 +31,8 @@ public class GroovyCompiler {
     public static GroovyCompilationResult compileScript(final int rangeIdx, String groovyScript, String mocaScript,
             MocaCompilationResult mocaCompilationResult) {
 
-        GroovyCompilationResult compilationResult = new GroovyCompilationResult();
-        compilationResult.compilationUnit = createCompilationUnit();
+        GroovyCompilationResult groovyCompilationResult = new GroovyCompilationResult();
+        groovyCompilationResult.compilationUnit = createCompilationUnit();
 
         // Add prefixes to script.
         // Also add moca redirects, as long as they were 'declared' above current groovy
@@ -59,10 +59,10 @@ public class GroovyCompiler {
                 + mocaRedirects + groovyScript;
 
         // Add a source unit to compilation unit and then compile.
-        compilationResult.compilationUnit.addSource(
-                new SourceUnit("script" + rangeIdx, groovyScript, compilationResult.compilationUnit.getConfiguration(),
-                        compilationResult.compilationUnit.getClassLoader(),
-                        compilationResult.compilationUnit.getErrorCollector()));
+        groovyCompilationResult.compilationUnit.addSource(new SourceUnit("script" + rangeIdx, groovyScript,
+                groovyCompilationResult.compilationUnit.getConfiguration(),
+                groovyCompilationResult.compilationUnit.getClassLoader(),
+                groovyCompilationResult.compilationUnit.getErrorCollector()));
 
         try {
             // AST is completely built after the canonicalization phase;
@@ -73,9 +73,9 @@ public class GroovyCompiler {
 
             // Check if static type checking is enabled via moca lang server options.
             if (MocaLanguageServer.mocaLanguageServerOptions.groovyStaticTypeCheckingEnabled) {
-                compilationResult.compilationUnit.compile(Phases.INSTRUCTION_SELECTION);
+                groovyCompilationResult.compilationUnit.compile(Phases.INSTRUCTION_SELECTION);
             } else {
-                compilationResult.compilationUnit.compile(Phases.CANONICALIZATION);
+                groovyCompilationResult.compilationUnit.compile(Phases.CANONICALIZATION);
             }
 
         } catch (MultipleCompilationErrorsException e) {
@@ -89,8 +89,8 @@ public class GroovyCompiler {
         }
 
         // Now visit AST and we should be all good.
-        compilationResult.astVisitor.visitCompilationUnit(compilationResult.compilationUnit);
-        return compilationResult;
+        groovyCompilationResult.astVisitor.visitCompilationUnit(groovyCompilationResult.compilationUnit);
+        return groovyCompilationResult;
 
     }
 
