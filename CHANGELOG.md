@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2.3 (September 29, 2020)
+* MOCA Sql cache table load bug fix
+
 ## 1.2.2 (September 28, 2020)
 * Antoher MOCA connection timeout tweak
 

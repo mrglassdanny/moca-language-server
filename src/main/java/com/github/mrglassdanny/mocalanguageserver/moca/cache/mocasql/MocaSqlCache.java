@@ -62,12 +62,11 @@ public class MocaSqlCache {
                     String tableName = res.getString(rowIdx, "table_name").toLowerCase();
                     String tableDescription = res.getString(rowIdx, "description");
                     String tableComment = res.getString(rowIdx, "table_comment");
-                    if (!tableComment.isEmpty()) {
+                    if (tableComment != null && !tableComment.isEmpty()) {
                         tableDescription += ": " + tableComment;
                     }
                     this.tables.put(tableName, new Table(tableName, tableDescription));
                 }
-
             }
         } catch (Exception e) {
             MocaServices
