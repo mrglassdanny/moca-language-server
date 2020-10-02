@@ -52,10 +52,9 @@ public class MocaSqlCache {
 
     public void loadTables() {
 
-        this.tables.clear();
-
         try {
             MocaResults res = MocaConnection.getGlobalMocaConnection().executeCommand(MocaSqlCache.TABLES_SCRIPT);
+            this.tables.clear();
 
             if (res != null) {
                 for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
@@ -77,10 +76,9 @@ public class MocaSqlCache {
 
     public void loadViews() {
 
-        this.views.clear();
-
         try {
             MocaResults res = MocaConnection.getGlobalMocaConnection().executeCommand(MocaSqlCache.VIEWS_SCRIPT);
+            this.views.clear();
 
             if (res != null) {
 
@@ -101,10 +99,9 @@ public class MocaSqlCache {
 
     public void loadColumns() {
 
-        this.columns.clear();
-
         try {
             MocaResults colRes = MocaConnection.getGlobalMocaConnection().executeCommand(MocaSqlCache.COLUMNS_SCRIPT);
+            this.columns.clear();
 
             // Due to how our loop works, we need to save off data here so that we do not
             // leave out the first column of every table(after the first table).
@@ -146,7 +143,9 @@ public class MocaSqlCache {
                     }
 
                     // Now add to map.
-                    this.columns.put(tableName, tableCols);
+                    // Make sure we convert to lowercase since table columns store table name as
+                    // lowercase.
+                    this.columns.put(tableName.toLowerCase(), tableCols);
                 }
             }
         } catch (Exception e) {

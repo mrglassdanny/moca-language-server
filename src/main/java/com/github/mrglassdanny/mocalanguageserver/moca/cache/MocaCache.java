@@ -149,12 +149,11 @@ public class MocaCache {
 
         public void loadCommands() {
 
-                this.distinctCommands.clear();
-                this.commands.clear();
-
                 try {
                         MocaResults res = MocaConnection.getGlobalMocaConnection()
                                         .executeCommand(MocaCache.COMMANDS_SCRIPT);
+                        this.distinctCommands.clear();
+                        this.commands.clear();
                         if (res != null) {
 
                                 for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
@@ -225,11 +224,10 @@ public class MocaCache {
 
         public void loadCommandArguments() {
 
-                this.commandArguments.clear();
-
                 try {
                         MocaResults res = MocaConnection.getGlobalMocaConnection()
                                         .executeCommand(MocaCache.COMMAND_ARGUMENTS_SCRIPT);
+                        this.commandArguments.clear();
 
                         if (res != null) {
 
@@ -271,11 +269,10 @@ public class MocaCache {
 
         public void loadTriggers() {
 
-                this.triggers.clear();
-
                 try {
                         MocaResults res = MocaConnection.getGlobalMocaConnection()
                                         .executeCommand(MocaCache.TRIGGERS_SCRIPT);
+                        this.triggers.clear();
 
                         if (res != null) {
 
