@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.2.4 (September 29, 2020)
+* MOCA cache tweaks
+
 ## 1.2.3 (September 29, 2020)
 * MOCA Sql cache table load bug fix
 
