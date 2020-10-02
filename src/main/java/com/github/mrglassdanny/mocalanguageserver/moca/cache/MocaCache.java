@@ -154,6 +154,7 @@ public class MocaCache {
                                         .executeCommand(MocaCache.COMMANDS_SCRIPT);
                         this.distinctCommands.clear();
                         this.commands.clear();
+
                         if (res != null) {
 
                                 for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
