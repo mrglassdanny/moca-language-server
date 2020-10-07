@@ -60,7 +60,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterTable_source_item(MocaSqlParser.Table_source_itemContext ctx) {
 
-        // Need to make sure context is not null.
         if (ctx == null) {
             return;
         }
@@ -109,7 +108,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterFull_table_name(MocaSqlParser.Full_table_nameContext ctx) {
 
-        // Need to make sure context is not null.
         if (ctx == null) {
             return;
         }
@@ -123,7 +121,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterTable_name(MocaSqlParser.Table_nameContext ctx) {
 
-        // Need to make sure context is not null.
         if (ctx == null) {
             return;
         }
@@ -137,7 +134,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterColumn_elem(MocaSqlParser.Column_elemContext ctx) {
 
-        // Need to make sure context is not null.
         if (ctx == null || ctx.id() == null) {
             return;
         }
@@ -238,7 +234,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterFull_column_name(MocaSqlParser.Full_column_nameContext ctx) {
 
-        // Need to make sure context is not null.
         if (ctx == null || ctx.id() == null) {
             return;
         }
@@ -368,7 +363,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterColumn_name_list(MocaSqlParser.Column_name_listContext ctx) {
 
-        // Need to make sure context is not null.
         if (ctx == null || ctx.children == null) {
             return;
         }
@@ -416,7 +410,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         // are no columns, we will not worry about adding anything -- including the
         // asterisk.
 
-        // Need to make sure context is not null.
         if (ctx == null) {
             return;
         }

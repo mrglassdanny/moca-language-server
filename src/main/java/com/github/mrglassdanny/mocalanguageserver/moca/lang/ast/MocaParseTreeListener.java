@@ -29,7 +29,6 @@ public class MocaParseTreeListener extends MocaBaseListener {
     @Override
     public void enterVerb_noun_clause(MocaParser.Verb_noun_clauseContext ctx) {
 
-        // Make sure context is not null.
         if (ctx == null) {
             return;
         }
@@ -71,7 +70,6 @@ public class MocaParseTreeListener extends MocaBaseListener {
     @Override
     public void enterRedirect_expr(MocaParser.Redirect_exprContext ctx) {
 
-        // Make sure context is not null.
         if (ctx == null) {
             return;
         }
@@ -87,7 +85,6 @@ public class MocaParseTreeListener extends MocaBaseListener {
     @Override
     public void enterFunction_expr(MocaParser.Function_exprContext ctx) {
 
-        // Make sure context is not null.
         if (ctx == null) {
             return;
         }
