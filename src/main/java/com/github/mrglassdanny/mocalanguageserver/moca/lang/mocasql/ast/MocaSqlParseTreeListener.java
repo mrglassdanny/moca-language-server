@@ -92,7 +92,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             // We want to store the alias.
             if (ctx.as_table_alias() != null) {
                 // Can add to list from here.
-                this.subqueries.put(ctx.as_table_alias().table_alias().id().getText(), derivedTableCtx.subquery());
+                this.subqueries.put(ctx.as_table_alias().table_alias().id().getText().toLowerCase(), derivedTableCtx.subquery());
             } else {
                 // Mark subquery as anon.
                 this.subqueries.put(ANONYMOUS_SUBQUERY, derivedTableCtx.subquery());
