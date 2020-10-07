@@ -12,6 +12,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResul
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.services.completion.CompletionProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.definition.DefinitionProvider;
@@ -176,9 +177,44 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
             case Moca:
                 return CompletionProvider.provideCompletion(position, mocaLanguageContext);
             case MocaSql:
-                return CompletionProvider.provideCompletion(position, mocaLanguageContext);
+                String originalSourceForMocaSql = null;
+
+                if (PositionUtils.getCharacterAtPosition(MocaServices.mocaCompilationResult.script,
+                        new Position(position.getLine(), position.getCharacter() - 1)) == '.') {
+
+                    originalSourceForMocaSql = MocaServices.fileManager.getContents(uri);
+                    VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
+                            textDocument.getUri(), 1);
+                    TextDocumentContentChangeEvent changeEvent = new TextDocumentContentChangeEvent(
+                            new Range(position, position), 0, "a");
+                    DidChangeTextDocumentParams didChangeParams = new DidChangeTextDocumentParams(versionedTextDocument,
+                            Collections.singletonList(changeEvent));
+                    // Like groovy below, if previous character is '.', then there is probably a
+                    // syntax error. One of the ways mocasql completion requests are triggered is
+                    // via '.'. This hack adds a placeholder value in hopes that the ast will
+                    // properly get built during mocasql compilation. We will restore the original
+                    // text after we are finished with this!
+                    didChange(didChangeParams);
+                }
+
+                CompletableFuture<Either<List<CompletionItem>, CompletionList>> mocaSqlCompletionItems = null;
+                try {
+                    mocaSqlCompletionItems = CompletionProvider.provideCompletion(position, mocaLanguageContext);
+                } finally {
+                    if (originalSourceForMocaSql != null) {
+                        VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
+                                textDocument.getUri(), 1);
+                        TextDocumentContentChangeEvent changeEvent = new TextDocumentContentChangeEvent(null, 0,
+                                originalSourceForMocaSql);
+                        DidChangeTextDocumentParams didChangeParams = new DidChangeTextDocumentParams(
+                                versionedTextDocument, Collections.singletonList(changeEvent));
+                        this.didChange(didChangeParams);
+                    }
+
+                }
+                return mocaSqlCompletionItems;
             case Groovy:
-                String originalSource = null;
+                String originalSourceForGroovy = null;
                 GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
                         .get(mocaLanguageContext.rangeIdx);
 
@@ -188,7 +224,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                 ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
                         position.getCharacter(), groovyScriptRange);
                 if (offsetNode == null) {
-                    originalSource = MocaServices.fileManager.getContents(uri);
+                    originalSourceForGroovy = MocaServices.fileManager.getContents(uri);
                     VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
                             textDocument.getUri(), 1);
                     TextDocumentContentChangeEvent changeEvent = new TextDocumentContentChangeEvent(
@@ -206,21 +242,21 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                     didChange(didChangeParams);
                 }
 
-                CompletableFuture<Either<List<CompletionItem>, CompletionList>> completionItems = null;
+                CompletableFuture<Either<List<CompletionItem>, CompletionList>> groovyCompletionItems = null;
                 try {
-                    completionItems = CompletionProvider.provideCompletion(position, mocaLanguageContext);
+                    groovyCompletionItems = CompletionProvider.provideCompletion(position, mocaLanguageContext);
                 } finally {
-                    if (originalSource != null) {
+                    if (originalSourceForGroovy != null) {
                         VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
                                 textDocument.getUri(), 1);
                         TextDocumentContentChangeEvent changeEvent = new TextDocumentContentChangeEvent(null, 0,
-                                originalSource);
+                                originalSourceForGroovy);
                         DidChangeTextDocumentParams didChangeParams = new DidChangeTextDocumentParams(
                                 versionedTextDocument, Collections.singletonList(changeEvent));
                         this.didChange(didChangeParams);
                     }
                 }
-                return completionItems;
+                return groovyCompletionItems;
         }
 
         // Shouldnt get here, but just in case we get here.
