@@ -2,6 +2,7 @@ package com.github.mrglassdanny.mocalanguageserver.moca.lang;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,12 +12,15 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaSyntaxErrorL
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompiler;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.RangeUtils;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ConsoleErrorListener;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
@@ -68,8 +72,39 @@ public class MocaCompiler {
                 // Remove first and last instances of("[[", "]]").
                 String groovyScript = RangeUtils.getText(mocaScript, mocaCompilationResult.groovyRanges.get(rangeIdx));
                 groovyScript = groovyScript.substring(2, groovyScript.length() - 2);
+
+                // Add prefixes to script.
+                // Also add moca redirects, as long as they were 'declared' above current groovy
+                // script range. We will initialize these as
+                // SimpleResults objects, that way we dont get the static
+                // type check warning and we get intellisense!
+
+                // NOTE: obvious potential problem if redirect is in a different scope.. worst
+                // case scenario is just the intellisense, so no need to make things more
+                // complicated.
+                String mocaRedirects = "";
+                // Need to keep track of what we have added, that way we dont add 2 redirects
+                // with the same name(will cause static type checking issue).
+                ArrayList<String> addedMocaRedirectNames = new ArrayList<>();
+                int groovyScriptOffset = PositionUtils.getOffset(mocaScript,
+                        mocaCompilationResult.groovyRanges.get(rangeIdx).getStart());
+
+                for (Map.Entry<Token, String> entry : mocaCompilationResult.mocaParseTreeListener.redirects
+                        .entrySet()) {
+                    if (entry.getKey().getStartIndex() <= groovyScriptOffset) {
+                        String curMocaRedirectName = entry.getValue();
+                        if (!addedMocaRedirectNames.contains(curMocaRedirectName)) {
+                            mocaRedirects += ("SimpleResults " + curMocaRedirectName + "; ");
+                            addedMocaRedirectNames.add(curMocaRedirectName);
+                        }
+                    }
+                }
+
+                groovyScript = GroovyLanguageUtils.GROOVY_DEFAULT_IMPORTS
+                        + GroovyLanguageUtils.MOCA_GROOVY_SCRIPT_PREFIX + mocaRedirects + groovyScript;
+
                 mocaCompilationResult.groovyCompilationResults.put(rangeIdx,
-                        GroovyCompiler.compileScript(rangeIdx, groovyScript, mocaScript, mocaCompilationResult));
+                        GroovyCompiler.compileScript(rangeIdx, groovyScript));
                 return true;
             });
         }

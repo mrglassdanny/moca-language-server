@@ -13,6 +13,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.IdContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Insert_statementContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Query_specificationContext;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Select_statementContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.SubqueryContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_source_item_joinedContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_sourcesContext;
@@ -59,7 +60,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterTable_source_item(MocaSqlParser.Table_source_itemContext ctx) {
 
-        // Need to make sure context is not null.
         if (ctx == null) {
             return;
         }
@@ -92,7 +92,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             // We want to store the alias.
             if (ctx.as_table_alias() != null) {
                 // Can add to list from here.
-                this.subqueries.put(ctx.as_table_alias().table_alias().id().getText(), derivedTableCtx.subquery());
+                this.subqueries.put(ctx.as_table_alias().table_alias().id().getText().toLowerCase(), derivedTableCtx.subquery());
             } else {
                 // Mark subquery as anon.
                 this.subqueries.put(ANONYMOUS_SUBQUERY, derivedTableCtx.subquery());
@@ -108,7 +108,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterFull_table_name(MocaSqlParser.Full_table_nameContext ctx) {
 
-        // Need to make sure context is not null.
         if (ctx == null) {
             return;
         }
@@ -122,7 +121,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterTable_name(MocaSqlParser.Table_nameContext ctx) {
 
-        // Need to make sure context is not null.
         if (ctx == null) {
             return;
         }
@@ -136,7 +134,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterColumn_elem(MocaSqlParser.Column_elemContext ctx) {
 
-        // Need to make sure context is not null.
         if (ctx == null || ctx.id() == null) {
             return;
         }
@@ -237,7 +234,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterFull_column_name(MocaSqlParser.Full_column_nameContext ctx) {
 
-        // Need to make sure context is not null.
         if (ctx == null || ctx.id() == null) {
             return;
         }
@@ -253,13 +249,16 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
 
         } else {
             // If table name is null, we can get the tables via going up through parents.
-            // Parent we want is query_specification. Query spec will exist if we are in the
-            // WHERE clause of a SELECT statement.
-            Query_specificationContext querySpecCtx = (Query_specificationContext) getParentRuleContext(ctx,
-                    Query_specificationContext.class);
+            // Parent we want is select_statement. Select statement context will exist if we
+            // are in the WHERE/GROUP BY/ORDER BY clause of a SELECT statement.
+            Select_statementContext selectStatementCtx = (Select_statementContext) getParentRuleContext(ctx,
+                    Select_statementContext.class);
 
-            if (querySpecCtx != null) {
-                // We should be able to access table_sources and downward to get what we need.
+            if (selectStatementCtx != null && selectStatementCtx.query_expression() != null
+                    && selectStatementCtx.query_expression().query_specification() != null) {
+                Query_specificationContext querySpecCtx = selectStatementCtx.query_expression().query_specification();
+                // With query spec context, We should be able to access table_sources and
+                // downward to get what we need.
                 Table_sourcesContext tblSrcCtx = querySpecCtx.table_sources();
                 if (tblSrcCtx != null) {
 
@@ -364,7 +363,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     @Override
     public void enterColumn_name_list(MocaSqlParser.Column_name_listContext ctx) {
 
-        // Need to make sure context is not null.
         if (ctx == null || ctx.children == null) {
             return;
         }
@@ -412,7 +410,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         // are no columns, we will not worry about adding anything -- including the
         // asterisk.
 
-        // Need to make sure context is not null.
         if (ctx == null) {
             return;
         }
