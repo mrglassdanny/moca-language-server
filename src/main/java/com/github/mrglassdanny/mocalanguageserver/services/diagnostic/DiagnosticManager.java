@@ -327,6 +327,9 @@ public class DiagnosticManager {
             } else {
                 // Analyze table name and see if column(s) exist for it.
 
+                // Convert tableName to lowercase.
+                tableName = tableName.toLowerCase();
+
                 if (tableName.compareTo(MocaSqlParseTreeListener.MULTIPLE_TABLES_DETECTED_FOR_COLUMN) == 0) {
 
                     // This is bad practice -- return warning to user.
