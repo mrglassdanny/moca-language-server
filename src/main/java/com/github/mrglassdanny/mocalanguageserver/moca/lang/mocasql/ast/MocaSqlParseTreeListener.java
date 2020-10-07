@@ -13,6 +13,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.IdContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Insert_statementContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Query_specificationContext;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Select_statementContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.SubqueryContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_source_item_joinedContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_sourcesContext;
@@ -253,13 +254,16 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
 
         } else {
             // If table name is null, we can get the tables via going up through parents.
-            // Parent we want is query_specification. Query spec will exist if we are in the
-            // WHERE clause of a SELECT statement.
-            Query_specificationContext querySpecCtx = (Query_specificationContext) getParentRuleContext(ctx,
-                    Query_specificationContext.class);
+            // Parent we want is select_statement. Select statement context will exist if we
+            // are in the WHERE/GROUP BY/ORDER BY clause of a SELECT statement.
+            Select_statementContext selectStatementCtx = (Select_statementContext) getParentRuleContext(ctx,
+                    Select_statementContext.class);
 
-            if (querySpecCtx != null) {
-                // We should be able to access table_sources and downward to get what we need.
+            if (selectStatementCtx != null && selectStatementCtx.query_expression() != null
+                    && selectStatementCtx.query_expression().query_specification() != null) {
+                Query_specificationContext querySpecCtx = selectStatementCtx.query_expression().query_specification();
+                // With query spec context, We should be able to access table_sources and
+                // downward to get what we need.
                 Table_sourcesContext tblSrcCtx = querySpecCtx.table_sources();
                 if (tblSrcCtx != null) {
 
