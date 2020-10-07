@@ -133,13 +133,21 @@ public class MocaFormatter {
                         if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlFormattingEnabled) {
                             MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompilationResult.mocaSqlCompilationResults
                                     .get(mocasqlCompilationResultsVisited);
-                            String formattedMocaSqlScript = formatMocaSql(mocaSqlCompilationResult.mocaSqlTokens,
-                                    indentBuf);
-                            if (formattedMocaSqlScript == null) {
-                                buf.append(tokenText);
+
+                            // Go ahead and just make sure mocasql compilation result is not null. Should
+                            // not be null, but we just want to be safe!
+                            if (mocaSqlCompilationResult != null) {
+                                String formattedMocaSqlScript = formatMocaSql(mocaSqlCompilationResult.mocaSqlTokens,
+                                        indentBuf);
+                                if (formattedMocaSqlScript != null) {
+                                    buf.append(formattedMocaSqlScript);
+                                } else {
+                                    buf.append(tokenText);
+                                }
                             } else {
-                                buf.append(formattedMocaSqlScript);
+                                buf.append(tokenText);
                             }
+
                         } else {
                             buf.append(tokenText);
                         }
