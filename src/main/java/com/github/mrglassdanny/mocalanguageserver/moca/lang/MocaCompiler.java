@@ -78,21 +78,24 @@ public class MocaCompiler {
                 // script range. We will initialize these as
                 // SimpleResults objects, that way we dont get the static
                 // type check warning and we get intellisense!
+
+                // NOTE: obvious potential problem if redirect is in a different scope.. worst
+                // case scenario is just the intellisense, so no need to make things more
+                // complicated.
                 String mocaRedirects = "";
                 // Need to keep track of what we have added, that way we dont add 2 redirects
                 // with the same name(will cause static type checking issue).
                 ArrayList<String> addedMocaRedirectNames = new ArrayList<>();
                 int groovyScriptOffset = PositionUtils.getOffset(mocaScript,
                         mocaCompilationResult.groovyRanges.get(rangeIdx).getStart());
-                if (mocaCompilationResult != null) {
-                    for (Map.Entry<Token, String> entry : mocaCompilationResult.mocaParseTreeListener.redirects
-                            .entrySet()) {
-                        if (entry.getKey().getStartIndex() <= groovyScriptOffset) {
-                            String curMocaRedirectName = entry.getValue();
-                            if (!addedMocaRedirectNames.contains(curMocaRedirectName)) {
-                                mocaRedirects += ("SimpleResults " + curMocaRedirectName + "; ");
-                                addedMocaRedirectNames.add(curMocaRedirectName);
-                            }
+
+                for (Map.Entry<Token, String> entry : mocaCompilationResult.mocaParseTreeListener.redirects
+                        .entrySet()) {
+                    if (entry.getKey().getStartIndex() <= groovyScriptOffset) {
+                        String curMocaRedirectName = entry.getValue();
+                        if (!addedMocaRedirectNames.contains(curMocaRedirectName)) {
+                            mocaRedirects += ("SimpleResults " + curMocaRedirectName + "; ");
+                            addedMocaRedirectNames.add(curMocaRedirectName);
                         }
                     }
                 }
