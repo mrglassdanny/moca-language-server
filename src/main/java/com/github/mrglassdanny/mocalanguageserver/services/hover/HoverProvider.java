@@ -167,23 +167,33 @@ public class HoverProvider {
                     return CompletableFuture.completedFuture(hover);
                 }
 
-                ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
-                        position.getCharacter(),
-                        MocaServices.mocaCompilationResult.groovyRanges.get(mocaLanguageContext.rangeIdx));
+                // Catching NoClassDefFoundError -- this isn't really best practice, but it
+                // doesn't hurt anything and I would rather give the user a more concise error
+                // message than what is thrown without this try/catch.
+                try {
+                    ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
+                            position.getCharacter(),
+                            MocaServices.mocaCompilationResult.groovyRanges.get(mocaLanguageContext.rangeIdx));
 
-                ASTNode definitionNode = GroovyASTUtils.getDefinition(offsetNode, false,
-                        groovyCompilationResult.astVisitor);
-                if (definitionNode == null) {
+                    ASTNode definitionNode = GroovyASTUtils.getDefinition(offsetNode, false,
+                            groovyCompilationResult.astVisitor);
+                    if (definitionNode == null) {
+                        return CompletableFuture.completedFuture(hover);
+                    }
+
+                    String content = getGroovyMarkdown(groovyCompilationResult.astVisitor, definitionNode);
+                    if (content == null) {
+                        return CompletableFuture.completedFuture(hover);
+                    }
+
+                    hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, content));
+                    return CompletableFuture.completedFuture(hover);
+                } catch (NoClassDefFoundError noClassDefFoundError) {
+                    MocaServices.logErrorToLanguageClient(String.format("Class '%s' not linked in groovyclasspath",
+                            noClassDefFoundError.getMessage()));
+
                     return CompletableFuture.completedFuture(hover);
                 }
-
-                String content = getGroovyMarkdown(groovyCompilationResult.astVisitor, definitionNode);
-                if (content == null) {
-                    return CompletableFuture.completedFuture(hover);
-                }
-
-                hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, content));
-                return CompletableFuture.completedFuture(hover);
         }
 
         return CompletableFuture.completedFuture(hover);
