@@ -130,21 +130,31 @@ public class DefinitionProvider {
                     return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
                 }
 
-                ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
-                        position.getCharacter(), groovyScriptRange);
+                // Catching NoClassDefFoundError -- this isn't really best practice, but it
+                // doesn't hurt anything and I would rather give the user a more concise error
+                // message than what is thrown without this try/catch.
+                try {
+                    ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
+                            position.getCharacter(), groovyScriptRange);
 
-                ASTNode definitionNode = GroovyASTUtils.getDefinition(offsetNode, false,
-                        groovyCompilationResult.astVisitor);
+                    ASTNode definitionNode = GroovyASTUtils.getDefinition(offsetNode, false,
+                            groovyCompilationResult.astVisitor);
 
-                if (definitionNode == null || definitionNode.getLineNumber() == -1
-                        || definitionNode.getColumnNumber() == -1) {
+                    if (definitionNode == null || definitionNode.getLineNumber() == -1
+                            || definitionNode.getColumnNumber() == -1) {
+                        return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
+                    }
+
+                    Location location = new Location(uri.toString(),
+                            GroovyLanguageUtils.astNodeToRange(definitionNode, groovyScriptRange));
+
+                    return CompletableFuture.completedFuture(Either.forLeft(Collections.singletonList(location)));
+                } catch (NoClassDefFoundError noClassDefFoundError) {
+                    MocaServices.logErrorToLanguageClient(String.format("Class '%s' not linked in groovyclasspath",
+                            noClassDefFoundError.getMessage()));
+
                     return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
                 }
-
-                Location location = new Location(uri.toString(),
-                        GroovyLanguageUtils.astNodeToRange(definitionNode, groovyScriptRange));
-
-                return CompletableFuture.completedFuture(Either.forLeft(Collections.singletonList(location)));
         }
 
         return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));

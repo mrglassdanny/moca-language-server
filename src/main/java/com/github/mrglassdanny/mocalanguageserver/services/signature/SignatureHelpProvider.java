@@ -126,58 +126,68 @@ public class SignatureHelpProvider {
 
                 }
 
-                ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
-                        position.getCharacter(), groovyScriptRange);
-                if (offsetNode == null) {
-                    return CompletableFuture.completedFuture(new SignatureHelp(Collections.emptyList(), -1, -1));
-                }
-                int activeParamIndex = -1;
-                MethodCall methodCall = null;
-                ASTNode parentNode = groovyCompilationResult.astVisitor.getParent(offsetNode);
-
-                if (offsetNode instanceof ArgumentListExpression) {
-                    methodCall = (MethodCall) parentNode;
-
-                    ArgumentListExpression argsList = (ArgumentListExpression) offsetNode;
-                    List<Expression> expressions = argsList.getExpressions();
-                    activeParamIndex = getActiveParameter(position, expressions, groovyScriptRange);
-                }
-
-                if (methodCall == null) {
-                    return CompletableFuture.completedFuture(new SignatureHelp(Collections.emptyList(), -1, -1));
-                }
-
-                List<MethodNode> methods = GroovyASTUtils.getMethodOverloadsFromCallExpression(methodCall,
-                        groovyCompilationResult.astVisitor);
-                if (methods.isEmpty()) {
-                    return CompletableFuture.completedFuture(new SignatureHelp(Collections.emptyList(), -1, -1));
-                }
-
-                List<SignatureInformation> sigInfos = new ArrayList<>();
-                for (MethodNode method : methods) {
-                    List<ParameterInformation> parameters = new ArrayList<>();
-                    Parameter[] methodParams = method.getParameters();
-                    for (int i = 0; i < methodParams.length; i++) {
-                        Parameter methodParam = methodParams[i];
-
-                        ParameterInformation paramInfo = new ParameterInformation();
-                        paramInfo.setLabel(GroovyNodeToStringUtils.variableToString(methodParam,
-                                groovyCompilationResult.astVisitor));
-                        parameters.add(paramInfo);
+                // Catching NoClassDefFoundError -- this isn't really best practice, but it
+                // doesn't hurt anything and I would rather give the user a more concise error
+                // message than what is thrown without this try/catch.
+                try {
+                    ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
+                            position.getCharacter(), groovyScriptRange);
+                    if (offsetNode == null) {
+                        return CompletableFuture.completedFuture(new SignatureHelp(Collections.emptyList(), -1, -1));
                     }
-                    SignatureInformation sigInfo = new SignatureInformation();
-                    sigInfo.setLabel(
-                            GroovyNodeToStringUtils.methodToString(method, groovyCompilationResult.astVisitor));
-                    sigInfo.setParameters(parameters);
-                    sigInfos.add(sigInfo);
+                    int activeParamIndex = -1;
+                    MethodCall methodCall = null;
+                    ASTNode parentNode = groovyCompilationResult.astVisitor.getParent(offsetNode);
+
+                    if (offsetNode instanceof ArgumentListExpression) {
+                        methodCall = (MethodCall) parentNode;
+
+                        ArgumentListExpression argsList = (ArgumentListExpression) offsetNode;
+                        List<Expression> expressions = argsList.getExpressions();
+                        activeParamIndex = getActiveParameter(position, expressions, groovyScriptRange);
+                    }
+
+                    if (methodCall == null) {
+                        return CompletableFuture.completedFuture(new SignatureHelp(Collections.emptyList(), -1, -1));
+                    }
+
+                    List<MethodNode> methods = GroovyASTUtils.getMethodOverloadsFromCallExpression(methodCall,
+                            groovyCompilationResult.astVisitor);
+                    if (methods.isEmpty()) {
+                        return CompletableFuture.completedFuture(new SignatureHelp(Collections.emptyList(), -1, -1));
+                    }
+
+                    List<SignatureInformation> sigInfos = new ArrayList<>();
+                    for (MethodNode method : methods) {
+                        List<ParameterInformation> parameters = new ArrayList<>();
+                        Parameter[] methodParams = method.getParameters();
+                        for (int i = 0; i < methodParams.length; i++) {
+                            Parameter methodParam = methodParams[i];
+
+                            ParameterInformation paramInfo = new ParameterInformation();
+                            paramInfo.setLabel(GroovyNodeToStringUtils.variableToString(methodParam,
+                                    groovyCompilationResult.astVisitor));
+                            parameters.add(paramInfo);
+                        }
+                        SignatureInformation sigInfo = new SignatureInformation();
+                        sigInfo.setLabel(
+                                GroovyNodeToStringUtils.methodToString(method, groovyCompilationResult.astVisitor));
+                        sigInfo.setParameters(parameters);
+                        sigInfos.add(sigInfo);
+                    }
+
+                    MethodNode bestMethod = GroovyASTUtils.getMethodFromCallExpression(methodCall,
+                            groovyCompilationResult.astVisitor, activeParamIndex);
+                    int activeSignature = methods.indexOf(bestMethod);
+
+                    return CompletableFuture
+                            .completedFuture(new SignatureHelp(sigInfos, activeSignature, activeParamIndex));
+                } catch (NoClassDefFoundError noClassDefFoundError) {
+                    MocaServices.logErrorToLanguageClient(String.format("Class '%s' not linked in groovyclasspath",
+                            noClassDefFoundError.getMessage()));
+
+                    return CompletableFuture.completedFuture(new SignatureHelp(Collections.emptyList(), -1, -1));
                 }
-
-                MethodNode bestMethod = GroovyASTUtils.getMethodFromCallExpression(methodCall,
-                        groovyCompilationResult.astVisitor, activeParamIndex);
-                int activeSignature = methods.indexOf(bestMethod);
-
-                return CompletableFuture
-                        .completedFuture(new SignatureHelp(sigInfos, activeSignature, activeParamIndex));
         }
 
         return CompletableFuture.completedFuture(new SignatureHelp(Collections.emptyList(), -1, -1));

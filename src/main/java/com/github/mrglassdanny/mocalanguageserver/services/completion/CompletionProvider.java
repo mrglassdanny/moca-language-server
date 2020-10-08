@@ -298,44 +298,50 @@ public class CompletionProvider {
                     return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
                 }
 
-                ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
-                        position.getCharacter(), groovyScriptRange);
-                if (offsetNode == null) {
-                    return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
+                // Catching NoClassDefFoundError -- this isn't really best practice, but it
+                // doesn't hurt anything and I would rather give the user a more concise error
+                // message than what is thrown without this try/catch.
+                try {
+                    ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
+                            position.getCharacter(), groovyScriptRange);
+                    if (offsetNode == null) {
+                        return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
+                    }
+
+                    ASTNode parentNode = groovyCompilationResult.astVisitor.getParent(offsetNode);
+
+                    if (offsetNode instanceof PropertyExpression) {
+                        populateGroovyItemsFromPropertyExpression((PropertyExpression) offsetNode, position, items,
+                                groovyScriptRange, groovyCompilationResult);
+                    } else if (parentNode instanceof PropertyExpression) {
+                        populateGroovyItemsFromPropertyExpression((PropertyExpression) parentNode, position, items,
+                                groovyScriptRange, groovyCompilationResult);
+                    } else if (offsetNode instanceof MethodCallExpression) {
+                        populateGroovyItemsFromMethodCallExpression((MethodCallExpression) offsetNode, position, items,
+                                groovyScriptRange, groovyCompilationResult);
+                    } else if (offsetNode instanceof ConstructorCallExpression) {
+                        populateGroovyItemsFromConstructorCallExpression((ConstructorCallExpression) offsetNode,
+                                position, items, groovyScriptRange, groovyCompilationResult);
+                    } else if (parentNode instanceof MethodCallExpression) {
+                        populateGroovyItemsFromMethodCallExpression((MethodCallExpression) parentNode, position, items,
+                                groovyScriptRange, groovyCompilationResult);
+                    } else if (offsetNode instanceof VariableExpression) {
+                        populateGroovyItemsFromVariableExpression((VariableExpression) offsetNode, position, items,
+                                groovyScriptRange, groovyCompilationResult);
+                    } else if (offsetNode instanceof ImportNode) {
+                        populateGroovyItemsFromImportNode((ImportNode) offsetNode, position, items, groovyScriptRange,
+                                groovyCompilationResult);
+                    } else if (offsetNode instanceof MethodNode) {
+                        populateGroovyItemsFromScope(offsetNode, "", items, groovyScriptRange, groovyCompilationResult);
+                    } else if (offsetNode instanceof Statement) {
+                        populateGroovyItemsFromScope(offsetNode, "", items, groovyScriptRange, groovyCompilationResult);
+                    }
+                } catch (NoClassDefFoundError noClassDefFoundError) {
+                    MocaServices.logErrorToLanguageClient(String.format("Class '%s' not linked in groovyclasspath",
+                            noClassDefFoundError.getMessage()));
                 }
-
-                ASTNode parentNode = groovyCompilationResult.astVisitor.getParent(offsetNode);
-
-                if (offsetNode instanceof PropertyExpression) {
-                    populateGroovyItemsFromPropertyExpression((PropertyExpression) offsetNode, position, items,
-                            groovyScriptRange, groovyCompilationResult);
-                } else if (parentNode instanceof PropertyExpression) {
-                    populateGroovyItemsFromPropertyExpression((PropertyExpression) parentNode, position, items,
-                            groovyScriptRange, groovyCompilationResult);
-                } else if (offsetNode instanceof MethodCallExpression) {
-                    populateGroovyItemsFromMethodCallExpression((MethodCallExpression) offsetNode, position, items,
-                            groovyScriptRange, groovyCompilationResult);
-                } else if (offsetNode instanceof ConstructorCallExpression) {
-                    populateGroovyItemsFromConstructorCallExpression((ConstructorCallExpression) offsetNode, position,
-                            items, groovyScriptRange, groovyCompilationResult);
-                } else if (parentNode instanceof MethodCallExpression) {
-                    populateGroovyItemsFromMethodCallExpression((MethodCallExpression) parentNode, position, items,
-                            groovyScriptRange, groovyCompilationResult);
-                } else if (offsetNode instanceof VariableExpression) {
-                    populateGroovyItemsFromVariableExpression((VariableExpression) offsetNode, position, items,
-                            groovyScriptRange, groovyCompilationResult);
-                } else if (offsetNode instanceof ImportNode) {
-                    populateGroovyItemsFromImportNode((ImportNode) offsetNode, position, items, groovyScriptRange,
-                            groovyCompilationResult);
-                } else if (offsetNode instanceof MethodNode) {
-                    populateGroovyItemsFromScope(offsetNode, "", items, groovyScriptRange, groovyCompilationResult);
-                } else if (offsetNode instanceof Statement) {
-                    populateGroovyItemsFromScope(offsetNode, "", items, groovyScriptRange, groovyCompilationResult);
-                }
-
                 return CompletableFuture.completedFuture(Either.forLeft(items));
         }
-
         return CompletableFuture.completedFuture(Either.forLeft(items));
     }
 
