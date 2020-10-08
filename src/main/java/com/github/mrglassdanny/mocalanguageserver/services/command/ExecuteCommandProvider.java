@@ -117,27 +117,48 @@ public class ExecuteCommandProvider {
                 // will just return when it is complete. The rest of functions
                 // will be run async.
 
+                // NOTE: we will check status of each cache after initial load. If empty for
+                // some reason, we will 1 more time.
+
                 CompletableFuture.runAsync(() -> {
                     MocaCache.getGlobalMocaCache().loadCommandArguments();
+                    if (MocaCache.getGlobalMocaCache().commandArguments.isEmpty()) {
+                        MocaCache.getGlobalMocaCache().loadCommandArguments();
+                    }
                 });
 
                 CompletableFuture.runAsync(() -> {
                     MocaCache.getGlobalMocaCache().loadTriggers();
+                    if (MocaCache.getGlobalMocaCache().triggers.isEmpty()) {
+                        MocaCache.getGlobalMocaCache().loadTriggers();
+                    }
                 });
 
                 CompletableFuture.runAsync(() -> {
                     MocaCache.getGlobalMocaCache().mocaSqlCache.loadTables();
+                    if (MocaCache.getGlobalMocaCache().mocaSqlCache.tables.isEmpty()) {
+                        MocaCache.getGlobalMocaCache().mocaSqlCache.loadTables();
+                    }
                 });
 
                 CompletableFuture.runAsync(() -> {
                     MocaCache.getGlobalMocaCache().mocaSqlCache.loadViews();
+                    if (MocaCache.getGlobalMocaCache().mocaSqlCache.views.isEmpty()) {
+                        MocaCache.getGlobalMocaCache().mocaSqlCache.loadViews();
+                    }
                 });
 
                 CompletableFuture.runAsync(() -> {
                     MocaCache.getGlobalMocaCache().mocaSqlCache.loadColumns();
+                    if (MocaCache.getGlobalMocaCache().mocaSqlCache.columns.isEmpty()) {
+                        MocaCache.getGlobalMocaCache().mocaSqlCache.loadColumns();
+                    }
                 });
 
                 MocaCache.getGlobalMocaCache().loadCommands();
+                if (MocaCache.getGlobalMocaCache().commands.isEmpty()) {
+                    MocaCache.getGlobalMocaCache().loadCommands();
+                }
 
                 return CompletableFuture.completedFuture(new LoadCacheResponse(null));
             case EXECUTE:
