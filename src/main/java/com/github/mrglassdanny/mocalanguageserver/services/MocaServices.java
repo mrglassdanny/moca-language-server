@@ -12,7 +12,6 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResul
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.services.completion.CompletionProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.definition.DefinitionProvider;
