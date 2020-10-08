@@ -223,7 +223,7 @@ public class ExecuteCommandProvider {
                         rowCount = mocaResultsResponse.results.getRowCount();
                     }
 
-                    MocaServices.logToLanguageClient(String.format("%s: Returned %d rows in %.2f seconds",
+                    MocaServices.logInfoToLanguageClient(String.format("%s: Returned %d rows in %.2f seconds",
                             mocaResultsRequest.fileName, rowCount, elapsedTime));
 
                     return CompletableFuture.completedFuture(mocaResultsResponse);
