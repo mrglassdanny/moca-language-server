@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.5 (October 7, 2020)
+* Issue #11 fix
+* Issue #19 fix
+* Issue #25 fix
+* Other minor bug fixes & rework
+
 ## 1.2.4 (September 29, 2020)
 * MOCA cache tweaks
 
