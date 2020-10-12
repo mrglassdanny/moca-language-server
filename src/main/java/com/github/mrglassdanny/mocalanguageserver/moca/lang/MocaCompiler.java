@@ -28,7 +28,9 @@ public class MocaCompiler {
 
     // Since mocasql/groovy ranges can be compiled independently of eachother, we
     // will utilize a simple thread pool.
-    private static ExecutorService embeddedLanguageCompilationThreadPool = Executors.newCachedThreadPool();
+    // However, we will keep resource usage in check a bit by only allowing a
+    // maximum of 10 threads.
+    private static ExecutorService embeddedLanguageCompilationThreadPool = Executors.newFixedThreadPool(10);
 
     public static MocaCompilationResult compileScript(final String mocaScript, final String uriStr) {
 
