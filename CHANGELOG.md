@@ -4,6 +4,7 @@
 * Issue #24 fix -- https://github.com/mrglassdanny/moca-language-server/issues/24
 * Issue #28 enhancement -- https://github.com/mrglassdanny/moca-language-server/issues/28
 * Issue #30 enhancement -- https://github.com/mrglassdanny/moca-language-server/issues/30
+* Issue #29 fix -- https://github.com/mrglassdanny/moca-language-server/issues/29
 * Performance improvements
 
 ## 1.2.5 (October 7, 2020)
