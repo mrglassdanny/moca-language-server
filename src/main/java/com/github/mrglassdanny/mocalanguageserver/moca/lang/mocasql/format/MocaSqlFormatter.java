@@ -246,7 +246,8 @@ public class MocaSqlFormatter {
                     break;
 
                 case MocaSqlLexer.STAR:
-                    if (prevToken != null && prevToken.getType() == MocaSqlLexer.DOT) {
+                    if (prevToken != null && (prevToken.getType() == MocaSqlLexer.DOT
+                            || prevToken.getType() == MocaSqlLexer.LR_BRACKET)) {
                         buf.append(tokenText);
                     } else {
                         buf.append(' ');
@@ -689,7 +690,24 @@ public class MocaSqlFormatter {
                         buf.append(tokenText);
 
                     } else {
-                        buf.append(tokenText);
+
+                        // We do not classify double quote or string as 'word', so we need to have some
+                        // extra analysis to create the asthetic we are looking for regarding these
+                        // tokens.
+                        if (token.getType() == MocaSqlLexer.DOUBLE_QUOTE_ID || token.getType() == MocaSqlLexer.STRING) {
+                            if (prevToken != null && isWord(prevToken)) {
+                                buf.append(' ');
+                                buf.append(tokenText);
+                                if (nextToken != null && isWord(nextToken)) {
+                                    buf.append(' ');
+                                }
+                            } else {
+                                buf.append(tokenText);
+                            }
+                        } else {
+                            buf.append(tokenText);
+                        }
+
                     }
                     break;
             }
