@@ -176,7 +176,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                                 && tblSrcJoinCtx.join_part().size() >= 1) {
                             // For joins here, we also need to get the table from the FROM clause, since the
                             // join part contexts do not include it.
-                            tableName += tblSrcJoinCtx.table_source_item().getStop().getText() + ",";
+                            tableName += (tblSrcJoinCtx.table_source_item().getStop().getText() + ",");
                             for (Join_partContext joinPartCtx : tblSrcJoinCtx.join_part()) {
                                 tableName += (joinPartCtx.table_source().getStop().getText() + ",");
                             }
@@ -287,7 +287,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                                 && tblSrcJoinCtx.join_part().size() >= 1) {
                             // For joins here, we also need to get the table from the FROM clause, since the
                             // join part contexts do not include it.
-                            tableName += tblSrcJoinCtx.table_source_item().getStop().getText() + ",";
+                            tableName += (tblSrcJoinCtx.table_source_item().getStop().getText() + ",");
                             for (Join_partContext joinPartCtx : tblSrcJoinCtx.join_part()) {
                                 tableName += (joinPartCtx.table_source().getStop().getText() + ",");
                             }
@@ -467,7 +467,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                                 && tblSrcJoinCtx.join_part().size() >= 1) {
                             // For joins here, we also need to get the table from the FROM clause, since the
                             // join part contexts do not include it.
-                            tableName += tblSrcJoinCtx.table_source_item().getStop().getText() + ",";
+                            tableName += (tblSrcJoinCtx.table_source_item().getStop().getText() + ",");
                             for (Join_partContext joinPartCtx : tblSrcJoinCtx.join_part()) {
                                 tableName += (joinPartCtx.table_source().getStop().getText() + ",");
                             }

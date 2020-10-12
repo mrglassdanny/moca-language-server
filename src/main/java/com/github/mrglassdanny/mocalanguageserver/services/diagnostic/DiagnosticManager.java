@@ -460,7 +460,7 @@ public class DiagnosticManager {
                         // context.
                         int tablesFoundForColumn = 0;
                         // We will add tables found to string for diagnostic message.
-                        String tableNamesForWarnDiagnostic = "";
+                        StringBuilder tableNamesForWarnDiagnosticBuf = new StringBuilder(256);
 
                         boolean foundColumn = false;
                         for (String tableNameForColumn : tableNamesForColumn) {
@@ -481,7 +481,8 @@ public class DiagnosticManager {
                                     if (tableColumn.column_name.compareToIgnoreCase(columnTokenText) == 0) {
                                         foundColumn = true;
                                         tablesFoundForColumn++;
-                                        tableNamesForWarnDiagnostic += tableNameForColumn + ",";
+                                        tableNamesForWarnDiagnosticBuf.append(tableNameForColumn);
+                                        tableNamesForWarnDiagnosticBuf.append(",");
                                         // Need to remember to get rid of trailing comma later ^.
                                         break;
                                     }
@@ -513,9 +514,11 @@ public class DiagnosticManager {
                                 Diagnostic diagnostic = new Diagnostic();
                                 diagnostic.setRange(range);
                                 diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                                // Remove trailing comma from tableNamesForWarnDiagnosticBuf.
+                                tableNamesForWarnDiagnosticBuf
+                                        .deleteCharAt(tableNamesForWarnDiagnosticBuf.length() - 1);
                                 diagnostic.setMessage(String.format(MOCASQL_COLUMN_EXISTS_FOR_MULTIPLE_TABLES_WARNING,
-                                        columnTokenText, tableNamesForWarnDiagnostic.substring(0,
-                                                tableNamesForWarnDiagnostic.length() - 1)));
+                                        columnTokenText, tableNamesForWarnDiagnosticBuf.toString()));
                                 diagnostics.add(diagnostic);
                             }
                         }
