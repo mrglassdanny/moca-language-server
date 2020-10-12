@@ -43,11 +43,88 @@ public class MocaSqlCache {
     public HashMap<String, Table> tables;
     public HashMap<String, Table> views;
     public HashMap<String, ArrayList<TableColumn>> columns;
+    public HashMap<String, MocaSqlFunction> functions;
 
     public MocaSqlCache() {
         this.tables = new HashMap<>();
         this.views = new HashMap<>();
         this.columns = new HashMap<>();
+        this.functions = new HashMap<>();
+
+        // Functions can be hardcoded.
+        {
+            // SQL aggregation functions:
+            MocaSqlFunction maxFunc = new MocaSqlFunction("max", new String[] { "expression" },
+                    "Returns the maximum value in the expression.");
+            MocaSqlFunction minFunc = new MocaSqlFunction("min", new String[] { "expression" },
+                    "Returns the minimum value in the expression.");
+            MocaSqlFunction countFunc = new MocaSqlFunction("count", new String[] { "expression" },
+                    "This function returns the number of items found in a group.");
+            MocaSqlFunction sumFunc = new MocaSqlFunction("sum", new String[] { "expression" },
+                    "Returns the sum of all the values in the expression -- null values are ignored.");
+            MocaSqlFunction avgFunc = new MocaSqlFunction("avg", new String[] { "expression" },
+                    "This function returns the average of the values in a group -- it ignores null values.");
+
+            this.functions.put("max", maxFunc);
+            this.functions.put("min", minFunc);
+            this.functions.put("count", countFunc);
+            this.functions.put("sum", sumFunc);
+            this.functions.put("avg", avgFunc);
+
+            // MOCA functions:
+            MocaSqlFunction instrFunc = new MocaSqlFunction("instr", new String[] { "search", "lookfor", "n" },
+                    "Index of the first character in search that contains the string lookfor. The string search is searched beginning at character n (if n is omitted, the first character).");
+            MocaSqlFunction lenFunc = new MocaSqlFunction("len", new String[] { "expr" },
+                    "Length of expr as returned by strlen().");
+            MocaSqlFunction lengthFunc = new MocaSqlFunction("length", new String[] { "expr" },
+                    "Length of expr as returned by strlen().");
+            MocaSqlFunction lowerFunc = new MocaSqlFunction("lower", new String[] { "expr" },
+                    "expr as a MocaType.STRING converted to lowercase.");
+            MocaSqlFunction lpadFunc = new MocaSqlFunction("lpad", new String[] { "expr", "length", "padstr" },
+                    "expr as a MocaType.STRING left padded to the length as a MocaType.INTEGER using the padstr as a MocaType.STRING. If padstr is not passed, the default is a space. If length is smaller than the length of the expr, then it will truncate to that length.");
+            MocaSqlFunction rpadFunc = new MocaSqlFunction("rpad", new String[] { "expr", "length", "padstr" },
+                    "expr as a MocaType.STRING right padded to the length as a MocaType.INTEGER using the padstr as a MocaType.STRING. If padstr is not passed, the default is a space. If length is smaller than the length of the expr, then it will truncate to that length.");
+            MocaSqlFunction rtrimFunc = new MocaSqlFunction("rtrim", new String[] { "expr" },
+                    "expr as a MocaType.STRING with trailing whitespace removed.");
+            MocaSqlFunction substrFunc = new MocaSqlFunction("substr", new String[] { "expr", "m", "n" },
+                    "expr as a MocaType.STRING beginning at character m, n characters long (if n is omitted, to end of expr).");
+            MocaSqlFunction upperFunc = new MocaSqlFunction("upper", new String[] { "expr" },
+                    "expr as a MocaType.STRING converted to uppercase.");
+            MocaSqlFunction sysdateFunc = new MocaSqlFunction("sysdate", new String[] {},
+                    "Current date and time as a MocaType.DATETIME.");
+            MocaSqlFunction to_charFunc = new MocaSqlFunction("to_char", new String[] { "expr", "format" },
+                    "expr as a MocaType.STRING using format if provided.");
+            MocaSqlFunction to_dateFunc = new MocaSqlFunction("to_date", new String[] { "expr", "format" },
+                    "expr as a MocaType.DATETIME using format if provided.");
+            MocaSqlFunction to_numberFunc = new MocaSqlFunction("to_number", new String[] { "expr" },
+                    "expr as a MocaType.DOUBLE.");
+            MocaSqlFunction decodeFunc = new MocaSqlFunction("decode",
+                    new String[] { "expr", "search1", "return1", "search2", "return2",
+                            MocaSqlFunction.VARIABLE_LENGTH_ARGUMENT, "default" },
+                    "If expr equals any search, it returns the corresponding return; if not, it returns default.");
+            MocaSqlFunction iifFunc = new MocaSqlFunction("iif", new String[] { "expr", "trueExpr", "falseExpr" },
+                    "If expr is true, it returns trueExpr; if not, it returns falseExpr.");
+            MocaSqlFunction nvlFunc = new MocaSqlFunction("nvl", new String[] { "expr1", "expr2" },
+                    "If expr1 is not null, it returns expr1; otherwise, it returns expr2.");
+
+            this.functions.put("instr", instrFunc);
+            this.functions.put("len", lenFunc);
+            this.functions.put("length", lengthFunc);
+            this.functions.put("lower", lowerFunc);
+            this.functions.put("lpad", lpadFunc);
+            this.functions.put("rpad", rpadFunc);
+            this.functions.put("rtrim", rtrimFunc);
+            this.functions.put("substr", substrFunc);
+            this.functions.put("upper", upperFunc);
+            this.functions.put("sysdate", sysdateFunc);
+            this.functions.put("to_char", to_charFunc);
+            this.functions.put("to_date", to_dateFunc);
+            this.functions.put("to_number", to_numberFunc);
+            this.functions.put("decode", decodeFunc);
+            this.functions.put("iif", iifFunc);
+            this.functions.put("nvl", nvlFunc);
+
+        }
     }
 
     public void loadTables() {

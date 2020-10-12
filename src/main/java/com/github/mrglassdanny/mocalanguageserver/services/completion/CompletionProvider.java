@@ -15,6 +15,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommand;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommandArgument;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaFunction;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.MocaSqlFunction;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.Table;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
@@ -276,8 +277,8 @@ public class CompletionProvider {
                         populateMocaSqlSubqueryNames(mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries,
                                 items);
 
-                        // Moca functions are valid in MocaSql context.
-                        populateMocaFunctions(items);
+                        // Get mocasql functions as well.
+                        populateMocaSqlFunctions(items);
 
                     }
 
@@ -505,6 +506,17 @@ public class CompletionProvider {
             CompletionItem item = new CompletionItem(columnName);
             item.setDocumentation("from subquery");
             item.setKind(CompletionItemKind.Field);
+            items.add(item);
+        }
+    }
+
+    private static void populateMocaSqlFunctions(List<CompletionItem> items) {
+        for (Map.Entry<String, MocaSqlFunction> entry : MocaCache.getGlobalMocaCache().mocaSqlCache.functions
+                .entrySet()) {
+            MocaSqlFunction function = entry.getValue();
+            CompletionItem item = new CompletionItem(function.name);
+            item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, function.getMarkdownStr()));
+            item.setKind(CompletionItemKind.Function);
             items.add(item);
         }
     }

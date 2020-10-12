@@ -8,6 +8,7 @@ import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommand;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaFunction;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.MocaSqlFunction;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.Table;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
@@ -143,16 +144,13 @@ public class HoverProvider {
                         return CompletableFuture.completedFuture(hover);
                     }
 
-                    // Check if this is a moca function -- moca functions are valid in mocasql
-                    // context.
-                    MocaFunction mocaFunction = MocaCache.getGlobalMocaCache().functions.get(mocaSqlWord);
-                    if (mocaFunction != null) {
-
-                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, mocaFunction.getMarkdownStr()));
-
+                    // Check if this is a mocasql function.
+                    MocaSqlFunction mocaSqlFunction = MocaCache.getGlobalMocaCache().mocaSqlCache.functions
+                            .get(mocaSqlWord);
+                    if (mocaSqlFunction != null) {
+                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, mocaSqlFunction.getMarkdownStr()));
                         return CompletableFuture.completedFuture(hover);
                     }
-
                 }
 
                 break;
