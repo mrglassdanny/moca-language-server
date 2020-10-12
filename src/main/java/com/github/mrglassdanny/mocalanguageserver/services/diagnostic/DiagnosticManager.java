@@ -38,7 +38,7 @@ public class DiagnosticManager {
     private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_TABLE_OR_VIEW_WARNING = "SQL: Column '%s' does not exist on Table/View/Subquery '%s'";
     private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_SUBQUERY_WARNING = "SQL: Column '%s' does not exist on Subquery '%s'";
     private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_ANON_SUBQUERY_WARNING = "SQL: Column '%s' does not exist on anonymous Subquery";
-    private static final String MOCASQL_MULTIPLE_TABLES_FOR_COLUMN_WARNING = "SQL: Multiple tables detected; please specify table for column '%s'";
+    private static final String MOCASQL_COLUMN_EXISTS_FOR_MULTIPLE_TABLES_WARNING = "SQL: Column '%s' exists for multiple tables(%s) in context; please specify table for column";
     private static final String GROOVY_MESSAGE = "GROOVY: %s";
     private static final String GROOVY_ERROR = "GROOVY: %s";
 
@@ -322,32 +322,47 @@ public class DiagnosticManager {
                 tableName = sqlParseTreeListener.aliasedTableNames.get(tableName);
             }
 
-            if (tableName == null) {
-                // Should not be null..
-            } else {
-                // Analyze table name and see if column(s) exist for it.
+            // Analyze table name and see if column(s) exist for it.
 
-                // Convert tableName to lowercase.
-                tableName = tableName.toLowerCase();
+            // Convert tableName to lowercase.
+            tableName = tableName.toLowerCase();
 
-                if (tableName.compareTo(MocaSqlParseTreeListener.MULTIPLE_TABLES_DETECTED_FOR_COLUMN) == 0) {
+            if (tableName.compareTo(MocaSqlParseTreeListener.ANONYMOUS_SUBQUERY) == 0) {
 
-                    // This is bad practice -- return warning to user.
+                // Dealing with anon subquery -- check columns in map for anon subquery key.
+                // NOTE: could see goofy stuff if multiple anonymous subqueries, but that is a
+                // risk I am willing to take!
+                ArrayList<org.antlr.v4.runtime.Token> subqueryColumnTokens = sqlParseTreeListener.subqueryColumns
+                        .get(sqlParseTreeListener.subqueries.get(MocaSqlParseTreeListener.ANONYMOUS_SUBQUERY));
 
+                if (subqueryColumnTokens != null) {
                     for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
 
                         String columnTokenText = columnToken.getText();
 
-                        // Make sure column does not exist in reserved column names array.
-                        boolean isReservedColumn = false;
-                        for (String reservedColumnName : MOCASQL_RESERVED_COLUMN_NAMES) {
-                            if (reservedColumnName.compareToIgnoreCase(columnTokenText) == 0) {
-                                isReservedColumn = true;
+                        // Check if column token exists in subquery column token list.
+                        // Need to compare token text since objects are likely different instances.
+                        boolean foundColumn = false;
+                        for (org.antlr.v4.runtime.Token subqueryColumnToken : subqueryColumnTokens) {
+                            if (columnTokenText.compareToIgnoreCase(subqueryColumnToken.getText()) == 0) {
+                                foundColumn = true;
                                 break;
                             }
                         }
 
-                        if (!isReservedColumn) {
+                        // Make sure column does not exist in reserved column names array.
+                        boolean isReservedColumn = false;
+                        // Do not check if already found!
+                        if (!foundColumn) {
+                            for (String reservedColumnName : MOCASQL_RESERVED_COLUMN_NAMES) {
+                                if (reservedColumnName.compareToIgnoreCase(columnTokenText) == 0) {
+                                    isReservedColumn = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!foundColumn && !isReservedColumn) {
                             Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
                                     columnToken.getCharPositionInLine(), sqlScriptRange);
                             Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
@@ -358,20 +373,23 @@ public class DiagnosticManager {
                                 Diagnostic diagnostic = new Diagnostic();
                                 diagnostic.setRange(range);
                                 diagnostic.setSeverity(DiagnosticSeverity.Warning);
-                                diagnostic.setMessage(
-                                        String.format(MOCASQL_MULTIPLE_TABLES_FOR_COLUMN_WARNING, columnTokenText));
+                                diagnostic.setMessage(String.format(
+                                        MOCASQL_COLUMN_DOES_NOT_EXIST_ON_ANON_SUBQUERY_WARNING, columnTokenText));
                                 diagnostics.add(diagnostic);
                             }
                         }
                     }
+                }
+            } else {
 
-                } else if (tableName.compareTo(MocaSqlParseTreeListener.ANONYMOUS_SUBQUERY) == 0) {
+                // Let's see if this table is a subquery.
+                if (sqlParseTreeListener.subqueries.containsKey(tableName)) {
 
-                    // Dealing with anon subquery -- check columns in map for anon subquery key.
-                    // NOTE: could see goofy stuff if multiple anonymous subqueries, but that is a
-                    // risk I am willing to take!
+                    // Check columns in here.
+                    // NOTE: could see goofy stuff if multiple subqueries of the same name, but that
+                    // is a risk I am willing to take!
                     ArrayList<org.antlr.v4.runtime.Token> subqueryColumnTokens = sqlParseTreeListener.subqueryColumns
-                            .get(sqlParseTreeListener.subqueries.get(MocaSqlParseTreeListener.ANONYMOUS_SUBQUERY));
+                            .get(sqlParseTreeListener.subqueries.get(tableName));
 
                     if (subqueryColumnTokens != null) {
                         for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
@@ -381,6 +399,7 @@ public class DiagnosticManager {
                             // Check if column token exists in subquery column token list.
                             // Need to compare token text since objects are likely different instances.
                             boolean foundColumn = false;
+
                             for (org.antlr.v4.runtime.Token subqueryColumnToken : subqueryColumnTokens) {
                                 if (columnTokenText.compareToIgnoreCase(subqueryColumnToken.getText()) == 0) {
                                     foundColumn = true;
@@ -411,135 +430,113 @@ public class DiagnosticManager {
                                     Diagnostic diagnostic = new Diagnostic();
                                     diagnostic.setRange(range);
                                     diagnostic.setSeverity(DiagnosticSeverity.Warning);
-                                    diagnostic.setMessage(String.format(
-                                            MOCASQL_COLUMN_DOES_NOT_EXIST_ON_ANON_SUBQUERY_WARNING, columnTokenText));
+                                    diagnostic
+                                            .setMessage(String.format(MOCASQL_COLUMN_DOES_NOT_EXIST_ON_SUBQUERY_WARNING,
+                                                    columnTokenText, tableName));
                                     diagnostics.add(diagnostic);
                                 }
                             }
                         }
                     }
+
                 } else {
 
-                    // Let's see if this table is a subquery.
-                    if (sqlParseTreeListener.subqueries.containsKey(tableName)) {
+                    // Do not worry about checking aliases -- we did so above and table name has
+                    // been adjusted accordingly.
 
-                        // Check columns in here.
-                        // NOTE: could see goofy stuff if multiple subqueries of the same name, but that
-                        // is a risk I am willing to take!
-                        ArrayList<org.antlr.v4.runtime.Token> subqueryColumnTokens = sqlParseTreeListener.subqueryColumns
-                                .get(sqlParseTreeListener.subqueries.get(tableName));
+                    tableName = tableName.toLowerCase();
 
-                        if (subqueryColumnTokens != null) {
-                            for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
+                    for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
 
-                                String columnTokenText = columnToken.getText();
+                        String columnTokenText = columnToken.getText();
 
-                                // Check if column token exists in subquery column token list.
-                                // Need to compare token text since objects are likely different instances.
-                                boolean foundColumn = false;
+                        // If table name not specified on column, tableName could be multiple table
+                        // names delimited by comma. Let's assume this is the case and loop over the
+                        // split result. If this is not the case, we will simply iterate 1 time over
+                        // the single table name.
+                        String[] tableNamesForColumn = entry.getKey().split(",");
+                        // Need to keep track of tables found for column. This is only
+                        // necessary if no table specified for column and there are multiple tables in
+                        // context.
+                        int tablesFoundForColumn = 0;
+                        // We will add tables found to string for diagnostic message.
+                        String tableNamesForWarnDiagnostic = "";
 
-                                for (org.antlr.v4.runtime.Token subqueryColumnToken : subqueryColumnTokens) {
-                                    if (columnTokenText.compareToIgnoreCase(subqueryColumnToken.getText()) == 0) {
-                                        foundColumn = true;
-                                        break;
-                                    }
-                                }
-
-                                // Make sure column does not exist in reserved column names array.
-                                boolean isReservedColumn = false;
-                                // Do not check if already found!
-                                if (!foundColumn) {
-                                    for (String reservedColumnName : MOCASQL_RESERVED_COLUMN_NAMES) {
-                                        if (reservedColumnName.compareToIgnoreCase(columnTokenText) == 0) {
-                                            isReservedColumn = true;
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                if (!foundColumn && !isReservedColumn) {
-                                    Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                            columnToken.getCharPositionInLine(), sqlScriptRange);
-                                    Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                            columnToken.getCharPositionInLine(), sqlScriptRange);
-
-                                    if (beginPos != null && endPos != null) {
-                                        Range range = new Range(beginPos, endPos);
-                                        Diagnostic diagnostic = new Diagnostic();
-                                        diagnostic.setRange(range);
-                                        diagnostic.setSeverity(DiagnosticSeverity.Warning);
-                                        diagnostic.setMessage(
-                                                String.format(MOCASQL_COLUMN_DOES_NOT_EXIST_ON_SUBQUERY_WARNING,
-                                                        columnTokenText, tableName));
-                                        diagnostics.add(diagnostic);
-                                    }
-                                }
-                            }
-                        }
-
-                    } else {
-
-                        // Do not worry about checking aliases -- we did so above and table name has
-                        // been adjusted accordingly.
-
-                        tableName = tableName.toLowerCase();
-
-                        for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
-
-                            String columnTokenText = columnToken.getText();
-
+                        boolean foundColumn = false;
+                        for (String tableNameForColumn : tableNamesForColumn) {
                             ArrayList<TableColumn> columnsInTable = MocaCache.getGlobalMocaCache().mocaSqlCache
-                                    .getColumnsForTable(tableName);
-
-                            boolean foundColumn = false;
+                                    .getColumnsForTable(tableNameForColumn);
                             if (columnsInTable != null) {
                                 for (TableColumn tableColumn : columnsInTable) {
                                     if (tableColumn.column_name.compareToIgnoreCase(columnTokenText) == 0) {
                                         foundColumn = true;
+                                        tablesFoundForColumn++;
+                                        tableNamesForWarnDiagnostic += tableNameForColumn + ",";
                                         break;
                                     }
                                 }
-                            }
-
-                            // Make sure column does not exist in reserved column names array.
-                            boolean isReservedColumn = false;
-                            // Do not check if already found!
-                            if (!foundColumn) {
-                                for (String reservedColumnName : MOCASQL_RESERVED_COLUMN_NAMES) {
-                                    if (reservedColumnName.compareToIgnoreCase(columnTokenText) == 0) {
-                                        isReservedColumn = true;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (!foundColumn && !isReservedColumn) {
-
-                                Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                        columnToken.getCharPositionInLine(), sqlScriptRange);
-                                Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                        columnToken.getCharPositionInLine(), sqlScriptRange);
-
-                                if (beginPos != null && endPos != null) {
-                                    Range range = new Range(beginPos, endPos);
-                                    Diagnostic diagnostic = new Diagnostic();
-                                    diagnostic.setRange(range);
-                                    diagnostic.setSeverity(DiagnosticSeverity.Warning);
-                                    diagnostic.setMessage(
-                                            String.format(MOCASQL_COLUMN_DOES_NOT_EXIST_ON_TABLE_OR_VIEW_WARNING,
-                                                    columnTokenText, tableName));
-                                    diagnostics.add(diagnostic);
-                                }
-
                             }
                         }
+
+                        // Make sure column does not exist in reserved column names array.
+                        boolean isReservedColumn = false;
+                        // Do not check if already found!
+                        if (!foundColumn) {
+                            for (String reservedColumnName : MOCASQL_RESERVED_COLUMN_NAMES) {
+                                if (reservedColumnName.compareToIgnoreCase(columnTokenText) == 0) {
+                                    isReservedColumn = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (tablesFoundForColumn > 1) {
+
+                            Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                    columnToken.getCharPositionInLine(), sqlScriptRange);
+                            Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                    columnToken.getCharPositionInLine(), sqlScriptRange);
+
+                            if (beginPos != null && endPos != null) {
+                                Range range = new Range(beginPos, endPos);
+                                Diagnostic diagnostic = new Diagnostic();
+                                diagnostic.setRange(range);
+                                diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                                diagnostic.setMessage(String.format(MOCASQL_COLUMN_EXISTS_FOR_MULTIPLE_TABLES_WARNING,
+                                        columnTokenText, tableNamesForWarnDiagnostic.substring(0,
+                                                tableNamesForWarnDiagnostic.length() - 1))); // Get rid
+                                // of
+                                // trailing
+                                // comma!
+                                diagnostics.add(diagnostic);
+                            }
+                        }
+
+                        if (!foundColumn && !isReservedColumn && tablesFoundForColumn == 0) {
+
+                            Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                    columnToken.getCharPositionInLine(), sqlScriptRange);
+                            Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                    columnToken.getCharPositionInLine(), sqlScriptRange);
+
+                            if (beginPos != null && endPos != null) {
+                                Range range = new Range(beginPos, endPos);
+                                Diagnostic diagnostic = new Diagnostic();
+                                diagnostic.setRange(range);
+                                diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                                diagnostic.setMessage(
+                                        String.format(MOCASQL_COLUMN_DOES_NOT_EXIST_ON_TABLE_OR_VIEW_WARNING,
+                                                columnTokenText, tableName));
+                                diagnostics.add(diagnostic);
+                            }
+
+                        }
                     }
-
                 }
-
             }
         }
         return diagnostics;
+
     }
 
     // GROOVY.
