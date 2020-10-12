@@ -1,8 +1,12 @@
 package com.github.mrglassdanny.mocalanguageserver.services.diagnostic;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
@@ -44,6 +48,16 @@ public class DiagnosticManager {
 
     private static final String[] MOCASQL_RESERVED_COLUMN_NAMES = { "rownum", "sysdate" };
 
+    // Can utilize thread pools since diagnostic types, lang contexts, and
+    // ranges can be processed independently of eachother. Just need to make sure
+    // everything is complete before we exit current function.
+    // 4 threads: errors, warnings, infos, hints.
+    private static ExecutorService allDiagnosticsThreadPool = Executors.newFixedThreadPool(4);
+    // Using fixed thread pool here to boost performance but also to keep resource
+    // usage in check.
+    private static ExecutorService errorDiagnosticsThreadPool = Executors.newFixedThreadPool(4);
+    private static ExecutorService warningDiagnosticsThreadPool = Executors.newFixedThreadPool(8);
+
     public static void streamAll() {
 
         // Check to see if file extension is marked as read only. If so, do not publish
@@ -60,10 +74,34 @@ public class DiagnosticManager {
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
-        diagnostics.addAll(streamErrors());
-        diagnostics.addAll(streamWarnings());
-        diagnostics.addAll(streamInformation());
-        diagnostics.addAll(streamHints());
+        Collection<Callable<Boolean>> allDiagnosticsTasks = new ArrayList<Callable<Boolean>>();
+
+        allDiagnosticsTasks.add(() -> {
+            diagnostics.addAll(streamErrors());
+            return true;
+        });
+
+        allDiagnosticsTasks.add(() -> {
+            diagnostics.addAll(streamWarnings());
+            return true;
+        });
+
+        allDiagnosticsTasks.add(() -> {
+            diagnostics.addAll(streamInformation());
+            return true;
+        });
+
+        allDiagnosticsTasks.add(() -> {
+            diagnostics.addAll(streamHints());
+            return true;
+        });
+
+        // Make sure everything is done before we leave function.
+        try {
+            DiagnosticManager.allDiagnosticsThreadPool.invokeAll(allDiagnosticsTasks);
+        } catch (InterruptedException ex) {
+            // Do nothing..
+        }
 
         MocaServices.languageClient.publishDiagnostics(
                 new PublishDiagnosticsParams(MocaServices.mocaCompilationResult.uriStr, diagnostics));
@@ -81,19 +119,29 @@ public class DiagnosticManager {
         // Clear out all existing dianostics by sending empty list.
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
+        Collection<Callable<Boolean>> errorDiagnosticsTasks = new ArrayList<Callable<Boolean>>();
+
         // MOCA.
         // Check moca diagnostics enabled.
         if (MocaLanguageServer.mocaLanguageServerOptions.mocaDiagnosticsEnabled) {
-            diagnostics.addAll(handleMocaSyntaxErrors());
+            errorDiagnosticsTasks.add(() -> {
+                diagnostics.addAll(handleMocaSyntaxErrors());
+                return true;
+            });
         }
 
         // SQL.
         // Check mocasql diagnostics enabled.
         if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlDiagnosticsEnabled) {
             for (int i = 0; i < MocaServices.mocaCompilationResult.mocaSqlRanges.size(); i++) {
-                diagnostics.addAll(
-                        handleMocaSqlSyntaxErrors(MocaServices.mocaCompilationResult.mocaSqlCompilationResults.get(i),
-                                MocaServices.mocaCompilationResult.mocaSqlRanges.get(i)));
+                final int rangeIdx = i;
+                errorDiagnosticsTasks.add(() -> {
+                    diagnostics.addAll(handleMocaSqlSyntaxErrors(
+                            MocaServices.mocaCompilationResult.mocaSqlCompilationResults.get(rangeIdx),
+                            MocaServices.mocaCompilationResult.mocaSqlRanges.get(rangeIdx)));
+                    return true;
+                });
+
             }
         }
 
@@ -101,9 +149,21 @@ public class DiagnosticManager {
         // Check groovy diagnostics enabled.
         if (MocaLanguageServer.mocaLanguageServerOptions.groovyDiagnosticsEnabled) {
             for (int i = 0; i < MocaServices.mocaCompilationResult.groovyRanges.size(); i++) {
-                diagnostics.addAll(handleGroovyAll(MocaServices.mocaCompilationResult.groovyCompilationResults.get(i),
-                        MocaServices.mocaCompilationResult.groovyRanges.get(i)));
+                final int rangeIdx = i;
+                errorDiagnosticsTasks.add(() -> {
+                    diagnostics.addAll(
+                            handleGroovyAll(MocaServices.mocaCompilationResult.groovyCompilationResults.get(rangeIdx),
+                                    MocaServices.mocaCompilationResult.groovyRanges.get(rangeIdx)));
+                    return true;
+                });
             }
+        }
+
+        // Make sure everything is done before we leave function.
+        try {
+            DiagnosticManager.errorDiagnosticsThreadPool.invokeAll(errorDiagnosticsTasks);
+        } catch (InterruptedException ex) {
+            // Do nothing..
         }
 
         return diagnostics;
@@ -114,11 +174,17 @@ public class DiagnosticManager {
 
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
+        Collection<Callable<Boolean>> warningDiagnosticsTasks = new ArrayList<Callable<Boolean>>();
+
         // MOCA.
         // Check moca diagnostics and warning diagnostics enabled.
         if (MocaLanguageServer.mocaLanguageServerOptions.mocaDiagnosticsEnabled
                 && MocaLanguageServer.mocaLanguageServerOptions.mocaWarningDiagnosticsEnabled) {
-            diagnostics.addAll(handleMocaCommandDoesNotExistWarnings());
+            warningDiagnosticsTasks.add(() -> {
+                diagnostics.addAll(handleMocaCommandDoesNotExistWarnings());
+                return true;
+            });
+
         }
 
         // SQL.
@@ -126,14 +192,32 @@ public class DiagnosticManager {
         if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlDiagnosticsEnabled
                 && MocaLanguageServer.mocaLanguageServerOptions.mocasqlWarningDiagnosticsEnabled) {
             for (int i = 0; i < MocaServices.mocaCompilationResult.mocaSqlRanges.size(); i++) {
+                final int rangeIdx = i;
                 MocaSqlCompilationResult sqlCompilationResult = MocaServices.mocaCompilationResult.mocaSqlCompilationResults
-                        .get(i);
-                Range sqlRange = MocaServices.mocaCompilationResult.mocaSqlRanges.get(i);
-                diagnostics.addAll(handleMocaSqlTableDoesNotExistWarnings(sqlCompilationResult.mocaSqlParseTreeListener,
-                        sqlRange));
-                diagnostics.addAll(handleMocaSqlColumnsDoesNotExistInTableWarnings(
-                        sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
+                        .get(rangeIdx);
+                Range sqlRange = MocaServices.mocaCompilationResult.mocaSqlRanges.get(rangeIdx);
+                warningDiagnosticsTasks.add(() -> {
+
+                    diagnostics.addAll(handleMocaSqlTableDoesNotExistWarnings(
+                            sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
+
+                    return true;
+                });
+                warningDiagnosticsTasks.add(() -> {
+
+                    diagnostics.addAll(handleMocaSqlColumnsDoesNotExistInTableWarnings(
+                            sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
+
+                    return true;
+                });
             }
+        }
+
+        // Make sure everything is done before we leave function.
+        try {
+            DiagnosticManager.warningDiagnosticsThreadPool.invokeAll(warningDiagnosticsTasks);
+        } catch (InterruptedException ex) {
+            // Do nothing..
         }
 
         return diagnostics;
