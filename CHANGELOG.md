@@ -2,6 +2,7 @@
 
 ## 1.2.6 (October ?, 2020)
 * Issue #24 fix
+* Issue #28 enhancement
 
 ## 1.2.5 (October 7, 2020)
 * Issue #11 fix
