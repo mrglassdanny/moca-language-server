@@ -538,13 +538,13 @@ public class DiagnosticManager {
                         // names delimited by comma. Let's assume this is the case and loop over the
                         // split result. If this is not the case, we will simply iterate 1 time over
                         // the single table name.
-                        String[] tableNamesForColumn = entry.getKey().split(",");
+                        String[] tableNamesForColumn = tableName.split(",");
                         // Need to keep track of tables found for column. This is only
                         // necessary if no table specified for column and there are multiple tables in
                         // context.
                         int tablesFoundForColumn = 0;
                         // We will add tables found to string for diagnostic message.
-                        StringBuilder tableNamesForWarnDiagnosticBuf = new StringBuilder(256);
+                        StringBuilder tableNamesForWarnDiagnosticBuf = new StringBuilder(128);
 
                         boolean foundColumn = false;
                         for (String tableNameForColumn : tableNamesForColumn) {
@@ -616,13 +616,31 @@ public class DiagnosticManager {
 
                             if (beginPos != null && endPos != null) {
                                 Range range = new Range(beginPos, endPos);
-                                Diagnostic diagnostic = new Diagnostic();
-                                diagnostic.setRange(range);
-                                diagnostic.setSeverity(DiagnosticSeverity.Warning);
-                                diagnostic.setMessage(
-                                        String.format(MOCASQL_COLUMN_DOES_NOT_EXIST_ON_TABLE_OR_VIEW_WARNING,
-                                                columnTokenText, tableName));
-                                diagnostics.add(diagnostic);
+
+                                // Let's iterate over tableNamesForColumn to allow for the possiblity to
+                                // multiple tables in the context for a column without a table specified. If
+                                // this is not that scenario, then we will just iterate over single table name.
+                                for (String tableNameForColumn : tableNamesForColumn) {
+
+                                    // We check for alias above, but if we have multiple tables in context it would
+                                    // have failed. We need to check here in our analysis.
+                                    if (sqlParseTreeListener.aliasedTableNames.containsKey(tableNameForColumn)) {
+                                        // Switch to actual table name.
+                                        // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree
+                                        // -- a risk I am willing to take!
+                                        tableNameForColumn = sqlParseTreeListener.aliasedTableNames
+                                                .get(tableNameForColumn);
+                                    }
+
+                                    Diagnostic diagnostic = new Diagnostic();
+                                    diagnostic.setRange(range);
+                                    diagnostic.setSeverity(DiagnosticSeverity.Warning);
+
+                                    diagnostic.setMessage(
+                                            String.format(MOCASQL_COLUMN_DOES_NOT_EXIST_ON_TABLE_OR_VIEW_WARNING,
+                                                    columnTokenText, tableNameForColumn));
+                                    diagnostics.add(diagnostic);
+                                }
                             }
 
                         }
