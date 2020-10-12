@@ -464,6 +464,16 @@ public class DiagnosticManager {
 
                         boolean foundColumn = false;
                         for (String tableNameForColumn : tableNamesForColumn) {
+
+                            // We check for alias above, but if we have multiple tables in context it would
+                            // have failed. We need to check here in our analysis.
+                            if (sqlParseTreeListener.aliasedTableNames.containsKey(tableNameForColumn)) {
+                                // Switch to actual table name.
+                                // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree -- a
+                                // risk I am willing to take!
+                                tableNameForColumn = sqlParseTreeListener.aliasedTableNames.get(tableNameForColumn);
+                            }
+
                             ArrayList<TableColumn> columnsInTable = MocaCache.getGlobalMocaCache().mocaSqlCache
                                     .getColumnsForTable(tableNameForColumn);
                             if (columnsInTable != null) {
@@ -472,6 +482,7 @@ public class DiagnosticManager {
                                         foundColumn = true;
                                         tablesFoundForColumn++;
                                         tableNamesForWarnDiagnostic += tableNameForColumn + ",";
+                                        // Need to remember to get rid of trailing comma later ^.
                                         break;
                                     }
                                 }
@@ -504,10 +515,7 @@ public class DiagnosticManager {
                                 diagnostic.setSeverity(DiagnosticSeverity.Warning);
                                 diagnostic.setMessage(String.format(MOCASQL_COLUMN_EXISTS_FOR_MULTIPLE_TABLES_WARNING,
                                         columnTokenText, tableNamesForWarnDiagnostic.substring(0,
-                                                tableNamesForWarnDiagnostic.length() - 1))); // Get rid
-                                // of
-                                // trailing
-                                // comma!
+                                                tableNamesForWarnDiagnostic.length() - 1)));
                                 diagnostics.add(diagnostic);
                             }
                         }
