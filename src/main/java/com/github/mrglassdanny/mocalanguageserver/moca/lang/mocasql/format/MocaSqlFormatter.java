@@ -698,12 +698,15 @@ public class MocaSqlFormatter {
                             if (prevToken != null && isWord(prevToken)) {
                                 buf.append(' ');
                                 buf.append(tokenText);
-                                if (nextToken != null && isWord(nextToken)) {
-                                    buf.append(' ');
-                                }
+
                             } else {
                                 buf.append(tokenText);
                             }
+
+                            if (nextToken != null && isWord(nextToken)) {
+                                buf.append(' ');
+                            }
+
                         } else {
                             buf.append(tokenText);
                         }
