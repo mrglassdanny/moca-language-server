@@ -6,6 +6,7 @@
 * Issue #30 enhancement -- https://github.com/mrglassdanny/moca-language-server/issues/30
 * Issue #29 fix -- https://github.com/mrglassdanny/moca-language-server/issues/29
 * Issue #12 fix -- https://github.com/mrglassdanny/moca-language-server/issues/12
+* Issue #31 fix -- https://github.com/mrglassdanny/moca-language-server/issues/31
 * Performance improvements
 * Misc. tweaks
 
