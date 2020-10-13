@@ -501,12 +501,19 @@ public class CompletionProvider {
             return;
         }
 
+        // Could potentially be duplicates if UNION is used.
+        ArrayList<String> columnsAlreadyAdded = new ArrayList<>();
+
         for (org.antlr.v4.runtime.Token columnToken : columnTokens) {
             String columnName = columnToken.getText();
-            CompletionItem item = new CompletionItem(columnName);
-            item.setDocumentation("from subquery");
-            item.setKind(CompletionItemKind.Field);
-            items.add(item);
+            if (!columnsAlreadyAdded.contains(columnName)) {
+                columnsAlreadyAdded.add(columnName);
+                CompletionItem item = new CompletionItem(columnName);
+                item.setDocumentation("from subquery");
+                item.setKind(CompletionItemKind.Field);
+                items.add(item);
+            }
+
         }
     }
 
