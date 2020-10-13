@@ -12,7 +12,7 @@ public class MocaConnectionRequest {
     public String url;
     public String userId;
     public String password;
-    public ArrayList<String> classpathList;
+    public ArrayList<String> groovyClasspathList;
 
     public MocaConnectionRequest(List<Object> args) throws Exception {
 
@@ -21,10 +21,10 @@ public class MocaConnectionRequest {
         this.userId = connJsonObj.get("user").getAsString();
         this.password = connJsonObj.get("password").getAsString();
 
-        this.classpathList = new ArrayList<>();
+        this.groovyClasspathList = new ArrayList<>();
         JsonArray classpathJsonArr = connJsonObj.get("groovyclasspath").getAsJsonArray();
         for (JsonElement jsonElem : classpathJsonArr) {
-            this.classpathList.add(jsonElem.getAsString());
+            this.groovyClasspathList.add(jsonElem.getAsString());
         }
 
     }

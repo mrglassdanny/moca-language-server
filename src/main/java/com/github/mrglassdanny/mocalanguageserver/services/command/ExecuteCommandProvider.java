@@ -64,6 +64,7 @@ public class ExecuteCommandProvider {
 
                     MocaLanguageServer.globalStoragePath = mocaLanguageServerActivateRequest.globalStoragePath;
                     MocaLanguageServer.mocaLanguageServerOptions = mocaLanguageServerActivateRequest.mocaLanguageServerOptionsRequest.mocaLanguageServerOptions;
+                    GroovyCompiler.classpathList = mocaLanguageServerActivateRequest.defaultGroovyClasspathList;
 
                     return CompletableFuture.completedFuture(new Object());
                 } catch (Exception exception) {
@@ -81,7 +82,7 @@ public class ExecuteCommandProvider {
 
                     MocaConnectionRequest mocaConnectionRequest = new MocaConnectionRequest(args);
 
-                    GroovyCompiler.classpathList = mocaConnectionRequest.classpathList;
+                    GroovyCompiler.classpathList = mocaConnectionRequest.groovyClasspathList;
 
                     MocaConnectionResponse mocaConnectionResponse = new MocaConnectionResponse();
                     try {
