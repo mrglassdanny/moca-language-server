@@ -155,8 +155,14 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         // make a change to the file. Therefore, we will add a compile here.
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
-        String script = MocaServices.fileManager.getContents(uri);
-        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+
+        // Before we actually compile, check if uri string is the same as the current
+        // moca compilation result's uri string.
+        // If it is, then we do not need to worry about compiling!
+        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
+            String script = MocaServices.fileManager.getContents(uri);
+            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+        }
 
         return HoverProvider.provideHover(params.getPosition());
     }
@@ -338,8 +344,14 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         // Need to compile script before we format.
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
-        String script = MocaServices.fileManager.getContents(uri);
-        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+
+        // Before we actually compile, check if uri string is the same as the current
+        // moca compilation result's uri string.
+        // If it is, then we do not need to worry about compiling!
+        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
+            String script = MocaServices.fileManager.getContents(uri);
+            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+        }
 
         return DocumentFormattingProvider.provideDocumentFormatting(params);
     }
@@ -350,8 +362,14 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         // Need to compile script before we format.
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
-        String script = MocaServices.fileManager.getContents(uri);
-        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+
+        // Before we actually compile, check if uri string is the same as the current
+        // moca compilation result's uri string.
+        // If it is, then we do not need to worry about compiling!
+        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
+            String script = MocaServices.fileManager.getContents(uri);
+            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+        }
 
         return DocumentFormattingProvider.provideDocumentRangeFormatting(params);
     }
@@ -387,8 +405,14 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         // Need to compile on definition provide for the same reason as on hover ^.
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
-        String script = MocaServices.fileManager.getContents(uri);
-        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+
+        // Before we actually compile, check if uri string is the same as the current
+        // moca compilation result's uri string.
+        // If it is, then we do not need to worry about compiling!
+        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
+            String script = MocaServices.fileManager.getContents(uri);
+            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+        }
 
         return DefinitionProvider.provideDefinition(uri, params.getPosition());
     }
