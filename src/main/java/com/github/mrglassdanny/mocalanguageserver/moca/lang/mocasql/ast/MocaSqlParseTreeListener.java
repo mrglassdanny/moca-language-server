@@ -14,6 +14,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Insert_statementContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Join_partContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Query_specificationContext;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Select_list_elemContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Select_statementContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.SubqueryContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_sourceContext;
@@ -372,7 +373,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             ArrayList<Token> columnTokenList = new ArrayList<>();
             columnTokenList.add(columnToken);
             this.columnTokens.put(tableName, columnTokenList);
-
         }
     }
 
@@ -412,7 +412,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             this.columnTokens.get(tableName).addAll(columnTokenList);
         } else {
             this.columnTokens.put(tableName, columnTokenList);
-
         }
     }
 
@@ -583,4 +582,61 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         }
     }
 
+    // SELECT statements.
+    @Override
+    public void enterColumn_alias(MocaSqlParser.Column_aliasContext ctx) {
+        if (ctx == null) {
+            return;
+        }
+
+        Token columnToken = ctx.id().getStop();
+
+        // Since we are handling column aliases elsewhere, we will only worry about
+        // scenarios where column alias is in a subquery and is accompanied by
+        // expression instead of a column type element. This happens in situations like
+        // this:
+        // "select subq.test_alias from (select 'expr' test_alias from dual) subq"
+        // -------------------------------------^^^^^^
+
+        // First make sure this is ^ scenario. We can do this by confirming that we have
+        // expression elem parent.
+        Expression_elemContext exprElemCtx = (Expression_elemContext) getParentRuleContext(ctx,
+                Expression_elemContext.class);
+        if (exprElemCtx != null) {
+            // Basically we want to make sure we are in a SELECT clause before we try to get
+            // subquery context. To do this, we will make sure we have a select list
+            // element parent. If we do, then we will get subquery parent and go from
+            // there.
+            Select_list_elemContext selectListElemCtx = (Select_list_elemContext) getParentRuleContext(exprElemCtx,
+                    Select_list_elemContext.class);
+            if (selectListElemCtx != null) {
+
+                // Now the goal is to see if we are inside a subquery.
+                SubqueryContext subqueryCtx = (SubqueryContext) getParentRuleContext(selectListElemCtx,
+                        SubqueryContext.class);
+                if (subqueryCtx != null) {
+
+                    // Check subquery columns map first.
+                    if (this.subqueryColumns.containsKey(subqueryCtx)) {
+                        this.subqueryColumns.get(subqueryCtx).add(columnToken);
+                    } else {
+                        // Let's see if we have an value in the subquery map that matches.
+                        if (this.subqueries.values().contains(subqueryCtx)) {
+                            // We need to put in a new sub query column map entry.
+                            ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
+                            subqueryColumnTokens.add(columnToken);
+                            this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
+                        } else {
+                            // Looks like subquery context does not exist in subqueries map yet. Let's go
+                            // ahead and still add to subquery columns map.
+                            // We need to put in a new sub query column map entry.
+                            ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
+                            subqueryColumnTokens.add(columnToken);
+                            this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
