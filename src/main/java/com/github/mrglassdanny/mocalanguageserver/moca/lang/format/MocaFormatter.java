@@ -322,7 +322,8 @@ public class MocaFormatter {
                     buf.append(tokenText);
 
                     // This handles ELSE without LEFT_BRACE behind it.
-                    if (nextToken != null && nextToken.getType() != MocaLexer.LEFT_BRACE) {
+                    if (nextToken != null && nextToken.getType() != MocaLexer.LEFT_BRACE
+                            && nextToken.getType() != MocaLexer.IF) {
                         addNewline(buf, indentBuf);
                     }
 
