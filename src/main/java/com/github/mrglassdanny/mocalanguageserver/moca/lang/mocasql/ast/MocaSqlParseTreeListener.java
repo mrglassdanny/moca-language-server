@@ -265,14 +265,21 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             Select_statementContext selectStatementCtx = (Select_statementContext) getParentRuleContext(ctx,
                     Select_statementContext.class);
 
-            if (selectStatementCtx != null && selectStatementCtx.query_expression() != null
-                    && selectStatementCtx.query_expression().query_specification() != null) {
+            if (selectStatementCtx != null && selectStatementCtx.query_expression() != null) {
+                // First try to get query spec from select statement context. This could fail in
+                // certain circumstances.
                 Query_specificationContext querySpecCtx = selectStatementCtx.query_expression().query_specification();
+
+                // If null, get query spec from ctx.
+                if (querySpecCtx == null) {
+                    querySpecCtx = (Query_specificationContext) getParentRuleContext(ctx,
+                            Query_specificationContext.class);
+                }
+
                 // With query spec context, We should be able to access table_sources and
                 // downward to get what we need.
                 Table_sourcesContext tblSrcsCtx = querySpecCtx.table_sources();
                 if (tblSrcsCtx != null) {
-
                     if (tblSrcsCtx.table_source().size() > 1) {
                         // If greater than 1, we know there are multiple tables -- we will build a
                         // string of table names delimited by commas.
