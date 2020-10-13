@@ -241,7 +241,8 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     }
 
     // WHERE & SET clauses.
-    // Could also be in expression in SELECT clause.
+    // Could also be in expression in SELECT clause (WHERE/GROUP BY/ORDER BY
+    // clauses).
     @Override
     public void enterFull_column_name(MocaSqlParser.Full_column_nameContext ctx) {
 
