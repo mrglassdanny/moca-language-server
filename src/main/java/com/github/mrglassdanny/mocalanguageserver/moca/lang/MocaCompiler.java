@@ -14,6 +14,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompiler;
+import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.RangeUtils;
 
@@ -33,6 +34,8 @@ public class MocaCompiler {
     private static ExecutorService embeddedLanguageCompilationThreadPool = Executors.newFixedThreadPool(10);
 
     public static MocaCompilationResult compileScript(final String mocaScript, final String uriStr) {
+
+        MocaServices.logInfoToLanguageClient("COMPILING");
 
         MocaCompilationResult mocaCompilationResult = new MocaCompilationResult(mocaScript, uriStr);
 

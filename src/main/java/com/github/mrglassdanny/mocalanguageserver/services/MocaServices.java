@@ -126,11 +126,16 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        String script = MocaServices.fileManager.getContents(uri);
-        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+        // Before we actually compile, check if uri string is the same as the current
+        // moca compilation result's uri string.
+        // If it is, then we do not need to worry about compiling!
+        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
+            String script = MocaServices.fileManager.getContents(uri);
+            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-        DiagnosticManager.streamAll();
-        SemanticHighlightingManager.streamAll();
+            DiagnosticManager.streamAll();
+            SemanticHighlightingManager.streamAll();
+        }
     }
 
     @Override
