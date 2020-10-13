@@ -40,6 +40,7 @@ public class MocaCache {
                 this.commands = new HashMap<>();
                 this.commandArguments = new HashMap<>();
                 this.triggers = new HashMap<>();
+                this.functions = new HashMap<>();
 
                 this.mocaSqlCache = new MocaSqlCache();
 
@@ -47,73 +48,67 @@ public class MocaCache {
                 {
                         MocaFunction maxFunc = new MocaFunction("max",
                                         new String[] { MocaFunction.VARIABLE_LENGTH_ARGUMENT },
-                                        "Maximum expr as a MocaType.INTEGER");
+                                        "Maximum expr as a MocaType.INTEGER.");
                         MocaFunction minFunc = new MocaFunction("min",
                                         new String[] { MocaFunction.VARIABLE_LENGTH_ARGUMENT },
-                                        "Minimum expr as a MocaType.INTEGER");
-
+                                        "Minimum expr as a MocaType.INTEGER.");
                         MocaFunction instrFunc = new MocaFunction("instr", new String[] { "search", "lookfor", "n" },
-                                        "Index of the first character in search that contains the string lookfor. The string search is searched beginning at character n (if n is omitted, the first character)");
+                                        "Index of the first character in search that contains the string lookfor. The string search is searched beginning at character n (if n is omitted, the first character).");
                         MocaFunction lenFunc = new MocaFunction("len", new String[] { "expr" },
-                                        "Length of expr as returned by strlen()");
+                                        "Length of expr as returned by strlen().");
                         MocaFunction lengthFunc = new MocaFunction("length", new String[] { "expr" },
-                                        "Length of expr as returned by strlen()");
+                                        "Length of expr as returned by strlen().");
                         MocaFunction lowerFunc = new MocaFunction("lower", new String[] { "expr" },
-                                        "expr as a MocaType.STRING converted to lowercase");
+                                        "expr as a MocaType.STRING converted to lowercase.");
                         MocaFunction lpadFunc = new MocaFunction("lpad", new String[] { "expr", "length", "padstr" },
-                                        "expr as a MocaType.STRING left padded to the length as a MocaType.INTEGER using the padstr as a MocaType.STRING. If padstr is not passed, the default is a space. If length is smaller than the length of the expr, then it will truncate to that length");
+                                        "expr as a MocaType.STRING left padded to the length as a MocaType.INTEGER using the padstr as a MocaType.STRING. If padstr is not passed, the default is a space. If length is smaller than the length of the expr, then it will truncate to that length.");
                         MocaFunction rpadFunc = new MocaFunction("rpad", new String[] { "expr", "length", "padstr" },
-                                        "expr as a MocaType.STRING right padded to the length as a MocaType.INTEGER using the padstr as a MocaType.STRING. If padstr is not passed, the default is a space. If length is smaller than the length of the expr, then it will truncate to that length");
+                                        "expr as a MocaType.STRING right padded to the length as a MocaType.INTEGER using the padstr as a MocaType.STRING. If padstr is not passed, the default is a space. If length is smaller than the length of the expr, then it will truncate to that length.");
                         MocaFunction rtrimFunc = new MocaFunction("rtrim", new String[] { "expr" },
-                                        "expr as a MocaType.STRING with trailing whitespace removed");
+                                        "expr as a MocaType.STRING with trailing whitespace removed.");
                         MocaFunction sprintfFunc = new MocaFunction("sprintf", new String[] { "fmt", "arg" },
-                                        "Result of applying the format expressed by fmt to arg using sprintf() as a MocaType.STRING. The fmt argument can only contain one format specifier");
+                                        "Result of applying the format expressed by fmt to arg using sprintf() as a MocaType.STRING. The fmt argument can only contain one format specifier.");
                         MocaFunction substrFunc = new MocaFunction("substr", new String[] { "expr", "m", "n" },
-                                        "expr as a MocaType.STRING beginning at character m, n characters long (if n is omitted, to end of expr)");
+                                        "expr as a MocaType.STRING beginning at character m, n characters long (if n is omitted, to end of expr).");
                         MocaFunction trimFunc = new MocaFunction("trim", new String[] { "expr" },
-                                        "expr as a MocaType.STRING with trailing whitespace removed");
+                                        "expr as a MocaType.STRING with trailing whitespace removed.");
                         MocaFunction upperFunc = new MocaFunction("upper", new String[] { "expr" },
-                                        "expr as a MocaType.STRING converted to uppercase");
-
+                                        "expr as a MocaType.STRING converted to uppercase.");
                         MocaFunction sysdateFunc = new MocaFunction("sysdate", new String[] {},
-                                        "Current date and time as a MocaType.DATETIME");
-
+                                        "Current date and time as a MocaType.DATETIME.");
                         MocaFunction dateFunc = new MocaFunction("date", new String[] { "expr" },
-                                        "expr as a MocaType.DATETIME");
+                                        "expr as a MocaType.DATETIME.");
                         MocaFunction dbdateFunc = new MocaFunction("dbdate", new String[] { "expr" },
-                                        "expr as a MocaType.STRING converted to the correct format, based on current database. expr must be either a MocaType.STRING or a MocaType.STRING in the 'YYYYMMDDHH24MISS' format");
+                                        "expr as a MocaType.STRING converted to the correct format, based on current database. expr must be either a MocaType.STRING or a MocaType.STRING in the 'YYYYMMDDHH24MISS' format.");
                         MocaFunction floatFunc = new MocaFunction("float", new String[] { "expr" },
-                                        "expr as a MocaType.DOUBLE");
+                                        "expr as a MocaType.DOUBLE.");
                         MocaFunction intFunc = new MocaFunction("int", new String[] { "expr" },
-                                        "expr as a MocaType.INTEGER");
+                                        "expr as a MocaType.INTEGER.");
                         MocaFunction stringFunc = new MocaFunction("string", new String[] { "expr" },
-                                        "expr as a MocaType.STRING");
+                                        "expr as a MocaType.STRING.");
                         MocaFunction to_charFunc = new MocaFunction("to_char", new String[] { "expr", "format" },
-                                        "expr as a MocaType.STRING using format if provided");
+                                        "expr as a MocaType.STRING using format if provided.");
                         MocaFunction to_dateFunc = new MocaFunction("to_date", new String[] { "expr", "format" },
-                                        "expr as a MocaType.DATETIME using format if provided");
+                                        "expr as a MocaType.DATETIME using format if provided.");
                         MocaFunction to_numberFunc = new MocaFunction("to_number", new String[] { "expr" },
-                                        "expr as a MocaType.DOUBLE");
-
+                                        "expr as a MocaType.DOUBLE.");
                         MocaFunction dbtypeFunc = new MocaFunction("dbtype", new String[] {},
-                                        "Database type as a MocaType.STRING. 'ERROR', 'NONE', 'DB2', 'MSSQL', or 'ORACLE'");
+                                        "Database type as a MocaType.STRING. 'ERROR', 'NONE', 'DB2', 'MSSQL', or 'ORACLE'.");
                         MocaFunction nextvalFunc = new MocaFunction("nextval", new String[] { "expr" },
-                                        "Next value in the sequence expr as a MocaType.STRING");
-
+                                        "Next value in the sequence expr as a MocaType.STRING.");
                         MocaFunction decodeFunc = new MocaFunction("decode",
                                         new String[] { "expr", "search1", "return1", "search2", "return2",
                                                         MocaFunction.VARIABLE_LENGTH_ARGUMENT, "default" },
-                                        "If expr equals any search, it returns the corresponding return; if not, it returns default");
+                                        "If expr equals any search, it returns the corresponding return; if not, it returns default.");
                         MocaFunction iifFunc = new MocaFunction("iif", new String[] { "expr", "trueExpr", "falseExpr" },
-                                        "If expr is true, it returns trueExpr; if not, it returns falseExpr");
+                                        "If expr is true, it returns trueExpr; if not, it returns falseExpr.");
                         MocaFunction nvlFunc = new MocaFunction("nvl", new String[] { "expr1", "expr2" },
-                                        "If expr1 is not null, it returns expr1; otherwise, it returns expr2");
+                                        "If expr1 is not null, it returns expr1; otherwise, it returns expr2.");
                         MocaFunction rowcountFunc = new MocaFunction("rowcount", new String[] { "resultset" },
-                                        "Number of rows in resultset");
+                                        "Number of rows in resultset.");
                         MocaFunction commandFunc = new MocaFunction("command", new String[] {},
-                                        "Full text of the currently executing command");
+                                        "Full text of the currently executing command.");
 
-                        this.functions = new HashMap<>();
                         this.functions.put("max", maxFunc);
                         this.functions.put("min", minFunc);
                         this.functions.put("instr", instrFunc);

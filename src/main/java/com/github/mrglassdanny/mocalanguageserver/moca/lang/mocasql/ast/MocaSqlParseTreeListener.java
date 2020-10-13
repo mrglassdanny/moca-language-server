@@ -12,9 +12,12 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Expression_elemContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.IdContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Insert_statementContext;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Join_partContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Query_specificationContext;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Select_list_elemContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Select_statementContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.SubqueryContext;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_sourceContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_source_item_joinedContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_sourcesContext;
 
@@ -24,7 +27,6 @@ import org.antlr.v4.runtime.Token;
 
 public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
 
-    public static final String MULTIPLE_TABLES_DETECTED_FOR_COLUMN = "__MULTIPLE_TABLES_DETECTED_FOR_COLUMN__";
     public static final String ANONYMOUS_SUBQUERY = "__ANONYMOUS_SUBQUERY__";
 
     public ArrayList<Token> tableTokens;
@@ -64,8 +66,8 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             return;
         }
 
-        String tableName = null;
-        String tableAliasName = null;
+        String tableName = "";
+        String tableAliasName = "";
 
         // Want to make sure we are not dealing with subquery here.
         if (ctx.table_name_with_hint() != null) {
@@ -92,7 +94,8 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             // We want to store the alias.
             if (ctx.as_table_alias() != null) {
                 // Can add to list from here.
-                this.subqueries.put(ctx.as_table_alias().table_alias().id().getText().toLowerCase(), derivedTableCtx.subquery());
+                this.subqueries.put(ctx.as_table_alias().table_alias().id().getText().toLowerCase(),
+                        derivedTableCtx.subquery());
             } else {
                 // Mark subquery as anon.
                 this.subqueries.put(ANONYMOUS_SUBQUERY, derivedTableCtx.subquery());
@@ -140,7 +143,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
 
         Token columnToken = ctx.id().getStop();
 
-        String tableName = null;
+        String tableName = "";
 
         if (ctx.table_name() != null) {
             /// Table token we care about will be the last token, since it could be fully
@@ -156,23 +159,31 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
 
             if (querySpecCtx != null) {
                 // We should be able to access table_sources and downward to get what we need.
-                Table_sourcesContext tblSrcCtx = querySpecCtx.table_sources();
-                if (tblSrcCtx != null) {
+                Table_sourcesContext tblSrcsCtx = querySpecCtx.table_sources();
+                if (tblSrcsCtx != null) {
 
-                    if (tblSrcCtx.table_source().size() > 1) {
-                        // If greater than 1, we know there are multiple tables. Let's indicate this via
-                        // the table name. this would be an old style join.
-                        tableName = MULTIPLE_TABLES_DETECTED_FOR_COLUMN;
+                    if (tblSrcsCtx.table_source().size() > 1) {
+                        // If greater than 1, we know there are multiple tables -- we will build a
+                        // string of table names delimited by commas.
+                        for (Table_sourceContext tblSrcCtx : tblSrcsCtx.table_source()) {
+                            tableName += (tblSrcCtx.getStop().getText() + ",");
+                        }
                     } else {
                         // Now check if we are joining in here -- if so, note multiple tables.
-                        Table_source_item_joinedContext tblSrcJoinCtx = tblSrcCtx.table_source().get(0)
+                        // We will build a string of table names delimited by commas.
+                        Table_source_item_joinedContext tblSrcJoinCtx = tblSrcsCtx.table_source().get(0)
                                 .table_source_item_joined();
                         if (tblSrcJoinCtx != null && tblSrcJoinCtx.join_part() != null
                                 && tblSrcJoinCtx.join_part().size() >= 1) {
-                            tableName = MULTIPLE_TABLES_DETECTED_FOR_COLUMN;
+                            // For joins here, we also need to get the table from the FROM clause, since the
+                            // join part contexts do not include it.
+                            tableName += (tblSrcJoinCtx.table_source_item().getStop().getText() + ",");
+                            for (Join_partContext joinPartCtx : tblSrcJoinCtx.join_part()) {
+                                tableName += (joinPartCtx.table_source().getStop().getText() + ",");
+                            }
                         } else {
                             // Should just have 1 table/subquery.
-                            String possibleTableName = tblSrcCtx.table_source().get(0).getStop().getText();
+                            String possibleTableName = tblSrcsCtx.table_source().get(0).getStop().getText();
                             // Could be a nameless subquery.
                             if (possibleTableName.compareTo(")") == 0) {
                                 tableName = ANONYMOUS_SUBQUERY;
@@ -230,7 +241,8 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     }
 
     // WHERE & SET clauses.
-    // Could also be in expression in SELECT clause.
+    // Could also be in expression in SELECT clause (WHERE/GROUP BY/ORDER BY
+    // clauses).
     @Override
     public void enterFull_column_name(MocaSqlParser.Full_column_nameContext ctx) {
 
@@ -240,7 +252,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
 
         Token columnToken = ctx.id().getStop();
 
-        String tableName = null;
+        String tableName = "";
 
         if (ctx.table_name() != null) {
             // Table token we care about will be the last token, since it could be fully
@@ -254,28 +266,43 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             Select_statementContext selectStatementCtx = (Select_statementContext) getParentRuleContext(ctx,
                     Select_statementContext.class);
 
-            if (selectStatementCtx != null && selectStatementCtx.query_expression() != null
-                    && selectStatementCtx.query_expression().query_specification() != null) {
+            if (selectStatementCtx != null && selectStatementCtx.query_expression() != null) {
+                // First try to get query spec from select statement context. This could fail in
+                // certain circumstances.
                 Query_specificationContext querySpecCtx = selectStatementCtx.query_expression().query_specification();
+
+                // If null, get query spec from ctx.
+                if (querySpecCtx == null) {
+                    querySpecCtx = (Query_specificationContext) getParentRuleContext(ctx,
+                            Query_specificationContext.class);
+                }
+
                 // With query spec context, We should be able to access table_sources and
                 // downward to get what we need.
-                Table_sourcesContext tblSrcCtx = querySpecCtx.table_sources();
-                if (tblSrcCtx != null) {
-
-                    if (tblSrcCtx.table_source().size() > 1) {
-                        // If greater than 1, we know there are multiple tables. Let's indicate this via
-                        // the table name. this would be an old style join.
-                        tableName = MULTIPLE_TABLES_DETECTED_FOR_COLUMN;
+                Table_sourcesContext tblSrcsCtx = querySpecCtx.table_sources();
+                if (tblSrcsCtx != null) {
+                    if (tblSrcsCtx.table_source().size() > 1) {
+                        // If greater than 1, we know there are multiple tables -- we will build a
+                        // string of table names delimited by commas.
+                        for (Table_sourceContext tblSrcCtx : tblSrcsCtx.table_source()) {
+                            tableName += (tblSrcCtx.getStop().getText() + ",");
+                        }
                     } else {
                         // Now check if we are joining in here -- if so, note multiple tables.
-                        Table_source_item_joinedContext tblSrcJoinCtx = tblSrcCtx.table_source().get(0)
+                        // We will build a string of table names delimited by commas.
+                        Table_source_item_joinedContext tblSrcJoinCtx = tblSrcsCtx.table_source().get(0)
                                 .table_source_item_joined();
                         if (tblSrcJoinCtx != null && tblSrcJoinCtx.join_part() != null
                                 && tblSrcJoinCtx.join_part().size() >= 1) {
-                            tableName = MULTIPLE_TABLES_DETECTED_FOR_COLUMN;
+                            // For joins here, we also need to get the table from the FROM clause, since the
+                            // join part contexts do not include it.
+                            tableName += (tblSrcJoinCtx.table_source_item().getStop().getText() + ",");
+                            for (Join_partContext joinPartCtx : tblSrcJoinCtx.join_part()) {
+                                tableName += (joinPartCtx.table_source().getStop().getText() + ",");
+                            }
                         } else {
                             // Should just have 1 table/subquery.
-                            String possibleTableName = tblSrcCtx.table_source().get(0).getStop().getText();
+                            String possibleTableName = tblSrcsCtx.table_source().get(0).getStop().getText();
                             // Could be a nameless subquery.
                             if (possibleTableName.compareTo(")") == 0) {
                                 tableName = ANONYMOUS_SUBQUERY;
@@ -295,7 +322,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                 if (dmlClauseCtx != null) {
                     // Process update and delete -- we already of select covered above and have
                     // insert covered in another function.
-
                     if (dmlClauseCtx.update_statement() != null) {
                         tableName = dmlClauseCtx.update_statement().ddl_object().full_table_name().getStop().getText();
                     } else if (dmlClauseCtx.delete_statement() != null) {
@@ -355,7 +381,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             ArrayList<Token> columnTokenList = new ArrayList<>();
             columnTokenList.add(columnToken);
             this.columnTokens.put(tableName, columnTokenList);
-
         }
     }
 
@@ -382,7 +407,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         String tableName = null;
         // We can get table name by getting parent insert statement and accessing it's
         // ddl_object.
-
         Insert_statementContext insertStatementCtx = (Insert_statementContext) getParentRuleContext(ctx,
                 Insert_statementContext.class);
         if (insertStatementCtx != null && insertStatementCtx.ddl_object().full_table_name() != null) {
@@ -396,7 +420,6 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             this.columnTokens.get(tableName).addAll(columnTokenList);
         } else {
             this.columnTokens.put(tableName, columnTokenList);
-
         }
     }
 
@@ -417,7 +440,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         Token asteriskToken = ctx.getStop();
         ArrayList<Token> columnTokensForAsterisk = new ArrayList<>();
 
-        String tableName = null;
+        String tableName = "";
 
         if (ctx.table_name() != null) {
             /// Table token we care about will be the last token, since it could be fully
@@ -433,23 +456,31 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
 
             if (querySpecCtx != null) {
                 // We should be able to access table_sources and downward to get what we need.
-                Table_sourcesContext tblSrcCtx = querySpecCtx.table_sources();
-                if (tblSrcCtx != null) {
+                Table_sourcesContext tblSrcsCtx = querySpecCtx.table_sources();
+                if (tblSrcsCtx != null) {
 
-                    if (tblSrcCtx.table_source().size() > 1) {
-                        // If greater than 1, we know there are multiple tables. Let's indicate this via
-                        // the table name. this would be an old style join.
-                        tableName = MULTIPLE_TABLES_DETECTED_FOR_COLUMN;
+                    if (tblSrcsCtx.table_source().size() > 1) {
+                        // If greater than 1, we know there are multiple tables -- we will build a
+                        // string of table names delimited by commas.
+                        for (Table_sourceContext tblSrcCtx : tblSrcsCtx.table_source()) {
+                            tableName += (tblSrcCtx.getStop().getText() + ",");
+                        }
                     } else {
                         // Now check if we are joining in here -- if so, note multiple tables.
-                        Table_source_item_joinedContext tblSrcJoinCtx = tblSrcCtx.table_source().get(0)
+                        // We will build a string of table names delimited by commas.
+                        Table_source_item_joinedContext tblSrcJoinCtx = tblSrcsCtx.table_source().get(0)
                                 .table_source_item_joined();
                         if (tblSrcJoinCtx != null && tblSrcJoinCtx.join_part() != null
                                 && tblSrcJoinCtx.join_part().size() >= 1) {
-                            tableName = MULTIPLE_TABLES_DETECTED_FOR_COLUMN;
+                            // For joins here, we also need to get the table from the FROM clause, since the
+                            // join part contexts do not include it.
+                            tableName += (tblSrcJoinCtx.table_source_item().getStop().getText() + ",");
+                            for (Join_partContext joinPartCtx : tblSrcJoinCtx.join_part()) {
+                                tableName += (joinPartCtx.table_source().getStop().getText() + ",");
+                            }
                         } else {
                             // Should just have 1 table/subquery.
-                            String possibleTableName = tblSrcCtx.table_source().get(0).getStop().getText();
+                            String possibleTableName = tblSrcsCtx.table_source().get(0).getStop().getText();
                             // Could be a nameless subquery.
                             if (possibleTableName.compareTo(")") == 0) {
                                 tableName = ANONYMOUS_SUBQUERY;
@@ -559,4 +590,61 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         }
     }
 
+    // SELECT statements.
+    @Override
+    public void enterColumn_alias(MocaSqlParser.Column_aliasContext ctx) {
+        if (ctx == null) {
+            return;
+        }
+
+        Token columnToken = ctx.id().getStop();
+
+        // Since we are handling column aliases elsewhere, we will only worry about
+        // scenarios where column alias is in a subquery and is accompanied by
+        // expression instead of a column type element. This happens in situations like
+        // this:
+        // "select subq.test_alias from (select 'expr' test_alias from dual) subq"
+        // -------------------------------------^^^^^^
+
+        // First make sure this is ^ scenario. We can do this by confirming that we have
+        // expression elem parent.
+        Expression_elemContext exprElemCtx = (Expression_elemContext) getParentRuleContext(ctx,
+                Expression_elemContext.class);
+        if (exprElemCtx != null) {
+            // Basically we want to make sure we are in a SELECT clause before we try to get
+            // subquery context. To do this, we will make sure we have a select list
+            // element parent. If we do, then we will get subquery parent and go from
+            // there.
+            Select_list_elemContext selectListElemCtx = (Select_list_elemContext) getParentRuleContext(exprElemCtx,
+                    Select_list_elemContext.class);
+            if (selectListElemCtx != null) {
+
+                // Now the goal is to see if we are inside a subquery.
+                SubqueryContext subqueryCtx = (SubqueryContext) getParentRuleContext(selectListElemCtx,
+                        SubqueryContext.class);
+                if (subqueryCtx != null) {
+
+                    // Check subquery columns map first.
+                    if (this.subqueryColumns.containsKey(subqueryCtx)) {
+                        this.subqueryColumns.get(subqueryCtx).add(columnToken);
+                    } else {
+                        // Let's see if we have an value in the subquery map that matches.
+                        if (this.subqueries.values().contains(subqueryCtx)) {
+                            // We need to put in a new sub query column map entry.
+                            ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
+                            subqueryColumnTokens.add(columnToken);
+                            this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
+                        } else {
+                            // Looks like subquery context does not exist in subqueries map yet. Let's go
+                            // ahead and still add to subquery columns map.
+                            // We need to put in a new sub query column map entry.
+                            ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
+                            subqueryColumnTokens.add(columnToken);
+                            this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

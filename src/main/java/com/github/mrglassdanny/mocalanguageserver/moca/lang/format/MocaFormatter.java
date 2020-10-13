@@ -168,6 +168,16 @@ public class MocaFormatter {
                 case MocaLexer.RIGHT_PAREN:
                     parenCounter--;
                     buf.append(tokenText);
+
+                    // This handles IF without LEFT_BRACE behind it.
+                    if (nextToken != null && isWord(nextToken)) {
+                        if (nextToken.getType() == MocaLexer.AND || nextToken.getType() == MocaLexer.OR) {
+                            buf.append(' ');
+                        } else {
+                            addNewline(buf, indentBuf);
+                        }
+                    }
+
                     break;
 
                 case MocaLexer.LEFT_BRACE:
@@ -308,11 +318,15 @@ public class MocaFormatter {
                     break;
                 case MocaLexer.ELSE:
 
-                    if (prevToken != null && prevToken.getType() == MocaLexer.RIGHT_BRACE) {
+                    addNewline(buf, indentBuf);
+                    buf.append(tokenText);
+
+                    // This handles ELSE without LEFT_BRACE behind it.
+                    if (nextToken != null && nextToken.getType() != MocaLexer.LEFT_BRACE
+                            && nextToken.getType() != MocaLexer.IF) {
                         addNewline(buf, indentBuf);
                     }
 
-                    buf.append(tokenText);
                     break;
 
                 case MocaLexer.OR:
