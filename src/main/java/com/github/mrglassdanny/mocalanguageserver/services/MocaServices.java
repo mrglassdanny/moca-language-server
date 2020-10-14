@@ -22,6 +22,7 @@ import com.github.mrglassdanny.mocalanguageserver.services.command.ExecuteComman
 import com.github.mrglassdanny.mocalanguageserver.services.hover.HoverProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.signature.SignatureHelpProvider;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.StringDifferenceUtils;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.eclipse.lsp4j.CompletionItem;
@@ -99,15 +100,43 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
     @Override
     public void didChange(DidChangeTextDocumentParams params) {
-        MocaServices.fileManager.didChange(params);
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        String script = MocaServices.fileManager.getContents(uri);
-        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+        // We do not want to needlessly compile the entire script everytime a change
+        // occurs -- this yields bad performance, especially on larger scripts.
+        // Therefore, we will instead attempt to figure out where the change to the file
+        // occured and only compile the range influenced by the change.
 
-        DiagnosticManager.streamAll();
-        SemanticHighlightingManager.streamAll();
+        // Before we process file manager changes, we need to extract the previous
+        // contents.
+        String prevScript = MocaServices.fileManager.getContents(uri);
+        MocaServices.fileManager.didChange(params);
+
+        // Now we need to get the new contents and compare.
+        String script = MocaServices.fileManager.getContents(uri);
+        // This will return the first indication of a difference. If 0, then there is no
+        // change.
+        int diffIdx = StringDifferenceUtils.indexOfDifference(prevScript, script);
+
+        // Before we assume that we are safe to just compile changes, let's also compare
+        // the size of previous and current scripts. If the difference in size is
+        // greater than 1, we should compile everything to be safe.
+
+        if (diffIdx != 0 && Math.abs(script.length() - prevScript.length()) == 1) {
+            Position diffPos = PositionUtils.getPosition(script, diffIdx);
+            MocaServices.mocaCompilationResult = MocaCompiler.compileScriptChanges(script, uriStr, diffPos,
+                    MocaServices.mocaCompilationResult);
+
+            DiagnosticManager.streamAll();
+            SemanticHighlightingManager.streamAll();
+        } else {
+            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+
+            DiagnosticManager.streamAll();
+            SemanticHighlightingManager.streamAll();
+        }
+
     }
 
     @Override
