@@ -14,7 +14,6 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompiler;
-import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.RangeUtils;
 
