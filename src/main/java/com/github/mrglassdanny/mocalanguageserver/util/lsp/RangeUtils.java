@@ -4,6 +4,7 @@ import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 
 public class RangeUtils {
+
     public static boolean contains(Range range, Position position) {
         return PositionUtils.COMPARATOR.compare(position, range.getStart()) >= 0
                 && PositionUtils.COMPARATOR.compare(position, range.getEnd()) <= 0;

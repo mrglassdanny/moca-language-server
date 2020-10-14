@@ -25,7 +25,6 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.lsp4j.Position;
-import org.eclipse.lsp4j.Range;
 
 public class MocaCompiler {
 
@@ -36,8 +35,6 @@ public class MocaCompiler {
     private static ExecutorService embeddedLanguageCompilationThreadPool = Executors.newFixedThreadPool(10);
 
     public static MocaCompilationResult compileScript(final String mocaScript, final String uriStr) {
-
-        MocaServices.logInfoToLanguageClient("COMPILING");
 
         MocaCompilationResult mocaCompilationResult = new MocaCompilationResult(mocaScript, uriStr);
 
@@ -86,9 +83,7 @@ public class MocaCompiler {
     }
 
     public static MocaCompilationResult compileScriptChanges(final String mocaScript, final String uriStr,
-            Position changedPos, MocaCompilationResult previousMocaCompilationResult) {
-
-        MocaServices.logInfoToLanguageClient("COMPILING CHANGES");
+            int changeIdx, int changeLen, MocaCompilationResult previousMocaCompilationResult) {
 
         // Need to compile moca regardless of where the change is, since technically
         // moca is changes regardless of where the change is.
@@ -123,8 +118,8 @@ public class MocaCompiler {
         // result.
         // If it is not in mocasql or groovy, then it must have been in moca.
 
-        // NOTE: we will not worry about thread pool here since we are only going to
-        // compile 1 range at most -- it would not make a difference to do so on a
+        // NOTE: we will not worry about using thread pool here since we are only going
+        // to compile 1 range at most -- it would not make a difference to do so on a
         // different thread.
 
         // NOTE: we do not need to worry about other mocasql/groovy ranges being
@@ -134,28 +129,66 @@ public class MocaCompiler {
         // that the moca compilation result embedded ranges are updated. This occurs
         // when we compile moca and call updateEmbeddedLangaugeRanges function.
 
-        int mocaSqlRangeIdx = 0;
-        for (Range mocaSqlRange : mocaCompilationResult.mocaSqlRanges) {
-            if (RangeUtils.contains(mocaSqlRange, changedPos)) {
-                MocaServices.logInfoToLanguageClient("FOUND IN SQL");
-                compileMocaSql(mocaScript, mocaCompilationResult, mocaSqlRangeIdx);
-                return mocaCompilationResult;
-            } else {
-                mocaSqlRangeIdx++;
-            }
+        // Need to get start and end positions for processing below.
+        // NOTE: changeLen could be negative number.
+        Position startPos, endPos;
+
+        startPos = PositionUtils.getPosition(mocaScript, changeIdx);
+        endPos = PositionUtils.getPosition(mocaScript, changeIdx + Math.abs(changeLen));
+        if (endPos == null) {
+            endPos = PositionUtils.getPosition(mocaScript, mocaScript.length() - 1);
         }
 
-        int groovyRangeIdx = 0;
-        for (Range groovyRange : mocaCompilationResult.groovyRanges) {
-            if (RangeUtils.contains(groovyRange, changedPos)) {
-                MocaServices.logInfoToLanguageClient("FOUND IN GROOVY");
-                compileGroovy(mocaScript, mocaCompilationResult, groovyRangeIdx);
-                return mocaCompilationResult;
+        // We are going to go through each range in order of position in
+        // file(sortedRanges map) and compile all ranges that are contained in changed
+        // range.
+
+        boolean foundStart = false, foundEnd = false;
+        for (MocaEmbeddedLanguageRange mocaEmbeddedLanguageRange : mocaCompilationResult.sortedRanges) {
+
+            if (!foundStart) {
+                if (RangeUtils.contains(mocaEmbeddedLanguageRange.range, startPos)) {
+                    if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.MocaSql) {
+                        compileMocaSql(mocaScript, mocaCompilationResult,
+                                mocaEmbeddedLanguageRange.mocaLanguageContext.rangeIdx);
+                    } else if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.Groovy) {
+                        compileGroovy(mocaScript, mocaCompilationResult,
+                                mocaEmbeddedLanguageRange.mocaLanguageContext.rangeIdx);
+                    }
+
+                    foundStart = true;
+
+                    // If range contains end position as well, we can just quit here!
+                    if (RangeUtils.contains(mocaEmbeddedLanguageRange.range, endPos)) {
+                        foundEnd = true;
+                        return mocaCompilationResult;
+                    }
+                }
+
             } else {
-                groovyRangeIdx++;
+
+                if (!foundEnd) {
+                    // Need to compile range regardless of if we contain end position since we have
+                    // already found start postion -- we can assume we are inside of the changed
+                    // range right now.
+                    if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.MocaSql) {
+                        compileMocaSql(mocaScript, mocaCompilationResult,
+                                mocaEmbeddedLanguageRange.mocaLanguageContext.rangeIdx);
+                    } else if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.Groovy) {
+                        compileGroovy(mocaScript, mocaCompilationResult,
+                                mocaEmbeddedLanguageRange.mocaLanguageContext.rangeIdx);
+                    }
+
+                    // Now we check if this range contains the end postion. If so, we quit!
+                    if (RangeUtils.contains(mocaEmbeddedLanguageRange.range, endPos)) {
+                        foundEnd = true;
+                        return mocaCompilationResult;
+                    }
+                } else {
+                    return mocaCompilationResult;
+                }
             }
         }
-
         return mocaCompilationResult;
     }
 

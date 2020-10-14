@@ -1,6 +1,17 @@
 package com.github.mrglassdanny.mocalanguageserver.util.lsp;
 
 public class StringDifferenceUtils {
+
+    /*
+    NOTE: this function has one main caveat:
+        start:      fffffff
+        change:      ^ remove 'f' here
+        end:        ffffff
+    
+    In ^ example, index of change is actually 1, but will show as 6.
+    
+    Based on how we will be using this function, I do not believe any problems will arise due to this caveat.
+     */
     public static int indexOfDifference(CharSequence cs1, CharSequence cs2) {
         if (cs1 == cs2) {
             return 0;

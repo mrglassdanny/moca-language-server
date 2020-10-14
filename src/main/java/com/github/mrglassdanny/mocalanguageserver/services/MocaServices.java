@@ -103,10 +103,22 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
+        // First make sure we are dealing with the same uri string as current
+        // compilation result. We should be, but let's put this here to be safe!
+        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
+            String script = MocaServices.fileManager.getContents(uri);
+            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+
+            DiagnosticManager.streamAll();
+            SemanticHighlightingManager.streamAll();
+
+            return;
+        }
+
         // We do not want to needlessly compile the entire script everytime a change
         // occurs -- this yields bad performance, especially on larger scripts.
         // Therefore, we will instead attempt to figure out where the change to the file
-        // occured and only compile the range influenced by the change.
+        // occured and only compile the range that the change is in.
 
         // Before we process file manager changes, we need to extract the previous
         // contents.
@@ -117,15 +129,11 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String script = MocaServices.fileManager.getContents(uri);
         // This will return the first indication of a difference. If 0, then there is no
         // change.
-        int diffIdx = StringDifferenceUtils.indexOfDifference(prevScript, script);
+        int changeIdx = StringDifferenceUtils.indexOfDifference(prevScript, script);
+        int changeLen = script.length() - prevScript.length(); // Could be negative number.
 
-        // Before we assume that we are safe to just compile changes, let's also compare
-        // the size of previous and current scripts. If the difference in size is
-        // greater than 1, we should compile everything to be safe.
-
-        if (diffIdx != 0 && Math.abs(script.length() - prevScript.length()) == 1) {
-            Position diffPos = PositionUtils.getPosition(script, diffIdx);
-            MocaServices.mocaCompilationResult = MocaCompiler.compileScriptChanges(script, uriStr, diffPos,
+        if (changeIdx != 0) {
+            MocaServices.mocaCompilationResult = MocaCompiler.compileScriptChanges(script, uriStr, changeIdx, changeLen,
                     MocaServices.mocaCompilationResult);
 
             DiagnosticManager.streamAll();
@@ -136,7 +144,6 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
             DiagnosticManager.streamAll();
             SemanticHighlightingManager.streamAll();
         }
-
     }
 
     @Override
@@ -155,16 +162,11 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        // Before we actually compile, check if uri string is the same as the current
-        // moca compilation result's uri string.
-        // If it is, then we do not need to worry about compiling!
-        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
-            String script = MocaServices.fileManager.getContents(uri);
-            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+        String script = MocaServices.fileManager.getContents(uri);
+        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-            DiagnosticManager.streamAll();
-            SemanticHighlightingManager.streamAll();
-        }
+        DiagnosticManager.streamAll();
+        SemanticHighlightingManager.streamAll();
     }
 
     @Override
@@ -190,7 +192,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        // Before we actually compile, check if uri string is the same as the current
+        // Before we compile, check if uri string is the same as the current
         // moca compilation result's uri string.
         // If it is, then we do not need to worry about compiling!
         if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
@@ -379,7 +381,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        // Before we actually compile, check if uri string is the same as the current
+        // Before we compile, check if uri string is the same as the current
         // moca compilation result's uri string.
         // If it is, then we do not need to worry about compiling!
         if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
@@ -397,7 +399,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        // Before we actually compile, check if uri string is the same as the current
+        // Before we compile, check if uri string is the same as the current
         // moca compilation result's uri string.
         // If it is, then we do not need to worry about compiling!
         if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
@@ -410,9 +412,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
     @Override
     public CompletableFuture<List<? extends TextEdit>> onTypeFormatting(DocumentOnTypeFormattingParams params) {
-
-        // No need to compile prior to calling formatting on type func. We know that
-        // will each change to file, we are compiling.
+        // TODO
         return DocumentOnTypeFormattingProvider.provideDocumentOnTypeFormatting(params);
     }
 
@@ -440,7 +440,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        // Before we actually compile, check if uri string is the same as the current
+        // Before we compile, check if uri string is the same as the current
         // moca compilation result's uri string.
         // If it is, then we do not need to worry about compiling!
         if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
