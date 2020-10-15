@@ -121,8 +121,14 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
             String script = MocaServices.fileManager.getContents(uri);
             MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-            DiagnosticManager.streamAll();
-            SemanticHighlightingManager.streamAll();
+            // We do not need to sync things up -- we can just execute.
+            MocaServices.threadPool.execute(() -> {
+                DiagnosticManager.streamAll();
+            });
+
+            MocaServices.threadPool.execute(() -> {
+                SemanticHighlightingManager.streamAll();
+            });
 
             return;
         }
@@ -144,7 +150,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         // change.
         // NOTE: this should work fine since we can assume that there cannot be more
         // than 1 'distinct' differences -- meaning that there cannot be a change at
-        // index 5 -> 10 and also one at index 80 -> 90.
+        // index 5 -> 10 and also one at index 80 -> 90 at the same time.
         int changeIdx = StringDifferenceUtils.indexOfDifference(prevScript, script);
         int changeLen = script.length() - prevScript.length(); // Could be negative number.
 
