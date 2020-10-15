@@ -78,25 +78,26 @@ public class MocaFormatter {
 
     public static String format(MocaCompilationResult mocaCompilationResult) {
 
-        List<? extends Token> tokens = mocaCompilationResult.mocaTokens;
+        // Need to copy existing list into new list for processing. Reason is that we do
+        // not want to modify moca compilation result's token list since other processes
+        // could be using it.
+        List<Token> tokens = new ArrayList<>(mocaCompilationResult.mocaTokens.size());
+        // Do not copy in whitespace tokens.
+        for (int i = 0; i < mocaCompilationResult.mocaTokens.size(); i++) {
+            if (mocaCompilationResult.mocaTokens.get(i).getType() != MocaLexer.WHITESPACE
+                    && mocaCompilationResult.mocaTokens.get(i).getType() != MocaLexer.NEWLINE) {
+                tokens.add(mocaCompilationResult.mocaTokens.get(i));
+            }
+        }
 
         StringBuilder buf = new StringBuilder(2048);
-
         StringBuilder indentBuf = new StringBuilder();
         int parenCounter = 0;
         Token token, prevToken = null, nextToken = null;
 
-        // Get rid of whitespace before we process formatting.
-        for (int i = 0; i < tokens.size(); i++) {
-            if (tokens.get(i).getType() == MocaLexer.WHITESPACE || tokens.get(i).getType() == MocaLexer.NEWLINE) {
-                tokens.remove(i--);
-            }
-        }
-
         int mocasqlCompilationResultsVisited = 0;
         // Commenting out for now -- int groovyCompilationResultsVisited = 0;
 
-        // Whitespace dealt with; process formatting.
         // Code is pretty self-explanatory -- just look at each condition for specifics.
         for (int i = 0; i < tokens.size(); i++) {
 
