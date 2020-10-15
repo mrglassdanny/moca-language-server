@@ -400,7 +400,7 @@ public class MocaFormatter {
     // is we are passing in the changed position in hopes of being able to
     // format moca and just the embedded language range that it is contained in, if
     // any.
-    public static String formatChanges(MocaCompilationResult mocaCompilationResult, Position changePosition) {
+    public static String formatChange(MocaCompilationResult mocaCompilationResult, Position changePosition) {
 
         // Need to copy existing list into new list for processing. Reason is that we do
         // not want to modify moca compilation result's token list since other processes

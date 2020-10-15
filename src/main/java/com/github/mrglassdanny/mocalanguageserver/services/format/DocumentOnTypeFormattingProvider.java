@@ -34,7 +34,7 @@ public class DocumentOnTypeFormattingProvider {
         public static ArrayList<TextEdit> processDocumentOnTypeFormatting(Position changePosition) {
                 ArrayList<TextEdit> edits = new ArrayList<>();
 
-                String formattedMocaScript = MocaFormatter.formatChanges(MocaServices.mocaCompilationResult,
+                String formattedMocaScript = MocaFormatter.formatChange(MocaServices.mocaCompilationResult,
                                 changePosition);
 
                 // Add to text doc edits and return!
