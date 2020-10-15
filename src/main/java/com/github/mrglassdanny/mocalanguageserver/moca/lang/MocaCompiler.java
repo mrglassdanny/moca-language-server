@@ -85,7 +85,7 @@ public class MocaCompiler {
             int changeIdx, int changeLen, MocaCompilationResult previousMocaCompilationResult) {
 
         // Need to compile moca regardless of where the change is, since technically
-        // moca is changes regardless of where the change is.
+        // moca is changed regardless of where the change is lang context-wise.
         MocaCompilationResult mocaCompilationResult = new MocaCompilationResult(mocaScript, uriStr);
 
         mocaCompilationResult.mocaParser = new MocaParser(
