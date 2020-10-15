@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -80,6 +82,9 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     public static LanguageClient languageClient = null;
     private static FileManager fileManager = new FileManager();
 
+    // Diagnostics and semantic highlighting can be processed on different threads.
+    private static ExecutorService threadPool = Executors.newFixedThreadPool(4);
+
     @Override
     public void connect(LanguageClient client) {
         MocaServices.languageClient = client;
@@ -94,8 +99,15 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String script = MocaServices.fileManager.getContents(uri);
         MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-        DiagnosticManager.streamAll();
-        SemanticHighlightingManager.streamAll();
+        // We do not need to sync things up -- we can just execute.
+        MocaServices.threadPool.execute(() -> {
+            DiagnosticManager.streamAll();
+        });
+
+        MocaServices.threadPool.execute(() -> {
+            SemanticHighlightingManager.streamAll();
+        });
+
     }
 
     @Override
@@ -140,13 +152,26 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
             MocaServices.mocaCompilationResult = MocaCompiler.compileScriptChanges(script, uriStr, changeIdx, changeLen,
                     MocaServices.mocaCompilationResult);
 
-            DiagnosticManager.streamAll();
-            SemanticHighlightingManager.streamAll();
+            // We do not need to sync things up -- we can just execute.
+            MocaServices.threadPool.execute(() -> {
+                DiagnosticManager.streamAll();
+            });
+
+            MocaServices.threadPool.execute(() -> {
+                SemanticHighlightingManager.streamAll();
+            });
+
         } else {
             MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-            DiagnosticManager.streamAll();
-            SemanticHighlightingManager.streamAll();
+            // We do not need to sync things up -- we can just execute.
+            MocaServices.threadPool.execute(() -> {
+                DiagnosticManager.streamAll();
+            });
+
+            MocaServices.threadPool.execute(() -> {
+                SemanticHighlightingManager.streamAll();
+            });
         }
     }
 
@@ -169,8 +194,14 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String script = MocaServices.fileManager.getContents(uri);
         MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-        DiagnosticManager.streamAll();
-        SemanticHighlightingManager.streamAll();
+        // We do not need to sync things up -- we can just execute.
+        MocaServices.threadPool.execute(() -> {
+            DiagnosticManager.streamAll();
+        });
+
+        MocaServices.threadPool.execute(() -> {
+            SemanticHighlightingManager.streamAll();
+        });
     }
 
     @Override
@@ -416,7 +447,9 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
     @Override
     public CompletableFuture<List<? extends TextEdit>> onTypeFormatting(DocumentOnTypeFormattingParams params) {
-        // TODO
+
+        // No need for a compile call -- we know that compilation is occuring on type
+        // elsewhere.
         return DocumentOnTypeFormattingProvider.provideDocumentOnTypeFormatting(params);
     }
 
