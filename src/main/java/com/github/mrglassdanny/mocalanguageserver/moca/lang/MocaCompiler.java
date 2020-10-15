@@ -14,6 +14,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompiler;
+import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.RangeUtils;
 
@@ -139,10 +140,10 @@ public class MocaCompiler {
         }
 
         // We are going to go through each range in order of position in
-        // file(sortedRanges map) and compile all ranges that are contained in changed
+        // file(sortedRanges list) and compile all ranges that are contained in changed
         // range.
 
-        boolean foundStart = false, foundEnd = false;
+        boolean foundStart = false;
         for (MocaEmbeddedLanguageRange mocaEmbeddedLanguageRange : mocaCompilationResult.sortedRanges) {
 
             if (!foundStart) {
@@ -159,31 +160,24 @@ public class MocaCompiler {
 
                     // If range contains end position as well, we can just quit here!
                     if (RangeUtils.contains(mocaEmbeddedLanguageRange.range, endPos)) {
-                        foundEnd = true;
                         return mocaCompilationResult;
                     }
                 }
 
             } else {
+                // Need to compile range regardless of whether or not we contain end position
+                // since we have already found start postion -- we can assume we are inside of
+                // the changed range right now.
+                if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.MocaSql) {
+                    compileMocaSql(mocaScript, mocaCompilationResult,
+                            mocaEmbeddedLanguageRange.mocaLanguageContext.rangeIdx);
+                } else if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.Groovy) {
+                    compileGroovy(mocaScript, mocaCompilationResult,
+                            mocaEmbeddedLanguageRange.mocaLanguageContext.rangeIdx);
+                }
 
-                if (!foundEnd) {
-                    // Need to compile range regardless of if we contain end position since we have
-                    // already found start postion -- we can assume we are inside of the changed
-                    // range right now.
-                    if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.MocaSql) {
-                        compileMocaSql(mocaScript, mocaCompilationResult,
-                                mocaEmbeddedLanguageRange.mocaLanguageContext.rangeIdx);
-                    } else if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.Groovy) {
-                        compileGroovy(mocaScript, mocaCompilationResult,
-                                mocaEmbeddedLanguageRange.mocaLanguageContext.rangeIdx);
-                    }
-
-                    // Now we check if this range contains the end postion. If so, we quit!
-                    if (RangeUtils.contains(mocaEmbeddedLanguageRange.range, endPos)) {
-                        foundEnd = true;
-                        return mocaCompilationResult;
-                    }
-                } else {
+                // Now we check if this range contains the end postion. If so, we quit!
+                if (RangeUtils.contains(mocaEmbeddedLanguageRange.range, endPos)) {
                     return mocaCompilationResult;
                 }
             }

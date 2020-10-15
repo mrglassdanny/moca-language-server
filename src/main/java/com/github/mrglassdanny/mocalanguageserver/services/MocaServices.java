@@ -127,8 +127,12 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         // Now we need to get the new contents and compare.
         String script = MocaServices.fileManager.getContents(uri);
+
         // This will return the first indication of a difference. If 0, then there is no
         // change.
+        // NOTE: this should work fine since we can assume that there cannot be more
+        // than 1 'distinct' differences -- meaning that there cannot be a change at
+        // index 5 -> 10 and also one at index 80 -> 90.
         int changeIdx = StringDifferenceUtils.indexOfDifference(prevScript, script);
         int changeLen = script.length() - prevScript.length(); // Could be negative number.
 
