@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.format.MocaFormatter;
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 
 import org.eclipse.lsp4j.DocumentOnTypeFormattingParams;
+import org.eclipse.lsp4j.Position;
+import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextEdit;
 
 public class DocumentOnTypeFormattingProvider {
@@ -23,7 +27,23 @@ public class DocumentOnTypeFormattingProvider {
                         return CompletableFuture.completedFuture(new ArrayList<>());
                 }
 
-                return CompletableFuture.completedFuture(DocumentFormattingProvider.processDocumentFormatting());
+                return CompletableFuture.completedFuture(
+                                DocumentOnTypeFormattingProvider.processDocumentOnTypeFormatting(params.getPosition()));
+        }
+
+        public static ArrayList<TextEdit> processDocumentOnTypeFormatting(Position changePosition) {
+                ArrayList<TextEdit> edits = new ArrayList<>();
+
+                String formattedMocaScript = MocaFormatter.formatChange(MocaServices.mocaCompilationResult,
+                                changePosition);
+
+                // Add to text doc edits and return!
+                edits.add(new TextEdit(
+                                new Range(new Position(0, 0),
+                                                PositionUtils.getPosition(MocaServices.mocaCompilationResult.script,
+                                                                MocaServices.mocaCompilationResult.script.length())),
+                                formattedMocaScript));
+                return edits;
         }
 
 }

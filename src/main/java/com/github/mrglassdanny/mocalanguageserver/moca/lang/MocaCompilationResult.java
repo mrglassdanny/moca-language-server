@@ -28,6 +28,9 @@ public class MocaCompilationResult {
     public MocaSyntaxErrorListener mocaSyntaxErrorListener;
     public ArrayList<Range> mocaSqlRanges;
     public ArrayList<Range> groovyRanges;
+    // sortedRanges list is mainly for compiling changed ranges in MocaCompiler
+    // class.
+    public ArrayList<MocaEmbeddedLanguageRange> sortedRanges;
     public HashMap<Integer, MocaSqlCompilationResult> mocaSqlCompilationResults;
     public HashMap<Integer, GroovyCompilationResult> groovyCompilationResults;
 
@@ -41,6 +44,7 @@ public class MocaCompilationResult {
         this.mocaSyntaxErrorListener = null;
         this.mocaSqlRanges = new ArrayList<>();
         this.groovyRanges = new ArrayList<>();
+        this.sortedRanges = new ArrayList<>();
         this.mocaSqlCompilationResults = new HashMap<>();
         this.groovyCompilationResults = new HashMap<>();
     }
@@ -52,6 +56,7 @@ public class MocaCompilationResult {
     public void updateEmbeddedLanguageRanges(String mocaScript) {
         this.mocaSqlRanges.clear();
         this.groovyRanges.clear();
+        this.sortedRanges.clear();
 
         // Can assume we do not have any ranges if no moca tokens exist.
         if (this.mocaTokens == null) {
@@ -59,18 +64,29 @@ public class MocaCompilationResult {
         }
 
         // Now just loop through tokens and find scripts.
+        int mocaSqlRangeIdx = 0;
+        int groovyRangeIdx = 0;
         for (Token curMocaToken : this.mocaTokens) {
             if (curMocaToken.getType() == MocaLexer.SINGLE_BRACKET_STRING) {
                 if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(curMocaToken.getText())) {
-                    this.mocaSqlRanges.add(new Range(
-                            PositionUtils.getPosition(mocaScript, curMocaToken.getStartIndex()),
+                    Range range = new Range(PositionUtils.getPosition(mocaScript, curMocaToken.getStartIndex()),
                             PositionUtils.getPosition(mocaScript,
-                                    MocaTokenUtils.getAdjustedMocaTokenStopIndex(curMocaToken.getStopIndex()))));
+                                    MocaTokenUtils.getAdjustedMocaTokenStopIndex(curMocaToken.getStopIndex())));
+                    this.mocaSqlRanges.add(range);
+
+                    // Add range to 'sorted' range map.
+                    this.sortedRanges.add(new MocaEmbeddedLanguageRange(range,
+                            new MocaLanguageContext(MocaLanguageContext.ContextId.MocaSql, mocaSqlRangeIdx++)));
                 }
             } else if (curMocaToken.getType() == MocaLexer.DOUBLE_BRACKET_STRING) {
-                this.groovyRanges.add(new Range(PositionUtils.getPosition(mocaScript, curMocaToken.getStartIndex()),
+                Range range = new Range(PositionUtils.getPosition(mocaScript, curMocaToken.getStartIndex()),
                         PositionUtils.getPosition(mocaScript,
-                                MocaTokenUtils.getAdjustedMocaTokenStopIndex(curMocaToken.getStopIndex()))));
+                                MocaTokenUtils.getAdjustedMocaTokenStopIndex(curMocaToken.getStopIndex())));
+                this.groovyRanges.add(range);
+
+                // Add range to 'sorted' range map.
+                this.sortedRanges.add(new MocaEmbeddedLanguageRange(range,
+                        new MocaLanguageContext(MocaLanguageContext.ContextId.Groovy, groovyRangeIdx++)));
             }
         }
 

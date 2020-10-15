@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +24,7 @@ import com.github.mrglassdanny.mocalanguageserver.services.command.ExecuteComman
 import com.github.mrglassdanny.mocalanguageserver.services.hover.HoverProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.signature.SignatureHelpProvider;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.StringDifferenceUtils;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.eclipse.lsp4j.CompletionItem;
@@ -79,6 +82,9 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     public static LanguageClient languageClient = null;
     private static FileManager fileManager = new FileManager();
 
+    // Diagnostics and semantic highlighting can be processed on different threads.
+    private static ExecutorService threadPool = Executors.newFixedThreadPool(4);
+
     @Override
     public void connect(LanguageClient client) {
         MocaServices.languageClient = client;
@@ -93,21 +99,86 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String script = MocaServices.fileManager.getContents(uri);
         MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-        DiagnosticManager.streamAll();
-        SemanticHighlightingManager.streamAll();
+        // We do not need to sync things up -- we can just execute.
+        MocaServices.threadPool.execute(() -> {
+            DiagnosticManager.streamAll();
+        });
+
+        MocaServices.threadPool.execute(() -> {
+            SemanticHighlightingManager.streamAll();
+        });
+
     }
 
     @Override
     public void didChange(DidChangeTextDocumentParams params) {
-        MocaServices.fileManager.didChange(params);
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        String script = MocaServices.fileManager.getContents(uri);
-        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+        // First make sure we are dealing with the same uri string as current
+        // compilation result. We should be, but let's put this here to be safe!
+        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
+            String script = MocaServices.fileManager.getContents(uri);
+            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-        DiagnosticManager.streamAll();
-        SemanticHighlightingManager.streamAll();
+            // We do not need to sync things up -- we can just execute.
+            MocaServices.threadPool.execute(() -> {
+                DiagnosticManager.streamAll();
+            });
+
+            MocaServices.threadPool.execute(() -> {
+                SemanticHighlightingManager.streamAll();
+            });
+
+            return;
+        }
+
+        // We do not want to needlessly compile the entire script everytime a change
+        // occurs -- this yields bad performance, especially on larger scripts.
+        // Therefore, we will instead attempt to figure out where the change to the file
+        // occured and only compile the range that the change is in.
+
+        // Before we process file manager changes, we need to extract the previous
+        // contents.
+        String prevScript = MocaServices.fileManager.getContents(uri);
+        MocaServices.fileManager.didChange(params);
+
+        // Now we need to get the new contents and compare.
+        String script = MocaServices.fileManager.getContents(uri);
+
+        // This will return the first indication of a difference. If 0, then there is no
+        // change.
+        // NOTE: this should work fine since we can assume that there cannot be more
+        // than 1 'distinct' differences -- meaning that there cannot be a change at
+        // index 5 -> 10 and also one at index 80 -> 90 at the same time.
+        int changeIdx = StringDifferenceUtils.indexOfDifference(prevScript, script);
+        int changeLen = script.length() - prevScript.length(); // Could be negative number.
+
+        if (changeIdx != 0) {
+            MocaServices.mocaCompilationResult = MocaCompiler.compileScriptChanges(script, uriStr, changeIdx, changeLen,
+                    MocaServices.mocaCompilationResult);
+
+            // We do not need to sync things up -- we can just execute.
+            MocaServices.threadPool.execute(() -> {
+                DiagnosticManager.streamAll();
+            });
+
+            MocaServices.threadPool.execute(() -> {
+                SemanticHighlightingManager.streamAll();
+            });
+
+        } else {
+            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+
+            // We do not need to sync things up -- we can just execute.
+            MocaServices.threadPool.execute(() -> {
+                DiagnosticManager.streamAll();
+            });
+
+            MocaServices.threadPool.execute(() -> {
+                SemanticHighlightingManager.streamAll();
+            });
+        }
     }
 
     @Override
@@ -129,8 +200,14 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String script = MocaServices.fileManager.getContents(uri);
         MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-        DiagnosticManager.streamAll();
-        SemanticHighlightingManager.streamAll();
+        // We do not need to sync things up -- we can just execute.
+        MocaServices.threadPool.execute(() -> {
+            DiagnosticManager.streamAll();
+        });
+
+        MocaServices.threadPool.execute(() -> {
+            SemanticHighlightingManager.streamAll();
+        });
     }
 
     @Override
@@ -155,8 +232,14 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         // make a change to the file. Therefore, we will add a compile here.
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
-        String script = MocaServices.fileManager.getContents(uri);
-        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+
+        // Before we compile, check if uri string is the same as the current
+        // moca compilation result's uri string.
+        // If it is, then we do not need to worry about compiling!
+        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
+            String script = MocaServices.fileManager.getContents(uri);
+            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+        }
 
         return HoverProvider.provideHover(params.getPosition());
     }
@@ -338,8 +421,14 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         // Need to compile script before we format.
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
-        String script = MocaServices.fileManager.getContents(uri);
-        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+
+        // Before we compile, check if uri string is the same as the current
+        // moca compilation result's uri string.
+        // If it is, then we do not need to worry about compiling!
+        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
+            String script = MocaServices.fileManager.getContents(uri);
+            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+        }
 
         return DocumentFormattingProvider.provideDocumentFormatting(params);
     }
@@ -350,8 +439,14 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         // Need to compile script before we format.
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
-        String script = MocaServices.fileManager.getContents(uri);
-        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+
+        // Before we compile, check if uri string is the same as the current
+        // moca compilation result's uri string.
+        // If it is, then we do not need to worry about compiling!
+        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
+            String script = MocaServices.fileManager.getContents(uri);
+            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+        }
 
         return DocumentFormattingProvider.provideDocumentRangeFormatting(params);
     }
@@ -359,8 +454,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     @Override
     public CompletableFuture<List<? extends TextEdit>> onTypeFormatting(DocumentOnTypeFormattingParams params) {
 
-        // No need to compile prior to calling formatting on type func. We know that
-        // will each change to file, we are compiling.
+        // No need for a compile call -- we know that compilation is occuring on type
+        // elsewhere.
         return DocumentOnTypeFormattingProvider.provideDocumentOnTypeFormatting(params);
     }
 
@@ -387,8 +482,14 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         // Need to compile on definition provide for the same reason as on hover ^.
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
-        String script = MocaServices.fileManager.getContents(uri);
-        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+
+        // Before we compile, check if uri string is the same as the current
+        // moca compilation result's uri string.
+        // If it is, then we do not need to worry about compiling!
+        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
+            String script = MocaServices.fileManager.getContents(uri);
+            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+        }
 
         return DefinitionProvider.provideDefinition(uri, params.getPosition());
     }
