@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.4.5 (October ?, 2020)
+## 1.4.5 (October 15, 2020)
 * Performance improvements -- https://github.com/mrglassdanny/moca-language-server/issues/18
 
 ## 1.3.5 (October 13, 2020)
