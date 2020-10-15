@@ -12,7 +12,6 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.format.MocaSqlFormatter;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.RangeUtils;
 
 public class MocaFormatter {
@@ -398,8 +397,8 @@ public class MocaFormatter {
 
     // This function will have the same formatting logic as ^. The only difference
     // is we are passing in the changed position in hopes of being able to
-    // format moca and just the embedded language range that it is contained in, if
-    // any.
+    // format moca(we always need to do moca regardless of change position) and just
+    // the embedded language range that it is contained in, if any.
     public static String formatChange(MocaCompilationResult mocaCompilationResult, Position changePosition) {
 
         // Need to copy existing list into new list for processing. Reason is that we do
@@ -471,7 +470,6 @@ public class MocaFormatter {
                                 if (RangeUtils.contains(
                                         mocaCompilationResult.mocaSqlRanges.get(mocasqlCompilationResultsVisited),
                                         changePosition)) {
-                                    MocaServices.logInfoToLanguageClient("Formatting range!");
                                     String formattedMocaSqlScript = formatMocaSql(
                                             mocaSqlCompilationResult.mocaSqlTokens, indentBuf);
                                     if (formattedMocaSqlScript != null) {
