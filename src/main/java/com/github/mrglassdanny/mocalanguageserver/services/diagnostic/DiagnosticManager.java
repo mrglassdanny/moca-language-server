@@ -72,8 +72,6 @@ public class DiagnosticManager {
             return;
         }
 
-        clearDiagnostics(MocaServices.mocaCompilationResult.uriStr);
-
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
         Collection<Callable<Boolean>> allDiagnosticsTasks = new ArrayList<Callable<Boolean>>();
@@ -98,7 +96,7 @@ public class DiagnosticManager {
             return true;
         });
 
-        // Make sure everything is done before we leave function.
+        // Make sure everything is done before we publish diagnostics.
         try {
             DiagnosticManager.allDiagnosticsThreadPool.invokeAll(allDiagnosticsTasks);
         } catch (InterruptedException ex) {
@@ -112,6 +110,8 @@ public class DiagnosticManager {
 
     // Could be clearing diagnostics for uriStr different than one in moca
     // compilation result.
+    // It seems like the only need for this function is to clear all diagnostics
+    // from file when we close it. We do not need to call this otherwise.
     public static void clearDiagnostics(String uriStr) {
         MocaServices.languageClient.publishDiagnostics(new PublishDiagnosticsParams(uriStr, new ArrayList<>()));
     }
