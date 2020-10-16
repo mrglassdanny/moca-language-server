@@ -117,13 +117,13 @@ public class HoverProvider {
                     // Check first to see if mocasql word is table/view in database.
                     Table table = MocaCache.getGlobalMocaCache().mocaSqlCache.tables.get(mocaSqlWord);
                     if (table != null) {
-                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, table.getMarkdownStr()));
+                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, table.getMarkdownStr(false)));
                         return CompletableFuture.completedFuture(hover);
                     }
 
                     Table view = MocaCache.getGlobalMocaCache().mocaSqlCache.views.get(mocaSqlWord);
                     if (view != null) {
-                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, view.getMarkdownStr()));
+                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, view.getMarkdownStr(true)));
                         return CompletableFuture.completedFuture(hover);
                     }
 

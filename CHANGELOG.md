@@ -2,6 +2,7 @@
 
 ## 1.4.7 (October ??, 2020)
 * Issue #42 fix -- https://github.com/mrglassdanny/moca-language-server/issues/42
+* Issue #39 fix -- https://github.com/mrglassdanny/moca-language-server/issues/39
 
 ## 1.4.6 (October 16, 2020)
 * Refactoring & tweaks

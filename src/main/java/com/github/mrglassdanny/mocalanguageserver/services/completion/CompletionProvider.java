@@ -410,7 +410,7 @@ public class CompletionProvider {
         for (Map.Entry<String, Table> tableEntry : MocaCache.getGlobalMocaCache().mocaSqlCache.tables.entrySet()) {
             Table tbl = tableEntry.getValue();
             CompletionItem item = new CompletionItem(tbl.table_name);
-            item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, tbl.getMarkdownStr()));
+            item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, tbl.getMarkdownStr(false)));
             item.setKind(CompletionItemKind.Struct);
             items.add(item);
         }
@@ -418,7 +418,7 @@ public class CompletionProvider {
         for (Map.Entry<String, Table> viewEntry : MocaCache.getGlobalMocaCache().mocaSqlCache.views.entrySet()) {
             Table view = viewEntry.getValue();
             CompletionItem item = new CompletionItem(view.table_name);
-            item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, view.getMarkdownStr()));
+            item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, view.getMarkdownStr(true)));
             item.setKind(CompletionItemKind.Struct);
             items.add(item);
         }
