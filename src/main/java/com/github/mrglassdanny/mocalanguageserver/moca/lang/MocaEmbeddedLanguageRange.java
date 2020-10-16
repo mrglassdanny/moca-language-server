@@ -9,6 +9,10 @@ public class MocaEmbeddedLanguageRange {
     // MocaCompiler.compileScript sets all ranges didChange to 'true', while
     // MocaCompiler.compileScriptChanges will only set 'true' if change occured and
     // we are compiling. Otherwise, didChange will stay 'false'.
+    // This field is used in conjunction with optimizations surrounding
+    // operations processing only changes to script instead of processing
+    // everything. Good examples of this are compilation, formatting, and
+    // diagnostics publishing.
     public boolean didChange;
 
     public MocaEmbeddedLanguageRange(Range range, MocaLanguageContext mocaLanguageContext) {
