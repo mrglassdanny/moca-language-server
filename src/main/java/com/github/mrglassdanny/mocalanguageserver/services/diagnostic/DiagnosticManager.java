@@ -565,7 +565,11 @@ public class DiagnosticManager {
                                     .getColumnsForTable(tableNameForColumn);
                             if (columnsInTable != null) {
                                 for (TableColumn tableColumn : columnsInTable) {
-                                    if (tableColumn.column_name.compareToIgnoreCase(columnTokenText) == 0) {
+                                    // Check column and potential column alias against tableColumn.
+                                    if (tableColumn.column_name.compareToIgnoreCase(columnTokenText) == 0
+                                            || (sqlParseTreeListener.columnAliasNames.containsKey(columnTokenText)
+                                                    && sqlParseTreeListener.columnAliasNames
+                                                            .containsKey(columnTokenText))) {
                                         foundColumn = true;
                                         tablesFoundForColumn++;
                                         tableNamesForWarnDiagnosticBuf.append(tableNameForColumn);

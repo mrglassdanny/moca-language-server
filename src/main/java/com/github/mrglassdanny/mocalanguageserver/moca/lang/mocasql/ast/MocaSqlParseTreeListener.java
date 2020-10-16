@@ -30,9 +30,9 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     public static final String ANONYMOUS_SUBQUERY = "__ANONYMOUS_SUBQUERY__";
 
     public ArrayList<Token> tableTokens;
-    public HashMap<String, String> tableAliasNames; // Key is alias and Value is table name.
+    public HashMap<String, String> tableAliasNames; // Key is table alias name and Value is table name.
     public HashMap<String, ArrayList<Token>> columnTokens; // Key is table name.
-    public HashMap<Token, Token> columnAliasTokens; // Key is column alias; value is column.
+    public HashMap<String, String> columnAliasNames; // Key is column alias name and Value is column name.
     public HashMap<String, SubqueryContext> subqueries; // Key is subquery name.
     public HashMap<SubqueryContext, ArrayList<Token>> subqueryColumns;
 
@@ -40,7 +40,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         this.tableTokens = new ArrayList<>();
         this.tableAliasNames = new HashMap<>();
         this.columnTokens = new HashMap<>();
-        this.columnAliasTokens = new HashMap<>();
+        this.columnAliasNames = new HashMap<>();
         this.subqueries = new HashMap<>();
         this.subqueryColumns = new HashMap<>();
     }
@@ -146,7 +146,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
 
         // Go ahead and add to column alias map.
         if (ctx.as_column_alias() != null) {
-            this.columnAliasTokens.put(ctx.as_column_alias().getStop(), columnToken);
+            this.columnAliasNames.put(ctx.as_column_alias().getStop().getText(), columnToken.getText());
         }
 
         String tableName = "";
