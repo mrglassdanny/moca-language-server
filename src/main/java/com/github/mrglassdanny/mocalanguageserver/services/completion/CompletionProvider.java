@@ -219,10 +219,10 @@ public class CompletionProvider {
                             if (items.isEmpty()) { // Empty - must be alias or subquery.
 
                                 // Checking if table is aliased.
-                                if (mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
+                                if (mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames
                                         .containsKey(lowerCaseWord)) {
                                     populateMocaSqlColumnsFromTableName(
-                                            mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
+                                            mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames
                                                     .get(lowerCaseWord),
                                             lowerCaseWord, true, items);
                                 } else {
@@ -248,9 +248,9 @@ public class CompletionProvider {
                             String tableName = mocaSqlCompilationResult.mocaSqlParseTreeListener.tableTokens.get(0)
                                     .getText();
                             // Check if it has been aliased.
-                            if (mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
+                            if (mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames
                                     .containsValue(tableName)) {
-                                for (Map.Entry<String, String> entry : mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
+                                for (Map.Entry<String, String> entry : mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames
                                         .entrySet()) {
                                     if (entry.getValue().compareTo(tableName) == 0) {
                                         populateMocaSqlColumnsFromTableName(tableName, entry.getKey(), false, items);
@@ -272,8 +272,8 @@ public class CompletionProvider {
                         // Get tables/views from database.
                         populateMocaSqlTables(items);
                         // Also get any other aliased entities in script.
-                        populateMocaSqlAliasedTableNames(
-                                mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames, items);
+                        populateMocaSqlTableAliasNames(
+                                mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames, items);
                         populateMocaSqlSubqueryNames(mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries,
                                 items);
 
@@ -424,14 +424,14 @@ public class CompletionProvider {
         }
     }
 
-    private static void populateMocaSqlAliasedTableNames(HashMap<String, String> aliasedTableNames,
+    private static void populateMocaSqlTableAliasNames(HashMap<String, String> tableAliasNames,
             List<CompletionItem> items) {
 
-        if (aliasedTableNames == null) {
+        if (tableAliasNames == null) {
             return;
         }
 
-        for (Map.Entry<String, String> entry : aliasedTableNames.entrySet()) {
+        for (Map.Entry<String, String> entry : tableAliasNames.entrySet()) {
             CompletionItem item = new CompletionItem(entry.getKey());
             item.setDocumentation(
                     new MarkupContent(MarkupKind.MARKDOWN, Table.getMarkdownStrForAlias(entry.getValue())));

@@ -129,11 +129,11 @@ public class HoverProvider {
 
                     // If not, check aliased tables/views/subqueries.
                     if (mocaSqlCompilationResult != null && mocaSqlCompilationResult.mocaSqlParseTreeListener != null
-                            && mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames != null
-                            && mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
+                            && mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames != null
+                            && mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames
                                     .containsKey(mocaSqlWord)) {
                         hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, Table.getMarkdownStrForAlias(
-                                mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames.get(mocaSqlWord))));
+                                mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames.get(mocaSqlWord))));
                         return CompletableFuture.completedFuture(hover);
                     }
                     if (mocaSqlCompilationResult != null && mocaSqlCompilationResult.mocaSqlParseTreeListener != null

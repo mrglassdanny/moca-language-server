@@ -360,7 +360,7 @@ public class DiagnosticManager {
             // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree -- a
             // risk I am willing to take!
             if (!foundTable) {
-                if (sqlParseTreeListener.aliasedTableNames.containsKey(tableTokenText)) {
+                if (sqlParseTreeListener.tableAliasNames.containsKey(tableTokenText)) {
                     foundTable = true;
                 }
             }
@@ -404,11 +404,11 @@ public class DiagnosticManager {
             String tableName = entry.getKey();
 
             // Before we continue, we need to check if this is an alias for another table.
-            if (sqlParseTreeListener.aliasedTableNames.containsKey(tableName)) {
+            if (sqlParseTreeListener.tableAliasNames.containsKey(tableName)) {
                 // Switch to actual table name.
                 // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree -- a
                 // risk I am willing to take!
-                tableName = sqlParseTreeListener.aliasedTableNames.get(tableName);
+                tableName = sqlParseTreeListener.tableAliasNames.get(tableName);
             }
 
             // Analyze table name and see if column(s) exist for it.
@@ -554,11 +554,11 @@ public class DiagnosticManager {
 
                             // We check for alias above, but if we have multiple tables in context it would
                             // have failed. We need to check here in our analysis.
-                            if (sqlParseTreeListener.aliasedTableNames.containsKey(tableNameForColumn)) {
+                            if (sqlParseTreeListener.tableAliasNames.containsKey(tableNameForColumn)) {
                                 // Switch to actual table name.
                                 // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree -- a
                                 // risk I am willing to take!
-                                tableNameForColumn = sqlParseTreeListener.aliasedTableNames.get(tableNameForColumn);
+                                tableNameForColumn = sqlParseTreeListener.tableAliasNames.get(tableNameForColumn);
                             }
 
                             ArrayList<TableColumn> columnsInTable = MocaCache.getGlobalMocaCache().mocaSqlCache
@@ -625,11 +625,11 @@ public class DiagnosticManager {
 
                                     // We check for alias above, but if we have multiple tables in context it would
                                     // have failed. We need to check here in our analysis.
-                                    if (sqlParseTreeListener.aliasedTableNames.containsKey(tableNameForColumn)) {
+                                    if (sqlParseTreeListener.tableAliasNames.containsKey(tableNameForColumn)) {
                                         // Switch to actual table name.
                                         // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree
                                         // -- a risk I am willing to take!
-                                        tableNameForColumn = sqlParseTreeListener.aliasedTableNames
+                                        tableNameForColumn = sqlParseTreeListener.tableAliasNames
                                                 .get(tableNameForColumn);
                                     }
 
