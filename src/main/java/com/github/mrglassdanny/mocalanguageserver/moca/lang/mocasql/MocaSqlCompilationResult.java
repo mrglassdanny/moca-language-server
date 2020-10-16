@@ -7,6 +7,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlP
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlSyntaxErrorListener;
 
 import org.antlr.v4.runtime.Token;
+import org.eclipse.lsp4j.Range;
 
 public class MocaSqlCompilationResult {
 
@@ -14,6 +15,7 @@ public class MocaSqlCompilationResult {
     public MocaSqlParser mocaSqlParser;
     public MocaSqlParseTreeListener mocaSqlParseTreeListener;
     public MocaSqlSyntaxErrorListener mocaSqlSyntaxErrorListener;
+    public Range range;
 
     public MocaSqlCompilationResult() {
 
@@ -21,6 +23,7 @@ public class MocaSqlCompilationResult {
         this.mocaSqlParser = null;
         this.mocaSqlParseTreeListener = null;
         this.mocaSqlSyntaxErrorListener = null;
+        this.range = null;
     }
 
     public boolean hasSqlErrors() {

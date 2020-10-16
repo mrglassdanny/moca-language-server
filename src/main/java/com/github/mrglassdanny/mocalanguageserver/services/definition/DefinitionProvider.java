@@ -119,10 +119,7 @@ public class DefinitionProvider {
             case Groovy:
 
                 GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
-                        .get(mocaLanguageContext.rangeIdx);
-
-                Range groovyScriptRange = MocaServices.mocaCompilationResult.groovyRanges
-                        .get(mocaLanguageContext.rangeIdx);
+                        .get(mocaLanguageContext.compilationResultIdx);
 
                 if (groovyCompilationResult.astVisitor == null) {
                     // This shouldn't happen, but let's avoid an exception if something
@@ -135,7 +132,7 @@ public class DefinitionProvider {
                 // message than what is thrown without this try/catch.
                 try {
                     ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
-                            position.getCharacter(), groovyScriptRange);
+                            position.getCharacter(), groovyCompilationResult.range);
 
                     ASTNode definitionNode = GroovyASTUtils.getDefinition(offsetNode, false,
                             groovyCompilationResult.astVisitor);
@@ -146,7 +143,7 @@ public class DefinitionProvider {
                     }
 
                     Location location = new Location(uri.toString(),
-                            GroovyLanguageUtils.astNodeToRange(definitionNode, groovyScriptRange));
+                            GroovyLanguageUtils.astNodeToRange(definitionNode, groovyCompilationResult.range));
 
                     return CompletableFuture.completedFuture(Either.forLeft(Collections.singletonList(location)));
                 } catch (NoClassDefFoundError noClassDefFoundError) {

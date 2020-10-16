@@ -30,18 +30,19 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     public static final String ANONYMOUS_SUBQUERY = "__ANONYMOUS_SUBQUERY__";
 
     public ArrayList<Token> tableTokens;
-    public HashMap<String, String> aliasedTableNames; // Key is alias and Value is table name.
+    public HashMap<String, String> tableAliasNames; // Key is table alias name and Value is table name.
     public HashMap<String, ArrayList<Token>> columnTokens; // Key is table name.
+    public HashMap<String, String> columnAliasNames; // Key is column alias name and Value is column name.
     public HashMap<String, SubqueryContext> subqueries; // Key is subquery name.
     public HashMap<SubqueryContext, ArrayList<Token>> subqueryColumns;
 
     public MocaSqlParseTreeListener() {
         this.tableTokens = new ArrayList<>();
-        this.aliasedTableNames = new HashMap<>();
+        this.tableAliasNames = new HashMap<>();
+        this.columnTokens = new HashMap<>();
+        this.columnAliasNames = new HashMap<>();
         this.subqueries = new HashMap<>();
         this.subqueryColumns = new HashMap<>();
-        this.columnTokens = new HashMap<>();
-
     }
 
     private static RuleContext getParentRuleContext(RuleContext ctx, Class<?> parentRuleContextClass) {
@@ -84,7 +85,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
 
                 // Can go ahead and put in map from here.
                 // Can assume that tableName was populated above if we have an alias.
-                this.aliasedTableNames.put(tableAliasName, tableName);
+                this.tableAliasNames.put(tableAliasName, tableName);
             }
         }
 
@@ -142,6 +143,11 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         }
 
         Token columnToken = ctx.id().getStop();
+
+        // Go ahead and add to column alias map.
+        if (ctx.as_column_alias() != null) {
+            this.columnAliasNames.put(ctx.as_column_alias().getStop().getText(), columnToken.getText());
+        }
 
         String tableName = "";
 
@@ -519,12 +525,12 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         }
 
         // Check aliases next.
-        if (this.aliasedTableNames.containsKey(tableName)) {
+        if (this.tableAliasNames.containsKey(tableName)) {
             processedAsteriskColumns = true;
 
             // Get all columns from cache for aliased table.
             ArrayList<TableColumn> tableColumnsForAsterisk = MocaCache.getGlobalMocaCache().mocaSqlCache
-                    .getColumnsForTable(this.aliasedTableNames.get(tableName));
+                    .getColumnsForTable(this.tableAliasNames.get(tableName));
 
             if (tableColumnsForAsterisk != null) {
                 for (TableColumn tableColumn : tableColumnsForAsterisk) {

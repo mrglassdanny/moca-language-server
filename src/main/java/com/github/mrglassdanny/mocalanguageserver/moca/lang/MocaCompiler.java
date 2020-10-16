@@ -24,6 +24,7 @@ import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.lsp4j.Position;
+import org.eclipse.lsp4j.Range;
 
 public class MocaCompiler {
 
@@ -51,25 +52,31 @@ public class MocaCompiler {
 
         mocaCompilationResult.mocaTokens = new MocaLexer(CharStreams.fromString(mocaScript)).getAllTokens();
 
-        // Update embedded lang ranges, then compile them.
-        mocaCompilationResult.updateEmbeddedLanguageRanges(mocaScript);
+        // Set embedded lang ranges, then compile them.
+        mocaCompilationResult.setMocaEmbeddedLanguageRanges(mocaScript);
 
         Collection<Callable<Boolean>> compileTasks = new ArrayList<Callable<Boolean>>();
 
-        for (int i = 0; i < mocaCompilationResult.mocaSqlRanges.size(); i++) {
-            final int rangeIdx = i;
-            compileTasks.add(() -> {
-                compileMocaSql(mocaScript, mocaCompilationResult, rangeIdx);
-                return true;
-            });
-        }
+        for (MocaEmbeddedLanguageRange mocaEmbeddedLanguageRange : mocaCompilationResult.mocaEmbeddedLanguageRanges) {
 
-        for (int i = 0; i < mocaCompilationResult.groovyRanges.size(); i++) {
-            final int rangeIdx = i;
-            compileTasks.add(() -> {
-                compileGroovy(mocaScript, mocaCompilationResult, rangeIdx);
-                return true;
-            });
+            switch (mocaEmbeddedLanguageRange.mocaLanguageContext.id) {
+                case MocaSql:
+                    compileTasks.add(() -> {
+                        compileMocaSql(mocaScript, mocaCompilationResult, mocaEmbeddedLanguageRange.range,
+                                mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
+                        return true;
+                    });
+                    break;
+                case Groovy:
+                    compileTasks.add(() -> {
+                        compileGroovy(mocaScript, mocaCompilationResult, mocaEmbeddedLanguageRange.range,
+                                mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
+                        return true;
+                    });
+                    break;
+                default:
+                    break;
+            }
         }
 
         try {
@@ -102,18 +109,18 @@ public class MocaCompiler {
 
         mocaCompilationResult.mocaTokens = new MocaLexer(CharStreams.fromString(mocaScript)).getAllTokens();
 
-        // Update embedded lang ranges.
-        mocaCompilationResult.updateEmbeddedLanguageRanges(mocaScript);
+        // Set embedded lang ranges.
+        mocaCompilationResult.setMocaEmbeddedLanguageRanges(mocaScript);
 
         // Now we need to check if changed position is inside mocasql or groovy. If so,
-        // we only need to compile that range and leave the rest alone. So let's go
-        // ahead and set the new moca compilation results mocasql/groovy compilation
+        // we only need to compile affected range(s) and leave the rest alone. So let's
+        // go ahead and set the new moca compilation results mocasql/groovy compilation
         // units to the previous ones'.
         mocaCompilationResult.mocaSqlCompilationResults = previousMocaCompilationResult.mocaSqlCompilationResults;
         mocaCompilationResult.groovyCompilationResults = previousMocaCompilationResult.groovyCompilationResults;
 
         // Now find changed position in either mocasql or groovy ranges. Once we find
-        // it, we just need to compile that range and return our moca compilation
+        // it, we just need to compile affected range(s) and return our moca compilation
         // result.
         // If it is not in mocasql or groovy, then it must have been in moca.
 
@@ -126,7 +133,7 @@ public class MocaCompiler {
         // regards to the moca compilation result(createMocaPosition function in
         // MocaSqlLanguageUtils/GroovyLanguageUtils), all we need to do is make sure
         // that the moca compilation result embedded ranges are updated. This occurs
-        // when we compile moca and call updateEmbeddedLangaugeRanges function.
+        // when we compile moca and call setMocaEmbeddedLangaugeRanges function.
 
         // Need to get start and end positions for processing below.
         // NOTE: changeLen could be negative number.
@@ -138,21 +145,17 @@ public class MocaCompiler {
             endPos = PositionUtils.getPosition(mocaScript, mocaScript.length() - 1);
         }
 
-        // We are going to go through each range in order of position in
-        // file(sortedRanges list) and compile all ranges that are contained in changed
-        // range.
-
         boolean foundStart = false;
-        for (MocaEmbeddedLanguageRange mocaEmbeddedLanguageRange : mocaCompilationResult.sortedRanges) {
+        for (MocaEmbeddedLanguageRange mocaEmbeddedLanguageRange : mocaCompilationResult.mocaEmbeddedLanguageRanges) {
 
             if (!foundStart) {
                 if (RangeUtils.contains(mocaEmbeddedLanguageRange.range, startPos)) {
                     if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.MocaSql) {
-                        compileMocaSql(mocaScript, mocaCompilationResult,
-                                mocaEmbeddedLanguageRange.mocaLanguageContext.rangeIdx);
+                        compileMocaSql(mocaScript, mocaCompilationResult, mocaEmbeddedLanguageRange.range,
+                                mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
                     } else if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.Groovy) {
-                        compileGroovy(mocaScript, mocaCompilationResult,
-                                mocaEmbeddedLanguageRange.mocaLanguageContext.rangeIdx);
+                        compileGroovy(mocaScript, mocaCompilationResult, mocaEmbeddedLanguageRange.range,
+                                mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
                     }
 
                     foundStart = true;
@@ -168,11 +171,11 @@ public class MocaCompiler {
                 // since we have already found start postion -- we can assume we are inside of
                 // the changed range right now.
                 if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.MocaSql) {
-                    compileMocaSql(mocaScript, mocaCompilationResult,
-                            mocaEmbeddedLanguageRange.mocaLanguageContext.rangeIdx);
+                    compileMocaSql(mocaScript, mocaCompilationResult, mocaEmbeddedLanguageRange.range,
+                            mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
                 } else if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.Groovy) {
-                    compileGroovy(mocaScript, mocaCompilationResult,
-                            mocaEmbeddedLanguageRange.mocaLanguageContext.rangeIdx);
+                    compileGroovy(mocaScript, mocaCompilationResult, mocaEmbeddedLanguageRange.range,
+                            mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
                 }
 
                 // Now we check if this range contains the end postion. If so, we quit!
@@ -184,18 +187,19 @@ public class MocaCompiler {
         return mocaCompilationResult;
     }
 
-    private static void compileMocaSql(String mocaScript, MocaCompilationResult mocaCompilationResult,
-            final int rangeIdx) {
+    private static void compileMocaSql(String mocaScript, MocaCompilationResult mocaCompilationResult, Range range,
+            final int compilationResultIdx) {
         // Remove first and last characters('[', ']').
-        String mocaSqlScript = RangeUtils.getText(mocaScript, mocaCompilationResult.mocaSqlRanges.get(rangeIdx));
+        String mocaSqlScript = RangeUtils.getText(mocaScript, range);
         mocaSqlScript = mocaSqlScript.substring(1, mocaSqlScript.length() - 1);
-        mocaCompilationResult.mocaSqlCompilationResults.put(rangeIdx, MocaSqlCompiler.compileScript(mocaSqlScript));
+        mocaCompilationResult.mocaSqlCompilationResults.put(compilationResultIdx,
+                MocaSqlCompiler.compileScript(mocaSqlScript, range));
     }
 
-    private static void compileGroovy(String mocaScript, MocaCompilationResult mocaCompilationResult,
-            final int rangeIdx) {
+    private static void compileGroovy(String mocaScript, MocaCompilationResult mocaCompilationResult, Range range,
+            final int compilationResultIdx) {
         // Remove first and last instances of("[[", "]]").
-        String groovyScript = RangeUtils.getText(mocaScript, mocaCompilationResult.groovyRanges.get(rangeIdx));
+        String groovyScript = RangeUtils.getText(mocaScript, range);
         groovyScript = groovyScript.substring(2, groovyScript.length() - 2);
 
         // Add prefixes to script.
@@ -211,8 +215,7 @@ public class MocaCompiler {
         // Need to keep track of what we have added, that way we dont add 2 redirects
         // with the same name(will cause static type checking issue).
         ArrayList<String> addedMocaRedirectNames = new ArrayList<>();
-        int groovyScriptOffset = PositionUtils.getOffset(mocaScript,
-                mocaCompilationResult.groovyRanges.get(rangeIdx).getStart());
+        int groovyScriptOffset = PositionUtils.getOffset(mocaScript, range.getStart());
 
         for (Map.Entry<Token, String> entry : mocaCompilationResult.mocaParseTreeListener.redirects.entrySet()) {
             if (entry.getKey().getStartIndex() <= groovyScriptOffset) {
@@ -227,7 +230,7 @@ public class MocaCompiler {
         groovyScript = GroovyLanguageUtils.GROOVY_DEFAULT_IMPORTS + GroovyLanguageUtils.MOCA_GROOVY_SCRIPT_PREFIX
                 + mocaRedirects + groovyScript;
 
-        mocaCompilationResult.groovyCompilationResults.put(rangeIdx,
-                GroovyCompiler.compileScript(rangeIdx, groovyScript));
+        mocaCompilationResult.groovyCompilationResults.put(compilationResultIdx,
+                GroovyCompiler.compileScript(compilationResultIdx, groovyScript, range));
     }
 }

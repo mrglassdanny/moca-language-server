@@ -8,13 +8,13 @@ import java.util.Map;
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaEmbeddedLanguageRange;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 
 import org.eclipse.lsp4j.Position;
-import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SemanticHighlightingInformation;
 import org.eclipse.lsp4j.SemanticHighlightingParams;
 import org.eclipse.lsp4j.VersionedTextDocumentIdentifier;
@@ -74,20 +74,8 @@ public class SemanticHighlightingManager {
         HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
 
         // Get semantic highlights.
-        HashMap<Integer, ArrayList<Token>> mocaSqlRangePreInfos = getMocaSqlRangeSemanticHighlightings();
-        for (Map.Entry<Integer, ArrayList<Token>> entry : mocaSqlRangePreInfos.entrySet()) {
-
-            int lineNum = entry.getKey();
-            if (preInfos.containsKey(lineNum)) {
-                preInfos.get(lineNum).addAll(entry.getValue());
-            } else {
-                ArrayList<Token> arr = new ArrayList<>();
-                arr.addAll(entry.getValue());
-                preInfos.put(lineNum, arr);
-            }
-        }
-        HashMap<Integer, ArrayList<Token>> groovyRangePreInfos = getGroovyRangeSemanticHighlightings();
-        for (Map.Entry<Integer, ArrayList<Token>> entry : groovyRangePreInfos.entrySet()) {
+        HashMap<Integer, ArrayList<Token>> mocaEmbeddedLanguageRangePreInfos = getMocaEmbeddedLanguageRangeSemanticHighlightings();
+        for (Map.Entry<Integer, ArrayList<Token>> entry : mocaEmbeddedLanguageRangePreInfos.entrySet()) {
 
             int lineNum = entry.getKey();
             if (preInfos.containsKey(lineNum)) {
@@ -147,71 +135,67 @@ public class SemanticHighlightingManager {
         MocaServices.languageClient.semanticHighlighting(params);
     }
 
-    public static HashMap<Integer, ArrayList<Token>> getMocaSqlRangeSemanticHighlightings() {
+    public static HashMap<Integer, ArrayList<Token>> getMocaEmbeddedLanguageRangeSemanticHighlightings() {
 
         // Have to pack all highlights for line into one SemanticHighlightingInformation
         // object.
         HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
 
-        for (Range mocaSqlRange : MocaServices.mocaCompilationResult.mocaSqlRanges) {
-            int firstLine = mocaSqlRange.getStart().getLine();
-            int lastLine = mocaSqlRange.getEnd().getLine();
+        for (MocaEmbeddedLanguageRange mocaEmbeddedLanguageRange : MocaServices.mocaCompilationResult.mocaEmbeddedLanguageRanges) {
+            int firstLine = mocaEmbeddedLanguageRange.range.getStart().getLine();
+            int lastLine = mocaEmbeddedLanguageRange.range.getEnd().getLine();
 
-            for (int i = firstLine; i < lastLine; i++) {
-                if (preInfos.containsKey(i)) {
-                    preInfos.get(i).add(new Token(0, 5, MOCASQL_RANGE_SCOPES_IDX));
-                } else {
-                    ArrayList<Token> tokensArr = new ArrayList<>();
-                    tokensArr.add(new Token(0, 5, MOCASQL_RANGE_SCOPES_IDX));
-                    preInfos.put(i, tokensArr);
-                }
-            }
+            switch (mocaEmbeddedLanguageRange.mocaLanguageContext.id) {
+                case MocaSql:
+                    for (int i = firstLine; i < lastLine; i++) {
+                        if (preInfos.containsKey(i)) {
+                            preInfos.get(i).add(new Token(0, 5, MOCASQL_RANGE_SCOPES_IDX));
+                        } else {
+                            ArrayList<Token> tokensArr = new ArrayList<>();
+                            tokensArr.add(new Token(0, 5, MOCASQL_RANGE_SCOPES_IDX));
+                            preInfos.put(i, tokensArr);
+                        }
+                    }
 
-            // Add last line now.
-            if (preInfos.containsKey(lastLine)) {
-                preInfos.get(lastLine)
-                        .add(new Token(0, mocaSqlRange.getEnd().getCharacter(), MOCASQL_RANGE_LAST_LINE_SCOPES_IDX));
-            } else {
-                ArrayList<Token> tokensArr = new ArrayList<>();
-                tokensArr.add(new Token(0, mocaSqlRange.getEnd().getCharacter(), MOCASQL_RANGE_LAST_LINE_SCOPES_IDX));
-                preInfos.put(lastLine, tokensArr);
+                    // Add last line now.
+                    if (preInfos.containsKey(lastLine)) {
+                        preInfos.get(lastLine).add(new Token(0, mocaEmbeddedLanguageRange.range.getEnd().getCharacter(),
+                                MOCASQL_RANGE_LAST_LINE_SCOPES_IDX));
+                    } else {
+                        ArrayList<Token> tokensArr = new ArrayList<>();
+                        tokensArr.add(new Token(0, mocaEmbeddedLanguageRange.range.getEnd().getCharacter(),
+                                MOCASQL_RANGE_LAST_LINE_SCOPES_IDX));
+                        preInfos.put(lastLine, tokensArr);
+                    }
+                    break;
+                case Groovy:
+                    for (int i = firstLine; i < lastLine; i++) {
+                        if (preInfos.containsKey(i)) {
+                            preInfos.get(i).add(new Token(0, 1, GROOVY_RANGE_SCOPES_IDX));
+                        } else {
+                            ArrayList<Token> tokensArr = new ArrayList<>();
+                            tokensArr.add(new Token(0, 1, GROOVY_RANGE_SCOPES_IDX));
+                            preInfos.put(i, tokensArr);
+                        }
+                    }
+
+                    // Add last line now.
+                    if (preInfos.containsKey(lastLine)) {
+                        preInfos.get(lastLine).add(new Token(0, mocaEmbeddedLanguageRange.range.getEnd().getCharacter(),
+                                GROOVY_RANGE_LAST_LINE_SCOPES_IDX));
+                    } else {
+                        ArrayList<Token> tokensArr = new ArrayList<>();
+                        tokensArr.add(new Token(0, mocaEmbeddedLanguageRange.range.getEnd().getCharacter(),
+                                GROOVY_RANGE_LAST_LINE_SCOPES_IDX));
+                        preInfos.put(lastLine, tokensArr);
+                    }
+                    break;
+                default:
+                    break;
             }
 
         }
 
-        return preInfos;
-
-    }
-
-    public static HashMap<Integer, ArrayList<Token>> getGroovyRangeSemanticHighlightings() {
-
-        // Have to pack all highlights for line into one SemanticHighlightingInformation
-        // object.
-        HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
-        for (Range groovyRange : MocaServices.mocaCompilationResult.groovyRanges) {
-            int firstLine = groovyRange.getStart().getLine();
-            int lastLine = groovyRange.getEnd().getLine();
-
-            for (int i = firstLine; i < lastLine; i++) {
-                if (preInfos.containsKey(i)) {
-                    preInfos.get(i).add(new Token(0, 1, GROOVY_RANGE_SCOPES_IDX));
-                } else {
-                    ArrayList<Token> tokensArr = new ArrayList<>();
-                    tokensArr.add(new Token(0, 1, GROOVY_RANGE_SCOPES_IDX));
-                    preInfos.put(i, tokensArr);
-                }
-            }
-
-            // Add last line now.
-            if (preInfos.containsKey(lastLine)) {
-                preInfos.get(lastLine)
-                        .add(new Token(0, groovyRange.getEnd().getCharacter(), GROOVY_RANGE_LAST_LINE_SCOPES_IDX));
-            } else {
-                ArrayList<Token> tokensArr = new ArrayList<>();
-                tokensArr.add(new Token(0, groovyRange.getEnd().getCharacter(), GROOVY_RANGE_LAST_LINE_SCOPES_IDX));
-                preInfos.put(lastLine, tokensArr);
-            }
-        }
         return preInfos;
 
     }
@@ -287,10 +271,13 @@ public class SemanticHighlightingManager {
         // object.
         HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
 
-        for (int i = 0; i < MocaServices.mocaCompilationResult.mocaSqlRanges.size(); i++) {
+        for (int i = 0; i < MocaServices.mocaCompilationResult.mocaEmbeddedLanguageRanges.size(); i++) {
+
+            MocaEmbeddedLanguageRange mocaEmbeddedLanguageRange = MocaServices.mocaCompilationResult.mocaEmbeddedLanguageRanges
+                    .get(i);
 
             MocaSqlCompilationResult mocaSqlCompilationResult = MocaServices.mocaCompilationResult.mocaSqlCompilationResults
-                    .get(i);
+                    .get(mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
 
             // Quit now if no compilation result.
             if (mocaSqlCompilationResult != null) {
@@ -298,8 +285,7 @@ public class SemanticHighlightingManager {
                 for (org.antlr.v4.runtime.Token tableToken : mocaSqlCompilationResult.mocaSqlParseTreeListener.tableTokens) {
 
                     Position pos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
-                            tableToken.getCharPositionInLine(),
-                            MocaServices.mocaCompilationResult.mocaSqlRanges.get(i));
+                            tableToken.getCharPositionInLine(), mocaEmbeddedLanguageRange.range);
 
                     String word = tableToken.getText().toLowerCase();
 

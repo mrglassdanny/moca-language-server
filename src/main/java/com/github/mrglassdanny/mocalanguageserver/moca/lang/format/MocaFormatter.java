@@ -467,9 +467,7 @@ public class MocaFormatter {
                             if (mocaSqlCompilationResult != null) {
                                 // Now let's see if changed position is contained in mocasql range. If so,
                                 // format it. Otherwise, we will assume formatting is not necessary.
-                                if (RangeUtils.contains(
-                                        mocaCompilationResult.mocaSqlRanges.get(mocasqlCompilationResultsVisited),
-                                        changePosition)) {
+                                if (RangeUtils.contains(mocaSqlCompilationResult.range, changePosition)) {
                                     String formattedMocaSqlScript = formatMocaSql(
                                             mocaSqlCompilationResult.mocaSqlTokens, indentBuf);
                                     if (formattedMocaSqlScript != null) {

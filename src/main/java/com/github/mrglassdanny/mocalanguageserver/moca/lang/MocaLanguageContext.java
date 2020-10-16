@@ -7,16 +7,17 @@ public class MocaLanguageContext {
     };
 
     public MocaLanguageContext.ContextId id;
-    public int rangeIdx;
+    // Represents key in compilation result maps.
+    public int compilationResultIdx;
 
     public MocaLanguageContext() {
         this.id = MocaLanguageContext.ContextId.Moca;
-        this.rangeIdx = 0;
+        this.compilationResultIdx = 0;
     }
 
-    public MocaLanguageContext(MocaLanguageContext.ContextId id, int rangeIdx) {
+    public MocaLanguageContext(MocaLanguageContext.ContextId id, int compilationResultIdx) {
         this.id = id;
-        this.rangeIdx = rangeIdx;
+        this.compilationResultIdx = compilationResultIdx;
     }
 
 }

@@ -11,10 +11,11 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ConsoleErrorListener;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.eclipse.lsp4j.Range;
 
 public class MocaSqlCompiler {
 
-    public static MocaSqlCompilationResult compileScript(String script) {
+    public static MocaSqlCompilationResult compileScript(String script, Range range) {
         MocaSqlCompilationResult mocaSqlCompilationResult = new MocaSqlCompilationResult();
 
         mocaSqlCompilationResult.mocaSqlTokens = new MocaSqlLexer(
@@ -29,7 +30,7 @@ public class MocaSqlCompiler {
         ParseTree parseTree = mocaSqlCompilationResult.mocaSqlParser.moca_sql_script();
         mocaSqlCompilationResult.mocaSqlParseTreeListener = new MocaSqlParseTreeListener();
         new ParseTreeWalker().walk(mocaSqlCompilationResult.mocaSqlParseTreeListener, parseTree);
-
+        mocaSqlCompilationResult.range = range;
         return mocaSqlCompilationResult;
     }
 }

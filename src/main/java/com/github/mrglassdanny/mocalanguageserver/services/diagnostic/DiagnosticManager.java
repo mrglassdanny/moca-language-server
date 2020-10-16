@@ -12,6 +12,8 @@ import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaEmbeddedLanguageRange;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaSyntaxError;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
@@ -70,8 +72,6 @@ public class DiagnosticManager {
             return;
         }
 
-        clearDiagnostics(MocaServices.mocaCompilationResult.uriStr);
-
         ArrayList<Diagnostic> diagnostics = new ArrayList<>();
 
         Collection<Callable<Boolean>> allDiagnosticsTasks = new ArrayList<Callable<Boolean>>();
@@ -96,7 +96,7 @@ public class DiagnosticManager {
             return true;
         });
 
-        // Make sure everything is done before we leave function.
+        // Make sure everything is done before we publish diagnostics.
         try {
             DiagnosticManager.allDiagnosticsThreadPool.invokeAll(allDiagnosticsTasks);
         } catch (InterruptedException ex) {
@@ -110,6 +110,8 @@ public class DiagnosticManager {
 
     // Could be clearing diagnostics for uriStr different than one in moca
     // compilation result.
+    // It seems like the only need for this function is to clear all diagnostics
+    // from file when we close it. We do not need to call this otherwise.
     public static void clearDiagnostics(String uriStr) {
         MocaServices.languageClient.publishDiagnostics(new PublishDiagnosticsParams(uriStr, new ArrayList<>()));
     }
@@ -133,29 +135,32 @@ public class DiagnosticManager {
         // SQL.
         // Check mocasql diagnostics enabled.
         if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlDiagnosticsEnabled) {
-            for (int i = 0; i < MocaServices.mocaCompilationResult.mocaSqlRanges.size(); i++) {
-                final int rangeIdx = i;
-                errorDiagnosticsTasks.add(() -> {
-                    diagnostics.addAll(handleMocaSqlSyntaxErrors(
-                            MocaServices.mocaCompilationResult.mocaSqlCompilationResults.get(rangeIdx),
-                            MocaServices.mocaCompilationResult.mocaSqlRanges.get(rangeIdx)));
-                    return true;
-                });
-
+            for (MocaEmbeddedLanguageRange mocaEmbeddedLanguageRange : MocaServices.mocaCompilationResult.mocaEmbeddedLanguageRanges) {
+                if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.MocaSql) {
+                    errorDiagnosticsTasks.add(() -> {
+                        diagnostics.addAll(handleMocaSqlSyntaxErrors(
+                                MocaServices.mocaCompilationResult.mocaSqlCompilationResults
+                                        .get(mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx),
+                                mocaEmbeddedLanguageRange.range));
+                        return true;
+                    });
+                }
             }
         }
 
         // GROOVY.
         // Check groovy diagnostics enabled.
         if (MocaLanguageServer.mocaLanguageServerOptions.groovyDiagnosticsEnabled) {
-            for (int i = 0; i < MocaServices.mocaCompilationResult.groovyRanges.size(); i++) {
-                final int rangeIdx = i;
-                errorDiagnosticsTasks.add(() -> {
-                    diagnostics.addAll(
-                            handleGroovyAll(MocaServices.mocaCompilationResult.groovyCompilationResults.get(rangeIdx),
-                                    MocaServices.mocaCompilationResult.groovyRanges.get(rangeIdx)));
-                    return true;
-                });
+            for (MocaEmbeddedLanguageRange mocaEmbeddedLanguageRange : MocaServices.mocaCompilationResult.mocaEmbeddedLanguageRanges) {
+                if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.Groovy) {
+                    errorDiagnosticsTasks.add(() -> {
+                        diagnostics.addAll(handleGroovyAll(
+                                MocaServices.mocaCompilationResult.groovyCompilationResults
+                                        .get(mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx),
+                                mocaEmbeddedLanguageRange.range));
+                        return true;
+                    });
+                }
             }
         }
 
@@ -191,25 +196,26 @@ public class DiagnosticManager {
         // Check mocasql diagnostics and warning diagnostics enabled.
         if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlDiagnosticsEnabled
                 && MocaLanguageServer.mocaLanguageServerOptions.mocasqlWarningDiagnosticsEnabled) {
-            for (int i = 0; i < MocaServices.mocaCompilationResult.mocaSqlRanges.size(); i++) {
-                final int rangeIdx = i;
-                MocaSqlCompilationResult sqlCompilationResult = MocaServices.mocaCompilationResult.mocaSqlCompilationResults
-                        .get(rangeIdx);
-                Range sqlRange = MocaServices.mocaCompilationResult.mocaSqlRanges.get(rangeIdx);
-                warningDiagnosticsTasks.add(() -> {
+            for (MocaEmbeddedLanguageRange mocaEmbeddedLanguageRange : MocaServices.mocaCompilationResult.mocaEmbeddedLanguageRanges) {
+                if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.MocaSql) {
+                    MocaSqlCompilationResult sqlCompilationResult = MocaServices.mocaCompilationResult.mocaSqlCompilationResults
+                            .get(mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
+                    Range sqlRange = mocaEmbeddedLanguageRange.range;
+                    warningDiagnosticsTasks.add(() -> {
 
-                    diagnostics.addAll(handleMocaSqlTableDoesNotExistWarnings(
-                            sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
+                        diagnostics.addAll(handleMocaSqlTableDoesNotExistWarnings(
+                                sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
 
-                    return true;
-                });
-                warningDiagnosticsTasks.add(() -> {
+                        return true;
+                    });
+                    warningDiagnosticsTasks.add(() -> {
 
-                    diagnostics.addAll(handleMocaSqlColumnsDoesNotExistInTableWarnings(
-                            sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
+                        diagnostics.addAll(handleMocaSqlColumnsDoesNotExistInTableWarnings(
+                                sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
 
-                    return true;
-                });
+                        return true;
+                    });
+                }
             }
         }
 
@@ -354,7 +360,7 @@ public class DiagnosticManager {
             // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree -- a
             // risk I am willing to take!
             if (!foundTable) {
-                if (sqlParseTreeListener.aliasedTableNames.containsKey(tableTokenText)) {
+                if (sqlParseTreeListener.tableAliasNames.containsKey(tableTokenText)) {
                     foundTable = true;
                 }
             }
@@ -370,8 +376,7 @@ public class DiagnosticManager {
 
                 Position beginPos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
                         tableToken.getCharPositionInLine(), sqlScriptRange);
-                Position endPos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
-                        tableToken.getCharPositionInLine(), sqlScriptRange);
+                Position endPos = beginPos;
 
                 if (beginPos != null && endPos != null) {
                     Range range = new Range(beginPos, endPos);
@@ -399,11 +404,11 @@ public class DiagnosticManager {
             String tableName = entry.getKey();
 
             // Before we continue, we need to check if this is an alias for another table.
-            if (sqlParseTreeListener.aliasedTableNames.containsKey(tableName)) {
+            if (sqlParseTreeListener.tableAliasNames.containsKey(tableName)) {
                 // Switch to actual table name.
                 // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree -- a
                 // risk I am willing to take!
-                tableName = sqlParseTreeListener.aliasedTableNames.get(tableName);
+                tableName = sqlParseTreeListener.tableAliasNames.get(tableName);
             }
 
             // Analyze table name and see if column(s) exist for it.
@@ -449,8 +454,7 @@ public class DiagnosticManager {
                         if (!foundColumn && !isReservedColumn) {
                             Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
                                     columnToken.getCharPositionInLine(), sqlScriptRange);
-                            Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                    columnToken.getCharPositionInLine(), sqlScriptRange);
+                            Position endPos = beginPos;
 
                             if (beginPos != null && endPos != null) {
                                 Range range = new Range(beginPos, endPos);
@@ -506,8 +510,7 @@ public class DiagnosticManager {
                             if (!foundColumn && !isReservedColumn) {
                                 Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
                                         columnToken.getCharPositionInLine(), sqlScriptRange);
-                                Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                        columnToken.getCharPositionInLine(), sqlScriptRange);
+                                Position endPos = beginPos;
 
                                 if (beginPos != null && endPos != null) {
                                     Range range = new Range(beginPos, endPos);
@@ -551,18 +554,22 @@ public class DiagnosticManager {
 
                             // We check for alias above, but if we have multiple tables in context it would
                             // have failed. We need to check here in our analysis.
-                            if (sqlParseTreeListener.aliasedTableNames.containsKey(tableNameForColumn)) {
+                            if (sqlParseTreeListener.tableAliasNames.containsKey(tableNameForColumn)) {
                                 // Switch to actual table name.
                                 // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree -- a
                                 // risk I am willing to take!
-                                tableNameForColumn = sqlParseTreeListener.aliasedTableNames.get(tableNameForColumn);
+                                tableNameForColumn = sqlParseTreeListener.tableAliasNames.get(tableNameForColumn);
                             }
 
                             ArrayList<TableColumn> columnsInTable = MocaCache.getGlobalMocaCache().mocaSqlCache
                                     .getColumnsForTable(tableNameForColumn);
                             if (columnsInTable != null) {
                                 for (TableColumn tableColumn : columnsInTable) {
-                                    if (tableColumn.column_name.compareToIgnoreCase(columnTokenText) == 0) {
+                                    // Check column and potential column alias against tableColumn.
+                                    if (tableColumn.column_name.compareToIgnoreCase(columnTokenText) == 0
+                                            || (sqlParseTreeListener.columnAliasNames.containsKey(columnTokenText)
+                                                    && sqlParseTreeListener.columnAliasNames
+                                                            .containsKey(columnTokenText))) {
                                         foundColumn = true;
                                         tablesFoundForColumn++;
                                         tableNamesForWarnDiagnosticBuf.append(tableNameForColumn);
@@ -590,8 +597,7 @@ public class DiagnosticManager {
 
                             Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
                                     columnToken.getCharPositionInLine(), sqlScriptRange);
-                            Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                    columnToken.getCharPositionInLine(), sqlScriptRange);
+                            Position endPos = beginPos;
 
                             if (beginPos != null && endPos != null) {
                                 Range range = new Range(beginPos, endPos);
@@ -611,8 +617,7 @@ public class DiagnosticManager {
 
                             Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
                                     columnToken.getCharPositionInLine(), sqlScriptRange);
-                            Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                    columnToken.getCharPositionInLine(), sqlScriptRange);
+                            Position endPos = beginPos;
 
                             if (beginPos != null && endPos != null) {
                                 Range range = new Range(beginPos, endPos);
@@ -624,11 +629,11 @@ public class DiagnosticManager {
 
                                     // We check for alias above, but if we have multiple tables in context it would
                                     // have failed. We need to check here in our analysis.
-                                    if (sqlParseTreeListener.aliasedTableNames.containsKey(tableNameForColumn)) {
+                                    if (sqlParseTreeListener.tableAliasNames.containsKey(tableNameForColumn)) {
                                         // Switch to actual table name.
                                         // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree
                                         // -- a risk I am willing to take!
-                                        tableNameForColumn = sqlParseTreeListener.aliasedTableNames
+                                        tableNameForColumn = sqlParseTreeListener.tableAliasNames
                                                 .get(tableNameForColumn);
                                     }
 

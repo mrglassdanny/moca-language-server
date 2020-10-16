@@ -104,7 +104,7 @@ public class HoverProvider {
             case MocaSql:
 
                 MocaSqlCompilationResult mocaSqlCompilationResult = MocaServices.mocaCompilationResult.mocaSqlCompilationResults
-                        .get(mocaLanguageContext.rangeIdx);
+                        .get(mocaLanguageContext.compilationResultIdx);
 
                 // Tables, views, aliases, and subqueries - oh my!
                 String mocaSqlWord = PositionUtils.getWordAtPosition(MocaServices.mocaCompilationResult.script,
@@ -129,11 +129,11 @@ public class HoverProvider {
 
                     // If not, check aliased tables/views/subqueries.
                     if (mocaSqlCompilationResult != null && mocaSqlCompilationResult.mocaSqlParseTreeListener != null
-                            && mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames != null
-                            && mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames
+                            && mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames != null
+                            && mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames
                                     .containsKey(mocaSqlWord)) {
                         hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, Table.getMarkdownStrForAlias(
-                                mocaSqlCompilationResult.mocaSqlParseTreeListener.aliasedTableNames.get(mocaSqlWord))));
+                                mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames.get(mocaSqlWord))));
                         return CompletableFuture.completedFuture(hover);
                     }
                     if (mocaSqlCompilationResult != null && mocaSqlCompilationResult.mocaSqlParseTreeListener != null
@@ -157,7 +157,7 @@ public class HoverProvider {
             case Groovy:
 
                 GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
-                        .get(mocaLanguageContext.rangeIdx);
+                        .get(mocaLanguageContext.compilationResultIdx);
 
                 if (groovyCompilationResult.astVisitor == null) {
                     // This shouldn't happen, but let's avoid an exception if something
@@ -170,8 +170,7 @@ public class HoverProvider {
                 // message than what is thrown without this try/catch.
                 try {
                     ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
-                            position.getCharacter(),
-                            MocaServices.mocaCompilationResult.groovyRanges.get(mocaLanguageContext.rangeIdx));
+                            position.getCharacter(), groovyCompilationResult.range);
 
                     ASTNode definitionNode = GroovyASTUtils.getDefinition(offsetNode, false,
                             groovyCompilationResult.astVisitor);
