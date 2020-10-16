@@ -565,11 +565,7 @@ public class DiagnosticManager {
                                     .getColumnsForTable(tableNameForColumn);
                             if (columnsInTable != null) {
                                 for (TableColumn tableColumn : columnsInTable) {
-                                    // Check column and potential column alias against tableColumn.
-                                    if (tableColumn.column_name.compareToIgnoreCase(columnTokenText) == 0
-                                            || (sqlParseTreeListener.columnAliasNames.containsKey(columnTokenText)
-                                                    && sqlParseTreeListener.columnAliasNames
-                                                            .containsKey(columnTokenText))) {
+                                    if (tableColumn.column_name.compareToIgnoreCase(columnTokenText) == 0) {
                                         foundColumn = true;
                                         tablesFoundForColumn++;
                                         tableNamesForWarnDiagnosticBuf.append(tableNameForColumn);
@@ -579,6 +575,13 @@ public class DiagnosticManager {
                                     }
                                 }
                             }
+                        }
+
+                        // Check if column is alias.
+                        // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree
+                        // -- a risk I am willing to take!
+                        if (!foundColumn && sqlParseTreeListener.columnAliasNames.contains(columnTokenText)) {
+                            foundColumn = true;
                         }
 
                         // Make sure column does not exist in reserved column names array.
