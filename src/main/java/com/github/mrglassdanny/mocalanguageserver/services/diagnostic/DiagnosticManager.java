@@ -357,8 +357,8 @@ public class DiagnosticManager {
             }
 
             // Check to see if is alias for table name.
-            // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree -- a
-            // risk I am willing to take!
+            // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree, but
+            // that is a risk I am willing to take!
             if (!foundTable) {
                 if (sqlParseTreeListener.tableAliasNames.containsKey(tableTokenText)) {
                     foundTable = true;
@@ -406,8 +406,8 @@ public class DiagnosticManager {
             // Before we continue, we need to check if this is an alias for another table.
             if (sqlParseTreeListener.tableAliasNames.containsKey(tableName)) {
                 // Switch to actual table name.
-                // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree -- a
-                // risk I am willing to take!
+                // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree, but
+                // that is a risk I am willing to take!
                 tableName = sqlParseTreeListener.tableAliasNames.get(tableName);
             }
 
@@ -556,8 +556,8 @@ public class DiagnosticManager {
                             // have failed. We need to check here in our analysis.
                             if (sqlParseTreeListener.tableAliasNames.containsKey(tableNameForColumn)) {
                                 // Switch to actual table name.
-                                // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree -- a
-                                // risk I am willing to take!
+                                // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree, but
+                                // that is a risk I am willing to take!
                                 tableNameForColumn = sqlParseTreeListener.tableAliasNames.get(tableNameForColumn);
                             }
 
@@ -565,11 +565,7 @@ public class DiagnosticManager {
                                     .getColumnsForTable(tableNameForColumn);
                             if (columnsInTable != null) {
                                 for (TableColumn tableColumn : columnsInTable) {
-                                    // Check column and potential column alias against tableColumn.
-                                    if (tableColumn.column_name.compareToIgnoreCase(columnTokenText) == 0
-                                            || (sqlParseTreeListener.columnAliasNames.containsKey(columnTokenText)
-                                                    && sqlParseTreeListener.columnAliasNames
-                                                            .containsKey(columnTokenText))) {
+                                    if (tableColumn.column_name.compareToIgnoreCase(columnTokenText) == 0) {
                                         foundColumn = true;
                                         tablesFoundForColumn++;
                                         tableNamesForWarnDiagnosticBuf.append(tableNameForColumn);
@@ -579,6 +575,13 @@ public class DiagnosticManager {
                                     }
                                 }
                             }
+                        }
+
+                        // Check if column is alias.
+                        // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree, but
+                        // that is a risk I am willing to take!
+                        if (!foundColumn && sqlParseTreeListener.columnAliasNames.contains(columnTokenText)) {
+                            foundColumn = true;
                         }
 
                         // Make sure column does not exist in reserved column names array.
@@ -631,8 +634,8 @@ public class DiagnosticManager {
                                     // have failed. We need to check here in our analysis.
                                     if (sqlParseTreeListener.tableAliasNames.containsKey(tableNameForColumn)) {
                                         // Switch to actual table name.
-                                        // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree
-                                        // -- a risk I am willing to take!
+                                        // NOTE: could see goofy stuff if alias is declared elsewhere in parse tree, but
+                                        // that is a risk I am willing to take!
                                         tableNameForColumn = sqlParseTreeListener.tableAliasNames
                                                 .get(tableNameForColumn);
                                     }

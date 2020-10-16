@@ -115,8 +115,18 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        // First make sure we are dealing with the same uri string as current
-        // compilation result. We should be, but let's put this here to be safe!
+        // We do not want to needlessly compile the entire script everytime a change
+        // occurs -- this yields bad performance, especially on larger scripts.
+        // Therefore, we will instead attempt to figure out where the change to the file
+        // occured and only compile the range that the change is in.
+
+        // Before we process file manager changes, we need to extract the previous
+        // contents.
+        String prevScript = MocaServices.fileManager.getContents(uri);
+        MocaServices.fileManager.didChange(params);
+
+        // Real quick, let's make sure we are dealing with the same uri string as
+        // current compilation result. We should be, but let's put this here to be safe!
         if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
             String script = MocaServices.fileManager.getContents(uri);
             MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
@@ -132,16 +142,6 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
             return;
         }
-
-        // We do not want to needlessly compile the entire script everytime a change
-        // occurs -- this yields bad performance, especially on larger scripts.
-        // Therefore, we will instead attempt to figure out where the change to the file
-        // occured and only compile the range that the change is in.
-
-        // Before we process file manager changes, we need to extract the previous
-        // contents.
-        String prevScript = MocaServices.fileManager.getContents(uri);
-        MocaServices.fileManager.didChange(params);
 
         // Now we need to get the new contents and compare.
         String script = MocaServices.fileManager.getContents(uri);

@@ -9,9 +9,16 @@ public class Table {
         this.description = description;
     }
 
-    public String getMarkdownStr() {
-        return String.format("table **%s**\n\n%s", this.table_name,
-                (this.description == null || this.description.isEmpty() ? "" : String.format("%s", this.description)));
+    public String getMarkdownStr(boolean isView) {
+        if (isView) {
+            return String.format("view **%s**\n\n%s", this.table_name,
+                    (this.description == null || this.description.isEmpty() ? ""
+                            : String.format("%s", this.description)));
+        } else {
+            return String.format("table **%s**\n\n%s", this.table_name,
+                    (this.description == null || this.description.isEmpty() ? ""
+                            : String.format("%s", this.description)));
+        }
     }
 
     public static String getMarkdownStrForAlias(String aliasedTableName) {
