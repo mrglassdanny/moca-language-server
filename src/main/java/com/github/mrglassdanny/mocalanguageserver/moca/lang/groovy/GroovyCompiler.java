@@ -11,6 +11,7 @@ import org.codehaus.groovy.control.MultipleCompilationErrorsException;
 import org.codehaus.groovy.control.Phases;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
+import org.eclipse.lsp4j.Range;
 
 import groovy.lang.GroovyClassLoader;
 import groovy.transform.TypeChecked;
@@ -19,13 +20,14 @@ public class GroovyCompiler {
 
     public static ArrayList<String> classpathList = new ArrayList<>();
 
-    public static GroovyCompilationResult compileScript(final int rangeIdx, String groovyScript) {
+    public static GroovyCompilationResult compileScript(final int compilationResultIdx, String groovyScript,
+            Range range) {
 
         GroovyCompilationResult groovyCompilationResult = new GroovyCompilationResult();
         groovyCompilationResult.compilationUnit = createCompilationUnit();
 
         // Add a source unit to compilation unit and then compile.
-        groovyCompilationResult.compilationUnit.addSource(new SourceUnit("script" + rangeIdx, groovyScript,
+        groovyCompilationResult.compilationUnit.addSource(new SourceUnit("script" + compilationResultIdx, groovyScript,
                 groovyCompilationResult.compilationUnit.getConfiguration(),
                 groovyCompilationResult.compilationUnit.getClassLoader(),
                 groovyCompilationResult.compilationUnit.getErrorCollector()));
@@ -56,6 +58,7 @@ public class GroovyCompiler {
 
         // Now visit AST and we should be all good.
         groovyCompilationResult.astVisitor.visitCompilationUnit(groovyCompilationResult.compilationUnit);
+        groovyCompilationResult.range = range;
         return groovyCompilationResult;
 
     }

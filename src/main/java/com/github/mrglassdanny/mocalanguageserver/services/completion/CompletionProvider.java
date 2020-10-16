@@ -194,7 +194,7 @@ public class CompletionProvider {
             case MocaSql:
 
                 MocaSqlCompilationResult mocaSqlCompilationResult = MocaServices.mocaCompilationResult.mocaSqlCompilationResults
-                        .get(mocaLanguageContext.rangeIdx);
+                        .get(mocaLanguageContext.compilationResultIdx);
 
                 // If we do not have compilation result, we need to quit now.
                 if (mocaSqlCompilationResult != null) {
@@ -288,10 +288,7 @@ public class CompletionProvider {
             case Groovy:
 
                 GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
-                        .get(mocaLanguageContext.rangeIdx);
-
-                Range groovyScriptRange = MocaServices.mocaCompilationResult.groovyRanges
-                        .get(mocaLanguageContext.rangeIdx);
+                        .get(mocaLanguageContext.compilationResultIdx);
 
                 if (groovyCompilationResult.astVisitor == null) {
                     // this shouldn't happen, but let's avoid an exception if something
@@ -304,7 +301,7 @@ public class CompletionProvider {
                 // message than what is thrown without this try/catch.
                 try {
                     ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
-                            position.getCharacter(), groovyScriptRange);
+                            position.getCharacter(), groovyCompilationResult.range);
                     if (offsetNode == null) {
                         return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
                     }
@@ -313,29 +310,31 @@ public class CompletionProvider {
 
                     if (offsetNode instanceof PropertyExpression) {
                         populateGroovyItemsFromPropertyExpression((PropertyExpression) offsetNode, position, items,
-                                groovyScriptRange, groovyCompilationResult);
+                                groovyCompilationResult.range, groovyCompilationResult);
                     } else if (parentNode instanceof PropertyExpression) {
                         populateGroovyItemsFromPropertyExpression((PropertyExpression) parentNode, position, items,
-                                groovyScriptRange, groovyCompilationResult);
+                                groovyCompilationResult.range, groovyCompilationResult);
                     } else if (offsetNode instanceof MethodCallExpression) {
                         populateGroovyItemsFromMethodCallExpression((MethodCallExpression) offsetNode, position, items,
-                                groovyScriptRange, groovyCompilationResult);
+                                groovyCompilationResult.range, groovyCompilationResult);
                     } else if (offsetNode instanceof ConstructorCallExpression) {
                         populateGroovyItemsFromConstructorCallExpression((ConstructorCallExpression) offsetNode,
-                                position, items, groovyScriptRange, groovyCompilationResult);
+                                position, items, groovyCompilationResult.range, groovyCompilationResult);
                     } else if (parentNode instanceof MethodCallExpression) {
                         populateGroovyItemsFromMethodCallExpression((MethodCallExpression) parentNode, position, items,
-                                groovyScriptRange, groovyCompilationResult);
+                                groovyCompilationResult.range, groovyCompilationResult);
                     } else if (offsetNode instanceof VariableExpression) {
                         populateGroovyItemsFromVariableExpression((VariableExpression) offsetNode, position, items,
-                                groovyScriptRange, groovyCompilationResult);
+                                groovyCompilationResult.range, groovyCompilationResult);
                     } else if (offsetNode instanceof ImportNode) {
-                        populateGroovyItemsFromImportNode((ImportNode) offsetNode, position, items, groovyScriptRange,
-                                groovyCompilationResult);
+                        populateGroovyItemsFromImportNode((ImportNode) offsetNode, position, items,
+                                groovyCompilationResult.range, groovyCompilationResult);
                     } else if (offsetNode instanceof MethodNode) {
-                        populateGroovyItemsFromScope(offsetNode, "", items, groovyScriptRange, groovyCompilationResult);
+                        populateGroovyItemsFromScope(offsetNode, "", items, groovyCompilationResult.range,
+                                groovyCompilationResult);
                     } else if (offsetNode instanceof Statement) {
-                        populateGroovyItemsFromScope(offsetNode, "", items, groovyScriptRange, groovyCompilationResult);
+                        populateGroovyItemsFromScope(offsetNode, "", items, groovyCompilationResult.range,
+                                groovyCompilationResult);
                     }
                 } catch (NoClassDefFoundError noClassDefFoundError) {
                     MocaServices.logErrorToLanguageClient(String.format("Class '%s' not linked in groovyclasspath",

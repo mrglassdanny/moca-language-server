@@ -12,6 +12,8 @@ import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaEmbeddedLanguageRange;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaSyntaxError;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
@@ -133,29 +135,32 @@ public class DiagnosticManager {
         // SQL.
         // Check mocasql diagnostics enabled.
         if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlDiagnosticsEnabled) {
-            for (int i = 0; i < MocaServices.mocaCompilationResult.mocaSqlRanges.size(); i++) {
-                final int rangeIdx = i;
-                errorDiagnosticsTasks.add(() -> {
-                    diagnostics.addAll(handleMocaSqlSyntaxErrors(
-                            MocaServices.mocaCompilationResult.mocaSqlCompilationResults.get(rangeIdx),
-                            MocaServices.mocaCompilationResult.mocaSqlRanges.get(rangeIdx)));
-                    return true;
-                });
-
+            for (MocaEmbeddedLanguageRange mocaEmbeddedLanguageRange : MocaServices.mocaCompilationResult.mocaEmbeddedLanguageRanges) {
+                if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.MocaSql) {
+                    errorDiagnosticsTasks.add(() -> {
+                        diagnostics.addAll(handleMocaSqlSyntaxErrors(
+                                MocaServices.mocaCompilationResult.mocaSqlCompilationResults
+                                        .get(mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx),
+                                mocaEmbeddedLanguageRange.range));
+                        return true;
+                    });
+                }
             }
         }
 
         // GROOVY.
         // Check groovy diagnostics enabled.
         if (MocaLanguageServer.mocaLanguageServerOptions.groovyDiagnosticsEnabled) {
-            for (int i = 0; i < MocaServices.mocaCompilationResult.groovyRanges.size(); i++) {
-                final int rangeIdx = i;
-                errorDiagnosticsTasks.add(() -> {
-                    diagnostics.addAll(
-                            handleGroovyAll(MocaServices.mocaCompilationResult.groovyCompilationResults.get(rangeIdx),
-                                    MocaServices.mocaCompilationResult.groovyRanges.get(rangeIdx)));
-                    return true;
-                });
+            for (MocaEmbeddedLanguageRange mocaEmbeddedLanguageRange : MocaServices.mocaCompilationResult.mocaEmbeddedLanguageRanges) {
+                if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.Groovy) {
+                    errorDiagnosticsTasks.add(() -> {
+                        diagnostics.addAll(handleGroovyAll(
+                                MocaServices.mocaCompilationResult.groovyCompilationResults
+                                        .get(mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx),
+                                mocaEmbeddedLanguageRange.range));
+                        return true;
+                    });
+                }
             }
         }
 
@@ -191,25 +196,26 @@ public class DiagnosticManager {
         // Check mocasql diagnostics and warning diagnostics enabled.
         if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlDiagnosticsEnabled
                 && MocaLanguageServer.mocaLanguageServerOptions.mocasqlWarningDiagnosticsEnabled) {
-            for (int i = 0; i < MocaServices.mocaCompilationResult.mocaSqlRanges.size(); i++) {
-                final int rangeIdx = i;
-                MocaSqlCompilationResult sqlCompilationResult = MocaServices.mocaCompilationResult.mocaSqlCompilationResults
-                        .get(rangeIdx);
-                Range sqlRange = MocaServices.mocaCompilationResult.mocaSqlRanges.get(rangeIdx);
-                warningDiagnosticsTasks.add(() -> {
+            for (MocaEmbeddedLanguageRange mocaEmbeddedLanguageRange : MocaServices.mocaCompilationResult.mocaEmbeddedLanguageRanges) {
+                if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.MocaSql) {
+                    MocaSqlCompilationResult sqlCompilationResult = MocaServices.mocaCompilationResult.mocaSqlCompilationResults
+                            .get(mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
+                    Range sqlRange = mocaEmbeddedLanguageRange.range;
+                    warningDiagnosticsTasks.add(() -> {
 
-                    diagnostics.addAll(handleMocaSqlTableDoesNotExistWarnings(
-                            sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
+                        diagnostics.addAll(handleMocaSqlTableDoesNotExistWarnings(
+                                sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
 
-                    return true;
-                });
-                warningDiagnosticsTasks.add(() -> {
+                        return true;
+                    });
+                    warningDiagnosticsTasks.add(() -> {
 
-                    diagnostics.addAll(handleMocaSqlColumnsDoesNotExistInTableWarnings(
-                            sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
+                        diagnostics.addAll(handleMocaSqlColumnsDoesNotExistInTableWarnings(
+                                sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
 
-                    return true;
-                });
+                        return true;
+                    });
+                }
             }
         }
 

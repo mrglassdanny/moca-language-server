@@ -298,13 +298,10 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
             case Groovy:
                 String originalSourceForGroovy = null;
                 GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
-                        .get(mocaLanguageContext.rangeIdx);
-
-                Range groovyScriptRange = MocaServices.mocaCompilationResult.groovyRanges
-                        .get(mocaLanguageContext.rangeIdx);
+                        .get(mocaLanguageContext.compilationResultIdx);
 
                 ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
-                        position.getCharacter(), groovyScriptRange);
+                        position.getCharacter(), groovyCompilationResult.range);
                 if (offsetNode == null) {
                     originalSourceForGroovy = MocaServices.fileManager.getContents(uri);
                     VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
@@ -363,13 +360,11 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
             case Groovy:
                 String originalSource = null;
                 GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
-                        .get(mocaLanguageContext.rangeIdx);
-
-                Range groovyScriptRange = MocaServices.mocaCompilationResult.groovyRanges
-                        .get(mocaLanguageContext.rangeIdx);
+                        .get(mocaLanguageContext.compilationResultIdx);
 
                 ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(
-                        params.getPosition().getLine(), params.getPosition().getCharacter(), groovyScriptRange);
+                        params.getPosition().getLine(), params.getPosition().getCharacter(),
+                        groovyCompilationResult.range);
                 if (offsetNode == null) {
                     originalSource = MocaServices.fileManager.getContents(uri);
                     VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(

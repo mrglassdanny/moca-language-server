@@ -114,10 +114,7 @@ public class SignatureHelpProvider {
                 break;
             case Groovy:
                 GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
-                        .get(mocaLanguageContext.rangeIdx);
-
-                Range groovyScriptRange = MocaServices.mocaCompilationResult.groovyRanges
-                        .get(mocaLanguageContext.rangeIdx);
+                        .get(mocaLanguageContext.compilationResultIdx);
 
                 if (groovyCompilationResult.astVisitor == null) {
                     // this shouldn't happen, but let's avoid an exception if something
@@ -131,7 +128,7 @@ public class SignatureHelpProvider {
                 // message than what is thrown without this try/catch.
                 try {
                     ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
-                            position.getCharacter(), groovyScriptRange);
+                            position.getCharacter(), groovyCompilationResult.range);
                     if (offsetNode == null) {
                         return CompletableFuture.completedFuture(new SignatureHelp(Collections.emptyList(), -1, -1));
                     }
@@ -144,7 +141,7 @@ public class SignatureHelpProvider {
 
                         ArgumentListExpression argsList = (ArgumentListExpression) offsetNode;
                         List<Expression> expressions = argsList.getExpressions();
-                        activeParamIndex = getActiveParameter(position, expressions, groovyScriptRange);
+                        activeParamIndex = getActiveParameter(position, expressions, groovyCompilationResult.range);
                     }
 
                     if (methodCall == null) {

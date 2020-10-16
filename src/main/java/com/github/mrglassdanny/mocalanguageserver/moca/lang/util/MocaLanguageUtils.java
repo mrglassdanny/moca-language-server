@@ -1,35 +1,24 @@
 package com.github.mrglassdanny.mocalanguageserver.moca.lang.util;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaEmbeddedLanguageRange;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.RangeUtils;
 
 import org.antlr.v4.runtime.Token;
 import org.eclipse.lsp4j.Position;
-import org.eclipse.lsp4j.Range;
 
 public class MocaLanguageUtils {
 
     public static MocaLanguageContext getMocaLanguageContextFromPosition(Position position,
             MocaCompilationResult mocaCompilationResult) {
 
-        // Check moca sql.
-        int mocaSqlCount = 0;
-        for (Range range : mocaCompilationResult.mocaSqlRanges) {
-            if (RangeUtils.contains(range, position)) {
-                return new MocaLanguageContext(MocaLanguageContext.ContextId.MocaSql, mocaSqlCount);
+        // Check inside mocasql and groovy ranges.
+        for (MocaEmbeddedLanguageRange mocaEmbeddedLanguageRange : mocaCompilationResult.mocaEmbeddedLanguageRanges) {
+            if (RangeUtils.contains(mocaEmbeddedLanguageRange.range, position)) {
+                return mocaEmbeddedLanguageRange.mocaLanguageContext;
             }
-            mocaSqlCount++;
-        }
-
-        // Check groovy.
-        int groovyCount = 0;
-        for (Range range : mocaCompilationResult.groovyRanges) {
-            if (RangeUtils.contains(range, position)) {
-                return new MocaLanguageContext(MocaLanguageContext.ContextId.Groovy, groovyCount);
-            }
-            groovyCount++;
         }
 
         // Must be moca.
