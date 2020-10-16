@@ -376,8 +376,7 @@ public class DiagnosticManager {
 
                 Position beginPos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
                         tableToken.getCharPositionInLine(), sqlScriptRange);
-                Position endPos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
-                        tableToken.getCharPositionInLine(), sqlScriptRange);
+                Position endPos = beginPos;
 
                 if (beginPos != null && endPos != null) {
                     Range range = new Range(beginPos, endPos);
@@ -455,8 +454,7 @@ public class DiagnosticManager {
                         if (!foundColumn && !isReservedColumn) {
                             Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
                                     columnToken.getCharPositionInLine(), sqlScriptRange);
-                            Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                    columnToken.getCharPositionInLine(), sqlScriptRange);
+                            Position endPos = beginPos;
 
                             if (beginPos != null && endPos != null) {
                                 Range range = new Range(beginPos, endPos);
@@ -512,8 +510,7 @@ public class DiagnosticManager {
                             if (!foundColumn && !isReservedColumn) {
                                 Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
                                         columnToken.getCharPositionInLine(), sqlScriptRange);
-                                Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                        columnToken.getCharPositionInLine(), sqlScriptRange);
+                                Position endPos = beginPos;
 
                                 if (beginPos != null && endPos != null) {
                                     Range range = new Range(beginPos, endPos);
@@ -596,8 +593,7 @@ public class DiagnosticManager {
 
                             Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
                                     columnToken.getCharPositionInLine(), sqlScriptRange);
-                            Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                    columnToken.getCharPositionInLine(), sqlScriptRange);
+                            Position endPos = beginPos;
 
                             if (beginPos != null && endPos != null) {
                                 Range range = new Range(beginPos, endPos);
@@ -617,8 +613,7 @@ public class DiagnosticManager {
 
                             Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
                                     columnToken.getCharPositionInLine(), sqlScriptRange);
-                            Position endPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
-                                    columnToken.getCharPositionInLine(), sqlScriptRange);
+                            Position endPos = beginPos;
 
                             if (beginPos != null && endPos != null) {
                                 Range range = new Range(beginPos, endPos);
