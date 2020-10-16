@@ -58,7 +58,7 @@ public class MocaCompiler {
         Collection<Callable<Boolean>> compileTasks = new ArrayList<Callable<Boolean>>();
 
         for (MocaEmbeddedLanguageRange mocaEmbeddedLanguageRange : mocaCompilationResult.mocaEmbeddedLanguageRanges) {
-            mocaEmbeddedLanguageRange.didChange = true;
+
             switch (mocaEmbeddedLanguageRange.mocaLanguageContext.id) {
                 case MocaSql:
                     compileTasks.add(() -> {
@@ -158,7 +158,6 @@ public class MocaCompiler {
                                 mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
                     }
 
-                    mocaEmbeddedLanguageRange.didChange = true;
                     foundStart = true;
 
                     // If range contains end position as well, we can just quit here!
@@ -178,8 +177,6 @@ public class MocaCompiler {
                     compileGroovy(mocaScript, mocaCompilationResult, mocaEmbeddedLanguageRange.range,
                             mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
                 }
-
-                mocaEmbeddedLanguageRange.didChange = true;
 
                 // Now we check if this range contains the end postion. If so, we quit!
                 if (RangeUtils.contains(mocaEmbeddedLanguageRange.range, endPos)) {

@@ -5,19 +5,9 @@ import org.eclipse.lsp4j.Range;
 public class MocaEmbeddedLanguageRange {
     public Range range;
     public MocaLanguageContext mocaLanguageContext;
-    // This field represents whether or not range did change from last compilation.
-    // MocaCompiler.compileScript sets all ranges didChange to 'true', while
-    // MocaCompiler.compileScriptChanges will only set 'true' if change occured and
-    // we are compiling. Otherwise, didChange will stay 'false'.
-    // This field is used in conjunction with optimizations surrounding
-    // operations processing only changes to script instead of processing
-    // everything. Good examples of this are compilation, formatting, and
-    // diagnostics publishing.
-    public boolean didChange;
 
     public MocaEmbeddedLanguageRange(Range range, MocaLanguageContext mocaLanguageContext) {
         this.range = range;
         this.mocaLanguageContext = mocaLanguageContext;
-        this.didChange = false;
     }
 }
