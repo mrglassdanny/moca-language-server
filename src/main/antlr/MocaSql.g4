@@ -4089,13 +4089,25 @@ simple_id
 
 // https://msdn.microsoft.com/en-us/library/ms188074.aspx
 // Spaces are allowed for comparison operators.
-comparison_operator
-    : '=' | '>' | '<' | '<' '=' | '>' '=' | '<' '>' | '!' '=' | '!' '>' | '!' '<'
-    ;
+comparison_operator:
+	EQUAL
+	| LESS
+	| GREATER
+	| LESS_EQUAL
+	| GREATER_EQUAL
+	| NOT_EQUAL
+	| '!' '>'
+	| '!' '<';
 
-assignment_operator
-    : '+=' | '-=' | '*=' | '/=' | '%=' | '&=' | '^=' | '|='
-    ;
+assignment_operator:
+	PLUS_ASSIGN
+	| MINUS_ASSIGN
+	| MULT_ASSIGN
+	| DIV_ASSIGN
+	| MOD_ASSIGN
+	| '&='
+	| '^='
+	| '|=';
 
 file_size
     : DECIMAL( KB | MB | GB | TB | '%' )?
