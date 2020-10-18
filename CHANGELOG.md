@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.8 (October 17, 2020)
+* Issue #38 fix -- https://github.com/mrglassdanny/moca-language-server/issues/38
+
 ## 1.4.7 (October 16, 2020)
 * Issue #41 fix -- https://github.com/mrglassdanny/moca-language-server/issues/41
 * Issue #42 fix -- https://github.com/mrglassdanny/moca-language-server/issues/42
