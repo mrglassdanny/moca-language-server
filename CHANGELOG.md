@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.10 (October 18, 2020)
+* MocaSql grammar bug fix
+
 ## 1.4.9 (October 18, 2020)
 * MocaSql grammar bug fix
 
