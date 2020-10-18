@@ -3110,6 +3110,7 @@ table_source_item
     | LOCAL_ID '.' function_call (as_table_alias column_alias_list?)?
     | open_xml
     | ':' ':' function_call       as_table_alias? // Build-in function (old syntax)
+    | (LOCAL_ID (DOT simple_id)? COLON 'RAW') // allowing a normal moca var is not correct here; has to be followed by a RAW type cast.
     ;
 
 // https://docs.microsoft.com/en-us/sql/t-sql/functions/openxml-transact-sql
