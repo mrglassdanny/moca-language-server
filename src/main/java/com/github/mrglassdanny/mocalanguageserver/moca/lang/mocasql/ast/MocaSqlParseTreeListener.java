@@ -477,7 +477,9 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                             // join part contexts do not include it.
                             tableName += (tblSrcJoinCtx.table_source_item().getStop().getText() + ",");
                             for (Join_partContext joinPartCtx : tblSrcJoinCtx.join_part()) {
-                                tableName += (joinPartCtx.table_source().getStop().getText() + ",");
+                                if (joinPartCtx.table_source() != null) {
+                                    tableName += (joinPartCtx.table_source().getStop().getText() + ",");
+                                }
                             }
                         } else {
                             // Should just have 1 table/subquery.

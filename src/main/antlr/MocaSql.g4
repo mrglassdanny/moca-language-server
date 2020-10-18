@@ -3640,8 +3640,8 @@ constant
     ;
 
 sign
-    : '+'
-    | '-'
+    : PLUS
+    | MINUS
     ;
 
 // https://msdn.microsoft.com/en-us/library/ms175874.aspx
@@ -4105,9 +4105,9 @@ assignment_operator:
 	| MULT_ASSIGN
 	| DIV_ASSIGN
 	| MOD_ASSIGN
-	| '&='
-	| '^='
-	| '|=';
+	| AND_ASSIGN
+	| XOR_ASSIGN
+	| OR_ASSIGN;
 
 file_size
     : DECIMAL( KB | MB | GB | TB | '%' )?
