@@ -82,8 +82,9 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     public static LanguageClient languageClient = null;
     private static FileManager fileManager = new FileManager();
 
-    // Diagnostics and semantic highlighting can be processed on different threads.
-    private static ExecutorService threadPool = Executors.newFixedThreadPool(4);
+    // Initialize thread pool for MocaServices -- certain processes here can be
+    // performed concurrently.
+    private static ExecutorService threadPool = Executors.newCachedThreadPool();
 
     @Override
     public void connect(LanguageClient client) {
@@ -99,15 +100,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String script = MocaServices.fileManager.getContents(uri);
         MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-        // We do not need to sync things up -- we can just execute.
-        MocaServices.threadPool.execute(() -> {
-            DiagnosticManager.streamAll();
-        });
-
-        MocaServices.threadPool.execute(() -> {
-            SemanticHighlightingManager.streamAll();
-        });
-
+        DiagnosticManager.streamAll();
+        SemanticHighlightingManager.streamAll();
     }
 
     @Override
@@ -131,14 +125,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
             String script = MocaServices.fileManager.getContents(uri);
             MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-            // We do not need to sync things up -- we can just execute.
-            MocaServices.threadPool.execute(() -> {
-                DiagnosticManager.streamAll();
-            });
-
-            MocaServices.threadPool.execute(() -> {
-                SemanticHighlightingManager.streamAll();
-            });
+            DiagnosticManager.streamAll();
+            SemanticHighlightingManager.streamAll();
 
             return;
         }
@@ -158,11 +146,11 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
             MocaServices.mocaCompilationResult = MocaCompiler.compileScriptChanges(script, uriStr, changeIdx, changeLen,
                     MocaServices.mocaCompilationResult);
 
+            // Utilize thread pool to stream diagnostics & semantic highlights.
             // We do not need to sync things up -- we can just execute.
             MocaServices.threadPool.execute(() -> {
                 DiagnosticManager.streamAll();
             });
-
             MocaServices.threadPool.execute(() -> {
                 SemanticHighlightingManager.streamAll();
             });
@@ -170,14 +158,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         } else {
             MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-            // We do not need to sync things up -- we can just execute.
-            MocaServices.threadPool.execute(() -> {
-                DiagnosticManager.streamAll();
-            });
-
-            MocaServices.threadPool.execute(() -> {
-                SemanticHighlightingManager.streamAll();
-            });
+            DiagnosticManager.streamAll();
+            SemanticHighlightingManager.streamAll();
         }
     }
 
@@ -200,14 +182,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String script = MocaServices.fileManager.getContents(uri);
         MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-        // We do not need to sync things up -- we can just execute.
-        MocaServices.threadPool.execute(() -> {
-            DiagnosticManager.streamAll();
-        });
-
-        MocaServices.threadPool.execute(() -> {
-            SemanticHighlightingManager.streamAll();
-        });
+        DiagnosticManager.streamAll();
+        SemanticHighlightingManager.streamAll();
     }
 
     @Override
