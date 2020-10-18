@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.9 (October 18, 2020)
+* MocaSql grammar bug fix
+
 ## 1.4.8 (October 18, 2020)
 * Issue #38 fix -- https://github.com/mrglassdanny/moca-language-server/issues/38
 
