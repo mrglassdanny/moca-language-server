@@ -27,4 +27,14 @@ public class MocaCommandArgument {
                 (this.altnam == null || this.altnam.isEmpty() ? "" : String.format("Alias: %s", this.altnam)),
                 (this.argreq ? "**REQUIRED**" : ""));
     }
+
+    public String getAlternateNameMarkdownStr() {
+        if (this.altnam == null || this.altnam.isEmpty()) {
+            return this.getMarkdownStr();
+        } else {
+            return String.format("alias **%s** for argument **%s**\n\nType: %s\n\n%s", this.altnam, this.argnam,
+                    this.argtyp, (this.argreq ? "**REQUIRED**" : ""));
+        }
+
+    }
 }

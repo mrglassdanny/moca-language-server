@@ -388,6 +388,17 @@ public class CompletionProvider {
                 item.setFilterText(firstTypedLetter + arg.argnam);
                 item.setKind(CompletionItemKind.Field);
                 items.add(item);
+
+                // NOTE: argument alias/alternate names will be included as distinct completion
+                // items.
+                if (arg.altnam != null && !arg.altnam.isEmpty()) {
+                    CompletionItem altItem = new CompletionItem(arg.altnam);
+                    altItem.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, arg.getAlternateNameMarkdownStr()));
+                    // HACK - same as ^.
+                    altItem.setFilterText(firstTypedLetter + arg.altnam);
+                    altItem.setKind(CompletionItemKind.EnumMember);
+                    items.add(altItem);
+                }
             }
         }
 
