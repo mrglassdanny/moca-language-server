@@ -4,6 +4,9 @@ This document provides information for developers who wish to contribute to the 
 
 ## Building
 
+#### Java
+MOCA Language Server is written in Java, so JDK is required. Most development has been done with JDK version 1.8.0_161, so it is recommended that at least this version is installed.
+
 #### Dependencies
 Project uses Gradle, so all dependencies are managed via `build.gradle` file in project root directory. Gradle `gradle-wrapper.jar` is packed with the project (`/gradle/wrapper`), so there is no need to make sure Gradle is installed.
 

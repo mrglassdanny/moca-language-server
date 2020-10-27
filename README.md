@@ -55,7 +55,9 @@ Cross-platform Java based implementation of the [Language Server Protocol] for M
 
 ## Contribute
 
-Thinking about contributing to the MOCA Language Server?! If you think something is missing or could be improved, please open issues and pull requests. If you'd like to help this project grow, we'd love to have you!
+Thinking about contributing to the MOCA Language Server?! If you think something is missing or could be improved, please open issues and pull requests. If you'd like to help this project grow, we'd love to have you! 
+
+Please refer to the [contribution guide] for specifics.
 
 
 ## Contact
@@ -67,4 +69,5 @@ Thinking about contributing to the MOCA Language Server?! If you think something
 [Language Server Protocol]: https://langserver.org
 [vscode-moca-client]: https://github.com/mrglassdanny/vscode-moca-client
 [https SSLHandshakeException]: https://stackoverflow.com/questions/9619030/resolving-javax-net-ssl-sslhandshakeexception-sun-security-validator-validatore
+[contribution guide]: https://github.com/mrglassdanny/moca-language-server/blob/master/CONTRIBUTE.md
 
