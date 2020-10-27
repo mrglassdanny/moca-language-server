@@ -22,7 +22,7 @@ This will generate new `.jar` files in `/build/libs`. `moca-language-server-VERS
 
 ## Testing
 
-It is recommended to test in conjunction with language client. Supported language clients can be found [here]. Supported clients will possess their own contribution guides. 
+It is recommended to test in conjunction with language client. Here is where [supported language clients] can be found. Supported clients will possess their own contribution guides. 
 
 
 ## Debugging
@@ -33,4 +33,4 @@ Debugging with language client is **not yet configured**.
 
 
 
-[here]: https://github.com/mrglassdanny/moca-language-server/blob/master/README.md
+[supported language clients]: https://github.com/mrglassdanny/moca-language-server/blob/master/README.md
