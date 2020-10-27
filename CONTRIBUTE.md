@@ -1,6 +1,6 @@
 # Contribute
 
-This document provides information for developers who wish to contribute to the MOCA Language Server project.
+This document provides information for developers who wish to contribute to the **MOCA Language Server** project.
 
 ## Building
 
