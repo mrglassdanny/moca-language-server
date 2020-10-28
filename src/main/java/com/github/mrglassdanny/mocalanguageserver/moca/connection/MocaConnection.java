@@ -17,6 +17,8 @@ import okhttp3.Response;
 
 public class MocaConnection {
 
+    private static final String SRV_TYP_PRODUCTION = "PRODUCTION";
+
     // Using singleton pattern to manage single global moca connection instance.
     private static MocaConnection globalMocaConnection = null;
 
@@ -34,6 +36,7 @@ public class MocaConnection {
     private String password;
     private String sessionId;
     private String environmentVariablesXmlStr;
+    private boolean productionEnvironment;
 
     private MocaConnection() {
         this.urlStr = null;
@@ -41,6 +44,7 @@ public class MocaConnection {
         this.password = null;
         this.sessionId = null;
         this.environmentVariablesXmlStr = null;
+        this.productionEnvironment = false;
     }
 
     private void login() throws IOException, MocaException, Exception {
@@ -54,6 +58,12 @@ public class MocaConnection {
         this.environmentVariablesXmlStr = String.format(
                 "<var name=\"LOCALE_ID\" value=\"%s\"/><var name=\"USR_ID\" value=\"%s\"/><var name=\"SESSION_KEY\" value=\"%s\"/>",
                 localeId, usrId, sessionKey);
+
+        // Check if is production.
+        if (res.getString(0, "srv_typ").compareToIgnoreCase(SRV_TYP_PRODUCTION) == 0) {
+            this.productionEnvironment = true;
+        }
+
     }
 
     public void connect(String urlStr, String userId, String password) throws Exception {
@@ -150,6 +160,10 @@ public class MocaConnection {
     public boolean isValid() {
         return this.urlStr != null && this.userId != null && this.password != null
                 && this.environmentVariablesXmlStr != null;
+    }
+
+    public boolean isProductionEnvironment() {
+        return this.productionEnvironment;
     }
 
     // Utilies.

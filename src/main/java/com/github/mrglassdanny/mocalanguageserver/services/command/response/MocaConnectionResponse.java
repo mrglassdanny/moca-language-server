@@ -6,7 +6,6 @@ public class MocaConnectionResponse {
     public Exception exception;
 
     public MocaConnectionResponse() {
-
     }
 
     public MocaConnectionResponse(boolean eOk, Exception exception) {

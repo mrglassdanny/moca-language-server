@@ -22,6 +22,8 @@ import com.github.mrglassdanny.mocalanguageserver.services.command.response.Moca
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnection;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
 
 import org.eclipse.lsp4j.ExecuteCommandParams;
@@ -166,7 +168,7 @@ public class ExecuteCommandProvider {
 
                 if (!MocaConnection.getGlobalMocaConnection().isValid()) {
                     MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null,
-                            new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER));
+                            new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER), false);
                     return CompletableFuture.completedFuture(mocaResultsResponse);
                 }
 
@@ -178,6 +180,24 @@ public class ExecuteCommandProvider {
 
                     MocaResultsRequest mocaResultsRequest = new MocaResultsRequest(args);
 
+                    // If not approved for run, check prod env unsafe config.
+                    if (!mocaResultsRequest.isApprovedForRun) {
+                        // If confirmation of unsafe scripts in production is configured and connection
+                        // is production connection, check if script is 'production safe'.
+                        if (MocaLanguageServer.mocaLanguageServerOptions.approveUnsafeScriptsInProductionEnvironment
+                                && MocaConnection.getGlobalMocaConnection().isProductionEnvironment()) {
+                            // Figure out if script has production unsafe activities.
+                            // We will do this by compiling script and checking out the compilation result.
+                            MocaCompilationResult mocaCompilationResult = MocaCompiler
+                                    .compileScript(mocaResultsRequest.script, mocaResultsRequest.fileName);
+
+                            if (mocaCompilationResult.isNotProductionEnvironmentSafe()) {
+                                MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null, null, true);
+                                return CompletableFuture.completedFuture(mocaResultsResponse);
+                            }
+                        }
+                    }
+
                     // Adding elapsed time console logging.
                     long start = System.currentTimeMillis();
 
@@ -186,9 +206,11 @@ public class ExecuteCommandProvider {
                         mocaResultsResponse.results = MocaConnection.getGlobalMocaConnection()
                                 .executeCommand(mocaResultsRequest.script);
                         mocaResultsResponse.exception = null;
+                        mocaResultsResponse.isProductionEnvionmentAndScriptIsUnsafe = false;
                     } catch (Exception e) {
                         mocaResultsResponse.results = null;
                         mocaResultsResponse.exception = e;
+                        mocaResultsResponse.isProductionEnvionmentAndScriptIsUnsafe = false;
                     }
 
                     // Check to see if our connection timed out. We will know whether or not this is
@@ -250,7 +272,7 @@ public class ExecuteCommandProvider {
 
                     return CompletableFuture.completedFuture(mocaResultsResponse);
                 } catch (Exception exception) {
-                    MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null, exception);
+                    MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null, exception, false);
                     return CompletableFuture.completedFuture(mocaResultsResponse);
                 }
 
@@ -258,7 +280,7 @@ public class ExecuteCommandProvider {
 
                 if (!MocaConnection.getGlobalMocaConnection().isValid()) {
                     MocaTraceResponse mocaTraceResponse = new MocaTraceResponse(
-                            new MocaResultsResponse(null, new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER)));
+                            new MocaResultsResponse(null, new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER), false));
                     return CompletableFuture.completedFuture(mocaTraceResponse);
                 }
 
@@ -300,7 +322,7 @@ public class ExecuteCommandProvider {
                     return CompletableFuture.completedFuture(new MocaTraceResponse(mocaResultsResponse));
                 } catch (Exception exception) {
                     return CompletableFuture
-                            .completedFuture(new MocaTraceResponse(new MocaResultsResponse(null, exception)));
+                            .completedFuture(new MocaTraceResponse(new MocaResultsResponse(null, exception, false)));
                 }
 
             case COMMAND_LOOKUP:
