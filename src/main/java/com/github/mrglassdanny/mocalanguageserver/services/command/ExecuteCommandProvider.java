@@ -89,7 +89,8 @@ public class ExecuteCommandProvider {
                     MocaConnectionResponse mocaConnectionResponse = new MocaConnectionResponse();
                     try {
                         MocaConnection.getGlobalMocaConnection().connect(mocaConnectionRequest.url,
-                                mocaConnectionRequest.userId, mocaConnectionRequest.password);
+                                mocaConnectionRequest.userId, mocaConnectionRequest.password,
+                                mocaConnectionRequest.approveUnsafeScripts);
                         mocaConnectionResponse.eOk = true;
                         mocaConnectionResponse.exception = null;
                     } catch (Exception e) {
@@ -180,18 +181,16 @@ public class ExecuteCommandProvider {
 
                     MocaResultsRequest mocaResultsRequest = new MocaResultsRequest(args);
 
-                    // If not approved for run, check prod env unsafe config.
-                    if (!mocaResultsRequest.isApprovedForRun) {
-                        // If confirmation of unsafe scripts in production is configured and connection
-                        // is production connection, check if script is 'production safe'.
-                        if (MocaLanguageServer.mocaLanguageServerOptions.approveUnsafeScriptsInProductionEnvironment
-                                && MocaConnection.getGlobalMocaConnection().isProductionEnvironment()) {
-                            // Figure out if script has production unsafe activities.
-                            // We will do this by compiling script and checking out the compilation result.
+                    // If not approved for execution, check unsafe config for connection.
+                    if (!mocaResultsRequest.isApprovedForExecution) {
+                        // If approval of unsafe scripts for connection is configured, check if script
+                        // is unsafe.
+                        if (MocaConnection.getGlobalMocaConnection().needToApproveUnsafeScripts()) {
+
                             MocaCompilationResult mocaCompilationResult = MocaCompiler
                                     .compileScript(mocaResultsRequest.script, mocaResultsRequest.fileName);
 
-                            if (mocaCompilationResult.isNotProductionEnvironmentSafe()) {
+                            if (mocaCompilationResult.isUnsafe()) {
                                 MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null, null, true);
                                 return CompletableFuture.completedFuture(mocaResultsResponse);
                             }
@@ -206,11 +205,11 @@ public class ExecuteCommandProvider {
                         mocaResultsResponse.results = MocaConnection.getGlobalMocaConnection()
                                 .executeCommand(mocaResultsRequest.script);
                         mocaResultsResponse.exception = null;
-                        mocaResultsResponse.isProductionEnvionmentAndScriptIsUnsafe = false;
+                        mocaResultsResponse.needsApprovalToExecute = false;
                     } catch (Exception e) {
                         mocaResultsResponse.results = null;
                         mocaResultsResponse.exception = e;
-                        mocaResultsResponse.isProductionEnvionmentAndScriptIsUnsafe = false;
+                        mocaResultsResponse.needsApprovalToExecute = false;
                     }
 
                     // Check to see if our connection timed out. We will know whether or not this is
@@ -228,7 +227,8 @@ public class ExecuteCommandProvider {
                                 MocaConnection.getGlobalMocaConnection().connect(
                                         MocaConnection.getGlobalMocaConnection().getUrlStr(),
                                         MocaConnection.getGlobalMocaConnection().getUserId(),
-                                        MocaConnection.getGlobalMocaConnection().getPassword());
+                                        MocaConnection.getGlobalMocaConnection().getPassword(),
+                                        MocaConnection.getGlobalMocaConnection().needToApproveUnsafeScripts());
                                 reconnectResponse.eOk = true;
                                 reconnectResponse.exception = null;
                             } catch (Exception e) {

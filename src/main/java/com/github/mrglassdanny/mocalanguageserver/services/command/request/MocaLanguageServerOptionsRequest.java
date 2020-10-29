@@ -37,8 +37,6 @@ public class MocaLanguageServerOptionsRequest {
                                 .getAsBoolean();
                 this.mocaLanguageServerOptions.groovyStaticTypeCheckingEnabled = jsonObj
                                 .get("groovy-static-type-checking-enabled").getAsBoolean();
-                this.mocaLanguageServerOptions.approveUnsafeScriptsInProductionEnvironment = jsonObj
-                                .get("approve-unsafe-scripts-in-production-environment").getAsBoolean();
 
         }
 

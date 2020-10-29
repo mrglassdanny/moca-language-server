@@ -6,18 +6,17 @@ public class MocaResultsResponse {
 
     public MocaResults results;
     public Exception exception;
-    public boolean isProductionEnvionmentAndScriptIsUnsafe;
+    public boolean needsApprovalToExecute;
 
     public MocaResultsResponse() {
         this.results = null;
         this.exception = null;
-        this.isProductionEnvionmentAndScriptIsUnsafe = false;
+        this.needsApprovalToExecute = false;
     }
 
-    public MocaResultsResponse(MocaResults results, Exception exception,
-            boolean isProductionEnvionmentAndScriptIsUnsafe) {
+    public MocaResultsResponse(MocaResults results, Exception exception, boolean needsApprovalToExecute) {
         this.results = results;
         this.exception = exception;
-        this.isProductionEnvionmentAndScriptIsUnsafe = isProductionEnvionmentAndScriptIsUnsafe;
+        this.needsApprovalToExecute = needsApprovalToExecute;
     }
 }
