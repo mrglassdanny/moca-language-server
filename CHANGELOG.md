@@ -1,7 +1,8 @@
 # Changelog
 
-## 1.6.10 (October ??, 2020)
+## 1.6.10 (October 29, 2020)
 * Issue #52 enhancement -- https://github.com/mrglassdanny/moca-language-server/issues/52
+* Issue #53 enhancement -- https://github.com/mrglassdanny/moca-language-server/issues/53
 * Issue #54 enhancement -- https://github.com/mrglassdanny/moca-language-server/issues/54
 
 ## 1.5.10 (October 28, 2020)
