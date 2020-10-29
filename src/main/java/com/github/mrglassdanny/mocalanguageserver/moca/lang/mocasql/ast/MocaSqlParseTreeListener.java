@@ -35,6 +35,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     public ArrayList<String> columnAliasNames;
     public HashMap<String, SubqueryContext> subqueries; // Key is subquery name.
     public HashMap<SubqueryContext, ArrayList<Token>> subqueryColumns;
+    public boolean isUpdateOrDeleteStatementWithoutWhereClause;
     public boolean isUnsafe;
 
     public MocaSqlParseTreeListener() {
@@ -44,6 +45,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         this.columnAliasNames = new ArrayList<>();
         this.subqueries = new HashMap<>();
         this.subqueryColumns = new HashMap<>();
+        this.isUpdateOrDeleteStatementWithoutWhereClause = false;
         this.isUnsafe = false;
     }
 
@@ -663,21 +665,45 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     // Unsafe clauses/statements.
     @Override
     public void enterDdl_clause(MocaSqlParser.Ddl_clauseContext ctx) {
+        if (ctx == null) {
+            return;
+        }
+
         this.isUnsafe = true;
     }
 
     @Override
     public void enterDelete_statement(MocaSqlParser.Delete_statementContext ctx) {
+        if (ctx == null) {
+            return;
+        }
+
         this.isUnsafe = true;
+
+        if (ctx.WHERE() == null) {
+            this.isUpdateOrDeleteStatementWithoutWhereClause = true;
+        }
     }
 
     @Override
     public void enterUpdate_statement(MocaSqlParser.Update_statementContext ctx) {
+        if (ctx == null) {
+            return;
+        }
+
         this.isUnsafe = true;
+
+        if (ctx.WHERE() == null) {
+            this.isUpdateOrDeleteStatementWithoutWhereClause = true;
+        }
     }
 
     @Override
     public void enterInsert_statement(MocaSqlParser.Insert_statementContext ctx) {
+        if (ctx == null) {
+            return;
+        }
+
         this.isUnsafe = true;
     }
 

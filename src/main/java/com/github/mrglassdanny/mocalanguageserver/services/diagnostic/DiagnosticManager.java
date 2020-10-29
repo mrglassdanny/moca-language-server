@@ -45,6 +45,7 @@ public class DiagnosticManager {
     private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_SUBQUERY_WARNING = "SQL: Column '%s' does not exist on Subquery '%s'";
     private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_ANON_SUBQUERY_WARNING = "SQL: Column '%s' does not exist on anonymous Subquery";
     private static final String MOCASQL_COLUMN_EXISTS_FOR_MULTIPLE_TABLES_WARNING = "SQL: Column '%s' exists for multiple tables(%s) in context; please specify table for column";
+    private static final String MOCASQL_UPDATE_OR_DELETE_STATEMENT_WITHOUT_WHERE_CLAUSE_WARNING = "SQL: UPDATE or DELETE statement does not have a WHERE clause";
     private static final String GROOVY_MESSAGE = "GROOVY: %s";
     private static final String GROOVY_ERROR = "GROOVY: %s";
 
@@ -211,6 +212,13 @@ public class DiagnosticManager {
                     warningDiagnosticsTasks.add(() -> {
 
                         diagnostics.addAll(handleMocaSqlColumnsDoesNotExistInTableWarnings(
+                                sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
+
+                        return true;
+                    });
+                    warningDiagnosticsTasks.add(() -> {
+
+                        diagnostics.addAll(handleMocaSqlUpdateOrDeleteWithoutWhereClauseWarnings(
                                 sqlCompilationResult.mocaSqlParseTreeListener, sqlRange));
 
                         return true;
@@ -658,6 +666,28 @@ public class DiagnosticManager {
         }
         return diagnostics;
 
+    }
+
+    private static ArrayList<Diagnostic> handleMocaSqlUpdateOrDeleteWithoutWhereClauseWarnings(
+            MocaSqlParseTreeListener sqlParseTreeListener, Range sqlScriptRange) {
+
+        ArrayList<Diagnostic> diagnostics = new ArrayList<>();
+
+        if (sqlParseTreeListener.isUpdateOrDeleteStatementWithoutWhereClause) {
+            Position beginPos = sqlScriptRange.getStart();
+            Position endPos = sqlScriptRange.getEnd();
+
+            if (beginPos != null && endPos != null) {
+                Range range = new Range(beginPos, endPos);
+                Diagnostic diagnostic = new Diagnostic();
+                diagnostic.setRange(range);
+                diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                diagnostic.setMessage(MOCASQL_UPDATE_OR_DELETE_STATEMENT_WITHOUT_WHERE_CLAUSE_WARNING);
+                diagnostics.add(diagnostic);
+            }
+        }
+
+        return diagnostics;
     }
 
     // GROOVY.
