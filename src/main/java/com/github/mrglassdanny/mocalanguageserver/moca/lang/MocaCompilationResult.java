@@ -20,7 +20,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 
 public class MocaCompilationResult {
 
-    private static final String[] unsafeVerbs = { "create", "change", "remove" };
+    private static final String[] unsafeVerbs = { "create", "change", "remove", "execute" };
 
     public final String script;
     public final String uriStr;
