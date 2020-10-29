@@ -30,6 +30,7 @@ Cross-platform Java based implementation of the [Language Server Protocol] for M
     - [x] http/https
         - [https SSLHandshakeException]
 - [x] MOCA Script Execution
+    - [x] Approve Unsafe Scripts
 - [x] MOCA Tracing
 - [x] MOCA Command/Trigger Lookup
 
@@ -46,7 +47,6 @@ Cross-platform Java based implementation of the [Language Server Protocol] for M
 - Enable/Disable Groovy Formatting
     - Not yet supported
 - Enable/Disable Groovy Static Type Checking
-- Approve Unsafe Scripts In Production Environments
 
 
 ## Clients

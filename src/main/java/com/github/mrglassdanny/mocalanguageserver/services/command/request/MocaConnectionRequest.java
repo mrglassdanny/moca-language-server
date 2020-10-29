@@ -13,10 +13,12 @@ public class MocaConnectionRequest {
     public String userId;
     public String password;
     public ArrayList<String> groovyClasspathList;
+    public boolean approveUnsafeScripts;
 
     public MocaConnectionRequest(List<Object> args) throws Exception {
 
         JsonObject connJsonObj = (JsonObject) args.get(0);
+
         this.url = connJsonObj.get("url").getAsString();
         this.userId = connJsonObj.get("user").getAsString();
         this.password = connJsonObj.get("password").getAsString();
@@ -26,6 +28,8 @@ public class MocaConnectionRequest {
         for (JsonElement jsonElem : classpathJsonArr) {
             this.groovyClasspathList.add(jsonElem.getAsString());
         }
+
+        this.approveUnsafeScripts = connJsonObj.get("approveUnsafeScripts").getAsBoolean();
 
     }
 

@@ -11,7 +11,6 @@ public class MocaLanguageServerOptions {
     public boolean mocasqlFormattingEnabled;
     public boolean groovyFormattingEnabled;
     public boolean groovyStaticTypeCheckingEnabled;
-    public boolean approveUnsafeScriptsInProductionEnvironment;
 
     public MocaLanguageServerOptions() {
         this.mocaDiagnosticsEnabled = true;
@@ -23,7 +22,6 @@ public class MocaLanguageServerOptions {
         this.mocasqlFormattingEnabled = true;
         this.groovyFormattingEnabled = true;
         this.groovyStaticTypeCheckingEnabled = true;
-        this.approveUnsafeScriptsInProductionEnvironment = true;
     }
 
 }

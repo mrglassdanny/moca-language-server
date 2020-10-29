@@ -20,7 +20,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 
 public class MocaCompilationResult {
 
-    private static final String[] productionEnvironmentUnsafeVerbs = { "create", "change", "remove" };
+    private static final String[] unsafeVerbs = { "create", "change", "remove", "execute" };
 
     public final String script;
     public final String uriStr;
@@ -80,7 +80,7 @@ public class MocaCompilationResult {
 
     }
 
-    public boolean isNotProductionEnvironmentSafe() {
+    public boolean isUnsafe() {
 
         // Check moca.
         // We will check all of the verb noun clause verbs against a list of
@@ -89,7 +89,7 @@ public class MocaCompilationResult {
             if (!tokenList.isEmpty()) {
                 // We can assume verb in verb noun clause is the first token.
                 String verb = tokenList.get(0).getText();
-                for (String unsafeVerb : MocaCompilationResult.productionEnvironmentUnsafeVerbs) {
+                for (String unsafeVerb : MocaCompilationResult.unsafeVerbs) {
                     if (verb.compareToIgnoreCase(unsafeVerb) == 0) {
                         return true;
                     }
@@ -98,9 +98,9 @@ public class MocaCompilationResult {
         }
 
         // Check mocasql.
-        // Will check each mocasql parse tree listener isProductionUnsafe variable.
+        // Will check each mocasql parse tree listener isUnsafe variable.
         for (MocaSqlCompilationResult mocaSqlCompilationResult : this.mocaSqlCompilationResults.values()) {
-            if (mocaSqlCompilationResult.mocaSqlParseTreeListener.isProductionEnvironmentUnsafe) {
+            if (mocaSqlCompilationResult.mocaSqlParseTreeListener.isUnsafe) {
                 return true;
             }
         }

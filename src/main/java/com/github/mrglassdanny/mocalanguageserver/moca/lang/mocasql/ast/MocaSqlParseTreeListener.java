@@ -35,7 +35,8 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     public ArrayList<String> columnAliasNames;
     public HashMap<String, SubqueryContext> subqueries; // Key is subquery name.
     public HashMap<SubqueryContext, ArrayList<Token>> subqueryColumns;
-    public boolean isProductionEnvironmentUnsafe;
+    public boolean isUpdateOrDeleteStatementWithoutWhereClause;
+    public boolean isUnsafe;
 
     public MocaSqlParseTreeListener() {
         this.tableTokens = new ArrayList<>();
@@ -44,7 +45,8 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         this.columnAliasNames = new ArrayList<>();
         this.subqueries = new HashMap<>();
         this.subqueryColumns = new HashMap<>();
-        this.isProductionEnvironmentUnsafe = false;
+        this.isUpdateOrDeleteStatementWithoutWhereClause = false;
+        this.isUnsafe = false;
     }
 
     private static RuleContext getParentRuleContext(RuleContext ctx, Class<?> parentRuleContextClass) {
@@ -660,25 +662,49 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         }
     }
 
-    // Production unsafe clauses/statements.
+    // Unsafe clauses/statements.
     @Override
     public void enterDdl_clause(MocaSqlParser.Ddl_clauseContext ctx) {
-        this.isProductionEnvironmentUnsafe = true;
+        if (ctx == null) {
+            return;
+        }
+
+        this.isUnsafe = true;
     }
 
     @Override
     public void enterDelete_statement(MocaSqlParser.Delete_statementContext ctx) {
-        this.isProductionEnvironmentUnsafe = true;
+        if (ctx == null) {
+            return;
+        }
+
+        this.isUnsafe = true;
+
+        if (ctx.WHERE() == null) {
+            this.isUpdateOrDeleteStatementWithoutWhereClause = true;
+        }
     }
 
     @Override
     public void enterUpdate_statement(MocaSqlParser.Update_statementContext ctx) {
-        this.isProductionEnvironmentUnsafe = true;
+        if (ctx == null) {
+            return;
+        }
+
+        this.isUnsafe = true;
+
+        if (ctx.WHERE() == null) {
+            this.isUpdateOrDeleteStatementWithoutWhereClause = true;
+        }
     }
 
     @Override
     public void enterInsert_statement(MocaSqlParser.Insert_statementContext ctx) {
-        this.isProductionEnvironmentUnsafe = true;
+        if (ctx == null) {
+            return;
+        }
+
+        this.isUnsafe = true;
     }
 
 }

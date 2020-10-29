@@ -17,8 +17,6 @@ import okhttp3.Response;
 
 public class MocaConnection {
 
-    private static final String SRV_TYP_PRODUCTION = "PRODUCTION";
-
     // Using singleton pattern to manage single global moca connection instance.
     private static MocaConnection globalMocaConnection = null;
 
@@ -36,7 +34,7 @@ public class MocaConnection {
     private String password;
     private String sessionId;
     private String environmentVariablesXmlStr;
-    private boolean productionEnvironment;
+    private boolean approveUnsafeScripts;
 
     private MocaConnection() {
         this.urlStr = null;
@@ -44,7 +42,7 @@ public class MocaConnection {
         this.password = null;
         this.sessionId = null;
         this.environmentVariablesXmlStr = null;
-        this.productionEnvironment = false;
+        this.approveUnsafeScripts = false;
     }
 
     private void login() throws IOException, MocaException, Exception {
@@ -58,21 +56,16 @@ public class MocaConnection {
         this.environmentVariablesXmlStr = String.format(
                 "<var name=\"LOCALE_ID\" value=\"%s\"/><var name=\"USR_ID\" value=\"%s\"/><var name=\"SESSION_KEY\" value=\"%s\"/>",
                 localeId, usrId, sessionKey);
-
-        // Check if is production.
-        if (res.getString(0, "srv_typ").compareToIgnoreCase(SRV_TYP_PRODUCTION) == 0) {
-            this.productionEnvironment = true;
-        }
-
     }
 
-    public void connect(String urlStr, String userId, String password) throws Exception {
+    public void connect(String urlStr, String userId, String password, boolean approveUnsafeScripts) throws Exception {
 
         this.urlStr = urlStr;
         this.userId = userId;
         this.password = password;
         this.sessionId = "";
         this.environmentVariablesXmlStr = "";
+        this.approveUnsafeScripts = approveUnsafeScripts;
 
         // Test to see if url is correct type -- we will only support http and https.
         String lowerCaseUrlStr = this.urlStr.toLowerCase();
@@ -157,13 +150,13 @@ public class MocaConnection {
         return this.password;
     }
 
+    public final boolean needToApproveUnsafeScripts() {
+        return this.approveUnsafeScripts;
+    }
+
     public boolean isValid() {
         return this.urlStr != null && this.userId != null && this.password != null
                 && this.environmentVariablesXmlStr != null;
-    }
-
-    public boolean isProductionEnvironment() {
-        return this.productionEnvironment;
     }
 
     // Utilies.
