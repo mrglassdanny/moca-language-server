@@ -12,6 +12,7 @@ import com.github.mrglassdanny.mocalanguageserver.services.command.request.MocaL
 import com.github.mrglassdanny.mocalanguageserver.services.command.request.MocaLanguageServerOptionsRequest;
 import com.github.mrglassdanny.mocalanguageserver.services.command.request.MocaResultsRequest;
 import com.github.mrglassdanny.mocalanguageserver.services.command.request.MocaTraceRequest;
+import com.github.mrglassdanny.mocalanguageserver.services.command.request.OpenMocaTraceRequest;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.LoadCacheResponse;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaCommandLookupResponse;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaConnectionResponse;
@@ -19,8 +20,10 @@ import com.github.mrglassdanny.mocalanguageserver.services.command.response.Moca
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaLanguageServerOptionsResponse;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaResultsResponse;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaTraceResponse;
+import com.github.mrglassdanny.mocalanguageserver.services.command.response.OpenMocaTraceResponse;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnection;
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
@@ -39,6 +42,7 @@ public class ExecuteCommandProvider {
     public static final String TRACE = "mocalanguageserver.trace";
     public static final String COMMAND_LOOKUP = "mocalanguageserver.commandLookup";
     public static final String SET_LANGUAGE_SERVER_OPTIONS = "mocalanguageserver.setLanguageServerOptions";
+    public static final String OPEN_TRACE = "mocalanguageserver.openTrace";
 
     public static ArrayList<String> mocaLanguageServerCommands = new ArrayList<>();
     static {
@@ -49,6 +53,7 @@ public class ExecuteCommandProvider {
         mocaLanguageServerCommands.add(TRACE);
         mocaLanguageServerCommands.add(COMMAND_LOOKUP);
         mocaLanguageServerCommands.add(SET_LANGUAGE_SERVER_OPTIONS);
+        mocaLanguageServerCommands.add(OPEN_TRACE);
     }
 
     public static CompletableFuture<Object> provideCommandExecution(ExecuteCommandParams params) {
@@ -363,6 +368,49 @@ public class ExecuteCommandProvider {
                     return CompletableFuture.completedFuture(new Object());
                 } catch (Exception exception) {
                     return CompletableFuture.completedFuture(new MocaLanguageServerOptionsResponse(exception));
+                }
+
+            case OPEN_TRACE:
+                try {
+                    List<Object> args = params.getArguments();
+
+                    OpenMocaTraceRequest openMocaTraceRequest = new OpenMocaTraceRequest(args);
+
+                    // If trace file name is not passed in, then we will send all trace file names.
+                    // Otherwise, we will send the contents of the requested trace file.
+                    OpenMocaTraceResponse openMocaTraceResponse;
+                    if (openMocaTraceRequest.requestedTraceFileName == null) {
+
+                        // Read file names from LESDIR/log/*.log
+                        MocaResults res = MocaConnection.getGlobalMocaConnection()
+                                .executeCommand("sl_get dir where path = '${LESDIR}/log/' and filter = '*.log'");
+                        ArrayList<String> traceFileNames = new ArrayList<>(res.getRowCount());
+                        for (int i = 0; i < res.getRowCount(); i++) {
+                            if (res.getString(i, "file_typ").compareToIgnoreCase("FILE") == 0) {
+                                traceFileNames.add(res.getString(i, "file_name"));
+                            }
+                        }
+                        openMocaTraceResponse = new OpenMocaTraceResponse(traceFileNames, null, null);
+                    } else {
+
+                        // Read trace file requested.
+                        MocaResults res = MocaConnection.getGlobalMocaConnection()
+                                .executeCommand(String.format("read file where filnam = '${LESDIR}/log/%s'",
+                                        openMocaTraceRequest.requestedTraceFileName));
+
+                        StringBuilder contents = new StringBuilder(5096);
+
+                        for (int i = 0; i < res.getRowCount(); i++) {
+                            contents.append(res.getString(i, "text"));
+                            contents.append('\n');
+                        }
+
+                        openMocaTraceResponse = new OpenMocaTraceResponse(null, contents.toString(), null);
+                    }
+
+                    return CompletableFuture.completedFuture(openMocaTraceResponse);
+                } catch (Exception exception) {
+                    return CompletableFuture.completedFuture(new OpenMocaTraceResponse(null, null, exception));
                 }
             default:
                 break;
