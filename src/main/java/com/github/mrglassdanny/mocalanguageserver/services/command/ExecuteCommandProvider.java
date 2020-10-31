@@ -382,12 +382,13 @@ public class ExecuteCommandProvider {
                     if (openMocaTraceRequest.requestedTraceFileName == null) {
 
                         // Read file names from LESDIR/log/*.log
-                        MocaResults res = MocaConnection.getGlobalMocaConnection()
-                                .executeCommand("sl_get dir where path = '${LESDIR}/log/' and filter = '*.log'");
+                        MocaResults res = MocaConnection.getGlobalMocaConnection().executeCommand(
+                                "sl_get dir where path = '${LESDIR}/log/' and filter = '*.log' | get file info where pathname = '${LESDIR}/log/' || @file_name");
                         ArrayList<String> traceFileNames = new ArrayList<>(res.getRowCount());
                         for (int i = 0; i < res.getRowCount(); i++) {
-                            if (res.getString(i, "file_typ").compareToIgnoreCase("FILE") == 0) {
-                                traceFileNames.add(res.getString(i, "file_name"));
+                            if (res.getString(i, "type").compareToIgnoreCase("F") == 0) {
+                                String pathName = res.getString(i, "pathname");
+                                traceFileNames.add(pathName.substring(pathName.lastIndexOf("\\") + 1));
                             }
                         }
                         openMocaTraceResponse = new OpenMocaTraceResponse(traceFileNames, null, null);
