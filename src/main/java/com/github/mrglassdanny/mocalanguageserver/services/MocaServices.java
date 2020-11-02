@@ -486,6 +486,12 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         return DefinitionProvider.provideDefinition(uri, params.getPosition());
     }
 
+    public static void logToLanguageClient(String msg) {
+        if (MocaServices.languageClient != null) {
+            MocaServices.languageClient.logMessage(new MessageParams(MessageType.Log, msg));
+        }
+    }
+
     public static void logErrorToLanguageClient(String msg) {
         if (MocaServices.languageClient != null) {
             MocaServices.languageClient.logMessage(new MessageParams(MessageType.Error, msg));
