@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StackNode {
+public class TraceStackNode {
 
     private static final String SERVER_GOT_REGEX_STR = "(Server got:) ((?s).*)";
     private static final String DISPATCHING_COMMAND_REGEX_STR = "Dispatching command...";
@@ -21,22 +21,25 @@ public class StackNode {
     private static final String ARGUMENT_REGEX_STR = "(Argument) (.*)(=)(.*) (\\(.*\\))";
     private static final String EXECUTING_SQL_REGEX_STR = "(Executing SQL:) ((?s).*)";
 
-    private static final Pattern SERVER_GOT_REGEX_PATTERN = Pattern.compile(StackNode.SERVER_GOT_REGEX_STR);
+    private static final Pattern SERVER_GOT_REGEX_PATTERN = Pattern.compile(TraceStackNode.SERVER_GOT_REGEX_STR);
     private static final Pattern DISPATCHING_COMMAND_REGEX_PATTERN = Pattern
-            .compile(StackNode.DISPATCHING_COMMAND_REGEX_STR);
+            .compile(TraceStackNode.DISPATCHING_COMMAND_REGEX_STR);
     private static final Pattern DISPATCHED_COMMAND_REGEX_PATTERN = Pattern
-            .compile(StackNode.DISPATCHED_COMMAND_REGEX_STR);
-    private static final Pattern PARSING_COMMAND_REGEX_PATTERN = Pattern.compile(StackNode.PARSING_COMMAND_REGEX_STR);
-    private static final Pattern PARSED_COMMAND_REGEX_PATTERN = Pattern.compile(StackNode.PARSED_COMMAND_REGEX_STR);
+            .compile(TraceStackNode.DISPATCHED_COMMAND_REGEX_STR);
+    private static final Pattern PARSING_COMMAND_REGEX_PATTERN = Pattern
+            .compile(TraceStackNode.PARSING_COMMAND_REGEX_STR);
+    private static final Pattern PARSED_COMMAND_REGEX_PATTERN = Pattern
+            .compile(TraceStackNode.PARSED_COMMAND_REGEX_STR);
     private static final Pattern LOOKING_UP_COMMAND_REGEX_PATTERN = Pattern
-            .compile(StackNode.LOOKING_UP_COMMAND_REGEX_STR);
-    private static final Pattern EXECUTING_REGEX_PATTERN = Pattern.compile(StackNode.EXECUTING_REGEX_STR);
+            .compile(TraceStackNode.LOOKING_UP_COMMAND_REGEX_STR);
+    private static final Pattern EXECUTING_REGEX_PATTERN = Pattern.compile(TraceStackNode.EXECUTING_REGEX_STR);
     private static final Pattern EXECUTING_COMMAND_REGEX_PATTERN = Pattern
-            .compile(StackNode.EXECUTING_COMMAND_REGEX_STR);
-    private static final Pattern EXECUTED_COMMAND_REGEX_PATTERN = Pattern.compile(StackNode.EXECUTED_COMMAND_REGEX_STR);
-    private static final Pattern PUBLISHED_REGEX_PATTERN = Pattern.compile(StackNode.PUBLISHED_REGEX_STR);
-    private static final Pattern ARGUMENT_REGEX_PATTERN = Pattern.compile(StackNode.ARGUMENT_REGEX_STR);
-    private static final Pattern EXECUTING_SQL_REGEX_PATTERN = Pattern.compile(StackNode.EXECUTING_SQL_REGEX_STR);
+            .compile(TraceStackNode.EXECUTING_COMMAND_REGEX_STR);
+    private static final Pattern EXECUTED_COMMAND_REGEX_PATTERN = Pattern
+            .compile(TraceStackNode.EXECUTED_COMMAND_REGEX_STR);
+    private static final Pattern PUBLISHED_REGEX_PATTERN = Pattern.compile(TraceStackNode.PUBLISHED_REGEX_STR);
+    private static final Pattern ARGUMENT_REGEX_PATTERN = Pattern.compile(TraceStackNode.ARGUMENT_REGEX_STR);
+    private static final Pattern EXECUTING_SQL_REGEX_PATTERN = Pattern.compile(TraceStackNode.EXECUTING_SQL_REGEX_STR);
 
     public int stackLevel;
 
@@ -45,7 +48,7 @@ public class StackNode {
     public HashMap<String, String> arguments; // What is being explicitly passed to instruction.
     public ArrayList<String> flowMessages;
 
-    public StackNode(int stackLevel, String logLevel, String component, String text) {
+    public TraceStackNode(int stackLevel, String logLevel, String component, String text) {
         this.stackLevel = stackLevel;
         this.instruction = "";
         this.published = new HashMap<>();
@@ -57,27 +60,27 @@ public class StackNode {
 
     public void processText(String logLevel, String component, String text) {
 
-        Matcher matcher = StackNode.PUBLISHED_REGEX_PATTERN.matcher(text);
+        Matcher matcher = TraceStackNode.PUBLISHED_REGEX_PATTERN.matcher(text);
         if (matcher.find()) {
             this.published.put(matcher.group(2), matcher.group(4));
         }
 
-        matcher = StackNode.ARGUMENT_REGEX_PATTERN.matcher(text);
+        matcher = TraceStackNode.ARGUMENT_REGEX_PATTERN.matcher(text);
         if (matcher.find()) {
             this.arguments.put(matcher.group(2), matcher.group(4));
         }
 
-        matcher = StackNode.EXECUTING_COMMAND_REGEX_PATTERN.matcher(text);
+        matcher = TraceStackNode.EXECUTING_COMMAND_REGEX_PATTERN.matcher(text);
         if (matcher.find()) {
             this.instruction = matcher.group(2);
         }
 
-        matcher = StackNode.SERVER_GOT_REGEX_PATTERN.matcher(text);
+        matcher = TraceStackNode.SERVER_GOT_REGEX_PATTERN.matcher(text);
         if (matcher.find()) {
             this.instruction = matcher.group(2);
         }
 
-        matcher = StackNode.EXECUTING_SQL_REGEX_PATTERN.matcher(text);
+        matcher = TraceStackNode.EXECUTING_SQL_REGEX_PATTERN.matcher(text);
         if (matcher.find()) {
             this.instruction = matcher.group(2);
         }

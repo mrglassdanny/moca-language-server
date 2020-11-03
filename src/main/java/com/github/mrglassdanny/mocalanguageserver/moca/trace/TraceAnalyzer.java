@@ -14,7 +14,7 @@ public class TraceAnalyzer {
     private static final int FULL_LINE_REGEX_STACK_LEVEL_GROUP_IDX = 6;
     private static final int FULL_LINE_REGEX_TEXT_GROUP_IDX = 7;
 
-    private Stack<StackNode> stack;
+    private Stack<TraceStackNode> stack;
     private StringBuilder lineBuf;
 
     public TraceAnalyzer() {
@@ -48,10 +48,10 @@ public class TraceAnalyzer {
             if (this.stack.empty()) {
                 // We do not want to read anything if stack is empty and level is not 0.
                 if (stackLevel == 0) {
-                    this.stack.push(new StackNode(0, logLevel, component, text));
+                    this.stack.push(new TraceStackNode(0, logLevel, component, text));
                 }
             } else {
-                StackNode curStackLevel = this.stack.peek();
+                TraceStackNode curStackLevel = this.stack.peek();
                 if (stackLevel == curStackLevel.stackLevel) {
                     curStackLevel.processText(logLevel, component, text);
                 } else if (stackLevel > curStackLevel.stackLevel) {
@@ -59,7 +59,7 @@ public class TraceAnalyzer {
                     buf.append(curStackLevel.toString2());
                     buf.append('\n');
 
-                    this.stack.push(new StackNode(stackLevel, logLevel, component, text));
+                    this.stack.push(new TraceStackNode(stackLevel, logLevel, component, text));
                 } else {
                     buf.append(stack.pop().toString2());
                     buf.append('\n');
