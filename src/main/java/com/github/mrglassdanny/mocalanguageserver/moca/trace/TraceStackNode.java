@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class TraceStackNode {
 
     private static final String SERVER_GOT_REGEX_STR = "(Server got:) ((?s).*)";
-    private static final String COMMAND_INITIATED_REGEX_STR = "(Command initiated:) ((?s).*)";
+    private static final String COMMAND_INITIATED_REGEX_STR = "(Command initiated:) (\\[)((?s).*)(\\])";
     private static final String EXECUTING_COMMAND_REGEX_STR = "(Executing Command:) (.*)";
     private static final String PUBLISHED_REGEX_STR = "(Published) (.*)(=)(.*) (\\(.*\\))";
     private static final String ARGUMENT_REGEX_STR = "(Argument) (.*)(=)(.*) (\\(.*\\))";
@@ -70,7 +70,7 @@ public class TraceStackNode {
 
         matcher = TraceStackNode.COMMAND_INITIATED_REGEX_PATTERN.matcher(text);
         if (matcher.find()) {
-            this.instruction = matcher.group(2);
+            this.instruction = matcher.group(3);
             // Need to change stack level start line number if we have a match here.
             this.stackLevelStartLineNum = lineNum;
         }
@@ -111,8 +111,8 @@ public class TraceStackNode {
 
     }
 
-    @Override
-    public String toString() {
+    // @Override
+    public String toString2() {
 
         String indentStr = "";
         for (int i = 0; i < this.stackLevel; i++) {
@@ -124,6 +124,26 @@ public class TraceStackNode {
         } else {
             return String.format("%s%d : %s -> %s\n", indentStr, this.stackLevelStartLineNum, this.conditionalTest,
                     this.instruction);
+        }
+
+    }
+
+    @Override
+    public String toString() {
+
+        if (!this.instruction.isEmpty()) {
+            if (!this.conditionalTest.isEmpty()) {
+                return String.format("<span class=\"Collapsable\">%s -> %s</span>", this.conditionalTest,
+                        this.instruction);
+            } else {
+                return String.format("<span class=\"Collapsable\">%s</span>", this.instruction);
+            }
+        } else {
+            if (!this.conditionalTest.isEmpty()) {
+                return String.format("<span class=\"Collapsable\">%s</span>", this.conditionalTest);
+            } else {
+                return null;
+            }
         }
 
     }

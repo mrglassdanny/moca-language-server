@@ -21,16 +21,10 @@ public class TraceOutliner {
     private int lineNum;
     private StringBuilder lineBuf;
 
-    // TODO - remove!
-    private boolean tempLastWasPush;
-
     public TraceOutliner() {
         this.stack = new Stack<>();
         this.lineNum = -1;
         this.lineBuf = new StringBuilder(2048);
-
-        this.tempLastWasPush = false;
-
     }
 
     public void readLine(int lineNum, String line, StringBuilder buf) {
@@ -41,10 +35,9 @@ public class TraceOutliner {
         // regex pattern. This is not the case though if the 'text' capture group
         // extends multiple lines.
         // Therefore, we are keeping a line buffer member and are using it to resolve
-        // this issue:
-        // If we have a perfect match, we need to process the line and clear out the
-        // line buffer. If we do not, we need to hold off on processing line until the
-        // line is 'complete' and we have a perfect regex match.
+        // this issue. If we have a perfect match, we need to process the line and clear
+        // out the line buffer. If we do not, we need to hold off on processing line
+        // until the line is 'complete' and we have a perfect regex match.
 
         // We want line number to be start line of text capture group. So if the text
         // capture group extends multiple lines, we want to make sure we are specifying
@@ -69,31 +62,31 @@ public class TraceOutliner {
                 this.stack.clear();
             } else if (text.compareToIgnoreCase(TraceOutliner.STACK_END_TEXT) == 0) {
                 this.stack.clear();
+                buf.append("</li></ul>");
             } else {
 
                 if (this.stack.empty()) {
                     if (stackLevel == 0) {
+                        buf.append("<ul><li>");
                         this.stack.push(new TraceStackNode(0, this.lineNum, logLevel, component, text));
-                        this.tempLastWasPush = true;
                     }
                 } else {
                     TraceStackNode curTraceStackNode = this.stack.peek();
                     if (stackLevel == curTraceStackNode.stackLevel) {
                         curTraceStackNode.processText(this.lineNum, logLevel, component, text);
                     } else if (stackLevel > curTraceStackNode.stackLevel) {
-                        buf.append(curTraceStackNode.toString());
+                        String str = curTraceStackNode.toString();
+                        if (str != null) {
+                            buf.append(str);
+                            buf.append("<ul><li>");
+                        }
+
                         this.stack.push(new TraceStackNode(stackLevel, this.lineNum, logLevel, component, text));
-                        this.tempLastWasPush = true;
                     } else {
                         while (stackLevel < curTraceStackNode.stackLevel) {
-                            TraceStackNode _node = stack.pop();
-                            if (this.tempLastWasPush) {
-                                buf.append(_node.toString());
-                            }
-
+                            stack.pop();
+                            buf.append("</li></ul>");
                             curTraceStackNode = this.stack.peek();
-
-                            this.tempLastWasPush = false;
                         }
 
                         curTraceStackNode.processText(lineNum, logLevel, component, text);

@@ -378,7 +378,8 @@ public class ExecuteCommandProvider {
                     OpenMocaTraceRequest openMocaTraceRequest = new OpenMocaTraceRequest(args);
 
                     // If trace file name is not passed in, then we will send all trace file names.
-                    // Otherwise, we will send the contents of the requested trace file.
+                    // Otherwise, we will send the results of the outlining of the requested trace
+                    // file.
                     OpenMocaTraceResponse openMocaTraceResponse;
                     if (openMocaTraceRequest.requestedTraceFileName == null) {
 
@@ -400,14 +401,27 @@ public class ExecuteCommandProvider {
                                 .executeCommand(String.format("read file where filnam = '${LESDIR}/log/%s'",
                                         openMocaTraceRequest.requestedTraceFileName));
 
-                        StringBuilder contents = new StringBuilder(5096);
+                        // Build html.
+                        StringBuilder htmlBuf = new StringBuilder(5096);
+
+                        htmlBuf.append("<html>\n" + "<head>\n"
+                                + "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n"
+                                + "    <title></title>\n"
+                                + "    <script type=\"text/javascript\" src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js\"></script>\n"
+                                + "</head>");
+
                         TraceOutliner traceOutliner = new TraceOutliner();
 
                         for (int i = 0; i < res.getRowCount(); i++) {
-                            traceOutliner.readLine(i, res.getString(i, "text"), contents);
+                            traceOutliner.readLine(i, res.getString(i, "text"), htmlBuf);
                         }
 
-                        openMocaTraceResponse = new OpenMocaTraceResponse(null, contents.toString(), null);
+                        htmlBuf.append(
+                                "<script type=\"text/javascript\">\n" + "    $(\".Collapsable\").click(function () {\n"
+                                        + "\n" + "        $(this).parent().children().toggle();\n"
+                                        + "        $(this).toggle();\n" + "\n" + "    });\n" + "\n" + "</script>");
+
+                        openMocaTraceResponse = new OpenMocaTraceResponse(null, htmlBuf.toString(), null);
                     }
 
                     return CompletableFuture.completedFuture(openMocaTraceResponse);
