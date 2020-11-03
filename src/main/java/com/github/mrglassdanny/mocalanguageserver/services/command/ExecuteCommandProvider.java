@@ -378,7 +378,7 @@ public class ExecuteCommandProvider {
                     OpenMocaTraceRequest openMocaTraceRequest = new OpenMocaTraceRequest(args);
 
                     // If trace file name is not passed in, then we will send all trace file names.
-                    // Otherwise, we will send the results of the outlining of the requested trace
+                    // Otherwise, we will send the resulting outline of the requested trace
                     // file.
                     OpenMocaTraceResponse openMocaTraceResponse;
                     if (openMocaTraceRequest.requestedTraceFileName == null) {
