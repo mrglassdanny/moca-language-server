@@ -28,7 +28,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.Moc
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
-import com.github.mrglassdanny.mocalanguageserver.moca.trace.TraceAnalyzer;
+import com.github.mrglassdanny.mocalanguageserver.moca.trace.TraceOutliner;
 
 import org.eclipse.lsp4j.ExecuteCommandParams;
 
@@ -401,10 +401,10 @@ public class ExecuteCommandProvider {
                                         openMocaTraceRequest.requestedTraceFileName));
 
                         StringBuilder contents = new StringBuilder(5096);
-                        TraceAnalyzer traceAnalyzer = new TraceAnalyzer();
+                        TraceOutliner traceOutliner = new TraceOutliner();
 
                         for (int i = 0; i < res.getRowCount(); i++) {
-                            traceAnalyzer.readLine(res.getString(i, "text"), contents);
+                            traceOutliner.readLine(i, res.getString(i, "text"), contents);
                         }
 
                         openMocaTraceResponse = new OpenMocaTraceResponse(null, contents.toString(), null);
