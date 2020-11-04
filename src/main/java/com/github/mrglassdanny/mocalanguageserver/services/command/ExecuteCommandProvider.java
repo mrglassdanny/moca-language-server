@@ -408,7 +408,7 @@ public class ExecuteCommandProvider {
                                 + "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n"
                                 + "    <title></title>\n"
                                 + "    <script type=\"text/javascript\" src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js\"></script>\n"
-                                + "</head>");
+                                + "</head>  <ul>");
 
                         TraceOutliner traceOutliner = new TraceOutliner();
 
@@ -416,10 +416,10 @@ public class ExecuteCommandProvider {
                             traceOutliner.readLine(i, res.getString(i, "text"), htmlBuf);
                         }
 
-                        htmlBuf.append(
-                                "<script type=\"text/javascript\">\n" + "    $(\".Collapsable\").click(function () {\n"
-                                        + "\n" + "        $(this).parent().children().toggle();\n"
-                                        + "        $(this).toggle();\n" + "\n" + "    });\n" + "\n" + "</script>");
+                        htmlBuf.append("</ul>   <script type=\"text/javascript\">\n"
+                                + "    $(\".Collapsable\").click(function () {\n" + "\n"
+                                + "        $(this).parent().children().toggle();\n" + "        $(this).toggle();\n"
+                                + "\n" + "    });\n" + "\n" + "</script>");
 
                         openMocaTraceResponse = new OpenMocaTraceResponse(null, htmlBuf.toString(), null);
                     }

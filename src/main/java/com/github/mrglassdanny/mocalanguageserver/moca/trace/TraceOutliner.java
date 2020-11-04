@@ -9,8 +9,8 @@ public class TraceOutliner {
     private static final String FULL_LINE_REGEX_STR = "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2},\\d{3}) (TRACE|DEBUG|INFO |WARN |ERROR|FATAL) \\[(\\d+)[ ]+([a-f0-9]+)\\] (.+?) \\[(\\d{1,3})\\] ([\\s\\S]*) \\[[\\s\\S]*\\](.*)";
     private static final Pattern FULL_LINE_REGEX_PATTERN = Pattern.compile(TraceOutliner.FULL_LINE_REGEX_STR);
 
-    private static final String STACK_START_TEXT = "Dispatching command...";
-    private static final String STACK_END_TEXT = "Dispatched command";
+    private static final String TRACE_STACK_START_TEXT = "Dispatching command...";
+    private static final String TRACE_STACK_END_TEXT = "Dispatched command";
 
     private static final int FULL_LINE_REGEX_LOG_LEVEL_GROUP_IDX = 2;
     private static final int FULL_LINE_REGEX_COMPONENT_GROUP_IDX = 5;
@@ -58,38 +58,46 @@ public class TraceOutliner {
             String component = matcher.group(TraceOutliner.FULL_LINE_REGEX_COMPONENT_GROUP_IDX);
             String text = matcher.group(TraceOutliner.FULL_LINE_REGEX_TEXT_GROUP_IDX);
 
-            if (text.compareToIgnoreCase(TraceOutliner.STACK_START_TEXT) == 0) {
+            if (text.compareToIgnoreCase(TraceOutliner.TRACE_STACK_START_TEXT) == 0) {
                 this.stack.clear();
-            } else if (text.compareToIgnoreCase(TraceOutliner.STACK_END_TEXT) == 0) {
+            } else if (text.compareToIgnoreCase(TraceOutliner.TRACE_STACK_END_TEXT) == 0) {
                 this.stack.clear();
-                buf.append("</li></ul>");
             } else {
-
                 if (this.stack.empty()) {
                     if (stackLevel == 0) {
-                        buf.append("<ul><li>");
-                        this.stack.push(new TraceStackNode(0, this.lineNum, logLevel, component, text));
+                        this.stack.push(new TraceStackNode(0, this.lineNum, logLevel, component, text, buf));
                     }
                 } else {
                     TraceStackNode curTraceStackNode = this.stack.peek();
                     if (stackLevel == curTraceStackNode.stackLevel) {
-                        curTraceStackNode.processText(this.lineNum, logLevel, component, text);
+                        curTraceStackNode.processText(this.lineNum, logLevel, component, text, buf);
                     } else if (stackLevel > curTraceStackNode.stackLevel) {
                         String str = curTraceStackNode.toString();
-                        if (str != null) {
+
+                        if (str != null && !curTraceStackNode.isWritten) {
+                            buf.append("<li>");
                             buf.append(str);
-                            buf.append("<ul><li>");
+                            buf.append("</li>");
+                            curTraceStackNode.isWritten = true;
                         }
 
-                        this.stack.push(new TraceStackNode(stackLevel, this.lineNum, logLevel, component, text));
+                        this.stack.push(new TraceStackNode(stackLevel, this.lineNum, logLevel, component, text, buf));
                     } else {
+
+                        String str = curTraceStackNode.toString();
+                        if (str != null && !curTraceStackNode.isWritten) {
+                            buf.append("<li>");
+                            buf.append(str);
+                            buf.append("</li>");
+                            curTraceStackNode.isWritten = true;
+                        }
+
                         while (stackLevel < curTraceStackNode.stackLevel) {
                             stack.pop();
-                            buf.append("</li></ul>");
                             curTraceStackNode = this.stack.peek();
                         }
 
-                        curTraceStackNode.processText(lineNum, logLevel, component, text);
+                        curTraceStackNode.processText(lineNum, logLevel, component, text, buf);
                     }
 
                 }
