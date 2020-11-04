@@ -14,6 +14,8 @@ public class TraceStackNode {
     private static final String PUBLISHED_REGEX_STR = "(Published) (.*)(=)(.*) (\\(.*\\))";
     private static final String ARGUMENT_REGEX_STR = "(Argument) (.*)(=)(.*) (\\(.*\\))";
     private static final String EVALUATING_CONDITIONAL_TEST_REGEX_STR = "(Evaluating conditional test:) ((?s).*)";
+    private static final String IF_TEST_FAILED_REGEX_STR = "If-test failed";
+    private static final String IF_TEST_FAILED_EXECUTING_ELSE_BLOCK_REGEX_STR = "If-test failed - executing else block";
     private static final String FIRING_TRIGGERS_REGEX_STR = "(Firing triggers...) ((?s).*)";
     private static final String EXECUTING_SQL_REGEX_STR = "(UNBIND:) ((?s).*)";
     private static final String EXECUTING_COMPILED_SCRIPT_REGEX_STR = "Executing Compiled Script";
@@ -29,6 +31,10 @@ public class TraceStackNode {
     private static final Pattern ARGUMENT_REGEX_PATTERN = Pattern.compile(TraceStackNode.ARGUMENT_REGEX_STR);
     private static final Pattern EVALUATING_CONDITIONAL_TEST_REGEX_PATTERN = Pattern
             .compile(TraceStackNode.EVALUATING_CONDITIONAL_TEST_REGEX_STR);
+    private static final Pattern IF_TEST_FAILED_REGEX_PATTERN = Pattern
+            .compile(TraceStackNode.IF_TEST_FAILED_REGEX_STR);
+    private static final Pattern IF_TEST_FAILED_EXECUTING_ELSE_BLOCK_REGEX_PATTERN = Pattern
+            .compile(TraceStackNode.IF_TEST_FAILED_EXECUTING_ELSE_BLOCK_REGEX_STR);
     private static final Pattern FIRING_TRIGGERS_REGEX_PATTERN = Pattern
             .compile(TraceStackNode.FIRING_TRIGGERS_REGEX_STR);
     private static final Pattern EXECUTING_SQL_REGEX_PATTERN = Pattern.compile(TraceStackNode.EXECUTING_SQL_REGEX_STR);
@@ -122,6 +128,16 @@ public class TraceStackNode {
             this.conditionalTest = "IF: " + matcher.group(2);
         }
 
+        matcher = TraceStackNode.IF_TEST_FAILED_REGEX_PATTERN.matcher(text);
+        if (matcher.find()) {
+            this.conditionalTest += " : FAILED";
+        }
+
+        matcher = TraceStackNode.IF_TEST_FAILED_EXECUTING_ELSE_BLOCK_REGEX_PATTERN.matcher(text);
+        if (matcher.find()) {
+            this.conditionalTest = "ELSE";
+        }
+
         if (component.compareToIgnoreCase("FLOW") == 0) {
             this.flowMessages.add(text);
         }
@@ -156,14 +172,16 @@ public class TraceStackNode {
 
         if (!this.instruction.isEmpty()) {
             if (!this.conditionalTest.isEmpty()) {
-                return String.format("<span>%s %d %s -> %s</span>", str, this.stackLevel, this.conditionalTest,
-                        this.instruction);
+                return String.format("<span>%s %d : %d %s -> %s</span>", str, this.stackLevelStartLineNum,
+                        this.stackLevel, this.conditionalTest, this.instruction);
             } else {
-                return String.format("<span>%s %d %s</span>", str, this.stackLevel, this.instruction);
+                return String.format("<span>%s %d : %d %s</span>", str, this.stackLevelStartLineNum, this.stackLevel,
+                        this.instruction);
             }
         } else {
             if (!this.conditionalTest.isEmpty()) {
-                return String.format("<span>%s %d %s</span>", str, this.stackLevel, this.conditionalTest);
+                return String.format("<span>%s %d : %d %s</span>", str, this.stackLevelStartLineNum, this.stackLevel,
+                        this.conditionalTest);
             } else {
                 return null;
             }
