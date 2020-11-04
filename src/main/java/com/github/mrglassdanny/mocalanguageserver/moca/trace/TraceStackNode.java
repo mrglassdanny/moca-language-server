@@ -77,6 +77,7 @@ public class TraceStackNode {
         if (matcher.find()) {
             if (!this.instruction.isEmpty()) {
                 this.instructionChanged = true;
+                this.stackLevelStartLineNum = lineNum;
             }
             this.instruction = matcher.group(2);
         }
@@ -85,6 +86,7 @@ public class TraceStackNode {
         if (matcher.find()) {
             if (!this.instruction.isEmpty()) {
                 this.instructionChanged = true;
+                this.stackLevelStartLineNum = lineNum;
             }
             this.instruction = matcher.group(2);
         }
@@ -93,6 +95,7 @@ public class TraceStackNode {
         if (matcher.find()) {
             if (!this.instruction.isEmpty()) {
                 this.instructionChanged = true;
+                this.stackLevelStartLineNum = lineNum;
             }
             this.instruction = matcher.group(3);
             // Need to change stack level start line number if we have a match here.
@@ -103,6 +106,7 @@ public class TraceStackNode {
         if (matcher.find()) {
             if (!this.instruction.isEmpty()) {
                 this.instructionChanged = true;
+                this.stackLevelStartLineNum = lineNum;
             }
             this.instruction = matcher.group(2);
         }
@@ -111,6 +115,7 @@ public class TraceStackNode {
         if (matcher.find()) {
             if (!this.instruction.isEmpty()) {
                 this.instructionChanged = true;
+                this.stackLevelStartLineNum = lineNum;
             }
             this.instruction = "[[Compiled Script]]";
         }
@@ -119,6 +124,7 @@ public class TraceStackNode {
         if (matcher.find()) {
             if (!this.instruction.isEmpty()) {
                 this.instructionChanged = true;
+                this.stackLevelStartLineNum = lineNum;
             }
             this.instruction = "FIRING TRIGGERS: " + matcher.group(2);
         }
@@ -135,7 +141,7 @@ public class TraceStackNode {
 
         matcher = TraceStackNode.IF_TEST_FAILED_EXECUTING_ELSE_BLOCK_REGEX_PATTERN.matcher(text);
         if (matcher.find()) {
-            this.conditionalTest = "ELSE";
+            this.conditionalTest += " -> ELSE";
         }
 
         if (component.compareToIgnoreCase("FLOW") == 0) {
@@ -173,10 +179,11 @@ public class TraceStackNode {
         if (!this.instruction.isEmpty()) {
             if (!this.conditionalTest.isEmpty()) {
                 return String.format("<span>%s %d : %d %s -> %s</span>", str, this.stackLevelStartLineNum,
-                        this.stackLevel, this.conditionalTest, this.instruction);
+                        this.stackLevel, this.conditionalTest,
+                        this.instruction.length() > 50 ? this.instruction.substring(0, 50) + "..." : this.instruction);
             } else {
                 return String.format("<span>%s %d : %d %s</span>", str, this.stackLevelStartLineNum, this.stackLevel,
-                        this.instruction);
+                        this.instruction.length() > 50 ? this.instruction.substring(0, 50) + "..." : this.instruction);
             }
         } else {
             if (!this.conditionalTest.isEmpty()) {

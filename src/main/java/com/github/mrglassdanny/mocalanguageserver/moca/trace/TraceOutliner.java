@@ -74,7 +74,7 @@ public class TraceOutliner {
                     } else if (stackLevel > curTraceStackNode.stackLevel) {
                         String str = curTraceStackNode.toString();
 
-                        if (str != null && !curTraceStackNode.isWritten) {
+                        if (str != null) {
                             buf.append("<li>");
                             buf.append(str);
                             buf.append("</li>");
