@@ -2,6 +2,7 @@ package com.github.mrglassdanny.mocalanguageserver.services.command;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
@@ -401,8 +402,9 @@ public class ExecuteCommandProvider {
                                 .executeCommand(String.format("read file where filnam = '${LESDIR}/log/%s'",
                                         openMocaTraceRequest.requestedTraceFileName));
 
-                        // Build html.
-                        StringBuilder htmlBuf = new StringBuilder(5096);
+                        TraceOutliner traceOutliner = new TraceOutliner();
+
+                        StringBuilder htmlBuf = new StringBuilder(8192);
 
                         htmlBuf.append("<html>\n" + "<head>\n"
                                 + "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n"
@@ -410,10 +412,20 @@ public class ExecuteCommandProvider {
                                 + "    <script type=\"text/javascript\" src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js\"></script>\n"
                                 + "</head>  <ul>");
 
-                        TraceOutliner traceOutliner = new TraceOutliner();
-
                         for (int i = 0; i < res.getRowCount(); i++) {
-                            traceOutliner.readLine(i, res.getString(i, "text"), htmlBuf);
+                            traceOutliner.readLine(i, res.getString(i, "text"));
+                        }
+
+                        // Add to main html buffer.
+                        for (Entry<String, StringBuilder> entry : traceOutliner.htmlBuffers.entrySet()) {
+                            htmlBuf.append(String.format(
+                                    "<p1>START: %s ============================================================================================================================</p1>",
+                                    entry.getKey()));
+                            htmlBuf.append(entry.getValue());
+                            htmlBuf.append(String.format(
+                                    "<p1>END: %s ============================================================================================================================</p1>",
+                                    entry.getKey()));
+
                         }
 
                         htmlBuf.append("</ul>   <script type=\"text/javascript\">\n"
