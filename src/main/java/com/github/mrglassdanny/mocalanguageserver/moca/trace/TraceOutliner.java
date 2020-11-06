@@ -20,12 +20,29 @@ public class TraceOutliner {
     private static final int FULL_LINE_REGEX_STACK_LEVEL_GROUP_IDX = 6;
     private static final int FULL_LINE_REGEX_TEXT_GROUP_IDX = 7;
 
+    // There are a select few components that we actually care to analyze.
+    private static final String[] APPROVED_COMPONENTS = { "Argument", "CommandStatement", "DefaultServerContext",
+            "JDBCAdapter", "Performance", "CommandDispatcher", "MocaTransactionManager", "GroovyScriptAdapter",
+            "ComponentAdapter" };
+
+    // These indicate if instruction is complete in trace stack node but stack level
+    // is not changed -- we will need to create a new one if this is the case!
+    private static final String TEXT_EXECUTED_COMMAND_REGEX_STR = "(Executed Command:) (.*)";
+    private static final String TEXT_SQL_EXECUTION_COMPLETED_REGEX_STR = "SQL execution completed";
+    private static final String TEXT_SCRIPT_EXECUTION_COMPLETE_REGEX_STR = "Script Execution Complete";
+    private static final Pattern TEXT_EXECUTED_COMMAND_REGEX_PATTERN = Pattern
+            .compile(TraceOutliner.TEXT_EXECUTED_COMMAND_REGEX_STR);
+    private static final Pattern TEXT_SQL_EXECUTION_COMPLETED_REGEX_PATTERN = Pattern
+            .compile(TraceOutliner.TEXT_SQL_EXECUTION_COMPLETED_REGEX_STR);
+    private static final Pattern TEXT_SCRIPT_EXECUTION_COMPLETE_REGEX_PATTERN = Pattern
+            .compile(TraceOutliner.TEXT_SCRIPT_EXECUTION_COMPLETE_REGEX_STR);
+
     private int lineNum;
     private StringBuilder lineBuffer;
     // We could have multiple transactions/threads in trace. We need to keep them
     // seperate if this is the case.
-    public HashMap<String, StringBuilder> htmlBuffers; // Key is transaction + thread.
-    private HashMap<String, Stack<TraceStackNode>> stacks; // Key is transaction + thread.
+    public HashMap<String, StringBuilder> htmlBuffers;
+    private HashMap<String, Stack<TraceStackNode>> stacks;
 
     public TraceOutliner() {
 
@@ -47,15 +64,16 @@ public class TraceOutliner {
         // out the line buffer. If we do not, we need to hold off on processing line
         // until the line is 'complete' and we have a perfect regex match.
 
+        // TODO
         // We want line number to be start line of text capture group. So if the text
         // capture group extends multiple lines, we want to make sure we are specifying
         // the start line. We can do this by making sure the current length of line
         // buffer is 0, since the only time we clear it out is when we are about to
         // start a new line.
-        if (this.lineBuffer.length() == 0) {
-            this.lineNum = lineNum;
-        }
-
+        // if (this.lineBuffer.length() == 0) {
+        // this.lineNum = lineNum;
+        // }
+        this.lineNum = lineNum;
         this.lineBuffer.append(line);
 
         Matcher matcher = TraceOutliner.FULL_LINE_REGEX_PATTERN.matcher(this.lineBuffer.toString());
@@ -68,71 +86,112 @@ public class TraceOutliner {
             int stackLevel = Integer.parseInt(matcher.group(TraceOutliner.FULL_LINE_REGEX_STACK_LEVEL_GROUP_IDX));
             String text = matcher.group(TraceOutliner.FULL_LINE_REGEX_TEXT_GROUP_IDX);
 
-            // Now that we have match, we need to make sure we are adding to the correct
-            // buffer/stack.
-
-            String key = transaction + thread;
-            StringBuilder htmlBuf;
-            Stack<TraceStackNode> stack;
-
-            if (this.htmlBuffers.containsKey(key)) {
-                htmlBuf = this.htmlBuffers.get(key);
-            } else {
-                htmlBuf = new StringBuilder();
-                this.htmlBuffers.put(key, htmlBuf);
+            // Check if approved component.
+            boolean componentIsApproved = false;
+            for (String approvedComponent : TraceOutliner.APPROVED_COMPONENTS) {
+                if (component.compareToIgnoreCase(approvedComponent) == 0) {
+                    componentIsApproved = true;
+                    break;
+                }
             }
 
-            if (this.stacks.containsKey(key)) {
-                stack = this.stacks.get(key);
-            } else {
-                stack = new Stack<>();
-                this.stacks.put(key, stack);
-            }
+            if (componentIsApproved) {
+                // Now that we have match, we need to make sure we are adding to the correct
+                // buffer/stack.
+                String key = thread;
+                StringBuilder htmlBuf;
+                Stack<TraceStackNode> stack;
 
-            if (text.compareToIgnoreCase(TraceOutliner.TRACE_STACK_START_TEXT) == 0) {
-                stack.clear();
-            } else if (text.compareToIgnoreCase(TraceOutliner.TRACE_STACK_END_TEXT) == 0) {
-                stack.clear();
-            } else {
-                if (stack.empty()) {
-                    if (stackLevel == 0) {
-                        stack.push(new TraceStackNode(0, this.lineNum, logLevel, component, text, htmlBuf));
-                    }
+                if (this.htmlBuffers.containsKey(key)) {
+                    htmlBuf = this.htmlBuffers.get(key);
                 } else {
-                    TraceStackNode curTraceStackNode = stack.peek();
-                    if (stackLevel == curTraceStackNode.stackLevel) {
-                        curTraceStackNode.processText(this.lineNum, logLevel, component, text, htmlBuf);
-                    } else if (stackLevel > curTraceStackNode.stackLevel) {
-                        String str = curTraceStackNode.toString();
-
-                        if (str != null) {
-                            htmlBuf.append("<li>");
-                            htmlBuf.append(str);
-                            htmlBuf.append("</li>");
-                            curTraceStackNode.isWritten = true;
-                        }
-
-                        stack.push(new TraceStackNode(stackLevel, this.lineNum, logLevel, component, text, htmlBuf));
-                    } else {
-
-                        String str = curTraceStackNode.toString();
-                        if (str != null && !curTraceStackNode.isWritten) {
-                            htmlBuf.append("<li>");
-                            htmlBuf.append(str);
-                            htmlBuf.append("</li>");
-                            curTraceStackNode.isWritten = true;
-                        }
-
-                        while (stackLevel < curTraceStackNode.stackLevel) {
-                            stack.pop();
-                            curTraceStackNode = stack.peek();
-                        }
-
-                        curTraceStackNode.processText(lineNum, logLevel, component, text, htmlBuf);
-                    }
-
+                    htmlBuf = new StringBuilder();
+                    this.htmlBuffers.put(key, htmlBuf);
                 }
 
+                if (this.stacks.containsKey(key)) {
+                    stack = this.stacks.get(key);
+                } else {
+                    stack = new Stack<>();
+                    this.stacks.put(key, stack);
+                }
+
+                if (text.compareToIgnoreCase(TraceOutliner.TRACE_STACK_START_TEXT) == 0) {
+                    stack.clear();
+                } else if (text.compareToIgnoreCase(TraceOutliner.TRACE_STACK_END_TEXT) == 0) {
+                    stack.clear();
+                } else {
+                    if (stack.empty()) {
+                        if (stackLevel == 0) {
+                            stack.push(new TraceStackNode(0, this.lineNum, logLevel, component, text, htmlBuf));
+                        }
+                    } else {
+                        TraceStackNode curTraceStackNode = stack.peek();
+                        if (stackLevel == curTraceStackNode.stackLevel) {
+
+                            if (TraceOutliner.TEXT_EXECUTED_COMMAND_REGEX_PATTERN.matcher(text).find()
+                                    || TraceOutliner.TEXT_SQL_EXECUTION_COMPLETED_REGEX_PATTERN.matcher(text).find()
+                                    || TraceOutliner.TEXT_SCRIPT_EXECUTION_COMPLETE_REGEX_PATTERN.matcher(text)
+                                            .find()) {
+
+                                String str = curTraceStackNode.toString();
+                                if (str != null) {
+                                    htmlBuf.append("<li>");
+                                    htmlBuf.append(str);
+                                    htmlBuf.append("</li>");
+                                }
+                                curTraceStackNode = new TraceStackNode(stackLevel, this.lineNum, logLevel, component,
+                                        text, htmlBuf);
+                            } else {
+                                curTraceStackNode.processText(this.lineNum, logLevel, component, text, htmlBuf);
+                            }
+
+                        } else if (stackLevel > curTraceStackNode.stackLevel) {
+                            if (!curTraceStackNode.isWritten) {
+                                String str = curTraceStackNode.toString();
+                                if (str != null) {
+                                    htmlBuf.append("<li>");
+                                    htmlBuf.append(str);
+                                    htmlBuf.append("</li>");
+                                }
+                            }
+                            stack.push(
+                                    new TraceStackNode(stackLevel, this.lineNum, logLevel, component, text, htmlBuf));
+                        } else {
+
+                            if (!curTraceStackNode.isWritten) {
+                                String str = curTraceStackNode.toString();
+                                if (str != null) {
+                                    htmlBuf.append("<li>");
+                                    htmlBuf.append(str);
+                                    htmlBuf.append("</li>");
+                                }
+                            }
+
+                            while (stackLevel < curTraceStackNode.stackLevel) {
+                                stack.pop();
+                                curTraceStackNode = stack.peek();
+                            }
+
+                            if (TraceOutliner.TEXT_EXECUTED_COMMAND_REGEX_PATTERN.matcher(text).find()
+                                    || TraceOutliner.TEXT_SQL_EXECUTION_COMPLETED_REGEX_PATTERN.matcher(text).find()
+                                    || TraceOutliner.TEXT_SCRIPT_EXECUTION_COMPLETE_REGEX_PATTERN.matcher(text)
+                                            .find()) {
+
+                                String str = curTraceStackNode.toString();
+                                if (str != null) {
+                                    htmlBuf.append("<li>");
+                                    htmlBuf.append(str);
+                                    htmlBuf.append("</li>");
+                                }
+                                curTraceStackNode = new TraceStackNode(stackLevel, this.lineNum, logLevel, component,
+                                        text, htmlBuf);
+                            } else {
+                                curTraceStackNode.processText(this.lineNum, logLevel, component, text, htmlBuf);
+                            }
+                        }
+                    }
+                }
             }
 
             // Need to clear out the line buffer since we had a match!
