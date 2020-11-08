@@ -14,8 +14,8 @@ public class TraceOutliner {
     private static final String TRACE_STACK_END_TEXT = "Dispatched command";
 
     private static final int FULL_LINE_REGEX_LOG_LEVEL_GROUP_IDX = 2;
-    private static final int FULL_LINE_REGEX_TRANSACTION_GROUP_IDX = 3;
-    private static final int FULL_LINE_REGEX_THREAD_GROUP_IDX = 4;
+    private static final int FULL_LINE_REGEX_THREAD_GROUP_IDX = 3;
+    private static final int FULL_LINE_REGEX_SESSION_GROUP_IDX = 4;
     private static final int FULL_LINE_REGEX_COMPONENT_GROUP_IDX = 5;
     private static final int FULL_LINE_REGEX_STACK_LEVEL_GROUP_IDX = 6;
     private static final int FULL_LINE_REGEX_TEXT_GROUP_IDX = 7;
@@ -83,8 +83,8 @@ public class TraceOutliner {
 
         if (matcher.find()) {
             String logLevel = matcher.group(TraceOutliner.FULL_LINE_REGEX_LOG_LEVEL_GROUP_IDX);
-            String transaction = matcher.group(TraceOutliner.FULL_LINE_REGEX_TRANSACTION_GROUP_IDX);
             String thread = matcher.group(TraceOutliner.FULL_LINE_REGEX_THREAD_GROUP_IDX);
+            String session = matcher.group(TraceOutliner.FULL_LINE_REGEX_SESSION_GROUP_IDX);
             String component = matcher.group(TraceOutliner.FULL_LINE_REGEX_COMPONENT_GROUP_IDX);
             int stackLevel = Integer.parseInt(matcher.group(TraceOutliner.FULL_LINE_REGEX_STACK_LEVEL_GROUP_IDX));
             String text = matcher.group(TraceOutliner.FULL_LINE_REGEX_TEXT_GROUP_IDX);
@@ -101,7 +101,7 @@ public class TraceOutliner {
             if (componentIsApproved) {
                 // Now that we have match, we need to make sure we are adding to the correct
                 // buffer/stack.
-                String key = thread;
+                String key = session;
                 StringBuilder htmlBuf;
                 Stack<TraceStackNode> stack;
 
