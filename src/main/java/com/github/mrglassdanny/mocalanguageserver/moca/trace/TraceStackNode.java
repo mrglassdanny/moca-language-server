@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
+
 public class TraceStackNode {
 
     private static final String SERVER_GOT_REGEX_STR = "(Server got:) ((?s).*)";

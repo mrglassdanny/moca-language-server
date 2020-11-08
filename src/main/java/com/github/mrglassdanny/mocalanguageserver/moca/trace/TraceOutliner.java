@@ -30,12 +30,15 @@ public class TraceOutliner {
     private static final String TEXT_EXECUTED_COMMAND_REGEX_STR = "(Executed Command:) (.*)";
     private static final String TEXT_SQL_EXECUTION_COMPLETED_REGEX_STR = "SQL execution completed";
     private static final String TEXT_SCRIPT_EXECUTION_COMPLETE_REGEX_STR = "Script Execution Complete";
+    private static final String TEXT_IF_TEST_PASSED_EXECUTING_IF_BLOCK_REGEX_STR = "If-test passed - executing if block";
     private static final Pattern TEXT_EXECUTED_COMMAND_REGEX_PATTERN = Pattern
             .compile(TraceOutliner.TEXT_EXECUTED_COMMAND_REGEX_STR);
     private static final Pattern TEXT_SQL_EXECUTION_COMPLETED_REGEX_PATTERN = Pattern
             .compile(TraceOutliner.TEXT_SQL_EXECUTION_COMPLETED_REGEX_STR);
     private static final Pattern TEXT_SCRIPT_EXECUTION_COMPLETE_REGEX_PATTERN = Pattern
             .compile(TraceOutliner.TEXT_SCRIPT_EXECUTION_COMPLETE_REGEX_STR);
+    private static final Pattern TEXT_IF_TEST_PASSED_EXECUTING_IF_BLOCK_REGEX_PATTERN = Pattern
+            .compile(TraceOutliner.TEXT_IF_TEST_PASSED_EXECUTING_IF_BLOCK_REGEX_STR);
 
     private int lineNum;
     private StringBuilder lineBuffer;
@@ -131,17 +134,21 @@ public class TraceOutliner {
 
                             if (TraceOutliner.TEXT_EXECUTED_COMMAND_REGEX_PATTERN.matcher(text).find()
                                     || TraceOutliner.TEXT_SQL_EXECUTION_COMPLETED_REGEX_PATTERN.matcher(text).find()
-                                    || TraceOutliner.TEXT_SCRIPT_EXECUTION_COMPLETE_REGEX_PATTERN.matcher(text)
+                                    || TraceOutliner.TEXT_SCRIPT_EXECUTION_COMPLETE_REGEX_PATTERN.matcher(text).find()
+                                    || TraceOutliner.TEXT_IF_TEST_PASSED_EXECUTING_IF_BLOCK_REGEX_PATTERN.matcher(text)
                                             .find()) {
 
-                                String str = curTraceStackNode.toString();
-                                if (str != null) {
-                                    htmlBuf.append("<li>");
-                                    htmlBuf.append(str);
-                                    htmlBuf.append("</li>");
+                                if (!curTraceStackNode.isWritten) {
+                                    String str = curTraceStackNode.toString();
+                                    if (str != null) {
+                                        htmlBuf.append("<li>");
+                                        htmlBuf.append(str);
+                                        htmlBuf.append("</li>");
+                                    }
                                 }
-                                curTraceStackNode = new TraceStackNode(stackLevel, this.lineNum, logLevel, component,
-                                        text, htmlBuf);
+                                stack.pop();
+                                stack.push(new TraceStackNode(stackLevel, this.lineNum, logLevel, component, text,
+                                        htmlBuf));
                             } else {
                                 curTraceStackNode.processText(this.lineNum, logLevel, component, text, htmlBuf);
                             }
@@ -175,17 +182,21 @@ public class TraceOutliner {
 
                             if (TraceOutliner.TEXT_EXECUTED_COMMAND_REGEX_PATTERN.matcher(text).find()
                                     || TraceOutliner.TEXT_SQL_EXECUTION_COMPLETED_REGEX_PATTERN.matcher(text).find()
-                                    || TraceOutliner.TEXT_SCRIPT_EXECUTION_COMPLETE_REGEX_PATTERN.matcher(text)
+                                    || TraceOutliner.TEXT_SCRIPT_EXECUTION_COMPLETE_REGEX_PATTERN.matcher(text).find()
+                                    || TraceOutliner.TEXT_IF_TEST_PASSED_EXECUTING_IF_BLOCK_REGEX_PATTERN.matcher(text)
                                             .find()) {
 
-                                String str = curTraceStackNode.toString();
-                                if (str != null) {
-                                    htmlBuf.append("<li>");
-                                    htmlBuf.append(str);
-                                    htmlBuf.append("</li>");
+                                if (!curTraceStackNode.isWritten) {
+                                    String str = curTraceStackNode.toString();
+                                    if (str != null) {
+                                        htmlBuf.append("<li>");
+                                        htmlBuf.append(str);
+                                        htmlBuf.append("</li>");
+                                    }
                                 }
-                                curTraceStackNode = new TraceStackNode(stackLevel, this.lineNum, logLevel, component,
-                                        text, htmlBuf);
+                                stack.pop();
+                                stack.push(new TraceStackNode(stackLevel, this.lineNum, logLevel, component, text,
+                                        htmlBuf));
                             } else {
                                 curTraceStackNode.processText(this.lineNum, logLevel, component, text, htmlBuf);
                             }
