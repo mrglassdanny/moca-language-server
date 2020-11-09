@@ -1,18 +1,16 @@
 package com.github.mrglassdanny.mocalanguageserver.moca.trace;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 
 public class TraceOutliner {
 
     private static final Pattern TRACE_LINE_REGEX_PATTERN = Pattern.compile(
             "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2},\\d{3}) (TRACE|DEBUG|INFO |WARN |ERROR|FATAL) \\[(\\d+)[ ]+(.*?)\\] (.+?) \\[(\\d{1,3})\\] ([\\s\\S]*) \\[[\\s\\S]*\\](.*)");
 
-    private static final int TRACE_LINE_REGEX_LOG_LEVEL_GROUP_IDX = 2;
     private static final int TRACE_LINE_REGEX_THREAD_GROUP_IDX = 3;
     private static final int TRACE_LINE_REGEX_SESSION_GROUP_IDX = 4;
     private static final int TRACE_LINE_REGEX_LOGGER_GROUP_IDX = 5;
@@ -29,16 +27,19 @@ public class TraceOutliner {
 
     private int lineNum;
     private StringBuilder lineTextBuffer;
+
     // We could have multiple threads/sessions in trace. We need to keep them
     // seperate if this is the case.
     public HashMap<String, StringBuilder> htmlBuffers;
     private HashMap<String, Stack<TraceStackFrame>> stacks;
+    private HashMap<String, ArrayList<String>> fullTraceLines;
 
     public TraceOutliner() {
         this.lineNum = -1;
         this.lineTextBuffer = new StringBuilder(2048);
         this.htmlBuffers = new HashMap<>();
         this.stacks = new HashMap<>();
+        this.fullTraceLines = new HashMap<>();
     }
 
     public void readLine(int lineNum, String lineText) {
@@ -53,14 +54,35 @@ public class TraceOutliner {
         // out the line buffer. If we do not, we need to hold off on processing line
         // until the line is 'complete' and we have a perfect regex match.
 
-        this.lineNum = lineNum;
+        if (this.lineTextBuffer.length() == 0) {
+            this.lineNum = lineNum;
+        }
         this.lineTextBuffer.append(lineText);
 
         Matcher matcher = TraceOutliner.TRACE_LINE_REGEX_PATTERN.matcher(this.lineTextBuffer.toString());
 
         if (matcher.find()) {
 
+            String thread = matcher.group(TraceOutliner.TRACE_LINE_REGEX_THREAD_GROUP_IDX);
+            String session = matcher.group(TraceOutliner.TRACE_LINE_REGEX_SESSION_GROUP_IDX);
             String logger = matcher.group(TraceOutliner.TRACE_LINE_REGEX_LOGGER_GROUP_IDX);
+
+            // We need to make sure we are adding to the correct buffer/stack/lines for
+            // thread:session combo.
+            String key = thread + ":" + session;
+
+            // Relative line number refers to line num relative to thread:session combo.
+            int relativeLineNum;
+            if (this.fullTraceLines.containsKey(key)) {
+                ArrayList<String> lines = this.fullTraceLines.get(key);
+                lines.add(this.lineTextBuffer.toString());
+                relativeLineNum = lines.size();
+            } else {
+                ArrayList<String> lines = new ArrayList<>();
+                lines.add(this.lineTextBuffer.toString());
+                this.fullTraceLines.put(key, lines);
+                relativeLineNum = lines.size();
+            }
 
             // Check if ignored logger.
             boolean ignoreLogger = true;
@@ -72,15 +94,9 @@ public class TraceOutliner {
             }
 
             if (!ignoreLogger) {
-                String logLevel = matcher.group(TraceOutliner.TRACE_LINE_REGEX_LOG_LEVEL_GROUP_IDX);
-                String thread = matcher.group(TraceOutliner.TRACE_LINE_REGEX_THREAD_GROUP_IDX);
-                String session = matcher.group(TraceOutliner.TRACE_LINE_REGEX_SESSION_GROUP_IDX);
                 int stackLevel = Integer.parseInt(matcher.group(TraceOutliner.TRACE_LINE_REGEX_STACK_LEVEL_GROUP_IDX));
                 String message = matcher.group(TraceOutliner.TRACE_LINE_REGEX_MESSAGE_GROUP_IDX);
 
-                // We need to make sure we are adding to the correct buffer/stack for
-                // thread/session combo.
-                String key = thread + ":" + session;
                 StringBuilder htmlBuf;
                 Stack<TraceStackFrame> stack;
 
@@ -107,13 +123,13 @@ public class TraceOutliner {
                     TraceStackFrame curStackFrame;
                     if (stack.empty()) {
                         if (stackLevel == 0) {
-                            curStackFrame = stack.push(new TraceStackFrame(0, this.lineNum));
-                            processLogger(curStackFrame, this.lineNum, logger, message, htmlBuf);
+                            curStackFrame = stack.push(new TraceStackFrame(0, this.lineNum, relativeLineNum));
+                            processLogger(curStackFrame, this.lineNum, relativeLineNum, logger, message, htmlBuf);
                         }
                     } else {
                         curStackFrame = stack.peek();
                         if (stackLevel == curStackFrame.stackLevel) {
-                            processLogger(curStackFrame, this.lineNum, logger, message, htmlBuf);
+                            processLogger(curStackFrame, this.lineNum, relativeLineNum, logger, message, htmlBuf);
                         } else if (stackLevel > curStackFrame.stackLevel) {
 
                             String htmlStr = curStackFrame.toHtmlString();
@@ -123,17 +139,17 @@ public class TraceOutliner {
 
                             // Check if stack level jumps more than 1 up.
                             for (int i = curStackFrame.stackLevel + 1; i < stackLevel; i++) {
-                                stack.push(new TraceStackFrame(i, this.lineNum));
+                                stack.push(new TraceStackFrame(i, this.lineNum, relativeLineNum));
                             }
 
-                            curStackFrame = stack.push(new TraceStackFrame(stackLevel, this.lineNum));
-                            processLogger(curStackFrame, this.lineNum, logger, message, htmlBuf);
+                            curStackFrame = stack.push(new TraceStackFrame(stackLevel, this.lineNum, relativeLineNum));
+                            processLogger(curStackFrame, this.lineNum, relativeLineNum, logger, message, htmlBuf);
                         } else {
                             while (curStackFrame.stackLevel > stackLevel) {
                                 stack.pop();
                                 curStackFrame = stack.peek();
                             }
-                            processLogger(curStackFrame, this.lineNum, logger, message, htmlBuf);
+                            processLogger(curStackFrame, this.lineNum, relativeLineNum, logger, message, htmlBuf);
                         }
                     }
                 }
@@ -145,33 +161,31 @@ public class TraceOutliner {
 
     }
 
-    private static void processLogger(TraceStackFrame stackFrame, int lineNum, String logger, String message,
-            StringBuilder htmlBuf) {
-
-        MocaServices.logInfoToLanguageClient(lineNum + "---" + stackFrame.stackLevel + "::" + logger + "::" + message);
+    private static void processLogger(TraceStackFrame stackFrame, int lineNum, int relativeLineNum, String logger,
+            String message, StringBuilder htmlBuf) {
 
         switch (logger) {
             case "CommandDispatcher":
-                stackFrame.processCommandDispatcherMessage(lineNum, message, htmlBuf);
+                stackFrame.processCommandDispatcherMessage(lineNum, relativeLineNum, message, htmlBuf);
                 break;
             case "DefaultServerContext":
-                stackFrame.processDefaultServerContextMessage(lineNum, message, htmlBuf);
+                stackFrame.processDefaultServerContextMessage(lineNum, relativeLineNum, message, htmlBuf);
                 break;
             case "JDBCAdapter":
-                stackFrame.processJdbcAdapterMessage(lineNum, message, htmlBuf);
+                stackFrame.processJdbcAdapterMessage(lineNum, relativeLineNum, message, htmlBuf);
                 break;
             case "GroovyScriptAdapter":
-                stackFrame.processGroovyScriptAdapterMessage(lineNum, message, htmlBuf);
+                stackFrame.processGroovyScriptAdapterMessage(lineNum, relativeLineNum, message, htmlBuf);
                 break;
             case "CommandStatement":
-                stackFrame.processCommandStatementMessage(lineNum, message, htmlBuf);
+                stackFrame.processCommandStatementMessage(lineNum, relativeLineNum, message, htmlBuf);
                 break;
             case "Argument":
-                stackFrame.processArgumentMessage(lineNum, message, htmlBuf);
+                stackFrame.processArgumentMessage(lineNum, relativeLineNum, message, htmlBuf);
                 break;
             case "Flow":
             case "FLOW":
-                stackFrame.processFlowMessage(lineNum, message, htmlBuf);
+                stackFrame.processFlowMessage(lineNum, relativeLineNum, message, htmlBuf);
                 break;
             default:
                 break;

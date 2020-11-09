@@ -45,12 +45,13 @@ public class TraceStackFrame {
             .compile("(Published) (.*)(=)(.*) (\\(.*\\))");
     private static final Pattern MESSAGE_ARGUMENT_REGEX_PATTERN = Pattern.compile("(Argument) (.*)(=)(.*) (\\(.*\\))");
 
-    // Will have 1 stack level and 1 start line number per frame.
+    // Will have 1 stack level per frame.
     public int stackLevel;
-    public int startLineNum; // For joining up with raw trace file contents.
+    public int absoluteLineNum; // For joining up with raw trace file contents relative to entire file.
+    public int relativeLineNum; // For joining up with raw trace file contents relative to thread:session combo.
 
     // Could be multple instructions executed in stack frame.
-    public ArrayList<String> instructions;
+    public String instruction;
 
     // Should just be 1, if any, conditional tests per stack frame.
     public String conditionalTest;
@@ -63,11 +64,12 @@ public class TraceStackFrame {
 
     public boolean isHtmlAppended; // Indicates if html payload has been appended to buffer yet.
 
-    public TraceStackFrame(int stackLevel, int lineNum) {
+    public TraceStackFrame(int stackLevel, int lineNum, int relativeLineNum) {
         this.stackLevel = stackLevel;
-        this.startLineNum = lineNum;
+        this.absoluteLineNum = lineNum;
+        this.relativeLineNum = relativeLineNum;
 
-        this.instructions = new ArrayList<>();
+        this.instruction = "";
 
         this.conditionalTest = "";
 
@@ -79,18 +81,19 @@ public class TraceStackFrame {
         this.isHtmlAppended = false;
     }
 
-    private void clear(int lineNum) {
+    private void clear(int lineNum, int relativeLineNum) {
 
-        this.startLineNum = lineNum;
+        this.absoluteLineNum = lineNum;
+        this.relativeLineNum = relativeLineNum;
 
-        this.instructions = new ArrayList<>();
+        this.instruction = "";
 
         this.conditionalTest = "";
 
-        this.published = new HashMap<>();
-        this.arguments = new HashMap<>();
+        this.published.clear();
+        this.arguments.clear();
 
-        this.flowMessages = new ArrayList<>();
+        this.flowMessages.clear();
 
         this.isHtmlAppended = false;
     }
@@ -105,9 +108,10 @@ public class TraceStackFrame {
         }
 
         String retStr = "";
-        for (String ins : this.instructions) {
-            retStr += String.format("<li><span>%s %d : %d %s</span></li>", stackLevelBuf, this.startLineNum,
-                    this.stackLevel, ins.length() > 150 ? ins.substring(0, 150) + "..." : ins);
+        if (!this.instruction.isEmpty()) {
+            retStr += String.format("<li><span>%s %d(%d) : %d %s</span></li>", stackLevelBuf, this.absoluteLineNum,
+                    this.relativeLineNum, this.stackLevel,
+                    this.instruction.length() > 150 ? this.instruction.substring(0, 150) + "..." : this.instruction);
         }
 
         if (retStr.isEmpty()) {
@@ -117,28 +121,31 @@ public class TraceStackFrame {
         }
     }
 
-    public void processCommandDispatcherMessage(int lineNum, String message, StringBuilder htmlBuf) {
+    public void processCommandDispatcherMessage(int lineNum, int relativeLineNum, String message,
+            StringBuilder htmlBuf) {
         Matcher matcher;
 
         matcher = TraceStackFrame.MESSAGE_SERVER_GOT_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.instructions.add(matcher.group(2));
+            this.instruction = matcher.group(2);
         }
     }
 
-    public void processDefaultServerContextMessage(int lineNum, String message, StringBuilder htmlBuf) {
+    public void processDefaultServerContextMessage(int lineNum, int relativeLineNum, String message,
+            StringBuilder htmlBuf) {
         Matcher matcher;
 
-        matcher = TraceStackFrame.MESSAGE_COMMAND_INITIATED_REGEX_PATTERN.matcher(message);
-        if (matcher.find()) {
-            this.clear(lineNum);
-            this.instructions.add(matcher.group(2));
-        }
+        // matcher =
+        // TraceStackFrame.MESSAGE_COMMAND_INITIATED_REGEX_PATTERN.matcher(message);
+        // if (matcher.find()) {
+        // this.clear(lineNum, relativeLineNum);
+        // this.instruction = matcher.group(3);
+        // }
 
         matcher = TraceStackFrame.MESSAGE_EXECUTING_COMMAND_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.clear(lineNum);
-            this.instructions.add(matcher.group(2));
+            this.clear(lineNum, relativeLineNum);
+            this.instruction = matcher.group(2);
         }
 
         matcher = TraceStackFrame.MESSAGE_EXECUTED_COMMAND_REGEX_PATTERN.matcher(message);
@@ -149,13 +156,13 @@ public class TraceStackFrame {
                     htmlBuf.append(htmlStr);
                 }
             }
-            this.clear(lineNum);
+            this.clear(lineNum, relativeLineNum);
         }
 
         matcher = TraceStackFrame.MESSAGE_FIRING_TRIGGERS_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.clear(lineNum);
-            this.instructions.add(String.format("FIRING TRIGGERS: ", matcher.group(2)));
+            this.clear(lineNum, relativeLineNum);
+            this.instruction = String.format("FIRING TRIGGERS: ", matcher.group(2));
         }
 
         matcher = TraceStackFrame.MESSAGE_DONE_FIRING_TRIGGERS_REGEX_PATTERN.matcher(message);
@@ -166,18 +173,18 @@ public class TraceStackFrame {
                     htmlBuf.append(htmlStr);
                 }
             }
-            this.clear(lineNum);
+            this.clear(lineNum, relativeLineNum);
         }
 
     }
 
-    public void processJdbcAdapterMessage(int lineNum, String message, StringBuilder htmlBuf) {
+    public void processJdbcAdapterMessage(int lineNum, int relativeLineNum, String message, StringBuilder htmlBuf) {
         Matcher matcher;
 
         matcher = TraceStackFrame.MESSAGE_EXECUTING_SQL_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.clear(lineNum);
-            this.instructions.add(matcher.group(2));
+            this.clear(lineNum, relativeLineNum);
+            this.instruction = matcher.group(2);
         }
 
         matcher = TraceStackFrame.MESSAGE_SQL_EXECUTION_COMPLETE_REGEX_PATTERN.matcher(message);
@@ -188,17 +195,18 @@ public class TraceStackFrame {
                     htmlBuf.append(htmlStr);
                 }
             }
-            this.clear(lineNum);
+            this.clear(lineNum, relativeLineNum);
         }
     }
 
-    public void processGroovyScriptAdapterMessage(int lineNum, String message, StringBuilder htmlBuf) {
+    public void processGroovyScriptAdapterMessage(int lineNum, int relativeLineNum, String message,
+            StringBuilder htmlBuf) {
         Matcher matcher;
 
         matcher = TraceStackFrame.MESSAGE_EXECUTING_COMPILED_SCRIPT_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.clear(lineNum);
-            this.instructions.add("[[Compiled Script]]");
+            this.clear(lineNum, relativeLineNum);
+            this.instruction = "[[Compiled Script]]";
         }
 
         matcher = TraceStackFrame.MESSAGE_SCRIPT_EXECUTION_COMPLETE_REGEX_PATTERN.matcher(message);
@@ -209,17 +217,18 @@ public class TraceStackFrame {
                     htmlBuf.append(htmlStr);
                 }
             }
-            this.clear(lineNum);
+            this.clear(lineNum, relativeLineNum);
         }
     }
 
-    public void processCommandStatementMessage(int lineNum, String message, StringBuilder htmlBuf) {
+    public void processCommandStatementMessage(int lineNum, int relativeLineNum, String message,
+            StringBuilder htmlBuf) {
 
         Matcher matcher;
 
         matcher = TraceStackFrame.MESSAGE_EVALUATING_CONDITIONAL_TEST_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.clear(lineNum);
+            this.clear(lineNum, relativeLineNum);
             this.conditionalTest = "IF: " + matcher.group(2);
         }
 
@@ -227,42 +236,42 @@ public class TraceStackFrame {
         if (matcher.find()) {
             this.conditionalTest += " : PASSED";
 
-            this.instructions.add(this.conditionalTest);
+            this.instruction = this.conditionalTest;
             if (!this.isHtmlAppended) {
                 String htmlStr = this.toHtmlString();
                 if (htmlStr != null) {
                     htmlBuf.append(htmlStr);
                 }
             }
-            this.clear(lineNum);
+            this.clear(lineNum, relativeLineNum);
         }
 
         matcher = TraceStackFrame.MESSAGE_IF_TEST_FAILED_NO_ELSE_BLOCK_TO_EXECUTE_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
             this.conditionalTest += " : FAILED";
 
-            this.instructions.add(this.conditionalTest);
+            this.instruction = this.conditionalTest;
             if (!this.isHtmlAppended) {
                 String htmlStr = this.toHtmlString();
                 if (htmlStr != null) {
                     htmlBuf.append(htmlStr);
                 }
             }
-            this.clear(lineNum);
+            this.clear(lineNum, relativeLineNum);
         }
 
         matcher = TraceStackFrame.MESSAGE_IF_TEST_FAILED_EXECUTING_ELSE_BLOCK_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
             this.conditionalTest += " : FAILED -> ELSE";
 
-            this.instructions.add(this.conditionalTest);
+            this.instruction = this.conditionalTest;
             if (!this.isHtmlAppended) {
                 String htmlStr = this.toHtmlString();
                 if (htmlStr != null) {
                     htmlBuf.append(htmlStr);
                 }
             }
-            this.clear(lineNum);
+            this.clear(lineNum, relativeLineNum);
         }
 
         matcher = TraceStackFrame.MESSAGE_EVALUATING_TRY_CATCH_EXPRESSION_REGEX_PATTERN.matcher(message);
@@ -270,17 +279,17 @@ public class TraceStackFrame {
 
             if (!this.conditionalTest.isEmpty()) {
                 this.conditionalTest += " : FAILED";
-                this.instructions.add(this.conditionalTest);
+                this.instruction = this.conditionalTest;
                 if (!this.isHtmlAppended) {
                     String htmlStr = this.toHtmlString();
                     if (htmlStr != null) {
                         htmlBuf.append(htmlStr);
                     }
                 }
-                this.clear(lineNum);
+                this.clear(lineNum, relativeLineNum);
             }
 
-            this.clear(lineNum);
+            this.clear(lineNum, relativeLineNum);
             this.conditionalTest = "CATCH: " + matcher.group(2);
         }
 
@@ -288,26 +297,26 @@ public class TraceStackFrame {
         if (matcher.find()) {
             this.conditionalTest += " : PASSED";
 
-            this.instructions.add(this.conditionalTest);
+            this.instruction = this.conditionalTest;
             if (!this.isHtmlAppended) {
                 String htmlStr = this.toHtmlString();
                 if (htmlStr != null) {
                     htmlBuf.append(htmlStr);
                 }
             }
-            this.clear(lineNum);
+            this.clear(lineNum, relativeLineNum);
         }
 
         matcher = TraceStackFrame.MESSAGE_EXECUTING_FINALLY_BLOCK_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.clear(lineNum);
+            this.clear(lineNum, relativeLineNum);
             this.conditionalTest = "FINALLY";
-            this.instructions.add(this.conditionalTest);
+            this.instruction = this.conditionalTest;
         }
 
     }
 
-    public void processArgumentMessage(int lineNum, String message, StringBuilder htmlBuf) {
+    public void processArgumentMessage(int lineNum, int relativeLineNum, String message, StringBuilder htmlBuf) {
 
         Matcher matcher;
 
@@ -322,7 +331,7 @@ public class TraceStackFrame {
         }
     }
 
-    public void processFlowMessage(int lineNum, String message, StringBuilder htmlBuf) {
+    public void processFlowMessage(int lineNum, int relativeLineNum, String message, StringBuilder htmlBuf) {
         this.flowMessages.add(message);
     }
 
