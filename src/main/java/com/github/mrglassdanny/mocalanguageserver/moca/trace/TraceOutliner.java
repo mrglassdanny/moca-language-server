@@ -132,12 +132,14 @@ public class TraceOutliner {
                             processLogger(curStackFrame, this.lineNum, relativeLineNum, logger, message, htmlBuf);
                         } else if (stackLevel > curStackFrame.stackLevel) {
 
-                            String htmlStr = curStackFrame.toHtmlString();
-                            if (htmlStr != null) {
-                                htmlBuf.append(htmlStr);
+                            if (!curStackFrame.isHtmlAppended) {
+                                String htmlStr = curStackFrame.toHtmlString();
+                                if (htmlStr != null) {
+                                    htmlBuf.append(htmlStr);
+                                }
                             }
 
-                            // Check if stack level jumps more than 1 up.
+                            // Check if stack level jumps up more than 1 level.
                             for (int i = curStackFrame.stackLevel + 1; i < stackLevel; i++) {
                                 stack.push(new TraceStackFrame(i, this.lineNum, relativeLineNum));
                             }

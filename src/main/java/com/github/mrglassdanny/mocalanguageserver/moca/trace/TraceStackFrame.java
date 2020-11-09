@@ -162,17 +162,11 @@ public class TraceStackFrame {
         matcher = TraceStackFrame.MESSAGE_FIRING_TRIGGERS_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
             this.clear(lineNum, relativeLineNum);
-            this.instruction = String.format("FIRING TRIGGERS: ", matcher.group(2));
+            this.instruction = message;
         }
 
         matcher = TraceStackFrame.MESSAGE_DONE_FIRING_TRIGGERS_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            if (!this.isHtmlAppended) {
-                String htmlStr = this.toHtmlString();
-                if (htmlStr != null) {
-                    htmlBuf.append(htmlStr);
-                }
-            }
             this.clear(lineNum, relativeLineNum);
         }
 
