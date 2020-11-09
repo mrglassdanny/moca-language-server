@@ -135,12 +135,11 @@ public class TraceStackFrame {
             StringBuilder htmlBuf) {
         Matcher matcher;
 
-        // matcher =
-        // TraceStackFrame.MESSAGE_COMMAND_INITIATED_REGEX_PATTERN.matcher(message);
-        // if (matcher.find()) {
-        // this.clear(lineNum, relativeLineNum);
-        // this.instruction = matcher.group(3);
-        // }
+        matcher = TraceStackFrame.MESSAGE_COMMAND_INITIATED_REGEX_PATTERN.matcher(message);
+        if (matcher.find()) {
+            this.clear(lineNum, relativeLineNum);
+            this.instruction = matcher.group(3);
+        }
 
         matcher = TraceStackFrame.MESSAGE_EXECUTING_COMMAND_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
