@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 
-public class TraceAnalyzer {
+public class TraceOutliner {
 
     private static final Pattern TRACE_LINE_REGEX_PATTERN = Pattern.compile(
             "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2},\\d{3}) (TRACE|DEBUG|INFO |WARN |ERROR|FATAL) \\[(\\d+)[ ]+(.*?)\\] (.+?) \\[(\\d{1,3})\\] ([\\s\\S]*) \\[[\\s\\S]*\\](.*)");
@@ -34,7 +34,7 @@ public class TraceAnalyzer {
     public HashMap<String, StringBuilder> htmlBuffers;
     private HashMap<String, Stack<TraceStackFrame>> stacks;
 
-    public TraceAnalyzer() {
+    public TraceOutliner() {
         this.lineNum = -1;
         this.lineTextBuffer = new StringBuilder(2048);
         this.htmlBuffers = new HashMap<>();
@@ -56,15 +56,15 @@ public class TraceAnalyzer {
         this.lineNum = lineNum;
         this.lineTextBuffer.append(lineText);
 
-        Matcher matcher = TraceAnalyzer.TRACE_LINE_REGEX_PATTERN.matcher(this.lineTextBuffer.toString());
+        Matcher matcher = TraceOutliner.TRACE_LINE_REGEX_PATTERN.matcher(this.lineTextBuffer.toString());
 
         if (matcher.find()) {
 
-            String logger = matcher.group(TraceAnalyzer.TRACE_LINE_REGEX_LOGGER_GROUP_IDX);
+            String logger = matcher.group(TraceOutliner.TRACE_LINE_REGEX_LOGGER_GROUP_IDX);
 
             // Check if ignored logger.
             boolean ignoreLogger = true;
-            for (String _logger : TraceAnalyzer.LOGGERS) {
+            for (String _logger : TraceOutliner.LOGGERS) {
                 if (logger.compareTo(_logger) == 0) {
                     ignoreLogger = false;
                     break;
@@ -72,11 +72,11 @@ public class TraceAnalyzer {
             }
 
             if (!ignoreLogger) {
-                String logLevel = matcher.group(TraceAnalyzer.TRACE_LINE_REGEX_LOG_LEVEL_GROUP_IDX);
-                String thread = matcher.group(TraceAnalyzer.TRACE_LINE_REGEX_THREAD_GROUP_IDX);
-                String session = matcher.group(TraceAnalyzer.TRACE_LINE_REGEX_SESSION_GROUP_IDX);
-                int stackLevel = Integer.parseInt(matcher.group(TraceAnalyzer.TRACE_LINE_REGEX_STACK_LEVEL_GROUP_IDX));
-                String message = matcher.group(TraceAnalyzer.TRACE_LINE_REGEX_MESSAGE_GROUP_IDX);
+                String logLevel = matcher.group(TraceOutliner.TRACE_LINE_REGEX_LOG_LEVEL_GROUP_IDX);
+                String thread = matcher.group(TraceOutliner.TRACE_LINE_REGEX_THREAD_GROUP_IDX);
+                String session = matcher.group(TraceOutliner.TRACE_LINE_REGEX_SESSION_GROUP_IDX);
+                int stackLevel = Integer.parseInt(matcher.group(TraceOutliner.TRACE_LINE_REGEX_STACK_LEVEL_GROUP_IDX));
+                String message = matcher.group(TraceOutliner.TRACE_LINE_REGEX_MESSAGE_GROUP_IDX);
 
                 // We need to make sure we are adding to the correct buffer/stack for
                 // thread/session combo.
@@ -99,9 +99,9 @@ public class TraceAnalyzer {
 
                 // If we come across trace stack start/end cues, we need to clear the stack and
                 // get ready for a new one.
-                if (message.compareToIgnoreCase(TraceAnalyzer.MESSAGE_TRACE_STACK_START_TEXT) == 0) {
+                if (message.compareToIgnoreCase(TraceOutliner.MESSAGE_TRACE_STACK_START_TEXT) == 0) {
                     stack.clear();
-                } else if (message.compareToIgnoreCase(TraceAnalyzer.MESSAGE_TRACE_STACK_END_TEXT) == 0) {
+                } else if (message.compareToIgnoreCase(TraceOutliner.MESSAGE_TRACE_STACK_END_TEXT) == 0) {
                     stack.clear();
                 } else {
                     TraceStackFrame curStackFrame;
