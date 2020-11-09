@@ -29,7 +29,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.Moc
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
-import com.github.mrglassdanny.mocalanguageserver.moca.trace.TraceOutliner;
+import com.github.mrglassdanny.mocalanguageserver.moca.trace.TraceAnalyzer;
 
 import org.eclipse.lsp4j.ExecuteCommandParams;
 
@@ -402,7 +402,7 @@ public class ExecuteCommandProvider {
                                 .executeCommand(String.format("read file where filnam = '${LESDIR}/log/%s'",
                                         openMocaTraceRequest.requestedTraceFileName));
 
-                        TraceOutliner traceOutliner = new TraceOutliner();
+                        TraceAnalyzer traceAnalyzer = new TraceAnalyzer();
 
                         StringBuilder htmlBuf = new StringBuilder(8192);
 
@@ -413,11 +413,11 @@ public class ExecuteCommandProvider {
                                 + "</head>  <ul>");
 
                         for (int i = 0; i < res.getRowCount(); i++) {
-                            traceOutliner.readLine(i, res.getString(i, "text"));
+                            traceAnalyzer.readLine(i, res.getString(i, "text"));
                         }
 
                         // Add to main html buffer.
-                        for (Entry<String, StringBuilder> entry : traceOutliner.htmlBuffers.entrySet()) {
+                        for (Entry<String, StringBuilder> entry : traceAnalyzer.htmlBuffers.entrySet()) {
                             htmlBuf.append(String.format(
                                     "<p1><br>START: %s ============================================================================================================================</br></p1>",
                                     entry.getKey()));

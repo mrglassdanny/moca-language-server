@@ -5,6 +5,8 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
+
 public class TraceAnalyzer {
 
     private static final Pattern TRACE_LINE_REGEX_PATTERN = Pattern.compile(
@@ -19,7 +21,11 @@ public class TraceAnalyzer {
 
     // There are a select few loggers that we actually care to analyze.
     private static final String[] LOGGERS = { "Argument", "CommandStatement", "DefaultServerContext", "JDBCAdapter",
-            "Performance", "CommandDispatcher", "MocaTransactionManager", "GroovyScriptAdapter" };
+            "Performance", "CommandDispatcher", "MocaTransactionManager", "GroovyScriptAdapter", "Flow", "FLOW" };
+
+    // These messages indicate the beginning and ending of a trace 'stack'.
+    private static final String MESSAGE_TRACE_STACK_START_TEXT = "Dispatching command...";
+    private static final String MESSAGE_TRACE_STACK_END_TEXT = "Dispatched command";
 
     private int lineNum;
     private StringBuilder lineTextBuffer;
@@ -91,62 +97,81 @@ public class TraceAnalyzer {
                     this.stacks.put(key, stack);
                 }
 
-                // Now process stack frame.
-                TraceStackFrame curStackFrame;
-                if (stack.empty()) {
-                    if (stackLevel == 0) {
-                        curStackFrame = stack.push(new TraceStackFrame(0, this.lineNum));
-                        processLogger(curStackFrame, logger, message);
-                    }
+                // If we come across trace stack start/end cues, we need to clear the stack and
+                // get ready for a new one.
+                if (message.compareToIgnoreCase(TraceAnalyzer.MESSAGE_TRACE_STACK_START_TEXT) == 0) {
+                    stack.clear();
+                } else if (message.compareToIgnoreCase(TraceAnalyzer.MESSAGE_TRACE_STACK_END_TEXT) == 0) {
+                    stack.clear();
                 } else {
-                    curStackFrame = stack.peek();
-                    if (stackLevel == curStackFrame.stackLevel) {
-                        processLogger(curStackFrame, logger, message);
-                    } else if (stackLevel > curStackFrame.stackLevel) {
-                        // Print
-                        curStackFrame = stack.push(new TraceStackFrame(stackLevel, this.lineNum));
-                        processLogger(curStackFrame, logger, message);
-                    } else {
-
-                        // Print popped
-
-                        while (curStackFrame.stackLevel > stackLevel) {
-                            stack.pop();
-                            curStackFrame = stack.peek();
+                    TraceStackFrame curStackFrame;
+                    if (stack.empty()) {
+                        if (stackLevel == 0) {
+                            curStackFrame = stack.push(new TraceStackFrame(0, this.lineNum));
+                            processLogger(curStackFrame, this.lineNum, logger, message, htmlBuf);
                         }
+                    } else {
+                        curStackFrame = stack.peek();
+                        if (stackLevel == curStackFrame.stackLevel) {
+                            processLogger(curStackFrame, this.lineNum, logger, message, htmlBuf);
+                        } else if (stackLevel > curStackFrame.stackLevel) {
 
-                        processLogger(curStackFrame, logger, message);
+                            String htmlStr = curStackFrame.toHtmlString();
+                            if (htmlStr != null) {
+                                htmlBuf.append(htmlStr);
+                            }
+
+                            // Check if stack level jumps more than 1 up.
+                            for (int i = curStackFrame.stackLevel + 1; i < stackLevel; i++) {
+                                stack.push(new TraceStackFrame(i, this.lineNum));
+                            }
+
+                            curStackFrame = stack.push(new TraceStackFrame(stackLevel, this.lineNum));
+                            processLogger(curStackFrame, this.lineNum, logger, message, htmlBuf);
+                        } else {
+                            while (curStackFrame.stackLevel > stackLevel) {
+                                stack.pop();
+                                curStackFrame = stack.peek();
+                            }
+                            processLogger(curStackFrame, this.lineNum, logger, message, htmlBuf);
+                        }
                     }
                 }
-
-                // Need to clear line text buf for next read line call.
-                this.lineTextBuffer.setLength(0);
-
             }
 
+            // Need to clear line text buf for next read line call.
+            this.lineTextBuffer.setLength(0);
         }
 
     }
 
-    private static void processLogger(TraceStackFrame stackFrame, String logger, String message) {
+    private static void processLogger(TraceStackFrame stackFrame, int lineNum, String logger, String message,
+            StringBuilder htmlBuf) {
+
+        MocaServices.logInfoToLanguageClient(lineNum + "---" + stackFrame.stackLevel + "::" + logger + "::" + message);
+
         switch (logger) {
             case "CommandDispatcher":
-                stackFrame.processCommandDispatcherMessage(message);
+                stackFrame.processCommandDispatcherMessage(lineNum, message, htmlBuf);
                 break;
             case "DefaultServerContext":
-                stackFrame.processDefaultServerContextMessage(message);
+                stackFrame.processDefaultServerContextMessage(lineNum, message, htmlBuf);
                 break;
             case "JDBCAdapter":
-                stackFrame.processJdbcAdapterMessage(message);
+                stackFrame.processJdbcAdapterMessage(lineNum, message, htmlBuf);
                 break;
             case "GroovyScriptAdapter":
-                stackFrame.processGroovyScriptAdapterMessage(message);
+                stackFrame.processGroovyScriptAdapterMessage(lineNum, message, htmlBuf);
                 break;
             case "CommandStatement":
-                stackFrame.processCommandStatementMessage(message);
+                stackFrame.processCommandStatementMessage(lineNum, message, htmlBuf);
                 break;
             case "Argument":
-                stackFrame.processArgumentMessage(message);
+                stackFrame.processArgumentMessage(lineNum, message, htmlBuf);
+                break;
+            case "Flow":
+            case "FLOW":
+                stackFrame.processFlowMessage(lineNum, message, htmlBuf);
                 break;
             default:
                 break;
