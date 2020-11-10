@@ -54,6 +54,7 @@ public class TraceOutliner {
         // out the line buffer. If we do not, we need to hold off on processing line
         // until the line is 'complete' and we have a perfect regex match.
 
+        // The lineNum member will be in line with how we are processing lines ^.
         if (this.lineTextBuffer.length() == 0) {
             this.lineNum = lineNum;
         }
