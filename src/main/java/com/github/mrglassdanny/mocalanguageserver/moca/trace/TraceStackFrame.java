@@ -81,7 +81,7 @@ public class TraceStackFrame {
         this.isHtmlAppended = false;
     }
 
-    private void clear(int lineNum, int relativeLineNum) {
+    private void reset(int lineNum, int relativeLineNum) {
 
         this.absoluteLineNum = lineNum;
         this.relativeLineNum = relativeLineNum;
@@ -135,15 +135,35 @@ public class TraceStackFrame {
             StringBuilder htmlBuf) {
         Matcher matcher;
 
+        // TODO: do we really need to handle this match?
         matcher = TraceStackFrame.MESSAGE_COMMAND_INITIATED_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.clear(lineNum, relativeLineNum);
+
+            // Sometimes we already have an instruction at this level when we come across
+            // this match. We need to append current and then handle our match.
+            if (!this.instruction.isEmpty()) {
+                if (!this.isHtmlAppended) {
+                    String htmlStr = this.toHtmlString();
+                    if (htmlStr != null) {
+                        htmlBuf.append(htmlStr);
+                    }
+                }
+                this.reset(lineNum, relativeLineNum);
+            }
+
             this.instruction = matcher.group(3);
+            if (!this.isHtmlAppended) {
+                String htmlStr = this.toHtmlString();
+                if (htmlStr != null) {
+                    htmlBuf.append(htmlStr);
+                }
+            }
+            this.reset(lineNum, relativeLineNum);
         }
 
         matcher = TraceStackFrame.MESSAGE_EXECUTING_COMMAND_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.clear(lineNum, relativeLineNum);
+            this.reset(lineNum, relativeLineNum);
             this.instruction = matcher.group(2);
         }
 
@@ -155,18 +175,18 @@ public class TraceStackFrame {
                     htmlBuf.append(htmlStr);
                 }
             }
-            this.clear(lineNum, relativeLineNum);
+            this.reset(lineNum, relativeLineNum);
         }
 
         matcher = TraceStackFrame.MESSAGE_FIRING_TRIGGERS_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.clear(lineNum, relativeLineNum);
+            this.reset(lineNum, relativeLineNum);
             this.instruction = message;
         }
 
         matcher = TraceStackFrame.MESSAGE_DONE_FIRING_TRIGGERS_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.clear(lineNum, relativeLineNum);
+            this.reset(lineNum, relativeLineNum);
         }
 
     }
@@ -176,7 +196,7 @@ public class TraceStackFrame {
 
         matcher = TraceStackFrame.MESSAGE_EXECUTING_SQL_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.clear(lineNum, relativeLineNum);
+            this.reset(lineNum, relativeLineNum);
             this.instruction = matcher.group(2);
         }
 
@@ -188,7 +208,7 @@ public class TraceStackFrame {
                     htmlBuf.append(htmlStr);
                 }
             }
-            this.clear(lineNum, relativeLineNum);
+            this.reset(lineNum, relativeLineNum);
         }
     }
 
@@ -198,7 +218,7 @@ public class TraceStackFrame {
 
         matcher = TraceStackFrame.MESSAGE_EXECUTING_COMPILED_SCRIPT_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.clear(lineNum, relativeLineNum);
+            this.reset(lineNum, relativeLineNum);
             this.instruction = "[[Compiled Script]]";
         }
 
@@ -210,7 +230,7 @@ public class TraceStackFrame {
                     htmlBuf.append(htmlStr);
                 }
             }
-            this.clear(lineNum, relativeLineNum);
+            this.reset(lineNum, relativeLineNum);
         }
     }
 
@@ -221,7 +241,7 @@ public class TraceStackFrame {
 
         matcher = TraceStackFrame.MESSAGE_EVALUATING_CONDITIONAL_TEST_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.clear(lineNum, relativeLineNum);
+            this.reset(lineNum, relativeLineNum);
             this.conditionalTest = "IF: " + matcher.group(2);
         }
 
@@ -236,7 +256,7 @@ public class TraceStackFrame {
                     htmlBuf.append(htmlStr);
                 }
             }
-            this.clear(lineNum, relativeLineNum);
+            this.reset(lineNum, relativeLineNum);
         }
 
         matcher = TraceStackFrame.MESSAGE_IF_TEST_FAILED_NO_ELSE_BLOCK_TO_EXECUTE_REGEX_PATTERN.matcher(message);
@@ -250,7 +270,7 @@ public class TraceStackFrame {
                     htmlBuf.append(htmlStr);
                 }
             }
-            this.clear(lineNum, relativeLineNum);
+            this.reset(lineNum, relativeLineNum);
         }
 
         matcher = TraceStackFrame.MESSAGE_IF_TEST_FAILED_EXECUTING_ELSE_BLOCK_REGEX_PATTERN.matcher(message);
@@ -264,7 +284,7 @@ public class TraceStackFrame {
                     htmlBuf.append(htmlStr);
                 }
             }
-            this.clear(lineNum, relativeLineNum);
+            this.reset(lineNum, relativeLineNum);
         }
 
         matcher = TraceStackFrame.MESSAGE_EVALUATING_TRY_CATCH_EXPRESSION_REGEX_PATTERN.matcher(message);
@@ -279,10 +299,10 @@ public class TraceStackFrame {
                         htmlBuf.append(htmlStr);
                     }
                 }
-                this.clear(lineNum, relativeLineNum);
+                this.reset(lineNum, relativeLineNum);
             }
 
-            this.clear(lineNum, relativeLineNum);
+            this.reset(lineNum, relativeLineNum);
             this.conditionalTest = "CATCH: " + matcher.group(2);
         }
 
@@ -297,12 +317,12 @@ public class TraceStackFrame {
                     htmlBuf.append(htmlStr);
                 }
             }
-            this.clear(lineNum, relativeLineNum);
+            this.reset(lineNum, relativeLineNum);
         }
 
         matcher = TraceStackFrame.MESSAGE_EXECUTING_FINALLY_BLOCK_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.clear(lineNum, relativeLineNum);
+            this.reset(lineNum, relativeLineNum);
             this.conditionalTest = "FINALLY";
             this.instruction = this.conditionalTest;
         }
