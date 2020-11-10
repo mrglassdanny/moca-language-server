@@ -9,14 +9,16 @@ public class TraceStackFrame {
 
     private static final Pattern MESSAGE_SERVER_GOT_REGEX_PATTERN = Pattern.compile("(Server got:) ((?s).*)");
 
-    private static final Pattern MESSAGE_COMMAND_INITIATED_REGEX_PATTERN = Pattern
-            .compile("(Command initiated:) (\\[)((?s).*)(\\])");
     private static final Pattern MESSAGE_EXECUTING_COMMAND_REGEX_PATTERN = Pattern.compile("(Executing Command:) (.*)");
     private static final Pattern MESSAGE_EXECUTED_COMMAND_REGEX_PATTERN = Pattern.compile("(Executed Command:) (.*)");
     private static final Pattern MESSAGE_FIRING_TRIGGERS_REGEX_PATTERN = Pattern
             .compile("(Firing triggers...) ((?s).*)");
     private static final Pattern MESSAGE_DONE_FIRING_TRIGGERS_REGEX_PATTERN = Pattern
             .compile("(Done Firing triggers...) ((?s).*)");
+    private static final Pattern MESSAGE_EXECUTING_COMMAND_ON_REMOTE_HOST_REGEX_PATTERN = Pattern
+            .compile("(Executing command on remote host) (.*)(\\:)((?s).*)");
+    private static final Pattern MESSAGE_REMOTE_EXECUTION_COMPLETE_REGEX_PATTERN = Pattern
+            .compile("Remote execution complete");
 
     private static final Pattern MESSAGE_EXECUTING_SQL_REGEX_PATTERN = Pattern.compile("(UNBIND:) ((?s).*)");
     private static final Pattern MESSAGE_SQL_EXECUTION_COMPLETE_REGEX_PATTERN = Pattern
@@ -45,8 +47,7 @@ public class TraceStackFrame {
             .compile("(Published) (.*)(=)(.*) (\\(.*\\))");
     private static final Pattern MESSAGE_ARGUMENT_REGEX_PATTERN = Pattern.compile("(Argument) (.*)(=)(.*) (\\(.*\\))");
 
-    // Will have 1 stack level per frame.
-    public int stackLevel;
+    public int stackLevel; // Will have 1 stack level per frame.
     public int absoluteLineNum; // For joining up with raw trace file contents relative to entire file.
     public int relativeLineNum; // For joining up with raw trace file contents relative to thread:session combo.
 
@@ -98,6 +99,15 @@ public class TraceStackFrame {
         this.isHtmlAppended = false;
     }
 
+    public void appendHtml(StringBuilder htmlBuf) {
+        if (!this.isHtmlAppended) {
+            String htmlStr = this.toHtmlString();
+            if (htmlStr != null) {
+                htmlBuf.append(htmlStr);
+            }
+        }
+    }
+
     public String toHtmlString() {
 
         this.isHtmlAppended = true;
@@ -135,32 +145,6 @@ public class TraceStackFrame {
             StringBuilder htmlBuf) {
         Matcher matcher;
 
-        // TODO: do we really need to handle this match?
-        matcher = TraceStackFrame.MESSAGE_COMMAND_INITIATED_REGEX_PATTERN.matcher(message);
-        if (matcher.find()) {
-
-            // Sometimes we already have an instruction at this level when we come across
-            // this match. We need to append current and then handle our match.
-            if (!this.instruction.isEmpty()) {
-                if (!this.isHtmlAppended) {
-                    String htmlStr = this.toHtmlString();
-                    if (htmlStr != null) {
-                        htmlBuf.append(htmlStr);
-                    }
-                }
-                this.reset(lineNum, relativeLineNum);
-            }
-
-            this.instruction = matcher.group(3);
-            if (!this.isHtmlAppended) {
-                String htmlStr = this.toHtmlString();
-                if (htmlStr != null) {
-                    htmlBuf.append(htmlStr);
-                }
-            }
-            this.reset(lineNum, relativeLineNum);
-        }
-
         matcher = TraceStackFrame.MESSAGE_EXECUTING_COMMAND_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
             this.reset(lineNum, relativeLineNum);
@@ -169,12 +153,7 @@ public class TraceStackFrame {
 
         matcher = TraceStackFrame.MESSAGE_EXECUTED_COMMAND_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            if (!this.isHtmlAppended) {
-                String htmlStr = this.toHtmlString();
-                if (htmlStr != null) {
-                    htmlBuf.append(htmlStr);
-                }
-            }
+            this.appendHtml(htmlBuf);
             this.reset(lineNum, relativeLineNum);
         }
 
@@ -186,6 +165,18 @@ public class TraceStackFrame {
 
         matcher = TraceStackFrame.MESSAGE_DONE_FIRING_TRIGGERS_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
+            this.reset(lineNum, relativeLineNum);
+        }
+
+        matcher = TraceStackFrame.MESSAGE_EXECUTING_COMMAND_ON_REMOTE_HOST_REGEX_PATTERN.matcher(message);
+        if (matcher.find()) {
+            this.reset(lineNum, relativeLineNum);
+            this.instruction = String.format("REMOTE %s -> %s", matcher.group(2), matcher.group(4));
+        }
+
+        matcher = TraceStackFrame.MESSAGE_REMOTE_EXECUTION_COMPLETE_REGEX_PATTERN.matcher(message);
+        if (matcher.find()) {
+            this.appendHtml(htmlBuf);
             this.reset(lineNum, relativeLineNum);
         }
 
@@ -202,12 +193,7 @@ public class TraceStackFrame {
 
         matcher = TraceStackFrame.MESSAGE_SQL_EXECUTION_COMPLETE_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            if (!this.isHtmlAppended) {
-                String htmlStr = this.toHtmlString();
-                if (htmlStr != null) {
-                    htmlBuf.append(htmlStr);
-                }
-            }
+            this.appendHtml(htmlBuf);
             this.reset(lineNum, relativeLineNum);
         }
     }
@@ -224,12 +210,7 @@ public class TraceStackFrame {
 
         matcher = TraceStackFrame.MESSAGE_SCRIPT_EXECUTION_COMPLETE_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            if (!this.isHtmlAppended) {
-                String htmlStr = this.toHtmlString();
-                if (htmlStr != null) {
-                    htmlBuf.append(htmlStr);
-                }
-            }
+            this.appendHtml(htmlBuf);
             this.reset(lineNum, relativeLineNum);
         }
     }
@@ -250,12 +231,7 @@ public class TraceStackFrame {
             this.conditionalTest += " : PASSED";
 
             this.instruction = this.conditionalTest;
-            if (!this.isHtmlAppended) {
-                String htmlStr = this.toHtmlString();
-                if (htmlStr != null) {
-                    htmlBuf.append(htmlStr);
-                }
-            }
+            this.appendHtml(htmlBuf);
             this.reset(lineNum, relativeLineNum);
         }
 
@@ -264,12 +240,7 @@ public class TraceStackFrame {
             this.conditionalTest += " : FAILED";
 
             this.instruction = this.conditionalTest;
-            if (!this.isHtmlAppended) {
-                String htmlStr = this.toHtmlString();
-                if (htmlStr != null) {
-                    htmlBuf.append(htmlStr);
-                }
-            }
+            this.appendHtml(htmlBuf);
             this.reset(lineNum, relativeLineNum);
         }
 
@@ -278,12 +249,7 @@ public class TraceStackFrame {
             this.conditionalTest += " : FAILED -> ELSE";
 
             this.instruction = this.conditionalTest;
-            if (!this.isHtmlAppended) {
-                String htmlStr = this.toHtmlString();
-                if (htmlStr != null) {
-                    htmlBuf.append(htmlStr);
-                }
-            }
+            this.appendHtml(htmlBuf);
             this.reset(lineNum, relativeLineNum);
         }
 
@@ -293,12 +259,7 @@ public class TraceStackFrame {
             if (!this.conditionalTest.isEmpty()) {
                 this.conditionalTest += " : FAILED";
                 this.instruction = this.conditionalTest;
-                if (!this.isHtmlAppended) {
-                    String htmlStr = this.toHtmlString();
-                    if (htmlStr != null) {
-                        htmlBuf.append(htmlStr);
-                    }
-                }
+                this.appendHtml(htmlBuf);
                 this.reset(lineNum, relativeLineNum);
             }
 
@@ -311,12 +272,7 @@ public class TraceStackFrame {
             this.conditionalTest += " : PASSED";
 
             this.instruction = this.conditionalTest;
-            if (!this.isHtmlAppended) {
-                String htmlStr = this.toHtmlString();
-                if (htmlStr != null) {
-                    htmlBuf.append(htmlStr);
-                }
-            }
+            this.appendHtml(htmlBuf);
             this.reset(lineNum, relativeLineNum);
         }
 
