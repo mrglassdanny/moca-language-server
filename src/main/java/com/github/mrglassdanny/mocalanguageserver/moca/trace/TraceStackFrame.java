@@ -8,6 +8,8 @@ import java.util.regex.Pattern;
 public class TraceStackFrame {
 
     private static final Pattern MESSAGE_SERVER_GOT_REGEX_PATTERN = Pattern.compile("(Server got:) ((?s).*)");
+    private static final Pattern MESSAGE_EXCEPTION_RAISED_FROM_COMMAND_REGEX_PATTERN = Pattern
+            .compile("(Exception raised from command:) ((?s).*)");
 
     private static final Pattern MESSAGE_EXECUTING_COMMAND_REGEX_PATTERN = Pattern.compile("(Executing Command:) (.*)");
     private static final Pattern MESSAGE_EXECUTED_COMMAND_REGEX_PATTERN = Pattern.compile("(Executed Command:) (.*)");
@@ -19,6 +21,8 @@ public class TraceStackFrame {
             .compile("(Executing command on remote host) (.*)(\\:)((?s).*)");
     private static final Pattern MESSAGE_REMOTE_EXECUTION_COMPLETE_REGEX_PATTERN = Pattern
             .compile("Remote execution complete");
+    private static final Pattern MESSAGE_RAISING_ERROR_REGEX_PATTERN = Pattern
+            .compile("(\\*\\*\\* RAISING ERROR) (.*)");
 
     private static final Pattern MESSAGE_EXECUTING_SQL_REGEX_PATTERN = Pattern.compile("(UNBIND:) ((?s).*)");
     private static final Pattern MESSAGE_SQL_EXECUTION_COMPLETE_REGEX_PATTERN = Pattern
@@ -27,6 +31,8 @@ public class TraceStackFrame {
             .compile("Executing Compiled Script");
     private static final Pattern MESSAGE_SCRIPT_EXECUTION_COMPLETE_REGEX_PATTERN = Pattern
             .compile("Script Execution Complete");
+    private static final Pattern MESSAGE_THROWING_NOT_FOUND_EXCEPTION_REGEX_PATTERN = Pattern
+            .compile("Throwing NotFoundException");
 
     private static final Pattern MESSAGE_EVALUATING_CONDITIONAL_TEST_REGEX_PATTERN = Pattern
             .compile("(Evaluating conditional test:) ((?s).*)");
@@ -51,19 +57,17 @@ public class TraceStackFrame {
     public int absoluteLineNum; // For joining up with raw trace file contents relative to entire file.
     public int relativeLineNum; // For joining up with raw trace file contents relative to thread:session combo.
 
-    // Could be multple instructions executed in stack frame.
     public String instruction;
+    public String instructionStatus;
 
-    // Should just be 1, if any, conditional tests per stack frame.
     public String conditionalTest;
 
-    // Can assume that we will only have 1 set of each of the below per stack frame.
     public HashMap<String, String> published; // What is on the stack at time of instruction invocation.
     public HashMap<String, String> arguments; // What is being explicitly passed to instruction.
 
     public ArrayList<String> flowMessages; // Simple list of flow messages.
 
-    public boolean isHtmlAppended; // Indicates if html payload has been appended to buffer yet.
+    public boolean isHtmlAppended; // Indicates if html payload has been appended to an html buffer yet.
 
     public TraceStackFrame(int stackLevel, int lineNum, int relativeLineNum) {
         this.stackLevel = stackLevel;
@@ -71,6 +75,7 @@ public class TraceStackFrame {
         this.relativeLineNum = relativeLineNum;
 
         this.instruction = "";
+        this.instructionStatus = "";
 
         this.conditionalTest = "";
 
@@ -88,6 +93,7 @@ public class TraceStackFrame {
         this.relativeLineNum = relativeLineNum;
 
         this.instruction = "";
+        this.instructionStatus = "";
 
         this.conditionalTest = "";
 
@@ -119,8 +125,9 @@ public class TraceStackFrame {
 
         String retStr = "";
         if (!this.instruction.isEmpty()) {
-            retStr += String.format("<li><span>%s %d(%d) : %d %s</span></li>", stackLevelBuf, this.absoluteLineNum,
+            retStr += String.format("<li><span>%s %d(%d) : %d %s %s</span></li>", stackLevelBuf, this.absoluteLineNum,
                     this.relativeLineNum, this.stackLevel,
+                    this.instructionStatus.isEmpty() ? "" : (String.format("(%s) ", this.instructionStatus)),
                     this.instruction.length() > 150 ? this.instruction.substring(0, 150) + "..." : this.instruction);
         }
 
@@ -138,6 +145,15 @@ public class TraceStackFrame {
         matcher = TraceStackFrame.MESSAGE_SERVER_GOT_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
             this.instruction = matcher.group(2);
+        }
+
+        matcher = TraceStackFrame.MESSAGE_EXCEPTION_RAISED_FROM_COMMAND_REGEX_PATTERN.matcher(message);
+        if (matcher.find()) {
+            this.reset(lineNum, relativeLineNum);
+            this.instructionStatus = matcher.group(2);
+            this.instruction = "^^^^^^^";
+            this.appendHtml(htmlBuf);
+            this.reset(lineNum, relativeLineNum);
         }
     }
 
@@ -180,6 +196,14 @@ public class TraceStackFrame {
             this.reset(lineNum, relativeLineNum);
         }
 
+        matcher = TraceStackFrame.MESSAGE_RAISING_ERROR_REGEX_PATTERN.matcher(message);
+        if (matcher.find()) {
+            this.instructionStatus = matcher.group(2);
+            this.instruction = "^^^^^^^";
+            this.appendHtml(htmlBuf);
+            this.reset(lineNum, relativeLineNum);
+        }
+
     }
 
     public void processJdbcAdapterMessage(int lineNum, int relativeLineNum, String message, StringBuilder htmlBuf) {
@@ -195,6 +219,11 @@ public class TraceStackFrame {
         if (matcher.find()) {
             this.appendHtml(htmlBuf);
             this.reset(lineNum, relativeLineNum);
+        }
+
+        matcher = TraceStackFrame.MESSAGE_THROWING_NOT_FOUND_EXCEPTION_REGEX_PATTERN.matcher(message);
+        if (matcher.find()) {
+            this.instructionStatus = "-1403";
         }
     }
 
