@@ -7,18 +7,24 @@ import java.util.regex.Pattern;
 
 public class TraceStackFrame {
 
-    private static final Pattern MESSAGE_SERVER_GOT_REGEX_PATTERN = Pattern.compile("(Server got:) ((?s).*)");
-    private static final Pattern MESSAGE_EXCEPTION_RAISED_FROM_COMMAND_REGEX_PATTERN = Pattern
-            .compile("(Exception raised from command:) ((?s).*)");
+    /*
+     * TODO: - parallel command execution start & end (should be similar to remote)
+     */
 
+    private static final Pattern MESSAGE_SERVER_GOT_REGEX_PATTERN = Pattern.compile("(Server got:) ((?s).*)");
+    private static final Pattern MESSAGE_EXCEPTION_RAISED_FROM_REGEX_PATTERN = Pattern
+            .compile("(Exception raised from .*?:) ((?s).*)");
+
+    private static final Pattern MESSAGE_COMMAND_INITIATED_REGEX_PATTERN = Pattern
+            .compile("(Command initiated:) (\\[)((?s).*)(\\])");
     private static final Pattern MESSAGE_EXECUTING_COMMAND_REGEX_PATTERN = Pattern.compile("(Executing Command:) (.*)");
     private static final Pattern MESSAGE_EXECUTED_COMMAND_REGEX_PATTERN = Pattern.compile("(Executed Command:) (.*)");
     private static final Pattern MESSAGE_FIRING_TRIGGERS_REGEX_PATTERN = Pattern
-            .compile("(Firing triggers...) ((?s).*)");
+            .compile("(Firing triggers\\.\\.\\.) ((?s).*)");
     private static final Pattern MESSAGE_DONE_FIRING_TRIGGERS_REGEX_PATTERN = Pattern
-            .compile("(Done Firing triggers...) ((?s).*)");
+            .compile("(Done Firing triggers\\.\\.\\.) ((?s).*)");
     private static final Pattern MESSAGE_EXECUTING_COMMAND_ON_REMOTE_HOST_REGEX_PATTERN = Pattern
-            .compile("(Executing command on remote host) (.*)(\\:)((?s).*)");
+            .compile("(Executing command on remote host) (.*)(:)((?s).*)");
     private static final Pattern MESSAGE_REMOTE_EXECUTION_COMPLETE_REGEX_PATTERN = Pattern
             .compile("Remote execution complete");
     private static final Pattern MESSAGE_RAISING_ERROR_REGEX_PATTERN = Pattern
@@ -29,10 +35,15 @@ public class TraceStackFrame {
             .compile("SQL execution completed");
     private static final Pattern MESSAGE_EXECUTING_COMPILED_SCRIPT_REGEX_PATTERN = Pattern
             .compile("Executing Compiled Script");
-    private static final Pattern MESSAGE_SCRIPT_EXECUTION_COMPLETE_REGEX_PATTERN = Pattern
-            .compile("Script Execution Complete");
+    private static final Pattern MESSAGE_PREPAREDSTATEMENT_EXECUTE_REGEX_PATTERN = Pattern
+            .compile("( \\.\\.\\.PreparedStatement\\.execute(.*?\\())((?s).*)(\\))");
+    private static final Pattern MESSAGE_PREPAREDSTATEMENT_CLOSE_REGEX_PATTERN = Pattern
+            .compile(" \\.\\.\\.PreparedStatement\\.close\\(\\)");
     private static final Pattern MESSAGE_THROWING_NOT_FOUND_EXCEPTION_REGEX_PATTERN = Pattern
             .compile("Throwing NotFoundException");
+
+    private static final Pattern MESSAGE_SCRIPT_EXECUTION_COMPLETE_REGEX_PATTERN = Pattern
+            .compile("Script Execution Complete");
 
     private static final Pattern MESSAGE_EVALUATING_CONDITIONAL_TEST_REGEX_PATTERN = Pattern
             .compile("(Evaluating conditional test:) ((?s).*)");
@@ -43,11 +54,11 @@ public class TraceStackFrame {
     private static final Pattern MESSAGE_IF_TEST_FAILED_EXECUTING_ELSE_BLOCK_REGEX_PATTERN = Pattern
             .compile("If-test failed - executing else block");
     private static final Pattern MESSAGE_EVALUATING_TRY_CATCH_EXPRESSION_REGEX_PATTERN = Pattern
-            .compile("(Evaluating try-catch expression...) ((?s).*)");
+            .compile("(Evaluating try-catch expression\\.\\.\\.) ((?s).*)");
     private static final Pattern MESSAGE_CATCH_CONDITION_MET_EXECUTING_CATCH_BLOCK_REGEX_PATTERN = Pattern
-            .compile("Catch condition met - executing catch block...");
+            .compile("Catch condition met - executing catch block\\.\\.\\.");
     private static final Pattern MESSAGE_EXECUTING_FINALLY_BLOCK_REGEX_PATTERN = Pattern
-            .compile("Executing finally block...");
+            .compile("Executing finally block\\.\\.\\.");
 
     private static final Pattern MESSAGE_PUBLISHED_REGEX_PATTERN = Pattern
             .compile("(Published) (.*)(=)(.*) (\\(.*\\))");
@@ -87,7 +98,7 @@ public class TraceStackFrame {
         this.isHtmlAppended = false;
     }
 
-    private void reset(int lineNum, int relativeLineNum) {
+    public void reset(int lineNum, int relativeLineNum) {
 
         this.absoluteLineNum = lineNum;
         this.relativeLineNum = relativeLineNum;
@@ -127,7 +138,7 @@ public class TraceStackFrame {
         if (!this.instruction.isEmpty()) {
             retStr += String.format("<li><span>%s %d(%d) : %d %s %s</span></li>", stackLevelBuf, this.absoluteLineNum,
                     this.relativeLineNum, this.stackLevel,
-                    this.instructionStatus.isEmpty() ? "" : (String.format("(%s) ", this.instructionStatus)),
+                    this.instructionStatus.isEmpty() ? "" : (String.format("<b>%s</b> ", this.instructionStatus)),
                     this.instruction.length() > 150 ? this.instruction.substring(0, 150) + "..." : this.instruction);
         }
 
@@ -147,11 +158,11 @@ public class TraceStackFrame {
             this.instruction = matcher.group(2);
         }
 
-        matcher = TraceStackFrame.MESSAGE_EXCEPTION_RAISED_FROM_COMMAND_REGEX_PATTERN.matcher(message);
+        matcher = TraceStackFrame.MESSAGE_EXCEPTION_RAISED_FROM_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
             this.reset(lineNum, relativeLineNum);
-            this.instructionStatus = matcher.group(2);
-            this.instruction = "^^^^^^^";
+            this.instructionStatus = "^^^^^^ERROR: " + matcher.group(2);
+            this.instruction = " ";
             this.appendHtml(htmlBuf);
             this.reset(lineNum, relativeLineNum);
         }
@@ -160,6 +171,12 @@ public class TraceStackFrame {
     public void processDefaultServerContextMessage(int lineNum, int relativeLineNum, String message,
             StringBuilder htmlBuf) {
         Matcher matcher;
+
+        matcher = TraceStackFrame.MESSAGE_COMMAND_INITIATED_REGEX_PATTERN.matcher(message);
+        if (matcher.find() && this.instruction.isEmpty()) {
+            this.reset(lineNum, relativeLineNum);
+            this.instruction = matcher.group(3);
+        }
 
         matcher = TraceStackFrame.MESSAGE_EXECUTING_COMMAND_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
@@ -198,8 +215,8 @@ public class TraceStackFrame {
 
         matcher = TraceStackFrame.MESSAGE_RAISING_ERROR_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.instructionStatus = matcher.group(2);
-            this.instruction = "^^^^^^^";
+            this.instructionStatus = "^^^^^^ERROR: " + matcher.group(2);
+            this.instruction = " ";
             this.appendHtml(htmlBuf);
             this.reset(lineNum, relativeLineNum);
         }
@@ -221,9 +238,24 @@ public class TraceStackFrame {
             this.reset(lineNum, relativeLineNum);
         }
 
+        matcher = TraceStackFrame.MESSAGE_PREPAREDSTATEMENT_EXECUTE_REGEX_PATTERN.matcher(message);
+        if (matcher.find()) {
+            // This could overwrite existing instruction; try to append before we process
+            // match.
+            this.appendHtml(htmlBuf);
+            this.reset(lineNum, relativeLineNum);
+            this.instruction = matcher.group(3);
+        }
+
+        matcher = TraceStackFrame.MESSAGE_PREPAREDSTATEMENT_CLOSE_REGEX_PATTERN.matcher(message);
+        if (matcher.find()) {
+            this.appendHtml(htmlBuf);
+            this.reset(lineNum, relativeLineNum);
+        }
+
         matcher = TraceStackFrame.MESSAGE_THROWING_NOT_FOUND_EXCEPTION_REGEX_PATTERN.matcher(message);
         if (matcher.find()) {
-            this.instructionStatus = "-1403";
+            this.instructionStatus = "ERROR: -1403 >>>>> ";
         }
     }
 

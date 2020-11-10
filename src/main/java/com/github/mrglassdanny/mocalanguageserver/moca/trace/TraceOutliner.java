@@ -134,6 +134,7 @@ public class TraceOutliner {
                         } else if (stackLevel > curStackFrame.stackLevel) {
 
                             curStackFrame.appendHtml(htmlBuf);
+                            curStackFrame.reset(this.lineNum, relativeLineNum);
 
                             // Check if stack level jumps up more than 1 level.
                             for (int i = curStackFrame.stackLevel + 1; i < stackLevel; i++) {
