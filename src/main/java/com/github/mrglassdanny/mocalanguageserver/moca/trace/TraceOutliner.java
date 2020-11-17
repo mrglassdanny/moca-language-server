@@ -32,14 +32,16 @@ public class TraceOutliner {
     // seperate if this is the case.
     public HashMap<String, StringBuilder> htmlBuffers;
     private HashMap<String, Stack<TraceStackFrame>> stacks;
-    private HashMap<String, ArrayList<String>> fullTraceLines;
+    public HashMap<String, ArrayList<String>> relativeTraceLines;
+    public ArrayList<String> absoluteTraceLines;
 
     public TraceOutliner() {
         this.lineNum = -1;
         this.lineTextBuffer = new StringBuilder(2048);
         this.htmlBuffers = new HashMap<>();
         this.stacks = new HashMap<>();
-        this.fullTraceLines = new HashMap<>();
+        this.relativeTraceLines = new HashMap<>();
+        this.absoluteTraceLines = new ArrayList<>();
     }
 
     public void readLine(int lineNum, String lineText) {
@@ -64,6 +66,9 @@ public class TraceOutliner {
 
         if (matcher.find()) {
 
+            // Add to absolute trace line list now.
+            this.absoluteTraceLines.add(this.lineTextBuffer.toString());
+
             String thread = matcher.group(TraceOutliner.TRACE_LINE_REGEX_THREAD_GROUP_IDX);
             String session = matcher.group(TraceOutliner.TRACE_LINE_REGEX_SESSION_GROUP_IDX);
             String logger = matcher.group(TraceOutliner.TRACE_LINE_REGEX_LOGGER_GROUP_IDX);
@@ -74,14 +79,14 @@ public class TraceOutliner {
 
             // Relative line number refers to line num relative to thread:session combo.
             int relativeLineNum;
-            if (this.fullTraceLines.containsKey(key)) {
-                ArrayList<String> lines = this.fullTraceLines.get(key);
+            if (this.relativeTraceLines.containsKey(key)) {
+                ArrayList<String> lines = this.relativeTraceLines.get(key);
                 lines.add(this.lineTextBuffer.toString());
                 relativeLineNum = lines.size();
             } else {
                 ArrayList<String> lines = new ArrayList<>();
                 lines.add(this.lineTextBuffer.toString());
-                this.fullTraceLines.put(key, lines);
+                this.relativeTraceLines.put(key, lines);
                 relativeLineNum = lines.size();
             }
 
