@@ -29,8 +29,9 @@ import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.Moc
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
-import com.github.mrglassdanny.mocalanguageserver.moca.trace.TraceOutliner;
-import com.github.mrglassdanny.mocalanguageserver.moca.trace.TraceStackFrame;
+import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutlineResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutliner;
+import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceStackFrame;
 
 import org.eclipse.lsp4j.ExecuteCommandParams;
 
@@ -403,47 +404,11 @@ public class ExecuteCommandProvider {
                                 .executeCommand(String.format("read file where filnam = '${LESDIR}/log/%s'",
                                         openMocaTraceRequest.requestedTraceFileName));
 
-                        TraceOutliner traceOutliner = new TraceOutliner();
+                        MocaTraceOutliner traceOutliner = new MocaTraceOutliner();
 
-                        for (int i = 0; i < res.getRowCount(); i++) {
-                            traceOutliner.readLine(i, res.getString(i, "text"));
-                        }
+                        MocaTraceOutlineResult outlineResult = traceOutliner.outlineTrace(res);
 
-                        StringBuilder mainBuf = new StringBuilder();
-
-                        for (Entry<String, ArrayList<TraceStackFrame>> entry : traceOutliner.outlineMap.entrySet()) {
-                            mainBuf.append("=== START: " + entry.getKey()
-                                    + " =======================================================================\n");
-                            StringBuilder buf = new StringBuilder(2048);
-                            for (TraceStackFrame t : entry.getValue()) {
-                                buf.append(String.format("%d - ", t.stackLevel));
-
-                                buf.append(t.indentStr);
-                                if (t.isTrigger) {
-                                    buf.append("(Trigger) ");
-                                }
-                                if (t.returnedRows > 0) {
-                                    buf.append("ROWS: " + t.returnedRows + "   ");
-                                }
-                                if (t.executionTime > 0.0) {
-                                    buf.append("TIME: " + t.executionTime + "   ");
-                                }
-                                if (t.instructionStatus != null && !t.instructionStatus.isEmpty()
-                                        && t.instructionStatus != "0") {
-                                    buf.append(t.instructionStatus + " -> " + t.instruction);
-                                } else {
-                                    buf.append(t.instruction);
-                                }
-                                buf.append('\n');
-
-                            }
-
-                            mainBuf.append(buf.toString());
-                            mainBuf.append("===== END: " + entry.getKey()
-                                    + " =======================================================================\n");
-                        }
-
-                        openMocaTraceResponse = new OpenMocaTraceResponse(null, mainBuf.toString(), null);
+                        openMocaTraceResponse = new OpenMocaTraceResponse(null, outlineResult.toString(), null);
                     }
 
                     return CompletableFuture.completedFuture(openMocaTraceResponse);

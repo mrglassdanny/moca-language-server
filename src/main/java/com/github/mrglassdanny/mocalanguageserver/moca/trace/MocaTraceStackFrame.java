@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
-public class TraceStackFrame {
+public class MocaTraceStackFrame {
 
     public int stackLevel; // Will have 1 stack level per frame.
     public int absoluteLineNum; // For joining up with raw trace file contents relative to entire file.
@@ -28,8 +28,8 @@ public class TraceStackFrame {
     public int returnedRows; // How many rows returned from instruction.
     public double executionTime; // Execution time for instruction.
 
-    public TraceStackFrame(int stackLevel, int lineNum, int relativeLineNum, String instruction,
-            boolean isCommandStatementOrNestedBraces, Stack<TraceStackFrame> indentStack) {
+    public MocaTraceStackFrame(int stackLevel, int lineNum, int relativeLineNum, String instruction,
+            boolean isCommandStatementOrNestedBraces, Stack<MocaTraceStackFrame> indentStack) {
         this.stackLevel = stackLevel;
         this.absoluteLineNum = lineNum;
         this.relativeLineNum = relativeLineNum;
@@ -52,7 +52,7 @@ public class TraceStackFrame {
 
         // Passing in the indent stack so we can use it for setting certain fields.
         if (indentStack.size() > 0) {
-            TraceStackFrame curIndentStackFrame = indentStack.peek();
+            MocaTraceStackFrame curIndentStackFrame = indentStack.peek();
             if (curIndentStackFrame.isFiringTriggers && curIndentStackFrame.stackLevel == this.stackLevel - 1
                     && this.instruction != "}" && this.instruction != "{") {
                 this.isTrigger = true;
@@ -61,9 +61,9 @@ public class TraceStackFrame {
 
     }
 
-    public TraceStackFrame(int stackLevel, int lineNum, int relativeLineNum, String instruction,
+    public MocaTraceStackFrame(int stackLevel, int lineNum, int relativeLineNum, String instruction,
             String instructionStatus, boolean isCommandStatementOrNestedBraces, String indentStr,
-            Stack<TraceStackFrame> indentStack) {
+            Stack<MocaTraceStackFrame> indentStack) {
         this.stackLevel = stackLevel;
         this.absoluteLineNum = lineNum;
         this.relativeLineNum = relativeLineNum;
@@ -86,7 +86,7 @@ public class TraceStackFrame {
 
         // Passing in the indent stack so we can use it for setting certain fields.
         if (indentStack.size() > 0) {
-            TraceStackFrame curIndentStackFrame = indentStack.peek();
+            MocaTraceStackFrame curIndentStackFrame = indentStack.peek();
             if (curIndentStackFrame.isFiringTriggers && curIndentStackFrame.stackLevel == this.stackLevel - 1
                     && this.instruction != "}" && this.instruction != "{") {
                 this.isTrigger = true;

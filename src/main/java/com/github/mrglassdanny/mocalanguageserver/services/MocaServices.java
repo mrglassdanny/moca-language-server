@@ -15,6 +15,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutliner;
 import com.github.mrglassdanny.mocalanguageserver.services.completion.CompletionProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.definition.DefinitionProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.diagnostic.DiagnosticManager;
@@ -78,6 +79,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     // initialized or null, we will just reference this in all of our services that
     // may need it or it's components.
     public static MocaCompilationResult mocaCompilationResult = null;
+    // See ^^^ -- same logic goes for moca trace outliner.
+    public static MocaTraceOutliner mocaTraceOutliner = null;
 
     public static LanguageClient languageClient = null;
     private static FileManager fileManager = new FileManager();
