@@ -5,12 +5,12 @@ import java.util.ArrayList;
 public class OpenMocaTraceResponse {
 
     public ArrayList<String> traceFileNames;
-    public String traceOutlineHtml;
+    public String traceOutline;
     public Exception exception;
 
-    public OpenMocaTraceResponse(ArrayList<String> traceFileNames, String traceOutlineHtml, Exception exception) {
+    public OpenMocaTraceResponse(ArrayList<String> traceFileNames, String traceOutline, Exception exception) {
         this.traceFileNames = traceFileNames;
-        this.traceOutlineHtml = traceOutlineHtml;
+        this.traceOutline = traceOutline;
         this.exception = exception;
     }
 }

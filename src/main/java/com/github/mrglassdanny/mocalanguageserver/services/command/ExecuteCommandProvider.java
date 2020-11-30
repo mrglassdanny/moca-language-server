@@ -30,6 +30,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResul
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.trace.TraceOutliner;
+import com.github.mrglassdanny.mocalanguageserver.moca.trace.TraceStackFrame;
 
 import org.eclipse.lsp4j.ExecuteCommandParams;
 
@@ -402,38 +403,47 @@ public class ExecuteCommandProvider {
                                 .executeCommand(String.format("read file where filnam = '${LESDIR}/log/%s'",
                                         openMocaTraceRequest.requestedTraceFileName));
 
-                        TraceOutliner traceAnalyzer = new TraceOutliner();
-
-                        StringBuilder htmlBuf = new StringBuilder(8192);
-
-                        htmlBuf.append("<html>\n" + "<head>\n"
-                                + "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n"
-                                + "    <title></title>\n"
-                                + "    <script type=\"text/javascript\" src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js\"></script>\n"
-                                + "</head>  <ul>");
+                        TraceOutliner traceOutliner = new TraceOutliner();
 
                         for (int i = 0; i < res.getRowCount(); i++) {
-                            traceAnalyzer.readLine(i, res.getString(i, "text"));
+                            traceOutliner.readLine(i, res.getString(i, "text"));
                         }
 
-                        // Add to main html buffer.
-                        for (Entry<String, StringBuilder> entry : traceAnalyzer.htmlBuffers.entrySet()) {
-                            htmlBuf.append(String.format(
-                                    "<p1><br>START: %s ============================================================================================================================</br></p1>",
-                                    entry.getKey()));
-                            htmlBuf.append(entry.getValue());
-                            htmlBuf.append(String.format(
-                                    "<p1>END:   %s ============================================================================================================================</p1>",
-                                    entry.getKey()));
+                        StringBuilder mainBuf = new StringBuilder();
 
+                        for (Entry<String, ArrayList<TraceStackFrame>> entry : traceOutliner.outlineMap.entrySet()) {
+                            mainBuf.append("=== START: " + entry.getKey()
+                                    + " =======================================================================\n");
+                            StringBuilder buf = new StringBuilder(2048);
+                            for (TraceStackFrame t : entry.getValue()) {
+                                buf.append(String.format("%d - ", t.stackLevel));
+
+                                buf.append(t.indentStr);
+                                if (t.isTrigger) {
+                                    buf.append("(Trigger) ");
+                                }
+                                if (t.returnedRows > 0) {
+                                    buf.append("ROWS: " + t.returnedRows + "   ");
+                                }
+                                if (t.executionTime > 0.0) {
+                                    buf.append("TIME: " + t.executionTime + "   ");
+                                }
+                                if (t.instructionStatus != null && !t.instructionStatus.isEmpty()
+                                        && t.instructionStatus != "0") {
+                                    buf.append(t.instructionStatus + " -> " + t.instruction);
+                                } else {
+                                    buf.append(t.instruction);
+                                }
+                                buf.append('\n');
+
+                            }
+
+                            mainBuf.append(buf.toString());
+                            mainBuf.append("===== END: " + entry.getKey()
+                                    + " =======================================================================\n");
                         }
 
-                        htmlBuf.append("</ul>   <script type=\"text/javascript\">\n"
-                                + "    $(\".Collapsable\").click(function () {\n" + "\n"
-                                + "        $(this).parent().children().toggle();\n" + "        $(this).toggle();\n"
-                                + "\n" + "    });\n" + "\n" + "</script>");
-
-                        openMocaTraceResponse = new OpenMocaTraceResponse(null, htmlBuf.toString(), null);
+                        openMocaTraceResponse = new OpenMocaTraceResponse(null, mainBuf.toString(), null);
                     }
 
                     return CompletableFuture.completedFuture(openMocaTraceResponse);
