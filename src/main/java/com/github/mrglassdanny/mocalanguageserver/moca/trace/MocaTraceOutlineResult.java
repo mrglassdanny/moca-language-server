@@ -7,9 +7,13 @@ import java.util.Map.Entry;
 public class MocaTraceOutlineResult {
 
     public HashMap<String, ArrayList<MocaTraceStackFrame>> outlines;
+    public ArrayList<String> absoluteTraceLines;
+    public HashMap<String, ArrayList<String>> relativeTraceLines;
 
     public MocaTraceOutlineResult() {
         this.outlines = new HashMap<>();
+        this.absoluteTraceLines = new ArrayList<>();
+        this.relativeTraceLines = new HashMap<>();
     }
 
     @Override

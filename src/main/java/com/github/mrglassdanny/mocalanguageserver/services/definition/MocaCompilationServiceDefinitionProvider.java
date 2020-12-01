@@ -29,7 +29,7 @@ import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
 
-public class CompilationServiceDefinitionProvider {
+public class MocaCompilationServiceDefinitionProvider {
 
     public static CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> provideDefinition(
             URI uri, Position position) {

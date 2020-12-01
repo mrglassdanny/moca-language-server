@@ -9,21 +9,22 @@ import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.github.mrglassdanny.mocalanguageserver.services.highlight.CompilationServiceSemanticHighlightingManager;
+import com.github.mrglassdanny.mocalanguageserver.services.highlight.MocaCompilationServiceSemanticHighlightingManager;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutliner;
-import com.github.mrglassdanny.mocalanguageserver.services.completion.CompilationServiceCompletionProvider;
-import com.github.mrglassdanny.mocalanguageserver.services.definition.CompilationServiceDefinitionProvider;
-import com.github.mrglassdanny.mocalanguageserver.services.diagnostic.CompilationServiceDiagnosticManager;
-import com.github.mrglassdanny.mocalanguageserver.services.format.CompilationServiceDocumentFormattingProvider;
-import com.github.mrglassdanny.mocalanguageserver.services.format.CompilationServiceDocumentOnTypeFormattingProvider;
+import com.github.mrglassdanny.mocalanguageserver.services.completion.MocaCompilationServiceCompletionProvider;
+import com.github.mrglassdanny.mocalanguageserver.services.definition.MocaCompilationServiceDefinitionProvider;
+import com.github.mrglassdanny.mocalanguageserver.services.diagnostic.MocaCompilationServiceDiagnosticManager;
+import com.github.mrglassdanny.mocalanguageserver.services.format.MocaCompilationServiceDocumentFormattingProvider;
+import com.github.mrglassdanny.mocalanguageserver.services.format.MocaCompilationServiceDocumentOnTypeFormattingProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.command.ExecuteCommandProvider;
-import com.github.mrglassdanny.mocalanguageserver.services.hover.CompilationServiceHoverProvider;
-import com.github.mrglassdanny.mocalanguageserver.services.signature.CompilationServiceSignatureHelpProvider;
+import com.github.mrglassdanny.mocalanguageserver.services.hover.MocaCompilationServiceHoverProvider;
+import com.github.mrglassdanny.mocalanguageserver.services.hover.MocaTraceOutlineHoverProvider;
+import com.github.mrglassdanny.mocalanguageserver.services.signature.MocaCompilationServiceSignatureHelpProvider;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.StringDifferenceUtils;
 
@@ -72,16 +73,16 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     // MocaServiceType enum to invoke the correct logic for each piece of MOCA
     // functionality.
     private enum MocaServiceType {
-        Compilation, TraceOutline
+        MocaCompilation, MocaTraceOutline
     }
 
     private static MocaServiceType getMocaServiceType(String uriStr) {
         String uriExt = uriStr.substring(uriStr.lastIndexOf("."), uriStr.length());
         if (uriExt.compareToIgnoreCase(".trace") == 0) {
-            return MocaServiceType.TraceOutline;
+            return MocaServiceType.MocaTraceOutline;
         }
 
-        return MocaServiceType.Compilation;
+        return MocaServiceType.MocaCompilation;
     }
 
     // COMPILATION SERVICE:
@@ -116,7 +117,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         URI uri = URI.create(uriStr);
 
         switch (getMocaServiceType(uriStr)) {
-            case TraceOutline:
+            case MocaTraceOutline:
                 break;
             default:
                 String script = MocaServices.fileManager.getContents(uri);
@@ -125,10 +126,10 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                 // Diagnostics and semantic highlights can be done on seperate threads and can
                 // finish independently of this function.
                 MocaServices.threadPool.execute(() -> {
-                    CompilationServiceDiagnosticManager.streamAll();
+                    MocaCompilationServiceDiagnosticManager.streamAll();
                 });
                 MocaServices.threadPool.execute(() -> {
-                    CompilationServiceSemanticHighlightingManager.streamAll();
+                    MocaCompilationServiceSemanticHighlightingManager.streamAll();
                 });
                 break;
         }
@@ -141,7 +142,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         URI uri = URI.create(uriStr);
 
         switch (getMocaServiceType(uriStr)) {
-            case TraceOutline:
+            case MocaTraceOutline:
                 break;
             default:
                 // We do not want to needlessly compile the entire script everytime a change
@@ -163,10 +164,10 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                     // Diagnostics and semantic highlights can be done on seperate threads and can
                     // finish independently of this function.
                     MocaServices.threadPool.execute(() -> {
-                        CompilationServiceDiagnosticManager.streamAll();
+                        MocaCompilationServiceDiagnosticManager.streamAll();
                     });
                     MocaServices.threadPool.execute(() -> {
-                        CompilationServiceSemanticHighlightingManager.streamAll();
+                        MocaCompilationServiceSemanticHighlightingManager.streamAll();
                     });
 
                     return;
@@ -190,10 +191,10 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                     // Diagnostics and semantic highlights can be done on seperate threads and can
                     // finish independently of this function.
                     MocaServices.threadPool.execute(() -> {
-                        CompilationServiceDiagnosticManager.streamAll();
+                        MocaCompilationServiceDiagnosticManager.streamAll();
                     });
                     MocaServices.threadPool.execute(() -> {
-                        CompilationServiceSemanticHighlightingManager.streamAll();
+                        MocaCompilationServiceSemanticHighlightingManager.streamAll();
                     });
 
                 } else {
@@ -202,10 +203,10 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                     // Diagnostics and semantic highlights can be done on seperate threads and can
                     // finish independently of this function.
                     MocaServices.threadPool.execute(() -> {
-                        CompilationServiceDiagnosticManager.streamAll();
+                        MocaCompilationServiceDiagnosticManager.streamAll();
                     });
                     MocaServices.threadPool.execute(() -> {
-                        CompilationServiceSemanticHighlightingManager.streamAll();
+                        MocaCompilationServiceSemanticHighlightingManager.streamAll();
                     });
                 }
                 break;
@@ -219,12 +220,12 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String uriStr = params.getTextDocument().getUri();
 
         switch (getMocaServiceType(uriStr)) {
-            case TraceOutline:
+            case MocaTraceOutline:
                 break;
             default:
                 // Need to clear diagnositics for file we just closed, that way the diagnostics
                 // dont linger.
-                CompilationServiceDiagnosticManager.clearDiagnostics(uriStr);
+                MocaCompilationServiceDiagnosticManager.clearDiagnostics(uriStr);
                 break;
         }
 
@@ -236,7 +237,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         URI uri = URI.create(uriStr);
 
         switch (getMocaServiceType(uriStr)) {
-            case TraceOutline:
+            case MocaTraceOutline:
                 break;
             default:
                 String script = MocaServices.fileManager.getContents(uri);
@@ -245,10 +246,10 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                 // Diagnostics and semantic highlights can be done on seperate threads and can
                 // finish independently of this function.
                 MocaServices.threadPool.execute(() -> {
-                    CompilationServiceDiagnosticManager.streamAll();
+                    MocaCompilationServiceDiagnosticManager.streamAll();
                 });
                 MocaServices.threadPool.execute(() -> {
-                    CompilationServiceSemanticHighlightingManager.streamAll();
+                    MocaCompilationServiceSemanticHighlightingManager.streamAll();
                 });
                 break;
         }
@@ -273,8 +274,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         URI uri = URI.create(uriStr);
 
         switch (getMocaServiceType(uriStr)) {
-            case TraceOutline:
-                return null;
+            case MocaTraceOutline:
+                return MocaTraceOutlineHoverProvider.provideHover(params.getPosition());
             default:
                 // Need to compile on hover for the following reason:
                 // When the user has 2 or more opened MOCA files and they make a change to file
@@ -291,7 +292,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                     MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
                 }
 
-                return CompilationServiceHoverProvider.provideHover(params.getPosition());
+                return MocaCompilationServiceHoverProvider.provideHover(params.getPosition());
         }
 
     }
@@ -305,7 +306,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         Position position = params.getPosition();
 
         switch (getMocaServiceType(uriStr)) {
-            case TraceOutline:
+            case MocaTraceOutline:
                 return null;
             default:
                 // Perform preprocessing for each context before we go to provider.
@@ -314,7 +315,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                         MocaServices.mocaCompilationResult);
                 switch (mocaLanguageContext.id) {
                     case Moca:
-                        return CompilationServiceCompletionProvider.provideCompletion(position, mocaLanguageContext);
+                        return MocaCompilationServiceCompletionProvider.provideCompletion(position,
+                                mocaLanguageContext);
                     case MocaSql:
                         String originalSourceForMocaSql = null;
 
@@ -338,8 +340,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
                         CompletableFuture<Either<List<CompletionItem>, CompletionList>> mocaSqlCompletionItems = null;
                         try {
-                            mocaSqlCompletionItems = CompilationServiceCompletionProvider.provideCompletion(position,
-                                    mocaLanguageContext);
+                            mocaSqlCompletionItems = MocaCompilationServiceCompletionProvider
+                                    .provideCompletion(position, mocaLanguageContext);
                         } finally {
                             if (originalSourceForMocaSql != null) {
                                 VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
@@ -381,7 +383,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
                         CompletableFuture<Either<List<CompletionItem>, CompletionList>> groovyCompletionItems = null;
                         try {
-                            groovyCompletionItems = CompilationServiceCompletionProvider.provideCompletion(position,
+                            groovyCompletionItems = MocaCompilationServiceCompletionProvider.provideCompletion(position,
                                     mocaLanguageContext);
                         } finally {
                             if (originalSourceForGroovy != null) {
@@ -398,7 +400,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                 }
 
                 // Shouldnt get here, but just in case we get here.
-                return CompilationServiceCompletionProvider.provideCompletion(position, mocaLanguageContext);
+                return MocaCompilationServiceCompletionProvider.provideCompletion(position, mocaLanguageContext);
         }
 
     }
@@ -412,7 +414,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         Position position = params.getPosition();
 
         switch (getMocaServiceType(uriStr)) {
-            case TraceOutline:
+            case MocaTraceOutline:
                 return null;
             default:
                 // Perform preprocessing for each context before we go to provider.
@@ -461,8 +463,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                         }
 
                         try {
-                            return CompilationServiceSignatureHelpProvider.provideSignatureHelp(params.getPosition(),
-                                    mocaLanguageContext);
+                            return MocaCompilationServiceSignatureHelpProvider
+                                    .provideSignatureHelp(params.getPosition(), mocaLanguageContext);
                         } finally {
                             if (originalSource != null) {
                                 VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
@@ -477,7 +479,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                 }
 
                 // Now provide signature help.
-                return CompilationServiceSignatureHelpProvider.provideSignatureHelp(params.getPosition(),
+                return MocaCompilationServiceSignatureHelpProvider.provideSignatureHelp(params.getPosition(),
                         mocaLanguageContext);
         }
 
@@ -490,7 +492,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         URI uri = URI.create(uriStr);
 
         switch (getMocaServiceType(uriStr)) {
-            case TraceOutline:
+            case MocaTraceOutline:
                 return null;
             default:
                 // Need to compile script before we format.
@@ -503,7 +505,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                     MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
                 }
 
-                return CompilationServiceDocumentFormattingProvider.provideDocumentFormatting(params);
+                return MocaCompilationServiceDocumentFormattingProvider.provideDocumentFormatting(params);
         }
     }
 
@@ -514,7 +516,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         URI uri = URI.create(uriStr);
 
         switch (getMocaServiceType(uriStr)) {
-            case TraceOutline:
+            case MocaTraceOutline:
                 return null;
             default:
                 // Need to compile script before we format.
@@ -527,7 +529,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                     MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
                 }
 
-                return CompilationServiceDocumentFormattingProvider.provideDocumentRangeFormatting(params);
+                return MocaCompilationServiceDocumentFormattingProvider.provideDocumentRangeFormatting(params);
         }
     }
 
@@ -537,12 +539,12 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String uriStr = params.getTextDocument().getUri();
 
         switch (getMocaServiceType(uriStr)) {
-            case TraceOutline:
+            case MocaTraceOutline:
                 return null;
             default:
                 // No need for a compile call -- we know that compilation is occuring on type
                 // elsewhere.
-                return CompilationServiceDocumentOnTypeFormattingProvider.provideDocumentOnTypeFormatting(params);
+                return MocaCompilationServiceDocumentOnTypeFormattingProvider.provideDocumentOnTypeFormatting(params);
         }
     }
 
@@ -572,7 +574,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         URI uri = URI.create(uriStr);
 
         switch (getMocaServiceType(uriStr)) {
-            case TraceOutline:
+            case MocaTraceOutline:
                 return null;
             default:
                 // Need to compile on definition provide for the same reason as on hover ^.
@@ -585,7 +587,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                     MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
                 }
 
-                return CompilationServiceDefinitionProvider.provideDefinition(uri, params.getPosition());
+                return MocaCompilationServiceDefinitionProvider.provideDefinition(uri, params.getPosition());
         }
     }
 

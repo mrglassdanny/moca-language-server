@@ -934,7 +934,9 @@ public class MocaTraceOutliner {
         }
 
         MocaTraceOutlineResult outlineResult = new MocaTraceOutlineResult();
-        outlineResult.outlines = MocaTraceOutliner.outlineMap;
+        outlineResult.outlines.putAll(MocaTraceOutliner.outlineMap);
+        outlineResult.absoluteTraceLines.addAll(MocaTraceOutliner.absoluteTraceLines);
+        outlineResult.relativeTraceLines.putAll(MocaTraceOutliner.relativeTraceLinesMap);
 
         return outlineResult;
     }

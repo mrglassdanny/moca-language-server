@@ -28,7 +28,7 @@ import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.MarkupKind;
 import org.eclipse.lsp4j.Position;
 
-public class CompilationServiceHoverProvider {
+public class MocaTraceOutlineHoverProvider {
 
     public static CompletableFuture<Hover> provideHover(Position position) {
 
@@ -209,4 +209,5 @@ public class CompilationServiceHoverProvider {
         }
         return null;
     }
+
 }

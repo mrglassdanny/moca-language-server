@@ -61,7 +61,7 @@ import io.github.classgraph.ClassInfo;
 import io.github.classgraph.PackageInfo;
 import io.github.classgraph.ScanResult;
 
-public class CompilationServiceCompletionProvider {
+public class MocaCompilationServiceCompletionProvider {
 
     public static CompletableFuture<Either<List<CompletionItem>, CompletionList>> provideCompletion(Position position,
             MocaLanguageContext mocaLanguageContext) {
