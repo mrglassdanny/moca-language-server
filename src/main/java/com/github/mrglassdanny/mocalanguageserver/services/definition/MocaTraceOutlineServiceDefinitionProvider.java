@@ -62,7 +62,6 @@ public class MocaTraceOutlineServiceDefinitionProvider {
             locations.add(location);
 
         } catch (IOException ioException) {
-            MocaServices.logErrorToLanguageClient(ioException.getMessage());
             return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
         }
 
