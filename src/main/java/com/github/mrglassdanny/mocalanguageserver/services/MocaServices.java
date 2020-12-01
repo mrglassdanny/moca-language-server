@@ -68,6 +68,23 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     private static FileManager fileManager = new FileManager();
     private static ExecutorService threadPool = Executors.newCachedThreadPool();
 
+    // We are supporting multiple pieces of MOCA functionality. We will use
+    // MocaServiceType enum to invoke the correct logic for each piece of MOCA
+    // functionality.
+    private enum MocaServiceType {
+        Compilation, TraceOutlining
+    }
+
+    private static MocaServiceType getMocaServiceType(String uriStr) {
+        String uriExt = uriStr.substring(uriStr.lastIndexOf("."), uriStr.length());
+        if (uriExt.compareToIgnoreCase(".trace") == 0) {
+            return MocaServiceType.TraceOutlining;
+        }
+
+        return MocaServiceType.Compilation;
+    }
+
+    // COMPILATION SERVICE:
     // Will only ever have 1 current moca compilation result. Reason being is that
     // moca scripts/files are independent of eachother, and there is no need to keep
     // track of any compilation results other than the current one for the moca
@@ -78,11 +95,12 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     // invalidated since the file will not be changed if the user is not focusing on
     // it. Once the file is focused on and a compile event like change is triggered,
     // we compile the file and everything is how it should be.
-
     // Since we know that we will always just have 1 of these, and it will either be
     // initialized or null, we will just reference this in all of our services that
     // may need it or it's components.
     public static MocaCompilationResult mocaCompilationResult = null;
+
+    // TRACE OUTLINING SERVICE:
     // See ^^^ -- same logic goes for moca trace outliner.
     public static MocaTraceOutliner mocaTraceOutliner = null;
 
@@ -97,17 +115,24 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        String script = MocaServices.fileManager.getContents(uri);
-        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+        switch (getMocaServiceType(uriStr)) {
+            case TraceOutlining:
+                break;
+            default:
+                String script = MocaServices.fileManager.getContents(uri);
+                MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-        // Diagnostics and semantic highlights can be done on seperate threads and can
-        // finish independently of this function.
-        MocaServices.threadPool.execute(() -> {
-            DiagnosticManager.streamAll();
-        });
-        MocaServices.threadPool.execute(() -> {
-            SemanticHighlightingManager.streamAll();
-        });
+                // Diagnostics and semantic highlights can be done on seperate threads and can
+                // finish independently of this function.
+                MocaServices.threadPool.execute(() -> {
+                    DiagnosticManager.streamAll();
+                });
+                MocaServices.threadPool.execute(() -> {
+                    SemanticHighlightingManager.streamAll();
+                });
+                break;
+        }
+
     }
 
     @Override
@@ -115,70 +140,77 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        // We do not want to needlessly compile the entire script everytime a change
-        // occurs -- this yields bad performance, especially on larger scripts.
-        // Therefore, we will instead attempt to figure out where the change to the file
-        // occured and only compile the range that the change is in.
+        switch (getMocaServiceType(uriStr)) {
+            case TraceOutlining:
+                break;
+            default:
+                // We do not want to needlessly compile the entire script everytime a change
+                // occurs -- this yields bad performance, especially on larger scripts.
+                // Therefore, we will instead attempt to figure out where the change to the file
+                // occured and only compile the range that the change is in.
 
-        // Before we process file manager changes, we need to extract the previous
-        // contents.
-        String prevScript = MocaServices.fileManager.getContents(uri);
-        MocaServices.fileManager.didChange(params);
+                // Before we process file manager changes, we need to extract the previous
+                // contents.
+                String prevScript = MocaServices.fileManager.getContents(uri);
+                MocaServices.fileManager.didChange(params);
 
-        // Real quick, let's make sure we are dealing with the same uri string as
-        // current compilation result. We should be, but let's put this here to be safe!
-        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
-            String script = MocaServices.fileManager.getContents(uri);
-            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+                // Real quick, let's make sure we are dealing with the same uri string as
+                // current compilation result. We should be, but let's put this here to be safe!
+                if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
+                    String script = MocaServices.fileManager.getContents(uri);
+                    MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-            // Diagnostics and semantic highlights can be done on seperate threads and can
-            // finish independently of this function.
-            MocaServices.threadPool.execute(() -> {
-                DiagnosticManager.streamAll();
-            });
-            MocaServices.threadPool.execute(() -> {
-                SemanticHighlightingManager.streamAll();
-            });
+                    // Diagnostics and semantic highlights can be done on seperate threads and can
+                    // finish independently of this function.
+                    MocaServices.threadPool.execute(() -> {
+                        DiagnosticManager.streamAll();
+                    });
+                    MocaServices.threadPool.execute(() -> {
+                        SemanticHighlightingManager.streamAll();
+                    });
 
-            return;
+                    return;
+                }
+
+                // Now we need to get the new contents and compare.
+                String script = MocaServices.fileManager.getContents(uri);
+
+                // This will return the first indication of a difference. If 0, then there is no
+                // change.
+                // NOTE: this should work fine since we can assume that there cannot be more
+                // than 1 'distinct' differences -- meaning that there cannot be a change at
+                // index 5 -> 10 and also one at index 80 -> 90 at the same time.
+                int changeIdx = StringDifferenceUtils.indexOfDifference(prevScript, script);
+                int changeLen = script.length() - prevScript.length(); // Could be negative number.
+
+                if (changeIdx != 0) {
+                    MocaServices.mocaCompilationResult = MocaCompiler.compileScriptChanges(script, uriStr, changeIdx,
+                            changeLen, MocaServices.mocaCompilationResult);
+
+                    // Diagnostics and semantic highlights can be done on seperate threads and can
+                    // finish independently of this function.
+                    MocaServices.threadPool.execute(() -> {
+                        DiagnosticManager.streamAll();
+                    });
+                    MocaServices.threadPool.execute(() -> {
+                        SemanticHighlightingManager.streamAll();
+                    });
+
+                } else {
+                    MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+
+                    // Diagnostics and semantic highlights can be done on seperate threads and can
+                    // finish independently of this function.
+                    MocaServices.threadPool.execute(() -> {
+                        DiagnosticManager.streamAll();
+                    });
+                    MocaServices.threadPool.execute(() -> {
+                        SemanticHighlightingManager.streamAll();
+                    });
+                }
+                break;
         }
 
-        // Now we need to get the new contents and compare.
-        String script = MocaServices.fileManager.getContents(uri);
-
-        // This will return the first indication of a difference. If 0, then there is no
-        // change.
-        // NOTE: this should work fine since we can assume that there cannot be more
-        // than 1 'distinct' differences -- meaning that there cannot be a change at
-        // index 5 -> 10 and also one at index 80 -> 90 at the same time.
-        int changeIdx = StringDifferenceUtils.indexOfDifference(prevScript, script);
-        int changeLen = script.length() - prevScript.length(); // Could be negative number.
-
-        if (changeIdx != 0) {
-            MocaServices.mocaCompilationResult = MocaCompiler.compileScriptChanges(script, uriStr, changeIdx, changeLen,
-                    MocaServices.mocaCompilationResult);
-
-            // Diagnostics and semantic highlights can be done on seperate threads and can
-            // finish independently of this function.
-            MocaServices.threadPool.execute(() -> {
-                DiagnosticManager.streamAll();
-            });
-            MocaServices.threadPool.execute(() -> {
-                SemanticHighlightingManager.streamAll();
-            });
-
-        } else {
-            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
-
-            // Diagnostics and semantic highlights can be done on seperate threads and can
-            // finish independently of this function.
-            MocaServices.threadPool.execute(() -> {
-                DiagnosticManager.streamAll();
-            });
-            MocaServices.threadPool.execute(() -> {
-                SemanticHighlightingManager.streamAll();
-            });
-        }
     }
 
     @Override
@@ -186,9 +218,15 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         MocaServices.fileManager.didClose(params);
         String uriStr = params.getTextDocument().getUri();
 
-        // Need to clear diagnositics for file we just closed, that way the diagnostics
-        // dont linger.
-        DiagnosticManager.clearDiagnostics(uriStr);
+        switch (getMocaServiceType(uriStr)) {
+            case TraceOutlining:
+                break;
+            default:
+                // Need to clear diagnositics for file we just closed, that way the diagnostics
+                // dont linger.
+                DiagnosticManager.clearDiagnostics(uriStr);
+                break;
+        }
 
     }
 
@@ -197,17 +235,24 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        String script = MocaServices.fileManager.getContents(uri);
-        MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+        switch (getMocaServiceType(uriStr)) {
+            case TraceOutlining:
+                break;
+            default:
+                String script = MocaServices.fileManager.getContents(uri);
+                MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-        // Diagnostics and semantic highlights can be done on seperate threads and can
-        // finish independently of this function.
-        MocaServices.threadPool.execute(() -> {
-            DiagnosticManager.streamAll();
-        });
-        MocaServices.threadPool.execute(() -> {
-            SemanticHighlightingManager.streamAll();
-        });
+                // Diagnostics and semantic highlights can be done on seperate threads and can
+                // finish independently of this function.
+                MocaServices.threadPool.execute(() -> {
+                    DiagnosticManager.streamAll();
+                });
+                MocaServices.threadPool.execute(() -> {
+                    SemanticHighlightingManager.streamAll();
+                });
+                break;
+        }
+
     }
 
     @Override
@@ -224,238 +269,285 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     @Override
     public CompletableFuture<Hover> hover(HoverParams params) {
 
-        // Need to compile on hover for the following reason:
-        // When the user has 2 or more opened MOCA files and they make a change to file
-        // A, then switch to file B, the MOCA server thinks user is still looking at
-        // file A, since switching files does not trigger an event. This is not an issue
-        // for anything other than on hover, since everything else requires the user to
-        // make a change to the file. Therefore, we will add a compile here.
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        // Before we compile, check if uri string is the same as the current
-        // moca compilation result's uri string.
-        // If it is, then we do not need to worry about compiling!
-        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
-            String script = MocaServices.fileManager.getContents(uri);
-            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+        switch (getMocaServiceType(uriStr)) {
+            case TraceOutlining:
+                return null;
+            default:
+                // Need to compile on hover for the following reason:
+                // When the user has 2 or more opened MOCA files and they make a change to file
+                // A, then switch to file B, the MOCA server thinks user is still looking at
+                // file A, since switching files does not trigger an event. This is not an issue
+                // for anything other than on hover, since everything else requires the user to
+                // make a change to the file. Therefore, we will add a compile here.
+
+                // Before we compile, check if uri string is the same as the current
+                // moca compilation result's uri string.
+                // If it is, then we do not need to worry about compiling!
+                if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
+                    String script = MocaServices.fileManager.getContents(uri);
+                    MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+                }
+
+                return HoverProvider.provideHover(params.getPosition());
         }
 
-        return HoverProvider.provideHover(params.getPosition());
     }
 
     @Override
     public CompletableFuture<Either<List<CompletionItem>, CompletionList>> completion(CompletionParams params) {
 
+        String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(params.getTextDocument().getUri());
         TextDocumentIdentifier textDocument = params.getTextDocument();
         Position position = params.getPosition();
 
-        // Perform preprocessing for each context before we go to provider.
-        // Analyze context id for position.
-        MocaLanguageContext mocaLanguageContext = MocaLanguageUtils.getMocaLanguageContextFromPosition(position,
-                MocaServices.mocaCompilationResult);
-        switch (mocaLanguageContext.id) {
-            case Moca:
+        switch (getMocaServiceType(uriStr)) {
+            case TraceOutlining:
+                return null;
+            default:
+                // Perform preprocessing for each context before we go to provider.
+                // Analyze context id for position.
+                MocaLanguageContext mocaLanguageContext = MocaLanguageUtils.getMocaLanguageContextFromPosition(position,
+                        MocaServices.mocaCompilationResult);
+                switch (mocaLanguageContext.id) {
+                    case Moca:
+                        return CompletionProvider.provideCompletion(position, mocaLanguageContext);
+                    case MocaSql:
+                        String originalSourceForMocaSql = null;
+
+                        if (PositionUtils.getCharacterAtPosition(MocaServices.mocaCompilationResult.script,
+                                new Position(position.getLine(), position.getCharacter() - 1)) == '.') {
+
+                            originalSourceForMocaSql = MocaServices.fileManager.getContents(uri);
+                            VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
+                                    textDocument.getUri(), 1);
+                            TextDocumentContentChangeEvent changeEvent = new TextDocumentContentChangeEvent(
+                                    new Range(position, position), 0, "a");
+                            DidChangeTextDocumentParams didChangeParams = new DidChangeTextDocumentParams(
+                                    versionedTextDocument, Collections.singletonList(changeEvent));
+                            // Like groovy below, if previous character is '.', then there is probably a
+                            // syntax error. One of the ways mocasql completion requests are triggered is
+                            // via '.'. This hack adds a placeholder value in hopes that the ast will
+                            // properly get built during mocasql compilation. We will restore the original
+                            // text after we are finished with this!
+                            didChange(didChangeParams);
+                        }
+
+                        CompletableFuture<Either<List<CompletionItem>, CompletionList>> mocaSqlCompletionItems = null;
+                        try {
+                            mocaSqlCompletionItems = CompletionProvider.provideCompletion(position,
+                                    mocaLanguageContext);
+                        } finally {
+                            if (originalSourceForMocaSql != null) {
+                                VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
+                                        textDocument.getUri(), 1);
+                                TextDocumentContentChangeEvent changeEvent = new TextDocumentContentChangeEvent(null, 0,
+                                        originalSourceForMocaSql);
+                                DidChangeTextDocumentParams didChangeParams = new DidChangeTextDocumentParams(
+                                        versionedTextDocument, Collections.singletonList(changeEvent));
+                                this.didChange(didChangeParams);
+                            }
+
+                        }
+                        return mocaSqlCompletionItems;
+                    case Groovy:
+                        String originalSourceForGroovy = null;
+                        GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
+                                .get(mocaLanguageContext.compilationResultIdx);
+
+                        ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(
+                                position.getLine(), position.getCharacter(), groovyCompilationResult.range);
+                        if (offsetNode == null) {
+                            originalSourceForGroovy = MocaServices.fileManager.getContents(uri);
+                            VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
+                                    textDocument.getUri(), 1);
+                            TextDocumentContentChangeEvent changeEvent = new TextDocumentContentChangeEvent(
+                                    new Range(position, position), 0, "a");
+                            DidChangeTextDocumentParams didChangeParams = new DidChangeTextDocumentParams(
+                                    versionedTextDocument, Collections.singletonList(changeEvent));
+                            // if the offset node is null, there is probably a syntax error.
+                            // a completion request is usually triggered by the . character, and
+                            // if there is no property name after the dot, it will cause a syntax
+                            // error.
+                            // this hack adds a placeholder property name in the hopes that it
+                            // will correctly create a PropertyExpression to use for completion.
+                            // we'll restore the original text after we're done handling the
+                            // completion request.
+                            didChange(didChangeParams);
+                        }
+
+                        CompletableFuture<Either<List<CompletionItem>, CompletionList>> groovyCompletionItems = null;
+                        try {
+                            groovyCompletionItems = CompletionProvider.provideCompletion(position, mocaLanguageContext);
+                        } finally {
+                            if (originalSourceForGroovy != null) {
+                                VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
+                                        textDocument.getUri(), 1);
+                                TextDocumentContentChangeEvent changeEvent = new TextDocumentContentChangeEvent(null, 0,
+                                        originalSourceForGroovy);
+                                DidChangeTextDocumentParams didChangeParams = new DidChangeTextDocumentParams(
+                                        versionedTextDocument, Collections.singletonList(changeEvent));
+                                this.didChange(didChangeParams);
+                            }
+                        }
+                        return groovyCompletionItems;
+                }
+
+                // Shouldnt get here, but just in case we get here.
                 return CompletionProvider.provideCompletion(position, mocaLanguageContext);
-            case MocaSql:
-                String originalSourceForMocaSql = null;
-
-                if (PositionUtils.getCharacterAtPosition(MocaServices.mocaCompilationResult.script,
-                        new Position(position.getLine(), position.getCharacter() - 1)) == '.') {
-
-                    originalSourceForMocaSql = MocaServices.fileManager.getContents(uri);
-                    VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
-                            textDocument.getUri(), 1);
-                    TextDocumentContentChangeEvent changeEvent = new TextDocumentContentChangeEvent(
-                            new Range(position, position), 0, "a");
-                    DidChangeTextDocumentParams didChangeParams = new DidChangeTextDocumentParams(versionedTextDocument,
-                            Collections.singletonList(changeEvent));
-                    // Like groovy below, if previous character is '.', then there is probably a
-                    // syntax error. One of the ways mocasql completion requests are triggered is
-                    // via '.'. This hack adds a placeholder value in hopes that the ast will
-                    // properly get built during mocasql compilation. We will restore the original
-                    // text after we are finished with this!
-                    didChange(didChangeParams);
-                }
-
-                CompletableFuture<Either<List<CompletionItem>, CompletionList>> mocaSqlCompletionItems = null;
-                try {
-                    mocaSqlCompletionItems = CompletionProvider.provideCompletion(position, mocaLanguageContext);
-                } finally {
-                    if (originalSourceForMocaSql != null) {
-                        VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
-                                textDocument.getUri(), 1);
-                        TextDocumentContentChangeEvent changeEvent = new TextDocumentContentChangeEvent(null, 0,
-                                originalSourceForMocaSql);
-                        DidChangeTextDocumentParams didChangeParams = new DidChangeTextDocumentParams(
-                                versionedTextDocument, Collections.singletonList(changeEvent));
-                        this.didChange(didChangeParams);
-                    }
-
-                }
-                return mocaSqlCompletionItems;
-            case Groovy:
-                String originalSourceForGroovy = null;
-                GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
-                        .get(mocaLanguageContext.compilationResultIdx);
-
-                ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(position.getLine(),
-                        position.getCharacter(), groovyCompilationResult.range);
-                if (offsetNode == null) {
-                    originalSourceForGroovy = MocaServices.fileManager.getContents(uri);
-                    VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
-                            textDocument.getUri(), 1);
-                    TextDocumentContentChangeEvent changeEvent = new TextDocumentContentChangeEvent(
-                            new Range(position, position), 0, "a");
-                    DidChangeTextDocumentParams didChangeParams = new DidChangeTextDocumentParams(versionedTextDocument,
-                            Collections.singletonList(changeEvent));
-                    // if the offset node is null, there is probably a syntax error.
-                    // a completion request is usually triggered by the . character, and
-                    // if there is no property name after the dot, it will cause a syntax
-                    // error.
-                    // this hack adds a placeholder property name in the hopes that it
-                    // will correctly create a PropertyExpression to use for completion.
-                    // we'll restore the original text after we're done handling the
-                    // completion request.
-                    didChange(didChangeParams);
-                }
-
-                CompletableFuture<Either<List<CompletionItem>, CompletionList>> groovyCompletionItems = null;
-                try {
-                    groovyCompletionItems = CompletionProvider.provideCompletion(position, mocaLanguageContext);
-                } finally {
-                    if (originalSourceForGroovy != null) {
-                        VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
-                                textDocument.getUri(), 1);
-                        TextDocumentContentChangeEvent changeEvent = new TextDocumentContentChangeEvent(null, 0,
-                                originalSourceForGroovy);
-                        DidChangeTextDocumentParams didChangeParams = new DidChangeTextDocumentParams(
-                                versionedTextDocument, Collections.singletonList(changeEvent));
-                        this.didChange(didChangeParams);
-                    }
-                }
-                return groovyCompletionItems;
         }
 
-        // Shouldnt get here, but just in case we get here.
-        return CompletionProvider.provideCompletion(position, mocaLanguageContext);
     }
 
     @Override
     public CompletableFuture<SignatureHelp> signatureHelp(SignatureHelpParams params) {
+
+        String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(params.getTextDocument().getUri());
         TextDocumentIdentifier textDocument = params.getTextDocument();
         Position position = params.getPosition();
 
-        // Perform preprocessing for each context before we go to provider.
-        // Analyze context id for position.
-        MocaLanguageContext mocaLanguageContext = MocaLanguageUtils.getMocaLanguageContextFromPosition(position,
-                MocaServices.mocaCompilationResult);
-        switch (mocaLanguageContext.id) {
-            case Moca:
-                break;
-            case MocaSql:
-                break;
-            case Groovy:
-                String originalSource = null;
-                GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
-                        .get(mocaLanguageContext.compilationResultIdx);
+        switch (getMocaServiceType(uriStr)) {
+            case TraceOutlining:
+                return null;
+            default:
+                // Perform preprocessing for each context before we go to provider.
+                // Analyze context id for position.
+                MocaLanguageContext mocaLanguageContext = MocaLanguageUtils.getMocaLanguageContextFromPosition(position,
+                        MocaServices.mocaCompilationResult);
+                switch (mocaLanguageContext.id) {
+                    case Moca:
+                        break;
+                    case MocaSql:
+                        break;
+                    case Groovy:
+                        String originalSource = null;
+                        GroovyCompilationResult groovyCompilationResult = MocaServices.mocaCompilationResult.groovyCompilationResults
+                                .get(mocaLanguageContext.compilationResultIdx);
 
-                ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(
-                        params.getPosition().getLine(), params.getPosition().getCharacter(),
-                        groovyCompilationResult.range);
-                if (offsetNode == null) {
-                    originalSource = MocaServices.fileManager.getContents(uri);
-                    VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
-                            textDocument.getUri(), 1);
-                    int offset = PositionUtils.getOffset(originalSource, position);
-                    String lineBeforeOffset = originalSource.substring(offset - position.getCharacter(), offset);
-                    Matcher matcher = Pattern.compile(".*new \\w*$").matcher(lineBeforeOffset);
-                    TextDocumentContentChangeEvent changeEvent = null;
-                    if (matcher.matches()) {
-                        changeEvent = new TextDocumentContentChangeEvent(new Range(position, position), 0, "a()");
-                    } else {
-                        changeEvent = new TextDocumentContentChangeEvent(new Range(position, position), 0, "a");
-                    }
-                    DidChangeTextDocumentParams didChangeParams = new DidChangeTextDocumentParams(versionedTextDocument,
-                            Collections.singletonList(changeEvent));
-                    // if the offset node is null, there is probably a syntax error.
-                    // a completion request is usually triggered by the . character, and
-                    // if there is no property name after the dot, it will cause a syntax
-                    // error.
-                    // this hack adds a placeholder property name in the hopes that it
-                    // will correctly create a PropertyExpression to use for completion.
-                    // we'll restore the original text after we're done handling the
-                    // completion request.
-                    didChange(didChangeParams);
+                        ASTNode offsetNode = groovyCompilationResult.astVisitor.getNodeAtLineAndColumn(
+                                params.getPosition().getLine(), params.getPosition().getCharacter(),
+                                groovyCompilationResult.range);
+                        if (offsetNode == null) {
+                            originalSource = MocaServices.fileManager.getContents(uri);
+                            VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
+                                    textDocument.getUri(), 1);
+                            int offset = PositionUtils.getOffset(originalSource, position);
+                            String lineBeforeOffset = originalSource.substring(offset - position.getCharacter(),
+                                    offset);
+                            Matcher matcher = Pattern.compile(".*new \\w*$").matcher(lineBeforeOffset);
+                            TextDocumentContentChangeEvent changeEvent = null;
+                            if (matcher.matches()) {
+                                changeEvent = new TextDocumentContentChangeEvent(new Range(position, position), 0,
+                                        "a()");
+                            } else {
+                                changeEvent = new TextDocumentContentChangeEvent(new Range(position, position), 0, "a");
+                            }
+                            DidChangeTextDocumentParams didChangeParams = new DidChangeTextDocumentParams(
+                                    versionedTextDocument, Collections.singletonList(changeEvent));
+                            // if the offset node is null, there is probably a syntax error.
+                            // a completion request is usually triggered by the . character, and
+                            // if there is no property name after the dot, it will cause a syntax
+                            // error.
+                            // this hack adds a placeholder property name in the hopes that it
+                            // will correctly create a PropertyExpression to use for completion.
+                            // we'll restore the original text after we're done handling the
+                            // completion request.
+                            didChange(didChangeParams);
+                        }
+
+                        try {
+                            return SignatureHelpProvider.provideSignatureHelp(params.getPosition(),
+                                    mocaLanguageContext);
+                        } finally {
+                            if (originalSource != null) {
+                                VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
+                                        textDocument.getUri(), 1);
+                                TextDocumentContentChangeEvent changeEvent = new TextDocumentContentChangeEvent(null, 0,
+                                        originalSource);
+                                DidChangeTextDocumentParams didChangeParams = new DidChangeTextDocumentParams(
+                                        versionedTextDocument, Collections.singletonList(changeEvent));
+                                didChange(didChangeParams);
+                            }
+                        }
                 }
 
-                try {
-                    return SignatureHelpProvider.provideSignatureHelp(params.getPosition(), mocaLanguageContext);
-                } finally {
-                    if (originalSource != null) {
-                        VersionedTextDocumentIdentifier versionedTextDocument = new VersionedTextDocumentIdentifier(
-                                textDocument.getUri(), 1);
-                        TextDocumentContentChangeEvent changeEvent = new TextDocumentContentChangeEvent(null, 0,
-                                originalSource);
-                        DidChangeTextDocumentParams didChangeParams = new DidChangeTextDocumentParams(
-                                versionedTextDocument, Collections.singletonList(changeEvent));
-                        didChange(didChangeParams);
-                    }
-                }
+                // Now provide signature help.
+                return SignatureHelpProvider.provideSignatureHelp(params.getPosition(), mocaLanguageContext);
         }
 
-        // Now provide signature help.
-        return SignatureHelpProvider.provideSignatureHelp(params.getPosition(), mocaLanguageContext);
     }
 
     @Override
     public CompletableFuture<List<? extends TextEdit>> formatting(DocumentFormattingParams params) {
 
-        // Need to compile script before we format.
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        // Before we compile, check if uri string is the same as the current
-        // moca compilation result's uri string.
-        // If it is, then we do not need to worry about compiling!
-        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
-            String script = MocaServices.fileManager.getContents(uri);
-            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
-        }
+        switch (getMocaServiceType(uriStr)) {
+            case TraceOutlining:
+                return null;
+            default:
+                // Need to compile script before we format.
 
-        return DocumentFormattingProvider.provideDocumentFormatting(params);
+                // Before we compile, check if uri string is the same as the current
+                // moca compilation result's uri string.
+                // If it is, then we do not need to worry about compiling!
+                if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
+                    String script = MocaServices.fileManager.getContents(uri);
+                    MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+                }
+
+                return DocumentFormattingProvider.provideDocumentFormatting(params);
+        }
     }
 
     @Override
     public CompletableFuture<List<? extends TextEdit>> rangeFormatting(DocumentRangeFormattingParams params) {
 
-        // Need to compile script before we format.
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        // Before we compile, check if uri string is the same as the current
-        // moca compilation result's uri string.
-        // If it is, then we do not need to worry about compiling!
-        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
-            String script = MocaServices.fileManager.getContents(uri);
-            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
-        }
+        switch (getMocaServiceType(uriStr)) {
+            case TraceOutlining:
+                return null;
+            default:
+                // Need to compile script before we format.
 
-        return DocumentFormattingProvider.provideDocumentRangeFormatting(params);
+                // Before we compile, check if uri string is the same as the current
+                // moca compilation result's uri string.
+                // If it is, then we do not need to worry about compiling!
+                if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
+                    String script = MocaServices.fileManager.getContents(uri);
+                    MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+                }
+
+                return DocumentFormattingProvider.provideDocumentRangeFormatting(params);
+        }
     }
 
     @Override
     public CompletableFuture<List<? extends TextEdit>> onTypeFormatting(DocumentOnTypeFormattingParams params) {
 
-        // No need for a compile call -- we know that compilation is occuring on type
-        // elsewhere.
-        return DocumentOnTypeFormattingProvider.provideDocumentOnTypeFormatting(params);
+        String uriStr = params.getTextDocument().getUri();
+
+        switch (getMocaServiceType(uriStr)) {
+            case TraceOutlining:
+                return null;
+            default:
+                // No need for a compile call -- we know that compilation is occuring on type
+                // elsewhere.
+                return DocumentOnTypeFormattingProvider.provideDocumentOnTypeFormatting(params);
+        }
     }
 
     @Override
     public CompletableFuture<Object> executeCommand(ExecuteCommandParams params) {
+
+        // No need to getMocaServiceType here.
 
         // Check if we need to run async.
         switch (params.getCommand()) {
@@ -474,19 +566,25 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     public CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> definition(
             DefinitionParams params) {
 
-        // Need to compile on definition provide for the same reason as on hover ^.
         String uriStr = params.getTextDocument().getUri();
         URI uri = URI.create(uriStr);
 
-        // Before we compile, check if uri string is the same as the current
-        // moca compilation result's uri string.
-        // If it is, then we do not need to worry about compiling!
-        if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
-            String script = MocaServices.fileManager.getContents(uri);
-            MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
-        }
+        switch (getMocaServiceType(uriStr)) {
+            case TraceOutlining:
+                return null;
+            default:
+                // Need to compile on definition provide for the same reason as on hover ^.
 
-        return DefinitionProvider.provideDefinition(uri, params.getPosition());
+                // Before we compile, check if uri string is the same as the current
+                // moca compilation result's uri string.
+                // If it is, then we do not need to worry about compiling!
+                if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
+                    String script = MocaServices.fileManager.getContents(uri);
+                    MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
+                }
+
+                return DefinitionProvider.provideDefinition(uri, params.getPosition());
+        }
     }
 
     public static void logToLanguageClient(String msg) {
