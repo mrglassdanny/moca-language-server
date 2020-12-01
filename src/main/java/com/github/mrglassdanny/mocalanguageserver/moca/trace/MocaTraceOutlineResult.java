@@ -8,12 +8,17 @@ public class MocaTraceOutlineResult {
 
     public ArrayList<MocaTraceOutline> outlines;
     public ArrayList<String> absoluteTraceLines;
+    // This will associate actual editor line number with trace stack frame so that
+    // we do not have to spend time analyzing outlines to find correct stack frame
+    // for actual line.
+    public HashMap<Integer, MocaTraceStackFrame> actualLinesMap;
 
     public MocaTraceOutlineResult(HashMap<String, ArrayList<MocaTraceStackFrame>> outlineMap,
             ArrayList<String> absoluteTraceLines, HashMap<String, ArrayList<String>> relativeTraceLinesMap) {
 
         this.outlines = new ArrayList<>();
         this.absoluteTraceLines = new ArrayList<>();
+        this.actualLinesMap = new HashMap<>();
 
         for (Entry<String, ArrayList<MocaTraceStackFrame>> entry : outlineMap.entrySet()) {
             String key = entry.getKey();
@@ -29,33 +34,22 @@ public class MocaTraceOutlineResult {
 
         StringBuilder buf = new StringBuilder(8196);
 
-        for (MocaTraceOutline outline : this.outlines) {
-            buf.append("/*** " + outline.id
-                    + " **********************************************************************/\n");
-            StringBuilder entryBuf = new StringBuilder(2048);
-            for (MocaTraceStackFrame t : outline.frames) {
-                // entryBuf.append(String.format("%d - ", t.stackLevel));
+        int actualLineNum = 1;
 
-                entryBuf.append(t.indentStr);
-                if (t.isTrigger) {
-                    entryBuf.append("(Trigger) ");
-                }
-                if (t.returnedRows > 0) {
-                    entryBuf.append("ROWS: " + t.returnedRows + "   ");
-                }
-                if (t.executionTime > 0.0) {
-                    entryBuf.append("TIME: " + t.executionTime + "   ");
-                }
-                if (t.instructionStatus != null && !t.instructionStatus.isEmpty() && t.instructionStatus != "0") {
-                    entryBuf.append(t.instructionStatus + " -> " + t.instruction);
-                } else {
-                    entryBuf.append(t.instruction);
-                }
-                entryBuf.append('\n');
+        for (MocaTraceOutline outline : this.outlines) {
+            buf.append("/****************************** " + outline.id + " ******************************/\n");
+            actualLineNum++;
+            StringBuilder outlineBuf = new StringBuilder(2048);
+            for (MocaTraceStackFrame t : outline.frames) {
+                this.actualLinesMap.put(actualLineNum, t);
+                outlineBuf.append(t.indentStr);
+                outlineBuf.append(t.instruction);
+                outlineBuf.append('\n');
+                actualLineNum++;
 
             }
 
-            buf.append(entryBuf.toString());
+            buf.append(outlineBuf.toString());
         }
 
         return buf.toString();

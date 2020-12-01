@@ -3,6 +3,9 @@ package com.github.mrglassdanny.mocalanguageserver.moca.trace;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
+import java.util.Map.Entry;
+
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.format.MocaFormatter;
 
 public class MocaTraceStackFrame {
 
@@ -27,39 +30,6 @@ public class MocaTraceStackFrame {
     public boolean isPreparedStatement; // Tells if instruction was JDBC prepared statement.
     public int returnedRows; // How many rows returned from instruction.
     public double executionTime; // Execution time for instruction.
-
-    public MocaTraceStackFrame(int stackLevel, int lineNum, int relativeLineNum, String instruction,
-            boolean isCommandStatementOrNestedBraces, Stack<MocaTraceStackFrame> indentStack) {
-        this.stackLevel = stackLevel;
-        this.absoluteLineNum = lineNum;
-        this.relativeLineNum = relativeLineNum;
-        this.instruction = instruction;
-        this.instructionStatus = "";
-        this.published = new HashMap<>();
-        this.arguments = new HashMap<>();
-        this.flows = new ArrayList<>();
-        this.isCommandStatementOrNestedBraces = isCommandStatementOrNestedBraces;
-        this.indentStr = "";
-        this.isServerGot = false;
-        this.isCommandInitiated = false;
-        this.componentLevel = null;
-        this.isFiringTriggers = false;
-        this.isTrigger = false;
-        this.isRemote = false;
-        this.isPreparedStatement = false;
-        this.returnedRows = 0;
-        this.executionTime = 0.0;
-
-        // Passing in the indent stack so we can use it for setting certain fields.
-        if (indentStack.size() > 0) {
-            MocaTraceStackFrame curIndentStackFrame = indentStack.peek();
-            if (curIndentStackFrame.isFiringTriggers && curIndentStackFrame.stackLevel == this.stackLevel - 1
-                    && this.instruction != "}" && this.instruction != "{") {
-                this.isTrigger = true;
-            }
-        }
-
-    }
 
     public MocaTraceStackFrame(int stackLevel, int lineNum, int relativeLineNum, String instruction,
             String instructionStatus, boolean isCommandStatementOrNestedBraces, String indentStr,
@@ -92,6 +62,89 @@ public class MocaTraceStackFrame {
                 this.isTrigger = true;
             }
         }
+    }
+
+    public String getMarkdownStr() {
+
+        StringBuilder buf = new StringBuilder(2048);
+
+        if (this.instructionStatus != "0") {
+            buf.append(String.format("Status: **%s**\n", this.instructionStatus));
+        }
+
+        buf.append(String.format("\nStack Level: %d\n", this.stackLevel));
+
+        StringBuilder publishedBuf = new StringBuilder(1024);
+        if (this.published.size() > 0) {
+            publishedBuf.append("publish data where ");
+        }
+        for (Entry<String, String> entry : this.published.entrySet()) {
+            if (!entry.getKey().isEmpty()) {
+                String value = entry.getValue().trim();
+                if (value.contains("'")) {
+                    value = ("\"" + value + "\"");
+                } else {
+                    if (value.compareToIgnoreCase("null") != 0) {
+                        value = ("'" + value + "'");
+                    }
+                }
+                publishedBuf.append(String.format("%s = %s and ", entry.getKey(), value));
+            }
+        }
+        // Remove last ' and '.
+        if (publishedBuf.length() > 1) {
+            publishedBuf.delete(publishedBuf.length() - 5, publishedBuf.length() - 1);
+            String formattedScript = MocaFormatter.format(publishedBuf.toString());
+            if (formattedScript != null) {
+                buf.append(String.format("```moca\n\n%s\n|\n```", formattedScript));
+            } else {
+                buf.append(String.format("```moca\n\n%s\n|\n```", publishedBuf.toString()));
+            }
+        }
+
+        if (this.instruction != "{" && this.instruction != "}") {
+
+            buf.append("\n");
+
+            StringBuilder argumentsBuf = new StringBuilder(1024);
+            if (this.arguments.size() > 0) {
+                argumentsBuf.append(" where ");
+            }
+            for (Entry<String, String> entry : this.arguments.entrySet()) {
+                if (!entry.getKey().isEmpty()) {
+                    String value = entry.getValue().trim();
+                    if (value.contains("'")) {
+                        value = ("\"" + value + "\"");
+                    } else {
+                        if (value.compareToIgnoreCase("null") != 0) {
+                            value = ("'" + value + "'");
+                        }
+                    }
+
+                    argumentsBuf.append(String.format("%s = %s and ", entry.getKey(), value));
+                }
+            }
+            // Remove last ' and '.
+            if (argumentsBuf.length() > 1) {
+                argumentsBuf.delete(argumentsBuf.length() - 5, argumentsBuf.length() - 1);
+                String formattedScript = MocaFormatter.format(this.instruction + argumentsBuf.toString());
+                if (formattedScript != null) {
+                    buf.append(String.format("```moca\n\n%s\n\n```", formattedScript));
+                } else {
+                    buf.append(String.format("```moca\n\n%s\n\n```", this.instruction + argumentsBuf.toString()));
+                }
+            } else {
+                String formattedScript = MocaFormatter.format(this.instruction);
+                if (formattedScript != null) {
+                    buf.append(String.format("```moca\n\n%s\n\n```", formattedScript));
+                } else {
+                    buf.append(String.format("```moca\n\n%s\n\n```", this.instruction));
+                }
+            }
+
+        }
+
+        return buf.toString();
     }
 
 }

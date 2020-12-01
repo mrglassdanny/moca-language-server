@@ -2,7 +2,6 @@ package com.github.mrglassdanny.mocalanguageserver.services.command;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
@@ -179,6 +178,8 @@ public class ExecuteCommandProvider {
                             new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER), false);
                     return CompletableFuture.completedFuture(mocaResultsResponse);
                 }
+
+                // TODO - make sure we cannot exec trace.
 
                 try {
                     List<Object> args = params.getArguments();

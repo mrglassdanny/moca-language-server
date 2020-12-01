@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.format.MocaSqlFormatter;
@@ -393,6 +394,10 @@ public class MocaFormatter {
         }
 
         return buf.toString();
+    }
+
+    public static String format(String script) {
+        return format(MocaCompiler.compileScript(script, ""));
     }
 
     // This function will have the same formatting logic as ^. The only difference

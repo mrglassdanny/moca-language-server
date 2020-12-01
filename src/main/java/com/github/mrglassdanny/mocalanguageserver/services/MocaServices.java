@@ -105,12 +105,12 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     public static MocaCompilationResult mocaCompilationResult = null;
 
     // MOCA TRACE OUTLINE SERVICE:
-    // Trace outline results will be treated differently than ^^^ -- once we perform
-    // outlining logic for moca trace, it will not change(unless outlining services
-    // are requested again). Therefore, we need to keep track of existing trace
-    // outlines since we cannot simply 'recompile' on changed focus.
-    private static HashMap<String, MocaTraceOutlineResult> mocaTraceOutlineResultMap = new HashMap<>(); // Key is file
-                                                                                                        // name.
+    // Trace outline results will be treated differently than compilation results --
+    // once we perform outlining logic for moca trace, it will not change(unless
+    // outlining services are requested again). Therefore, we need to keep track of
+    // existing trace outlines since we cannot simply 'recompile' on changed focus.
+    private static HashMap<String, MocaTraceOutlineResult> mocaTraceOutlineResultMap = new HashMap<>(); // Key is uri
+                                                                                                        // string.
     // To make things easier for callers, we will expose the 'focused' moca trace
     // outline result.
     public static MocaTraceOutlineResult mocaTraceOutlineResult = null;
@@ -133,9 +133,9 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                     MocaServices.mocaTraceOutlineResult = MocaServices.mocaTraceOutlineResultMap.get(uriStr);
                 } else {
                     // Can assume we are here for 1 of 2 reasons:
-                    // 1. Execute command provider loaded trace outline
+                    // 1. Execute command provider loaded trace outline result
                     // 2. vscode was reopened and this file was left open during last vscode close.
-                    // This should handle both ^^^ since we want invalidated moca trace outline
+                    // This should handle both ^^^ since we want invalidated trace outline
                     // results to be null.
                     MocaServices.mocaTraceOutlineResultMap.put(uriStr, MocaServices.mocaTraceOutlineResult);
                 }
