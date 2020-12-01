@@ -55,8 +55,9 @@ public class MocaTraceOutlineServiceDefinitionProvider {
 
             logFileBufferedWriter.close();
 
-            // Relative line nums start at 1, and position line nums start at 0.
-            Position startPos = new Position(frame.relativeLineNum - 1, 0);
+            // No need to subtract 1 here since relative line num will actually match up
+            // with actual line num.
+            Position startPos = new Position(frame.relativeLineNum, 0);
             Location location = new Location(logFileUri.toString(), new Range(startPos, startPos));
 
             locations.add(location);

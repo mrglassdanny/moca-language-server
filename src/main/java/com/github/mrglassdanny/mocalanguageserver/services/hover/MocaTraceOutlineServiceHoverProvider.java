@@ -23,7 +23,7 @@ public class MocaTraceOutlineServiceHoverProvider {
             return CompletableFuture.completedFuture(hover);
         }
 
-        // +1 since position lines start at 0!
+        // +1 since lsp position lines start at 0!
         MocaTraceStackFrame frame = MocaServices.mocaTraceOutlineResult.actualLinesMap.get(position.getLine() + 1);
         if (frame == null) {
             return CompletableFuture.completedFuture(hover);
