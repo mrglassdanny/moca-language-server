@@ -23,7 +23,7 @@ import com.github.mrglassdanny.mocalanguageserver.services.format.MocaCompilatio
 import com.github.mrglassdanny.mocalanguageserver.services.format.MocaCompilationServiceDocumentOnTypeFormattingProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.command.ExecuteCommandProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.hover.MocaCompilationServiceHoverProvider;
-import com.github.mrglassdanny.mocalanguageserver.services.hover.MocaTraceOutlineHoverProvider;
+import com.github.mrglassdanny.mocalanguageserver.services.hover.MocaTraceOutlineServiceHoverProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.signature.MocaCompilationServiceSignatureHelpProvider;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.StringDifferenceUtils;
@@ -69,9 +69,11 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     private static FileManager fileManager = new FileManager();
     private static ExecutorService threadPool = Executors.newCachedThreadPool();
 
-    // We are supporting multiple pieces of MOCA functionality. We will use
-    // MocaServiceType enum to invoke the correct logic for each piece of MOCA
-    // functionality.
+    // We are supporting multiple MOCA 'services'. We will use
+    // MocaServiceType enum in order to invoke the correct logic for the requested
+    // service.
+    // Ex: File ext is .moca.trace -> MocaTraceOutlineService
+    // Ex: File ext is .moca OR .msql -> MocaCompilationService
     private enum MocaServiceType {
         MocaCompilation, MocaTraceOutline
     }
@@ -85,7 +87,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         return MocaServiceType.MocaCompilation;
     }
 
-    // COMPILATION SERVICE:
+    // MOCA COMPILATION SERVICE:
     // Will only ever have 1 current moca compilation result. Reason being is that
     // moca scripts/files are independent of eachother, and there is no need to keep
     // track of any compilation results other than the current one for the moca
@@ -101,7 +103,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     // may need it or it's components.
     public static MocaCompilationResult mocaCompilationResult = null;
 
-    // TRACE OUTLINE SERVICE:
+    // MOCA TRACE OUTLINE SERVICE:
     // See ^^^ -- same logic goes for moca trace outliner.
     public static MocaTraceOutliner mocaTraceOutliner = null;
 
@@ -275,7 +277,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
-                return MocaTraceOutlineHoverProvider.provideHover(params.getPosition());
+                return MocaTraceOutlineServiceHoverProvider.provideHover(params.getPosition());
             default:
                 // Need to compile on hover for the following reason:
                 // When the user has 2 or more opened MOCA files and they make a change to file
