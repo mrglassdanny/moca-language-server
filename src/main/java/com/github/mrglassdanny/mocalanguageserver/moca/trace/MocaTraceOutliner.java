@@ -328,7 +328,7 @@ public class MocaTraceOutliner {
                                     p++;
                                 }
                             } else if (previousStackLevel > stackLevel) { // Coming up (3 -> 1).
-                                if (previousStackLevel > stackLevel + 1
+                                if (previousStackLevel > stackLevel + 1 && indentStack.size() > 0
                                         && indentStack.peek().isCommandStatementOrNestedBraces
                                         && indentStack.peek().instruction == "{") {
                                     processUnindent(indentStack, stackLevel, outline);
