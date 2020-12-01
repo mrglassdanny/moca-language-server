@@ -64,6 +64,10 @@ import org.eclipse.lsp4j.services.WorkspaceService;
 
 public class MocaServices implements TextDocumentService, WorkspaceService, LanguageClientAware {
 
+    public static LanguageClient languageClient = null;
+    private static FileManager fileManager = new FileManager();
+    private static ExecutorService threadPool = Executors.newCachedThreadPool();
+
     // Will only ever have 1 current moca compilation result. Reason being is that
     // moca scripts/files are independent of eachother, and there is no need to keep
     // track of any compilation results other than the current one for the moca
@@ -81,10 +85,6 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     public static MocaCompilationResult mocaCompilationResult = null;
     // See ^^^ -- same logic goes for moca trace outliner.
     public static MocaTraceOutliner mocaTraceOutliner = null;
-
-    public static LanguageClient languageClient = null;
-    private static FileManager fileManager = new FileManager();
-    private static ExecutorService threadPool = Executors.newCachedThreadPool();
 
     @Override
     public void connect(LanguageClient client) {
