@@ -9,9 +9,12 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.format.MocaFormatter
 
 public class MocaTraceStackFrame {
 
+    public String outlineId; // ID for outline.
     public int stackLevel; // Will have 1 stack level per frame.
-    public int absoluteLineNum; // For joining up with raw trace file contents relative to entire file.
-    public int relativeLineNum; // For joining up with raw trace file contents relative to thread:session combo.
+    public int absoluteLineNum; // For joining up with raw trace file contents relative to entire file. Line
+                                // numbers start at 1.
+    public int relativeLineNum; // For joining up with raw trace file contents relative to outline ID. Line
+                                // numbers start at 1.
     public String instruction; // Stack frames have 1 instruction.
     public String instructionStatus; // Stack frames have 1 instruction status.
     public HashMap<String, String> published; // What is on the stack at time of instruction invocation.
@@ -31,9 +34,10 @@ public class MocaTraceStackFrame {
     public int returnedRows; // How many rows returned from instruction.
     public double executionTime; // Execution time for instruction.
 
-    public MocaTraceStackFrame(int stackLevel, int lineNum, int relativeLineNum, String instruction,
+    public MocaTraceStackFrame(String outlineId, int stackLevel, int lineNum, int relativeLineNum, String instruction,
             String instructionStatus, boolean isCommandStatementOrNestedBraces, String indentStr,
             Stack<MocaTraceStackFrame> indentStack) {
+        this.outlineId = outlineId;
         this.stackLevel = stackLevel;
         this.absoluteLineNum = lineNum;
         this.relativeLineNum = relativeLineNum;

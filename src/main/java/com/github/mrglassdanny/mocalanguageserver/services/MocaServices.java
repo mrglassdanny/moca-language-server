@@ -19,6 +19,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaLanguageUti
 import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutlineResult;
 import com.github.mrglassdanny.mocalanguageserver.services.completion.MocaCompilationServiceCompletionProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.definition.MocaCompilationServiceDefinitionProvider;
+import com.github.mrglassdanny.mocalanguageserver.services.definition.MocaTraceOutlineServiceDefinitionProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.diagnostic.MocaCompilationServiceDiagnosticManager;
 import com.github.mrglassdanny.mocalanguageserver.services.format.MocaCompilationServiceDocumentFormattingProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.format.MocaCompilationServiceDocumentOnTypeFormattingProvider;
@@ -611,9 +612,20 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
-                return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
+                // Check if exists in our map.
+                if (MocaServices.mocaTraceOutlineResultMap.containsKey(uriStr)) {
+                    MocaServices.mocaTraceOutlineResult = MocaServices.mocaTraceOutlineResultMap.get(uriStr);
+                } else {
+                    // Can assume we are here for 1 of 2 reasons:
+                    // 1. Execute command provider loaded trace outline result
+                    // 2. vscode was reopened and this file was left open during last vscode close.
+                    // This should handle both ^^^ since we want invalidated trace outline
+                    // results to be null.
+                    MocaServices.mocaTraceOutlineResultMap.put(uriStr, MocaServices.mocaTraceOutlineResult);
+                }
+                return MocaTraceOutlineServiceDefinitionProvider.provideDefinition(uri, params.getPosition());
             default:
-                // Need to compile on definition provide for the same reason as on hover ^.
+                // Need to compile on definition provide for the same reason as on hover.
 
                 // Before we compile, check if uri string is the same as the current
                 // moca compilation result's uri string.

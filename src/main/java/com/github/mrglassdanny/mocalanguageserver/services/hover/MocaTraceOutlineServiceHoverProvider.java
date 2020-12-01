@@ -16,13 +16,14 @@ public class MocaTraceOutlineServiceHoverProvider {
 
         Hover hover = new Hover();
         // Placeholder contents until we set due to analysis.
-        hover.setContents(new MarkupContent(MarkupKind.PLAINTEXT, "TEST: " + (position.getLine() + 1)));
+        hover.setContents(new MarkupContent(MarkupKind.PLAINTEXT, "No data found"));
 
         // Make sure we have a working trace outline result.
         if (MocaServices.mocaTraceOutlineResult == null) {
             return CompletableFuture.completedFuture(hover);
         }
 
+        // +1 since position lines start at 0!
         MocaTraceStackFrame frame = MocaServices.mocaTraceOutlineResult.actualLinesMap.get(position.getLine() + 1);
         if (frame == null) {
             return CompletableFuture.completedFuture(hover);

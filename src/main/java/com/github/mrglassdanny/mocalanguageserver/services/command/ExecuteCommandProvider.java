@@ -405,7 +405,8 @@ public class ExecuteCommandProvider {
 
                         MocaTraceOutliner traceOutliner = new MocaTraceOutliner();
 
-                        MocaServices.mocaTraceOutlineResult = traceOutliner.outlineTrace(res);
+                        MocaServices.mocaTraceOutlineResult = traceOutliner
+                                .outlineTrace(openMocaTraceRequest.requestedTraceFileName, res);
 
                         openMocaTraceResponse = new OpenMocaTraceResponse(null,
                                 MocaServices.mocaTraceOutlineResult.toString(), null);
