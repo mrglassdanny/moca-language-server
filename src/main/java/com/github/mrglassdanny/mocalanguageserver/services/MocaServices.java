@@ -307,7 +307,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
-                return null;
+                return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
             default:
                 // Perform preprocessing for each context before we go to provider.
                 // Analyze context id for position.
@@ -415,7 +415,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
-                return null;
+                return CompletableFuture.completedFuture(new SignatureHelp(Collections.emptyList(), -1, -1));
             default:
                 // Perform preprocessing for each context before we go to provider.
                 // Analyze context id for position.
@@ -493,7 +493,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
-                return null;
+                return CompletableFuture.completedFuture(Collections.emptyList());
             default:
                 // Need to compile script before we format.
 
@@ -517,7 +517,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
-                return null;
+                return CompletableFuture.completedFuture(Collections.emptyList());
             default:
                 // Need to compile script before we format.
 
@@ -540,7 +540,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
-                return null;
+                return CompletableFuture.completedFuture(Collections.emptyList());
             default:
                 // No need for a compile call -- we know that compilation is occuring on type
                 // elsewhere.
@@ -575,7 +575,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
-                return null;
+                return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
             default:
                 // Need to compile on definition provide for the same reason as on hover ^.
 
