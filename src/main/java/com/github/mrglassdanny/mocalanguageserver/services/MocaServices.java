@@ -300,6 +300,17 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
+                // Check if exists in our map.
+                if (MocaServices.mocaTraceOutlineResultMap.containsKey(uriStr)) {
+                    MocaServices.mocaTraceOutlineResult = MocaServices.mocaTraceOutlineResultMap.get(uriStr);
+                } else {
+                    // Can assume we are here for 1 of 2 reasons:
+                    // 1. Execute command provider loaded trace outline result
+                    // 2. vscode was reopened and this file was left open during last vscode close.
+                    // This should handle both ^^^ since we want invalidated trace outline
+                    // results to be null.
+                    MocaServices.mocaTraceOutlineResultMap.put(uriStr, MocaServices.mocaTraceOutlineResult);
+                }
                 return MocaTraceOutlineServiceHoverProvider.provideHover(params.getPosition());
             default:
                 // Need to compile on hover for the following reason:
