@@ -28,7 +28,7 @@ import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SignatureHelp;
 import org.eclipse.lsp4j.SignatureInformation;
 
-public class SignatureHelpProvider {
+public class CompilationServiceSignatureHelpProvider {
 
     public static CompletableFuture<SignatureHelp> provideSignatureHelp(Position position,
             MocaLanguageContext mocaLanguageContext) {

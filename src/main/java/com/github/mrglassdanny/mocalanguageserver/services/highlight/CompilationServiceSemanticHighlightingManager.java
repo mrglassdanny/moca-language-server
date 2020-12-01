@@ -21,7 +21,7 @@ import org.eclipse.lsp4j.VersionedTextDocumentIdentifier;
 import org.eclipse.lsp4j.util.SemanticHighlightingTokens;
 import org.eclipse.lsp4j.util.SemanticHighlightingTokens.Token;
 
-public class SemanticHighlightingManager {
+public class CompilationServiceSemanticHighlightingManager {
 
     private static final int MOCASQL_RANGE_SCOPES_IDX = 0;
     private static final int MOCASQL_RANGE_LAST_LINE_SCOPES_IDX = 1;

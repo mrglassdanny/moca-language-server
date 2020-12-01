@@ -35,7 +35,7 @@ import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.PublishDiagnosticsParams;
 import org.eclipse.lsp4j.Range;
 
-public class DiagnosticManager {
+public class CompilationServiceDiagnosticManager {
 
     private static final String MOCA_SYNTAX_ERROR = "MOCA: line %d:%d %s";
     private static final String MOCA_COMMAND_DOES_NOT_EXIST_WARNING = "MOCA: Command '%s' does not exist";
@@ -99,7 +99,7 @@ public class DiagnosticManager {
 
         // Make sure everything is done before we publish diagnostics.
         try {
-            DiagnosticManager.allDiagnosticsThreadPool.invokeAll(allDiagnosticsTasks);
+            CompilationServiceDiagnosticManager.allDiagnosticsThreadPool.invokeAll(allDiagnosticsTasks);
         } catch (InterruptedException ex) {
             // Do nothing..
         }
@@ -167,7 +167,7 @@ public class DiagnosticManager {
 
         // Make sure everything is done before we leave function.
         try {
-            DiagnosticManager.errorDiagnosticsThreadPool.invokeAll(errorDiagnosticsTasks);
+            CompilationServiceDiagnosticManager.errorDiagnosticsThreadPool.invokeAll(errorDiagnosticsTasks);
         } catch (InterruptedException ex) {
             // Do nothing..
         }
@@ -229,7 +229,7 @@ public class DiagnosticManager {
 
         // Make sure everything is done before we leave function.
         try {
-            DiagnosticManager.warningDiagnosticsThreadPool.invokeAll(warningDiagnosticsTasks);
+            CompilationServiceDiagnosticManager.warningDiagnosticsThreadPool.invokeAll(warningDiagnosticsTasks);
         } catch (InterruptedException ex) {
             // Do nothing..
         }

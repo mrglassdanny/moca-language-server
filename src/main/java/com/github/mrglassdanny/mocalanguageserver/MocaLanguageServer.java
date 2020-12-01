@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.github.mrglassdanny.mocalanguageserver.services.highlight.SemanticHighlightingManager;
+import com.github.mrglassdanny.mocalanguageserver.services.highlight.CompilationServiceSemanticHighlightingManager;
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.services.command.ExecuteCommandProvider;
 
@@ -148,9 +148,9 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
         executeCommandOptions.setCommands(ExecuteCommandProvider.mocaLanguageServerCommands);
         serverCapabilities.setExecuteCommandProvider(executeCommandOptions);
 
-        SemanticHighlightingManager.setTextmateScopes();
-        serverCapabilities.setSemanticHighlighting(
-                new SemanticHighlightingServerCapabilities(SemanticHighlightingManager.textmateScopes));
+        CompilationServiceSemanticHighlightingManager.setTextmateScopes();
+        serverCapabilities.setSemanticHighlighting(new SemanticHighlightingServerCapabilities(
+                CompilationServiceSemanticHighlightingManager.textmateScopes));
 
         serverCapabilities.setDefinitionProvider(true);
 

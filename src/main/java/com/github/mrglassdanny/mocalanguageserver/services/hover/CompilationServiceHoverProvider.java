@@ -28,7 +28,7 @@ import org.eclipse.lsp4j.MarkupContent;
 import org.eclipse.lsp4j.MarkupKind;
 import org.eclipse.lsp4j.Position;
 
-public class HoverProvider {
+public class CompilationServiceHoverProvider {
 
     public static CompletableFuture<Hover> provideHover(Position position) {
 
