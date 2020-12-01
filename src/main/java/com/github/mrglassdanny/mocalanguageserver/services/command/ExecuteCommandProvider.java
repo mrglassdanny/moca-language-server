@@ -29,9 +29,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.Moc
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
-import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutlineResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutliner;
-import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceStackFrame;
 
 import org.eclipse.lsp4j.ExecuteCommandParams;
 
@@ -406,9 +404,10 @@ public class ExecuteCommandProvider {
 
                         MocaTraceOutliner traceOutliner = new MocaTraceOutliner();
 
-                        MocaTraceOutlineResult outlineResult = traceOutliner.outlineTrace(res);
+                        MocaServices.mocaTraceOutlineResult = traceOutliner.outlineTrace(res);
 
-                        openMocaTraceResponse = new OpenMocaTraceResponse(null, outlineResult.toString(), null);
+                        openMocaTraceResponse = new OpenMocaTraceResponse(null,
+                                MocaServices.mocaTraceOutlineResult.toString(), null);
                     }
 
                     return CompletableFuture.completedFuture(openMocaTraceResponse);

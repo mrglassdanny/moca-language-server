@@ -6,14 +6,22 @@ import java.util.Map.Entry;
 
 public class MocaTraceOutlineResult {
 
-    public HashMap<String, ArrayList<MocaTraceStackFrame>> outlines;
+    public ArrayList<MocaTraceOutline> outlines;
     public ArrayList<String> absoluteTraceLines;
-    public HashMap<String, ArrayList<String>> relativeTraceLines;
 
-    public MocaTraceOutlineResult() {
-        this.outlines = new HashMap<>();
+    public MocaTraceOutlineResult(HashMap<String, ArrayList<MocaTraceStackFrame>> outlineMap,
+            ArrayList<String> absoluteTraceLines, HashMap<String, ArrayList<String>> relativeTraceLinesMap) {
+
+        this.outlines = new ArrayList<>();
         this.absoluteTraceLines = new ArrayList<>();
-        this.relativeTraceLines = new HashMap<>();
+
+        for (Entry<String, ArrayList<MocaTraceStackFrame>> entry : outlineMap.entrySet()) {
+            String key = entry.getKey();
+            this.outlines.add(new MocaTraceOutline(key, entry.getValue(), relativeTraceLinesMap.get(key)));
+        }
+
+        this.absoluteTraceLines.addAll(absoluteTraceLines);
+
     }
 
     @Override
@@ -21,12 +29,12 @@ public class MocaTraceOutlineResult {
 
         StringBuilder buf = new StringBuilder(8196);
 
-        for (Entry<String, ArrayList<MocaTraceStackFrame>> entry : this.outlines.entrySet()) {
-            buf.append("=== START: " + entry.getKey()
-                    + " =======================================================================\n");
+        for (MocaTraceOutline outline : this.outlines) {
+            buf.append("/*** " + outline.id
+                    + " **********************************************************************/\n");
             StringBuilder entryBuf = new StringBuilder(2048);
-            for (MocaTraceStackFrame t : entry.getValue()) {
-                entryBuf.append(String.format("%d - ", t.stackLevel));
+            for (MocaTraceStackFrame t : outline.frames) {
+                // entryBuf.append(String.format("%d - ", t.stackLevel));
 
                 entryBuf.append(t.indentStr);
                 if (t.isTrigger) {
@@ -48,10 +56,21 @@ public class MocaTraceOutlineResult {
             }
 
             buf.append(entryBuf.toString());
-            buf.append("===== END: " + entry.getKey()
-                    + " =======================================================================\n");
         }
 
         return buf.toString();
+    }
+}
+
+class MocaTraceOutline {
+
+    String id;
+    ArrayList<MocaTraceStackFrame> frames;
+    ArrayList<String> relativeTraceLines;
+
+    MocaTraceOutline(String id, ArrayList<MocaTraceStackFrame> frames, ArrayList<String> relativeTraceLines) {
+        this.id = id;
+        this.frames = frames;
+        this.relativeTraceLines = relativeTraceLines;
     }
 }

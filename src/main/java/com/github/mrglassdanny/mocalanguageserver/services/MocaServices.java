@@ -2,6 +2,7 @@ package com.github.mrglassdanny.mocalanguageserver.services;
 
 import java.net.URI;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -15,7 +16,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutliner;
+import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutlineResult;
 import com.github.mrglassdanny.mocalanguageserver.services.completion.MocaCompilationServiceCompletionProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.definition.MocaCompilationServiceDefinitionProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.diagnostic.MocaCompilationServiceDiagnosticManager;
@@ -104,8 +105,15 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     public static MocaCompilationResult mocaCompilationResult = null;
 
     // MOCA TRACE OUTLINE SERVICE:
-    // See ^^^ -- same logic goes for moca trace outliner.
-    public static MocaTraceOutliner mocaTraceOutliner = null;
+    // Trace outline results will be treated differently than ^^^ -- once we perform
+    // outlining logic for moca trace, it will not change(unless outlining services
+    // are requested again). Therefore, we need to keep track of existing trace
+    // outlines since we cannot simply 'recompile' on changed focus.
+    private static HashMap<String, MocaTraceOutlineResult> mocaTraceOutlineResultMap = new HashMap<>(); // Key is file
+                                                                                                        // name.
+    // To make things easier for callers, we will expose the 'focused' moca trace
+    // outline result.
+    public static MocaTraceOutlineResult mocaTraceOutlineResult = null;
 
     @Override
     public void connect(LanguageClient client) {
@@ -120,6 +128,17 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
+                // Check if exists in our map.
+                if (MocaServices.mocaTraceOutlineResultMap.containsKey(uriStr)) {
+                    MocaServices.mocaTraceOutlineResult = MocaServices.mocaTraceOutlineResultMap.get(uriStr);
+                } else {
+                    // Can assume we are here for 1 of 2 reasons:
+                    // 1. Execute command provider loaded trace outline
+                    // 2. vscode was reopened and this file was left open during last vscode close.
+                    // This should handle both ^^^ since we want invalidated moca trace outline
+                    // results to be null.
+                    MocaServices.mocaTraceOutlineResultMap.put(uriStr, MocaServices.mocaTraceOutlineResult);
+                }
                 break;
             default:
                 String script = MocaServices.fileManager.getContents(uri);
@@ -145,6 +164,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
+                // Nothing to do here.
                 break;
             default:
                 // We do not want to needlessly compile the entire script everytime a change
@@ -223,6 +243,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
+                // Just need to remove trace outline result from map.
+                MocaServices.mocaTraceOutlineResultMap.remove(uriStr);
                 break;
             default:
                 // Need to clear diagnositics for file we just closed, that way the diagnostics
@@ -240,6 +262,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
+                // Nothing to do here.
                 break;
             default:
                 String script = MocaServices.fileManager.getContents(uri);

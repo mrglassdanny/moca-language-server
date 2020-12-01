@@ -918,6 +918,7 @@ public class MocaTraceOutliner {
 
     public MocaTraceOutlineResult outlineTrace(MocaResults res) {
 
+        // Reset all fields.
         MocaTraceOutliner.lineNum = -1;
         MocaTraceOutliner.lineTextBuffer = new StringBuilder(2048);
         MocaTraceOutliner.absoluteTraceLines = new ArrayList<>();
@@ -929,14 +930,14 @@ public class MocaTraceOutliner {
         MocaTraceOutliner.argumentsMap = new HashMap<>();
         MocaTraceOutliner.flowsMap = new HashMap<>();
 
+        // Process trace outlining.
         for (int i = 0; i < res.getRowCount(); i++) {
             MocaTraceOutliner.readLine(i, res.getString(i, "text"));
         }
 
-        MocaTraceOutlineResult outlineResult = new MocaTraceOutlineResult();
-        outlineResult.outlines.putAll(MocaTraceOutliner.outlineMap);
-        outlineResult.absoluteTraceLines.addAll(MocaTraceOutliner.absoluteTraceLines);
-        outlineResult.relativeTraceLines.putAll(MocaTraceOutliner.relativeTraceLinesMap);
+        // Initialize result structure and return it.
+        MocaTraceOutlineResult outlineResult = new MocaTraceOutlineResult(MocaTraceOutliner.outlineMap,
+                MocaTraceOutliner.absoluteTraceLines, MocaTraceOutliner.relativeTraceLinesMap);
 
         return outlineResult;
     }
