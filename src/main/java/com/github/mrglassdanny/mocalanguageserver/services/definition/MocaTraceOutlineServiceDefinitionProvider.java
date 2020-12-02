@@ -30,7 +30,8 @@ public class MocaTraceOutlineServiceDefinitionProvider {
             return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
         }
 
-        MocaTraceStackFrame frame = MocaServices.mocaTraceOutlineResult.actualLinesMap.get(position.getLine());
+        // +1 since lsp position lines start at 0!
+        MocaTraceStackFrame frame = MocaServices.mocaTraceOutlineResult.actualLinesMap.get(position.getLine() + 1);
 
         if (frame == null) {
             return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
@@ -55,11 +56,11 @@ public class MocaTraceOutlineServiceDefinitionProvider {
 
             logFileBufferedWriter.close();
 
-            // No need to subtract 1 here since relative line num will actually match up
-            // with actual line num.
-            Position startPos = new Position(frame.relativeLineNum, 0);
-            Location location = new Location(logFileUri.toString(), new Range(startPos, startPos));
-
+            // -1 since lsp position line nums start at 0 and stack frame relative line nums
+            // start at 1!
+            Position startPos = new Position(frame.relativeLineNum - 1, 0);
+            Position endPos = new Position(frame.relativeLineNum, 0);
+            Location location = new Location(logFileUri.toString(), new Range(startPos, endPos));
             locations.add(location);
 
         } catch (IOException ioException) {
