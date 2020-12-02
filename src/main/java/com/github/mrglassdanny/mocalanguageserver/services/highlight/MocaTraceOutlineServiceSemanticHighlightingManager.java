@@ -20,12 +20,16 @@ import org.eclipse.lsp4j.util.SemanticHighlightingTokens.Token;
 public class MocaTraceOutlineServiceSemanticHighlightingManager {
 
     // Integers represent indicies in list sent to MocaLanguageServer.
-    private static final int CONDITIONAL_TEST_FAIL_SCOPES_IDX = 7;
-    private static final int CONDITIONAL_TEST_PASS_SCOPES_IDX = 8;
+    private static final int MOCA_COMMAND_SCOPES_IDX = 7;
+    private static final int CONDITIONAL_TEST_FAIL_SCOPES_IDX = 8;
+    private static final int CONDITIONAL_TEST_PASS_SCOPES_IDX = 9;
 
     public static List<List<String>> textmateScopes = new ArrayList<>();
 
     public static void setTextmateScopes() {
+
+        List<String> mocaCommandScopes = new ArrayList<>();
+        mocaCommandScopes.add("entity.name.function");
 
         List<String> mocaTraceOutlineConditionalTestFailScopes = new ArrayList<>();
         mocaTraceOutlineConditionalTestFailScopes.add("moca.traceoutline.conditionaltest.fail");
@@ -33,6 +37,7 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
         List<String> mocaTraceOutlineConditionalTestPassScopes = new ArrayList<>();
         mocaTraceOutlineConditionalTestPassScopes.add("moca.traceoutline.conditionaltest.pass");
 
+        textmateScopes.add(mocaCommandScopes);
         textmateScopes.add(mocaTraceOutlineConditionalTestFailScopes);
         textmateScopes.add(mocaTraceOutlineConditionalTestPassScopes);
 
@@ -76,6 +81,24 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
             for (MocaTraceOutline outline : mocaTraceOutlineResult.outlines) {
 
                 for (MocaTraceStackFrame frame : outline.frames) {
+
+                    if (frame.componentLevel != null) {
+                        Position pos = new Position(lineNum, 0);
+                        if (pos != null) {
+                            if (preInfos.containsKey(pos.getLine())) {
+                                preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
+                                        frame.instruction.length() + frame.indentStr.length(),
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.MOCA_COMMAND_SCOPES_IDX));
+                            } else {
+                                ArrayList<Token> tokensArr = new ArrayList<>();
+                                tokensArr.add(new Token(pos.getCharacter(),
+                                        frame.instruction.length() + frame.indentStr.length(),
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.MOCA_COMMAND_SCOPES_IDX));
+                                preInfos.put(pos.getLine(), tokensArr);
+                            }
+                        }
+                    }
+
                     if (frame.instructionStatus == "Failed") {
                         Position pos = new Position(lineNum, 0);
                         if (pos != null) {
