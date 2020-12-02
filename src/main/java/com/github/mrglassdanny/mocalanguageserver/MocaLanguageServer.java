@@ -154,7 +154,6 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
         List<List<String>> textmateScopes = new ArrayList<>();
         textmateScopes.addAll(MocaCompilationServiceSemanticHighlightingManager.textmateScopes);
         textmateScopes.addAll(MocaTraceOutlineServiceSemanticHighlightingManager.textmateScopes);
-        MocaServices.logInfoToLanguageClient(textmateScopes.toString());
         serverCapabilities.setSemanticHighlighting(new SemanticHighlightingServerCapabilities(textmateScopes));
 
         serverCapabilities.setDefinitionProvider(true);

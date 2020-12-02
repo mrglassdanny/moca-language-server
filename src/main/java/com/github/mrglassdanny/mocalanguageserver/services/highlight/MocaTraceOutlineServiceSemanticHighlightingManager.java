@@ -43,7 +43,6 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
         // Prepare to add new highlights.
         List<SemanticHighlightingInformation> lines = new ArrayList<>();
         VersionedTextDocumentIdentifier versionTextDoc = new VersionedTextDocumentIdentifier(uriStr, 1);
-        MocaServices.logInfoToLanguageClient(versionTextDoc.toString());
 
         // Get semantic highlights.
         HashMap<Integer, ArrayList<Token>> preInfos = getMocaTraceOutlineHighlights();
@@ -57,7 +56,6 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
             lines.add(info);
         }
 
-        MocaServices.logInfoToLanguageClient("" + lines.size());
         SemanticHighlightingParams params = new SemanticHighlightingParams(versionTextDoc, lines);
         MocaServices.languageClient.semanticHighlighting(params);
     }
@@ -74,21 +72,38 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
         // Go ahead and stop now if null compilation result.
         if (mocaTraceOutlineResult != null) {
 
+            int lineNum = 1;
             for (MocaTraceOutline outline : mocaTraceOutlineResult.outlines) {
 
-                int lineNum = 1;
                 for (MocaTraceStackFrame frame : outline.frames) {
                     if (frame.instructionStatus == "Failed") {
                         Position pos = new Position(lineNum, 0);
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
                                 preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
-                                        frame.instruction.length(),
+                                        frame.instruction.length() + frame.indentStr.length(),
                                         MocaTraceOutlineServiceSemanticHighlightingManager.CONDITIONAL_TEST_FAIL_SCOPES_IDX));
                             } else {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
-                                tokensArr.add(new Token(pos.getCharacter(), frame.instruction.length(),
+                                tokensArr.add(new Token(pos.getCharacter(),
+                                        frame.instruction.length() + frame.indentStr.length(),
                                         MocaTraceOutlineServiceSemanticHighlightingManager.CONDITIONAL_TEST_FAIL_SCOPES_IDX));
+                                preInfos.put(pos.getLine(), tokensArr);
+                            }
+                        }
+                    }
+                    if (frame.instructionStatus == "Passed") {
+                        Position pos = new Position(lineNum, 0);
+                        if (pos != null) {
+                            if (preInfos.containsKey(pos.getLine())) {
+                                preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
+                                        frame.instruction.length() + frame.indentStr.length(),
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.CONDITIONAL_TEST_PASS_SCOPES_IDX));
+                            } else {
+                                ArrayList<Token> tokensArr = new ArrayList<>();
+                                tokensArr.add(new Token(pos.getCharacter(),
+                                        frame.instruction.length() + frame.indentStr.length(),
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.CONDITIONAL_TEST_PASS_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }
                         }
@@ -96,6 +111,8 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
 
                     lineNum++;
                 }
+                // Need to increment here since we are still writing outline ID comment.
+                lineNum++;
             }
 
         }
