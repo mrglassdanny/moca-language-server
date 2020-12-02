@@ -67,16 +67,3 @@ public class MocaTraceOutlineResult {
         return new ArrayList<>();
     }
 }
-
-class MocaTraceOutline {
-
-    String id;
-    ArrayList<MocaTraceStackFrame> frames;
-    ArrayList<String> relativeTraceLines;
-
-    MocaTraceOutline(String id, ArrayList<MocaTraceStackFrame> frames, ArrayList<String> relativeTraceLines) {
-        this.id = id;
-        this.frames = frames;
-        this.relativeTraceLines = relativeTraceLines;
-    }
-}

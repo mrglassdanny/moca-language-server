@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.services.highlight.MocaCompilationServiceSemanticHighlightingManager;
+import com.github.mrglassdanny.mocalanguageserver.services.highlight.MocaTraceOutlineServiceSemanticHighlightingManager;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
@@ -139,7 +140,13 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                     // This should handle both ^^^ since we want invalidated trace outline
                     // results to be null.
                     MocaServices.mocaTraceOutlineResultMap.put(uriStr, MocaServices.mocaTraceOutlineResult);
+
                 }
+                // Semantic highlights can be done on seperate threads and can
+                // finish independently of this function.
+                MocaServices.threadPool.execute(() -> {
+                    MocaTraceOutlineServiceSemanticHighlightingManager.streamAll(uriStr);
+                });
                 break;
             default:
                 String script = MocaServices.fileManager.getContents(uri);
@@ -312,6 +319,11 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                     // results to be null.
                     MocaServices.mocaTraceOutlineResultMap.put(uriStr, MocaServices.mocaTraceOutlineResult);
                 }
+                // Semantic highlights can be done on seperate threads and can
+                // finish independently of this function.
+                MocaServices.threadPool.execute(() -> {
+                    MocaTraceOutlineServiceSemanticHighlightingManager.streamAll(uriStr);
+                });
                 return MocaTraceOutlineServiceHoverProvider.provideHover(params.getPosition());
             default:
                 // Need to compile on hover for the following reason:
