@@ -20,26 +20,56 @@ import org.eclipse.lsp4j.util.SemanticHighlightingTokens.Token;
 public class MocaTraceOutlineServiceSemanticHighlightingManager {
 
     // Integers represent indicies in list sent to MocaLanguageServer.
-    private static final int MOCA_COMMAND_SCOPES_IDX = 7;
-    private static final int CONDITIONAL_TEST_FAIL_SCOPES_IDX = 8;
-    private static final int CONDITIONAL_TEST_PASS_SCOPES_IDX = 9;
+    private static final int SERVER_GOT_SCOPES_IDX = 7;
+    private static final int COMMAND_SCOPES_IDX = 8;
+    private static final int FIRING_TRIGGERS_SCOPES_IDX = 9;
+    private static final int TRIGGER_SCOPES_IDX = 10;
+    private static final int ERROR_SCOPES_IDX = 11;
+    private static final int ERROR_CAUGHT_SCOPES = 12;
+    private static final int CONDITIONAL_TEST_PASS_SCOPES_IDX = 13;
+    private static final int CONDITIONAL_TEST_FAIL_SCOPES_IDX = 14;
+    private static final int PREPARED_STATEMENT_SCOPES_IDX = 15;
 
     public static List<List<String>> textmateScopes = new ArrayList<>();
 
     public static void setTextmateScopes() {
 
-        List<String> mocaCommandScopes = new ArrayList<>();
-        mocaCommandScopes.add("entity.name.function");
+        List<String> mocaTraceOutlineServerGotScopes = new ArrayList<>();
+        mocaTraceOutlineServerGotScopes.add("moca.traceoutline.servergot");
 
-        List<String> mocaTraceOutlineConditionalTestFailScopes = new ArrayList<>();
-        mocaTraceOutlineConditionalTestFailScopes.add("moca.traceoutline.conditionaltest.fail");
+        List<String> mocaTraceOutlineMocaCommandScopes = new ArrayList<>();
+        mocaTraceOutlineMocaCommandScopes.add("entity.name.function");
+
+        List<String> mocaTraceOutlineFiringTriggersScopes = new ArrayList<>();
+        mocaTraceOutlineFiringTriggersScopes.add("moca.traceoutline.firingtriggers");
+
+        List<String> mocaTraceOutlineTriggerScopes = new ArrayList<>();
+        mocaTraceOutlineTriggerScopes.add("moca.traceoutline.trigger");
+
+        List<String> mocaTraceOutlineErrorScopes = new ArrayList<>();
+        mocaTraceOutlineErrorScopes.add("moca.traceoutline.error");
+
+        List<String> mocaTraceOutlineErrorCaughtScopes = new ArrayList<>();
+        mocaTraceOutlineErrorCaughtScopes.add("moca.traceoutline.error.caught");
 
         List<String> mocaTraceOutlineConditionalTestPassScopes = new ArrayList<>();
         mocaTraceOutlineConditionalTestPassScopes.add("moca.traceoutline.conditionaltest.pass");
 
-        textmateScopes.add(mocaCommandScopes);
-        textmateScopes.add(mocaTraceOutlineConditionalTestFailScopes);
+        List<String> mocaTraceOutlineConditionalTestFailScopes = new ArrayList<>();
+        mocaTraceOutlineConditionalTestFailScopes.add("moca.traceoutline.conditionaltest.fail");
+
+        List<String> mocaTraceOutlinePreparedStatementScopes = new ArrayList<>();
+        mocaTraceOutlinePreparedStatementScopes.add("moca.traceoutline.preparedstatement");
+
+        textmateScopes.add(mocaTraceOutlineServerGotScopes);
+        textmateScopes.add(mocaTraceOutlineMocaCommandScopes);
+        textmateScopes.add(mocaTraceOutlineFiringTriggersScopes);
+        textmateScopes.add(mocaTraceOutlineTriggerScopes);
+        textmateScopes.add(mocaTraceOutlineErrorScopes);
+        textmateScopes.add(mocaTraceOutlineErrorCaughtScopes);
         textmateScopes.add(mocaTraceOutlineConditionalTestPassScopes);
+        textmateScopes.add(mocaTraceOutlineConditionalTestFailScopes);
+        textmateScopes.add(mocaTraceOutlinePreparedStatementScopes);
 
     }
 
@@ -82,51 +112,152 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
 
                 for (MocaTraceStackFrame frame : outline.frames) {
 
-                    if (frame.componentLevel != null) {
+                    if (frame.isServerGot) {
                         Position pos = new Position(lineNum, 0);
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
                                 preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
                                         frame.instruction.length() + frame.indentStr.length(),
-                                        MocaTraceOutlineServiceSemanticHighlightingManager.MOCA_COMMAND_SCOPES_IDX));
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.SERVER_GOT_SCOPES_IDX));
                             } else {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
                                 tokensArr.add(new Token(pos.getCharacter(),
                                         frame.instruction.length() + frame.indentStr.length(),
-                                        MocaTraceOutlineServiceSemanticHighlightingManager.MOCA_COMMAND_SCOPES_IDX));
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.SERVER_GOT_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }
                         }
                     }
 
-                    if (frame.instructionStatus == "Failed") {
+                    if (frame.componentLevel != null) {
                         Position pos = new Position(lineNum, 0);
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
-                                preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
-                                        frame.instruction.length() + frame.indentStr.length(),
-                                        MocaTraceOutlineServiceSemanticHighlightingManager.CONDITIONAL_TEST_FAIL_SCOPES_IDX));
+                                preInfos.get(pos.getLine())
+                                        .add(new Token(pos.getCharacter(),
+                                                frame.instruction.length() + frame.indentStr.length(),
+                                                MocaTraceOutlineServiceSemanticHighlightingManager.COMMAND_SCOPES_IDX));
                             } else {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
                                 tokensArr.add(new Token(pos.getCharacter(),
                                         frame.instruction.length() + frame.indentStr.length(),
-                                        MocaTraceOutlineServiceSemanticHighlightingManager.CONDITIONAL_TEST_FAIL_SCOPES_IDX));
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.COMMAND_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }
                         }
                     }
-                    if (frame.instructionStatus == "Passed") {
+
+                    if (frame.isFiringTriggers) {
                         Position pos = new Position(lineNum, 0);
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
                                 preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
                                         frame.instruction.length() + frame.indentStr.length(),
-                                        MocaTraceOutlineServiceSemanticHighlightingManager.CONDITIONAL_TEST_PASS_SCOPES_IDX));
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.FIRING_TRIGGERS_SCOPES_IDX));
                             } else {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
                                 tokensArr.add(new Token(pos.getCharacter(),
                                         frame.instruction.length() + frame.indentStr.length(),
-                                        MocaTraceOutlineServiceSemanticHighlightingManager.CONDITIONAL_TEST_PASS_SCOPES_IDX));
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.FIRING_TRIGGERS_SCOPES_IDX));
+                                preInfos.put(pos.getLine(), tokensArr);
+                            }
+                        }
+                    }
+
+                    if (frame.isTrigger) {
+                        Position pos = new Position(lineNum, 0);
+                        if (pos != null) {
+                            if (preInfos.containsKey(pos.getLine())) {
+                                preInfos.get(pos.getLine())
+                                        .add(new Token(pos.getCharacter(),
+                                                frame.instruction.length() + frame.indentStr.length(),
+                                                MocaTraceOutlineServiceSemanticHighlightingManager.TRIGGER_SCOPES_IDX));
+                            } else {
+                                ArrayList<Token> tokensArr = new ArrayList<>();
+                                tokensArr.add(new Token(pos.getCharacter(),
+                                        frame.instruction.length() + frame.indentStr.length(),
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.TRIGGER_SCOPES_IDX));
+                                preInfos.put(pos.getLine(), tokensArr);
+                            }
+                        }
+                    }
+
+                    if (frame.instructionStatus != "0") {
+                        if (frame.instructionStatus == "Passed") {
+                            Position pos = new Position(lineNum, 0);
+                            if (pos != null) {
+                                if (preInfos.containsKey(pos.getLine())) {
+                                    preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
+                                            frame.instruction.length() + frame.indentStr.length(),
+                                            MocaTraceOutlineServiceSemanticHighlightingManager.CONDITIONAL_TEST_PASS_SCOPES_IDX));
+                                } else {
+                                    ArrayList<Token> tokensArr = new ArrayList<>();
+                                    tokensArr.add(new Token(pos.getCharacter(),
+                                            frame.instruction.length() + frame.indentStr.length(),
+                                            MocaTraceOutlineServiceSemanticHighlightingManager.CONDITIONAL_TEST_PASS_SCOPES_IDX));
+                                    preInfos.put(pos.getLine(), tokensArr);
+                                }
+                            }
+                        } else if (frame.instructionStatus == "Failed") {
+                            Position pos = new Position(lineNum, 0);
+                            if (pos != null) {
+                                if (preInfos.containsKey(pos.getLine())) {
+                                    preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
+                                            frame.instruction.length() + frame.indentStr.length(),
+                                            MocaTraceOutlineServiceSemanticHighlightingManager.CONDITIONAL_TEST_FAIL_SCOPES_IDX));
+                                } else {
+                                    ArrayList<Token> tokensArr = new ArrayList<>();
+                                    tokensArr.add(new Token(pos.getCharacter(),
+                                            frame.instruction.length() + frame.indentStr.length(),
+                                            MocaTraceOutlineServiceSemanticHighlightingManager.CONDITIONAL_TEST_FAIL_SCOPES_IDX));
+                                    preInfos.put(pos.getLine(), tokensArr);
+                                }
+                            }
+                        } else if (frame.instructionStatus.contains("Caught")) {
+                            Position pos = new Position(lineNum, 0);
+                            if (pos != null) {
+                                if (preInfos.containsKey(pos.getLine())) {
+                                    preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
+                                            frame.instruction.length() + frame.indentStr.length(),
+                                            MocaTraceOutlineServiceSemanticHighlightingManager.ERROR_CAUGHT_SCOPES));
+                                } else {
+                                    ArrayList<Token> tokensArr = new ArrayList<>();
+                                    tokensArr.add(new Token(pos.getCharacter(),
+                                            frame.instruction.length() + frame.indentStr.length(),
+                                            MocaTraceOutlineServiceSemanticHighlightingManager.ERROR_CAUGHT_SCOPES));
+                                    preInfos.put(pos.getLine(), tokensArr);
+                                }
+                            }
+                        } else {
+                            Position pos = new Position(lineNum, 0);
+                            if (pos != null) {
+                                if (preInfos.containsKey(pos.getLine())) {
+                                    preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
+                                            frame.instruction.length() + frame.indentStr.length(),
+                                            MocaTraceOutlineServiceSemanticHighlightingManager.ERROR_SCOPES_IDX));
+                                } else {
+                                    ArrayList<Token> tokensArr = new ArrayList<>();
+                                    tokensArr.add(new Token(pos.getCharacter(),
+                                            frame.instruction.length() + frame.indentStr.length(),
+                                            MocaTraceOutlineServiceSemanticHighlightingManager.ERROR_SCOPES_IDX));
+                                    preInfos.put(pos.getLine(), tokensArr);
+                                }
+                            }
+                        }
+                    }
+
+                    if (frame.isPreparedStatement) {
+                        Position pos = new Position(lineNum, 0);
+                        if (pos != null) {
+                            if (preInfos.containsKey(pos.getLine())) {
+                                preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
+                                        frame.instruction.length() + frame.indentStr.length(),
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.PREPARED_STATEMENT_SCOPES_IDX));
+                            } else {
+                                ArrayList<Token> tokensArr = new ArrayList<>();
+                                tokensArr.add(new Token(pos.getCharacter(),
+                                        frame.instruction.length() + frame.indentStr.length(),
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.PREPARED_STATEMENT_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }
                         }
