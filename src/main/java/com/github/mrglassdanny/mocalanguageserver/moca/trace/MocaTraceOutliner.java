@@ -413,6 +413,9 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).published.putAll(published);
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         outline.get(outline.size() - 1).flows.addAll(flows);
+                        published.clear();
+                        arguments.clear();
+                        flows.clear();
 
                         indentStack.push(outline.get(outline.size() - 1));
                     }
@@ -442,6 +445,9 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).published.putAll(published);
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         outline.get(outline.size() - 1).flows.addAll(flows);
+                        published.clear();
+                        arguments.clear();
+                        flows.clear();
 
                         indentStack.push(outline.get(outline.size() - 1));
                     }
@@ -467,6 +473,9 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).published.putAll(published);
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         outline.get(outline.size() - 1).flows.addAll(flows);
+                        published.clear();
+                        arguments.clear();
+                        flows.clear();
 
                         indentStack.push(outline.get(outline.size() - 1));
 
@@ -496,6 +505,9 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).published.putAll(published);
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         outline.get(outline.size() - 1).flows.addAll(flows);
+                        published.clear();
+                        arguments.clear();
+                        flows.clear();
 
                         indentStack.push(outline.get(outline.size() - 1));
 
@@ -516,6 +528,9 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).published.putAll(published);
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         outline.get(outline.size() - 1).flows.addAll(flows);
+                        published.clear();
+                        arguments.clear();
+                        flows.clear();
 
                         indentStack.push(outline.get(outline.size() - 1));
 
@@ -546,6 +561,9 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).published.putAll(published);
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         outline.get(outline.size() - 1).flows.addAll(flows);
+                        published.clear();
+                        arguments.clear();
+                        flows.clear();
                     }
 
                     matcher = MocaTraceOutliner.MESSAGE_SQL_EXECUTION_COMPLETE_REGEX_PATTERN.matcher(message);
@@ -565,6 +583,9 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).published.putAll(published);
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         outline.get(outline.size() - 1).flows.addAll(flows);
+                        published.clear();
+                        arguments.clear();
+                        flows.clear();
                     }
 
                     matcher = MocaTraceOutliner.MESSAGE_PREPAREDSTATEMENT_CLOSE_REGEX_PATTERN.matcher(message);
@@ -586,6 +607,9 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).published.putAll(published);
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         outline.get(outline.size() - 1).flows.addAll(flows);
+                        published.clear();
+                        arguments.clear();
+                        flows.clear();
 
                         indentStack.push(outline.get(outline.size() - 1));
                     }
@@ -671,8 +695,12 @@ public class MocaTraceOutliner {
 
                             outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                     instruction, "0", true, getIndentString(indentStack), indentStack));
-                            outline.get(outline.size() - 1).published = published;
-                            outline.get(outline.size() - 1).arguments = arguments;
+                            outline.get(outline.size() - 1).published.putAll(published);
+                            outline.get(outline.size() - 1).arguments.putAll(arguments);
+                            outline.get(outline.size() - 1).flows.addAll(flows);
+                            published.clear();
+                            arguments.clear();
+                            flows.clear();
 
                         }
                     }
@@ -688,6 +716,9 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).published.putAll(published);
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         outline.get(outline.size() - 1).flows.addAll(flows);
+                        published.clear();
+                        arguments.clear();
+                        flows.clear();
 
                         indentStack.push(outline.get(outline.size() - 1));
 
@@ -714,12 +745,18 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).published.putAll(published);
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         outline.get(outline.size() - 1).flows.addAll(flows);
+                        published.clear();
+                        arguments.clear();
+                        flows.clear();
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum, "{", "0",
                                 true, getIndentString(indentStack), indentStack));
                         outline.get(outline.size() - 1).published.putAll(published);
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         outline.get(outline.size() - 1).flows.addAll(flows);
+                        published.clear();
+                        arguments.clear();
+                        flows.clear();
 
                         indentStack.push(outline.get(outline.size() - 1));
 
@@ -777,12 +814,18 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).published.putAll(published);
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         outline.get(outline.size() - 1).flows.addAll(flows);
+                        published.clear();
+                        arguments.clear();
+                        flows.clear();
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum, "{", "0",
                                 true, getIndentString(indentStack), indentStack));
                         outline.get(outline.size() - 1).published.putAll(published);
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         outline.get(outline.size() - 1).flows.addAll(flows);
+                        published.clear();
+                        arguments.clear();
+                        flows.clear();
 
                         indentStack.push(outline.get(outline.size() - 1));
 

@@ -73,14 +73,29 @@ public class MocaTraceStackFrame {
         StringBuilder buf = new StringBuilder(2048);
 
         if (this.instructionStatus != "0") {
-            buf.append(String.format("Status: **%s**\n", this.instructionStatus));
+            buf.append(String.format("Status: **%s**\n\n", this.instructionStatus));
         }
 
-        buf.append(String.format("\nStack Level: %d\n", this.stackLevel));
+        buf.append(String.format("Rows Returned: **%d**\n\n", this.returnedRows));
+        buf.append(String.format("Execution Time: **%s** seconds\n\n", this.executionTime));
 
-        StringBuilder publishedBuf = new StringBuilder(1024);
+        if (this.componentLevel != null) {
+            buf.append(String.format("Component Level: **%s**\n\n", this.componentLevel));
+        }
+
+        if (this.isFiringTriggers) {
+
+        }
+
+        if (this.isTrigger) {
+
+        }
+
+        // Published args:
+        StringBuilder argsBuf = new StringBuilder(1024);
         if (this.published.size() > 0) {
-            publishedBuf.append("publish data where ");
+            argsBuf.append("/* Published */ ");
+            argsBuf.append("publish data where ");
         }
         for (Entry<String, String> entry : this.published.entrySet()) {
             if (!entry.getKey().isEmpty()) {
@@ -92,60 +107,60 @@ public class MocaTraceStackFrame {
                         value = ("'" + value + "'");
                     }
                 }
-                publishedBuf.append(String.format("%s = %s and ", entry.getKey(), value));
+                argsBuf.append(String.format("%s = %s and ", entry.getKey(), value));
             }
         }
         // Remove last ' and '.
-        if (publishedBuf.length() > 1) {
-            publishedBuf.delete(publishedBuf.length() - 5, publishedBuf.length() - 1);
-            String formattedScript = MocaFormatter.format(publishedBuf.toString());
-            if (formattedScript != null) {
-                buf.append(String.format("```moca\n\n%s\n|\n```", formattedScript));
-            } else {
-                buf.append(String.format("```moca\n\n%s\n|\n```", publishedBuf.toString()));
-            }
+        if (argsBuf.length() > 1) {
+            argsBuf.delete(argsBuf.length() - 5, argsBuf.length() - 1);
+            argsBuf.append(" | ");
         }
 
-        if (this.instruction != "{" && this.instruction != "}") {
-
-            buf.append("\n");
-
-            StringBuilder argumentsBuf = new StringBuilder(1024);
-            if (this.arguments.size() > 0) {
-                argumentsBuf.append(" where ");
-            }
-            for (Entry<String, String> entry : this.arguments.entrySet()) {
-                if (!entry.getKey().isEmpty()) {
-                    String value = entry.getValue().trim();
-                    if (value.contains("'")) {
-                        value = ("\"" + value + "\"");
-                    } else {
-                        if (value.compareToIgnoreCase("null") != 0) {
-                            value = ("'" + value + "'");
-                        }
+        // Argument args:
+        if (this.arguments.size() > 0) {
+            argsBuf.append("/* Arguments */ ");
+            argsBuf.append("publish data where ");
+        }
+        for (Entry<String, String> entry : this.arguments.entrySet()) {
+            if (!entry.getKey().isEmpty()) {
+                String value = entry.getValue().trim();
+                if (value.contains("'")) {
+                    value = ("\"" + value + "\"");
+                } else {
+                    if (value.compareToIgnoreCase("null") != 0) {
+                        value = ("'" + value + "'");
                     }
-
-                    argumentsBuf.append(String.format("%s = %s and ", entry.getKey(), value));
                 }
+                argsBuf.append(String.format("%s = %s and ", entry.getKey(), value));
             }
-            // Remove last ' and '.
-            if (argumentsBuf.length() > 1) {
-                argumentsBuf.delete(argumentsBuf.length() - 5, argumentsBuf.length() - 1);
-                String formattedScript = MocaFormatter.format(this.instruction + argumentsBuf.toString());
-                if (formattedScript != null) {
-                    buf.append(String.format("```moca\n\n%s\n\n```", formattedScript));
-                } else {
-                    buf.append(String.format("```moca\n\n%s\n\n```", this.instruction + argumentsBuf.toString()));
-                }
+        }
+        // Remove last ' and '.
+        if (argsBuf.length() > 1) {
+            argsBuf.delete(argsBuf.length() - 5, argsBuf.length() - 1);
+            argsBuf.append(" | ");
+        }
+
+        // Instruction:
+        if (this.instruction != "{" && this.instruction != "}") {
+            String formattedScript = MocaFormatter.format(argsBuf.toString() + this.instruction);
+            if (formattedScript != null) {
+                buf.append(String.format("```moca\n\n%s\n\n```", formattedScript));
             } else {
-                String formattedScript = MocaFormatter.format(this.instruction);
-                if (formattedScript != null) {
-                    buf.append(String.format("```moca\n\n%s\n\n```", formattedScript));
-                } else {
-                    buf.append(String.format("```moca\n\n%s\n\n```", this.instruction));
-                }
+                buf.append(String.format("```moca\n\n%s\n\n```", argsBuf.toString() + this.instruction));
+            }
+        } else {
+            // Remove " | ".
+            if (argsBuf.length() > 1) {
+                argsBuf.delete(argsBuf.length() - 3, argsBuf.length() - 1);
+                argsBuf.append(" & ");
             }
 
+            String formattedScript = MocaFormatter.format(argsBuf.toString());
+            if (formattedScript != null) {
+                buf.append(String.format("```moca\n\n%s\n\n```", formattedScript));
+            } else {
+                buf.append(String.format("```moca\n\n%s\n\n```", argsBuf.toString()));
+            }
         }
 
         return buf.toString();
