@@ -39,7 +39,7 @@ public class MocaTraceOutliner {
     private static final Pattern MESSAGE_EXECUTING_COMMAND_REGEX_PATTERN = Pattern.compile("(Executing Command:) (.*)");
     private static final Pattern MESSAGE_EXECUTED_COMMAND_REGEX_PATTERN = Pattern.compile("(Executed Command:) (.*)");
     private static final Pattern MESSAGE_FIRING_TRIGGERS_REGEX_PATTERN = Pattern
-            .compile("(Firing triggers\\.\\.\\.) ((?s).*)");
+            .compile("(Firing triggers\\.\\.\\.)    (\\()((?s).*)(\\))");
     private static final Pattern MESSAGE_DONE_FIRING_TRIGGERS_REGEX_PATTERN = Pattern
             .compile("(Done Firing triggers\\.\\.\\.) ((?s).*)");
     private static final Pattern MESSAGE_EXECUTING_COMMAND_ON_REMOTE_HOST_REGEX_PATTERN = Pattern
@@ -434,7 +434,7 @@ public class MocaTraceOutliner {
 
                         processUnindent(indentStack, stackLevel, outline, outlineId);
 
-                        String instruction = "Firing Triggers:" + matcher.group(2);
+                        String instruction = matcher.group(3);
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                 instruction, "0", false, getIndentString(indentStack), indentStack));
