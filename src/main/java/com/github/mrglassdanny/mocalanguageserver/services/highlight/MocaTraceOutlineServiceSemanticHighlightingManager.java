@@ -290,7 +290,8 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
                         }
                     }
 
-                    if (frame.executionTime > .002) {
+                    // 1 second is significant enough!
+                    if (frame.executionTime > 1.0) {
                         Position pos = new Position(lineNum, 0);
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
