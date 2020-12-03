@@ -1,6 +1,5 @@
 package com.github.mrglassdanny.mocalanguageserver.moca.trace;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Map.Entry;
@@ -19,7 +18,6 @@ public class MocaTraceStackFrame {
     public String instructionStatus; // Stack frames have 1 instruction status.
     public HashMap<String, String> published; // What is on the stack at time of instruction invocation.
     public HashMap<String, String> arguments; // What is being explicitly passed to instruction.
-    public ArrayList<String> flows; // Simple list of flow messages.
     public boolean isCommandStatementOrNestedBraces; // Indicates if logger was CommandStatement or if is nested
                                                      // brace instruction.
     public String indentStr; // String that stores tabs/spaces for indenting instruction.
@@ -47,7 +45,6 @@ public class MocaTraceStackFrame {
         this.instructionStatus = instructionStatus;
         this.published = new HashMap<>();
         this.arguments = new HashMap<>();
-        this.flows = new ArrayList<>();
         this.isCommandStatementOrNestedBraces = isCommandStatementOrNestedBraces;
         this.indentStr = indentStr;
         this.isServerGot = false;
@@ -87,11 +84,11 @@ public class MocaTraceStackFrame {
         }
 
         if (this.isFiringTriggers) {
-
+            buf.append("\n\n**Firing Triggers**\n");
         }
 
         if (this.isTrigger) {
-
+            buf.append("\n\n**Is Trigger**\n");
         }
 
         // Published args:
