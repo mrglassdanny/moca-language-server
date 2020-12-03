@@ -31,6 +31,8 @@ public class MocaTraceStackFrame {
                               // "Firing triggers" instruction!).
     public boolean isRemote; // Tells if MOCA command executed on remote host.
     public boolean isPreparedStatement; // Tells if instruction was JDBC prepared statement.
+    public String actualPreparedStatementQuery; // Actual query ran -- we will use this for hover instruction instead of
+                                                // actual instruction(actual contains '?'s!).
     public int returnedRows; // How many rows returned from instruction.
     public double executionTime; // Execution time for instruction.
 
@@ -55,6 +57,7 @@ public class MocaTraceStackFrame {
         this.isTrigger = false;
         this.isRemote = false;
         this.isPreparedStatement = false;
+        this.actualPreparedStatementQuery = null;
         this.returnedRows = 0;
         this.executionTime = 0.0;
 
@@ -92,74 +95,86 @@ public class MocaTraceStackFrame {
         }
 
         // Published args:
-        StringBuilder argsBuf = new StringBuilder(1024);
+        StringBuilder stackArgsBuf = new StringBuilder(1024);
         if (this.published.size() > 0) {
-            argsBuf.append("/* Published */ ");
-            argsBuf.append("publish data where ");
+            stackArgsBuf.append("/* On stack */ ");
+            stackArgsBuf.append("publish data where ");
         }
         for (Entry<String, String> entry : this.published.entrySet()) {
-            if (!entry.getKey().isEmpty()) {
+            if (!entry.getKey().isBlank()) {
                 String value = entry.getValue().trim();
-                if (value.contains("'")) {
+                if (value.contains("'") || value.contains("=") || value.contains("<") || value.contains(">")) {
                     value = ("\"" + value + "\"");
                 } else {
                     if (value.compareToIgnoreCase("null") != 0) {
                         value = ("'" + value + "'");
                     }
                 }
-                argsBuf.append(String.format("%s = %s and ", entry.getKey(), value));
+                stackArgsBuf.append(String.format("%s = %s and ", entry.getKey(), value));
             }
         }
-        // Remove last ' and '.
-        if (argsBuf.length() > 1) {
-            argsBuf.delete(argsBuf.length() - 5, argsBuf.length() - 1);
-            argsBuf.append(" | ");
-        }
 
-        // Argument args:
-        if (this.arguments.size() > 0) {
-            argsBuf.append("/* Arguments */ ");
-            argsBuf.append("publish data where ");
+        if (stackArgsBuf.length() == 0 && this.arguments.size() > 0) {
+            stackArgsBuf.append("/* On stack */ ");
+            stackArgsBuf.append("publish data where ");
         }
         for (Entry<String, String> entry : this.arguments.entrySet()) {
             if (!entry.getKey().isEmpty()) {
                 String value = entry.getValue().trim();
-                if (value.contains("'")) {
+                if (value.contains("'") || value.contains("=") || value.contains("<") || value.contains(">")) {
                     value = ("\"" + value + "\"");
                 } else {
                     if (value.compareToIgnoreCase("null") != 0) {
                         value = ("'" + value + "'");
                     }
                 }
-                argsBuf.append(String.format("%s = %s and ", entry.getKey(), value));
+                stackArgsBuf.append(String.format("%s = %s and ", entry.getKey(), value));
             }
         }
         // Remove last ' and '.
-        if (argsBuf.length() > 1) {
-            argsBuf.delete(argsBuf.length() - 5, argsBuf.length() - 1);
-            argsBuf.append(" | ");
+        if (stackArgsBuf.length() > 1) {
+            stackArgsBuf.delete(stackArgsBuf.length() - 5, stackArgsBuf.length() - 1);
         }
 
         // Instruction:
         if (this.instruction != "{" && this.instruction != "}") {
-            String formattedScript = MocaFormatter.format(argsBuf.toString() + this.instruction);
-            if (formattedScript != null) {
-                buf.append(String.format("```moca\n\n%s\n\n```", formattedScript));
-            } else {
-                buf.append(String.format("```moca\n\n%s\n\n```", argsBuf.toString() + this.instruction));
-            }
-        } else {
-            // Remove " | ".
-            if (argsBuf.length() > 1) {
-                argsBuf.delete(argsBuf.length() - 3, argsBuf.length() - 1);
-                argsBuf.append(" & ");
+
+            if (stackArgsBuf.length() > 0) {
+                // Pipe down to instruction.
+                stackArgsBuf.append(" | ");
             }
 
-            String formattedScript = MocaFormatter.format(argsBuf.toString());
+            String adjInstruction = this.instruction;
+            if (this.isPreparedStatement && this.actualPreparedStatementQuery != null) {
+                adjInstruction = this.actualPreparedStatementQuery;
+            }
+
+            String formattedScript;
+            // Formatter could throw exception.
+            try {
+                formattedScript = MocaFormatter.format(stackArgsBuf.toString() + adjInstruction);
+            } catch (Exception e) {
+                formattedScript = null;
+            }
             if (formattedScript != null) {
                 buf.append(String.format("```moca\n\n%s\n\n```", formattedScript));
             } else {
-                buf.append(String.format("```moca\n\n%s\n\n```", argsBuf.toString()));
+                buf.append(String.format("```moca\n\n%s\n\n```", stackArgsBuf.toString() + adjInstruction));
+            }
+        } else {
+            // If here, we dont have an instruction... this probably wont happen.
+            String formattedScript;
+            // Formatter could throw exception.
+            try {
+                formattedScript = MocaFormatter.format(stackArgsBuf.toString());
+            } catch (Exception e) {
+                formattedScript = null;
+            }
+
+            if (formattedScript != null) {
+                buf.append(String.format("```moca\n\n%s\n\n```", formattedScript));
+            } else {
+                buf.append(String.format("```moca\n\n%s\n\n```", stackArgsBuf.toString()));
             }
         }
 

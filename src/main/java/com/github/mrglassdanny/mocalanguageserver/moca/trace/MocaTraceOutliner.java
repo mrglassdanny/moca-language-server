@@ -57,6 +57,8 @@ public class MocaTraceOutliner {
     private static final Pattern MESSAGE_EXECUTING_SQL_REGEX_PATTERN = Pattern.compile("(UNBIND:) ((?s).*)");
     private static final Pattern MESSAGE_SQL_EXECUTION_COMPLETE_REGEX_PATTERN = Pattern
             .compile("SQL execution completed");
+    private static final Pattern MESSAGE_CONNECTION_PREPARESTATEMENT_REGEX_PATTERN = Pattern
+            .compile("(Connection.prepareStatement(.*?\\())((?s).*)(\\))");
     private static final Pattern MESSAGE_PREPAREDSTATEMENT_EXECUTE_REGEX_PATTERN = Pattern
             .compile("( \\.\\.\\.PreparedStatement\\.execute(.*?\\())((?s).*)(\\))");
     private static final Pattern MESSAGE_PREPAREDSTATEMENT_CLOSE_REGEX_PATTERN = Pattern
@@ -218,6 +220,11 @@ public class MocaTraceOutliner {
         // The lineNum member will be in line with how we are processing lines ^.
         if (MocaTraceOutliner.lineTextBuffer.length() == 0) {
             MocaTraceOutliner.lineNum = lineNum;
+        }
+
+        // Add newline if needed.
+        if (MocaTraceOutliner.lineTextBuffer.length() > 0) {
+            MocaTraceOutliner.lineTextBuffer.append('\n');
         }
         MocaTraceOutliner.lineTextBuffer.append(lineText);
 
@@ -570,12 +577,13 @@ public class MocaTraceOutliner {
                     if (matcher.find()) {
                     }
 
-                    matcher = MocaTraceOutliner.MESSAGE_PREPAREDSTATEMENT_EXECUTE_REGEX_PATTERN.matcher(message);
+                    matcher = MocaTraceOutliner.MESSAGE_CONNECTION_PREPARESTATEMENT_REGEX_PATTERN.matcher(message);
                     if (matcher.find()) {
 
                         processUnindent(indentStack, stackLevel, outline, outlineId);
 
-                        String instruction = "[" + matcher.group(3).trim().replace('\n', ' ') + "]";
+                        String instruction = "[" + matcher.group(3).trim().replace('\n', ' ').replace("?", "'<var>'")
+                                + "]";
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                 instruction, "0", false, getIndentString(indentStack), indentStack));
@@ -586,6 +594,13 @@ public class MocaTraceOutliner {
                         published.clear();
                         arguments.clear();
                         flows.clear();
+                    }
+
+                    matcher = MocaTraceOutliner.MESSAGE_PREPAREDSTATEMENT_EXECUTE_REGEX_PATTERN.matcher(message);
+                    if (matcher.find()) {
+
+                        outline.get(outline.size() - 1).actualPreparedStatementQuery = "["
+                                + matcher.group(3).trim().replace('\n', ' ') + "]";
                     }
 
                     matcher = MocaTraceOutliner.MESSAGE_PREPAREDSTATEMENT_CLOSE_REGEX_PATTERN.matcher(message);
@@ -600,7 +615,7 @@ public class MocaTraceOutliner {
 
                         processUnindent(indentStack, stackLevel, outline, outlineId);
 
-                        String instruction = "[[ Groovy ]]";
+                        String instruction = "[[ /* Groovy */ ]]";
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                 instruction, "0", false, getIndentString(indentStack), indentStack));
