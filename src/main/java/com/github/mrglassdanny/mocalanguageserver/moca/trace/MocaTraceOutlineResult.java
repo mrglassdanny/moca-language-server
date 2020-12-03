@@ -2,7 +2,6 @@ package com.github.mrglassdanny.mocalanguageserver.moca.trace;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 public class MocaTraceOutlineResult {
 
@@ -15,7 +14,8 @@ public class MocaTraceOutlineResult {
     public HashMap<Integer, MocaTraceStackFrame> actualLinesMap; // Line numbers start at 1.
 
     public MocaTraceOutlineResult(String traceFileName, HashMap<String, ArrayList<MocaTraceStackFrame>> outlineMap,
-            ArrayList<String> absoluteTraceLines, HashMap<String, ArrayList<String>> relativeTraceLinesMap) {
+            ArrayList<String> orderedOutlineIds, ArrayList<String> absoluteTraceLines,
+            HashMap<String, ArrayList<String>> relativeTraceLinesMap) {
 
         // Remove .log from file name.
         this.traceFileName = traceFileName.substring(0, traceFileName.lastIndexOf("."));
@@ -23,9 +23,10 @@ public class MocaTraceOutlineResult {
         this.absoluteTraceLines = new ArrayList<>();
         this.actualLinesMap = new HashMap<>();
 
-        for (Entry<String, ArrayList<MocaTraceStackFrame>> entry : outlineMap.entrySet()) {
-            String key = entry.getKey();
-            this.outlines.add(new MocaTraceOutline(key, entry.getValue(), relativeTraceLinesMap.get(key)));
+        // Add according to ordered outline ID list.
+        for (String outlineId : orderedOutlineIds) {
+            this.outlines.add(
+                    new MocaTraceOutline(outlineId, outlineMap.get(outlineId), relativeTraceLinesMap.get(outlineId)));
         }
 
         this.absoluteTraceLines.addAll(absoluteTraceLines);

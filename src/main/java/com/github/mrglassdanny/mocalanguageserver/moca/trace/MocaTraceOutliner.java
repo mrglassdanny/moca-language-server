@@ -118,6 +118,8 @@ public class MocaTraceOutliner {
     private static ArrayList<String> absoluteTraceLines;
     private static HashMap<String, ArrayList<String>> relativeTraceLinesMap;
     private static HashMap<String, ArrayList<MocaTraceStackFrame>> outlineMap;
+    private static ArrayList<String> orderedOutlineIds; // Outline IDs stored in the order in which we come across them.
+                                                        // HashMaps do not order outlines this way.
     private static HashMap<String, Stack<MocaTraceStackFrame>> indentStackMap;
     private static HashMap<String, Integer> previousStackLevelMap;
     private static HashMap<String, HashMap<String, String>> publishedMap;
@@ -243,6 +245,11 @@ public class MocaTraceOutliner {
             // We need to make sure we are adding to the correct buffer/stack/lines for
             // thread & session combo. This will be the outline's ID.
             String outlineId = String.format("%s-%s", thread, session);
+
+            // When we come across a new outline, add it to ordered list.
+            if (!MocaTraceOutliner.orderedOutlineIds.contains(outlineId)) {
+                MocaTraceOutliner.orderedOutlineIds.add(outlineId);
+            }
 
             // Relative line number refers to line num relative to outline ID.
             int relativeLineNum;
@@ -982,6 +989,7 @@ public class MocaTraceOutliner {
         MocaTraceOutliner.absoluteTraceLines = new ArrayList<>();
         MocaTraceOutliner.relativeTraceLinesMap = new HashMap<>();
         MocaTraceOutliner.outlineMap = new HashMap<>();
+        MocaTraceOutliner.orderedOutlineIds = new ArrayList<>();
         MocaTraceOutliner.indentStackMap = new HashMap<>();
         MocaTraceOutliner.previousStackLevelMap = new HashMap<>();
         MocaTraceOutliner.publishedMap = new HashMap<>();
@@ -995,7 +1003,8 @@ public class MocaTraceOutliner {
 
         // Initialize result structure and return it.
         MocaTraceOutlineResult outlineResult = new MocaTraceOutlineResult(traceFileName, MocaTraceOutliner.outlineMap,
-                MocaTraceOutliner.absoluteTraceLines, MocaTraceOutliner.relativeTraceLinesMap);
+                MocaTraceOutliner.orderedOutlineIds, MocaTraceOutliner.absoluteTraceLines,
+                MocaTraceOutliner.relativeTraceLinesMap);
 
         return outlineResult;
     }
