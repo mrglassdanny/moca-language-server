@@ -32,6 +32,8 @@ import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.StringDifferenceUtils;
 
 import org.codehaus.groovy.ast.ASTNode;
+import org.eclipse.lsp4j.CodeLens;
+import org.eclipse.lsp4j.CodeLensParams;
 import org.eclipse.lsp4j.CompletionItem;
 import org.eclipse.lsp4j.CompletionList;
 import org.eclipse.lsp4j.CompletionParams;
@@ -651,6 +653,18 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         }
     }
 
+    @Override
+    public CompletableFuture<List<? extends CodeLens>> codeLens(CodeLensParams params) {
+        String uriStr = params.getTextDocument().getUri();
+
+        switch (getMocaServiceType(uriStr)) {
+            case MocaTraceOutline:
+                return CompletableFuture.completedFuture(Collections.emptyList());
+            default:
+                return CompletableFuture.completedFuture(Collections.emptyList());
+        }
+    }
+
     public static void logToLanguageClient(String msg) {
         if (MocaServices.languageClient != null) {
             MocaServices.languageClient.logMessage(new MessageParams(MessageType.Log, msg));
@@ -674,4 +688,5 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
             MocaServices.languageClient.logMessage(new MessageParams(MessageType.Info, msg));
         }
     }
+
 }

@@ -10,6 +10,7 @@ import com.github.mrglassdanny.mocalanguageserver.services.highlight.MocaTraceOu
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.services.command.ExecuteCommandProvider;
 
+import org.eclipse.lsp4j.CodeLensOptions;
 import org.eclipse.lsp4j.CompletionOptions;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingOptions;
 import org.eclipse.lsp4j.ExecuteCommandOptions;
@@ -157,6 +158,10 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
         serverCapabilities.setSemanticHighlighting(new SemanticHighlightingServerCapabilities(textmateScopes));
 
         serverCapabilities.setDefinitionProvider(true);
+
+        CodeLensOptions codeLensOptions = new CodeLensOptions();
+        // codeLensOptions.setResolveProvider(true);
+        serverCapabilities.setCodeLensProvider(codeLensOptions);
 
         InitializeResult initializeResult = new InitializeResult(serverCapabilities);
         return CompletableFuture.completedFuture(initializeResult);

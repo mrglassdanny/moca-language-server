@@ -179,8 +179,6 @@ public class ExecuteCommandProvider {
                     return CompletableFuture.completedFuture(mocaResultsResponse);
                 }
 
-                // TODO - make sure we cannot exec trace.
-
                 try {
                     List<Object> args = params.getArguments();
                     if (args == null) {
