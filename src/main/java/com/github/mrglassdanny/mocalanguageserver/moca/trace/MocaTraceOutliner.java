@@ -223,12 +223,6 @@ public class MocaTraceOutliner {
             MocaTraceOutliner.lineNum = lineNum;
         }
 
-        // Add newline if needed.
-        if (MocaTraceOutliner.lineTextBuffer.length() > 0) {
-            MocaTraceOutliner.lineTextBuffer.append('\n');
-            // Need to increment line number since we are adding a newline.
-            lineNum++;
-        }
         MocaTraceOutliner.lineTextBuffer.append(lineText);
 
         Matcher traceLineMatcher = MocaTraceOutliner.TRACE_LINE_REGEX_PATTERN
