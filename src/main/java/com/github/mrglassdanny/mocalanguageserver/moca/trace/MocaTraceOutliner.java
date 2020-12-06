@@ -776,7 +776,7 @@ public class MocaTraceOutliner {
                         // May have to go back a few frames to find the correct stack frame.
                         for (int i = outline.size() - 1; i >= 0; i--) {
                             // Should not be prepared statement.
-                            if (!outline.get(i).isPreparedStatement) {
+                            if (outline.get(i).stackLevel == stackLevel && !outline.get(i).isPreparedStatement) {
                                 outline.get(i).instructionStatus = "Caught (" + conditionalTest + ")";
                                 break;
                             }
