@@ -156,9 +156,9 @@ public class MocaTraceOutliner {
                     if (prevLvl == stackLevel) {
                         // Need to check if we are just seeing same stack level again due to
                         // multiple rows returned from previous stack frame instruction.
-                        for (int i = outline.size() - 1, rowCount = 1; i >= 0; i--, rowCount++) {
+                        for (int i = outline.size() - 1, rowsSeenSoFar = 1; i >= 0; i--, rowsSeenSoFar++) {
                             if (outline.get(i).stackLevel < stackLevel) {
-                                if (outline.get(i).returnedRows >= rowCount) {
+                                if (outline.get(i).returnedRows >= rowsSeenSoFar) {
                                     return;
                                 } else {
                                     break;
