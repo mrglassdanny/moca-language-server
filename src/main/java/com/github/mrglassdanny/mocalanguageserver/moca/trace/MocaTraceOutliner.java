@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
+import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 
 public class MocaTraceOutliner {
 
@@ -97,6 +98,7 @@ public class MocaTraceOutliner {
             .compile("(\\*\\*\\* RAISING ERROR) (.*)");
     private static final Pattern MESSAGE_THROWING_NOT_FOUND_EXCEPTION_REGEX_PATTERN = Pattern
             .compile("Throwing NotFoundException");
+    private static final Pattern MESSAGE_SQL_EXCEPTION_REGEX_PATTERN = Pattern.compile("SQL Exception");
 
     // ARGUMENTS:
     private static final Pattern MESSAGE_PUBLISHED_REGEX_PATTERN = Pattern
@@ -133,9 +135,12 @@ public class MocaTraceOutliner {
         }
 
         if (indentStack.peek().isCommandStatementOrNestedBraces) {
+
             int beginIndentStackSize = indentStack.size();
-            while (indentStack.peek().stackLevel >= stackLevel && indentStack.size() > 1
+
+            while (indentStack.peek().stackLevel > stackLevel && indentStack.size() > 1
                     && indentStack.peek().isCommandStatementOrNestedBraces) {
+                MocaServices.logInfoToLanguageClient("1: " + outline.get(outline.size() - 1).instruction);
                 MocaTraceStackFrame poppedFrame = indentStack.pop();
 
                 outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel, poppedFrame.absoluteLineNum,
@@ -153,6 +158,7 @@ public class MocaTraceOutliner {
                 if (indentStack.peek().isCommandStatementOrNestedBraces) {
 
                     int prevLvl = outline.get(outline.size() - 1).stackLevel;
+
                     if (prevLvl == stackLevel) {
                         // Need to check if we are just seeing same stack level again due to
                         // multiple rows returned from previous stack frame instruction.
@@ -166,13 +172,19 @@ public class MocaTraceOutliner {
                             }
                         }
 
-                        MocaTraceStackFrame poppedFrame = indentStack.pop();
+                        MocaServices.logInfoToLanguageClient("2: " + outline.get(outline.size() - 1).instruction);
 
-                        outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel,
-                                poppedFrame.absoluteLineNum, poppedFrame.relativeLineNum, "}", "0", true,
-                                getIndentString(indentStack), indentStack));
+                        // Only continue if previous indent was due to "{".
+                        // TODO: may need to differentiate nested "{" and command statement "{".
+                        if (indentStack.peek().instruction == "{") {
+                            MocaTraceStackFrame poppedFrame = indentStack.pop();
 
-                        processUnindent(indentStack, stackLevel, outline, outlineId);
+                            outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel,
+                                    poppedFrame.absoluteLineNum, poppedFrame.relativeLineNum, "}", "0", true,
+                                    getIndentString(indentStack), indentStack));
+
+                            processUnindent(indentStack, stackLevel, outline, outlineId);
+                        }
 
                     } else if (prevLvl > stackLevel && indentStack.peek().stackLevel >= stackLevel - 1) {
 
@@ -624,7 +636,8 @@ public class MocaTraceOutliner {
                     if (matcher.find()) {
 
                         if (indentStack.size() > 0 && indentStack.peek().isCommandStatementOrNestedBraces
-                                && outline.get(outline.size() - 2).instruction.compareTo("else") == 0) {
+                                && outline.get(outline.size() - 2).instruction.compareTo("else") == 0
+                                && outline.get(outline.size() - 2).stackLevel == stackLevel) {
                             // ^^^ -2 since we added an outline entry for "{".
 
                             // Get rid of preemptive indent.
@@ -853,6 +866,11 @@ public class MocaTraceOutliner {
                                 break;
                             }
                         }
+                    }
+
+                    matcher = MocaTraceOutliner.MESSAGE_SQL_EXCEPTION_REGEX_PATTERN.matcher(message);
+                    if (matcher.find()) {
+                        outline.get(outline.size() - 1).instructionStatus = matcher.group();
                     }
 
                     // ARGUMENTS:
