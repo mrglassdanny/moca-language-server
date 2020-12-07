@@ -219,16 +219,14 @@ public class MocaTraceOutliner {
     private static void readLine(int lineNum, String lineText) {
 
         // We are passing the trace file contents line by line into MocaTraceOutliner
-        // function. For
-        // the most part, a line represents a perfect match via our trace line regex
-        // pattern. MocaTraceOutliner is not the case though if the 'message' capture
-        // group extends
-        // multiple lines.
+        // function. For the most part, a line represents a perfect match via our trace
+        // line regex pattern. MocaTraceOutliner is not the case though if the 'message'
+        // capture group extends multiple lines.
         // Therefore, we are keeping a line buffer member and are using it to resolve
         // MocaTraceOutliner issue. If we have a perfect match, we need to process the
-        // line and clear
-        // out the line buffer. If we do not, we need to hold off on processing line
-        // until the line is 'complete' and we have a perfect regex match.
+        // line and clear out the line buffer. If we do not, we need to hold off on
+        // processing line until the line is 'complete' and we have a perfect regex
+        // match.
 
         // The lineNum member will be in line with how we are processing lines ^.
         if (MocaTraceOutliner.lineTextBuffer.length() == 0) {
@@ -753,10 +751,6 @@ public class MocaTraceOutliner {
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum, "{", "0",
                                 true, getIndentString(indentStack), indentStack));
-                        outline.get(outline.size() - 1).published.putAll(published);
-                        outline.get(outline.size() - 1).arguments.putAll(arguments);
-                        published.clear();
-                        arguments.clear();
 
                         indentStack.push(outline.get(outline.size() - 1));
 
@@ -818,10 +812,6 @@ public class MocaTraceOutliner {
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum, "{", "0",
                                 true, getIndentString(indentStack), indentStack));
-                        outline.get(outline.size() - 1).published.putAll(published);
-                        outline.get(outline.size() - 1).arguments.putAll(arguments);
-                        published.clear();
-                        arguments.clear();
 
                         indentStack.push(outline.get(outline.size() - 1));
 
