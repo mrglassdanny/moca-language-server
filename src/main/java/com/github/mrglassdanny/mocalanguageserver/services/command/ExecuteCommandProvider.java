@@ -1,5 +1,6 @@
 package com.github.mrglassdanny.mocalanguageserver.services.command;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -377,12 +378,9 @@ public class ExecuteCommandProvider {
 
                     OpenMocaTraceRequest openMocaTraceRequest = new OpenMocaTraceRequest(args);
 
-                    // If trace file name is not passed in, then we will send all trace file names.
-                    // Otherwise, we will send the resulting outline of the requested trace
-                    // file.
-                    OpenMocaTraceResponse openMocaTraceResponse;
-                    if (openMocaTraceRequest.requestedTraceFileName == null) {
+                    OpenMocaTraceResponse openMocaTraceResponse = null;
 
+                    if (openMocaTraceRequest.requestedTraceFileName == null) {
                         // Read file names from LESDIR/log/*.log
                         MocaResults res = MocaConnection.getGlobalMocaConnection().executeCommand(
                                 "sl_get dir where path = '${LESDIR}/log/' and filter = '*.log' | get file info where pathname = '${LESDIR}/log/' || @file_name");
@@ -395,19 +393,25 @@ public class ExecuteCommandProvider {
                         }
                         openMocaTraceResponse = new OpenMocaTraceResponse(traceFileNames, null, null);
                     } else {
+                        if (openMocaTraceRequest.isRemote) {
+                            // Read trace file requested.
+                            MocaResults res = MocaConnection.getGlobalMocaConnection()
+                                    .executeCommand(String.format("read file where filnam = '${LESDIR}/log/%s'",
+                                            openMocaTraceRequest.requestedTraceFileName));
 
-                        // Read trace file requested.
-                        MocaResults res = MocaConnection.getGlobalMocaConnection()
-                                .executeCommand(String.format("read file where filnam = '${LESDIR}/log/%s'",
-                                        openMocaTraceRequest.requestedTraceFileName));
+                            MocaTraceOutliner traceOutliner = new MocaTraceOutliner();
 
-                        MocaTraceOutliner traceOutliner = new MocaTraceOutliner();
+                            MocaServices.mocaTraceOutlineResult = traceOutliner
+                                    .outlineTrace(openMocaTraceRequest.requestedTraceFileName, res);
 
-                        MocaServices.mocaTraceOutlineResult = traceOutliner
-                                .outlineTrace(openMocaTraceRequest.requestedTraceFileName, res);
+                            openMocaTraceResponse = new OpenMocaTraceResponse(null,
+                                    MocaServices.mocaTraceOutlineResult.toString(), null);
+                        } else {
+                            // Will have full URI from client.
+                            MocaServices.logInfoToLanguageClient(openMocaTraceRequest.requestedTraceFileName);
+                            File file = new File(openMocaTraceRequest.requestedTraceFileName);
 
-                        openMocaTraceResponse = new OpenMocaTraceResponse(null,
-                                MocaServices.mocaTraceOutlineResult.toString(), null);
+                        }
                     }
 
                     return CompletableFuture.completedFuture(openMocaTraceResponse);
