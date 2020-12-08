@@ -18,7 +18,7 @@ public class MocaTraceOutlineResult {
             HashMap<String, ArrayList<String>> relativeTraceLinesMap) {
 
         // Remove .log from file name.
-        this.traceFileName = traceFileName.substring(0, traceFileName.lastIndexOf("."));
+        this.traceFileName = traceFileName.replace(".log", "");
         this.outlines = new ArrayList<>();
         this.absoluteTraceLines = new ArrayList<>();
         this.actualLinesMap = new HashMap<>();

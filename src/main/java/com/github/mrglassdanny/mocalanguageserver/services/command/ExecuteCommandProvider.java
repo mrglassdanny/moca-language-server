@@ -414,8 +414,11 @@ public class ExecuteCommandProvider {
                             BufferedReader reader = new BufferedReader(new FileReader(file));
 
                             try {
-                                MocaServices.mocaTraceOutlineResult = MocaTraceOutliner
-                                        .outlineTrace(openMocaTraceOutlineRequest.requestedTraceFileName, reader);
+                                // Make sure we shorten requested trace file name for MocaTraceOutliner.
+                                MocaServices.mocaTraceOutlineResult = MocaTraceOutliner.outlineTrace(
+                                        openMocaTraceOutlineRequest.requestedTraceFileName.substring(
+                                                openMocaTraceOutlineRequest.requestedTraceFileName.lastIndexOf("/")),
+                                        reader);
                                 openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
                                         MocaServices.mocaTraceOutlineResult.toString(), null);
                             } catch (IOException ioException) {

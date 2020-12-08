@@ -54,6 +54,8 @@ public class MocaTraceOutliner {
             .compile("(Executing inparallel command on hosts) (.*)(:)((?s).*)");
     private static final Pattern MESSAGE_PARALLEL_EXECUTION_COMPLETE_REGEX_PATTERN = Pattern
             .compile("Parallel execution complete");
+    private static final Pattern MESSAGE_RESUMING_EXECUTION_OF_REGEX_PATTERN = Pattern
+            .compile("(Resuming execution of) (.*)");
 
     // SQL:
     private static final Pattern MESSAGE_EXECUTING_SQL_REGEX_PATTERN = Pattern.compile("(UNBIND:) ((?s).*)");
@@ -150,81 +152,106 @@ public class MocaTraceOutliner {
     private static void processImplicitUnindent(Stack<MocaTraceStackFrame> indentStack, int stackLevel,
             ArrayList<MocaTraceStackFrame> outline, String outlineId) {
 
+        // Need to quit if no indents.
         if (indentStack.size() == 0) {
             return;
         }
 
-        if (indentStack.peek().isCommandInitiated) {
-            // Pop if we are clearly going down from an outline and indent stack frame
+        // For implicit unindentation, current indent stack frame was due to either:
+        // command statement | nested braces | command initiated
+
+        // NOTE: this function is recursive in nature.
+
+        if (indentStack.peek().isCommandStatement) {
+            // Obvious pop scenario: if last indent stack frame level is greater than
+            // current stack level.
+            if (indentStack.peek().stackLevel > stackLevel) {
+                MocaTraceStackFrame poppedFrame = processExplicitUnindent(indentStack, false);
+                outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel, poppedFrame.absoluteLineNum,
+                        poppedFrame.relativeLineNum, "}", "0", true, false, buildIndentString(indentStack),
+                        indentStack));
+                processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
+            } else if (indentStack.peek().stackLevel == stackLevel) {
+                // ^^^ it is also possible we need to pop if current indent stack frame level
+                // equals current level.
+
+                // If outline suggests that we went down and are now coming back up, we need to
+                // pop.
+                if (outline.get(outline.size() - 1).stackLevel > stackLevel) {
+                    MocaTraceStackFrame poppedFrame = processExplicitUnindent(indentStack, false);
+                    outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel, poppedFrame.absoluteLineNum,
+                            poppedFrame.relativeLineNum, "}", "0", true, false, buildIndentString(indentStack),
+                            indentStack));
+                    processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
+                }
+            } else {
+                // ^^^ could have odd edge cases for when current indent stack frame level is
+                // less than stack level.
+
+                // Odd edge case coverage: if we are clearly coming up and our stack level is 1
+                // less than current indent stack frame level, we need to pop.
+                if (outline.get(outline.size() - 1).stackLevel > stackLevel
+                        && indentStack.peek().stackLevel >= stackLevel - 1) {
+                    MocaTraceStackFrame poppedFrame = processExplicitUnindent(indentStack, false);
+                    outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel, poppedFrame.absoluteLineNum,
+                            poppedFrame.relativeLineNum, "}", "0", true, false, buildIndentString(indentStack),
+                            indentStack));
+                    processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
+                }
+            }
+
+        } else if (indentStack.peek().isNestedBraces) {
+            // Obvious pop scenario: if last indent stack frame level is greater than
+            // current stack level.
+            if (indentStack.peek().stackLevel > stackLevel) {
+                MocaTraceStackFrame poppedFrame = processExplicitUnindent(indentStack, false);
+                outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel, poppedFrame.absoluteLineNum,
+                        poppedFrame.relativeLineNum, "}", "0", false, true, buildIndentString(indentStack),
+                        indentStack));
+                processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
+            } else if (indentStack.peek().stackLevel == stackLevel) {
+                // ^^^ it is also possible we need to pop if current indent stack frame level
+                // equals current level.
+
+                // If outline suggests that we went down and are now coming back up, we need to
+                // pop.
+                if (outline.get(outline.size() - 1).stackLevel > stackLevel) {
+                    MocaTraceStackFrame poppedFrame = processExplicitUnindent(indentStack, false);
+                    outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel, poppedFrame.absoluteLineNum,
+                            poppedFrame.relativeLineNum, "}", "0", false, true, buildIndentString(indentStack),
+                            indentStack));
+                    processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
+                } else if (outline.get(outline.size() - 1).stackLevel == stackLevel) {
+                    // Need to check if we are just seeing same stack level again due to
+                    // multiple rows returned from previous stack frame instruction.
+                    for (int i = outline.size() - 1, rowsSeenSoFar = 1; i >= 0; i--, rowsSeenSoFar++) {
+                        if (outline.get(i).stackLevel < stackLevel) {
+                            if (outline.get(i).returnedRows >= rowsSeenSoFar) {
+                                return;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+
+                    // If we get here, we probably need to pop.
+                    MocaTraceStackFrame poppedFrame = processExplicitUnindent(indentStack, false);
+                    outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel, poppedFrame.absoluteLineNum,
+                            poppedFrame.relativeLineNum, "}", "0", false, true, buildIndentString(indentStack),
+                            indentStack));
+                    processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
+                }
+            }
+        } else if (indentStack.peek().isCommandInitiated) {
+            // Pop if we are clearly coming up from an outline and indent stack frame
             // perspective.
             if (outline.get(outline.size() - 1).stackLevel > stackLevel
                     && indentStack.peek().stackLevel >= stackLevel) {
                 processExplicitUnindent(indentStack, false);
                 processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
             }
-        } else if (indentStack.peek().isCommandStatement || indentStack.peek().isNestedBraces) {
-
-            int beginIndentStackSize = indentStack.size();
-
-            while (indentStack.peek().stackLevel > stackLevel && indentStack.size() > 1
-                    && (indentStack.peek().isCommandStatement || indentStack.peek().isNestedBraces)) {
-                MocaTraceStackFrame poppedFrame = processExplicitUnindent(indentStack, false);
-
-                outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel, poppedFrame.absoluteLineNum,
-                        poppedFrame.relativeLineNum, "}", "0", true, true, buildIndentString(indentStack),
-                        indentStack));
-            }
-
-            if (beginIndentStackSize > indentStack.size()
-                    && (indentStack.peek().isCommandStatement || indentStack.peek().isNestedBraces)) {
-                MocaTraceStackFrame poppedFrame = processExplicitUnindent(indentStack, false);
-
-                outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel, poppedFrame.absoluteLineNum,
-                        poppedFrame.relativeLineNum, "}", "0", true, true, buildIndentString(indentStack),
-                        indentStack));
-
-                processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
-            } else {
-                if (indentStack.peek().isCommandStatement || indentStack.peek().isNestedBraces) {
-
-                    if (outline.get(outline.size() - 1).stackLevel == stackLevel) {
-                        // Need to check if we are just seeing same stack level again due to
-                        // multiple rows returned from previous stack frame instruction.
-                        for (int i = outline.size() - 1, rowsSeenSoFar = 1; i >= 0; i--, rowsSeenSoFar++) {
-                            if (outline.get(i).stackLevel < stackLevel) {
-                                if (outline.get(i).returnedRows >= rowsSeenSoFar) {
-                                    return;
-                                } else {
-                                    break;
-                                }
-                            }
-                        }
-
-                        // Only continue if previous indent was due to nested braces.
-                        if (indentStack.peek().isNestedBraces) {
-                            MocaTraceStackFrame poppedFrame = processExplicitUnindent(indentStack, false);
-
-                            outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel,
-                                    poppedFrame.absoluteLineNum, poppedFrame.relativeLineNum, "}", "0", true, true,
-                                    buildIndentString(indentStack), indentStack));
-
-                            processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
-                        }
-
-                    } else if (outline.get(outline.size() - 1).stackLevel > stackLevel
-                            && indentStack.peek().stackLevel >= stackLevel - 1) {
-
-                        MocaTraceStackFrame poppedFrame = processExplicitUnindent(indentStack, false);
-
-                        outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel,
-                                poppedFrame.absoluteLineNum, poppedFrame.relativeLineNum, "}", "0", true, true,
-                                buildIndentString(indentStack), indentStack));
-
-                        processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
-                    }
-                }
-            }
         }
+
     }
 
     private static String buildIndentString(Stack<MocaTraceStackFrame> indentStack) {
@@ -558,6 +585,37 @@ public class MocaTraceOutliner {
                         processExplicitUnindent(indentStack, true);
                     }
 
+                    matcher = MocaTraceOutliner.MESSAGE_RESUMING_EXECUTION_OF_REGEX_PATTERN.matcher(message);
+                    if (matcher.find()) {
+
+                        // This is like a combo of explicit and implicit unindent.
+
+                        String[] instructionArr = matcher.group(2).trim().split("/");
+                        String cmplvl = instructionArr[0];
+                        String instruction = instructionArr[1];
+
+                        // Can assume we need to pop if current indent stack frame was command statement
+                        // or nested brace AND if current indent stack frame level is GE to our
+                        // current level, but we need to make sure that we do not pop the
+                        // command/cmplvl being resumed. Only pop 1 frame.
+                        if ((indentStack.peek().isCommandStatement || indentStack.peek().isNestedBraces)
+                                && indentStack.peek().stackLevel >= stackLevel
+                                && indentStack.peek().instruction.compareToIgnoreCase(instruction) != 0
+                                && (indentStack.peek().componentLevel == null
+                                        || indentStack.peek().componentLevel.compareToIgnoreCase(cmplvl) != 0)) {
+                            MocaTraceStackFrame poppedFrame = processExplicitUnindent(indentStack, false);
+                            if (poppedFrame.isCommandStatement) {
+                                outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel,
+                                        poppedFrame.absoluteLineNum, poppedFrame.relativeLineNum, "}", "0", true, false,
+                                        buildIndentString(indentStack), indentStack));
+                            } else if (poppedFrame.isNestedBraces) {
+                                outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel,
+                                        poppedFrame.absoluteLineNum, poppedFrame.relativeLineNum, "}", "0", false, true,
+                                        buildIndentString(indentStack), indentStack));
+                            }
+                        }
+                    }
+
                     // SQL:
                     // -----------------------------------------------------------------------------------------------------------------
 
@@ -770,6 +828,8 @@ public class MocaTraceOutliner {
                     matcher = MocaTraceOutliner.MESSAGE_EVALUATING_TRY_CATCH_EXPRESSION_REGEX_PATTERN.matcher(message);
                     if (matcher.find()) {
 
+                        processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
+
                         String conditionalTest = matcher.group(2);
 
                         Matcher extractConditionalTestValuesMatcher = MocaTraceOutliner.EXTRACT_CONDITIONAL_TEST_VALUES
@@ -795,7 +855,16 @@ public class MocaTraceOutliner {
                         for (int i = outline.size() - 1; i >= 0; i--) {
                             // Should not be prepared statement.
                             if (outline.get(i).stackLevel == stackLevel && !outline.get(i).isPreparedStatement) {
-                                outline.get(i).instructionStatus = "Caught (" + conditionalTest + ")";
+
+                                // If outline at i is nested braces(which should indicate "try"), use the
+                                // outline before that instead, since it is likely the instruction that failed.
+                                if (outline.get(i).isNestedBraces && outline.get(i).instruction == "}") {
+                                    // Should be i - 1 since i is "}".
+                                    outline.get(i - 1).instructionStatus = "Caught (" + conditionalTest + ")";
+                                } else {
+                                    outline.get(i).instructionStatus = "Caught (" + conditionalTest + ")";
+                                }
+
                                 break;
                             }
                         }
