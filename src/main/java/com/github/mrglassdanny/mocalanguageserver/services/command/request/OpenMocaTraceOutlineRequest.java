@@ -4,12 +4,12 @@ import java.util.List;
 
 import com.google.gson.JsonElement;
 
-public class OpenMocaTraceRequest {
+public class OpenMocaTraceOutlineRequest {
 
     public String requestedTraceFileName;
     public boolean isRemote;
 
-    public OpenMocaTraceRequest(List<Object> args) throws Exception {
+    public OpenMocaTraceOutlineRequest(List<Object> args) throws Exception {
         if (args == null || args.isEmpty()) {
             this.requestedTraceFileName = null;
             this.isRemote = false;

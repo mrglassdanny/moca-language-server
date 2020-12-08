@@ -2,15 +2,15 @@ package com.github.mrglassdanny.mocalanguageserver.services.command.response;
 
 import java.util.ArrayList;
 
-public class OpenMocaTraceResponse {
+public class OpenMocaTraceOutlineResponse {
 
     public ArrayList<String> traceFileNames;
-    public String traceOutline;
+    public String traceOutlineStr;
     public Exception exception;
 
-    public OpenMocaTraceResponse(ArrayList<String> traceFileNames, String traceOutline, Exception exception) {
+    public OpenMocaTraceOutlineResponse(ArrayList<String> traceFileNames, String traceOutlineStr, Exception exception) {
         this.traceFileNames = traceFileNames;
-        this.traceOutline = traceOutline;
+        this.traceOutlineStr = traceOutlineStr;
         this.exception = exception;
     }
 }

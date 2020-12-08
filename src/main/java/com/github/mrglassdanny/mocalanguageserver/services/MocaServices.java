@@ -85,7 +85,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
     private static MocaServiceType getMocaServiceType(String uriStr) {
         String uriExt = uriStr.substring(uriStr.lastIndexOf("."), uriStr.length());
-        if (uriExt.compareToIgnoreCase(".trace") == 0) {
+        if (uriExt.compareToIgnoreCase(".traceoutline") == 0) {
             return MocaServiceType.MocaTraceOutline;
         }
 

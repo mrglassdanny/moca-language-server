@@ -1,5 +1,7 @@
 package com.github.mrglassdanny.mocalanguageserver.moca.trace;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
@@ -954,7 +956,7 @@ public class MocaTraceOutliner {
 
     }
 
-    public MocaTraceOutlineResult outlineTrace(String traceFileName, MocaResults res) {
+    public static MocaTraceOutlineResult outlineTrace(String traceFileName, MocaResults res) {
 
         // Reset all fields.
         MocaTraceOutliner.lineNum = -1;
@@ -971,6 +973,36 @@ public class MocaTraceOutliner {
         // Process trace outlining.
         for (int i = 1; i < res.getRowCount(); i++) {
             MocaTraceOutliner.readLine(i, res.getString(i, "text"));
+        }
+
+        // Initialize result structure and return it.
+        MocaTraceOutlineResult outlineResult = new MocaTraceOutlineResult(traceFileName, MocaTraceOutliner.outlineMap,
+                MocaTraceOutliner.orderedOutlineIds, MocaTraceOutliner.absoluteTraceLines,
+                MocaTraceOutliner.relativeTraceLinesMap);
+
+        return outlineResult;
+    }
+
+    public static MocaTraceOutlineResult outlineTrace(String traceFileName, BufferedReader bufferedReader)
+            throws IOException {
+
+        // Reset all fields.
+        MocaTraceOutliner.lineNum = -1;
+        MocaTraceOutliner.lineTextBuffer = new StringBuilder(2048);
+        MocaTraceOutliner.absoluteTraceLines = new ArrayList<>();
+        MocaTraceOutliner.relativeTraceLinesMap = new HashMap<>();
+        MocaTraceOutliner.outlineMap = new HashMap<>();
+        MocaTraceOutliner.orderedOutlineIds = new ArrayList<>();
+        MocaTraceOutliner.indentStackMap = new HashMap<>();
+        MocaTraceOutliner.previousStackLevelMap = new HashMap<>();
+        MocaTraceOutliner.publishedMap = new HashMap<>();
+        MocaTraceOutliner.argumentsMap = new HashMap<>();
+
+        // Process trace outlining.
+        String line = bufferedReader.readLine();
+        while (line != null) {
+            MocaTraceOutliner.readLine(lineNum++, line);
+            line = bufferedReader.readLine();
         }
 
         // Initialize result structure and return it.
