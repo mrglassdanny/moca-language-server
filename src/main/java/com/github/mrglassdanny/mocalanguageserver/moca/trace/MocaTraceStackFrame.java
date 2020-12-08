@@ -25,6 +25,8 @@ public class MocaTraceStackFrame {
     public boolean isServerGot; // Indicates if match was from "Server got:" regex in message.
     public boolean isCommandInitiated; // Indicates if match was from "Command initiated:" regex in message.
     public String componentLevel; // MOCA command component level.
+    public boolean isCFunction; // Tells if C function.
+    public boolean isJavaMethod; // Tells if Java method.
     public boolean isFiringTriggers; // Indicates if "Firing triggers" instruction.
     public boolean isTrigger; // Indicates if instruction is the first instruction for a trigger (under
                               // "Firing triggers" instruction!).
@@ -52,6 +54,8 @@ public class MocaTraceStackFrame {
         this.isServerGot = false;
         this.isCommandInitiated = false;
         this.componentLevel = null;
+        this.isCFunction = false;
+        this.isJavaMethod = false;
         this.isFiringTriggers = false;
         this.isTrigger = false;
         this.isRemote = false;
@@ -83,14 +87,18 @@ public class MocaTraceStackFrame {
 
         if (this.componentLevel != null) {
             buf.append(String.format("Component Level: **%s**\n\n", this.componentLevel));
-        }
 
-        if (this.isFiringTriggers) {
-            buf.append("\n\n**Firing Triggers**\n");
+            if (this.isCFunction) {
+                buf.append(String.format("Type: **C Function**\n\n"));
+            } else if (this.isJavaMethod) {
+                buf.append(String.format("Type: **Java Method**\n\n"));
+            } else {
+                buf.append(String.format("Type: **Local Syntax**\n\n"));
+            }
         }
 
         if (this.isTrigger) {
-            buf.append("\n\n**Is Trigger**\n");
+            buf.append("Is Trigger: **true**\n\n");
         }
 
         // Published args:

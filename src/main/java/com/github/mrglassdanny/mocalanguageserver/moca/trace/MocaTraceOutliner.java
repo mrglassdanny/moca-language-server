@@ -24,7 +24,7 @@ public class MocaTraceOutliner {
     // There are a select few loggers that we actually care to analyze.
     private static final String[] LOGGERS = { "Argument", "CommandStatement", "DefaultServerContext", "JDBCAdapter",
             "Performance", "CommandDispatcher", "MocaTransactionManager", "GroovyScriptAdapter", "ComponentAdapter",
-            "ServerActivity" };
+            "ServerActivity", "CFunctionCommand" };
 
     // These messages indicate the beginning and ending of a trace 'stack'.
     private static final String MESSAGE_TRACE_STACK_START_TEXT = "Dispatching command...";
@@ -56,6 +56,10 @@ public class MocaTraceOutliner {
             .compile("Parallel execution complete");
     private static final Pattern MESSAGE_RESUMING_EXECUTION_OF_REGEX_PATTERN = Pattern
             .compile("(Resuming execution of) (.*)");
+
+    private static final Pattern MESSAGE_CALLING_C_FUNCTION_REGEX_PATTERN = Pattern
+            .compile("(Calling C function) (.*)");
+    private static final Pattern MESSAGE_INVOKING_METHOD_REGEX_PATTERN = Pattern.compile("(Invoking method:) (.*)");
 
     // SQL:
     private static final Pattern MESSAGE_EXECUTING_SQL_REGEX_PATTERN = Pattern.compile("(UNBIND:) ((?s).*)");
@@ -190,7 +194,7 @@ public class MocaTraceOutliner {
 
                 // Odd edge case coverage: if we are clearly coming up and our stack level is 1
                 // less than current indent stack frame level, we need to pop.
-                if (outline.get(outline.size() - 1).stackLevel > stackLevel
+                if (outline.get(outline.size() - 1).stackLevel >= stackLevel
                         && indentStack.peek().stackLevel >= stackLevel - 1) {
                     MocaTraceStackFrame poppedFrame = processExplicitUnindent(indentStack, false);
                     outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel, poppedFrame.absoluteLineNum,
@@ -235,6 +239,20 @@ public class MocaTraceOutliner {
                     }
 
                     // If we get here, we probably need to pop.
+                    MocaTraceStackFrame poppedFrame = processExplicitUnindent(indentStack, false);
+                    outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel, poppedFrame.absoluteLineNum,
+                            poppedFrame.relativeLineNum, "}", "0", false, true, buildIndentString(indentStack),
+                            indentStack));
+                    processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
+                }
+            } else {
+                // ^^^ could have odd edge cases for when current indent stack frame level is
+                // less than stack level.
+
+                // Odd edge case coverage: if we are likely coming up and our stack level is 1
+                // less than current indent stack frame level, we need to pop.
+                if (outline.get(outline.size() - 1).stackLevel >= stackLevel
+                        && indentStack.peek().stackLevel >= stackLevel - 1) {
                     MocaTraceStackFrame poppedFrame = processExplicitUnindent(indentStack, false);
                     outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel, poppedFrame.absoluteLineNum,
                             poppedFrame.relativeLineNum, "}", "0", false, true, buildIndentString(indentStack),
@@ -368,7 +386,7 @@ public class MocaTraceOutliner {
                 } else {
 
                     // Handle scenario where stack level goes down/comes up multiple levels.
-                    // This happens due to extra "{}" either because of "try" block or nesting "{}".
+                    // This happens due to extra "{}" either because of try block or nesting "{}".
                     // Ex: 1 -> 3 OR 3 -> 1
                     // Indenting via "{}" below for organization purposes and to illustrate exactly
                     // what we are looking for in the trace -- lol.
@@ -616,6 +634,16 @@ public class MocaTraceOutliner {
                         }
                     }
 
+                    matcher = MocaTraceOutliner.MESSAGE_CALLING_C_FUNCTION_REGEX_PATTERN.matcher(message);
+                    if (matcher.find()) {
+                        outline.get(outline.size() - 1).isCFunction = true;
+                    }
+
+                    matcher = MocaTraceOutliner.MESSAGE_INVOKING_METHOD_REGEX_PATTERN.matcher(message);
+                    if (matcher.find()) {
+                        outline.get(outline.size() - 1).isJavaMethod = true;
+                    }
+
                     // SQL:
                     // -----------------------------------------------------------------------------------------------------------------
 
@@ -828,7 +856,11 @@ public class MocaTraceOutliner {
                     matcher = MocaTraceOutliner.MESSAGE_EVALUATING_TRY_CATCH_EXPRESSION_REGEX_PATTERN.matcher(message);
                     if (matcher.find()) {
 
-                        processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
+                        // Only process implicit undindent if current indent stack frame is nested brace
+                        // (likely try block!).
+                        if (indentStack.peek().isNestedBraces) {
+                            processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
+                        }
 
                         String conditionalTest = matcher.group(2);
 
@@ -856,7 +888,7 @@ public class MocaTraceOutliner {
                             // Should not be prepared statement.
                             if (outline.get(i).stackLevel == stackLevel && !outline.get(i).isPreparedStatement) {
 
-                                // If outline at i is nested braces(which should indicate "try"), use the
+                                // If outline at i is nested braces(which should indicate try block), use the
                                 // outline before that instead, since it is likely the instruction that failed.
                                 if (outline.get(i).isNestedBraces && outline.get(i).instruction == "}") {
                                     // Should be i - 1 since i is "}".
