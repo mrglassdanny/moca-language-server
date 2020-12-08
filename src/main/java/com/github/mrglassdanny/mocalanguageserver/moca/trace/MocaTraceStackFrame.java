@@ -18,8 +18,9 @@ public class MocaTraceStackFrame {
     public String instructionStatus; // Stack frames have 1 instruction status.
     public HashMap<String, String> published; // What is on the stack at time of instruction invocation.
     public HashMap<String, String> arguments; // What is being explicitly passed to instruction.
-    public boolean isCommandStatementOrNestedBraces; // Indicates if logger was CommandStatement or if is nested
-                                                     // brace instruction.
+    public boolean isCommandStatement; // Indicates if logger was CommandStatement(includes "{" & "}" for command
+                                       // statement, but not nested braces).
+    public boolean isNestedBraces; // Indicates if instruction is nested "{" or "}".
     public String indentStr; // String that stores tabs/spaces for indenting instruction.
     public boolean isServerGot; // Indicates if match was from "Server got:" regex in message.
     public boolean isCommandInitiated; // Indicates if match was from "Command initiated:" regex in message.
@@ -35,7 +36,7 @@ public class MocaTraceStackFrame {
     public double executionTime; // Execution time for instruction.
 
     public MocaTraceStackFrame(String outlineId, int stackLevel, int lineNum, int relativeLineNum, String instruction,
-            String instructionStatus, boolean isCommandStatementOrNestedBraces, String indentStr,
+            String instructionStatus, boolean isCommandStatement, boolean isNestedBraces, String indentStr,
             Stack<MocaTraceStackFrame> indentStack) {
         this.outlineId = outlineId;
         this.stackLevel = stackLevel;
@@ -45,7 +46,8 @@ public class MocaTraceStackFrame {
         this.instructionStatus = instructionStatus;
         this.published = new HashMap<>();
         this.arguments = new HashMap<>();
-        this.isCommandStatementOrNestedBraces = isCommandStatementOrNestedBraces;
+        this.isCommandStatement = isCommandStatement;
+        this.isNestedBraces = isNestedBraces;
         this.indentStr = indentStr;
         this.isServerGot = false;
         this.isCommandInitiated = false;
