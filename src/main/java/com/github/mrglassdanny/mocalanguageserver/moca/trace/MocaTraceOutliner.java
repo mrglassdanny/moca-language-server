@@ -717,7 +717,9 @@ public class MocaTraceOutliner {
 
                         processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
 
-                        String instruction = "[" + matcher.group(2).trim().replace('\n', ' ') + "]";
+                        String instruction = "["
+                                + matcher.group(2).trim().replace('\n', ' ').replace(" N'", "'").replace("(N'", "('")
+                                + "]";
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                 instruction, "0", false, false, buildIndentString(indentStack), indentStack));
@@ -825,7 +827,13 @@ public class MocaTraceOutliner {
 
                                 switch (type) {
                                     case "STRING":
-                                        value = "'" + value + "'";
+                                        if (value.contains("'") || value.contains("=")) {
+                                            value = (" \"" + value + "\"");
+                                        } else {
+                                            if (value.compareToIgnoreCase("null") != 0) {
+                                                value = (" '" + value + "'");
+                                            }
+                                        }
                                         break;
                                     default:
                                         break;
@@ -856,7 +864,13 @@ public class MocaTraceOutliner {
 
                                 switch (type) {
                                     case "STRING":
-                                        value = "'" + value + "'";
+                                        if (value.contains("'") || value.contains("=")) {
+                                            value = (" \"" + value + "\"");
+                                        } else {
+                                            if (value.compareToIgnoreCase("null") != 0) {
+                                                value = (" '" + value + "'");
+                                            }
+                                        }
                                         break;
                                     default:
                                         break;
@@ -899,7 +913,6 @@ public class MocaTraceOutliner {
                     matcher = MocaTraceOutliner.MESSAGE_IF_TEST_FAILED_NO_ELSE_BLOCK_TO_EXECUTE_REGEX_PATTERN
                             .matcher(message);
                     if (matcher.find()) {
-
                         outline.get(outline.size() - 1).instructionStatus = "Failed";
 
                     }
@@ -947,7 +960,13 @@ public class MocaTraceOutliner {
 
                             switch (type) {
                                 case "STRING":
-                                    value = "'" + value + "'";
+                                    if (value.contains("'") || value.contains("=")) {
+                                        value = (" \"" + value + "\"");
+                                    } else {
+                                        if (value.compareToIgnoreCase("null") != 0) {
+                                            value = (" '" + value + "'");
+                                        }
+                                    }
                                     break;
                                 default:
                                     break;
