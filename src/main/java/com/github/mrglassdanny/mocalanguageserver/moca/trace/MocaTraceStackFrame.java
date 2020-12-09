@@ -14,16 +14,26 @@ public class MocaTraceStackFrame {
                                 // numbers start at 1.
     public int relativeLineNum; // For joining up with raw trace file contents relative to outline ID. Line
                                 // numbers start at 1.
-    public String instruction; // Stack frames have 1 instruction.
-    public String instructionStatus; // Stack frames have 1 instruction status.
+    public String indentStr; // String that stores tabs/spaces for indenting instruction.
+    public String instruction; // Stack frames have 1 instruction. Instruction is meant to be close to actual
+                               // MOCA instruction.
+    public String instructionStatus; // Stack frames have 1 instruction status. Status will be a specific format that
+                                     // we can analyze.
+    public String instructionPrefix; // Since instruction is not meant to be anything but actual MOCA instruction, we
+                                     // will have a prefix string for display purposes.
+    public String instructionSuffix; // Since instruction is not meant to be anything but actual MOCA instruction, we
+                                     // will have a suffix string for display purposes.
+    public int returnedRows; // How many rows returned from instruction.
+    public int parentReturnedRows; // How many rows did parent instruction return.
+    public int rowNumber; // Which row am I in regards to parent instruction returned rows.
+    public double executionTime; // Execution time for instruction.
     public HashMap<String, String> published; // What is on the stack at time of instruction invocation.
     public HashMap<String, String> arguments; // What is being explicitly passed to instruction.
+    public boolean isServerGot; // Indicates if match was from "Server got:" regex in message.
+    public boolean isCommandInitiated; // Indicates if match was from "Command initiated:" regex in message.
     public boolean isCommandStatement; // Indicates if logger was CommandStatement(includes "{" & "}" for command
                                        // statement, but not nested braces).
     public boolean isNestedBraces; // Indicates if instruction is nested "{" or "}".
-    public String indentStr; // String that stores tabs/spaces for indenting instruction.
-    public boolean isServerGot; // Indicates if match was from "Server got:" regex in message.
-    public boolean isCommandInitiated; // Indicates if match was from "Command initiated:" regex in message.
     public String componentLevel; // MOCA command component level.
     public boolean isCFunction; // Tells if C function.
     public boolean isJavaMethod; // Tells if Java method.
@@ -34,8 +44,6 @@ public class MocaTraceStackFrame {
     public boolean isPreparedStatement; // Tells if instruction was JDBC prepared statement.
     public String actualPreparedStatementQuery; // Actual query ran -- we will use this for hover instruction instead of
                                                 // actual instruction(actual contains '?'s!).
-    public int returnedRows; // How many rows returned from instruction.
-    public double executionTime; // Execution time for instruction.
 
     public MocaTraceStackFrame(String outlineId, int stackLevel, int lineNum, int relativeLineNum, String instruction,
             String instructionStatus, boolean isCommandStatement, boolean isNestedBraces, String indentStr,
@@ -44,15 +52,21 @@ public class MocaTraceStackFrame {
         this.stackLevel = stackLevel;
         this.absoluteLineNum = lineNum;
         this.relativeLineNum = relativeLineNum;
+        this.indentStr = indentStr;
         this.instruction = instruction;
         this.instructionStatus = instructionStatus;
+        this.instructionPrefix = "";
+        this.instructionSuffix = "";
+        this.returnedRows = 0;
+        this.parentReturnedRows = 0;
+        this.rowNumber = 0;
+        this.executionTime = 0.0;
         this.published = new HashMap<>();
         this.arguments = new HashMap<>();
-        this.isCommandStatement = isCommandStatement;
-        this.isNestedBraces = isNestedBraces;
-        this.indentStr = indentStr;
         this.isServerGot = false;
         this.isCommandInitiated = false;
+        this.isCommandStatement = isCommandStatement;
+        this.isNestedBraces = isNestedBraces;
         this.componentLevel = null;
         this.isCFunction = false;
         this.isJavaMethod = false;
@@ -61,8 +75,6 @@ public class MocaTraceStackFrame {
         this.isRemote = false;
         this.isPreparedStatement = false;
         this.actualPreparedStatementQuery = null;
-        this.returnedRows = 0;
-        this.executionTime = 0.0;
 
         // Passing in the indent stack so we can use it for setting certain fields.
         if (indentStack.size() > 0) {
