@@ -282,12 +282,12 @@ public class MocaTraceOutliner {
 
     private static void readLine(int lineNum, String lineText) {
 
-        // We are passing the trace file contents line by line into MocaTraceOutliner
+        // We are passing the trace file contents line by line into this
         // function. For the most part, a line represents a perfect match via our trace
-        // line regex pattern. MocaTraceOutliner is not the case though if the 'message'
+        // line regex pattern. This is not the case though if the 'message'
         // capture group extends multiple lines.
         // Therefore, we are keeping a line buffer member and are using it to resolve
-        // MocaTraceOutliner issue. If we have a perfect match, we need to process the
+        // this issue. If we have a perfect match, we need to process the
         // line and clear out the line buffer. If we do not, we need to hold off on
         // processing line until the line is 'complete' and we have a perfect regex
         // match.
@@ -949,7 +949,7 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).instructionStatus = matcher.group(2);
                     }
 
-                    // MocaTraceOutliner error should only come up after a MOCA command fails.
+                    // This error should only come up after a MOCA command fails.
                     matcher = MocaTraceOutliner.MESSAGE_RAISING_ERROR_REGEX_PATTERN.matcher(message);
                     if (matcher.find()) {
                         for (int i = outline.size() - 1; i >= 0; i--) {
@@ -1021,11 +1021,10 @@ public class MocaTraceOutliner {
                                     break;
                                 }
                             }
-
                         }
                     }
 
-                    // Seems like we only see MocaTraceOutliner in regards to the "Server got:"
+                    // Seems like we only see this in regards to the "Server got:"
                     // match.
                     matcher = MocaTraceOutliner.MESSAGE_RETURNING_X_ROWS_REGEX_PATTERN.matcher(message);
                     if (matcher.find()) {
@@ -1038,7 +1037,7 @@ public class MocaTraceOutliner {
                         }
                     }
 
-                    // MocaTraceOutliner one should just be in regards to JDBCApapter queries.
+                    // This one should just be in regards to JDBCApapter queries.
                     matcher = MocaTraceOutliner.MESSAGE_QUERY_RETURNED_X_ROWS_REGEX_PATTERN.matcher(message);
                     if (matcher.find()) {
                         outline.get(outline.size() - 1).returnedRows = Integer.parseInt(matcher.group(2));
@@ -1084,6 +1083,7 @@ public class MocaTraceOutliner {
         return outlineResult;
     }
 
+    // TODO
     public static MocaTraceOutlineResult outlineTrace(String traceFileName, BufferedReader bufferedReader)
             throws IOException {
 
