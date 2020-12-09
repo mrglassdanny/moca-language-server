@@ -506,7 +506,7 @@ public class MocaTraceOutliner {
 
                         processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
 
-                        String instruction = matcher.group(3);
+                        String instruction = "Firing Triggers For: " + matcher.group(3);
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                 instruction, "0", false, false, buildIndentString(indentStack), indentStack));

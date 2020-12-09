@@ -150,16 +150,14 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
                     }
 
                     if (frame.isCommandInitiated) {
-                        Position pos = new Position(lineNum, 0);
+                        Position pos = new Position(lineNum, frame.instruction.length() + frame.indentStr.length());
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
-                                preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
-                                        frame.instruction.length() + frame.indentStr.length(),
+                                preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(), 0,
                                         MocaTraceOutlineServiceSemanticHighlightingManager.COMMAND_INITIATED_SCOPES_IDX));
                             } else {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
-                                tokensArr.add(new Token(pos.getCharacter(),
-                                        frame.instruction.length() + frame.indentStr.length(),
+                                tokensArr.add(new Token(pos.getCharacter(), 0,
                                         MocaTraceOutlineServiceSemanticHighlightingManager.COMMAND_INITIATED_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }
@@ -167,17 +165,15 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
                     }
 
                     if (frame.componentLevel != null) {
-                        Position pos = new Position(lineNum, 0);
+                        Position pos = new Position(lineNum, frame.indentStr.length());
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
                                 preInfos.get(pos.getLine())
-                                        .add(new Token(pos.getCharacter(),
-                                                frame.instruction.length() + frame.indentStr.length(),
+                                        .add(new Token(pos.getCharacter(), frame.instruction.length(),
                                                 MocaTraceOutlineServiceSemanticHighlightingManager.COMMAND_SCOPES_IDX));
                             } else {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
-                                tokensArr.add(new Token(pos.getCharacter(),
-                                        frame.instruction.length() + frame.indentStr.length(),
+                                tokensArr.add(new Token(pos.getCharacter(), frame.instruction.length(),
                                         MocaTraceOutlineServiceSemanticHighlightingManager.COMMAND_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }
@@ -185,16 +181,15 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
                     }
 
                     if (frame.isFiringTriggers) {
-                        Position pos = new Position(lineNum, 0);
+                        Position pos = new Position(lineNum, frame.indentStr.length());
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
                                 preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
-                                        frame.instruction.length() + frame.indentStr.length(),
+                                        frame.instruction.length(),
                                         MocaTraceOutlineServiceSemanticHighlightingManager.FIRING_TRIGGERS_SCOPES_IDX));
                             } else {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
-                                tokensArr.add(new Token(pos.getCharacter(),
-                                        frame.instruction.length() + frame.indentStr.length(),
+                                tokensArr.add(new Token(pos.getCharacter(), frame.instruction.length(),
                                         MocaTraceOutlineServiceSemanticHighlightingManager.FIRING_TRIGGERS_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }
@@ -202,17 +197,14 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
                     }
 
                     if (frame.isTrigger) {
-                        Position pos = new Position(lineNum, 0);
+                        Position pos = new Position(lineNum, frame.indentStr.length());
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
-                                preInfos.get(pos.getLine())
-                                        .add(new Token(pos.getCharacter(),
-                                                frame.instruction.length() + frame.indentStr.length(),
-                                                MocaTraceOutlineServiceSemanticHighlightingManager.TRIGGER_SCOPES_IDX));
+                                preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(), 0,
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.TRIGGER_SCOPES_IDX));
                             } else {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
-                                tokensArr.add(new Token(pos.getCharacter(),
-                                        frame.instruction.length() + frame.indentStr.length(),
+                                tokensArr.add(new Token(pos.getCharacter(), 0,
                                         MocaTraceOutlineServiceSemanticHighlightingManager.TRIGGER_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }
@@ -221,61 +213,55 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
 
                     if (frame.instructionStatus != "0") {
                         if (frame.instructionStatus == "Passed") {
-                            Position pos = new Position(lineNum, 0);
+                            Position pos = new Position(lineNum, frame.instruction.length() + frame.indentStr.length());
                             if (pos != null) {
                                 if (preInfos.containsKey(pos.getLine())) {
-                                    preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
-                                            frame.instruction.length() + frame.indentStr.length(),
+                                    preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(), 0,
                                             MocaTraceOutlineServiceSemanticHighlightingManager.CONDITIONAL_TEST_PASS_SCOPES_IDX));
                                 } else {
                                     ArrayList<Token> tokensArr = new ArrayList<>();
-                                    tokensArr.add(new Token(pos.getCharacter(),
-                                            frame.instruction.length() + frame.indentStr.length(),
+                                    tokensArr.add(new Token(pos.getCharacter(), 0,
                                             MocaTraceOutlineServiceSemanticHighlightingManager.CONDITIONAL_TEST_PASS_SCOPES_IDX));
                                     preInfos.put(pos.getLine(), tokensArr);
                                 }
                             }
                         } else if (frame.instructionStatus == "Failed") {
-                            Position pos = new Position(lineNum, 0);
+                            Position pos = new Position(lineNum, frame.instruction.length() + frame.indentStr.length());
                             if (pos != null) {
                                 if (preInfos.containsKey(pos.getLine())) {
-                                    preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
-                                            frame.instruction.length() + frame.indentStr.length(),
+                                    preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(), 0,
                                             MocaTraceOutlineServiceSemanticHighlightingManager.CONDITIONAL_TEST_FAIL_SCOPES_IDX));
                                 } else {
                                     ArrayList<Token> tokensArr = new ArrayList<>();
-                                    tokensArr.add(new Token(pos.getCharacter(),
-                                            frame.instruction.length() + frame.indentStr.length(),
+                                    tokensArr.add(new Token(pos.getCharacter(), 0,
                                             MocaTraceOutlineServiceSemanticHighlightingManager.CONDITIONAL_TEST_FAIL_SCOPES_IDX));
                                     preInfos.put(pos.getLine(), tokensArr);
                                 }
                             }
                         } else if (frame.instructionStatus.contains("Caught")) {
-                            Position pos = new Position(lineNum, 0);
+                            Position pos = new Position(lineNum, frame.indentStr.length());
                             if (pos != null) {
                                 if (preInfos.containsKey(pos.getLine())) {
                                     preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
-                                            frame.instruction.length() + frame.indentStr.length(),
+                                            frame.instruction.length(),
                                             MocaTraceOutlineServiceSemanticHighlightingManager.ERROR_CAUGHT_SCOPES));
                                 } else {
                                     ArrayList<Token> tokensArr = new ArrayList<>();
-                                    tokensArr.add(new Token(pos.getCharacter(),
-                                            frame.instruction.length() + frame.indentStr.length(),
+                                    tokensArr.add(new Token(pos.getCharacter(), frame.instruction.length(),
                                             MocaTraceOutlineServiceSemanticHighlightingManager.ERROR_CAUGHT_SCOPES));
                                     preInfos.put(pos.getLine(), tokensArr);
                                 }
                             }
                         } else {
-                            Position pos = new Position(lineNum, 0);
+                            Position pos = new Position(lineNum, frame.indentStr.length());
                             if (pos != null) {
                                 if (preInfos.containsKey(pos.getLine())) {
                                     preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
-                                            frame.instruction.length() + frame.indentStr.length(),
+                                            frame.instruction.length(),
                                             MocaTraceOutlineServiceSemanticHighlightingManager.ERROR_SCOPES_IDX));
                                 } else {
                                     ArrayList<Token> tokensArr = new ArrayList<>();
-                                    tokensArr.add(new Token(pos.getCharacter(),
-                                            frame.instruction.length() + frame.indentStr.length(),
+                                    tokensArr.add(new Token(pos.getCharacter(), frame.instruction.length(),
                                             MocaTraceOutlineServiceSemanticHighlightingManager.ERROR_SCOPES_IDX));
                                     preInfos.put(pos.getLine(), tokensArr);
                                 }
@@ -284,23 +270,22 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
                     }
 
                     if (frame.isPreparedStatement) {
-                        Position pos = new Position(lineNum, 0);
+                        Position pos = new Position(lineNum, frame.indentStr.length());
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
                                 preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
-                                        frame.instruction.length() + frame.indentStr.length(),
+                                        frame.instruction.length(),
                                         MocaTraceOutlineServiceSemanticHighlightingManager.PREPARED_STATEMENT_SCOPES_IDX));
                             } else {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
-                                tokensArr.add(new Token(pos.getCharacter(),
-                                        frame.instruction.length() + frame.indentStr.length(),
+                                tokensArr.add(new Token(pos.getCharacter(), frame.instruction.length(),
                                         MocaTraceOutlineServiceSemanticHighlightingManager.PREPARED_STATEMENT_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }
                         }
                     }
 
-                    // 1 second is significant enough!
+                    // TODO
                     if (frame.executionTime > 1.0) {
                         Position pos = new Position(lineNum, 0);
                         if (pos != null) {
@@ -319,16 +304,14 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
                     }
 
                     if (frame.isCFunction) {
-                        Position pos = new Position(lineNum, 0);
+                        Position pos = new Position(lineNum, frame.instruction.length() + frame.indentStr.length());
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
-                                preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
-                                        frame.instruction.length() + frame.indentStr.length(),
+                                preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(), 0,
                                         MocaTraceOutlineServiceSemanticHighlightingManager.C_FUNCTION_SCOPES_IDX));
                             } else {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
-                                tokensArr.add(new Token(pos.getCharacter(),
-                                        frame.instruction.length() + frame.indentStr.length(),
+                                tokensArr.add(new Token(pos.getCharacter(), 0,
                                         MocaTraceOutlineServiceSemanticHighlightingManager.C_FUNCTION_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }
@@ -336,16 +319,14 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
                     }
 
                     if (frame.isJavaMethod) {
-                        Position pos = new Position(lineNum, 0);
+                        Position pos = new Position(lineNum, frame.instruction.length() + frame.indentStr.length());
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
-                                preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
-                                        frame.instruction.length() + frame.indentStr.length(),
+                                preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(), 0,
                                         MocaTraceOutlineServiceSemanticHighlightingManager.JAVA_METHOD_SCOPES_IDX));
                             } else {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
-                                tokensArr.add(new Token(pos.getCharacter(),
-                                        frame.instruction.length() + frame.indentStr.length(),
+                                tokensArr.add(new Token(pos.getCharacter(), 0,
                                         MocaTraceOutlineServiceSemanticHighlightingManager.JAVA_METHOD_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }

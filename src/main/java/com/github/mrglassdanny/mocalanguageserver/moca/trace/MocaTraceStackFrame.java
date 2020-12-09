@@ -78,6 +78,8 @@ public class MocaTraceStackFrame {
 
         StringBuilder buf = new StringBuilder(2048);
 
+        buf.append(String.format("Stack Level: **%d**\n\n", this.stackLevel));
+
         if (this.instructionStatus != "0") {
             buf.append(String.format("Status: **%s**\n\n", this.instructionStatus));
         }
