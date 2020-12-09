@@ -48,7 +48,9 @@ public class MocaTraceOutlineResult {
             for (MocaTraceStackFrame t : outline.frames) {
                 this.actualLinesMap.put(actualLineNum, t);
                 outlineBuf.append(t.indentStr);
+                outlineBuf.append(t.instructionPrefix);
                 outlineBuf.append(t.instruction);
+                outlineBuf.append(t.instructionSuffix);
                 outlineBuf.append('\n');
                 actualLineNum++;
             }

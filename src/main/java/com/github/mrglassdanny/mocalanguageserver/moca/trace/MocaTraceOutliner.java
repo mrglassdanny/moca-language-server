@@ -281,17 +281,20 @@ public class MocaTraceOutliner {
         return buf.toString();
     }
 
-    private static String buildReturnedRowsString(Stack<ReturnedRows> returnedRowsStack, int stackLevel) {
-        String returnedRowsStr = "";
+    private static void processReturnedRowsForChild(Stack<ReturnedRows> returnedRowsStack, int stackLevel,
+            MocaTraceStackFrame stackFrame) {
         if (returnedRowsStack.size() > 0) {
             if (returnedRowsStack.peek().stackLevel == stackLevel - 1) {
+
                 returnedRowsStack.peek().visitedRows++;
-                returnedRowsStr = String.format("(%d/%d) ", returnedRowsStack.peek().visitedRows,
-                        returnedRowsStack.peek().totalRows);
+
+                stackFrame.parentReturnedRows = returnedRowsStack.peek().totalRows;
+                stackFrame.rowNumber = returnedRowsStack.peek().visitedRows;
+
+                stackFrame.instructionPrefix = String.format("(%d/%d) ", stackFrame.rowNumber,
+                        stackFrame.parentReturnedRows);
             }
         }
-
-        return returnedRowsStr;
     }
 
     private static void readLine(int lineNum, String lineText) {
@@ -362,19 +365,19 @@ public class MocaTraceOutliner {
                         .parseInt(traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_STACK_LEVEL_GROUP_IDX));
                 String message = traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_MESSAGE_GROUP_IDX);
 
-                Stack<MocaTraceStackFrame> indentStack;
-                if (MocaTraceOutliner.indentStackMap.containsKey(outlineId)) {
-                    indentStack = MocaTraceOutliner.indentStackMap.get(outlineId);
-                } else {
-                    indentStack = new Stack<>();
-                    MocaTraceOutliner.indentStackMap.put(outlineId, indentStack);
-                }
                 ArrayList<MocaTraceStackFrame> outline;
                 if (MocaTraceOutliner.outlineMap.containsKey(outlineId)) {
                     outline = MocaTraceOutliner.outlineMap.get(outlineId);
                 } else {
                     outline = new ArrayList<>();
                     MocaTraceOutliner.outlineMap.put(outlineId, outline);
+                }
+                Stack<MocaTraceStackFrame> indentStack;
+                if (MocaTraceOutliner.indentStackMap.containsKey(outlineId)) {
+                    indentStack = MocaTraceOutliner.indentStackMap.get(outlineId);
+                } else {
+                    indentStack = new Stack<>();
+                    MocaTraceOutliner.indentStackMap.put(outlineId, indentStack);
                 }
                 HashMap<String, String> published;
                 if (MocaTraceOutliner.publishedMap.containsKey(outlineId)) {
@@ -441,9 +444,32 @@ public class MocaTraceOutliner {
                         MocaTraceOutliner.previousStackLevelMap.put(outlineId, stackLevel);
                     }
 
-                    // Returned rows.
-                    while (returnedRowsStack.size() > 0 && returnedRowsStack.peek().stackLevel > stackLevel) {
-                        returnedRowsStack.pop();
+                    // Returned rows analysis.
+                    while (returnedRowsStack.size() > 0 && ((returnedRowsStack.peek().stackLevel >= stackLevel
+                            && !returnedRowsStack.peek().fromJdbc)
+                            || (returnedRowsStack.peek().stackLevel > stackLevel
+                                    && returnedRowsStack.peek().fromJdbc))) {
+
+                        ReturnedRows poppedReturnedRows = returnedRowsStack.pop();
+                        // Let's make sure that we actually visited rows. We can tell by
+                        // comparing the visited rows to the total rows. If they dont equal eachother,
+                        // then we may not have actually visited any(maybe due to redirect or
+                        // semicolon). This is not perfect, but it should be
+                        // accurate enough.
+                        if (poppedReturnedRows.totalRows != poppedReturnedRows.visitedRows) {
+                            // Now we need to go back to all the stack frames that think they were visited
+                            // and clear them out.
+                            for (int i = outline.size() - 1; i >= 0; i--) {
+                                if (outline.get(i).stackLevel == poppedReturnedRows.stackLevel + 1
+                                        && outline.get(i).parentReturnedRows == poppedReturnedRows.totalRows) {
+                                    outline.get(i).instructionPrefix = "";
+                                    outline.get(i).parentReturnedRows = 0;
+                                    outline.get(i).rowNumber = 0;
+                                } else if (outline.get(i).stackLevel <= poppedReturnedRows.stackLevel) {
+                                    break;
+                                }
+                            }
+                        }
                     }
 
                     // Process matches:
@@ -506,7 +532,7 @@ public class MocaTraceOutliner {
 
                         String[] instructionArr = matcher.group(2).trim().split("/");
                         String cmplvl = instructionArr[0];
-                        String instruction = buildReturnedRowsString(returnedRowsStack, stackLevel) + instructionArr[1];
+                        String instruction = instructionArr[1];
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                 instruction, "0", false, false, buildIndentString(indentStack), indentStack));
@@ -515,6 +541,8 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         published.clear();
                         arguments.clear();
+
+                        processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
 
                         indentStack.push(outline.get(outline.size() - 1));
                     }
@@ -534,7 +562,7 @@ public class MocaTraceOutliner {
 
                         processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
 
-                        String instruction = "Firing Triggers For: " + matcher.group(3);
+                        String instruction = matcher.group(3);
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                 instruction, "0", false, false, buildIndentString(indentStack), indentStack));
@@ -543,6 +571,8 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         published.clear();
                         arguments.clear();
+
+                        outline.get(outline.size() - 1).instructionPrefix = "Firing Triggers for: ";
 
                         indentStack.push(outline.get(outline.size() - 1));
                     }
@@ -569,6 +599,8 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         published.clear();
                         arguments.clear();
+
+                        processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
 
                         indentStack.push(outline.get(outline.size() - 1));
 
@@ -598,6 +630,8 @@ public class MocaTraceOutliner {
                         published.clear();
                         arguments.clear();
 
+                        processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
+
                         indentStack.push(outline.get(outline.size() - 1));
 
                     }
@@ -618,6 +652,8 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         published.clear();
                         arguments.clear();
+
+                        processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
 
                         indentStack.push(outline.get(outline.size() - 1));
 
@@ -681,8 +717,7 @@ public class MocaTraceOutliner {
 
                         processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
 
-                        String instruction = buildReturnedRowsString(returnedRowsStack, stackLevel) + "["
-                                + matcher.group(2).trim().replace('\n', ' ') + "]";
+                        String instruction = "[" + matcher.group(2).trim().replace('\n', ' ') + "]";
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                 instruction, "0", false, false, buildIndentString(indentStack), indentStack));
@@ -690,6 +725,8 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         published.clear();
                         arguments.clear();
+
+                        processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
 
                     }
 
@@ -702,8 +739,8 @@ public class MocaTraceOutliner {
 
                         processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
 
-                        String instruction = buildReturnedRowsString(returnedRowsStack, stackLevel) + "["
-                                + matcher.group(3).trim().replace('\n', ' ').replace("?", "'<var>'") + "]";
+                        String instruction = "[" + matcher.group(3).trim().replace('\n', ' ').replace("?", "'<var>'")
+                                + "]";
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                 instruction, "0", false, false, buildIndentString(indentStack), indentStack));
@@ -712,6 +749,8 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         published.clear();
                         arguments.clear();
+
+                        processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
 
                     }
 
@@ -734,8 +773,7 @@ public class MocaTraceOutliner {
 
                         processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
 
-                        String instruction = buildReturnedRowsString(returnedRowsStack, stackLevel)
-                                + "[[ /* Groovy */ ]]";
+                        String instruction = "[[ /* Groovy */ ]]";
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                 instruction, "0", false, false, buildIndentString(indentStack), indentStack));
@@ -743,6 +781,8 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         published.clear();
                         arguments.clear();
+
+                        processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
 
                         indentStack.push(outline.get(outline.size() - 1));
                     }
@@ -825,8 +865,7 @@ public class MocaTraceOutliner {
                                 conditionalTest = conditionalTest.replace(entireGroup, value);
                             }
 
-                            instruction = buildReturnedRowsString(returnedRowsStack, stackLevel) + "if ("
-                                    + conditionalTest + ")";
+                            instruction = "if (" + conditionalTest + ")";
 
                             outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                     instruction, "0", true, false, buildIndentString(indentStack), indentStack));
@@ -834,6 +873,8 @@ public class MocaTraceOutliner {
                             outline.get(outline.size() - 1).arguments.putAll(arguments);
                             published.clear();
                             arguments.clear();
+
+                            processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
 
                         }
                     }
@@ -1061,7 +1102,7 @@ public class MocaTraceOutliner {
 
                                     if (outline.get(i).returnedRows > 1) {
                                         returnedRowsStack
-                                                .push(new ReturnedRows(stackLevel, outline.get(i).returnedRows));
+                                                .push(new ReturnedRows(stackLevel, outline.get(i).returnedRows, false));
                                     }
 
                                     break;
@@ -1089,8 +1130,8 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).returnedRows = Integer.parseInt(matcher.group(2));
 
                         if (outline.get(outline.size() - 1).returnedRows > 1) {
-                            returnedRowsStack
-                                    .push(new ReturnedRows(stackLevel, outline.get(outline.size() - 1).returnedRows));
+                            returnedRowsStack.push(
+                                    new ReturnedRows(stackLevel, outline.get(outline.size() - 1).returnedRows, true));
                         }
                     }
 
@@ -1173,10 +1214,12 @@ class ReturnedRows {
     int stackLevel;
     int totalRows;
     int visitedRows;
+    boolean fromJdbc;
 
-    ReturnedRows(int stackLevel, int totalRows) {
+    ReturnedRows(int stackLevel, int totalRows, boolean fromJdbc) {
         this.stackLevel = stackLevel;
         this.totalRows = totalRows;
         this.visitedRows = 0;
+        this.fromJdbc = fromJdbc;
     }
 }
