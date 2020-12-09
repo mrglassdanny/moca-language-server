@@ -133,6 +133,7 @@ public class MocaTraceOutliner {
     private static HashMap<String, Integer> previousStackLevelMap;
     private static HashMap<String, HashMap<String, String>> publishedMap;
     private static HashMap<String, HashMap<String, String>> argumentsMap;
+    private static HashMap<String, Stack<ReturnedRows>> returnedRowsStackMap;
 
     // This gets called when we have a scenario where we know we need to pop an
     // indent stack frame. "Explicit" is used here because the tell for popping
@@ -280,6 +281,19 @@ public class MocaTraceOutliner {
         return buf.toString();
     }
 
+    private static String buildReturnedRowsString(Stack<ReturnedRows> returnedRowsStack, int stackLevel) {
+        String returnedRowsStr = "";
+        if (returnedRowsStack.size() > 0) {
+            if (returnedRowsStack.peek().stackLevel == stackLevel - 1) {
+                returnedRowsStack.peek().visitedRows++;
+                returnedRowsStr = String.format("(%d/%d) ", returnedRowsStack.peek().visitedRows,
+                        returnedRowsStack.peek().totalRows);
+            }
+        }
+
+        return returnedRowsStr;
+    }
+
     private static void readLine(int lineNum, String lineText) {
 
         // We are passing the trace file contents line by line into this
@@ -376,6 +390,13 @@ public class MocaTraceOutliner {
                     arguments = new HashMap<>();
                     MocaTraceOutliner.argumentsMap.put(outlineId, arguments);
                 }
+                Stack<ReturnedRows> returnedRowsStack;
+                if (MocaTraceOutliner.returnedRowsStackMap.containsKey(outlineId)) {
+                    returnedRowsStack = MocaTraceOutliner.returnedRowsStackMap.get(outlineId);
+                } else {
+                    returnedRowsStack = new Stack<>();
+                    MocaTraceOutliner.returnedRowsStackMap.put(outlineId, returnedRowsStack);
+                }
 
                 // If we come across trace stack start/end cues, we need to clear the stack and
                 // get ready for a new one.
@@ -419,6 +440,13 @@ public class MocaTraceOutliner {
 
                         MocaTraceOutliner.previousStackLevelMap.put(outlineId, stackLevel);
                     }
+
+                    // Returned rows.
+                    while (returnedRowsStack.size() > 0 && returnedRowsStack.peek().stackLevel > stackLevel) {
+                        returnedRowsStack.pop();
+                    }
+
+                    // Process matches:
 
                     Matcher matcher;
 
@@ -478,7 +506,7 @@ public class MocaTraceOutliner {
 
                         String[] instructionArr = matcher.group(2).trim().split("/");
                         String cmplvl = instructionArr[0];
-                        String instruction = instructionArr[1];
+                        String instruction = buildReturnedRowsString(returnedRowsStack, stackLevel) + instructionArr[1];
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                 instruction, "0", false, false, buildIndentString(indentStack), indentStack));
@@ -622,6 +650,7 @@ public class MocaTraceOutliner {
                                 && (indentStack.peek().componentLevel == null
                                         || indentStack.peek().componentLevel.compareToIgnoreCase(cmplvl) != 0)) {
                             MocaTraceStackFrame poppedFrame = processExplicitUnindent(indentStack, false);
+
                             if (poppedFrame.isCommandStatement) {
                                 outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel,
                                         poppedFrame.absoluteLineNum, poppedFrame.relativeLineNum, "}", "0", true, false,
@@ -652,7 +681,8 @@ public class MocaTraceOutliner {
 
                         processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
 
-                        String instruction = "[" + matcher.group(2).trim().replace('\n', ' ') + "]";
+                        String instruction = buildReturnedRowsString(returnedRowsStack, stackLevel) + "["
+                                + matcher.group(2).trim().replace('\n', ' ') + "]";
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                 instruction, "0", false, false, buildIndentString(indentStack), indentStack));
@@ -672,8 +702,8 @@ public class MocaTraceOutliner {
 
                         processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
 
-                        String instruction = "[" + matcher.group(3).trim().replace('\n', ' ').replace("?", "'<var>'")
-                                + "]";
+                        String instruction = buildReturnedRowsString(returnedRowsStack, stackLevel) + "["
+                                + matcher.group(3).trim().replace('\n', ' ').replace("?", "'<var>'") + "]";
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                 instruction, "0", false, false, buildIndentString(indentStack), indentStack));
@@ -704,7 +734,8 @@ public class MocaTraceOutliner {
 
                         processImplicitUnindent(indentStack, stackLevel, outline, outlineId);
 
-                        String instruction = "[[ /* Groovy */ ]]";
+                        String instruction = buildReturnedRowsString(returnedRowsStack, stackLevel)
+                                + "[[ /* Groovy */ ]]";
 
                         outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                 instruction, "0", false, false, buildIndentString(indentStack), indentStack));
@@ -794,7 +825,8 @@ public class MocaTraceOutliner {
                                 conditionalTest = conditionalTest.replace(entireGroup, value);
                             }
 
-                            instruction = "if (" + conditionalTest + ")";
+                            instruction = buildReturnedRowsString(returnedRowsStack, stackLevel) + "if ("
+                                    + conditionalTest + ")";
 
                             outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                     instruction, "0", true, false, buildIndentString(indentStack), indentStack));
@@ -886,7 +918,8 @@ public class MocaTraceOutliner {
                         // May have to go back a few frames to find the correct stack frame.
                         for (int i = outline.size() - 1; i >= 0; i--) {
                             // Should not be prepared statement.
-                            if (outline.get(i).stackLevel == stackLevel && !outline.get(i).isPreparedStatement) {
+                            if (outline.get(i).stackLevel == stackLevel && !outline.get(i).isPreparedStatement
+                                    && !outline.get(i).isCommandInitiated) {
 
                                 // If outline at i is nested braces(which should indicate try block), use the
                                 // outline before that instead, since it is likely the instruction that failed.
@@ -937,7 +970,8 @@ public class MocaTraceOutliner {
                     matcher = MocaTraceOutliner.MESSAGE_EXCEPTION_RAISED_FROM_REGEX_PATTERN.matcher(message);
                     if (matcher.find()) {
                         for (int i = outline.size() - 1; i >= 0; i--) {
-                            if (stackLevel == outline.get(i).stackLevel && !outline.get(i).isCommandInitiated) {
+                            if (stackLevel == outline.get(i).stackLevel && !outline.get(i).isCommandInitiated
+                                    && !outline.get(i).isNestedBraces && !outline.get(i).isCommandStatement) {
                                 outline.get(i).instructionStatus = matcher.group(2);
                                 break;
                             }
@@ -946,7 +980,13 @@ public class MocaTraceOutliner {
 
                     matcher = MocaTraceOutliner.MESSAGE_EXCEPTION_THROWN_FROM_COMPONENT_REGEX_PATTERN.matcher(message);
                     if (matcher.find()) {
-                        outline.get(outline.size() - 1).instructionStatus = matcher.group(2);
+                        for (int i = outline.size() - 1; i >= 0; i--) {
+                            if (stackLevel == outline.get(i).stackLevel && !outline.get(i).isCommandInitiated
+                                    && !outline.get(i).isNestedBraces && !outline.get(i).isCommandStatement) {
+                                outline.get(i).instructionStatus = matcher.group(2);
+                                break;
+                            }
+                        }
                     }
 
                     // This error should only come up after a MOCA command fails.
@@ -963,7 +1003,8 @@ public class MocaTraceOutliner {
                     matcher = MocaTraceOutliner.MESSAGE_THROWING_NOT_FOUND_EXCEPTION_REGEX_PATTERN.matcher(message);
                     if (matcher.find()) {
                         for (int i = outline.size() - 1; i >= 0; i--) {
-                            if (stackLevel == outline.get(i).stackLevel && !outline.get(i).isCommandInitiated) {
+                            if (stackLevel == outline.get(i).stackLevel && !outline.get(i).isCommandInitiated
+                                    && !outline.get(i).isNestedBraces && !outline.get(i).isCommandStatement) {
                                 outline.get(i).instructionStatus = "-1403";
                                 break;
                             }
@@ -1018,6 +1059,11 @@ public class MocaTraceOutliner {
                                     }
                                     outline.get(i).returnedRows = Integer.parseInt(matcher.group(5));
 
+                                    if (outline.get(i).returnedRows > 1) {
+                                        returnedRowsStack
+                                                .push(new ReturnedRows(stackLevel, outline.get(i).returnedRows));
+                                    }
+
                                     break;
                                 }
                             }
@@ -1041,6 +1087,11 @@ public class MocaTraceOutliner {
                     matcher = MocaTraceOutliner.MESSAGE_QUERY_RETURNED_X_ROWS_REGEX_PATTERN.matcher(message);
                     if (matcher.find()) {
                         outline.get(outline.size() - 1).returnedRows = Integer.parseInt(matcher.group(2));
+
+                        if (outline.get(outline.size() - 1).returnedRows > 1) {
+                            returnedRowsStack
+                                    .push(new ReturnedRows(stackLevel, outline.get(outline.size() - 1).returnedRows));
+                        }
                     }
 
                     matcher = MocaTraceOutliner.MESSAGE_EXECUTION_TIME_REGEX_PATTERN.matcher(message);
@@ -1069,6 +1120,7 @@ public class MocaTraceOutliner {
         MocaTraceOutliner.previousStackLevelMap = new HashMap<>();
         MocaTraceOutliner.publishedMap = new HashMap<>();
         MocaTraceOutliner.argumentsMap = new HashMap<>();
+        MocaTraceOutliner.returnedRowsStackMap = new HashMap<>();
 
         // Process trace outlining.
         for (int i = 1; i < res.getRowCount(); i++) {
@@ -1098,6 +1150,7 @@ public class MocaTraceOutliner {
         MocaTraceOutliner.previousStackLevelMap = new HashMap<>();
         MocaTraceOutliner.publishedMap = new HashMap<>();
         MocaTraceOutliner.argumentsMap = new HashMap<>();
+        MocaTraceOutliner.returnedRowsStackMap = new HashMap<>();
 
         // Process trace outlining.
         String line = bufferedReader.readLine();
@@ -1114,4 +1167,16 @@ public class MocaTraceOutliner {
         return outlineResult;
     }
 
+}
+
+class ReturnedRows {
+    int stackLevel;
+    int totalRows;
+    int visitedRows;
+
+    ReturnedRows(int stackLevel, int totalRows) {
+        this.stackLevel = stackLevel;
+        this.totalRows = totalRows;
+        this.visitedRows = 0;
+    }
 }
