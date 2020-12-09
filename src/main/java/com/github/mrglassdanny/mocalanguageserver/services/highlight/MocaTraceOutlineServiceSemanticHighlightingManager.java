@@ -33,6 +33,7 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
     private static final int EXECUTION_TIME_SCOPES_IDX = 17;
     private static final int C_FUNCTION_SCOPES_IDX = 18;
     private static final int JAVA_METHOD_SCOPES_IDX = 19;
+    private static final int ROW_X_OF_Y_SCOPES_IDX = 20;
 
     public static List<List<String>> textmateScopes = new ArrayList<>();
 
@@ -77,6 +78,9 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
         List<String> mocaTraceOutlineJavaMethodScopes = new ArrayList<>();
         mocaTraceOutlineJavaMethodScopes.add("moca.traceoutline.javamethod");
 
+        List<String> mocaTraceOutlineRowXOfYScopes = new ArrayList<>();
+        mocaTraceOutlineRowXOfYScopes.add("moca.traceoutline.rowxofy");
+
         textmateScopes.add(mocaTraceOutlineServerGotScopes);
         textmateScopes.add(mocaTraceOutlineCommandInitiatedScopes);
         textmateScopes.add(mocaTraceOutlineMocaCommandScopes);
@@ -90,6 +94,7 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
         textmateScopes.add(mocaTraceOutlineExecutionTimeScopes);
         textmateScopes.add(mocaTraceOutlineCFunctionScopes);
         textmateScopes.add(mocaTraceOutlineJavaMethodScopes);
+        textmateScopes.add(mocaTraceOutlineRowXOfYScopes);
 
     }
 
@@ -345,6 +350,22 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
                                 tokensArr.add(new Token(pos.getCharacter(), 0,
                                         MocaTraceOutlineServiceSemanticHighlightingManager.JAVA_METHOD_SCOPES_IDX));
+                                preInfos.put(pos.getLine(), tokensArr);
+                            }
+                        }
+                    }
+
+                    if (frame.rowNumber > 0) {
+                        Position pos = new Position(lineNum, frame.indentStr.length());
+                        if (pos != null) {
+                            if (preInfos.containsKey(pos.getLine())) {
+                                preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(),
+                                        frame.instructionPrefix.length() - 1,
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.ROW_X_OF_Y_SCOPES_IDX));
+                            } else {
+                                ArrayList<Token> tokensArr = new ArrayList<>();
+                                tokensArr.add(new Token(pos.getCharacter(), frame.instructionPrefix.length() - 1,
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.ROW_X_OF_Y_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }
                         }
