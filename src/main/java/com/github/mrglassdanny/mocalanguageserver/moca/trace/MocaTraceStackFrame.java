@@ -20,9 +20,13 @@ public class MocaTraceStackFrame {
     public String instructionStatus; // Stack frames have 1 instruction status. Status will be a specific format that
                                      // we can analyze.
     public String instructionPrefix; // Since instruction is not meant to be anything but actual MOCA instruction, we
-                                     // will have a prefix string for display purposes.
+                                     // will have a prefix string for display purposes. NOTE: we also have text
+                                     // decorations that could be before/after instruction, but it should not affect
+                                     // this!
     public String instructionSuffix; // Since instruction is not meant to be anything but actual MOCA instruction, we
-                                     // will have a suffix string for display purposes.
+                                     // will have a suffix string for display purposes. NOTE: we also have text
+                                     // decorations that could be before/after instruction, but it should not affect
+                                     // this!
     public int returnedRows; // How many rows returned from instruction.
     public int parentReturnedRows; // How many rows did parent instruction return.
     public int rowNumber; // Which row am I in regards to parent instruction returned rows.
@@ -164,6 +168,8 @@ public class MocaTraceStackFrame {
                 // Pipe down to instruction.
                 stackArgsBuf.append(" | ");
             }
+
+            stackArgsBuf.append("/* Instruction */ ");
 
             String adjInstruction = this.instruction;
             if (this.isPreparedStatement && this.actualPreparedStatementQuery != null) {
