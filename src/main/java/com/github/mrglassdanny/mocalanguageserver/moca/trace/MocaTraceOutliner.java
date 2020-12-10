@@ -62,7 +62,8 @@ public class MocaTraceOutliner {
     private static final Pattern MESSAGE_INVOKING_METHOD_REGEX_PATTERN = Pattern.compile("(Invoking method:) (.*)");
 
     // SQL:
-    private static final Pattern MESSAGE_EXECUTING_SQL_REGEX_PATTERN = Pattern.compile("(UNBIND:) ((?s).*)");
+    private static final Pattern MESSAGE_EXECUTING_SQL_REGEX_PATTERN = Pattern.compile("(Executing SQL:) ((?s).*)");
+    private static final Pattern MESSAGE_UNBIND_SQL_REGEX_PATTERN = Pattern.compile("(UNBIND:) ((?s).*)");
     private static final Pattern MESSAGE_SQL_EXECUTION_COMPLETE_REGEX_PATTERN = Pattern
             .compile("SQL execution completed");
     private static final Pattern MESSAGE_CONNECTION_PREPARESTATEMENT_REGEX_PATTERN = Pattern
@@ -767,7 +768,8 @@ public class MocaTraceOutliner {
 
                     // SQL:
                     // -----------------------------------------------------------------------------------------------------------------
-
+                    // Need both exec sql and unbind sql since sometimes unbind will not occur.
+                    // If unbind comes through, we will just overwrite.
                     matcher = MocaTraceOutliner.MESSAGE_EXECUTING_SQL_REGEX_PATTERN.matcher(message);
                     if (matcher.find()) {
 
@@ -786,6 +788,17 @@ public class MocaTraceOutliner {
                         arguments.clear();
 
                         processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
+
+                    }
+                    // Overwrite last outline frame if we get unbind.
+                    matcher = MocaTraceOutliner.MESSAGE_UNBIND_SQL_REGEX_PATTERN.matcher(message);
+                    if (matcher.find()) {
+
+                        String instruction = "["
+                                + matcher.group(2).trim().replace('\n', ' ').replace(" N'", "'").replace("(N'", "('")
+                                + "]";
+
+                        outline.get(outline.size() - 1).instruction = instruction;
 
                     }
 
