@@ -403,8 +403,8 @@ public class ExecuteCommandProvider {
                                     .executeCommand(String.format("read file where filnam = '${LESDIR}/log/%s'",
                                             openMocaTraceOutlineRequest.requestedTraceFileName));
 
-                            MocaServices.mocaTraceOutlineResult = MocaTraceOutliner
-                                    .outlineTrace(openMocaTraceOutlineRequest.requestedTraceFileName, true, true, res);
+                            MocaServices.mocaTraceOutlineResult = MocaTraceOutliner.outlineTrace(
+                                    openMocaTraceOutlineRequest.requestedTraceFileName, true, true, .5, res);
 
                             openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
                                     MocaServices.mocaTraceOutlineResult.toString(), null);
@@ -418,7 +418,7 @@ public class ExecuteCommandProvider {
                                 MocaServices.mocaTraceOutlineResult = MocaTraceOutliner.outlineTrace(
                                         openMocaTraceOutlineRequest.requestedTraceFileName.substring(
                                                 openMocaTraceOutlineRequest.requestedTraceFileName.lastIndexOf("/")),
-                                        true, true, reader);
+                                        true, true, .5, reader);
                                 openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
                                         MocaServices.mocaTraceOutlineResult.toString(), null);
                             } catch (IOException ioException) {

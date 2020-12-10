@@ -125,6 +125,7 @@ public class MocaTraceOutliner {
     private String traceFileName;
     private boolean useLogicalIndentStrategy;
     private boolean showCurlyBraces;
+    private double minimumExecutionTime; // Used only for semantic highlighting.
     private int lineNum;
     private StringBuilder lineTextBuffer;
     private ArrayList<String> absoluteTraceLines;
@@ -138,10 +139,12 @@ public class MocaTraceOutliner {
     private HashMap<String, HashMap<String, String>> argumentsMap;
     private HashMap<String, Stack<ReturnedRows>> returnedRowsStackMap;
 
-    private MocaTraceOutliner(String traceFileName, boolean useLogicalIndentStrategy, boolean showCurlyBraces) {
+    private MocaTraceOutliner(String traceFileName, boolean useLogicalIndentStrategy, boolean showCurlyBraces,
+            double minimumExecutionTime) {
         this.traceFileName = traceFileName;
         this.useLogicalIndentStrategy = useLogicalIndentStrategy;
         this.showCurlyBraces = showCurlyBraces;
+        this.minimumExecutionTime = minimumExecutionTime;
         this.lineNum = 0;
         this.lineTextBuffer = new StringBuilder(2048);
         this.absoluteTraceLines = new ArrayList<>();
@@ -1241,13 +1244,14 @@ public class MocaTraceOutliner {
 
     private MocaTraceOutlineResult toResult() {
         return new MocaTraceOutlineResult(this.traceFileName, this.outlineMap, this.orderedOutlineIds,
-                this.absoluteTraceLines, this.relativeTraceLinesMap);
+                this.absoluteTraceLines, this.relativeTraceLinesMap, this.minimumExecutionTime);
     }
 
     public static MocaTraceOutlineResult outlineTrace(String traceFileName, boolean useLogicalIndentStrategy,
-            boolean showCurlyBraces, MocaResults res) {
+            boolean showCurlyBraces, double minimumExecutionTime, MocaResults res) {
 
-        MocaTraceOutliner outliner = new MocaTraceOutliner(traceFileName, useLogicalIndentStrategy, showCurlyBraces);
+        MocaTraceOutliner outliner = new MocaTraceOutliner(traceFileName, useLogicalIndentStrategy, showCurlyBraces,
+                minimumExecutionTime);
 
         for (int i = 1; i < res.getRowCount(); i++) {
             outliner.readLine(i, res.getString(i, "text"));
@@ -1257,9 +1261,10 @@ public class MocaTraceOutliner {
     }
 
     public static MocaTraceOutlineResult outlineTrace(String traceFileName, boolean useLogicalIndentStrategy,
-            boolean showCurlyBraces, BufferedReader bufferedReader) throws IOException {
+            boolean showCurlyBraces, double minimumExecutionTime, BufferedReader bufferedReader) throws IOException {
 
-        MocaTraceOutliner outliner = new MocaTraceOutliner(traceFileName, useLogicalIndentStrategy, showCurlyBraces);
+        MocaTraceOutliner outliner = new MocaTraceOutliner(traceFileName, useLogicalIndentStrategy, showCurlyBraces,
+                minimumExecutionTime);
 
         int lineNum = 1;
         String line = bufferedReader.readLine();

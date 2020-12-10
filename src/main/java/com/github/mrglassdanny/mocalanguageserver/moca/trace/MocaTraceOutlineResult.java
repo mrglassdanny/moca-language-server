@@ -13,10 +13,11 @@ public class MocaTraceOutlineResult {
     // stack frame for actual line.
     public HashMap<Integer, MocaTraceStackFrame> actualLinesMap; // Line numbers start at 1.
     public ArrayList<Integer> outlineIdLineNumbers; // Easy way for decorations to be applied to outline ID lines.
+    public double minimumExecutionTime; // Used only for semantic highlighting.
 
     public MocaTraceOutlineResult(String traceFileName, HashMap<String, ArrayList<MocaTraceStackFrame>> outlineMap,
             ArrayList<String> orderedOutlineIds, ArrayList<String> absoluteTraceLines,
-            HashMap<String, ArrayList<String>> relativeTraceLinesMap) {
+            HashMap<String, ArrayList<String>> relativeTraceLinesMap, double minimumExecutionTime) {
 
         // Remove .log from file name.
         this.traceFileName = traceFileName.replace(".log", "");
@@ -32,6 +33,8 @@ public class MocaTraceOutlineResult {
         }
 
         this.absoluteTraceLines.addAll(absoluteTraceLines);
+
+        this.minimumExecutionTime = minimumExecutionTime;
 
     }
 
