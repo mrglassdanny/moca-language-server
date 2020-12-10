@@ -45,6 +45,7 @@ public class MocaTraceStackFrame {
     public String componentLevel; // MOCA command component level.
     public boolean isCFunction; // Tells if C function.
     public boolean isJavaMethod; // Tells if Java method.
+    public boolean isGroovy; // Tells if Groovy script.
     public boolean isFiringTriggers; // Indicates if "Firing triggers" instruction.
     public boolean isTrigger; // Indicates if instruction is the first instruction for a trigger (under
                               // "Firing triggers" instruction!).
@@ -78,6 +79,7 @@ public class MocaTraceStackFrame {
         this.componentLevel = null;
         this.isCFunction = false;
         this.isJavaMethod = false;
+        this.isGroovy = false;
         this.isFiringTriggers = false;
         this.isTrigger = false;
         this.isRemote = false;

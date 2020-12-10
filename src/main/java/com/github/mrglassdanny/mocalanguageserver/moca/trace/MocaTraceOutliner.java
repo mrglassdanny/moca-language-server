@@ -309,7 +309,15 @@ public class MocaTraceOutliner {
             // Pop if we are clearly coming up from an outline and indent stack frame
             // perspective.
             if (outline.get(outline.size() - 1).stackLevel > stackLevel
-                    && indentStack.peek().stackLevel >= stackLevel) {
+                    && indentStack.peek().stackLevel >= stackLevel - 1) {
+                processExplicitUnindentForLogicalIndentStrategy(indentStack, false);
+                processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline, outlineId);
+            }
+        } else {
+            // Edge case coverage: if groovy instruction and something fails during, we will
+            // get a groovy script exec complete match. Therefore, we need to look for these
+            // and handle them.
+            if (indentStack.peek().isGroovy && indentStack.peek().stackLevel > stackLevel) {
                 processExplicitUnindentForLogicalIndentStrategy(indentStack, false);
                 processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline, outlineId);
             }
@@ -831,6 +839,8 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         published.clear();
                         arguments.clear();
+
+                        outline.get(outline.size() - 1).isGroovy = true;
 
                         processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
 
