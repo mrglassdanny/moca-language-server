@@ -122,24 +122,42 @@ public class MocaTraceOutliner {
     private static final Pattern MESSAGE_EXECUTION_TIME_REGEX_PATTERN = Pattern
             .compile("(Execute Time:) ([0-9.]+) (s)");
 
-    public static boolean useLogicalIndentStrategy = true;
+    private String traceFileName;
+    private boolean useLogicalIndentStrategy;
+    private boolean showCurlyBraces;
+    private int lineNum;
+    private StringBuilder lineTextBuffer;
+    private ArrayList<String> absoluteTraceLines;
+    private HashMap<String, ArrayList<String>> relativeTraceLinesMap;
+    private HashMap<String, ArrayList<MocaTraceStackFrame>> outlineMap;
+    private ArrayList<String> orderedOutlineIds; // Outline IDs stored in the order in which we come across them.
+                                                 // HashMaps do not order outlines this way.
+    private HashMap<String, Stack<MocaTraceStackFrame>> indentStackMap;
+    private HashMap<String, Integer> previousStackLevelMap;
+    private HashMap<String, HashMap<String, String>> publishedMap;
+    private HashMap<String, HashMap<String, String>> argumentsMap;
+    private HashMap<String, Stack<ReturnedRows>> returnedRowsStackMap;
 
-    private static int lineNum;
-    private static StringBuilder lineTextBuffer;
-    private static ArrayList<String> absoluteTraceLines;
-    private static HashMap<String, ArrayList<String>> relativeTraceLinesMap;
-    private static HashMap<String, ArrayList<MocaTraceStackFrame>> outlineMap;
-    private static ArrayList<String> orderedOutlineIds; // Outline IDs stored in the order in which we come across them.
-                                                        // HashMaps do not order outlines this way.
-    private static HashMap<String, Stack<MocaTraceStackFrame>> indentStackMap;
-    private static HashMap<String, Integer> previousStackLevelMap;
-    private static HashMap<String, HashMap<String, String>> publishedMap;
-    private static HashMap<String, HashMap<String, String>> argumentsMap;
-    private static HashMap<String, Stack<ReturnedRows>> returnedRowsStackMap;
+    private MocaTraceOutliner(String traceFileName, boolean useLogicalIndentStrategy, boolean showCurlyBraces) {
+        this.traceFileName = traceFileName;
+        this.useLogicalIndentStrategy = useLogicalIndentStrategy;
+        this.showCurlyBraces = showCurlyBraces;
+        this.lineNum = 0;
+        this.lineTextBuffer = new StringBuilder(2048);
+        this.absoluteTraceLines = new ArrayList<>();
+        this.relativeTraceLinesMap = new HashMap<>();
+        this.outlineMap = new HashMap<>();
+        this.orderedOutlineIds = new ArrayList<>();
+        this.indentStackMap = new HashMap<>();
+        this.previousStackLevelMap = new HashMap<>();
+        this.publishedMap = new HashMap<>();
+        this.argumentsMap = new HashMap<>();
+        this.returnedRowsStackMap = new HashMap<>();
+    }
 
-    private static String buildIndentString(Stack<MocaTraceStackFrame> indentStack, int stackLevel) {
+    private String buildIndentString(Stack<MocaTraceStackFrame> indentStack, int stackLevel) {
 
-        if (MocaTraceOutliner.useLogicalIndentStrategy) {
+        if (this.useLogicalIndentStrategy) {
             StringBuilder buf = new StringBuilder(indentStack.size());
             for (int i = 0; i < indentStack.size(); i++) {
                 buf.append('\t');
@@ -158,8 +176,7 @@ public class MocaTraceOutliner {
     // This gets called when we have a scenario where we know we need to pop an
     // indent stack frame. "Explicit" is used here because the tell for popping
     // indent stack frames here is clear.
-    private static MocaTraceStackFrame processExplicitUnindent(Stack<MocaTraceStackFrame> indentStack,
-            boolean checkSize) {
+    private MocaTraceStackFrame processExplicitUnindent(Stack<MocaTraceStackFrame> indentStack, boolean checkSize) {
         if (checkSize) {
             if (indentStack.size() > 0) {
                 return indentStack.pop();
@@ -175,7 +192,7 @@ public class MocaTraceOutliner {
     // This gets called when we are not sure whether or not we need to pop an indent
     // stack frame. "Implicit" is used here because the tell for popping indent
     // stack frames here is not explicit.
-    private static void processImplicitUnindent(Stack<MocaTraceStackFrame> indentStack, int stackLevel,
+    private void processImplicitUnindent(Stack<MocaTraceStackFrame> indentStack, int stackLevel,
             ArrayList<MocaTraceStackFrame> outline, String outlineId) {
 
         // Need to quit if no indents.
@@ -294,7 +311,23 @@ public class MocaTraceOutliner {
 
     }
 
-    private static void readLine(int lineNum, String lineText) {
+    private void processReturnedRowsForChild(Stack<ReturnedRows> returnedRowsStack, int stackLevel,
+            MocaTraceStackFrame stackFrame) {
+        if (returnedRowsStack.size() > 0) {
+            if (returnedRowsStack.peek().stackLevel == stackLevel - 1) {
+
+                returnedRowsStack.peek().visitedRows++;
+
+                stackFrame.parentReturnedRows = returnedRowsStack.peek().totalRows;
+                stackFrame.rowNumberToParent = returnedRowsStack.peek().visitedRows;
+
+                stackFrame.instructionPrefix = String.format("(%d/%d) ", stackFrame.rowNumberToParent,
+                        stackFrame.parentReturnedRows);
+            }
+        }
+    }
+
+    private void readLine(int lineNum, String lineText) {
 
         // We are passing the trace file contents line by line into this
         // function. For the most part, a line represents a perfect match via our trace
@@ -307,19 +340,18 @@ public class MocaTraceOutliner {
         // match.
 
         // The lineNum member will be in line with how we are processing lines ^.
-        if (MocaTraceOutliner.lineTextBuffer.length() == 0) {
-            MocaTraceOutliner.lineNum = lineNum;
+        if (this.lineTextBuffer.length() == 0) {
+            this.lineNum = lineNum;
         }
 
-        MocaTraceOutliner.lineTextBuffer.append(lineText);
+        this.lineTextBuffer.append(lineText);
 
-        Matcher traceLineMatcher = MocaTraceOutliner.TRACE_LINE_REGEX_PATTERN
-                .matcher(MocaTraceOutliner.lineTextBuffer.toString());
+        Matcher traceLineMatcher = MocaTraceOutliner.TRACE_LINE_REGEX_PATTERN.matcher(this.lineTextBuffer.toString());
 
         if (traceLineMatcher.find()) {
 
             // Add to absolute trace line list now.
-            MocaTraceOutliner.absoluteTraceLines.add(MocaTraceOutliner.lineTextBuffer.toString());
+            this.absoluteTraceLines.add(this.lineTextBuffer.toString());
 
             String thread = traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_THREAD_GROUP_IDX);
             String session = traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_SESSION_GROUP_IDX);
@@ -330,20 +362,20 @@ public class MocaTraceOutliner {
             String outlineId = String.format("%s-%s", thread, session);
 
             // When we come across a new outline, add it to ordered list.
-            if (!MocaTraceOutliner.orderedOutlineIds.contains(outlineId)) {
-                MocaTraceOutliner.orderedOutlineIds.add(outlineId);
+            if (!this.orderedOutlineIds.contains(outlineId)) {
+                this.orderedOutlineIds.add(outlineId);
             }
 
             // Relative line number refers to line num relative to outline ID.
             int relativeLineNum;
-            if (MocaTraceOutliner.relativeTraceLinesMap.containsKey(outlineId)) {
-                ArrayList<String> relativeLines = MocaTraceOutliner.relativeTraceLinesMap.get(outlineId);
-                relativeLines.add(MocaTraceOutliner.lineTextBuffer.toString());
+            if (this.relativeTraceLinesMap.containsKey(outlineId)) {
+                ArrayList<String> relativeLines = this.relativeTraceLinesMap.get(outlineId);
+                relativeLines.add(this.lineTextBuffer.toString());
                 relativeLineNum = relativeLines.size();
             } else {
                 ArrayList<String> relativeLines = new ArrayList<>();
-                relativeLines.add(MocaTraceOutliner.lineTextBuffer.toString());
-                MocaTraceOutliner.relativeTraceLinesMap.put(outlineId, relativeLines);
+                relativeLines.add(this.lineTextBuffer.toString());
+                this.relativeTraceLinesMap.put(outlineId, relativeLines);
                 relativeLineNum = relativeLines.size();
             }
 
@@ -363,39 +395,39 @@ public class MocaTraceOutliner {
                 String message = traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_MESSAGE_GROUP_IDX);
 
                 ArrayList<MocaTraceStackFrame> outline;
-                if (MocaTraceOutliner.outlineMap.containsKey(outlineId)) {
-                    outline = MocaTraceOutliner.outlineMap.get(outlineId);
+                if (this.outlineMap.containsKey(outlineId)) {
+                    outline = this.outlineMap.get(outlineId);
                 } else {
                     outline = new ArrayList<>();
-                    MocaTraceOutliner.outlineMap.put(outlineId, outline);
+                    this.outlineMap.put(outlineId, outline);
                 }
                 Stack<MocaTraceStackFrame> indentStack;
-                if (MocaTraceOutliner.indentStackMap.containsKey(outlineId)) {
-                    indentStack = MocaTraceOutliner.indentStackMap.get(outlineId);
+                if (this.indentStackMap.containsKey(outlineId)) {
+                    indentStack = this.indentStackMap.get(outlineId);
                 } else {
                     indentStack = new Stack<>();
-                    MocaTraceOutliner.indentStackMap.put(outlineId, indentStack);
+                    this.indentStackMap.put(outlineId, indentStack);
                 }
                 HashMap<String, String> published;
-                if (MocaTraceOutliner.publishedMap.containsKey(outlineId)) {
-                    published = MocaTraceOutliner.publishedMap.get(outlineId);
+                if (this.publishedMap.containsKey(outlineId)) {
+                    published = this.publishedMap.get(outlineId);
                 } else {
                     published = new HashMap<>();
-                    MocaTraceOutliner.publishedMap.put(outlineId, published);
+                    this.publishedMap.put(outlineId, published);
                 }
                 HashMap<String, String> arguments;
-                if (MocaTraceOutliner.argumentsMap.containsKey(outlineId)) {
-                    arguments = MocaTraceOutliner.argumentsMap.get(outlineId);
+                if (this.argumentsMap.containsKey(outlineId)) {
+                    arguments = this.argumentsMap.get(outlineId);
                 } else {
                     arguments = new HashMap<>();
-                    MocaTraceOutliner.argumentsMap.put(outlineId, arguments);
+                    this.argumentsMap.put(outlineId, arguments);
                 }
                 Stack<ReturnedRows> returnedRowsStack;
-                if (MocaTraceOutliner.returnedRowsStackMap.containsKey(outlineId)) {
-                    returnedRowsStack = MocaTraceOutliner.returnedRowsStackMap.get(outlineId);
+                if (this.returnedRowsStackMap.containsKey(outlineId)) {
+                    returnedRowsStack = this.returnedRowsStackMap.get(outlineId);
                 } else {
                     returnedRowsStack = new Stack<>();
-                    MocaTraceOutliner.returnedRowsStackMap.put(outlineId, returnedRowsStack);
+                    this.returnedRowsStackMap.put(outlineId, returnedRowsStack);
                 }
 
                 // If we come across trace stack start/end cues, we need to clear the stack and
@@ -412,9 +444,9 @@ public class MocaTraceOutliner {
                     // Indenting via "{}" below for organization purposes and to illustrate exactly
                     // what we are looking for in the trace -- lol.
                     {
-                        MocaTraceOutliner.previousStackLevelMap.get(outlineId);
-                        if (MocaTraceOutliner.previousStackLevelMap.containsKey(outlineId)) {
-                            int previousStackLevel = MocaTraceOutliner.previousStackLevelMap.get(outlineId);
+                        this.previousStackLevelMap.get(outlineId);
+                        if (this.previousStackLevelMap.containsKey(outlineId)) {
+                            int previousStackLevel = this.previousStackLevelMap.get(outlineId);
                             if (previousStackLevel < stackLevel) { // Going down (1 -> 3).
                                 int p = previousStackLevel;
                                 while (p < stackLevel - 1) {
@@ -438,7 +470,7 @@ public class MocaTraceOutliner {
 
                         }
 
-                        MocaTraceOutliner.previousStackLevelMap.put(outlineId, stackLevel);
+                        this.previousStackLevelMap.put(outlineId, stackLevel);
                     }
 
                     // Returned rows analysis.
@@ -1171,94 +1203,51 @@ public class MocaTraceOutliner {
             }
 
             // Need to clear line text buf for next read line call.
-            MocaTraceOutliner.lineTextBuffer.setLength(0);
+            this.lineTextBuffer.setLength(0);
         }
 
     }
 
-    public static MocaTraceOutlineResult outlineTrace(String traceFileName, MocaResults res) {
+    private MocaTraceOutlineResult toResult() {
+        return new MocaTraceOutlineResult(this.traceFileName, this.outlineMap, this.orderedOutlineIds,
+                this.absoluteTraceLines, this.relativeTraceLinesMap);
+    }
 
-        // Reset all fields.
-        MocaTraceOutliner.lineNum = -1;
-        MocaTraceOutliner.lineTextBuffer = new StringBuilder(2048);
-        MocaTraceOutliner.absoluteTraceLines = new ArrayList<>();
-        MocaTraceOutliner.relativeTraceLinesMap = new HashMap<>();
-        MocaTraceOutliner.outlineMap = new HashMap<>();
-        MocaTraceOutliner.orderedOutlineIds = new ArrayList<>();
-        MocaTraceOutliner.indentStackMap = new HashMap<>();
-        MocaTraceOutliner.previousStackLevelMap = new HashMap<>();
-        MocaTraceOutliner.publishedMap = new HashMap<>();
-        MocaTraceOutliner.argumentsMap = new HashMap<>();
-        MocaTraceOutliner.returnedRowsStackMap = new HashMap<>();
+    public static MocaTraceOutlineResult outlineTrace(String traceFileName, boolean useLogicalIndentStrategy,
+            boolean showCurlyBraces, MocaResults res) {
 
-        // Process trace outlining.
+        MocaTraceOutliner outliner = new MocaTraceOutliner(traceFileName, useLogicalIndentStrategy, showCurlyBraces);
+
         for (int i = 1; i < res.getRowCount(); i++) {
-            MocaTraceOutliner.readLine(i, res.getString(i, "text"));
+            outliner.readLine(i, res.getString(i, "text"));
         }
 
-        // Initialize result structure and return it.
-        MocaTraceOutlineResult outlineResult = new MocaTraceOutlineResult(traceFileName, MocaTraceOutliner.outlineMap,
-                MocaTraceOutliner.orderedOutlineIds, MocaTraceOutliner.absoluteTraceLines,
-                MocaTraceOutliner.relativeTraceLinesMap);
-
-        return outlineResult;
+        return outliner.toResult();
     }
 
-    // TODO
-    public static MocaTraceOutlineResult outlineTrace(String traceFileName, BufferedReader bufferedReader)
-            throws IOException {
+    public static MocaTraceOutlineResult outlineTrace(String traceFileName, boolean useLogicalIndentStrategy,
+            boolean showCurlyBraces, BufferedReader bufferedReader) throws IOException {
 
-        // Reset all fields.
-        MocaTraceOutliner.lineNum = -1;
-        MocaTraceOutliner.lineTextBuffer = new StringBuilder(2048);
-        MocaTraceOutliner.absoluteTraceLines = new ArrayList<>();
-        MocaTraceOutliner.relativeTraceLinesMap = new HashMap<>();
-        MocaTraceOutliner.outlineMap = new HashMap<>();
-        MocaTraceOutliner.orderedOutlineIds = new ArrayList<>();
-        MocaTraceOutliner.indentStackMap = new HashMap<>();
-        MocaTraceOutliner.previousStackLevelMap = new HashMap<>();
-        MocaTraceOutliner.publishedMap = new HashMap<>();
-        MocaTraceOutliner.argumentsMap = new HashMap<>();
-        MocaTraceOutliner.returnedRowsStackMap = new HashMap<>();
+        MocaTraceOutliner outliner = new MocaTraceOutliner(traceFileName, useLogicalIndentStrategy, showCurlyBraces);
 
-        // Process trace outlining.
+        int lineNum = 1;
         String line = bufferedReader.readLine();
         while (line != null) {
-            MocaTraceOutliner.readLine(lineNum++, line);
+            outliner.readLine(lineNum++, line);
             line = bufferedReader.readLine();
         }
 
-        // Initialize result structure and return it.
-        MocaTraceOutlineResult outlineResult = new MocaTraceOutlineResult(traceFileName, MocaTraceOutliner.outlineMap,
-                MocaTraceOutliner.orderedOutlineIds, MocaTraceOutliner.absoluteTraceLines,
-                MocaTraceOutliner.relativeTraceLinesMap);
-
-        return outlineResult;
-    }
-
-    private static void processReturnedRowsForChild(Stack<ReturnedRows> returnedRowsStack, int stackLevel,
-            MocaTraceStackFrame stackFrame) {
-        if (returnedRowsStack.size() > 0) {
-            if (returnedRowsStack.peek().stackLevel == stackLevel - 1) {
-
-                returnedRowsStack.peek().visitedRows++;
-
-                stackFrame.parentReturnedRows = returnedRowsStack.peek().totalRows;
-                stackFrame.rowNumberToParent = returnedRowsStack.peek().visitedRows;
-
-                stackFrame.instructionPrefix = String.format("(%d/%d) ", stackFrame.rowNumberToParent,
-                        stackFrame.parentReturnedRows);
-            }
-        }
+        return outliner.toResult();
     }
 
 }
 
+// Basic data structure to aid with parent instruction returned row processing.
 class ReturnedRows {
     int stackLevel;
     int totalRows;
     int visitedRows;
-    boolean fromJdbc;
+    boolean fromJdbc; // Slightly different logic in some places if from jdbc logger.
 
     ReturnedRows(int stackLevel, int totalRows, boolean fromJdbc) {
         this.stackLevel = stackLevel;
