@@ -8,12 +8,11 @@ public class MocaTraceOutlineResult {
     public String traceFileName;
     public ArrayList<MocaTraceOutline> outlines;
     public ArrayList<String> absoluteTraceLines;
-    // This will associate actual editor line number with trace stack frame so that
-    // we do not have to spend time analyzing outlines to find correct stack frame
-    // for actual line.
+    // actualLinesMap will associate actual editor line number with trace stack
+    // frame so that we do not have to spend time analyzing outlines to find correct
+    // stack frame for actual line.
     public HashMap<Integer, MocaTraceStackFrame> actualLinesMap; // Line numbers start at 1.
-    public ArrayList<Integer> outlineIdLineNumbers; // Nice and easy way for decorations to be applied to outline ID
-                                                    // lines.
+    public ArrayList<Integer> outlineIdLineNumbers; // Easy way for decorations to be applied to outline ID lines.
 
     public MocaTraceOutlineResult(String traceFileName, HashMap<String, ArrayList<MocaTraceStackFrame>> outlineMap,
             ArrayList<String> orderedOutlineIds, ArrayList<String> absoluteTraceLines,
@@ -39,11 +38,12 @@ public class MocaTraceOutlineResult {
     @Override
     public String toString() {
 
-        StringBuilder buf = new StringBuilder(8196);
+        StringBuilder buf = new StringBuilder(65536);
 
         int actualLineNum = 1;
 
         for (MocaTraceOutline outline : this.outlines) {
+
             buf.append(
                     "/* ------------------------------------------------------------------------------------------------------------------ Thread-Session: "
                             + outline.id
@@ -51,13 +51,10 @@ public class MocaTraceOutlineResult {
             this.outlineIdLineNumbers.add(actualLineNum - 1);
             actualLineNum++;
 
-            StringBuilder outlineBuf = new StringBuilder(2048);
-            for (MocaTraceStackFrame t : outline.frames) {
-                this.actualLinesMap.put(actualLineNum, t);
-                outlineBuf.append(t.indentStr);
-                outlineBuf.append(t.instructionPrefix);
-                outlineBuf.append(t.instruction);
-                outlineBuf.append(t.instructionSuffix);
+            StringBuilder outlineBuf = new StringBuilder(8192);
+            for (MocaTraceStackFrame frame : outline.frames) {
+                this.actualLinesMap.put(actualLineNum, frame);
+                outlineBuf.append(frame.toString());
                 outlineBuf.append('\n');
                 actualLineNum++;
             }

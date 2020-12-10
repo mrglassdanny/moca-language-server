@@ -461,7 +461,7 @@ public class MocaTraceOutliner {
                                         && outline.get(i).parentReturnedRows == poppedReturnedRows.totalRows) {
                                     outline.get(i).instructionPrefix = "";
                                     outline.get(i).parentReturnedRows = 0;
-                                    outline.get(i).rowNumber = 0;
+                                    outline.get(i).rowNumberToParent = 0;
                                 } else if (outline.get(i).stackLevel <= poppedReturnedRows.stackLevel) {
                                     break;
                                 }
@@ -764,7 +764,7 @@ public class MocaTraceOutliner {
                     matcher = MocaTraceOutliner.MESSAGE_PREPAREDSTATEMENT_EXECUTE_REGEX_PATTERN.matcher(message);
                     if (matcher.find()) {
 
-                        outline.get(outline.size() - 1).actualPreparedStatementQuery = "["
+                        outline.get(outline.size() - 1).preparedStatementQuery = "["
                                 + matcher.group(3).trim().replace('\n', ' ') + "]";
                     }
 
@@ -1244,9 +1244,9 @@ public class MocaTraceOutliner {
                 returnedRowsStack.peek().visitedRows++;
 
                 stackFrame.parentReturnedRows = returnedRowsStack.peek().totalRows;
-                stackFrame.rowNumber = returnedRowsStack.peek().visitedRows;
+                stackFrame.rowNumberToParent = returnedRowsStack.peek().visitedRows;
 
-                stackFrame.instructionPrefix = String.format("(%d/%d) ", stackFrame.rowNumber,
+                stackFrame.instructionPrefix = String.format("(%d/%d) ", stackFrame.rowNumberToParent,
                         stackFrame.parentReturnedRows);
             }
         }

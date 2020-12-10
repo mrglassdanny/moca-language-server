@@ -375,7 +375,7 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
                         }
                     }
 
-                    if (frame.rowNumber > 0) {
+                    if (frame.rowNumberToParent > 0) {
                         Position pos = new Position(lineNum, frame.indentStr.length());
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
