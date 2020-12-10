@@ -327,8 +327,6 @@ public class MocaTraceOutliner {
                 stackFrame.parentReturnedRows = returnedRowsStack.peek().totalRows;
                 stackFrame.rowNumberToParent = returnedRowsStack.peek().visitedRows;
 
-                stackFrame.instructionPrefix = String.format("(%d/%d) ", stackFrame.rowNumberToParent,
-                        stackFrame.parentReturnedRows);
             }
         }
     }
@@ -503,7 +501,6 @@ public class MocaTraceOutliner {
                             for (int i = outline.size() - 1; i >= 0; i--) {
                                 if (outline.get(i).stackLevel == poppedReturnedRows.stackLevel + 1
                                         && outline.get(i).parentReturnedRows == poppedReturnedRows.totalRows) {
-                                    outline.get(i).instructionPrefix = "";
                                     outline.get(i).parentReturnedRows = 0;
                                     outline.get(i).rowNumberToParent = 0;
                                 } else if (outline.get(i).stackLevel <= poppedReturnedRows.stackLevel) {
@@ -616,8 +613,6 @@ public class MocaTraceOutliner {
                         outline.get(outline.size() - 1).arguments.putAll(arguments);
                         published.clear();
                         arguments.clear();
-
-                        outline.get(outline.size() - 1).instructionPrefix = "Firing Triggers for: ";
 
                         indentStack.push(outline.get(outline.size() - 1));
                     }

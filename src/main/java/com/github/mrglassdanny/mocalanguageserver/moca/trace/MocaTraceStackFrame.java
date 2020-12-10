@@ -19,14 +19,18 @@ public class MocaTraceStackFrame {
                                // MOCA instruction.
     public String instructionStatus; // Stack frames have 1 instruction status. Status will be a specific format that
                                      // we can analyze.
-    public String instructionPrefix; // Since instruction is not meant to be anything but actual MOCA instruction, we
-                                     // will have a prefix string for display purposes. NOTE: we also have text
-                                     // decorations that could be before/after instruction, but it should not affect
-                                     // this!
-    public String instructionSuffix; // Since instruction is not meant to be anything but actual MOCA instruction, we
-                                     // will have a suffix string for display purposes. NOTE: we also have text
-                                     // decorations that could be before/after instruction, but it should not affect
-                                     // this!
+    private String instructionPrefix; // Since instruction is not meant to be anything but actual MOCA instruction, we
+                                      // will have a prefix string for display purposes. NOTE: we also have text
+                                      // decorations that could be before/after instruction, but it should not affect
+                                      // this! NOTE: is private since we do not want any outsiders writing to this --
+                                      // our public fields will influence what we write to this during our toString
+                                      // method
+    private String instructionSuffix; // Since instruction is not meant to be anything but actual MOCA instruction, we
+                                      // will have a suffix string for display purposes. NOTE: we also have text
+                                      // decorations that could be before/after instruction, but it should not affect
+                                      // this! NOTE: is private since we do not want any outsiders writing to this --
+                                      // our public fields will influence what we write to this during our toString
+                                      // method.
     public int returnedRows; // How many rows returned from instruction.
     public int parentReturnedRows; // How many rows did parent instruction return.
     public int rowNumberToParent; // Which row am I in regards to parent instruction returned rows.
@@ -92,6 +96,15 @@ public class MocaTraceStackFrame {
 
     @Override
     public String toString() {
+
+        if (this.isFiringTriggers) {
+            this.instructionPrefix += "Firing Triggers for: ";
+        }
+
+        if (this.rowNumberToParent > 0 && this.parentReturnedRows > 0) {
+            this.instructionPrefix += String.format("(%d/%d) ", this.rowNumberToParent, this.parentReturnedRows);
+        }
+
         return this.indentStr + this.instructionPrefix + this.instruction + this.instructionSuffix;
     }
 
@@ -213,4 +226,11 @@ public class MocaTraceStackFrame {
         return buf.toString();
     }
 
+    public int getInstructionPrefixLen() {
+        return this.instructionPrefix.length();
+    }
+
+    public int getInstructionSuffixLen() {
+        return this.instructionSuffix.length();
+    }
 }
