@@ -20,24 +20,28 @@ import org.eclipse.lsp4j.util.SemanticHighlightingTokens.Token;
 public class MocaTraceOutlineServiceSemanticHighlightingManager {
 
     // Integers represent indicies in list sent to MocaLanguageServer.
-    private static final int SERVER_GOT_SCOPES_IDX = 7;
-    private static final int COMMAND_INITIATED_SCOPES_IDX = 8;
-    private static final int COMMAND_SCOPES_IDX = 9;
-    private static final int FIRING_TRIGGERS_SCOPES_IDX = 10;
-    private static final int TRIGGER_SCOPES_IDX = 11;
-    private static final int ERROR_SCOPES_IDX = 12;
-    private static final int ERROR_CAUGHT_SCOPES = 13;
-    private static final int CONDITIONAL_TEST_PASS_SCOPES_IDX = 14;
-    private static final int CONDITIONAL_TEST_FAIL_SCOPES_IDX = 15;
-    private static final int PREPARED_STATEMENT_SCOPES_IDX = 16;
-    private static final int EXECUTION_TIME_SCOPES_IDX = 17;
-    private static final int C_FUNCTION_SCOPES_IDX = 18;
-    private static final int JAVA_METHOD_SCOPES_IDX = 19;
-    private static final int ROW_X_OF_Y_SCOPES_IDX = 20;
+    private static final int OUTLINE_ID_SCOPES_IDX = 7;
+    private static final int SERVER_GOT_SCOPES_IDX = 8;
+    private static final int COMMAND_INITIATED_SCOPES_IDX = 9;
+    private static final int COMMAND_SCOPES_IDX = 10;
+    private static final int FIRING_TRIGGERS_SCOPES_IDX = 11;
+    private static final int TRIGGER_SCOPES_IDX = 12;
+    private static final int ERROR_SCOPES_IDX = 13;
+    private static final int ERROR_CAUGHT_SCOPES = 14;
+    private static final int CONDITIONAL_TEST_PASS_SCOPES_IDX = 15;
+    private static final int CONDITIONAL_TEST_FAIL_SCOPES_IDX = 16;
+    private static final int PREPARED_STATEMENT_SCOPES_IDX = 17;
+    private static final int EXECUTION_TIME_SCOPES_IDX = 18;
+    private static final int C_FUNCTION_SCOPES_IDX = 19;
+    private static final int JAVA_METHOD_SCOPES_IDX = 20;
+    private static final int ROW_X_OF_Y_SCOPES_IDX = 21;
 
     public static List<List<String>> textmateScopes = new ArrayList<>();
 
     public static void setTextmateScopes() {
+
+        List<String> mocaTraceOutlineOutlineIdScopes = new ArrayList<>();
+        mocaTraceOutlineOutlineIdScopes.add("moca.traceoutline.outlineid");
 
         List<String> mocaTraceOutlineServerGotScopes = new ArrayList<>();
         mocaTraceOutlineServerGotScopes.add("moca.traceoutline.servergot");
@@ -81,6 +85,7 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
         List<String> mocaTraceOutlineRowXOfYScopes = new ArrayList<>();
         mocaTraceOutlineRowXOfYScopes.add("moca.traceoutline.rowxofy");
 
+        textmateScopes.add(mocaTraceOutlineOutlineIdScopes);
         textmateScopes.add(mocaTraceOutlineServerGotScopes);
         textmateScopes.add(mocaTraceOutlineCommandInitiatedScopes);
         textmateScopes.add(mocaTraceOutlineMocaCommandScopes);
@@ -131,6 +136,21 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
 
         // Go ahead and stop now if null compilation result.
         if (mocaTraceOutlineResult != null) {
+
+            for (int outlineIdLineNum : mocaTraceOutlineResult.outlineIdLineNumbers) {
+                Position pos = new Position(outlineIdLineNum, 0);
+                if (pos != null) {
+                    if (preInfos.containsKey(pos.getLine())) {
+                        preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(), 1,
+                                MocaTraceOutlineServiceSemanticHighlightingManager.OUTLINE_ID_SCOPES_IDX));
+                    } else {
+                        ArrayList<Token> tokensArr = new ArrayList<>();
+                        tokensArr.add(new Token(pos.getCharacter(), 1,
+                                MocaTraceOutlineServiceSemanticHighlightingManager.OUTLINE_ID_SCOPES_IDX));
+                        preInfos.put(pos.getLine(), tokensArr);
+                    }
+                }
+            }
 
             int lineNum = 1;
             for (MocaTraceOutline outline : mocaTraceOutlineResult.outlines) {

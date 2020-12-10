@@ -12,6 +12,8 @@ public class MocaTraceOutlineResult {
     // we do not have to spend time analyzing outlines to find correct stack frame
     // for actual line.
     public HashMap<Integer, MocaTraceStackFrame> actualLinesMap; // Line numbers start at 1.
+    public ArrayList<Integer> outlineIdLineNumbers; // Nice and easy way for decorations to be applied to outline ID
+                                                    // lines.
 
     public MocaTraceOutlineResult(String traceFileName, HashMap<String, ArrayList<MocaTraceStackFrame>> outlineMap,
             ArrayList<String> orderedOutlineIds, ArrayList<String> absoluteTraceLines,
@@ -22,6 +24,7 @@ public class MocaTraceOutlineResult {
         this.outlines = new ArrayList<>();
         this.absoluteTraceLines = new ArrayList<>();
         this.actualLinesMap = new HashMap<>();
+        this.outlineIdLineNumbers = new ArrayList<>();
 
         // Add according to ordered outline ID list.
         for (String outlineId : orderedOutlineIds) {
@@ -41,9 +44,13 @@ public class MocaTraceOutlineResult {
         int actualLineNum = 1;
 
         for (MocaTraceOutline outline : this.outlines) {
-            buf.append("/************************************************************ Thread-Session: " + outline.id
-                    + " ************************************************************/\n");
+            buf.append(
+                    "/* ------------------------------------------------------------------------------------------------------------------ Thread-Session: "
+                            + outline.id
+                            + " ------------------------------------------------------------------------------------------------------------------ */\n");
+            this.outlineIdLineNumbers.add(actualLineNum - 1);
             actualLineNum++;
+
             StringBuilder outlineBuf = new StringBuilder(2048);
             for (MocaTraceStackFrame t : outline.frames) {
                 this.actualLinesMap.put(actualLineNum, t);
