@@ -404,7 +404,10 @@ public class ExecuteCommandProvider {
                                             openMocaTraceOutlineRequest.requestedTraceFileName));
 
                             MocaServices.mocaTraceOutlineResult = MocaTraceOutliner.outlineTrace(
-                                    openMocaTraceOutlineRequest.requestedTraceFileName, true, true, .5, res);
+                                    openMocaTraceOutlineRequest.requestedTraceFileName,
+                                    openMocaTraceOutlineRequest.useLogicalIndentStrategy,
+                                    openMocaTraceOutlineRequest.showCurlyBraces,
+                                    openMocaTraceOutlineRequest.minimumExecutionTime, res);
 
                             openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
                                     MocaServices.mocaTraceOutlineResult.toString(), null);
@@ -418,7 +421,9 @@ public class ExecuteCommandProvider {
                                 MocaServices.mocaTraceOutlineResult = MocaTraceOutliner.outlineTrace(
                                         openMocaTraceOutlineRequest.requestedTraceFileName.substring(
                                                 openMocaTraceOutlineRequest.requestedTraceFileName.lastIndexOf("/")),
-                                        true, true, .5, reader);
+                                        openMocaTraceOutlineRequest.useLogicalIndentStrategy,
+                                        openMocaTraceOutlineRequest.showCurlyBraces,
+                                        openMocaTraceOutlineRequest.minimumExecutionTime, reader);
                                 openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
                                         MocaServices.mocaTraceOutlineResult.toString(), null);
                             } catch (IOException ioException) {

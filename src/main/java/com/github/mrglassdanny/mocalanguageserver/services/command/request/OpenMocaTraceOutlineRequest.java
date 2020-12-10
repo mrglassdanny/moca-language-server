@@ -8,6 +8,9 @@ public class OpenMocaTraceOutlineRequest {
 
     public String requestedTraceFileName;
     public boolean isRemote;
+    public boolean useLogicalIndentStrategy;
+    public boolean showCurlyBraces;
+    public double minimumExecutionTime;
 
     public OpenMocaTraceOutlineRequest(List<Object> args) throws Exception {
         if (args == null || args.isEmpty()) {
@@ -18,6 +21,12 @@ public class OpenMocaTraceOutlineRequest {
             this.requestedTraceFileName = requestedTraceFileNameJsonElem.getAsString();
             JsonElement isRemoteJsonElem = (JsonElement) args.get(1);
             this.isRemote = isRemoteJsonElem.getAsBoolean();
+            JsonElement useLogicalIndentStrategyJsonElem = (JsonElement) args.get(2);
+            this.useLogicalIndentStrategy = useLogicalIndentStrategyJsonElem.getAsBoolean();
+            JsonElement showCurlyBracesJsonElem = (JsonElement) args.get(3);
+            this.showCurlyBraces = showCurlyBracesJsonElem.getAsBoolean();
+            JsonElement minimumExecutionTimeJsonElem = (JsonElement) args.get(4);
+            this.minimumExecutionTime = minimumExecutionTimeJsonElem.getAsDouble();
         }
     }
 }
