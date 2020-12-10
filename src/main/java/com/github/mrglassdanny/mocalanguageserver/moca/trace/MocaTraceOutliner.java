@@ -439,6 +439,7 @@ public class MocaTraceOutliner {
                 if (message.compareToIgnoreCase(MocaTraceOutliner.MESSAGE_TRACE_STACK_START_TEXT) == 0) {
                     indentStack.clear();
                 } else if (message.compareToIgnoreCase(MocaTraceOutliner.MESSAGE_TRACE_STACK_END_TEXT) == 0) {
+                    processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline, outlineId);
                     indentStack.clear();
                 } else {
 
@@ -875,12 +876,15 @@ public class MocaTraceOutliner {
                                 switch (type) {
                                     case "STRING":
                                         if (value.contains("'") || value.contains("=")) {
-                                            value = (" \"" + value + "\"");
+                                            value = (" \"" + value.replace("\"", "\"\"") + "\"");
                                         } else {
                                             if (value.compareToIgnoreCase("null") != 0) {
                                                 value = (" '" + value + "'");
                                             }
                                         }
+                                        break;
+                                    case "RESULTS":
+                                        value = (" \"" + value.replace("\"", "\"\"") + "\"");
                                         break;
                                     default:
                                         break;
@@ -913,12 +917,15 @@ public class MocaTraceOutliner {
                                 switch (type) {
                                     case "STRING":
                                         if (value.contains("'") || value.contains("=")) {
-                                            value = (" \"" + value + "\"");
+                                            value = (" \"" + value.replace("\"", "\"\"") + "\"");
                                         } else {
                                             if (value.compareToIgnoreCase("null") != 0) {
                                                 value = (" '" + value + "'");
                                             }
                                         }
+                                        break;
+                                    case "RESULTS":
+                                        value = (" \"" + value.replace("\"", "\"\"") + "\"");
                                         break;
                                     default:
                                         break;
@@ -1012,12 +1019,15 @@ public class MocaTraceOutliner {
                             switch (type) {
                                 case "STRING":
                                     if (value.contains("'") || value.contains("=")) {
-                                        value = (" \"" + value + "\"");
+                                        value = (" \"" + value.replace("\"", "\"\"") + "\"");
                                     } else {
                                         if (value.compareToIgnoreCase("null") != 0) {
                                             value = (" '" + value + "'");
                                         }
                                     }
+                                    break;
+                                case "RESULTS":
+                                    value = (" \"" + value.replace("\"", "\"\"") + "\"");
                                     break;
                                 default:
                                     break;

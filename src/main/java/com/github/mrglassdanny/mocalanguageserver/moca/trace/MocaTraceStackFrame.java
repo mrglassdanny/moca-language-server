@@ -146,8 +146,9 @@ public class MocaTraceStackFrame {
         for (Entry<String, String> entry : this.published.entrySet()) {
             if (!entry.getKey().isBlank()) {
                 String value = entry.getValue().trim();
-                if (value.contains("'") || value.contains("=") || value.contains("<") || value.contains(">")) {
-                    value = ("\"" + value + "\"");
+                if (value.contains("'") || value.contains("=") || value.contains("<") || value.contains(">")
+                        || value.contains("{")) {
+                    value = ("\"" + value.replace("\"", "\"\"") + "\"");
                 } else {
                     if (value.compareToIgnoreCase("null") != 0) {
                         value = ("'" + value + "'");
@@ -164,8 +165,9 @@ public class MocaTraceStackFrame {
         for (Entry<String, String> entry : this.arguments.entrySet()) {
             if (!entry.getKey().isEmpty()) {
                 String value = entry.getValue().trim();
-                if (value.contains("'") || value.contains("=") || value.contains("<") || value.contains(">")) {
-                    value = ("\"" + value + "\"");
+                if (value.contains("'") || value.contains("=") || value.contains("<") || value.contains(">")
+                        || value.contains("{")) {
+                    value = ("\"" + value.replace("\"", "\"\"") + "\"");
                 } else {
                     if (value.compareToIgnoreCase("null") != 0) {
                         value = ("'" + value + "'");
