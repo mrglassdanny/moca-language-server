@@ -206,7 +206,7 @@ public class MocaTraceOutliner {
         // or something and the MOCA engine will attempt to execute again with some
         // changes to the original query. The previous outline stack frame will have the
         // same stack level and an instruction status that indicates this.
-        if (outline.size() > 1 && outline.get(outline.size() - 1).stackLevel == stackLevel
+        if (outline.size() > 0 && outline.get(outline.size() - 1).stackLevel == stackLevel
                 && outline.get(outline.size() - 1).instructionStatus.compareTo("SQL Exception") == 0) {
             return;
         }
@@ -226,7 +226,7 @@ public class MocaTraceOutliner {
                         buildIndentString(indentStack, poppedFrame.stackLevel), indentStack));
                 processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline, outlineId);
             } else if (indentStack.peek().stackLevel == stackLevel) {
-                // ^^^ it is also possible we need to pop if current indent stack frame level
+                // It is also possible we need to pop if current indent stack frame level
                 // equals current level.
 
                 // If outline suggests that we went down and are now coming back up, we need to
@@ -240,7 +240,7 @@ public class MocaTraceOutliner {
                     processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline, outlineId);
                 }
             } else {
-                // ^^^ could have odd edge cases for when current indent stack frame level is
+                // Could have odd edge cases for when current indent stack frame level is
                 // less than stack level.
 
                 // Odd edge case coverage: if we are clearly coming up and our stack level is 1
@@ -266,7 +266,7 @@ public class MocaTraceOutliner {
                         buildIndentString(indentStack, poppedFrame.stackLevel), indentStack));
                 processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline, outlineId);
             } else if (indentStack.peek().stackLevel == stackLevel) {
-                // ^^^ it is also possible we need to pop if current indent stack frame level
+                // It is also possible we need to pop if current indent stack frame level
                 // equals current level.
 
                 // If outline suggests that we went down and are now coming back up, we need to
@@ -300,7 +300,7 @@ public class MocaTraceOutliner {
                     processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline, outlineId);
                 }
             } else {
-                // ^^^ could have odd edge cases for when current indent stack frame level is
+                // Could have odd edge cases for when current indent stack frame level is
                 // less than stack level.
 
                 // Odd edge case coverage: if we are likely coming up and our stack level is 1
@@ -367,6 +367,7 @@ public class MocaTraceOutliner {
         }
 
         this.lineTextBuffer.append(lineText);
+        this.lineTextBuffer.append(' ');
 
         Matcher traceLineMatcher = MocaTraceOutliner.TRACE_LINE_REGEX_PATTERN.matcher(this.lineTextBuffer.toString());
 
@@ -457,6 +458,7 @@ public class MocaTraceOutliner {
                 if (message.compareToIgnoreCase(MocaTraceOutliner.MESSAGE_TRACE_STACK_START_TEXT) == 0) {
                     indentStack.clear();
                 } else if (message.compareToIgnoreCase(MocaTraceOutliner.MESSAGE_TRACE_STACK_END_TEXT) == 0) {
+                    // Need to call implicit unindent here to make sure curly braces are tied off.
                     processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline, outlineId);
                     indentStack.clear();
                 } else {
@@ -622,7 +624,7 @@ public class MocaTraceOutliner {
 
                         processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline, outlineId);
 
-                        String instruction = "/* Firing triggers for " + matcher.group(3) + " */";
+                        String instruction = "";
 
                         outline.add(
                                 new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum, instruction,
@@ -633,7 +635,17 @@ public class MocaTraceOutliner {
                         published.clear();
                         arguments.clear();
 
+                        outline.get(outline.size() - 1)
+                                .setInstructionPrefix(String.format("Firing triggers (%s)", matcher.group(3)));
+
                         indentStack.push(outline.get(outline.size() - 1));
+                    }
+
+                    // Line after firing triggers ^ should be the entire trigger instruction. Let's
+                    // grab it and overwrite the last outline stack frame instruction.
+                    if (outline.size() > 0 && outline.get(outline.size() - 1).isFiringTriggers
+                            && outline.get(outline.size() - 1).relativeLineNum == relativeLineNum - 1) {
+                        outline.get(outline.size() - 1).instruction = message;
                     }
 
                     matcher = MocaTraceOutliner.MESSAGE_DONE_FIRING_TRIGGERS_REGEX_PATTERN.matcher(message);

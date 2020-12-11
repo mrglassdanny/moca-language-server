@@ -24,13 +24,15 @@ public class MocaTraceStackFrame {
                                       // decorations that could be before/after instruction, but it should not affect
                                       // this! NOTE: is private since we do not want any outsiders writing to this --
                                       // our public fields will influence what we write to this during our toString
-                                      // method
+                                      // method. However, there are some circumstances where outsiders do need to
+                                      // write to this -- we have a public interface(setInstructionPrefix) for this.
     private String instructionSuffix; // Since instruction is not meant to be anything but actual MOCA instruction, we
                                       // will have a suffix string for display purposes. NOTE: we also have text
                                       // decorations that could be before/after instruction, but it should not affect
                                       // this! NOTE: is private since we do not want any outsiders writing to this --
                                       // our public fields will influence what we write to this during our toString
-                                      // method.
+                                      // method. However, there are some circumstances where outsiders do need to
+                                      // write to this -- we have a public interface(setInstructionSuffix) for this.
     public int returnedRows; // How many rows returned from instruction.
     public int parentReturnedRows; // How many rows did parent instruction return.
     public int rowNumberToParent; // Which row am I in regards to parent instruction returned rows.
@@ -254,5 +256,13 @@ public class MocaTraceStackFrame {
 
     public int getInstructionSuffixLen() {
         return this.instructionSuffix.length();
+    }
+
+    public void setInstructionPrefix(String instructionPrefix) {
+        this.instructionPrefix = instructionPrefix;
+    }
+
+    public void setInstructionSuffix(String instructionSuffix) {
+        this.instructionSuffix = instructionSuffix;
     }
 }
