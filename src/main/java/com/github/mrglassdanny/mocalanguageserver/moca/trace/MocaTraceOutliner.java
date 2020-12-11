@@ -9,17 +9,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
 
 public class MocaTraceOutliner {
 
     private static final Pattern TRACE_LINE_REGEX_PATTERN = Pattern.compile(
-            "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2},\\d{3}) (TRACE|DEBUG|INFO |WARN |ERROR|FATAL) \\[(\\d+)[ ]+(.*?)\\] (.+?) \\[(\\d{1,3})\\] ([\\s\\S]*) \\[[\\s\\S]*\\](.*)");
+            "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2},\\d{3}) (TRACE|DEBUG|INFO |WARN |ERROR|FATAL) \\[(\\d+)[ ]+(.*?)\\] (.+?) \\[(\\d{1,3})\\] ([\\s\\S]*) (\\[.*\\])");
 
     private static final int TRACE_LINE_REGEX_THREAD_GROUP_IDX = 3;
     private static final int TRACE_LINE_REGEX_SESSION_GROUP_IDX = 4;
     private static final int TRACE_LINE_REGEX_LOGGER_GROUP_IDX = 5;
     private static final int TRACE_LINE_REGEX_STACK_LEVEL_GROUP_IDX = 6;
     private static final int TRACE_LINE_REGEX_MESSAGE_GROUP_IDX = 7;
+    private static final int TRACE_LINE_REGEX_LAST_GROUP_IDX = 8;
 
     // There are a select few loggers that we actually care to analyze.
     private static final String[] LOGGERS = { "Argument", "CommandStatement", "DefaultServerContext", "JDBCAdapter",
@@ -335,16 +337,15 @@ public class MocaTraceOutliner {
 
     }
 
+    // Updates returned row stack and sets parent/visited row data for stack frame
+    // (ex: (1/6, 2/6, etc)).
     private void processReturnedRowsForChild(Stack<ReturnedRows> returnedRowsStack, int stackLevel,
             MocaTraceStackFrame stackFrame) {
         if (returnedRowsStack.size() > 0) {
             if (returnedRowsStack.peek().stackLevel == stackLevel - 1) {
-
                 returnedRowsStack.peek().visitedRows++;
-
                 stackFrame.parentReturnedRows = returnedRowsStack.peek().totalRows;
                 stackFrame.rowNumberToParent = returnedRowsStack.peek().visitedRows;
-
             }
         }
     }
@@ -372,6 +373,13 @@ public class MocaTraceOutliner {
         Matcher traceLineMatcher = MocaTraceOutliner.TRACE_LINE_REGEX_PATTERN.matcher(this.lineTextBuffer.toString());
 
         if (traceLineMatcher.find()) {
+
+            // If last capture group looks like SQL, we probably jumped the gun with this
+            // current match -- we need to keep reading lines.
+            if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(
+                    traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_LAST_GROUP_IDX))) {
+                return;
+            }
 
             // Add to absolute trace line list now.
             this.absoluteTraceLines.add(this.lineTextBuffer.toString());

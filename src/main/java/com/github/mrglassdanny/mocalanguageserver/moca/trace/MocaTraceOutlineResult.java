@@ -47,10 +47,8 @@ public class MocaTraceOutlineResult {
 
         for (MocaTraceOutline outline : this.outlines) {
 
-            buf.append(
-                    "/* ------------------------------------------------------------------------------------------------------------------ Thread-Session: "
-                            + outline.id
-                            + " ------------------------------------------------------------------------------------------------------------------ */\n");
+            buf.append("/* ----------- Thread-Session: " + outline.id
+                    + " ------------------------------------------------------------------------------------------------------------------ */\n");
             this.outlineIdLineNumbers.add(actualLineNum - 1);
             actualLineNum++;
 
