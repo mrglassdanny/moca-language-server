@@ -100,7 +100,7 @@ public class MocaTraceStackFrame {
     public String toString() {
 
         if (this.isFiringTriggers) {
-            this.instructionPrefix = "Firing Triggers ";
+            // this.instructionPrefix = "Firing Triggers ";
         }
 
         if (this.rowNumberToParent > 0 && this.parentReturnedRows > 0) {
@@ -115,10 +115,14 @@ public class MocaTraceStackFrame {
                     this.executionTime);
         }
 
-        if (this.instructionStatus != "0" && this.instructionStatus != "Passed" && this.instructionStatus != "Failed"
-                && !this.instructionStatus.contains("Caught")) {
-            this.instructionSuffix = String.format("\t\tFailed with \"%s\" in %.3f seconds", this.instructionStatus,
-                    this.executionTime);
+        if (this.instructionStatus != "0" && this.instructionStatus != "Passed" && this.instructionStatus != "Failed") {
+            if (this.instructionStatus.contains("Caught")) {
+                this.instructionSuffix = String.format("\t\t%s in %.3f seconds", this.instructionStatus,
+                        this.executionTime);
+            } else {
+                this.instructionSuffix = String.format("\t\tReturned (%s) in %.3f seconds", this.instructionStatus,
+                        this.executionTime);
+            }
         }
 
         return this.indentStr + this.instructionPrefix + this.instruction + this.instructionSuffix;

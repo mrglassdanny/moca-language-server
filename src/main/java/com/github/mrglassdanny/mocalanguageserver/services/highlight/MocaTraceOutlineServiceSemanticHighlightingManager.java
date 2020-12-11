@@ -187,8 +187,7 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
                         }
                     }
 
-                    if (frame.componentLevel != null || frame.isFiringTriggers) {
-                        // Including firing triggers since this will just highlight the instruction.
+                    if (frame.componentLevel != null) {
                         Position pos = new Position(lineNum,
                                 frame.indentStr.length() + frame.getInstructionPrefixLen());
                         if (preInfos.containsKey(pos.getLine())) {
