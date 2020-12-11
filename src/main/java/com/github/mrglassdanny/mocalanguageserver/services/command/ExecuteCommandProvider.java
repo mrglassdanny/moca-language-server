@@ -406,7 +406,6 @@ public class ExecuteCommandProvider {
                             MocaServices.mocaTraceOutlineResult = MocaTraceOutliner.outlineTrace(
                                     openMocaTraceOutlineRequest.requestedTraceFileName,
                                     openMocaTraceOutlineRequest.useLogicalIndentStrategy,
-                                    openMocaTraceOutlineRequest.showCurlyBraces,
                                     openMocaTraceOutlineRequest.minimumExecutionTime, res);
 
                             openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
@@ -422,7 +421,6 @@ public class ExecuteCommandProvider {
                                         openMocaTraceOutlineRequest.requestedTraceFileName.substring(
                                                 openMocaTraceOutlineRequest.requestedTraceFileName.lastIndexOf("/")),
                                         openMocaTraceOutlineRequest.useLogicalIndentStrategy,
-                                        openMocaTraceOutlineRequest.showCurlyBraces,
                                         openMocaTraceOutlineRequest.minimumExecutionTime, reader);
                                 openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
                                         MocaServices.mocaTraceOutlineResult.toString(), null);
