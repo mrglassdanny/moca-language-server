@@ -107,14 +107,18 @@ public class MocaTraceStackFrame {
             this.instructionPrefix = String.format("(%d/%d) ", this.rowNumberToParent, this.parentReturnedRows);
         }
 
-        if (this.returnedRows > 0) {
-            this.instructionSuffix = String.format("\t\tReturned %s row(s) in %.3f seconds", this.returnedRows,
+        if (this.returnedRows > 1) {
+            this.instructionSuffix = String.format("\t\tReturned %s rows in %.3f seconds", this.returnedRows,
+                    this.executionTime);
+        } else if (this.returnedRows == 1) {
+            this.instructionSuffix = String.format("\t\tReturned %s row in %.3f seconds", this.returnedRows,
                     this.executionTime);
         }
 
         if (this.instructionStatus != "0" && this.instructionStatus != "Passed" && this.instructionStatus != "Failed"
                 && !this.instructionStatus.contains("Caught")) {
-            this.instructionSuffix = String.format("\t\t(%s)", this.instructionStatus);
+            this.instructionSuffix = String.format("\t\tFailed with \"%s\" in %.3f seconds", this.instructionStatus,
+                    this.executionTime);
         }
 
         return this.indentStr + this.instructionPrefix + this.instruction + this.instructionSuffix;
