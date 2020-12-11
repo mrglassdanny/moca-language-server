@@ -100,11 +100,21 @@ public class MocaTraceStackFrame {
     public String toString() {
 
         if (this.isFiringTriggers) {
-            this.instructionPrefix += "Firing Triggers for: ";
+            this.instructionPrefix = "Firing Triggers ";
         }
 
         if (this.rowNumberToParent > 0 && this.parentReturnedRows > 0) {
-            this.instructionPrefix += String.format("(%d/%d) ", this.rowNumberToParent, this.parentReturnedRows);
+            this.instructionPrefix = String.format("(%d/%d) ", this.rowNumberToParent, this.parentReturnedRows);
+        }
+
+        if (this.returnedRows > 0) {
+            this.instructionSuffix = String.format("\t\tReturned %s row(s) in %.3f seconds", this.returnedRows,
+                    this.executionTime);
+        }
+
+        if (this.instructionStatus != "0" && this.instructionStatus != "Passed" && this.instructionStatus != "Failed"
+                && !this.instructionStatus.contains("Caught")) {
+            this.instructionSuffix = String.format("\t\t(%s)", this.instructionStatus);
         }
 
         return this.indentStr + this.instructionPrefix + this.instruction + this.instructionSuffix;
