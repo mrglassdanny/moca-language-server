@@ -52,9 +52,6 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
         List<String> mocaTraceOutlineMocaCommandScopes = new ArrayList<>();
         mocaTraceOutlineMocaCommandScopes.add("entity.name.function");
 
-        List<String> mocaTraceOutlineFiringTriggersScopes = new ArrayList<>();
-        mocaTraceOutlineFiringTriggersScopes.add("moca.traceoutline.firingtriggers");
-
         List<String> mocaTraceOutlineTriggerScopes = new ArrayList<>();
         mocaTraceOutlineTriggerScopes.add("moca.traceoutline.trigger");
 
