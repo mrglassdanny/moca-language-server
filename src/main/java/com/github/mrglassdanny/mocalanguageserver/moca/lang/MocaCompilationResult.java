@@ -62,7 +62,7 @@ public class MocaCompilationResult {
         int groovyRangeIdx = 0;
         for (Token curMocaToken : this.mocaTokens) {
             if (curMocaToken.getType() == MocaLexer.SINGLE_BRACKET_STRING) {
-                if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(curMocaToken.getText())) {
+                if (MocaSqlLanguageUtils.isMocaSqlScript(curMocaToken.getText())) {
                     Range range = new Range(PositionUtils.getPosition(mocaScript, curMocaToken.getStartIndex()),
                             PositionUtils.getPosition(mocaScript,
                                     MocaTokenUtils.getAdjustedMocaTokenStopIndex(curMocaToken.getStopIndex())));

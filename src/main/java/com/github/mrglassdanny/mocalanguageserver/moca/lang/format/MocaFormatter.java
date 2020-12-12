@@ -132,7 +132,7 @@ public class MocaFormatter {
                 case MocaLexer.SINGLE_BRACKET_STRING:
 
                     // Could just be an ordinary bracket string -- make sure to check!
-                    if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(tokenText)) {
+                    if (MocaSqlLanguageUtils.isMocaSqlScript(tokenText)) {
 
                         // Make sure moca language server options allow us to format.
                         if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlFormattingEnabled) {
@@ -460,7 +460,7 @@ public class MocaFormatter {
                 case MocaLexer.SINGLE_BRACKET_STRING:
 
                     // Could just be an ordinary bracket string -- make sure to check!
-                    if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(tokenText)) {
+                    if (MocaSqlLanguageUtils.isMocaSqlScript(tokenText)) {
 
                         // Make sure moca language server options allow us to format.
                         if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlFormattingEnabled) {

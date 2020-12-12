@@ -17,8 +17,8 @@ public class MocaTraceStackFrame {
     public String indentStr; // String that stores tabs/spaces for indenting instruction.
     public String instruction; // Stack frames have 1 instruction. Instruction is meant to be close to actual
                                // MOCA instruction.
-    public String instructionStatus; // Stack frames have 1 instruction status. Status will be a specific format that
-                                     // we can analyze.
+    public String instructionStatus; // Stack frames have 1 instruction status. Status will be a specific format(set
+                                     // by us) that we can analyze.
     private String instructionPrefix; // Since instruction is not meant to be anything but actual MOCA instruction, we
                                       // will have a prefix string for display purposes. NOTE: we also have text
                                       // decorations that could be before/after instruction, but it should not affect
@@ -34,10 +34,10 @@ public class MocaTraceStackFrame {
                                       // method. However, there are some circumstances where outsiders do need to
                                       // write to this -- we have a public interface(setInstructionSuffix) for this.
     public int returnedRows; // How many rows returned from instruction.
-    public int parentReturnedRows; // How many rows did parent instruction return.
-    public int rowNumberToParent; // Which row am I in regards to parent instruction returned rows.
+    public int previousStackLevelReturnedRows; // How many rows did previous stack level return.
+    public int rowNumberToPreviousStackLevel; // Which row am I in regards to previous stack level returned rows.
     public double executionTime; // Execution time for instruction.
-    public HashMap<String, String> published; // What is on the stack at time of instruction invocation.
+    public HashMap<String, String> published; // What is on the stack at time of instruction execution.
     public HashMap<String, String> arguments; // What is being explicitly passed to instruction.
     public boolean isServerGot; // Indicates if match was from "Server got:" regex in message.
     public boolean isCommandInitiated; // Indicates if match was from "Command initiated:" regex in message.
@@ -49,8 +49,8 @@ public class MocaTraceStackFrame {
     public boolean isJavaMethod; // Tells if Java method.
     public boolean isGroovy; // Tells if Groovy script.
     public boolean isFiringTriggers; // Indicates if "Firing triggers" instruction.
-    public boolean isTrigger; // Indicates if instruction is the first instruction for a trigger (under
-                              // "Firing triggers" instruction!).
+    public boolean isTrigger; // Indicates if instruction is the first instruction for a trigger ("Firing
+                              // triggers" stack level - 1).
     public boolean isRemote; // Tells if MOCA command executed on remote host.
     public boolean isPreparedStatement; // Tells if instruction was JDBC prepared statement.
     public String preparedStatementQuery; // Actual query ran -- we will use this for hover instruction instead of
@@ -69,8 +69,8 @@ public class MocaTraceStackFrame {
         this.instructionPrefix = "";
         this.instructionSuffix = "";
         this.returnedRows = 0;
-        this.parentReturnedRows = 0;
-        this.rowNumberToParent = 0;
+        this.previousStackLevelReturnedRows = 0;
+        this.rowNumberToPreviousStackLevel = 0;
         this.executionTime = 0.0;
         this.published = new HashMap<>();
         this.arguments = new HashMap<>();
@@ -101,12 +101,9 @@ public class MocaTraceStackFrame {
     @Override
     public String toString() {
 
-        if (this.isFiringTriggers) {
-            // this.instructionPrefix = "Firing Triggers ";
-        }
-
-        if (this.rowNumberToParent > 0 && this.parentReturnedRows > 0) {
-            this.instructionPrefix = String.format("(%d/%d) ", this.rowNumberToParent, this.parentReturnedRows);
+        if (this.rowNumberToPreviousStackLevel > 0 && this.previousStackLevelReturnedRows > 0) {
+            this.instructionPrefix = String.format("(%d/%d) ", this.rowNumberToPreviousStackLevel,
+                    this.previousStackLevelReturnedRows);
         }
 
         if (this.returnedRows > 1) {
@@ -159,23 +156,16 @@ public class MocaTraceStackFrame {
             buf.append("Is Trigger: **true**\n\n");
         }
 
-        // Published args:
+        // Stack args:
         StringBuilder stackArgsBuf = new StringBuilder(1024);
         if (this.published.size() > 0) {
             stackArgsBuf.append("/* On stack */ ");
             stackArgsBuf.append("publish data where ");
         }
+
         for (Entry<String, String> entry : this.published.entrySet()) {
             if (!entry.getKey().isBlank()) {
-                String value = entry.getValue().trim();
-                if (value.contains("'") || value.contains("=") || value.contains("<") || value.contains(">")
-                        || value.contains("{")) {
-                    value = ("\"" + value.replace("\"", "\"\"") + "\"");
-                } else {
-                    if (value.compareToIgnoreCase("null") != 0) {
-                        value = ("'" + value + "'");
-                    }
-                }
+                String value = adjustValue(entry.getValue().trim());
                 stackArgsBuf.append(String.format("%s = %s and ", entry.getKey(), value));
             }
         }
@@ -184,17 +174,10 @@ public class MocaTraceStackFrame {
             stackArgsBuf.append("/* On stack */ ");
             stackArgsBuf.append("publish data where ");
         }
+
         for (Entry<String, String> entry : this.arguments.entrySet()) {
             if (!entry.getKey().isEmpty()) {
-                String value = entry.getValue().trim();
-                if (value.contains("'") || value.contains("=") || value.contains("<") || value.contains(">")
-                        || value.contains("{")) {
-                    value = ("\"" + value.replace("\"", "\"\"") + "\"");
-                } else {
-                    if (value.compareToIgnoreCase("null") != 0) {
-                        value = ("'" + value + "'");
-                    }
-                }
+                String value = adjustValue(entry.getValue().trim());
                 stackArgsBuf.append(String.format("%s = %s and ", entry.getKey(), value));
             }
         }
@@ -225,11 +208,13 @@ public class MocaTraceStackFrame {
             } catch (Exception e) {
                 formattedScript = null;
             }
+
             if (formattedScript != null) {
                 buf.append(String.format("```moca\n\n%s\n\n```", formattedScript));
             } else {
                 buf.append(String.format("```moca\n\n%s\n\n```", stackArgsBuf.toString() + adjInstruction));
             }
+
         } else {
             // If here, we dont have an instruction... this probably wont happen.
             String formattedScript;
@@ -264,5 +249,19 @@ public class MocaTraceStackFrame {
 
     public void setInstructionSuffix(String instructionSuffix) {
         this.instructionSuffix = instructionSuffix;
+    }
+
+    private static String adjustValue(String value) {
+        String adjValue = value;
+        if (adjValue.contains("'") || adjValue.contains("=") || adjValue.contains("<") || adjValue.contains(">")
+                || adjValue.contains("{")) {
+            adjValue = ("\"" + adjValue.replace("\"", "\"\"") + "\"");
+        } else {
+            if (adjValue.compareToIgnoreCase("null") != 0) {
+                adjValue = ("'" + adjValue + "'");
+            }
+        }
+
+        return adjValue;
     }
 }

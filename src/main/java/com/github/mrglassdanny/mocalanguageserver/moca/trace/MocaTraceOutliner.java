@@ -337,17 +337,39 @@ public class MocaTraceOutliner {
 
     }
 
-    // Updates returned row stack and sets parent/visited row data for stack frame
-    // (ex: (1/6, 2/6, etc)).
-    private void processReturnedRowsForChild(Stack<ReturnedRows> returnedRowsStack, int stackLevel,
+    // Updates returned row stack and sets previous stack level returned row data
+    // for stack frame (ex: (1/6, 2/6, etc)).
+    private void processReturnedRowsForNextStackLevel(Stack<ReturnedRows> returnedRowsStack, int stackLevel,
             MocaTraceStackFrame stackFrame) {
         if (returnedRowsStack.size() > 0) {
             if (returnedRowsStack.peek().stackLevel == stackLevel - 1) {
                 returnedRowsStack.peek().visitedRows++;
-                stackFrame.parentReturnedRows = returnedRowsStack.peek().totalRows;
-                stackFrame.rowNumberToParent = returnedRowsStack.peek().visitedRows;
+                stackFrame.previousStackLevelReturnedRows = returnedRowsStack.peek().totalRows;
+                stackFrame.rowNumberToPreviousStackLevel = returnedRowsStack.peek().visitedRows;
             }
         }
+    }
+
+    private static String adjustConditionalTestValue(String type, String value) {
+        String adjValue = value;
+        switch (type) {
+            case "STRING":
+                if (adjValue.contains("'") || adjValue.contains("=")) {
+                    adjValue = (" \"" + adjValue.replace("\"", "\"\"") + "\"");
+                } else {
+                    if (adjValue.compareToIgnoreCase("null") != 0) {
+                        adjValue = (" '" + adjValue + "'");
+                    }
+                }
+                break;
+            case "RESULTS":
+                adjValue = (" \"" + adjValue.replace("\"", "\"\"") + "\"");
+                break;
+            default:
+                break;
+        }
+
+        return adjValue;
     }
 
     private void readLine(int lineNum, String lineText) {
@@ -376,8 +398,8 @@ public class MocaTraceOutliner {
 
             // If last capture group looks like SQL, we probably jumped the gun with this
             // current match -- we need to keep reading lines.
-            if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(
-                    traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_LAST_GROUP_IDX))) {
+            if (MocaSqlLanguageUtils
+                    .isMocaSqlScript(traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_LAST_GROUP_IDX))) {
                 return;
             }
 
@@ -528,10 +550,10 @@ public class MocaTraceOutliner {
                             // Now we need to go back to all the stack frames that think they were visited
                             // and clear them out.
                             for (int i = outline.size() - 1; i >= 0; i--) {
-                                if (outline.get(i).stackLevel == poppedReturnedRows.stackLevel + 1
-                                        && outline.get(i).parentReturnedRows == poppedReturnedRows.totalRows) {
-                                    outline.get(i).parentReturnedRows = 0;
-                                    outline.get(i).rowNumberToParent = 0;
+                                if (outline.get(i).stackLevel == poppedReturnedRows.stackLevel + 1 && outline
+                                        .get(i).previousStackLevelReturnedRows == poppedReturnedRows.totalRows) {
+                                    outline.get(i).previousStackLevelReturnedRows = 0;
+                                    outline.get(i).rowNumberToPreviousStackLevel = 0;
                                 } else if (outline.get(i).stackLevel <= poppedReturnedRows.stackLevel) {
                                     break;
                                 }
@@ -612,7 +634,8 @@ public class MocaTraceOutliner {
                         published.clear();
                         arguments.clear();
 
-                        processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
+                        processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                outline.get(outline.size() - 1));
 
                         indentStack.push(outline.get(outline.size() - 1));
                     }
@@ -680,7 +703,8 @@ public class MocaTraceOutliner {
                         published.clear();
                         arguments.clear();
 
-                        processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
+                        processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                outline.get(outline.size() - 1));
 
                         indentStack.push(outline.get(outline.size() - 1));
 
@@ -711,7 +735,8 @@ public class MocaTraceOutliner {
                         published.clear();
                         arguments.clear();
 
-                        processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
+                        processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                outline.get(outline.size() - 1));
 
                         indentStack.push(outline.get(outline.size() - 1));
 
@@ -735,7 +760,8 @@ public class MocaTraceOutliner {
                         published.clear();
                         arguments.clear();
 
-                        processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
+                        processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                outline.get(outline.size() - 1));
 
                         indentStack.push(outline.get(outline.size() - 1));
 
@@ -813,7 +839,8 @@ public class MocaTraceOutliner {
                         published.clear();
                         arguments.clear();
 
-                        processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
+                        processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                outline.get(outline.size() - 1));
 
                     }
                     // Overwrite last outline frame if we get unbind.
@@ -826,10 +853,6 @@ public class MocaTraceOutliner {
 
                         outline.get(outline.size() - 1).instruction = instruction;
 
-                    }
-
-                    matcher = MocaTraceOutliner.MESSAGE_SQL_EXECUTION_COMPLETE_REGEX_PATTERN.matcher(message);
-                    if (matcher.find()) {
                     }
 
                     matcher = MocaTraceOutliner.MESSAGE_CONNECTION_PREPARESTATEMENT_REGEX_PATTERN.matcher(message);
@@ -849,7 +872,8 @@ public class MocaTraceOutliner {
                         published.clear();
                         arguments.clear();
 
-                        processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
+                        processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                outline.get(outline.size() - 1));
 
                     }
 
@@ -858,10 +882,6 @@ public class MocaTraceOutliner {
 
                         outline.get(outline.size() - 1).preparedStatementQuery = "["
                                 + matcher.group(3).trim().replace('\n', ' ') + "]";
-                    }
-
-                    matcher = MocaTraceOutliner.MESSAGE_PREPAREDSTATEMENT_CLOSE_REGEX_PATTERN.matcher(message);
-                    if (matcher.find()) {
                     }
 
                     // GROOVY:
@@ -884,7 +904,8 @@ public class MocaTraceOutliner {
 
                         outline.get(outline.size() - 1).isGroovy = true;
 
-                        processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
+                        processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                outline.get(outline.size() - 1));
 
                         indentStack.push(outline.get(outline.size() - 1));
                     }
@@ -923,24 +944,8 @@ public class MocaTraceOutliner {
                             while (extractConditionalTestValuesMatcher.find()) {
                                 String entireGroup = extractConditionalTestValuesMatcher.group(0);
                                 String type = extractConditionalTestValuesMatcher.group(3);
-                                String value = extractConditionalTestValuesMatcher.group(6);
-
-                                switch (type) {
-                                    case "STRING":
-                                        if (value.contains("'") || value.contains("=")) {
-                                            value = (" \"" + value.replace("\"", "\"\"") + "\"");
-                                        } else {
-                                            if (value.compareToIgnoreCase("null") != 0) {
-                                                value = (" '" + value + "'");
-                                            }
-                                        }
-                                        break;
-                                    case "RESULTS":
-                                        value = (" \"" + value.replace("\"", "\"\"") + "\"");
-                                        break;
-                                    default:
-                                        break;
-                                }
+                                String value = MocaTraceOutliner.adjustConditionalTestValue(type,
+                                        extractConditionalTestValuesMatcher.group(6));
 
                                 conditionalTest = conditionalTest.replace(entireGroup, value);
                             }
@@ -964,24 +969,8 @@ public class MocaTraceOutliner {
                             while (extractConditionalTestValuesMatcher.find()) {
                                 String entireGroup = extractConditionalTestValuesMatcher.group(0);
                                 String type = extractConditionalTestValuesMatcher.group(3);
-                                String value = extractConditionalTestValuesMatcher.group(6);
-
-                                switch (type) {
-                                    case "STRING":
-                                        if (value.contains("'") || value.contains("=")) {
-                                            value = (" \"" + value.replace("\"", "\"\"") + "\"");
-                                        } else {
-                                            if (value.compareToIgnoreCase("null") != 0) {
-                                                value = (" '" + value + "'");
-                                            }
-                                        }
-                                        break;
-                                    case "RESULTS":
-                                        value = (" \"" + value.replace("\"", "\"\"") + "\"");
-                                        break;
-                                    default:
-                                        break;
-                                }
+                                String value = MocaTraceOutliner.adjustConditionalTestValue(type,
+                                        extractConditionalTestValuesMatcher.group(6));
 
                                 conditionalTest = conditionalTest.replace(entireGroup, value);
                             }
@@ -996,7 +985,8 @@ public class MocaTraceOutliner {
                             published.clear();
                             arguments.clear();
 
-                            processReturnedRowsForChild(returnedRowsStack, stackLevel, outline.get(outline.size() - 1));
+                            processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                    outline.get(outline.size() - 1));
 
                         }
                     }
@@ -1022,7 +1012,6 @@ public class MocaTraceOutliner {
                             .matcher(message);
                     if (matcher.find()) {
                         outline.get(outline.size() - 1).instructionStatus = "Failed";
-
                     }
 
                     matcher = MocaTraceOutliner.MESSAGE_IF_TEST_FAILED_EXECUTING_ELSE_BLOCK_REGEX_PATTERN
@@ -1066,24 +1055,8 @@ public class MocaTraceOutliner {
                         while (extractConditionalTestValuesMatcher.find()) {
                             String entireGroup = extractConditionalTestValuesMatcher.group(0);
                             String type = extractConditionalTestValuesMatcher.group(3);
-                            String value = extractConditionalTestValuesMatcher.group(6);
-
-                            switch (type) {
-                                case "STRING":
-                                    if (value.contains("'") || value.contains("=")) {
-                                        value = (" \"" + value.replace("\"", "\"\"") + "\"");
-                                    } else {
-                                        if (value.compareToIgnoreCase("null") != 0) {
-                                            value = (" '" + value + "'");
-                                        }
-                                    }
-                                    break;
-                                case "RESULTS":
-                                    value = (" \"" + value.replace("\"", "\"\"") + "\"");
-                                    break;
-                                default:
-                                    break;
-                            }
+                            String value = MocaTraceOutliner.adjustConditionalTestValue(type,
+                                    extractConditionalTestValuesMatcher.group(6));
 
                             conditionalTest = conditionalTest.replace(entireGroup, value);
                         }
@@ -1106,12 +1079,6 @@ public class MocaTraceOutliner {
                                 break;
                             }
                         }
-                    }
-
-                    matcher = MocaTraceOutliner.MESSAGE_CATCH_CONDITION_MET_EXECUTING_CATCH_BLOCK_REGEX_PATTERN
-                            .matcher(message);
-                    if (matcher.find()) {
-
                     }
 
                     matcher = MocaTraceOutliner.MESSAGE_EXECUTING_FINALLY_BLOCK_REGEX_PATTERN.matcher(message);
@@ -1317,7 +1284,7 @@ public class MocaTraceOutliner {
 
 }
 
-// Basic data structure to aid with parent instruction returned row processing.
+// Basic data structure to aid returned row analysis.
 class ReturnedRows {
     int stackLevel;
     int totalRows;
