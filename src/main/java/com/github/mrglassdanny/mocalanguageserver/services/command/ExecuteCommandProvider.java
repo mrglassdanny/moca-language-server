@@ -382,7 +382,10 @@ public class ExecuteCommandProvider {
 
                     OpenMocaTraceOutlineRequest openMocaTraceOutlineRequest = new OpenMocaTraceOutlineRequest(args);
 
-                    OpenMocaTraceOutlineResponse openMocaTraceOutlineResponse = null;
+                    OpenMocaTraceOutlineResponse openMocaTraceOutlineResponse;
+
+                    // If no requested trace file name, we can assume client wants list of remote
+                    // trace files.
 
                     if (openMocaTraceOutlineRequest.requestedTraceFileName == null) {
                         // Read file names from LESDIR/log/*.log
@@ -397,12 +400,16 @@ public class ExecuteCommandProvider {
                         }
                         openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(traceFileNames, null, null);
                     } else {
+
+                        // Read remote or read local file.
+
                         if (openMocaTraceOutlineRequest.isRemote) {
                             // Read trace file requested.
                             MocaResults res = MocaConnection.getGlobalMocaConnection()
                                     .executeCommand(String.format("read file where filnam = '${LESDIR}/log/%s'",
                                             openMocaTraceOutlineRequest.requestedTraceFileName));
 
+                            // Set MocaServices moca trace outline result.
                             MocaServices.mocaTraceOutlineResult = MocaTraceOutliner.outlineTrace(
                                     openMocaTraceOutlineRequest.requestedTraceFileName,
                                     openMocaTraceOutlineRequest.useLogicalIndentStrategy,
@@ -411,29 +418,30 @@ public class ExecuteCommandProvider {
                             openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
                                     MocaServices.mocaTraceOutlineResult.toString(), null);
                         } else {
+
                             // Will have full URI from client.
                             File file = new File(URI.create(openMocaTraceOutlineRequest.requestedTraceFileName));
                             BufferedReader reader = new BufferedReader(new FileReader(file));
 
                             try {
+                                // Set MocaServices moca trace outline result.
                                 // Make sure we shorten requested trace file name for MocaTraceOutliner.
                                 MocaServices.mocaTraceOutlineResult = MocaTraceOutliner.outlineTrace(
                                         openMocaTraceOutlineRequest.requestedTraceFileName.substring(
                                                 openMocaTraceOutlineRequest.requestedTraceFileName.lastIndexOf("/")),
                                         openMocaTraceOutlineRequest.useLogicalIndentStrategy,
                                         openMocaTraceOutlineRequest.minimumExecutionTime, reader);
+
                                 openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
                                         MocaServices.mocaTraceOutlineResult.toString(), null);
                             } catch (IOException ioException) {
-                                return CompletableFuture
-                                        .completedFuture(new OpenMocaTraceOutlineResponse(null, null, ioException));
+                                openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null, null,
+                                        ioException);
                             } finally {
                                 reader.close();
                             }
-
                         }
                     }
-
                     return CompletableFuture.completedFuture(openMocaTraceOutlineResponse);
                 } catch (Exception exception) {
                     return CompletableFuture.completedFuture(new OpenMocaTraceOutlineResponse(null, null, exception));
