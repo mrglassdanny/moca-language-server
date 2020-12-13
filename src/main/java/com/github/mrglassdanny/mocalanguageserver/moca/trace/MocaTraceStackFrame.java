@@ -156,6 +156,10 @@ public class MocaTraceStackFrame {
             buf.append("Is Trigger: **true**\n\n");
         }
 
+        if (this.isFiringTriggers) {
+            buf.append(String.format("**%s**\n\n", this.instructionPrefix));
+        }
+
         // Stack args:
         StringBuilder stackArgsBuf = new StringBuilder(1024);
         if (this.published.size() > 0) {
