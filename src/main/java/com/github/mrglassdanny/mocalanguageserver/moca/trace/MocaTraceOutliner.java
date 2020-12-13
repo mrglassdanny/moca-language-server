@@ -1071,9 +1071,37 @@ public class MocaTraceOutliner {
                                 // outline before that instead, since it is likely the instruction that failed.
                                 if (outline.get(i).isNestedBraces && outline.get(i).instruction == "}") {
                                     // Should be i - 1 since i is "}".
-                                    outline.get(i - 1).instructionStatus = "Caught (" + conditionalTest + ")";
+                                    outline.get(i - 1).evaluatingTryCatchCondition = "Caught (" + conditionalTest + ")";
                                 } else {
-                                    outline.get(i).instructionStatus = "Caught (" + conditionalTest + ")";
+                                    outline.get(i).evaluatingTryCatchCondition = "Caught (" + conditionalTest + ")";
+                                }
+
+                                break;
+                            }
+                        }
+                    }
+
+                    matcher = MocaTraceOutliner.MESSAGE_CATCH_CONDITION_MET_EXECUTING_CATCH_BLOCK_REGEX_PATTERN
+                            .matcher(message);
+                    if (matcher.find()) {
+
+                        // Now that we have met the catch condition, go back and set frame instruction
+                        // status to evaluated try-catch condition.
+
+                        // May have to go back a few frames to find the correct stack frame.
+                        for (int i = outline.size() - 1; i >= 0; i--) {
+                            // Should not be prepared statement.
+                            if (outline.get(i).stackLevel == stackLevel && !outline.get(i).isPreparedStatement
+                                    && !outline.get(i).isCommandInitiated) {
+
+                                // If outline at i is nested braces(which should indicate try block), use the
+                                // outline before that instead, since it is likely the instruction that failed.
+                                if (outline.get(i).isNestedBraces && outline.get(i).instruction == "}") {
+                                    // Should be i - 1 since i is "}".
+                                    outline.get(i - 1).instructionStatus = outline
+                                            .get(i - 1).evaluatingTryCatchCondition;
+                                } else {
+                                    outline.get(i).instructionStatus = outline.get(i).evaluatingTryCatchCondition;
                                 }
 
                                 break;

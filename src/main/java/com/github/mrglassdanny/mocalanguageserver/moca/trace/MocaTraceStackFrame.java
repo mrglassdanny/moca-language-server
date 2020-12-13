@@ -19,6 +19,8 @@ public class MocaTraceStackFrame {
                                // MOCA instruction.
     public String instructionStatus; // Stack frames have 1 instruction status. Status will be a specific format(set
                                      // by us) that we can analyze.
+    public String evaluatingTryCatchCondition; // Placeholder field for storing try-catch evaluation before we set
+                                               // instruction status.
     private String instructionPrefix; // Since instruction is not meant to be anything but actual MOCA instruction, we
                                       // will have a prefix string for display purposes. NOTE: we also have text
                                       // decorations that could be before/after instruction, but it should not affect
@@ -66,6 +68,7 @@ public class MocaTraceStackFrame {
         this.indentStr = indentStr;
         this.instruction = instruction;
         this.instructionStatus = instructionStatus;
+        this.evaluatingTryCatchCondition = "";
         this.instructionPrefix = "";
         this.instructionSuffix = "";
         this.returnedRows = 0;
