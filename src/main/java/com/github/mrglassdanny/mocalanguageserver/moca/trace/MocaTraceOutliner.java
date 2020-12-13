@@ -487,10 +487,16 @@ public class MocaTraceOutliner {
                 // get ready for a new one.
                 if (message.compareToIgnoreCase(MocaTraceOutliner.MESSAGE_TRACE_STACK_START_TEXT) == 0) {
                     indentStack.clear();
+                    published.clear();
+                    arguments.clear();
+                    returnedRowsStack.clear();
                 } else if (message.compareToIgnoreCase(MocaTraceOutliner.MESSAGE_TRACE_STACK_END_TEXT) == 0) {
                     // Need to call implicit unindent here to make sure curly braces are tied off.
                     processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline, outlineId);
                     indentStack.clear();
+                    published.clear();
+                    arguments.clear();
+                    returnedRowsStack.clear();
                 } else {
 
                     // Handle scenario where stack level goes down/comes up multiple levels.
@@ -1241,6 +1247,8 @@ public class MocaTraceOutliner {
 
                     // Seems like we only see this in regards to the "Server got:"
                     // match.
+                    // NOTE: not adding to returned rows stack here since we do not care to add for
+                    // "Server got:" match.
                     matcher = MocaTraceOutliner.MESSAGE_RETURNING_X_ROWS_REGEX_PATTERN.matcher(message);
                     if (matcher.find()) {
                         // Go back to last server got instruction.
