@@ -15,6 +15,7 @@ public class MocaTraceOutlineServiceHoverProvider {
     public static CompletableFuture<Hover> provideHover(Position position) {
 
         Hover hover = new Hover();
+
         // Placeholder contents until we set due to analysis.
         hover.setContents(new MarkupContent(MarkupKind.PLAINTEXT, "No data found"));
 

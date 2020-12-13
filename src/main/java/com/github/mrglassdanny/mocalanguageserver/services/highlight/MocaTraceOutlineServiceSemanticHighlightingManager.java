@@ -139,6 +139,7 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
 
         MocaTraceOutlineResult mocaTraceOutlineResult = MocaServices.mocaTraceOutlineResult;
 
+        // Make sure we have a working trace outline result.
         if (mocaTraceOutlineResult != null) {
 
             for (int outlineIdLineNum : mocaTraceOutlineResult.outlineIdLineNumbers) {
