@@ -15,6 +15,8 @@ public class OpenMocaTraceOutlineRequest {
         if (args == null || args.isEmpty()) {
             this.requestedTraceFileName = null;
             this.isRemote = false;
+            this.useLogicalIndentStrategy = false;
+            this.minimumExecutionTime = 0.0;
         } else {
             JsonElement requestedTraceFileNameJsonElem = (JsonElement) args.get(0);
             this.requestedTraceFileName = requestedTraceFileNameJsonElem.getAsString();
