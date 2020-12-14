@@ -132,18 +132,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
-                // Check if exists in our map.
-                if (MocaServices.mocaTraceOutlineResultMap.containsKey(uriStr)) {
-                    MocaServices.mocaTraceOutlineResult = MocaServices.mocaTraceOutlineResultMap.get(uriStr);
-                } else {
-                    // Can assume we are here for 1 of 2 reasons:
-                    // 1. Execute command provider loaded trace outline result
-                    // 2. vscode was reopened and this file was left open during last vscode close.
-                    // This should handle both ^^^ since we want invalidated trace outline
-                    // results to be null.
-                    MocaServices.mocaTraceOutlineResultMap.put(uriStr, MocaServices.mocaTraceOutlineResult);
-
-                }
+                // Add to map.
+                MocaServices.mocaTraceOutlineResultMap.put(uriStr, MocaServices.mocaTraceOutlineResult);
                 // Semantic highlights can be done on seperate threads and can
                 // finish independently of this function.
                 MocaServices.threadPool.execute(() -> {
@@ -255,7 +245,6 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
             case MocaTraceOutline:
                 // Just need to remove trace outline result from map.
                 MocaServices.mocaTraceOutlineResultMap.remove(uriStr);
-                MocaTraceOutlineServiceSemanticHighlightingManager.clearAll(uriStr);
                 break;
             default:
                 // Need to clear diagnositics for file we just closed, that way the diagnostics
