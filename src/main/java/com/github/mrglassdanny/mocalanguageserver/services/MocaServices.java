@@ -255,6 +255,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
             case MocaTraceOutline:
                 // Just need to remove trace outline result from map.
                 MocaServices.mocaTraceOutlineResultMap.remove(uriStr);
+                MocaTraceOutlineServiceSemanticHighlightingManager.clearAll(uriStr);
                 break;
             default:
                 // Need to clear diagnositics for file we just closed, that way the diagnostics

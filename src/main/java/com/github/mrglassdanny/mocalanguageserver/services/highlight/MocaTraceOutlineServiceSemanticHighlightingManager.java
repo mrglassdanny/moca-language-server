@@ -130,6 +130,13 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
         MocaServices.languageClient.semanticHighlighting(params);
     }
 
+    public static void clearAll(String uriStr) {
+        List<SemanticHighlightingInformation> lines = new ArrayList<>();
+        VersionedTextDocumentIdentifier versionTextDoc = new VersionedTextDocumentIdentifier(uriStr, 1);
+        SemanticHighlightingParams params = new SemanticHighlightingParams(versionTextDoc, lines);
+        MocaServices.languageClient.semanticHighlighting(params);
+    }
+
     // Can do all work in one function, contrary to
     // MocaCompilationServiceSemanticHighlightingManager.
     public static HashMap<Integer, ArrayList<Token>> getMocaTraceOutlineHighlights() {
