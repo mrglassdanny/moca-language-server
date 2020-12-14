@@ -47,13 +47,13 @@ public class MocaTraceOutliner {
     private static final Pattern MESSAGE_DONE_FIRING_TRIGGERS_REGEX_PATTERN = Pattern
             .compile("(Done Firing triggers\\.\\.\\.) ((?s).*)");
     private static final Pattern MESSAGE_EXECUTING_COMMAND_ON_REMOTE_HOST_REGEX_PATTERN = Pattern
-            .compile("(Executing command on remote host) (.*)(:)((?s).*)");
+            .compile("(Executing command on remote host) (\\()(.*)(\\))(:)((?s).*)");
     private static final Pattern MESSAGE_REMOTE_EXECUTION_COMPLETE_REGEX_PATTERN = Pattern
             .compile("Remote execution complete");
     private static final Pattern MESSAGE_EXECUTING_PARALLEL_COMMAND_ON_REMOTE_HOSTS_REGEX_PATTERN = Pattern
-            .compile("(Executing parallel command on hosts) (.*)(:)((?s).*)");
+            .compile("(Executing parallel command on hosts) (\\()(.*)(\\))(:)((?s).*)");
     private static final Pattern MESSAGE_EXECUTING_INPARALLEL_COMMAND_ON_REMOTE_HOSTS_REGEX_PATTERN = Pattern
-            .compile("(Executing inparallel command on hosts) (.*)(:)((?s).*)");
+            .compile("(Executing inparallel command on hosts) (\\()(.*)(\\))(:)((?s).*)");
     private static final Pattern MESSAGE_PARALLEL_EXECUTION_COMPLETE_REGEX_PATTERN = Pattern
             .compile("Parallel execution complete");
     private static final Pattern MESSAGE_RESUMING_EXECUTION_OF_REGEX_PATTERN = Pattern
@@ -698,7 +698,8 @@ public class MocaTraceOutliner {
 
                         processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline, outlineId);
 
-                        String instruction = "remote" + matcher.group(2) + matcher.group(4).trim().replace('\n', ' ');
+                        String instruction = "remote ('" + matcher.group(3) + "') "
+                                + matcher.group(6).trim().replace('\n', ' ');
 
                         outline.add(
                                 new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum, instruction,
@@ -730,7 +731,8 @@ public class MocaTraceOutliner {
 
                         processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline, outlineId);
 
-                        String instruction = "parallel" + matcher.group(2) + matcher.group(4).trim().replace('\n', ' ');
+                        String instruction = "parallel ('" + matcher.group(3) + "') "
+                                + matcher.group(6).trim().replace('\n', ' ');
 
                         outline.add(
                                 new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum, instruction,
@@ -754,8 +756,8 @@ public class MocaTraceOutliner {
 
                         processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline, outlineId);
 
-                        String instruction = "inparallel" + matcher.group(2)
-                                + matcher.group(4).trim().replace('\n', ' ');
+                        String instruction = "inparallel ('" + matcher.group(3) + "') "
+                                + matcher.group(6).trim().replace('\n', ' ');
 
                         outline.add(
                                 new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum, instruction,
