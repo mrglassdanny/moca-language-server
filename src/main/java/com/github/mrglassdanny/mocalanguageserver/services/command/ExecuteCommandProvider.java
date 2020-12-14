@@ -403,7 +403,7 @@ public class ExecuteCommandProvider {
 
                         // Read file names from LESDIR/log/*.log
                         MocaResults res = MocaConnection.getGlobalMocaConnection().executeCommand(
-                                "sl_get dir where path = '${LESDIR}/log/' and filter = '*.log' | get file info where pathname = '${LESDIR}/log/' || @file_name");
+                                "{ sl_get dir where path = '${LESDIR}/log/' and filter = '*.log' | get file info where pathname = '${LESDIR}/log/' || @file_name } >> res | sort result set where result_set = @res and sort_list = 'modified desc'");
                         ArrayList<String> traceFileNames = new ArrayList<>(res.getRowCount());
                         for (int i = 0; i < res.getRowCount(); i++) {
                             if (res.getString(i, "type").compareToIgnoreCase("F") == 0) {
