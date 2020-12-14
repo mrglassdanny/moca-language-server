@@ -21,8 +21,9 @@ import org.eclipse.lsp4j.VersionedTextDocumentIdentifier;
 import org.eclipse.lsp4j.util.SemanticHighlightingTokens;
 import org.eclipse.lsp4j.util.SemanticHighlightingTokens.Token;
 
-public class SemanticHighlightingManager {
+public class MocaCompilationServiceSemanticHighlightingManager {
 
+    // Integers represent indicies in list sent to MocaLanguageServer.
     private static final int MOCASQL_RANGE_SCOPES_IDX = 0;
     private static final int MOCASQL_RANGE_LAST_LINE_SCOPES_IDX = 1;
     private static final int GROOVY_RANGE_SCOPES_IDX = 2;
@@ -149,10 +150,12 @@ public class SemanticHighlightingManager {
                 case MocaSql:
                     for (int i = firstLine; i < lastLine; i++) {
                         if (preInfos.containsKey(i)) {
-                            preInfos.get(i).add(new Token(0, 5, MOCASQL_RANGE_SCOPES_IDX));
+                            preInfos.get(i).add(new Token(0, 5,
+                                    MocaCompilationServiceSemanticHighlightingManager.MOCASQL_RANGE_SCOPES_IDX));
                         } else {
                             ArrayList<Token> tokensArr = new ArrayList<>();
-                            tokensArr.add(new Token(0, 5, MOCASQL_RANGE_SCOPES_IDX));
+                            tokensArr.add(new Token(0, 5,
+                                    MocaCompilationServiceSemanticHighlightingManager.MOCASQL_RANGE_SCOPES_IDX));
                             preInfos.put(i, tokensArr);
                         }
                     }
@@ -160,21 +163,23 @@ public class SemanticHighlightingManager {
                     // Add last line now.
                     if (preInfos.containsKey(lastLine)) {
                         preInfos.get(lastLine).add(new Token(0, mocaEmbeddedLanguageRange.range.getEnd().getCharacter(),
-                                MOCASQL_RANGE_LAST_LINE_SCOPES_IDX));
+                                MocaCompilationServiceSemanticHighlightingManager.MOCASQL_RANGE_LAST_LINE_SCOPES_IDX));
                     } else {
                         ArrayList<Token> tokensArr = new ArrayList<>();
                         tokensArr.add(new Token(0, mocaEmbeddedLanguageRange.range.getEnd().getCharacter(),
-                                MOCASQL_RANGE_LAST_LINE_SCOPES_IDX));
+                                MocaCompilationServiceSemanticHighlightingManager.MOCASQL_RANGE_LAST_LINE_SCOPES_IDX));
                         preInfos.put(lastLine, tokensArr);
                     }
                     break;
                 case Groovy:
                     for (int i = firstLine; i < lastLine; i++) {
                         if (preInfos.containsKey(i)) {
-                            preInfos.get(i).add(new Token(0, 1, GROOVY_RANGE_SCOPES_IDX));
+                            preInfos.get(i).add(new Token(0, 1,
+                                    MocaCompilationServiceSemanticHighlightingManager.GROOVY_RANGE_SCOPES_IDX));
                         } else {
                             ArrayList<Token> tokensArr = new ArrayList<>();
-                            tokensArr.add(new Token(0, 1, GROOVY_RANGE_SCOPES_IDX));
+                            tokensArr.add(new Token(0, 1,
+                                    MocaCompilationServiceSemanticHighlightingManager.GROOVY_RANGE_SCOPES_IDX));
                             preInfos.put(i, tokensArr);
                         }
                     }
@@ -182,11 +187,11 @@ public class SemanticHighlightingManager {
                     // Add last line now.
                     if (preInfos.containsKey(lastLine)) {
                         preInfos.get(lastLine).add(new Token(0, mocaEmbeddedLanguageRange.range.getEnd().getCharacter(),
-                                GROOVY_RANGE_LAST_LINE_SCOPES_IDX));
+                                MocaCompilationServiceSemanticHighlightingManager.GROOVY_RANGE_LAST_LINE_SCOPES_IDX));
                     } else {
                         ArrayList<Token> tokensArr = new ArrayList<>();
                         tokensArr.add(new Token(0, mocaEmbeddedLanguageRange.range.getEnd().getCharacter(),
-                                GROOVY_RANGE_LAST_LINE_SCOPES_IDX));
+                                MocaCompilationServiceSemanticHighlightingManager.GROOVY_RANGE_LAST_LINE_SCOPES_IDX));
                         preInfos.put(lastLine, tokensArr);
                     }
                     break;
@@ -225,11 +230,11 @@ public class SemanticHighlightingManager {
                         if (pos != null) {
                             if (preInfos.containsKey(pos.getLine())) {
                                 preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(), verbNounClause.length(),
-                                        MOCA_COMMAND_SCOPES_IDX));
+                                        MocaCompilationServiceSemanticHighlightingManager.MOCA_COMMAND_SCOPES_IDX));
                             } else {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
                                 tokensArr.add(new Token(pos.getCharacter(), verbNounClause.length(),
-                                        MOCA_COMMAND_SCOPES_IDX));
+                                        MocaCompilationServiceSemanticHighlightingManager.MOCA_COMMAND_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }
                         }
@@ -253,10 +258,12 @@ public class SemanticHighlightingManager {
                         mocaToken.getStartIndex());
                 int lineNum = pos.getLine();
                 if (preInfos.containsKey(lineNum)) {
-                    preInfos.get(lineNum).add(new Token(0, pos.getCharacter(), MOCA_COMMAND_STREAM_END_SCOPES_IDX));
+                    preInfos.get(lineNum).add(new Token(0, pos.getCharacter(),
+                            MocaCompilationServiceSemanticHighlightingManager.MOCA_COMMAND_STREAM_END_SCOPES_IDX));
                 } else {
                     ArrayList<Token> tokensArr = new ArrayList<>();
-                    tokensArr.add(new Token(0, pos.getCharacter(), MOCA_COMMAND_STREAM_END_SCOPES_IDX));
+                    tokensArr.add(new Token(0, pos.getCharacter(),
+                            MocaCompilationServiceSemanticHighlightingManager.MOCA_COMMAND_STREAM_END_SCOPES_IDX));
                     preInfos.put(lineNum, tokensArr);
                 }
             }
@@ -298,11 +305,12 @@ public class SemanticHighlightingManager {
                         if (offset > 0 && (offset - 1) < MocaServices.mocaCompilationResult.script.length()
                                 && MocaServices.mocaCompilationResult.script.charAt(offset - 1) != '@') {
                             if (preInfos.containsKey(pos.getLine())) {
-                                preInfos.get(pos.getLine())
-                                        .add(new Token(pos.getCharacter(), word.length(), MOCASQL_TABLE_SCOPES_IDX));
+                                preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(), word.length(),
+                                        MocaCompilationServiceSemanticHighlightingManager.MOCASQL_TABLE_SCOPES_IDX));
                             } else {
                                 ArrayList<Token> tokensArr = new ArrayList<>();
-                                tokensArr.add(new Token(pos.getCharacter(), word.length(), MOCASQL_TABLE_SCOPES_IDX));
+                                tokensArr.add(new Token(pos.getCharacter(), word.length(),
+                                        MocaCompilationServiceSemanticHighlightingManager.MOCASQL_TABLE_SCOPES_IDX));
                                 preInfos.put(pos.getLine(), tokensArr);
                             }
                         }

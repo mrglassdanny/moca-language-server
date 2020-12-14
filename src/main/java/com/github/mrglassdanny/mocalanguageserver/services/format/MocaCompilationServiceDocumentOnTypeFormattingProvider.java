@@ -13,7 +13,7 @@ import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.TextEdit;
 
-public class DocumentOnTypeFormattingProvider {
+public class MocaCompilationServiceDocumentOnTypeFormattingProvider {
 
         public static CompletableFuture<List<? extends TextEdit>> provideDocumentOnTypeFormatting(
                         DocumentOnTypeFormattingParams params) {
@@ -27,8 +27,8 @@ public class DocumentOnTypeFormattingProvider {
                         return CompletableFuture.completedFuture(new ArrayList<>());
                 }
 
-                return CompletableFuture.completedFuture(
-                                DocumentOnTypeFormattingProvider.processDocumentOnTypeFormatting(params.getPosition()));
+                return CompletableFuture.completedFuture(MocaCompilationServiceDocumentOnTypeFormattingProvider
+                                .processDocumentOnTypeFormatting(params.getPosition()));
         }
 
         public static ArrayList<TextEdit> processDocumentOnTypeFormatting(Position changePosition) {

@@ -1,7 +1,13 @@
 package com.github.mrglassdanny.mocalanguageserver.services.command;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
@@ -12,6 +18,7 @@ import com.github.mrglassdanny.mocalanguageserver.services.command.request.MocaL
 import com.github.mrglassdanny.mocalanguageserver.services.command.request.MocaLanguageServerOptionsRequest;
 import com.github.mrglassdanny.mocalanguageserver.services.command.request.MocaResultsRequest;
 import com.github.mrglassdanny.mocalanguageserver.services.command.request.MocaTraceRequest;
+import com.github.mrglassdanny.mocalanguageserver.services.command.request.OpenMocaTraceOutlineRequest;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.LoadCacheResponse;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaCommandLookupResponse;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaConnectionResponse;
@@ -19,12 +26,17 @@ import com.github.mrglassdanny.mocalanguageserver.services.command.response.Moca
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaLanguageServerOptionsResponse;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaResultsResponse;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaTraceResponse;
+import com.github.mrglassdanny.mocalanguageserver.services.command.response.OpenMocaTraceOutlineResponse;
+import com.github.mrglassdanny.mocalanguageserver.services.highlight.MocaTraceOutlineServiceSemanticHighlightingManager;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnection;
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutlineResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutliner;
 
 import org.eclipse.lsp4j.ExecuteCommandParams;
 
@@ -39,6 +51,7 @@ public class ExecuteCommandProvider {
     public static final String TRACE = "mocalanguageserver.trace";
     public static final String COMMAND_LOOKUP = "mocalanguageserver.commandLookup";
     public static final String SET_LANGUAGE_SERVER_OPTIONS = "mocalanguageserver.setLanguageServerOptions";
+    public static final String OPEN_TRACE_OUTLINE = "mocalanguageserver.openTraceOutline";
 
     public static ArrayList<String> mocaLanguageServerCommands = new ArrayList<>();
     static {
@@ -49,6 +62,7 @@ public class ExecuteCommandProvider {
         mocaLanguageServerCommands.add(TRACE);
         mocaLanguageServerCommands.add(COMMAND_LOOKUP);
         mocaLanguageServerCommands.add(SET_LANGUAGE_SERVER_OPTIONS);
+        mocaLanguageServerCommands.add(OPEN_TRACE_OUTLINE);
     }
 
     public static CompletableFuture<Object> provideCommandExecution(ExecuteCommandParams params) {
@@ -292,6 +306,8 @@ public class ExecuteCommandProvider {
 
                     MocaTraceRequest mocaTraceRequest = new MocaTraceRequest(args);
 
+                    // Should be sending file name from client, but set as user ID just in case we
+                    // do not.
                     if (mocaTraceRequest.fileName.isEmpty()) {
                         mocaTraceRequest.fileName = MocaConnection.getGlobalMocaConnection().getUserId();
                     }
@@ -363,6 +379,119 @@ public class ExecuteCommandProvider {
                     return CompletableFuture.completedFuture(new Object());
                 } catch (Exception exception) {
                     return CompletableFuture.completedFuture(new MocaLanguageServerOptionsResponse(exception));
+                }
+
+            case OPEN_TRACE_OUTLINE:
+                try {
+                    List<Object> args = params.getArguments();
+
+                    OpenMocaTraceOutlineRequest openMocaTraceOutlineRequest = new OpenMocaTraceOutlineRequest(args);
+
+                    OpenMocaTraceOutlineResponse openMocaTraceOutlineResponse;
+
+                    // If no requested trace file name, we can assume client wants list of remote
+                    // trace files.
+
+                    if (openMocaTraceOutlineRequest.requestedTraceFileName == null) {
+
+                        // Before returning remote trace file names, make sure we have valid MOCA
+                        // connection.
+                        if (!MocaConnection.getGlobalMocaConnection().isValid()) {
+                            return CompletableFuture.completedFuture(new OpenMocaTraceOutlineResponse(null, null,
+                                    new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER)));
+                        }
+
+                        // Read file names from LESDIR/log/*.log
+                        MocaResults res = MocaConnection.getGlobalMocaConnection().executeCommand(
+                                "{ sl_get dir where path = '${LESDIR}/log/' and filter = '*.log' | get file info where pathname = '${LESDIR}/log/' || @file_name } >> res | sort result set where result_set = @res and sort_list = 'modified desc'");
+                        ArrayList<String> traceFileNames = new ArrayList<>(res.getRowCount());
+                        for (int i = 0; i < res.getRowCount(); i++) {
+                            if (res.getString(i, "type").compareToIgnoreCase("F") == 0) {
+                                String pathName = res.getString(i, "pathname");
+                                traceFileNames.add(pathName.substring(pathName.lastIndexOf("\\") + 1));
+                            }
+                        }
+                        openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(traceFileNames, null, null);
+                    } else {
+
+                        // Read remote or read local file.
+
+                        if (openMocaTraceOutlineRequest.isRemote) {
+
+                            // Before reading requested remote trace file, make sure we have valid MOCA
+                            // connection.
+                            if (!MocaConnection.getGlobalMocaConnection().isValid()) {
+                                return CompletableFuture.completedFuture(new OpenMocaTraceOutlineResponse(null, null,
+                                        new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER)));
+                            }
+
+                            // Read trace file requested.
+                            MocaResults res = MocaConnection.getGlobalMocaConnection()
+                                    .executeCommand(String.format("read file where filnam = '${LESDIR}/log/%s'",
+                                            openMocaTraceOutlineRequest.requestedTraceFileName));
+
+                            // Set MocaServices moca trace outline result.
+                            MocaServices.mocaTraceOutlineResult = MocaTraceOutliner.outlineTrace(
+                                    openMocaTraceOutlineRequest.requestedTraceFileName,
+                                    openMocaTraceOutlineRequest.useLogicalIndentStrategy,
+                                    openMocaTraceOutlineRequest.minimumExecutionTime, res);
+
+                            // Since we may not have an event that fires for reopening a trace outline,
+                            // let's process MocaServices.mocaTraceOutlineResultMap changes here.
+                            for (Entry<String, MocaTraceOutlineResult> entry : MocaServices.mocaTraceOutlineResultMap
+                                    .entrySet()) {
+                                if (entry.getValue().traceFileName
+                                        .compareTo(MocaServices.mocaTraceOutlineResult.traceFileName) == 0) {
+                                    MocaServices.mocaTraceOutlineResultMap.put(entry.getKey(),
+                                            MocaServices.mocaTraceOutlineResult);
+                                    MocaTraceOutlineServiceSemanticHighlightingManager.streamAll(entry.getKey());
+                                    break;
+                                }
+                            }
+
+                            openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
+                                    MocaServices.mocaTraceOutlineResult.toString(), null);
+                        } else {
+
+                            // Will have full URI from client.
+                            File file = new File(URI.create(openMocaTraceOutlineRequest.requestedTraceFileName));
+                            BufferedReader reader = new BufferedReader(new FileReader(file));
+
+                            try {
+                                // Set MocaServices moca trace outline result.
+                                // Make sure we shorten requested trace file name for MocaTraceOutliner.
+                                MocaServices.mocaTraceOutlineResult = MocaTraceOutliner.outlineTrace(
+                                        openMocaTraceOutlineRequest.requestedTraceFileName.substring(
+                                                openMocaTraceOutlineRequest.requestedTraceFileName.lastIndexOf("/")),
+                                        openMocaTraceOutlineRequest.useLogicalIndentStrategy,
+                                        openMocaTraceOutlineRequest.minimumExecutionTime, reader);
+
+                                // Since we may not have an event that fires for reopening a trace outline,
+                                // let's process MocaServices.mocaTraceOutlineResultMap changes here.
+                                for (Entry<String, MocaTraceOutlineResult> entry : MocaServices.mocaTraceOutlineResultMap
+                                        .entrySet()) {
+                                    if (entry.getValue().traceFileName
+                                            .compareTo(MocaServices.mocaTraceOutlineResult.traceFileName) == 0) {
+                                        MocaServices.mocaTraceOutlineResultMap.put(entry.getKey(),
+                                                MocaServices.mocaTraceOutlineResult);
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.streamAll(entry.getKey());
+                                        break;
+                                    }
+                                }
+
+                                openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
+                                        MocaServices.mocaTraceOutlineResult.toString(), null);
+                            } catch (IOException ioException) {
+                                openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null, null,
+                                        ioException);
+                            } finally {
+                                reader.close();
+                            }
+                        }
+                    }
+                    return CompletableFuture.completedFuture(openMocaTraceOutlineResponse);
+                } catch (Exception exception) {
+                    return CompletableFuture.completedFuture(new OpenMocaTraceOutlineResponse(null, null, exception));
                 }
             default:
                 break;

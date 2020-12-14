@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.format.MocaSqlFormatter;
@@ -131,7 +132,7 @@ public class MocaFormatter {
                 case MocaLexer.SINGLE_BRACKET_STRING:
 
                     // Could just be an ordinary bracket string -- make sure to check!
-                    if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(tokenText)) {
+                    if (MocaSqlLanguageUtils.isMocaSqlScript(tokenText)) {
 
                         // Make sure moca language server options allow us to format.
                         if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlFormattingEnabled) {
@@ -395,6 +396,10 @@ public class MocaFormatter {
         return buf.toString();
     }
 
+    public static String format(String script) {
+        return format(MocaCompiler.compileScript(script, ""));
+    }
+
     // This function will have the same formatting logic as ^. The only difference
     // is we are passing in the changed position in hopes of being able to
     // format moca(we always need to do moca regardless of change position) and just
@@ -455,7 +460,7 @@ public class MocaFormatter {
                 case MocaLexer.SINGLE_BRACKET_STRING:
 
                     // Could just be an ordinary bracket string -- make sure to check!
-                    if (MocaSqlLanguageUtils.isMocaTokenValueMocaSqlScript(tokenText)) {
+                    if (MocaSqlLanguageUtils.isMocaSqlScript(tokenText)) {
 
                         // Make sure moca language server options allow us to format.
                         if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlFormattingEnabled) {

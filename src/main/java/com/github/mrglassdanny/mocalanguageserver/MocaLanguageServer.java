@@ -5,10 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.github.mrglassdanny.mocalanguageserver.services.highlight.SemanticHighlightingManager;
+import com.github.mrglassdanny.mocalanguageserver.services.highlight.MocaCompilationServiceSemanticHighlightingManager;
+import com.github.mrglassdanny.mocalanguageserver.services.highlight.MocaTraceOutlineServiceSemanticHighlightingManager;
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.services.command.ExecuteCommandProvider;
 
+import org.eclipse.lsp4j.CodeLensOptions;
 import org.eclipse.lsp4j.CompletionOptions;
 import org.eclipse.lsp4j.DocumentOnTypeFormattingOptions;
 import org.eclipse.lsp4j.ExecuteCommandOptions;
@@ -148,11 +150,18 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
         executeCommandOptions.setCommands(ExecuteCommandProvider.mocaLanguageServerCommands);
         serverCapabilities.setExecuteCommandProvider(executeCommandOptions);
 
-        SemanticHighlightingManager.setTextmateScopes();
-        serverCapabilities.setSemanticHighlighting(
-                new SemanticHighlightingServerCapabilities(SemanticHighlightingManager.textmateScopes));
+        MocaCompilationServiceSemanticHighlightingManager.setTextmateScopes();
+        MocaTraceOutlineServiceSemanticHighlightingManager.setTextmateScopes();
+        List<List<String>> textmateScopes = new ArrayList<>();
+        textmateScopes.addAll(MocaCompilationServiceSemanticHighlightingManager.textmateScopes);
+        textmateScopes.addAll(MocaTraceOutlineServiceSemanticHighlightingManager.textmateScopes);
+        serverCapabilities.setSemanticHighlighting(new SemanticHighlightingServerCapabilities(textmateScopes));
 
         serverCapabilities.setDefinitionProvider(true);
+
+        CodeLensOptions codeLensOptions = new CodeLensOptions();
+        // codeLensOptions.setResolveProvider(true);
+        serverCapabilities.setCodeLensProvider(codeLensOptions);
 
         InitializeResult initializeResult = new InitializeResult(serverCapabilities);
         return CompletableFuture.completedFuture(initializeResult);
