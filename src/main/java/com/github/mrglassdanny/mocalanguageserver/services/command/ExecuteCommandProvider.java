@@ -306,6 +306,8 @@ public class ExecuteCommandProvider {
 
                     MocaTraceRequest mocaTraceRequest = new MocaTraceRequest(args);
 
+                    // Should be sending file name from client, but set as user ID just in case we
+                    // do not.
                     if (mocaTraceRequest.fileName.isEmpty()) {
                         mocaTraceRequest.fileName = MocaConnection.getGlobalMocaConnection().getUserId();
                     }
@@ -391,6 +393,14 @@ public class ExecuteCommandProvider {
                     // trace files.
 
                     if (openMocaTraceOutlineRequest.requestedTraceFileName == null) {
+
+                        // Before returning remote trace file names, make sure we have valid MOCA
+                        // connection.
+                        if (!MocaConnection.getGlobalMocaConnection().isValid()) {
+                            return CompletableFuture.completedFuture(new OpenMocaTraceOutlineResponse(null, null,
+                                    new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER)));
+                        }
+
                         // Read file names from LESDIR/log/*.log
                         MocaResults res = MocaConnection.getGlobalMocaConnection().executeCommand(
                                 "sl_get dir where path = '${LESDIR}/log/' and filter = '*.log' | get file info where pathname = '${LESDIR}/log/' || @file_name");
@@ -407,6 +417,14 @@ public class ExecuteCommandProvider {
                         // Read remote or read local file.
 
                         if (openMocaTraceOutlineRequest.isRemote) {
+
+                            // Before reading requested remote trace file, make sure we have valid MOCA
+                            // connection.
+                            if (!MocaConnection.getGlobalMocaConnection().isValid()) {
+                                return CompletableFuture.completedFuture(new OpenMocaTraceOutlineResponse(null, null,
+                                        new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER)));
+                            }
+
                             // Read trace file requested.
                             MocaResults res = MocaConnection.getGlobalMocaConnection()
                                     .executeCommand(String.format("read file where filnam = '${LESDIR}/log/%s'",
