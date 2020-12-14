@@ -33,6 +33,34 @@ Cross-platform Java based implementation of the [Language Server Protocol] for M
     - [x] Approve Unsafe Scripts
 - [x] MOCA Tracing
 - [x] MOCA Command/Trigger Lookup
+- [x] Open MOCA Trace Outline
+
+
+### Trace Outliner
+
+#### Semantic Highlighting
+- Execution Status
+- Execution Time
+- MOCA Commands
+- MOCA Triggers
+- Returned Rows
+- Command Statement Status
+- Component Type
+- Thread-Session
+- Initiated From Compiled Code
+
+#### Definition Lookup
+- .log Definition (relative to thread-session)
+
+#### Hover
+- Stack Level
+- Execution Status
+- Execution Time
+- Returned Rows
+- Component Type
+- Component Level
+- Stack Arguments
+- Instruction
 
 
 ## Configuration Options
