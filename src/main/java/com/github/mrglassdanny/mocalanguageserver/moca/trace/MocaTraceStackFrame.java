@@ -171,7 +171,7 @@ public class MocaTraceStackFrame {
         }
 
         for (Entry<String, String> entry : this.published.entrySet()) {
-            if (!entry.getKey().isBlank()) {
+            if (!entry.getKey().isEmpty()) {
                 String value = adjustValue(entry.getValue().trim());
                 stackArgsBuf.append(String.format("%s = %s and ", entry.getKey(), value));
             }
