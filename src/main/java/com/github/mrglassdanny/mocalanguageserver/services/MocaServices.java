@@ -113,8 +113,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     // once we perform outlining logic for moca trace, it will not change(unless
     // outlining services are requested again). Therefore, we need to keep track of
     // existing trace outlines since we cannot simply 'recompile' on changed focus.
-    private static HashMap<String, MocaTraceOutlineResult> mocaTraceOutlineResultMap = new HashMap<>(); // Key is uri
-                                                                                                        // string.
+    public static HashMap<String, MocaTraceOutlineResult> mocaTraceOutlineResultMap = new HashMap<>(); // Key is uri
+                                                                                                       // string.
     // To make things easier for callers, we will expose the 'focused' moca trace
     // outline result.
     public static MocaTraceOutlineResult mocaTraceOutlineResult = null;
@@ -164,7 +164,22 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
-                // Nothing to do here.
+                // Check if exists in our map.
+                if (MocaServices.mocaTraceOutlineResultMap.containsKey(uriStr)) {
+                    MocaServices.mocaTraceOutlineResult = MocaServices.mocaTraceOutlineResultMap.get(uriStr);
+                } else {
+                    // Can assume we are here for 1 of 2 reasons:
+                    // 1. Execute command provider loaded trace outline result
+                    // 2. vscode was reopened and this file was left open during last vscode close.
+                    // This should handle both ^^^ since we want invalidated trace outline
+                    // results to be null.
+                    MocaServices.mocaTraceOutlineResultMap.put(uriStr, MocaServices.mocaTraceOutlineResult);
+                }
+                // Semantic highlights can be done on seperate threads and can
+                // finish independently of this function.
+                MocaServices.threadPool.execute(() -> {
+                    MocaTraceOutlineServiceSemanticHighlightingManager.streamAll(uriStr);
+                });
                 break;
             default:
                 // We do not want to needlessly compile the entire script everytime a change
@@ -284,7 +299,6 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     @Override
     public void didChangeWatchedFiles(DidChangeWatchedFilesParams params) {
         // Not doing anything..
-
     }
 
     @Override
@@ -599,6 +613,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
             case ExecuteCommandProvider.CONNECT:
             case ExecuteCommandProvider.LOAD_CACHE:
             case ExecuteCommandProvider.EXECUTE:
+            case ExecuteCommandProvider.OPEN_TRACE_OUTLINE:
                 return CompletableFuture.supplyAsync(() -> {
                     return ExecuteCommandProvider.provideCommandExecution(params).join();
                 });

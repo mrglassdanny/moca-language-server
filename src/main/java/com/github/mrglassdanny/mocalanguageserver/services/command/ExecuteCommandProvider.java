@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
@@ -26,6 +27,7 @@ import com.github.mrglassdanny.mocalanguageserver.services.command.response.Moca
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaResultsResponse;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaTraceResponse;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.OpenMocaTraceOutlineResponse;
+import com.github.mrglassdanny.mocalanguageserver.services.highlight.MocaTraceOutlineServiceSemanticHighlightingManager;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnection;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
@@ -33,6 +35,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.Moc
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
+import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutlineResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutliner;
 
 import org.eclipse.lsp4j.ExecuteCommandParams;
@@ -415,6 +418,19 @@ public class ExecuteCommandProvider {
                                     openMocaTraceOutlineRequest.useLogicalIndentStrategy,
                                     openMocaTraceOutlineRequest.minimumExecutionTime, res);
 
+                            // Since we may not have an event that fires for reopening a trace outline,
+                            // let's process MocaServices.mocaTraceOutlineResultMap changes here.
+                            for (Entry<String, MocaTraceOutlineResult> entry : MocaServices.mocaTraceOutlineResultMap
+                                    .entrySet()) {
+                                if (entry.getValue().traceFileName
+                                        .compareTo(MocaServices.mocaTraceOutlineResult.traceFileName) == 0) {
+                                    MocaServices.mocaTraceOutlineResultMap.put(entry.getKey(),
+                                            MocaServices.mocaTraceOutlineResult);
+                                    MocaTraceOutlineServiceSemanticHighlightingManager.streamAll(entry.getKey());
+                                    break;
+                                }
+                            }
+
                             openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
                                     MocaServices.mocaTraceOutlineResult.toString(), null);
                         } else {
@@ -431,6 +447,19 @@ public class ExecuteCommandProvider {
                                                 openMocaTraceOutlineRequest.requestedTraceFileName.lastIndexOf("/")),
                                         openMocaTraceOutlineRequest.useLogicalIndentStrategy,
                                         openMocaTraceOutlineRequest.minimumExecutionTime, reader);
+
+                                // Since we may not have an event that fires for reopening a trace outline,
+                                // let's process MocaServices.mocaTraceOutlineResultMap changes here.
+                                for (Entry<String, MocaTraceOutlineResult> entry : MocaServices.mocaTraceOutlineResultMap
+                                        .entrySet()) {
+                                    if (entry.getValue().traceFileName
+                                            .compareTo(MocaServices.mocaTraceOutlineResult.traceFileName) == 0) {
+                                        MocaServices.mocaTraceOutlineResultMap.put(entry.getKey(),
+                                                MocaServices.mocaTraceOutlineResult);
+                                        MocaTraceOutlineServiceSemanticHighlightingManager.streamAll(entry.getKey());
+                                        break;
+                                    }
+                                }
 
                                 openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
                                         MocaServices.mocaTraceOutlineResult.toString(), null);
