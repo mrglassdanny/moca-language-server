@@ -1,8 +1,11 @@
 # Changelog
 https://semver.org/
 
+## 1.7.11 (December 14, 2020)
+* Trace outline bug fix
+
 ## 1.7.10 (December 13, 2020)
-* Trace outline feature (beta) -- https://github.com/mrglassdanny/moca-language-server/issues/13
+* Trace outline feature -- https://github.com/mrglassdanny/moca-language-server/issues/13
 * SQL formatting improvements
 
 ## 1.6.10 (October 29, 2020)

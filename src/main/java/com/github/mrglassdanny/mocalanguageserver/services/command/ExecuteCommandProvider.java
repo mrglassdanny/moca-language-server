@@ -402,15 +402,20 @@ public class ExecuteCommandProvider {
                         }
 
                         // Read file names from LESDIR/log/*.log
+                        // A little over-complicated because we want to sort by modified date.
                         MocaResults res = MocaConnection.getGlobalMocaConnection().executeCommand(
-                                "{ sl_get dir where path = '${LESDIR}/log/' and filter = '*.log' | get file info where pathname = '${LESDIR}/log/' || @file_name } >> res | sort result set where result_set = @res and sort_list = 'modified desc'");
+                                "{ sl_get dir where path = '${LESDIR}/log/' and filter = '*.log' | get file info where pathname = '${LESDIR}/log/' || @file_name | publish data where file_name = @file_name and file_typ = @file_typ and modified = @modified } >> res | sort result set where result_set = @res and sort_list = 'modified desc'");
+
                         ArrayList<String> traceFileNames = new ArrayList<>(res.getRowCount());
+                        // Should have dirs and files in result set -- let's make sure to only add files
+                        // to the list.
                         for (int i = 0; i < res.getRowCount(); i++) {
-                            if (res.getString(i, "type").compareToIgnoreCase("F") == 0) {
-                                String pathName = res.getString(i, "pathname");
-                                traceFileNames.add(pathName.substring(pathName.lastIndexOf("\\") + 1));
+                            if (res.getString(i, "file_typ").compareToIgnoreCase("FILE") == 0) {
+                                String fileName = res.getString(i, "file_name");
+                                traceFileNames.add(fileName);
                             }
                         }
+
                         openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(traceFileNames, null, null);
                     } else {
 
@@ -440,6 +445,7 @@ public class ExecuteCommandProvider {
                             // let's process MocaServices.mocaTraceOutlineResultMap changes here.
                             for (Entry<String, MocaTraceOutlineResult> entry : MocaServices.mocaTraceOutlineResultMap
                                     .entrySet()) {
+                                // Comparing traceFileName should be okay here.
                                 if (entry.getValue().traceFileName
                                         .compareTo(MocaServices.mocaTraceOutlineResult.traceFileName) == 0) {
                                     MocaServices.mocaTraceOutlineResultMap.put(entry.getKey(),
@@ -470,6 +476,7 @@ public class ExecuteCommandProvider {
                                 // let's process MocaServices.mocaTraceOutlineResultMap changes here.
                                 for (Entry<String, MocaTraceOutlineResult> entry : MocaServices.mocaTraceOutlineResultMap
                                         .entrySet()) {
+                                    // Comparing traceFileName should be okay here.
                                     if (entry.getValue().traceFileName
                                             .compareTo(MocaServices.mocaTraceOutlineResult.traceFileName) == 0) {
                                         MocaServices.mocaTraceOutlineResultMap.put(entry.getKey(),
