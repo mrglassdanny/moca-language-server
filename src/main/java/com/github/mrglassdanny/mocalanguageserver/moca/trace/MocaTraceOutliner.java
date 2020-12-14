@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
+import com.github.mrglassdanny.mocalanguageserver.moca.trace.exceptions.InvalidMocaTraceFileException;
 
 public class MocaTraceOutliner {
 
@@ -1292,26 +1293,53 @@ public class MocaTraceOutliner {
     }
 
     public static MocaTraceOutlineResult outlineTrace(String traceFileName, boolean useLogicalIndentStrategy,
-            double minimumExecutionTime, MocaResults res) {
+            double minimumExecutionTime, MocaResults res) throws InvalidMocaTraceFileException {
 
         MocaTraceOutliner outliner = new MocaTraceOutliner(traceFileName, useLogicalIndentStrategy,
                 minimumExecutionTime);
 
-        for (int i = 1; i < res.getRowCount(); i++) {
-            outliner.readLine(i, res.getString(i, "text"));
+        // If no rows, let's quit.
+        if (res.getRowCount() == 0) {
+            throw new InvalidMocaTraceFileException("MOCA trace file is empty");
+        }
+
+        // Test first line. If not a match, let's assume invalid trace file format.
+        Matcher firstLineMatcher = MocaTraceOutliner.TRACE_LINE_REGEX_PATTERN.matcher(res.getString(0, "text"));
+        if (!firstLineMatcher.find()) {
+            throw new InvalidMocaTraceFileException("Invalid MOCA trace file format");
+        }
+
+        // All good -- build trace outline.
+        for (int i = 0; i < res.getRowCount(); i++) {
+            // Add 1 to readLine call since trace outliner lines start at 1!
+            outliner.readLine(i + 1, res.getString(i, "text"));
         }
 
         return outliner.toResult();
     }
 
     public static MocaTraceOutlineResult outlineTrace(String traceFileName, boolean useLogicalIndentStrategy,
-            double minimumExecutionTime, BufferedReader bufferedReader) throws IOException {
+            double minimumExecutionTime, BufferedReader bufferedReader)
+            throws IOException, InvalidMocaTraceFileException {
 
         MocaTraceOutliner outliner = new MocaTraceOutliner(traceFileName, useLogicalIndentStrategy,
                 minimumExecutionTime);
 
         int lineNum = 1;
         String line = bufferedReader.readLine();
+
+        // If null here, quit.
+        if (line == null) {
+            throw new InvalidMocaTraceFileException("MOCA trace file is empty");
+        }
+
+        // Test first line. If not a match, let's assume invalid trace file format.
+        Matcher firstLineMatcher = MocaTraceOutliner.TRACE_LINE_REGEX_PATTERN.matcher(line);
+        if (!firstLineMatcher.find()) {
+            throw new InvalidMocaTraceFileException("Invalid MOCA trace file format");
+        }
+
+        // All good -- build trace outline.
         while (line != null) {
             outliner.readLine(lineNum++, line);
             line = bufferedReader.readLine();
