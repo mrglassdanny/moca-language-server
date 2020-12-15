@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
+import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutliningResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceStackFrame;
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 
@@ -23,15 +24,17 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either;
 public class MocaTraceOutlineServiceDefinitionProvider {
 
     public static CompletableFuture<Either<List<? extends Location>, List<? extends LocationLink>>> provideDefinition(
-            URI uri, Position position) {
+            String uriStr, URI uri, Position position) {
+
+        MocaTraceOutliningResult mocaTraceOutliningResult = MocaServices.mocaTraceOutliningResultMap.get(uriStr);
 
         // Make sure we have a working trace outline result.
-        if (MocaServices.mocaTraceOutliningResult == null) {
+        if (mocaTraceOutliningResult == null) {
             return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
         }
 
         // +1 since lsp position lines start at 0!
-        MocaTraceStackFrame frame = MocaServices.mocaTraceOutliningResult.actualLinesMap.get(position.getLine() + 1);
+        MocaTraceStackFrame frame = mocaTraceOutliningResult.actualLinesMap.get(position.getLine() + 1);
 
         if (frame == null) {
             return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
@@ -42,12 +45,12 @@ public class MocaTraceOutlineServiceDefinitionProvider {
         try {
 
             String logFileName = MocaLanguageServer.globalStoragePath + "\\trace\\"
-                    + (MocaServices.mocaTraceOutliningResult.traceFileName + "_" + frame.outlineId) + ".log";
+                    + (mocaTraceOutliningResult.traceFileName + "_" + frame.outlineId) + ".log";
             File logFile = new File(logFileName);
             URI logFileUri = logFile.toURI();
             BufferedWriter logFileBufferedWriter = new BufferedWriter(new FileWriter(logFile));
 
-            ArrayList<String> relativeTraceLines = MocaServices.mocaTraceOutliningResult
+            ArrayList<String> relativeTraceLines = mocaTraceOutliningResult
                     .getRelativeTraceLinesForOutline(frame.outlineId);
 
             for (String line : relativeTraceLines) {

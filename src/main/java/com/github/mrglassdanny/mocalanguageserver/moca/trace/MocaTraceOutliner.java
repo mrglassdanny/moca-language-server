@@ -68,14 +68,10 @@ public class MocaTraceOutliner {
     // SQL:
     private static final Pattern MESSAGE_EXECUTING_SQL_REGEX_PATTERN = Pattern.compile("(Executing SQL:) ((?s).*)");
     private static final Pattern MESSAGE_UNBIND_SQL_REGEX_PATTERN = Pattern.compile("(UNBIND:) ((?s).*)");
-    private static final Pattern MESSAGE_SQL_EXECUTION_COMPLETE_REGEX_PATTERN = Pattern
-            .compile("SQL execution completed");
     private static final Pattern MESSAGE_CONNECTION_PREPARESTATEMENT_REGEX_PATTERN = Pattern
             .compile("(Connection.prepareStatement(.*?\\())((?s).*)(\\))");
     private static final Pattern MESSAGE_PREPAREDSTATEMENT_EXECUTE_REGEX_PATTERN = Pattern
             .compile("( \\.\\.\\.PreparedStatement\\.execute(.*?\\())((?s).*)(\\))");
-    private static final Pattern MESSAGE_PREPAREDSTATEMENT_CLOSE_REGEX_PATTERN = Pattern
-            .compile(" \\.\\.\\.PreparedStatement\\.close\\(\\)");
 
     // GROOVY:
     private static final Pattern MESSAGE_EXECUTING_COMPILED_SCRIPT_REGEX_PATTERN = Pattern
@@ -447,7 +443,9 @@ public class MocaTraceOutliner {
 
                 int stackLevel = Integer
                         .parseInt(traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_STACK_LEVEL_GROUP_IDX));
-                String message = traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_MESSAGE_GROUP_IDX);
+                // Cleanup whitespace.
+                String message = traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_MESSAGE_GROUP_IDX)
+                        .replaceAll("\\s+", " ");
 
                 ArrayList<MocaTraceStackFrame> outline;
                 if (this.outlineMap.containsKey(outlineId)) {

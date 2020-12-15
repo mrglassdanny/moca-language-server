@@ -115,7 +115,7 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
         VersionedTextDocumentIdentifier versionTextDoc = new VersionedTextDocumentIdentifier(uriStr, 1);
 
         // Get semantic highlights.
-        HashMap<Integer, ArrayList<Token>> preInfos = getMocaTraceOutlineHighlights();
+        HashMap<Integer, ArrayList<Token>> preInfos = getMocaTraceOutlineHighlights(uriStr);
 
         // Now steam all semantic highlights.
         for (Map.Entry<Integer, ArrayList<Token>> entry : preInfos.entrySet()) {
@@ -132,12 +132,12 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
 
     // Can do all work in one function, contrary to
     // MocaCompilationServiceSemanticHighlightingManager.
-    public static HashMap<Integer, ArrayList<Token>> getMocaTraceOutlineHighlights() {
+    public static HashMap<Integer, ArrayList<Token>> getMocaTraceOutlineHighlights(String uriStr) {
         // Have to pack all highlights for line into one SemanticHighlightingInformation
         // object.
         HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
 
-        MocaTraceOutliningResult mocaTraceOutliningResult = MocaServices.mocaTraceOutliningResult;
+        MocaTraceOutliningResult mocaTraceOutliningResult = MocaServices.mocaTraceOutliningResultMap.get(uriStr);
 
         // Make sure we have a working trace outline result.
         if (mocaTraceOutliningResult != null) {

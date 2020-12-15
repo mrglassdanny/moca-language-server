@@ -3,7 +3,6 @@ package com.github.mrglassdanny.mocalanguageserver.services.command;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -447,18 +446,15 @@ public class ExecuteCommandProvider {
                                 throw new InvalidMocaTraceFileException("Trace Outline is empty");
                             }
 
-                            // Set MocaServices moca trace outline result.
-                            MocaServices.mocaTraceOutliningResult = mocaTraceOutliningResult;
-
                             // Since we may not have an event that fires for reopening a trace outline,
                             // let's process MocaServices.mocaTraceOutliningResultMap changes here.
                             for (Entry<String, MocaTraceOutliningResult> entry : MocaServices.mocaTraceOutliningResultMap
                                     .entrySet()) {
                                 // Comparing traceFileName should be okay here.
                                 if (entry.getValue().traceFileName
-                                        .compareTo(MocaServices.mocaTraceOutliningResult.traceFileName) == 0) {
+                                        .compareTo(mocaTraceOutliningResult.traceFileName) == 0) {
                                     MocaServices.mocaTraceOutliningResultMap.put(entry.getKey(),
-                                            MocaServices.mocaTraceOutliningResult);
+                                            mocaTraceOutliningResult);
                                     MocaTraceOutlineServiceSemanticHighlightingManager.streamAll(entry.getKey());
                                     break;
                                 }
@@ -477,6 +473,7 @@ public class ExecuteCommandProvider {
                             // Wrapping in try-catch-finally here since we need to cleanup io resources.
                             try {
 
+                                // Make sure we shorten file name.
                                 MocaTraceOutliningResult mocaTraceOutliningResult = MocaTraceOutliner.outlineTrace(
                                         openMocaTraceOutlineRequest.requestedTraceFileName.substring(
                                                 openMocaTraceOutlineRequest.requestedTraceFileName.lastIndexOf("/")),
@@ -489,19 +486,15 @@ public class ExecuteCommandProvider {
                                     throw new InvalidMocaTraceFileException("Trace Outline is empty");
                                 }
 
-                                // Set MocaServices moca trace outline result.
-                                // Make sure we shorten requested trace file name for MocaTraceOutliner.
-                                MocaServices.mocaTraceOutliningResult = mocaTraceOutliningResult;
-
                                 // Since we may not have an event that fires for reopening a trace outline,
                                 // let's process MocaServices.mocaTraceOutliningResultMap changes here.
                                 for (Entry<String, MocaTraceOutliningResult> entry : MocaServices.mocaTraceOutliningResultMap
                                         .entrySet()) {
                                     // Comparing traceFileName should be okay here.
                                     if (entry.getValue().traceFileName
-                                            .compareTo(MocaServices.mocaTraceOutliningResult.traceFileName) == 0) {
+                                            .compareTo(mocaTraceOutliningResult.traceFileName) == 0) {
                                         MocaServices.mocaTraceOutliningResultMap.put(entry.getKey(),
-                                                MocaServices.mocaTraceOutliningResult);
+                                                mocaTraceOutliningResult);
                                         MocaTraceOutlineServiceSemanticHighlightingManager.streamAll(entry.getKey());
                                         break;
                                     }
