@@ -63,7 +63,7 @@ public class MocaTraceOutliner {
             .compile("(Calling C function) (.*)");
     private static final Pattern MESSAGE_INVOKING_METHOD_REGEX_PATTERN = Pattern.compile("(Invoking method:) (.*)");
     private static final Pattern MESSAGE_EXECUTING_BUILTIN_COMMAND_REGEX_PATTERN = Pattern
-            .compile("(Executing built-in command:) (.*)");
+            .compile("(Executing built-in command:) (.*)");
 
     // SQL:
     private static final Pattern MESSAGE_EXECUTING_SQL_REGEX_PATTERN = Pattern.compile("(Executing SQL:) ((?s).*)");

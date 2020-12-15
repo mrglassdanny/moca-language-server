@@ -47,23 +47,21 @@ public class MocaTraceOutliningResult {
 
         for (MocaTraceOutline outline : this.outlines) {
 
-            // Only write outline if we have some frames.
-            if (outline.frames.size() > 0) {
-                buf.append("/* ----------- Thread-Session: " + outline.id
-                        + " ------------------------------------------------------------------------------------------------------------------ */\n");
-                this.outlineIdLineNumbers.add(actualLineNum - 1);
+            buf.append("/* ----------- Thread-Session: " + outline.id
+                    + " ------------------------------------------------------------------------------------------------------------------ */\n");
+            this.outlineIdLineNumbers.add(actualLineNum - 1);
+            actualLineNum++;
+
+            StringBuilder outlineBuf = new StringBuilder(8192);
+            for (MocaTraceStackFrame frame : outline.frames) {
+                this.actualLinesMap.put(actualLineNum, frame);
+                outlineBuf.append(frame.toString());
+                outlineBuf.append('\n');
                 actualLineNum++;
-
-                StringBuilder outlineBuf = new StringBuilder(8192);
-                for (MocaTraceStackFrame frame : outline.frames) {
-                    this.actualLinesMap.put(actualLineNum, frame);
-                    outlineBuf.append(frame.toString());
-                    outlineBuf.append('\n');
-                    actualLineNum++;
-                }
-
-                buf.append(outlineBuf.toString());
             }
+
+            buf.append(outlineBuf.toString());
+
         }
 
         return buf.toString();

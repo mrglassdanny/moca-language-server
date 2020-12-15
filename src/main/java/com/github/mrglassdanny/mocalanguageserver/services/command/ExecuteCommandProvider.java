@@ -436,19 +436,19 @@ public class ExecuteCommandProvider {
                                     .executeCommand(String.format("read file where filnam = '${LESDIR}/log/%s'",
                                             openMocaTraceOutlineRequest.requestedTraceFileName));
 
-                            MocaTraceOutliningResult mocaTraceOutlineResult = MocaTraceOutliner.outlineTrace(
+                            MocaTraceOutliningResult mocaTraceOutliningResult = MocaTraceOutliner.outlineTrace(
                                     openMocaTraceOutlineRequest.requestedTraceFileName,
                                     openMocaTraceOutlineRequest.useLogicalIndentStrategy,
                                     openMocaTraceOutlineRequest.minimumExecutionTime, res);
 
                             // Make sure string is not null.
-                            String mocaTraceOutlineResultStr = mocaTraceOutlineResult.toString();
-                            if (mocaTraceOutlineResultStr == null) {
+                            String mocaTraceOutlineResultStr = mocaTraceOutliningResult.toString();
+                            if (mocaTraceOutlineResultStr == null || mocaTraceOutlineResultStr.isEmpty()) {
                                 throw new InvalidMocaTraceFileException("Trace Outline is empty");
                             }
 
                             // Set MocaServices moca trace outline result.
-                            MocaServices.mocaTraceOutliningResult = mocaTraceOutlineResult;
+                            MocaServices.mocaTraceOutliningResult = mocaTraceOutliningResult;
 
                             // Since we may not have an event that fires for reopening a trace outline,
                             // let's process MocaServices.mocaTraceOutlineResultMap changes here.
@@ -477,21 +477,21 @@ public class ExecuteCommandProvider {
                             // Wrapping in try-catch-finally here since we need to cleanup io resources.
                             try {
 
-                                MocaTraceOutliningResult mocaTraceOutlineResult = MocaTraceOutliner.outlineTrace(
+                                MocaTraceOutliningResult mocaTraceOutliningResult = MocaTraceOutliner.outlineTrace(
                                         openMocaTraceOutlineRequest.requestedTraceFileName.substring(
                                                 openMocaTraceOutlineRequest.requestedTraceFileName.lastIndexOf("/")),
                                         openMocaTraceOutlineRequest.useLogicalIndentStrategy,
                                         openMocaTraceOutlineRequest.minimumExecutionTime, reader);
 
                                 // Make sure string is not null.
-                                String mocaTraceOutlineResultStr = mocaTraceOutlineResult.toString();
-                                if (mocaTraceOutlineResultStr == null) {
+                                String mocaTraceOutlineResultStr = mocaTraceOutliningResult.toString();
+                                if (mocaTraceOutlineResultStr == null || mocaTraceOutlineResultStr.isEmpty()) {
                                     throw new InvalidMocaTraceFileException("Trace Outline is empty");
                                 }
 
                                 // Set MocaServices moca trace outline result.
                                 // Make sure we shorten requested trace file name for MocaTraceOutliner.
-                                MocaServices.mocaTraceOutliningResult = mocaTraceOutlineResult;
+                                MocaServices.mocaTraceOutliningResult = mocaTraceOutliningResult;
 
                                 // Since we may not have an event that fires for reopening a trace outline,
                                 // let's process MocaServices.mocaTraceOutlineResultMap changes here.
