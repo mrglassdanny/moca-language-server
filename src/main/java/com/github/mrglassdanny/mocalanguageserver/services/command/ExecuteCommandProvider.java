@@ -442,8 +442,8 @@ public class ExecuteCommandProvider {
                                     openMocaTraceOutlineRequest.minimumExecutionTime, res);
 
                             // Make sure string is not null.
-                            String mocaTraceOutlineResultStr = mocaTraceOutliningResult.toString();
-                            if (mocaTraceOutlineResultStr == null || mocaTraceOutlineResultStr.isEmpty()) {
+                            String mocaTraceOutliningResultStr = mocaTraceOutliningResult.toString();
+                            if (mocaTraceOutliningResultStr == null || mocaTraceOutliningResultStr.isEmpty()) {
                                 throw new InvalidMocaTraceFileException("Trace Outline is empty");
                             }
 
@@ -451,13 +451,13 @@ public class ExecuteCommandProvider {
                             MocaServices.mocaTraceOutliningResult = mocaTraceOutliningResult;
 
                             // Since we may not have an event that fires for reopening a trace outline,
-                            // let's process MocaServices.mocaTraceOutlineResultMap changes here.
-                            for (Entry<String, MocaTraceOutliningResult> entry : MocaServices.mocaTraceOutlineResultMap
+                            // let's process MocaServices.mocaTraceOutliningResultMap changes here.
+                            for (Entry<String, MocaTraceOutliningResult> entry : MocaServices.mocaTraceOutliningResultMap
                                     .entrySet()) {
                                 // Comparing traceFileName should be okay here.
                                 if (entry.getValue().traceFileName
                                         .compareTo(MocaServices.mocaTraceOutliningResult.traceFileName) == 0) {
-                                    MocaServices.mocaTraceOutlineResultMap.put(entry.getKey(),
+                                    MocaServices.mocaTraceOutliningResultMap.put(entry.getKey(),
                                             MocaServices.mocaTraceOutliningResult);
                                     MocaTraceOutlineServiceSemanticHighlightingManager.streamAll(entry.getKey());
                                     break;
@@ -465,7 +465,7 @@ public class ExecuteCommandProvider {
                             }
 
                             openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
-                                    mocaTraceOutlineResultStr, null);
+                                    mocaTraceOutliningResultStr, null);
                         } else {
 
                             // Will have full URI from client.
@@ -484,8 +484,8 @@ public class ExecuteCommandProvider {
                                         openMocaTraceOutlineRequest.minimumExecutionTime, reader);
 
                                 // Make sure string is not null.
-                                String mocaTraceOutlineResultStr = mocaTraceOutliningResult.toString();
-                                if (mocaTraceOutlineResultStr == null || mocaTraceOutlineResultStr.isEmpty()) {
+                                String mocaTraceOutliningResultStr = mocaTraceOutliningResult.toString();
+                                if (mocaTraceOutliningResultStr == null || mocaTraceOutliningResultStr.isEmpty()) {
                                     throw new InvalidMocaTraceFileException("Trace Outline is empty");
                                 }
 
@@ -494,13 +494,13 @@ public class ExecuteCommandProvider {
                                 MocaServices.mocaTraceOutliningResult = mocaTraceOutliningResult;
 
                                 // Since we may not have an event that fires for reopening a trace outline,
-                                // let's process MocaServices.mocaTraceOutlineResultMap changes here.
-                                for (Entry<String, MocaTraceOutliningResult> entry : MocaServices.mocaTraceOutlineResultMap
+                                // let's process MocaServices.mocaTraceOutliningResultMap changes here.
+                                for (Entry<String, MocaTraceOutliningResult> entry : MocaServices.mocaTraceOutliningResultMap
                                         .entrySet()) {
                                     // Comparing traceFileName should be okay here.
                                     if (entry.getValue().traceFileName
                                             .compareTo(MocaServices.mocaTraceOutliningResult.traceFileName) == 0) {
-                                        MocaServices.mocaTraceOutlineResultMap.put(entry.getKey(),
+                                        MocaServices.mocaTraceOutliningResultMap.put(entry.getKey(),
                                                 MocaServices.mocaTraceOutliningResult);
                                         MocaTraceOutlineServiceSemanticHighlightingManager.streamAll(entry.getKey());
                                         break;
@@ -508,7 +508,7 @@ public class ExecuteCommandProvider {
                                 }
 
                                 openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
-                                        mocaTraceOutlineResultStr, null);
+                                        mocaTraceOutliningResultStr, null);
                             } catch (Exception innerException) {
                                 openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null, null,
                                         innerException);

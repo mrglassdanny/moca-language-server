@@ -137,12 +137,12 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
         // object.
         HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
 
-        MocaTraceOutliningResult mocaTraceOutlineResult = MocaServices.mocaTraceOutliningResult;
+        MocaTraceOutliningResult mocaTraceOutliningResult = MocaServices.mocaTraceOutliningResult;
 
         // Make sure we have a working trace outline result.
-        if (mocaTraceOutlineResult != null) {
+        if (mocaTraceOutliningResult != null) {
 
-            for (int outlineIdLineNum : mocaTraceOutlineResult.outlineIdLineNumbers) {
+            for (int outlineIdLineNum : mocaTraceOutliningResult.outlineIdLineNumbers) {
                 Position pos = new Position(outlineIdLineNum, 0);
                 if (preInfos.containsKey(pos.getLine())) {
                     preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(), 1,
@@ -156,7 +156,7 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
             }
 
             int lineNum = 1;
-            for (MocaTraceOutline outline : mocaTraceOutlineResult.outlines) {
+            for (MocaTraceOutline outline : mocaTraceOutliningResult.outlines) {
 
                 for (MocaTraceStackFrame frame : outline.frames) {
 
@@ -288,7 +288,7 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
                         }
                     }
 
-                    if (frame.executionTime >= mocaTraceOutlineResult.minimumExecutionTime) {
+                    if (frame.executionTime >= mocaTraceOutliningResult.minimumExecutionTime) {
                         Position pos = new Position(lineNum,
                                 frame.indentStr.length() + frame.getInstructionPrefixLen());
                         if (preInfos.containsKey(pos.getLine())) {

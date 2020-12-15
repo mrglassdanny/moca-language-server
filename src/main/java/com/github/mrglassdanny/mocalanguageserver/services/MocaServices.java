@@ -113,8 +113,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     // once we perform outlining logic for moca trace, it will not change(unless
     // outlining services are requested again). Therefore, we need to keep track of
     // existing trace outlines since we cannot simply 'recompile' on changed focus.
-    public static HashMap<String, MocaTraceOutliningResult> mocaTraceOutlineResultMap = new HashMap<>(); // Key is uri
-                                                                                                         // string.
+    public static HashMap<String, MocaTraceOutliningResult> mocaTraceOutliningResultMap = new HashMap<>(); // Key is uri
+                                                                                                           // string.
     // To make things easier for callers, we will expose the 'focused' moca trace
     // outline result.
     public static MocaTraceOutliningResult mocaTraceOutliningResult = null;
@@ -133,7 +133,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
                 // Add to map.
-                MocaServices.mocaTraceOutlineResultMap.put(uriStr, MocaServices.mocaTraceOutliningResult);
+                MocaServices.mocaTraceOutliningResultMap.put(uriStr, MocaServices.mocaTraceOutliningResult);
                 // Semantic highlights can be done on seperate threads and can
                 // finish independently of this function.
                 MocaServices.threadPool.execute(() -> {
@@ -165,15 +165,15 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
                 // Check if exists in our map.
-                if (MocaServices.mocaTraceOutlineResultMap.containsKey(uriStr)) {
-                    MocaServices.mocaTraceOutliningResult = MocaServices.mocaTraceOutlineResultMap.get(uriStr);
+                if (MocaServices.mocaTraceOutliningResultMap.containsKey(uriStr)) {
+                    MocaServices.mocaTraceOutliningResult = MocaServices.mocaTraceOutliningResultMap.get(uriStr);
                 } else {
                     // Can assume we are here for 1 of 2 reasons:
                     // 1. Execute command provider loaded trace outline result
                     // 2. vscode was reopened and this file was left open during last vscode close.
                     // This should handle both ^^^ since we want invalidated trace outline
                     // results to be null.
-                    MocaServices.mocaTraceOutlineResultMap.put(uriStr, MocaServices.mocaTraceOutliningResult);
+                    MocaServices.mocaTraceOutliningResultMap.put(uriStr, MocaServices.mocaTraceOutliningResult);
                 }
                 // Semantic highlights can be done on seperate threads and can
                 // finish independently of this function.
@@ -259,7 +259,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
                 // Just need to remove trace outline result from map.
-                MocaServices.mocaTraceOutlineResultMap.remove(uriStr);
+                MocaServices.mocaTraceOutliningResultMap.remove(uriStr);
                 break;
             default:
                 // Need to clear diagnositics for file we just closed, that way the diagnostics
@@ -315,15 +315,15 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
                 // Check if exists in our map.
-                if (MocaServices.mocaTraceOutlineResultMap.containsKey(uriStr)) {
-                    MocaServices.mocaTraceOutliningResult = MocaServices.mocaTraceOutlineResultMap.get(uriStr);
+                if (MocaServices.mocaTraceOutliningResultMap.containsKey(uriStr)) {
+                    MocaServices.mocaTraceOutliningResult = MocaServices.mocaTraceOutliningResultMap.get(uriStr);
                 } else {
                     // Can assume we are here for 1 of 2 reasons:
                     // 1. Execute command provider loaded trace outline result
                     // 2. vscode was reopened and this file was left open during last vscode close.
                     // This should handle both ^^^ since we want invalidated trace outline
                     // results to be null.
-                    MocaServices.mocaTraceOutlineResultMap.put(uriStr, MocaServices.mocaTraceOutliningResult);
+                    MocaServices.mocaTraceOutliningResultMap.put(uriStr, MocaServices.mocaTraceOutliningResult);
                 }
                 // Semantic highlights can be done on seperate threads and can
                 // finish independently of this function.
@@ -632,15 +632,15 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
                 // Check if exists in our map.
-                if (MocaServices.mocaTraceOutlineResultMap.containsKey(uriStr)) {
-                    MocaServices.mocaTraceOutliningResult = MocaServices.mocaTraceOutlineResultMap.get(uriStr);
+                if (MocaServices.mocaTraceOutliningResultMap.containsKey(uriStr)) {
+                    MocaServices.mocaTraceOutliningResult = MocaServices.mocaTraceOutliningResultMap.get(uriStr);
                 } else {
                     // Can assume we are here for 1 of 2 reasons:
                     // 1. Execute command provider loaded trace outline result
                     // 2. vscode was reopened and this file was left open during last vscode close.
                     // This should handle both ^^^ since we want invalidated trace outline
                     // results to be null.
-                    MocaServices.mocaTraceOutlineResultMap.put(uriStr, MocaServices.mocaTraceOutliningResult);
+                    MocaServices.mocaTraceOutliningResultMap.put(uriStr, MocaServices.mocaTraceOutliningResult);
                 }
                 return MocaTraceOutlineServiceDefinitionProvider.provideDefinition(uri, params.getPosition());
             default:
