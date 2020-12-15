@@ -1315,7 +1315,7 @@ public class MocaTraceOutliner {
                 minimumExecutionTime);
 
         // If no rows, let's quit.
-        if (res.getRowCount() == 0) {
+        if (res == null || res.getRowCount() == 0) {
             throw new InvalidMocaTraceFileException("MOCA trace file is empty");
         }
 
