@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutline;
-import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutlineResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutliningResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceStackFrame;
 
 import org.eclipse.lsp4j.Position;
@@ -137,7 +137,7 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
         // object.
         HashMap<Integer, ArrayList<Token>> preInfos = new HashMap<>();
 
-        MocaTraceOutlineResult mocaTraceOutlineResult = MocaServices.mocaTraceOutlineResult;
+        MocaTraceOutliningResult mocaTraceOutlineResult = MocaServices.mocaTraceOutliningResult;
 
         // Make sure we have a working trace outline result.
         if (mocaTraceOutlineResult != null) {

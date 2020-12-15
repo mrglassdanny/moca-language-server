@@ -20,12 +20,12 @@ public class MocaTraceOutlineServiceHoverProvider {
         hover.setContents(new MarkupContent(MarkupKind.PLAINTEXT, "No data found"));
 
         // Make sure we have a working trace outline result.
-        if (MocaServices.mocaTraceOutlineResult == null) {
+        if (MocaServices.mocaTraceOutliningResult == null) {
             return CompletableFuture.completedFuture(hover);
         }
 
         // +1 since lsp position lines start at 0!
-        MocaTraceStackFrame frame = MocaServices.mocaTraceOutlineResult.actualLinesMap.get(position.getLine() + 1);
+        MocaTraceStackFrame frame = MocaServices.mocaTraceOutliningResult.actualLinesMap.get(position.getLine() + 1);
         if (frame == null) {
             return CompletableFuture.completedFuture(hover);
         }

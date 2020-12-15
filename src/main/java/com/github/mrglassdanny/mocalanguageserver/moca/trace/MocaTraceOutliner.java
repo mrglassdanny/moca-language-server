@@ -59,10 +59,11 @@ public class MocaTraceOutliner {
             .compile("Parallel execution complete");
     private static final Pattern MESSAGE_RESUMING_EXECUTION_OF_REGEX_PATTERN = Pattern
             .compile("(Resuming execution of) (.*)");
-
     private static final Pattern MESSAGE_CALLING_C_FUNCTION_REGEX_PATTERN = Pattern
             .compile("(Calling C function) (.*)");
     private static final Pattern MESSAGE_INVOKING_METHOD_REGEX_PATTERN = Pattern.compile("(Invoking method:) (.*)");
+    private static final Pattern MESSAGE_EXECUTING_BUILTIN_COMMAND_REGEX_PATTERN = Pattern
+            .compile("(Executing built-in command:) (.*)");
 
     // SQL:
     private static final Pattern MESSAGE_EXECUTING_SQL_REGEX_PATTERN = Pattern.compile("(Executing SQL:) ((?s).*)");
@@ -679,8 +680,8 @@ public class MocaTraceOutliner {
                         indentStack.push(outline.get(outline.size() - 1));
                     }
 
-                    // Line after firing triggers ^ should be the entire trigger instruction. Let's
-                    // grab it and overwrite the last outline stack frame instruction.
+                    // Line after firing triggers ^^^ should be the entire trigger instruction.
+                    // Let's grab it and overwrite the last outline stack frame instruction.
                     if (outline.size() > 0 && outline.get(outline.size() - 1).isFiringTriggers
                             && outline.get(outline.size() - 1).relativeLineNum == relativeLineNum - 1) {
                         outline.get(outline.size() - 1).instruction = message;
@@ -825,6 +826,25 @@ public class MocaTraceOutliner {
                     matcher = MocaTraceOutliner.MESSAGE_INVOKING_METHOD_REGEX_PATTERN.matcher(message);
                     if (matcher.find()) {
                         outline.get(outline.size() - 1).isJavaMethod = true;
+                    }
+
+                    matcher = MocaTraceOutliner.MESSAGE_EXECUTING_BUILTIN_COMMAND_REGEX_PATTERN.matcher(message);
+                    if (matcher.find()) {
+
+                        processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline, outlineId);
+
+                        String instruction = matcher.group(2);
+
+                        outline.add(
+                                new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum, instruction,
+                                        "0", false, false, buildIndentString(indentStack, stackLevel), indentStack));
+                        outline.get(outline.size() - 1).published.putAll(published);
+                        outline.get(outline.size() - 1).arguments.putAll(arguments);
+                        published.clear();
+                        arguments.clear();
+
+                        processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                outline.get(outline.size() - 1));
                     }
 
                     // SQL:
@@ -1287,12 +1307,12 @@ public class MocaTraceOutliner {
 
     }
 
-    private MocaTraceOutlineResult toResult() {
-        return new MocaTraceOutlineResult(this.traceFileName, this.outlineMap, this.orderedOutlineIds,
+    private MocaTraceOutliningResult toResult() {
+        return new MocaTraceOutliningResult(this.traceFileName, this.outlineMap, this.orderedOutlineIds,
                 this.absoluteTraceLines, this.relativeTraceLinesMap, this.minimumExecutionTime);
     }
 
-    public static MocaTraceOutlineResult outlineTrace(String traceFileName, boolean useLogicalIndentStrategy,
+    public static MocaTraceOutliningResult outlineTrace(String traceFileName, boolean useLogicalIndentStrategy,
             double minimumExecutionTime, MocaResults res) throws InvalidMocaTraceFileException {
 
         MocaTraceOutliner outliner = new MocaTraceOutliner(traceFileName, useLogicalIndentStrategy,
@@ -1318,7 +1338,7 @@ public class MocaTraceOutliner {
         return outliner.toResult();
     }
 
-    public static MocaTraceOutlineResult outlineTrace(String traceFileName, boolean useLogicalIndentStrategy,
+    public static MocaTraceOutliningResult outlineTrace(String traceFileName, boolean useLogicalIndentStrategy,
             double minimumExecutionTime, BufferedReader bufferedReader)
             throws IOException, InvalidMocaTraceFileException {
 
