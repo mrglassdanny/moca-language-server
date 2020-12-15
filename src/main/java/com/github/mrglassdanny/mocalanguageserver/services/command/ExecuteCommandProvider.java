@@ -445,8 +445,8 @@ public class ExecuteCommandProvider {
                             }
 
                             // We have uriStr; add to moca services map here.
-                            MocaServices.mocaTraceOutliningResultMap.put(openMocaTraceOutlineRequest.uriStr,
-                                    mocaTraceOutliningResult);
+                            MocaServices.mocaTraceOutliningResultMap.put(
+                                    openMocaTraceOutlineRequest.createdTraceOutlineUriStr, mocaTraceOutliningResult);
 
                             openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
                                     mocaTraceOutliningResultStr, null);
@@ -475,7 +475,8 @@ public class ExecuteCommandProvider {
                                 }
 
                                 // We have uriStr; add to moca services map here.
-                                MocaServices.mocaTraceOutliningResultMap.put(openMocaTraceOutlineRequest.uriStr,
+                                MocaServices.mocaTraceOutliningResultMap.put(
+                                        openMocaTraceOutlineRequest.createdTraceOutlineUriStr,
                                         mocaTraceOutliningResult);
 
                                 openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(null,
