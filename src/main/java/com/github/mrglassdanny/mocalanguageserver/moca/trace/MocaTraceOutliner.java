@@ -443,9 +443,7 @@ public class MocaTraceOutliner {
 
                 int stackLevel = Integer
                         .parseInt(traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_STACK_LEVEL_GROUP_IDX));
-                // Cleanup whitespace.
-                String message = traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_MESSAGE_GROUP_IDX)
-                        .replaceAll("\\s+", " ");
+                String message = traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_MESSAGE_GROUP_IDX);
 
                 ArrayList<MocaTraceStackFrame> outline;
                 if (this.outlineMap.containsKey(outlineId)) {

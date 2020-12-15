@@ -127,7 +127,9 @@ public class MocaTraceStackFrame {
             }
         }
 
-        return this.indentStr + this.instructionPrefix + this.instruction + this.instructionSuffix;
+        // Make sure to clean up whitespace in instruction.
+        return this.indentStr + this.instructionPrefix + this.instruction.replaceAll("\\s+", " ")
+                + this.instructionSuffix;
     }
 
     public String getMarkdownStr() {

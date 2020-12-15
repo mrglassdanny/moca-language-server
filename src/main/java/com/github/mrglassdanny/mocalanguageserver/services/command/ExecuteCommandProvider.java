@@ -444,7 +444,7 @@ public class ExecuteCommandProvider {
                                 throw new InvalidMocaTraceFileException("Trace Outline is empty");
                             }
 
-                            // We have uriStr; add to moca services map here.
+                            // We have uriStr(map key); add to moca services map here.
                             MocaServices.mocaTraceOutliningResultMap.put(
                                     openMocaTraceOutlineRequest.createdTraceOutlineUriStr, mocaTraceOutliningResult);
 
@@ -474,7 +474,7 @@ public class ExecuteCommandProvider {
                                     throw new InvalidMocaTraceFileException("Trace Outline is empty");
                                 }
 
-                                // We have uriStr; add to moca services map here.
+                                // We have uriStr(map key); add to moca services map here.
                                 MocaServices.mocaTraceOutliningResultMap.put(
                                         openMocaTraceOutlineRequest.createdTraceOutlineUriStr,
                                         mocaTraceOutliningResult);
