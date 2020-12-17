@@ -503,7 +503,6 @@ public class MocaTraceOutliner {
                     // Indenting via "{}" below for organization purposes and to illustrate exactly
                     // what we are looking for in the trace -- lol.
                     {
-                        this.previousStackLevelMap.get(outlineId);
                         if (this.previousStackLevelMap.containsKey(outlineId)) {
                             int previousStackLevel = this.previousStackLevelMap.get(outlineId);
                             if (previousStackLevel < stackLevel) { // Going down (1 -> 3).
