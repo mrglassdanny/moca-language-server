@@ -144,7 +144,7 @@ public class MocaTraceOutliner {
         this.minimumExecutionTime = minimumExecutionTime;
         this.lineNum = 0;
         this.lineTextBuffer = new StringBuilder(2048);
-        this.absoluteTraceLines = new ArrayList<>();
+        this.absoluteTraceLines = new ArrayList<>(4096);
         this.relativeTraceLinesMap = new HashMap<>();
         this.outlineMap = new HashMap<>();
         this.orderedOutlineIds = new ArrayList<>();
@@ -389,7 +389,8 @@ public class MocaTraceOutliner {
         this.lineTextBuffer.append(lineText);
         this.lineTextBuffer.append(' ');
 
-        Matcher traceLineMatcher = MocaTraceOutliner.TRACE_LINE_REGEX_PATTERN.matcher(this.lineTextBuffer.toString());
+        final String lineTextBufferStr = this.lineTextBuffer.toString();
+        Matcher traceLineMatcher = MocaTraceOutliner.TRACE_LINE_REGEX_PATTERN.matcher(lineTextBufferStr);
 
         if (traceLineMatcher.find()) {
 
@@ -401,7 +402,7 @@ public class MocaTraceOutliner {
             }
 
             // Add to absolute trace line list now.
-            this.absoluteTraceLines.add(this.lineTextBuffer.toString());
+            this.absoluteTraceLines.add(lineTextBufferStr);
 
             String thread = traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_THREAD_GROUP_IDX);
             String session = traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_SESSION_GROUP_IDX);
@@ -420,11 +421,11 @@ public class MocaTraceOutliner {
             int relativeLineNum;
             if (this.relativeTraceLinesMap.containsKey(outlineId)) {
                 ArrayList<String> relativeLines = this.relativeTraceLinesMap.get(outlineId);
-                relativeLines.add(this.lineTextBuffer.toString());
+                relativeLines.add(lineTextBufferStr);
                 relativeLineNum = relativeLines.size();
             } else {
-                ArrayList<String> relativeLines = new ArrayList<>();
-                relativeLines.add(this.lineTextBuffer.toString());
+                ArrayList<String> relativeLines = new ArrayList<>(2048);
+                relativeLines.add(lineTextBufferStr);
                 this.relativeTraceLinesMap.put(outlineId, relativeLines);
                 relativeLineNum = relativeLines.size();
             }
@@ -448,7 +449,7 @@ public class MocaTraceOutliner {
                 if (this.outlineMap.containsKey(outlineId)) {
                     outline = this.outlineMap.get(outlineId);
                 } else {
-                    outline = new ArrayList<>();
+                    outline = new ArrayList<>(2048);
                     this.outlineMap.put(outlineId, outline);
                 }
                 Stack<MocaTraceStackFrame> indentStack;
