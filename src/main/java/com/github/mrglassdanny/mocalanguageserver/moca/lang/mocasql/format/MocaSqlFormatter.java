@@ -94,6 +94,7 @@ public class MocaSqlFormatter {
             case MocaSqlLexer.OUTER:
             case MocaSqlLexer.CROSS:
             case MocaSqlLexer.JOIN:
+            case MocaSqlLexer.FULL:
             case MocaSqlLexer.LEFT:
             case MocaSqlLexer.ON:
             case MocaSqlLexer.GROUP:
@@ -386,6 +387,7 @@ public class MocaSqlFormatter {
                     break;
 
                 case MocaSqlLexer.JOIN:
+                case MocaSqlLexer.FULL:
                 case MocaSqlLexer.LEFT:
 
                     curQuery.clauseIndentBuf.setLength(0);
