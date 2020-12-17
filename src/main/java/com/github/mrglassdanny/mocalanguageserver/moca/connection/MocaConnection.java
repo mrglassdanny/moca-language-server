@@ -90,7 +90,6 @@ public class MocaConnection {
         URL url = null;
         if (this.sessionId != null) {
             url = new URL(String.format("%s?msession=%s", this.urlStr, this.sessionId));
-
         } else {
             url = new URL(this.urlStr);
         }
@@ -103,39 +102,43 @@ public class MocaConnection {
         // timeout at 3 mins.
         OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(180, TimeUnit.SECONDS).writeTimeout(180, TimeUnit.SECONDS).build();
+
         MediaType mediaType = MediaType.parse("application/moca-xml");
         RequestBody body = RequestBody.create(mediaType, mocaRequest);
         Request request = new Request.Builder().url(url).post(body).addHeader("Content-Type", "application/moca-xml")
                 .addHeader("Accept", "application/json").addHeader("Response-Encoder", "Json").build();
-        Response response = client.newCall(request).execute();
 
-        // Process headers -- these will tell the story if something went wrong.
-        // We also need to extract session id if it is there.
-        String sessionId = null;
-        int commandStatusHeader = 0;
-        String messageHeader = null;
+        // Try with resources will make sure response/response body is closed correctly.
+        try (Response response = client.newCall(request).execute()) {
 
-        try {
-            sessionId = response.header("Session-Id");
-            // Change session id if it is different than before.
-            if (sessionId != null && !sessionId.equals(this.sessionId)) {
-                this.sessionId = sessionId;
+            // Process headers -- these will tell the story if something went wrong.
+            // We also need to extract session id if it is there.
+            String sessionId = null;
+            int commandStatusHeader = 0;
+            String messageHeader = null;
+
+            try {
+                sessionId = response.header("Session-Id");
+                // Change session id if it is different than before.
+                if (sessionId != null && !sessionId.equals(this.sessionId)) {
+                    this.sessionId = sessionId;
+                }
+
+                commandStatusHeader = Integer.parseInt(response.header("Command-Status"));
+                messageHeader = response.header("Message");
+
+            } catch (Exception headerAnalysisException) {
+                // Do not care about doing anything here -- just want to make sure we do not
+                // crash.
             }
 
-            commandStatusHeader = Integer.parseInt(response.header("Command-Status"));
-            messageHeader = response.header("Message");
-
-        } catch (Exception headerAnalysisException) {
-            // Do not care about doing anything here -- just want to make sure we do not
-            // crash.
+            if (commandStatusHeader != 0) {
+                throw new MocaException(messageHeader != null ? messageHeader : "Unknown Error Occured",
+                        commandStatusHeader);
+            } else {
+                return new Gson().fromJson(response.body().string(), MocaResults.class);
+            }
         }
-
-        if (commandStatusHeader != 0) {
-            throw new MocaException(messageHeader != null ? messageHeader : "Unknown Error Occured",
-                    commandStatusHeader);
-        }
-
-        return new Gson().fromJson(response.body().string(), MocaResults.class);
     }
 
     public final String getUrlStr() {
