@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.Token;
 import org.eclipse.lsp4j.Position;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.List;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
@@ -142,17 +143,20 @@ public class MocaFormatter {
                             // Go ahead and just make sure mocasql compilation result is not null. Should
                             // not be null, but we just want to be safe!
                             if (mocaSqlCompilationResult != null) {
-                                String formattedMocaSqlScript = formatMocaSql(mocaSqlCompilationResult.mocaSqlTokens,
-                                        indentBuf);
-                                if (formattedMocaSqlScript != null) {
-                                    buf.append(formattedMocaSqlScript);
-                                } else {
+                                try {
+                                    String formattedMocaSqlScript = formatMocaSql(
+                                            mocaSqlCompilationResult.mocaSqlTokens, indentBuf);
+                                    if (formattedMocaSqlScript != null) {
+                                        buf.append(formattedMocaSqlScript);
+                                    } else {
+                                        buf.append(tokenText);
+                                    }
+                                } catch (EmptyStackException emptyStackException) {
                                     buf.append(tokenText);
                                 }
                             } else {
                                 buf.append(tokenText);
                             }
-
                         } else {
                             buf.append(tokenText);
                         }
@@ -473,11 +477,15 @@ public class MocaFormatter {
                                 // Now let's see if changed position is contained in mocasql range. If so,
                                 // format it. Otherwise, we will assume formatting is not necessary.
                                 if (RangeUtils.contains(mocaSqlCompilationResult.range, changePosition)) {
-                                    String formattedMocaSqlScript = formatMocaSql(
-                                            mocaSqlCompilationResult.mocaSqlTokens, indentBuf);
-                                    if (formattedMocaSqlScript != null) {
-                                        buf.append(formattedMocaSqlScript);
-                                    } else {
+                                    try {
+                                        String formattedMocaSqlScript = formatMocaSql(
+                                                mocaSqlCompilationResult.mocaSqlTokens, indentBuf);
+                                        if (formattedMocaSqlScript != null) {
+                                            buf.append(formattedMocaSqlScript);
+                                        } else {
+                                            buf.append(tokenText);
+                                        }
+                                    } catch (EmptyStackException emptyStackException) {
                                         buf.append(tokenText);
                                     }
                                 } else {
@@ -729,7 +737,8 @@ public class MocaFormatter {
         return buf.toString();
     }
 
-    private static String formatMocaSql(List<? extends Token> tokens, final StringBuilder mocaIndentBufState) {
+    private static String formatMocaSql(List<? extends Token> tokens, final StringBuilder mocaIndentBufState)
+            throws EmptyStackException {
 
         String formattedMocaSqlScript = MocaSqlFormatter.format(tokens);
 

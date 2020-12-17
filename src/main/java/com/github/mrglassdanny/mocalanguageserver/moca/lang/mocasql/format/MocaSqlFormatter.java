@@ -3,6 +3,7 @@ package com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.format;
 import org.antlr.v4.runtime.Token;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
 import java.util.regex.Matcher;
@@ -117,7 +118,7 @@ public class MocaSqlFormatter {
         }
     }
 
-    public static String format(List<? extends Token> mocaSqlTokens) {
+    public static String format(List<? extends Token> mocaSqlTokens) throws EmptyStackException {
 
         // Need to copy existing list into new list for processing. Reason is that we do
         // not want to modify the token list being passed in since other processes
