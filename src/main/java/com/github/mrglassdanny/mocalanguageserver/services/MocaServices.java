@@ -34,6 +34,7 @@ import com.github.mrglassdanny.mocalanguageserver.services.hover.MocaCompilation
 import com.github.mrglassdanny.mocalanguageserver.services.hover.MocaTraceOutlineServiceHoverProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.signature.MocaCompilationServiceSignatureHelpProvider;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.StringDifferenceUtils;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.eclipse.lsp4j.CodeLens;
@@ -133,8 +134,6 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
-                // Semantic highlights can be done on seperate threads and can
-                // finish independently of this function.
                 MocaServices.threadPool.execute(() -> {
                     MocaTraceOutlineServiceSemanticHighlightingManager.streamAll(uriStr);
                 });
@@ -143,8 +142,6 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                 String script = MocaServices.fileManager.getContents(uri);
                 MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-                // Diagnostics and semantic highlights can be done on seperate threads and can
-                // finish independently of this function.
                 MocaServices.threadPool.execute(() -> {
                     MocaCompilationServiceDiagnosticManager.streamAll();
                 });
@@ -163,8 +160,6 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
-                // Semantic highlights can be done on seperate threads and can
-                // finish independently of this function.
                 MocaServices.threadPool.execute(() -> {
                     MocaTraceOutlineServiceSemanticHighlightingManager.streamAll(uriStr);
                 });
@@ -172,8 +167,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
             default:
                 // We do not want to needlessly compile the entire script every time a change
                 // occurs -- this yields bad performance, especially on larger scripts.
-                // Therefore, we will instead attempt to figure out where the change to the file
-                // occured and only compile the range that the change is in.
+                // Therefore, we will instead attempt to figure out where the change(s) to the
+                // file occured and only compile the range(s) that the change(s) is in.
 
                 // Before we process file manager changes, we need to extract the previous
                 // contents.
@@ -181,15 +176,13 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                 MocaServices.fileManager.didChange(params);
 
                 // Real quick, let's make sure we are dealing with the same uri string as
-                // current compilation result. We should be, but let's put this here to be safe!
-                // If for some reason we are not dealing with the same uri string, we need to
-                // compile all.
+                // the current compilation result. We should be, but let's put this here to be
+                // safe! If for some reason we are not dealing with the same uri string, we need
+                // to compile all.
                 if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
                     String script = MocaServices.fileManager.getContents(uri);
                     MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-                    // Diagnostics and semantic highlights can be done on seperate threads and can
-                    // finish independently of this function.
                     MocaServices.threadPool.execute(() -> {
                         MocaCompilationServiceDiagnosticManager.streamAll();
                     });
@@ -203,59 +196,35 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                 // Now we need to get the new contents and compare.
                 String script = MocaServices.fileManager.getContents(uri);
 
-                // Calculate differences.
-                List<DiffRow> rows = null;
-                try {
-                    DiffRowGenerator generator = DiffRowGenerator.create().showInlineDiffs(true).oldTag(f -> "~")
-                            .newTag(f -> "**").build();
-                    rows = generator.generateDiffRows(Arrays.asList(prevScript), Arrays.asList(script));
-                } catch (DiffException diffException) {
-                    rows = null;
-                }
+                // Get differences.
+                // NOTE: lsp lines/characters start at 0!
+                ArrayList<Integer> changedLineNumbers = new ArrayList<>();
+                String[] prevScriptLines = prevScript.split("\n");
+                String[] scriptLines = script.split("\n");
 
-                // Compile accordingly.
-                // If rows are null for some reason, just compile everything.
-                if (rows != null) {
-
-                    // NOTE: lsp lines/characters start at 0!
-                    int lineNum = 0;
-                    ArrayList<Integer> changedLineNums = new ArrayList<>();
-
-                    for (DiffRow row : rows) {
-
-                        String oldLine = row.getOldLine();
-                        String newLine = row.getNewLine();
-
-                        if (oldLine.compareTo(newLine) != 0) {
-                            changedLineNums.add(lineNum);
+                int lineCount = prevScriptLines.length > scriptLines.length ? prevScriptLines.length
+                        : scriptLines.length;
+                for (int lineNum = 0; lineNum < lineCount; lineNum++) {
+                    if (prevScriptLines.length > lineNum && scriptLines.length > lineNum) {
+                        if (StringDifferenceUtils.indexOfDifference(prevScriptLines[lineNum],
+                                scriptLines[lineNum]) != -1) {
+                            changedLineNumbers.add(lineNum);
                         }
-                        lineNum++;
+                    } else {
+                        changedLineNumbers.add(lineNum);
                     }
-
-                    MocaServices.mocaCompilationResult = MocaCompiler.compileScriptChanges(script, uriStr,
-                            changedLineNums, MocaServices.mocaCompilationResult);
-
-                    // Diagnostics and semantic highlights can be done on seperate threads and can
-                    // finish independently of this function.
-                    MocaServices.threadPool.execute(() -> {
-                        MocaCompilationServiceDiagnosticManager.streamAll();
-                    });
-                    MocaServices.threadPool.execute(() -> {
-                        MocaCompilationServiceSemanticHighlightingManager.streamAll();
-                    });
-
-                } else {
-                    MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
-
-                    // Diagnostics and semantic highlights can be done on seperate threads and can
-                    // finish independently of this function.
-                    MocaServices.threadPool.execute(() -> {
-                        MocaCompilationServiceDiagnosticManager.streamAll();
-                    });
-                    MocaServices.threadPool.execute(() -> {
-                        MocaCompilationServiceSemanticHighlightingManager.streamAll();
-                    });
                 }
+
+                // Have changed line numbers -- go ahead and compile.
+                MocaServices.mocaCompilationResult = MocaCompiler.compileScriptChanges(script, uriStr,
+                        changedLineNumbers, MocaServices.mocaCompilationResult);
+
+                MocaServices.threadPool.execute(() -> {
+                    MocaCompilationServiceDiagnosticManager.streamAll();
+                });
+                MocaServices.threadPool.execute(() -> {
+                    MocaCompilationServiceSemanticHighlightingManager.streamAll();
+                });
 
                 break;
         }
@@ -294,8 +263,6 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                 String script = MocaServices.fileManager.getContents(uri);
                 MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
 
-                // Diagnostics and semantic highlights can be done on seperate threads and can
-                // finish independently of this function.
                 MocaServices.threadPool.execute(() -> {
                     MocaCompilationServiceDiagnosticManager.streamAll();
                 });
@@ -325,8 +292,6 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
         switch (getMocaServiceType(uriStr)) {
             case MocaTraceOutline:
-                // Semantic highlights can be done on seperate threads and can
-                // finish independently of this function.
                 MocaServices.threadPool.execute(() -> {
                     MocaTraceOutlineServiceSemanticHighlightingManager.streamAll(uriStr);
                 });
