@@ -1,6 +1,8 @@
 package com.github.mrglassdanny.mocalanguageserver.services;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +14,9 @@ import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.services.highlight.MocaCompilationServiceSemanticHighlightingManager;
 import com.github.mrglassdanny.mocalanguageserver.services.highlight.MocaTraceOutlineServiceSemanticHighlightingManager;
+import com.github.difflib.algorithm.DiffException;
+import com.github.difflib.text.DiffRow;
+import com.github.difflib.text.DiffRowGenerator;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
@@ -29,7 +34,6 @@ import com.github.mrglassdanny.mocalanguageserver.services.hover.MocaCompilation
 import com.github.mrglassdanny.mocalanguageserver.services.hover.MocaTraceOutlineServiceHoverProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.signature.MocaCompilationServiceSignatureHelpProvider;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
-import com.github.mrglassdanny.mocalanguageserver.util.lsp.StringDifferenceUtils;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.eclipse.lsp4j.CodeLens;
@@ -166,7 +170,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                 });
                 break;
             default:
-                // We do not want to needlessly compile the entire script everytime a change
+                // We do not want to needlessly compile the entire script every time a change
                 // occurs -- this yields bad performance, especially on larger scripts.
                 // Therefore, we will instead attempt to figure out where the change to the file
                 // occured and only compile the range that the change is in.
@@ -178,6 +182,8 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
 
                 // Real quick, let's make sure we are dealing with the same uri string as
                 // current compilation result. We should be, but let's put this here to be safe!
+                // If for some reason we are not dealing with the same uri string, we need to
+                // compile all.
                 if (uriStr.compareToIgnoreCase(MocaServices.mocaCompilationResult.uriStr) != 0) {
                     String script = MocaServices.fileManager.getContents(uri);
                     MocaServices.mocaCompilationResult = MocaCompiler.compileScript(script, uriStr);
@@ -197,17 +203,37 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                 // Now we need to get the new contents and compare.
                 String script = MocaServices.fileManager.getContents(uri);
 
-                // This will return the first indication of a difference. If 0, then there is no
-                // change.
-                // NOTE: this should work fine since we can assume that there cannot be more
-                // than 1 'distinct' differences -- meaning that there cannot be a change at
-                // index 5 -> 10 and also one at index 80 -> 90 at the same time.
-                int changeIdx = StringDifferenceUtils.indexOfDifference(prevScript, script);
-                int changeLen = script.length() - prevScript.length(); // Could be negative number.
+                // Calculate differences.
+                List<DiffRow> rows = null;
+                try {
+                    DiffRowGenerator generator = DiffRowGenerator.create().showInlineDiffs(true).oldTag(f -> "~")
+                            .newTag(f -> "**").build();
+                    rows = generator.generateDiffRows(Arrays.asList(prevScript), Arrays.asList(script));
+                } catch (DiffException diffException) {
+                    rows = null;
+                }
 
-                if (changeIdx != 0) {
-                    MocaServices.mocaCompilationResult = MocaCompiler.compileScriptChanges(script, uriStr, changeIdx,
-                            changeLen, MocaServices.mocaCompilationResult);
+                // Compile accordingly.
+                // If rows are null for some reason, just compile everything.
+                if (rows != null) {
+
+                    // NOTE: lsp lines/characters start at 0!
+                    int lineNum = 0;
+                    ArrayList<Integer> changedLineNums = new ArrayList<>();
+
+                    for (DiffRow row : rows) {
+
+                        String oldLine = row.getOldLine();
+                        String newLine = row.getNewLine();
+
+                        if (oldLine.compareTo(newLine) != 0) {
+                            changedLineNums.add(lineNum);
+                        }
+                        lineNum++;
+                    }
+
+                    MocaServices.mocaCompilationResult = MocaCompiler.compileScriptChanges(script, uriStr,
+                            changedLineNums, MocaServices.mocaCompilationResult);
 
                     // Diagnostics and semantic highlights can be done on seperate threads and can
                     // finish independently of this function.
@@ -230,6 +256,7 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
                         MocaCompilationServiceSemanticHighlightingManager.streamAll();
                     });
                 }
+
                 break;
         }
 

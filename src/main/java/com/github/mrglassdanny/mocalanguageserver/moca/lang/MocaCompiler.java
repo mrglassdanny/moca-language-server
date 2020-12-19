@@ -14,6 +14,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompiler;
+import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.RangeUtils;
 
@@ -25,20 +26,22 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.util.Positions;
+import org.eclipse.lsp4j.util.Ranges;
 
 public class MocaCompiler {
 
     // Since mocasql/groovy ranges can be compiled independently of eachother, we
     // will utilize a simple thread pool.
-    private static ExecutorService embeddedLanguageCompilationThreadPool = Executors.newCachedThreadPool();
+    private static ExecutorService threadPool = Executors.newCachedThreadPool();
 
     public static MocaCompilationResult compileScript(final String mocaScript, final String uriStr) {
 
         MocaCompilationResult mocaCompilationResult = new MocaCompilationResult(mocaScript, uriStr);
 
+        mocaCompilationResult.mocaTokens = new MocaLexer(CharStreams.fromString(mocaScript)).getAllTokens();
         mocaCompilationResult.mocaParser = new MocaParser(
                 new CommonTokenStream(new MocaLexer(CharStreams.fromString(mocaScript))));
-
         mocaCompilationResult.mocaSyntaxErrorListener = new MocaSyntaxErrorListener();
         mocaCompilationResult.mocaParser.addErrorListener(mocaCompilationResult.mocaSyntaxErrorListener);
         // Since we do not want errors printing to the console, remove this
@@ -47,8 +50,6 @@ public class MocaCompiler {
         ParseTree parseTree = mocaCompilationResult.mocaParser.moca_script();
         mocaCompilationResult.mocaParseTreeListener = new MocaParseTreeListener();
         new ParseTreeWalker().walk(mocaCompilationResult.mocaParseTreeListener, parseTree);
-
-        mocaCompilationResult.mocaTokens = new MocaLexer(CharStreams.fromString(mocaScript)).getAllTokens();
 
         // Set embedded lang ranges, then compile them.
         mocaCompilationResult.setMocaEmbeddedLanguageRanges(mocaScript);
@@ -78,7 +79,7 @@ public class MocaCompiler {
         }
 
         try {
-            embeddedLanguageCompilationThreadPool.invokeAll(compileTasks);
+            threadPool.invokeAll(compileTasks);
         } catch (InterruptedException ex) {
             // Do nothing..
         }
@@ -87,15 +88,15 @@ public class MocaCompiler {
     }
 
     public static MocaCompilationResult compileScriptChanges(final String mocaScript, final String uriStr,
-            int changeIdx, int changeLen, MocaCompilationResult previousMocaCompilationResult) {
+            ArrayList<Integer> changedLineNums, MocaCompilationResult previousMocaCompilationResult) {
 
         // Need to compile moca regardless of where the change is, since technically
         // moca is changed regardless of where the change is lang context-wise.
         MocaCompilationResult mocaCompilationResult = new MocaCompilationResult(mocaScript, uriStr);
 
+        mocaCompilationResult.mocaTokens = new MocaLexer(CharStreams.fromString(mocaScript)).getAllTokens();
         mocaCompilationResult.mocaParser = new MocaParser(
                 new CommonTokenStream(new MocaLexer(CharStreams.fromString(mocaScript))));
-
         mocaCompilationResult.mocaSyntaxErrorListener = new MocaSyntaxErrorListener();
         mocaCompilationResult.mocaParser.addErrorListener(mocaCompilationResult.mocaSyntaxErrorListener);
         // Since we do not want errors printing to the console, remove this
@@ -105,83 +106,81 @@ public class MocaCompiler {
         mocaCompilationResult.mocaParseTreeListener = new MocaParseTreeListener();
         new ParseTreeWalker().walk(mocaCompilationResult.mocaParseTreeListener, parseTree);
 
-        mocaCompilationResult.mocaTokens = new MocaLexer(CharStreams.fromString(mocaScript)).getAllTokens();
-
         // Set embedded lang ranges.
         mocaCompilationResult.setMocaEmbeddedLanguageRanges(mocaScript);
 
-        // Now we need to check if changed position is inside mocasql or groovy. If so,
-        // we only need to compile affected range(s) and leave the rest alone. So let's
-        // go ahead and set the new moca compilation results mocasql/groovy compilation
-        // units to the previous ones'.
+        // Now that we have updated embedded lang ranges, the plan is to compare changed
+        // line numbers to the ranges and only compile those ranges that contain/border
+        // a changed line number.
+
+        // Keep existing mocasql/groovy compilation results for now, since only a subset
+        // may need to be re-compiled and replaced.
         mocaCompilationResult.mocaSqlCompilationResults = previousMocaCompilationResult.mocaSqlCompilationResults;
         mocaCompilationResult.groovyCompilationResults = previousMocaCompilationResult.groovyCompilationResults;
 
-        // Now find changed position in either mocasql or groovy ranges. Once we find
-        // it, we just need to compile affected range(s) and return our moca compilation
-        // result.
-        // If it is not in mocasql or groovy, then it must have been in moca.
+        // Will use thread pool to compile changes.
+        Collection<Callable<Boolean>> compileTasks = new ArrayList<Callable<Boolean>>();
 
-        // NOTE: we will not worry about using thread pool here since we are only going
-        // to compile 1 range at most -- it would not make a difference to do so on a
-        // different thread.
-
-        // NOTE: we do not need to worry about other mocasql/groovy ranges being
-        // invalidated due to this. Since we take into account where ranges are in
-        // regards to the moca compilation result(createMocaPosition function in
-        // MocaSqlLanguageUtils/GroovyLanguageUtils), all we need to do is make sure
-        // that the moca compilation result embedded ranges are updated. This occurs
-        // when we compile moca and call setMocaEmbeddedLangaugeRanges function.
-
-        // Need to get start and end positions for processing below.
-        // NOTE: changeLen could be negative number.
-        Position startPos, endPos;
-
-        startPos = PositionUtils.getPosition(mocaScript, changeIdx);
-        endPos = PositionUtils.getPosition(mocaScript, changeIdx + Math.abs(changeLen));
-        if (endPos == null) {
-            endPos = PositionUtils.getPosition(mocaScript, mocaScript.length() - 1);
-        }
-
-        boolean foundStart = false;
+        // This variable is here to make sure we do not revisit already seen changed
+        // line numbers.
+        int visitedChangedLineCount = 0;
         for (MocaEmbeddedLanguageRange mocaEmbeddedLanguageRange : mocaCompilationResult.mocaEmbeddedLanguageRanges) {
 
-            if (!foundStart) {
-                if (RangeUtils.contains(mocaEmbeddedLanguageRange.range, startPos)) {
+            MocaServices.logInfoToLanguageClient(String.format("Checking Range: %s", mocaEmbeddedLanguageRange.range));
+
+            for (int i = visitedChangedLineCount; i < changedLineNums.size(); i++) {
+                int changedLineNum = changedLineNums.get(i);
+
+                MocaServices.logInfoToLanguageClient(String.format("Changed Line Num: %d", changedLineNum));
+
+                // Checking if changed line number is inside/part of range.
+                if (mocaEmbeddedLanguageRange.range.getStart().getLine() <= changedLineNum
+                        && mocaEmbeddedLanguageRange.range.getEnd().getLine() >= changedLineNum) {
+
+                    // Add for compile.
                     if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.MocaSql) {
-                        compileMocaSql(mocaScript, mocaCompilationResult, mocaEmbeddedLanguageRange.range,
-                                mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
+                        compileTasks.add(() -> {
+                            compileMocaSql(mocaScript, mocaCompilationResult, mocaEmbeddedLanguageRange.range,
+                                    mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
+                            return true;
+                        });
                     } else if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.Groovy) {
-                        compileGroovy(mocaScript, mocaCompilationResult, mocaEmbeddedLanguageRange.range,
-                                mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
+                        compileTasks.add(() -> {
+                            compileGroovy(mocaScript, mocaCompilationResult, mocaEmbeddedLanguageRange.range,
+                                    mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
+                            return true;
+                        });
                     }
 
-                    foundStart = true;
+                    // Now that we have added range for compilation, we can break from changed line
+                    // nums loop to move
+                    // onto the next range.
+                    break;
 
-                    // If range contains end position as well, we can just quit here!
-                    if (RangeUtils.contains(mocaEmbeddedLanguageRange.range, endPos)) {
-                        return mocaCompilationResult;
+                } else {
+                    // Checking if changed line number is before and not contained/bordering range.
+                    if (changedLineNum < mocaEmbeddedLanguageRange.range.getStart().getLine()) {
+                        // If so, we need to move onto the next changed line number and not revisit this
+                        // one.
+                        visitedChangedLineCount++;
                     }
-                }
-
-            } else {
-                // Need to compile range regardless of whether or not we contain end position
-                // since we have already found start postion -- we can assume we are inside of
-                // the changed range right now.
-                if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.MocaSql) {
-                    compileMocaSql(mocaScript, mocaCompilationResult, mocaEmbeddedLanguageRange.range,
-                            mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
-                } else if (mocaEmbeddedLanguageRange.mocaLanguageContext.id == MocaLanguageContext.ContextId.Groovy) {
-                    compileGroovy(mocaScript, mocaCompilationResult, mocaEmbeddedLanguageRange.range,
-                            mocaEmbeddedLanguageRange.mocaLanguageContext.compilationResultIdx);
-                }
-
-                // Now we check if this range contains the end postion. If so, we quit!
-                if (RangeUtils.contains(mocaEmbeddedLanguageRange.range, endPos)) {
-                    return mocaCompilationResult;
                 }
             }
+
+            // Can leave when we have visited all of the changed line numbers.
+            if (visitedChangedLineCount == changedLineNums.size()) {
+                break;
+            }
         }
+
+        // Now compile ranges.
+        try {
+            threadPool.invokeAll(compileTasks);
+            MocaServices.logInfoToLanguageClient("COMPILED RANGES: " + compileTasks.size());
+        } catch (InterruptedException ex) {
+            // Do nothing..
+        }
+
         return mocaCompilationResult;
     }
 
