@@ -1,11 +1,12 @@
 # Changelog
 https://semver.org/
 
-## 1.7.15 (December ??, 2020)
+## 1.7.15 (December 19, 2020)
 * Trace outline performance improvements
 * MOCA Connection bug fix
 * SQL Formatter bug fix -- https://github.com/mrglassdanny/moca-language-server/issues/63
 * SQL/Groovy compilation bug fix -- https://github.com/mrglassdanny/moca-language-server/issues/61
+* SQL column intellisense improvement -- https://github.com/mrglassdanny/moca-language-server/issues/60
 
 ## 1.7.14 (December 15, 2020)
 * Trace outline tweaks

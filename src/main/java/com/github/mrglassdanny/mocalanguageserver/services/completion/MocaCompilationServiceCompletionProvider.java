@@ -200,10 +200,11 @@ public class MocaCompilationServiceCompletionProvider {
                 if (mocaSqlCompilationResult != null) {
 
                     // Checking to see if we pressed '.' - which in an mocasql context would mean
-                    // that
-                    // we are looking for table columns.
+                    // that we are looking for table columns.
                     if (PositionUtils.getCharacterAtPosition(MocaServices.mocaCompilationResult.script,
-                            new Position(position.getLine(), position.getCharacter() - 1)) == '.') {
+                            new Position(position.getLine(), position.getCharacter() - 1)) == '.'
+                            || PositionUtils.getCharacterAtPosition(MocaServices.mocaCompilationResult.script,
+                                    new Position(position.getLine(), position.getCharacter() - 2)) == '.') {
 
                         // Get word on left of '.'.
                         String word = PositionUtils.getWordAtPosition(MocaServices.mocaCompilationResult.script,

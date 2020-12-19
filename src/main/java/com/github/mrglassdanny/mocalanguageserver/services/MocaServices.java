@@ -2,7 +2,6 @@ package com.github.mrglassdanny.mocalanguageserver.services;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -14,9 +13,6 @@ import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.services.highlight.MocaCompilationServiceSemanticHighlightingManager;
 import com.github.mrglassdanny.mocalanguageserver.services.highlight.MocaTraceOutlineServiceSemanticHighlightingManager;
-import com.github.difflib.algorithm.DiffException;
-import com.github.difflib.text.DiffRow;
-import com.github.difflib.text.DiffRowGenerator;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
