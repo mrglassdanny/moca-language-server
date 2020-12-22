@@ -862,7 +862,7 @@ public class MocaTraceOutliner {
                             // This error should only come up after a MOCA command fails.
                             for (int i = outline.size() - 1; i >= 0; i--) {
                                 if (stackLevel == outline.get(i).stackLevel && outline.get(i).componentLevel != null) {
-                                    outline.get(i).instructionStatus = "-1403";
+                                    outline.get(i).instructionStatus = matcher.group(2).trim();
                                     break;
                                 }
                             }
