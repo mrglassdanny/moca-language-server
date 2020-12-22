@@ -14,9 +14,9 @@ import com.github.mrglassdanny.mocalanguageserver.moca.trace.exceptions.InvalidM
 public class MocaTraceOutliner {
 
     private static final Pattern TRACE_LINE_REGEX_PATTERN = Pattern.compile(
-            "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2},\\d{3}) (TRACE|DEBUG|INFO |WARN |ERROR|FATAL) \\[(\\d+)[ ]+(.*?)\\] (.+?) \\[(\\d{1,3})\\] ([\\s\\S]*) ((\\[\\])|(\\[\\w{16} \\w{16}\\]))");
+            "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2},\\d{3}) (TRACE|DEBUG|INFO |WARN |ERROR|FATAL) \\[(\\d+)[ ]+(.*?)\\] (.+?) \\[(\\d{1,3})\\] ([\\s\\S]*) ((\\[\\])|(\\[ \\])|(\\[\\w{16} \\w{16}\\]))");
     private static final Pattern TRACE_LINE_CONTINUED_REGEX_PATTERN = Pattern
-            .compile(" ((\\[\\])|(\\[\\w{16} \\w{16}\\]))");
+            .compile(" ((\\[\\])|(\\[ \\])|(\\[\\w{16} \\w{16}\\]))");
 
     private static final int TRACE_LINE_REGEX_THREAD_GROUP_IDX = 3;
     private static final int TRACE_LINE_REGEX_SESSION_GROUP_IDX = 4;
