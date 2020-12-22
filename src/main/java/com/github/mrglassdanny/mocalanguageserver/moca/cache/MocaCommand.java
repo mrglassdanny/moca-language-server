@@ -2,6 +2,8 @@ package com.github.mrglassdanny.mocalanguageserver.moca.cache;
 
 import java.util.ArrayList;
 
+import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
+
 public class MocaCommand {
 
     public static final String TYPE_LOCAL_SYNTAX = "Local Syntax";
@@ -40,7 +42,7 @@ public class MocaCommand {
 
         // Add required args to documentation if there are any.
         String requiredArgumentsStr = "";
-        ArrayList<MocaCommandArgument> args = MocaCache.getGlobalMocaCache().commandArguments.get(mcmds.get(0).command);
+        ArrayList<MocaCommandArgument> args = MocaServices.mocaCache.commandArguments.get(mcmds.get(0).command);
         if (args != null) {
             for (MocaCommandArgument arg : args) {
                 if (arg.argreq) {
@@ -54,7 +56,7 @@ public class MocaCommand {
         }
         // Go ahead and add triggers to documentation if there are any.
         String triggersStr = "";
-        ArrayList<MocaTrigger> triggers = MocaCache.getGlobalMocaCache().triggers.get(mcmds.get(0).command);
+        ArrayList<MocaTrigger> triggers = MocaServices.mocaCache.triggers.get(mcmds.get(0).command);
         if (triggers != null) {
             for (MocaTrigger trg : triggers) {
                 triggersStr += String.format("* %d: %s\n", trg.trgseq, trg.name);

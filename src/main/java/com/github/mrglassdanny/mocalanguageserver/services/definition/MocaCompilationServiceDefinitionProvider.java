@@ -13,7 +13,6 @@ import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommand;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
@@ -71,7 +70,7 @@ public class MocaCompilationServiceDefinitionProvider {
 
                                 verbNounClause = entry.getKey();
 
-                                ArrayList<MocaCommand> mcmds = MocaCache.getGlobalMocaCache().commands
+                                ArrayList<MocaCommand> mcmds = MocaServices.mocaCache.commands
                                         .get(verbNounClause.toString());
                                 if (mcmds != null) {
 

@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.services.highlight.MocaCompilationServiceSemanticHighlightingManager;
 import com.github.mrglassdanny.mocalanguageserver.services.highlight.MocaTraceOutlineServiceSemanticHighlightingManager;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
+import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnection;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
@@ -74,6 +76,9 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
     public static LanguageClient languageClient = null;
     private static FileManager fileManager = new FileManager();
     private static ExecutorService threadPool = Executors.newCachedThreadPool();
+
+    public static MocaConnection mocaConnection = new MocaConnection();
+    public static MocaCache mocaCache = new MocaCache();
 
     // We are supporting multiple MOCA 'services'. We will use
     // MocaServiceType enum in order to invoke the correct logic for the requested

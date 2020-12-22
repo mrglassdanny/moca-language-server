@@ -4,24 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.MocaSqlCache;
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnection;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 
 public class MocaCache {
-
-        // Using singleton pattern to manage single global cache instance.
-        private static MocaCache globalMocaCache = null;
-
-        public static MocaCache getGlobalMocaCache() {
-                if (MocaCache.globalMocaCache == null) {
-                        MocaCache.globalMocaCache = new MocaCache();
-                        return MocaCache.globalMocaCache;
-                } else {
-                        return MocaCache.globalMocaCache;
-                }
-        }
 
         private static final String COMMANDS_SCRIPT = "list active commands";
         private static final String COMMAND_ARGUMENTS_SCRIPT = "list active command arguments";
@@ -145,8 +132,7 @@ public class MocaCache {
         public void loadCommands() {
 
                 try {
-                        MocaResults res = MocaConnection.getGlobalMocaConnection()
-                                        .executeCommand(MocaCache.COMMANDS_SCRIPT);
+                        MocaResults res = MocaServices.mocaConnection.executeCommand(MocaCache.COMMANDS_SCRIPT);
                         this.distinctCommands.clear();
                         this.commands.clear();
 
@@ -221,7 +207,7 @@ public class MocaCache {
         public void loadCommandArguments() {
 
                 try {
-                        MocaResults res = MocaConnection.getGlobalMocaConnection()
+                        MocaResults res = MocaServices.mocaConnection
                                         .executeCommand(MocaCache.COMMAND_ARGUMENTS_SCRIPT);
                         this.commandArguments.clear();
 
@@ -266,8 +252,7 @@ public class MocaCache {
         public void loadTriggers() {
 
                 try {
-                        MocaResults res = MocaConnection.getGlobalMocaConnection()
-                                        .executeCommand(MocaCache.TRIGGERS_SCRIPT);
+                        MocaResults res = MocaServices.mocaConnection.executeCommand(MocaCache.TRIGGERS_SCRIPT);
                         this.triggers.clear();
 
                         if (res != null) {

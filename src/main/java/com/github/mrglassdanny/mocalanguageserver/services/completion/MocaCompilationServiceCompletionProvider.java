@@ -11,7 +11,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommand;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommandArgument;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaFunction;
@@ -152,8 +151,7 @@ public class MocaCompilationServiceCompletionProvider {
                             }
                             // Now we can get the verb noun clause's data from our distinct commands list!
                             if (verbNounClause != null) {
-                                if (MocaCache.getGlobalMocaCache().distinctCommands
-                                        .contains(verbNounClause.toString())) {
+                                if (MocaServices.mocaCache.distinctCommands.contains(verbNounClause.toString())) {
 
                                     // HACK - getting the first letter typed for command arg population; see
                                     // function for more info.
@@ -349,7 +347,7 @@ public class MocaCompilationServiceCompletionProvider {
     // MOCA.
     private static void populateMocaCommands(List<CompletionItem> items) {
 
-        for (Map.Entry<String, ArrayList<MocaCommand>> entry : MocaCache.getGlobalMocaCache().commands.entrySet()) {
+        for (Map.Entry<String, ArrayList<MocaCommand>> entry : MocaServices.mocaCache.commands.entrySet()) {
             CompletionItem item = new CompletionItem(entry.getKey());
             item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN,
                     MocaCommand.getMarkdownStr(entry.getKey(), entry.getValue())));
@@ -362,7 +360,7 @@ public class MocaCompilationServiceCompletionProvider {
     private static void populateMocaCommandArguments(String mocaCommandName, List<CompletionItem> items,
             char firstTypedLetter) {
 
-        ArrayList<MocaCommandArgument> cmdArgs = MocaCache.getGlobalMocaCache().commandArguments.get(mocaCommandName);
+        ArrayList<MocaCommandArgument> cmdArgs = MocaServices.mocaCache.commandArguments.get(mocaCommandName);
         if (cmdArgs == null) {
             return;
         }
@@ -406,7 +404,7 @@ public class MocaCompilationServiceCompletionProvider {
     }
 
     private static void populateMocaFunctions(List<CompletionItem> items) {
-        for (Map.Entry<String, MocaFunction> entry : MocaCache.getGlobalMocaCache().functions.entrySet()) {
+        for (Map.Entry<String, MocaFunction> entry : MocaServices.mocaCache.functions.entrySet()) {
             MocaFunction mocaFunction = entry.getValue();
             CompletionItem item = new CompletionItem(mocaFunction.name);
             item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, mocaFunction.getMarkdownStr()));
@@ -419,7 +417,7 @@ public class MocaCompilationServiceCompletionProvider {
     // Includes views.
     private static void populateMocaSqlTables(List<CompletionItem> items) {
 
-        for (Map.Entry<String, Table> tableEntry : MocaCache.getGlobalMocaCache().mocaSqlCache.tables.entrySet()) {
+        for (Map.Entry<String, Table> tableEntry : MocaServices.mocaCache.mocaSqlCache.tables.entrySet()) {
             Table tbl = tableEntry.getValue();
             CompletionItem item = new CompletionItem(tbl.table_name);
             item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, tbl.getMarkdownStr(false)));
@@ -427,7 +425,7 @@ public class MocaCompilationServiceCompletionProvider {
             items.add(item);
         }
 
-        for (Map.Entry<String, Table> viewEntry : MocaCache.getGlobalMocaCache().mocaSqlCache.views.entrySet()) {
+        for (Map.Entry<String, Table> viewEntry : MocaServices.mocaCache.mocaSqlCache.views.entrySet()) {
             Table view = viewEntry.getValue();
             CompletionItem item = new CompletionItem(view.table_name);
             item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, view.getMarkdownStr(true)));
@@ -470,7 +468,7 @@ public class MocaCompilationServiceCompletionProvider {
 
     private static void populateMocaSqlColumnsFromTableName(String tableName, String aliasName,
             boolean excludeColPrefixForFirstForAllCols, List<CompletionItem> items) {
-        ArrayList<TableColumn> cols = MocaCache.getGlobalMocaCache().mocaSqlCache.getColumnsForTable(tableName);
+        ArrayList<TableColumn> cols = MocaServices.mocaCache.mocaSqlCache.getColumnsForTable(tableName);
 
         // Could be null.
         if (cols == null) {
@@ -529,8 +527,7 @@ public class MocaCompilationServiceCompletionProvider {
     }
 
     private static void populateMocaSqlFunctions(List<CompletionItem> items) {
-        for (Map.Entry<String, MocaSqlFunction> entry : MocaCache.getGlobalMocaCache().mocaSqlCache.functions
-                .entrySet()) {
+        for (Map.Entry<String, MocaSqlFunction> entry : MocaServices.mocaCache.mocaSqlCache.functions.entrySet()) {
             MocaSqlFunction function = entry.getValue();
             CompletionItem item = new CompletionItem(function.name);
             item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, function.getMarkdownStr()));

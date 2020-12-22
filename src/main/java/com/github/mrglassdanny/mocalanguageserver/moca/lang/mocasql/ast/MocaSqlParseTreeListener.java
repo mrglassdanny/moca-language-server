@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlBaseListener;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Derived_tableContext;
@@ -20,6 +19,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_sourceContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_source_item_joinedContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Table_sourcesContext;
+import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 
 import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.RuleContext;
@@ -512,7 +512,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         // Check table/view cache first.
         if (!processedAsteriskColumns) {
 
-            ArrayList<TableColumn> tableColumnsForAsterisk = MocaCache.getGlobalMocaCache().mocaSqlCache
+            ArrayList<TableColumn> tableColumnsForAsterisk = MocaServices.mocaCache.mocaSqlCache
                     .getColumnsForTable(tableName);
 
             if (tableColumnsForAsterisk != null) {
@@ -534,7 +534,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             processedAsteriskColumns = true;
 
             // Get all columns from cache for aliased table.
-            ArrayList<TableColumn> tableColumnsForAsterisk = MocaCache.getGlobalMocaCache().mocaSqlCache
+            ArrayList<TableColumn> tableColumnsForAsterisk = MocaServices.mocaCache.mocaSqlCache
                     .getColumnsForTable(this.tableAliasNames.get(tableName));
 
             if (tableColumnsForAsterisk != null) {

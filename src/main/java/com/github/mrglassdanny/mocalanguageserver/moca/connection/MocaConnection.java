@@ -17,18 +17,6 @@ import okhttp3.Response;
 
 public class MocaConnection {
 
-    // Using singleton pattern to manage single global moca connection instance.
-    private static MocaConnection globalMocaConnection = null;
-
-    public static MocaConnection getGlobalMocaConnection() {
-        if (globalMocaConnection == null) {
-            MocaConnection.globalMocaConnection = new MocaConnection();
-            return MocaConnection.globalMocaConnection;
-        } else {
-            return MocaConnection.globalMocaConnection;
-        }
-    }
-
     private String urlStr;
     private String userId;
     private String password;
@@ -36,7 +24,7 @@ public class MocaConnection {
     private String environmentVariablesXmlStr;
     private boolean approveUnsafeScripts;
 
-    private MocaConnection() {
+    public MocaConnection() {
         this.urlStr = null;
         this.userId = null;
         this.password = null;

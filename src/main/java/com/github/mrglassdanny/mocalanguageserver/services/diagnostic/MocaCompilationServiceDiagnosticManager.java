@@ -10,7 +10,6 @@ import java.util.concurrent.Executors;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaEmbeddedLanguageRange;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
@@ -295,7 +294,7 @@ public class MocaCompilationServiceDiagnosticManager {
 
             StringBuilder verbNounClause = entry.getKey();
 
-            if (!MocaCache.getGlobalMocaCache().distinctCommands.contains(verbNounClause.toString())) {
+            if (!MocaServices.mocaCache.distinctCommands.contains(verbNounClause.toString())) {
 
                 ArrayList<org.antlr.v4.runtime.Token> mocaTokens = entry.getValue();
                 // No need to validate size -- we can assume that we have
@@ -359,8 +358,8 @@ public class MocaCompilationServiceDiagnosticManager {
             String tableTokenText = tableToken.getText().toLowerCase();
 
             // Check tables and views.
-            if (MocaCache.getGlobalMocaCache().mocaSqlCache.tables.containsKey(tableTokenText)
-                    || MocaCache.getGlobalMocaCache().mocaSqlCache.views.containsKey(tableTokenText)) {
+            if (MocaServices.mocaCache.mocaSqlCache.tables.containsKey(tableTokenText)
+                    || MocaServices.mocaCache.mocaSqlCache.views.containsKey(tableTokenText)) {
                 foundTable = true;
             }
 
@@ -569,7 +568,7 @@ public class MocaCompilationServiceDiagnosticManager {
                                 tableNameForColumn = sqlParseTreeListener.tableAliasNames.get(tableNameForColumn);
                             }
 
-                            ArrayList<TableColumn> columnsInTable = MocaCache.getGlobalMocaCache().mocaSqlCache
+                            ArrayList<TableColumn> columnsInTable = MocaServices.mocaCache.mocaSqlCache
                                     .getColumnsForTable(tableNameForColumn);
                             if (columnsInTable != null) {
                                 for (TableColumn tableColumn : columnsInTable) {

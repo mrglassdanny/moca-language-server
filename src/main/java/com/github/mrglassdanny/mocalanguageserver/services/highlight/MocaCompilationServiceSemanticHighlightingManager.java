@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaEmbeddedLanguageRange;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
@@ -223,7 +222,7 @@ public class MocaCompilationServiceSemanticHighlightingManager {
                 if (verbNounClause != null) {
 
                     // Make sure command exists before we color it.
-                    if (MocaCache.getGlobalMocaCache().commands.containsKey(verbNounClause.toString())) {
+                    if (MocaServices.mocaCache.commands.containsKey(verbNounClause.toString())) {
                         Position pos = PositionUtils.getPosition(MocaServices.mocaCompilationResult.script,
                                 mocaTokens.get(0).getStartIndex());
 
@@ -297,8 +296,8 @@ public class MocaCompilationServiceSemanticHighlightingManager {
                     String word = tableToken.getText().toLowerCase();
 
                     // Check if exists in tables/views before we add to map.
-                    if (MocaCache.getGlobalMocaCache().mocaSqlCache.tables.containsKey(word)
-                            || MocaCache.getGlobalMocaCache().mocaSqlCache.views.containsKey(word)) {
+                    if (MocaServices.mocaCache.mocaSqlCache.tables.containsKey(word)
+                            || MocaServices.mocaCache.mocaSqlCache.views.containsKey(word)) {
 
                         // Let's make sure real quick that this is not a '@' var.
                         int offset = PositionUtils.getOffset(MocaServices.mocaCompilationResult.script, pos);

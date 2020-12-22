@@ -25,8 +25,6 @@ import com.github.mrglassdanny.mocalanguageserver.services.command.response.Moca
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaResultsResponse;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaTraceResponse;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.OpenMocaTraceOutlineResponse;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
-import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaConnection;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.exceptions.MocaException;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
@@ -100,9 +98,8 @@ public class ExecuteCommandProvider {
 
                     MocaConnectionResponse mocaConnectionResponse = new MocaConnectionResponse();
                     try {
-                        MocaConnection.getGlobalMocaConnection().connect(mocaConnectionRequest.url,
-                                mocaConnectionRequest.userId, mocaConnectionRequest.password,
-                                mocaConnectionRequest.approveUnsafeScripts);
+                        MocaServices.mocaConnection.connect(mocaConnectionRequest.url, mocaConnectionRequest.userId,
+                                mocaConnectionRequest.password, mocaConnectionRequest.approveUnsafeScripts);
                         mocaConnectionResponse.eOk = true;
                         mocaConnectionResponse.exception = null;
                     } catch (Exception e) {
@@ -122,7 +119,7 @@ public class ExecuteCommandProvider {
                 // arguments.
 
                 // Make sure connection is valid.
-                if (!MocaConnection.getGlobalMocaConnection().isValid()) {
+                if (!MocaServices.mocaConnection.isValid()) {
                     LoadCacheResponse loadCacheResponse = new LoadCacheResponse(
                             new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER));
                     return CompletableFuture.completedFuture(loadCacheResponse);
@@ -137,49 +134,49 @@ public class ExecuteCommandProvider {
                 // some reason, we will 1 more time.
 
                 CompletableFuture.runAsync(() -> {
-                    MocaCache.getGlobalMocaCache().loadCommandArguments();
-                    if (MocaCache.getGlobalMocaCache().commandArguments.isEmpty()) {
-                        MocaCache.getGlobalMocaCache().loadCommandArguments();
+                    MocaServices.mocaCache.loadCommandArguments();
+                    if (MocaServices.mocaCache.commandArguments.isEmpty()) {
+                        MocaServices.mocaCache.loadCommandArguments();
                     }
                 });
 
                 CompletableFuture.runAsync(() -> {
-                    MocaCache.getGlobalMocaCache().loadTriggers();
-                    if (MocaCache.getGlobalMocaCache().triggers.isEmpty()) {
-                        MocaCache.getGlobalMocaCache().loadTriggers();
+                    MocaServices.mocaCache.loadTriggers();
+                    if (MocaServices.mocaCache.triggers.isEmpty()) {
+                        MocaServices.mocaCache.loadTriggers();
                     }
                 });
 
                 CompletableFuture.runAsync(() -> {
-                    MocaCache.getGlobalMocaCache().mocaSqlCache.loadTables();
-                    if (MocaCache.getGlobalMocaCache().mocaSqlCache.tables.isEmpty()) {
-                        MocaCache.getGlobalMocaCache().mocaSqlCache.loadTables();
+                    MocaServices.mocaCache.mocaSqlCache.loadTables();
+                    if (MocaServices.mocaCache.mocaSqlCache.tables.isEmpty()) {
+                        MocaServices.mocaCache.mocaSqlCache.loadTables();
                     }
                 });
 
                 CompletableFuture.runAsync(() -> {
-                    MocaCache.getGlobalMocaCache().mocaSqlCache.loadViews();
-                    if (MocaCache.getGlobalMocaCache().mocaSqlCache.views.isEmpty()) {
-                        MocaCache.getGlobalMocaCache().mocaSqlCache.loadViews();
+                    MocaServices.mocaCache.mocaSqlCache.loadViews();
+                    if (MocaServices.mocaCache.mocaSqlCache.views.isEmpty()) {
+                        MocaServices.mocaCache.mocaSqlCache.loadViews();
                     }
                 });
 
                 CompletableFuture.runAsync(() -> {
-                    MocaCache.getGlobalMocaCache().mocaSqlCache.loadColumns();
-                    if (MocaCache.getGlobalMocaCache().mocaSqlCache.columns.isEmpty()) {
-                        MocaCache.getGlobalMocaCache().mocaSqlCache.loadColumns();
+                    MocaServices.mocaCache.mocaSqlCache.loadColumns();
+                    if (MocaServices.mocaCache.mocaSqlCache.columns.isEmpty()) {
+                        MocaServices.mocaCache.mocaSqlCache.loadColumns();
                     }
                 });
 
-                MocaCache.getGlobalMocaCache().loadCommands();
-                if (MocaCache.getGlobalMocaCache().commands.isEmpty()) {
-                    MocaCache.getGlobalMocaCache().loadCommands();
+                MocaServices.mocaCache.loadCommands();
+                if (MocaServices.mocaCache.commands.isEmpty()) {
+                    MocaServices.mocaCache.loadCommands();
                 }
 
                 return CompletableFuture.completedFuture(new LoadCacheResponse(null));
             case EXECUTE:
 
-                if (!MocaConnection.getGlobalMocaConnection().isValid()) {
+                if (!MocaServices.mocaConnection.isValid()) {
                     MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null,
                             new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER), false);
                     return CompletableFuture.completedFuture(mocaResultsResponse);
@@ -197,7 +194,7 @@ public class ExecuteCommandProvider {
                     if (!mocaResultsRequest.isApprovedForExecution) {
                         // If approval of unsafe scripts for connection is configured, check if script
                         // is unsafe.
-                        if (MocaConnection.getGlobalMocaConnection().needToApproveUnsafeScripts()) {
+                        if (MocaServices.mocaConnection.needToApproveUnsafeScripts()) {
 
                             MocaCompilationResult mocaCompilationResult = MocaCompiler
                                     .compileScript(mocaResultsRequest.script, mocaResultsRequest.fileName);
@@ -214,7 +211,7 @@ public class ExecuteCommandProvider {
 
                     MocaResultsResponse mocaResultsResponse = new MocaResultsResponse();
                     try {
-                        mocaResultsResponse.results = MocaConnection.getGlobalMocaConnection()
+                        mocaResultsResponse.results = MocaServices.mocaConnection
                                 .executeCommand(mocaResultsRequest.script);
                         mocaResultsResponse.exception = null;
                         mocaResultsResponse.needsApprovalToExecute = false;
@@ -236,11 +233,10 @@ public class ExecuteCommandProvider {
                             // script.
                             MocaConnectionResponse reconnectResponse = new MocaConnectionResponse();
                             try {
-                                MocaConnection.getGlobalMocaConnection().connect(
-                                        MocaConnection.getGlobalMocaConnection().getUrlStr(),
-                                        MocaConnection.getGlobalMocaConnection().getUserId(),
-                                        MocaConnection.getGlobalMocaConnection().getPassword(),
-                                        MocaConnection.getGlobalMocaConnection().needToApproveUnsafeScripts());
+                                MocaServices.mocaConnection.connect(MocaServices.mocaConnection.getUrlStr(),
+                                        MocaServices.mocaConnection.getUserId(),
+                                        MocaServices.mocaConnection.getPassword(),
+                                        MocaServices.mocaConnection.needToApproveUnsafeScripts());
                                 reconnectResponse.eOk = true;
                                 reconnectResponse.exception = null;
                             } catch (Exception e) {
@@ -256,7 +252,7 @@ public class ExecuteCommandProvider {
                                 mocaResultsResponse.exception = reconnectResponse.exception;
                             } else {
                                 try {
-                                    mocaResultsResponse.results = MocaConnection.getGlobalMocaConnection()
+                                    mocaResultsResponse.results = MocaServices.mocaConnection
                                             .executeCommand(mocaResultsRequest.script);
                                     mocaResultsResponse.exception = null;
                                 } catch (Exception e) {
@@ -290,7 +286,7 @@ public class ExecuteCommandProvider {
 
             case TRACE:
 
-                if (!MocaConnection.getGlobalMocaConnection().isValid()) {
+                if (!MocaServices.mocaConnection.isValid()) {
                     MocaTraceResponse mocaTraceResponse = new MocaTraceResponse(
                             new MocaResultsResponse(null, new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER), false));
                     return CompletableFuture.completedFuture(mocaTraceResponse);
@@ -307,16 +303,15 @@ public class ExecuteCommandProvider {
                     // Should be sending file name from client, but set as user ID just in case we
                     // do not.
                     if (mocaTraceRequest.fileName.isEmpty()) {
-                        mocaTraceRequest.fileName = MocaConnection.getGlobalMocaConnection().getUserId();
+                        mocaTraceRequest.fileName = MocaServices.mocaConnection.getUserId();
                     }
 
                     MocaResultsResponse mocaResultsResponse = new MocaResultsResponse();
                     if (mocaTraceRequest.startTrace) {
                         try {
-                            mocaResultsResponse.results = MocaConnection.getGlobalMocaConnection()
-                                    .executeCommand(String.format(
-                                            "set trace where activate = 1 and filename = '%s.log' and trcmod = '%s'",
-                                            mocaTraceRequest.fileName, mocaTraceRequest.mode));
+                            mocaResultsResponse.results = MocaServices.mocaConnection.executeCommand(String.format(
+                                    "set trace where activate = 1 and filename = '%s.log' and trcmod = '%s'",
+                                    mocaTraceRequest.fileName, mocaTraceRequest.mode));
                             mocaResultsResponse.exception = null;
                         } catch (Exception e) {
                             mocaResultsResponse.results = null;
@@ -324,7 +319,7 @@ public class ExecuteCommandProvider {
                         }
                     } else {
                         try {
-                            mocaResultsResponse.results = MocaConnection.getGlobalMocaConnection()
+                            mocaResultsResponse.results = MocaServices.mocaConnection
                                     .executeCommand("set trace where activate = 0");
                             mocaResultsResponse.exception = null;
                         } catch (Exception e) {
@@ -349,13 +344,11 @@ public class ExecuteCommandProvider {
                     MocaCommandLookupResponse mocaCommandLookupResponse;
                     if (mocaCommandLookupRequest.requestedMocaCommand == null) {
                         mocaCommandLookupResponse = new MocaCommandLookupResponse(
-                                MocaCache.getGlobalMocaCache().distinctCommands, null, null, null);
+                                MocaServices.mocaCache.distinctCommands, null, null, null);
                     } else {
                         mocaCommandLookupResponse = new MocaCommandLookupResponse(null,
-                                MocaCache.getGlobalMocaCache().commands
-                                        .get(mocaCommandLookupRequest.requestedMocaCommand),
-                                MocaCache.getGlobalMocaCache().triggers
-                                        .get(mocaCommandLookupRequest.requestedMocaCommand),
+                                MocaServices.mocaCache.commands.get(mocaCommandLookupRequest.requestedMocaCommand),
+                                MocaServices.mocaCache.triggers.get(mocaCommandLookupRequest.requestedMocaCommand),
                                 null);
                     }
 
@@ -394,14 +387,14 @@ public class ExecuteCommandProvider {
 
                         // Before returning remote trace file names, make sure we have valid MOCA
                         // connection.
-                        if (!MocaConnection.getGlobalMocaConnection().isValid()) {
+                        if (!MocaServices.mocaConnection.isValid()) {
                             return CompletableFuture.completedFuture(new OpenMocaTraceOutlineResponse(null, null,
                                     new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER)));
                         }
 
                         // Read file names from LESDIR/log/*.log
                         // A little over-complicated because we want to sort by modified date.
-                        MocaResults res = MocaConnection.getGlobalMocaConnection().executeCommand(
+                        MocaResults res = MocaServices.mocaConnection.executeCommand(
                                 "{ sl_get dir where path = '${LESDIR}/log/' and filter = '*.log' | get file info where pathname = '${LESDIR}/log/' || @file_name | publish data where file_name = @file_name and file_typ = @file_typ and modified = @modified } >> res | sort result set where result_set = @res and sort_list = 'modified desc'");
 
                         ArrayList<String> traceFileNames = new ArrayList<>(res.getRowCount());
@@ -423,13 +416,13 @@ public class ExecuteCommandProvider {
 
                             // Before reading requested remote trace file, make sure we have valid MOCA
                             // connection.
-                            if (!MocaConnection.getGlobalMocaConnection().isValid()) {
+                            if (!MocaServices.mocaConnection.isValid()) {
                                 return CompletableFuture.completedFuture(new OpenMocaTraceOutlineResponse(null, null,
                                         new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER)));
                             }
 
                             // Read trace file requested.
-                            MocaResults res = MocaConnection.getGlobalMocaConnection()
+                            MocaResults res = MocaServices.mocaConnection
                                     .executeCommand(String.format("read file where filnam = '${LESDIR}/log/%s'",
                                             openMocaTraceOutlineRequest.requestedTraceFileName));
 

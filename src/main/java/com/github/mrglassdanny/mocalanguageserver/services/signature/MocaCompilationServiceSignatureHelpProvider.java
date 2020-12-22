@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
-import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCache;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaFunction;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaParser.Function_exprContext;
@@ -52,7 +51,7 @@ public class MocaCompilationServiceSignatureHelpProvider {
                         if (startFuncToken.getStartIndex() <= curMocaToken.getStartIndex()
                                 && stopFuncToken.getStopIndex() >= curMocaToken.getStopIndex()) {
                             // Looks like we have our function expression.
-                            MocaFunction mocaFunction = MocaCache.getGlobalMocaCache().functions
+                            MocaFunction mocaFunction = MocaServices.mocaCache.functions
                                     .get(mocaFuncExpr.WORD().getText());
                             if (mocaFunction != null) {
                                 // One thing to note -- we do not have to worry about overloads with moca
