@@ -9,25 +9,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.connection.MocaResults;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.trace.exceptions.InvalidMocaTraceFileException;
 
 public class MocaTraceOutliner {
 
     private static final Pattern TRACE_LINE_REGEX_PATTERN = Pattern.compile(
-            "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2},\\d{3}) (TRACE|DEBUG|INFO |WARN |ERROR|FATAL) \\[(\\d+)[ ]+(.*?)\\] (.+?) \\[(\\d{1,3})\\] ([\\s\\S]*) (\\[.*\\])");
+            "(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2},\\d{3}) (TRACE|DEBUG|INFO |WARN |ERROR|FATAL) \\[(\\d+)[ ]+(.*?)\\] (.+?) \\[(\\d{1,3})\\] ([\\s\\S]*) ((\\[\\])|(\\[\\w{16} \\w{16}\\]))");
+    private static final Pattern TRACE_LINE_CONTINUED_REGEX_PATTERN = Pattern
+            .compile(" ((\\[\\])|(\\[\\w{16} \\w{16}\\]))");
 
     private static final int TRACE_LINE_REGEX_THREAD_GROUP_IDX = 3;
     private static final int TRACE_LINE_REGEX_SESSION_GROUP_IDX = 4;
     private static final int TRACE_LINE_REGEX_LOGGER_GROUP_IDX = 5;
     private static final int TRACE_LINE_REGEX_STACK_LEVEL_GROUP_IDX = 6;
     private static final int TRACE_LINE_REGEX_MESSAGE_GROUP_IDX = 7;
-    private static final int TRACE_LINE_REGEX_LAST_GROUP_IDX = 8;
-
-    // There are a select few loggers that we actually care to analyze.
-    private static final String[] LOGGERS = { "Argument", "CommandStatement", "DefaultServerContext", "JDBCAdapter",
-            "Performance", "CommandDispatcher", "GroovyScriptAdapter", "ComponentAdapter", "ServerActivity",
-            "CFunctionCommand" };
 
     // These messages indicate the beginning and ending of a trace 'stack'.
     private static final String MESSAGE_TRACE_STACK_START_TEXT = "Dispatching command...";
@@ -143,7 +138,7 @@ public class MocaTraceOutliner {
         this.useLogicalIndentStrategy = useLogicalIndentStrategy;
         this.minimumExecutionTime = minimumExecutionTime;
         this.lineNum = 0;
-        this.lineTextBuffer = new StringBuilder(2048);
+        this.lineTextBuffer = new StringBuilder(8192);
         this.absoluteTraceLines = new ArrayList<>(4096);
         this.relativeTraceLinesMap = new HashMap<>();
         this.outlineMap = new HashMap<>();
@@ -381,25 +376,36 @@ public class MocaTraceOutliner {
         // processing line until the line is 'complete' and we have a perfect regex
         // match.
 
-        // The lineNum member will be in line with how we are processing lines ^.
+        // We know that we are starting a fresh line if line text buffer length is 0.
+        // Otherwise, we are appending it due to trace line regex failing to match line text last
+        // time.
         if (this.lineTextBuffer.length() == 0) {
             this.lineNum = lineNum;
-        }
 
-        this.lineTextBuffer.append(lineText);
-        this.lineTextBuffer.append(' ');
+            this.lineTextBuffer.append(lineText);
+            this.lineTextBuffer.append(' ');
+        } else {
+
+            // We are here if we failed to match trace line regex last time. Instead of
+            // checking against the trace line regex again, we will test against the trace
+            // line continued regex. The reason for this is to improve performance, since
+            // regex testing large strings is very slow. If we have a match with the
+            // continued trace line regex, we can continue with normal logic. Otherwise, we
+            // need to quit and try again next time.
+
+            this.lineTextBuffer.append(lineText);
+            this.lineTextBuffer.append(' ');
+
+            Matcher traceLineContinuedMatcher = MocaTraceOutliner.TRACE_LINE_CONTINUED_REGEX_PATTERN.matcher(lineText);
+            if (!traceLineContinuedMatcher.find()) {
+                return;
+            }
+        }
 
         final String lineTextBufferStr = this.lineTextBuffer.toString();
         Matcher traceLineMatcher = MocaTraceOutliner.TRACE_LINE_REGEX_PATTERN.matcher(lineTextBufferStr);
 
         if (traceLineMatcher.find()) {
-
-            // If last capture group looks like SQL, we probably jumped the gun with this
-            // current match -- we need to keep reading lines.
-            if (MocaSqlLanguageUtils
-                    .isMocaSqlScript(traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_LAST_GROUP_IDX))) {
-                return;
-            }
 
             // Add to absolute trace line list now.
             this.absoluteTraceLines.add(lineTextBufferStr);
@@ -430,269 +436,162 @@ public class MocaTraceOutliner {
                 relativeLineNum = relativeLines.size();
             }
 
-            // Check if ignored logger.
-            boolean ignoreLogger = true;
-            for (String _logger : MocaTraceOutliner.LOGGERS) {
-                if (logger.compareTo(_logger) == 0) {
-                    ignoreLogger = false;
-                    break;
-                }
+            int stackLevel = Integer
+                    .parseInt(traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_STACK_LEVEL_GROUP_IDX));
+            String message = traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_MESSAGE_GROUP_IDX);
+
+            ArrayList<MocaTraceStackFrame> outline;
+            if (this.outlineMap.containsKey(outlineId)) {
+                outline = this.outlineMap.get(outlineId);
+            } else {
+                outline = new ArrayList<>(2048);
+                this.outlineMap.put(outlineId, outline);
+            }
+            Stack<MocaTraceStackFrame> indentStack;
+            if (this.indentStackMap.containsKey(outlineId)) {
+                indentStack = this.indentStackMap.get(outlineId);
+            } else {
+                indentStack = new Stack<>();
+                this.indentStackMap.put(outlineId, indentStack);
+            }
+            HashMap<String, String> published;
+            if (this.publishedMap.containsKey(outlineId)) {
+                published = this.publishedMap.get(outlineId);
+            } else {
+                published = new HashMap<>();
+                this.publishedMap.put(outlineId, published);
+            }
+            HashMap<String, String> arguments;
+            if (this.argumentsMap.containsKey(outlineId)) {
+                arguments = this.argumentsMap.get(outlineId);
+            } else {
+                arguments = new HashMap<>();
+                this.argumentsMap.put(outlineId, arguments);
+            }
+            Stack<ReturnedRows> returnedRowsStack;
+            if (this.returnedRowsStackMap.containsKey(outlineId)) {
+                returnedRowsStack = this.returnedRowsStackMap.get(outlineId);
+            } else {
+                returnedRowsStack = new Stack<>();
+                this.returnedRowsStackMap.put(outlineId, returnedRowsStack);
             }
 
-            if (!ignoreLogger) {
+            // If we come across trace stack start/end cues, we need to clear the stack and
+            // get ready for a new one.
+            if (logger.compareTo("CommandDispatcher") == 0
+                    && message.compareTo(MocaTraceOutliner.MESSAGE_TRACE_STACK_START_TEXT) == 0) {
+                indentStack.clear();
+                published.clear();
+                arguments.clear();
+                returnedRowsStack.clear();
+            } else if (logger.compareTo("CommandDispatcher") == 0
+                    && message.compareTo(MocaTraceOutliner.MESSAGE_TRACE_STACK_END_TEXT) == 0) {
+                // Need to call implicit unindent here to make sure curly braces are tied off.
+                processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline, outlineId);
+                indentStack.clear();
+                published.clear();
+                arguments.clear();
+                returnedRowsStack.clear();
+            } else {
 
-                int stackLevel = Integer
-                        .parseInt(traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_STACK_LEVEL_GROUP_IDX));
-                String message = traceLineMatcher.group(MocaTraceOutliner.TRACE_LINE_REGEX_MESSAGE_GROUP_IDX);
-
-                ArrayList<MocaTraceStackFrame> outline;
-                if (this.outlineMap.containsKey(outlineId)) {
-                    outline = this.outlineMap.get(outlineId);
-                } else {
-                    outline = new ArrayList<>(2048);
-                    this.outlineMap.put(outlineId, outline);
-                }
-                Stack<MocaTraceStackFrame> indentStack;
-                if (this.indentStackMap.containsKey(outlineId)) {
-                    indentStack = this.indentStackMap.get(outlineId);
-                } else {
-                    indentStack = new Stack<>();
-                    this.indentStackMap.put(outlineId, indentStack);
-                }
-                HashMap<String, String> published;
-                if (this.publishedMap.containsKey(outlineId)) {
-                    published = this.publishedMap.get(outlineId);
-                } else {
-                    published = new HashMap<>();
-                    this.publishedMap.put(outlineId, published);
-                }
-                HashMap<String, String> arguments;
-                if (this.argumentsMap.containsKey(outlineId)) {
-                    arguments = this.argumentsMap.get(outlineId);
-                } else {
-                    arguments = new HashMap<>();
-                    this.argumentsMap.put(outlineId, arguments);
-                }
-                Stack<ReturnedRows> returnedRowsStack;
-                if (this.returnedRowsStackMap.containsKey(outlineId)) {
-                    returnedRowsStack = this.returnedRowsStackMap.get(outlineId);
-                } else {
-                    returnedRowsStack = new Stack<>();
-                    this.returnedRowsStackMap.put(outlineId, returnedRowsStack);
-                }
-
-                // If we come across trace stack start/end cues, we need to clear the stack and
-                // get ready for a new one.
-                if (message.compareToIgnoreCase(MocaTraceOutliner.MESSAGE_TRACE_STACK_START_TEXT) == 0) {
-                    indentStack.clear();
-                    published.clear();
-                    arguments.clear();
-                    returnedRowsStack.clear();
-                } else if (message.compareToIgnoreCase(MocaTraceOutliner.MESSAGE_TRACE_STACK_END_TEXT) == 0) {
-                    // Need to call implicit unindent here to make sure curly braces are tied off.
-                    processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline, outlineId);
-                    indentStack.clear();
-                    published.clear();
-                    arguments.clear();
-                    returnedRowsStack.clear();
-                } else {
-
-                    // Handle scenario where stack level goes down/comes up multiple levels.
-                    // This happens due to extra "{}" either because of try block or nesting "{}".
-                    // Ex: 1 -> 3 OR 3 -> 1
-                    // Indenting via "{}" below for organization purposes and to illustrate exactly
-                    // what we are looking for in the trace -- lol.
-                    {
-                        if (this.previousStackLevelMap.containsKey(outlineId)) {
-                            int previousStackLevel = this.previousStackLevelMap.get(outlineId);
-                            if (previousStackLevel < stackLevel) { // Going down (1 -> 3).
-                                int p = previousStackLevel;
-                                while (p < stackLevel - 1) {
-                                    outline.add(new MocaTraceStackFrame(outlineId, p + 1, lineNum, relativeLineNum, "{",
-                                            "0", false, true, buildIndentString(indentStack, p + 1), indentStack));
-                                    indentStack.push(outline.get(outline.size() - 1));
-                                    p++;
-                                }
-                            } else if (previousStackLevel > stackLevel) { // Coming up (3 -> 1).
-                                if (previousStackLevel > stackLevel + 1 && indentStack.size() > 0
-                                        && indentStack.peek().isNestedBraces) {
-                                    processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
-                                            outlineId);
-                                }
+                // Handle scenario where stack level goes down/comes up multiple levels.
+                // This happens due to extra "{}" either because of try block or nesting "{}".
+                // Ex: 1 -> 3 OR 3 -> 1
+                // Indenting via "{}" below for organization purposes and to illustrate exactly
+                // what we are looking for in the trace -- lol.
+                {
+                    if (this.previousStackLevelMap.containsKey(outlineId)) {
+                        int previousStackLevel = this.previousStackLevelMap.get(outlineId);
+                        if (previousStackLevel < stackLevel) { // Going down (1 -> 3).
+                            int p = previousStackLevel;
+                            while (p < stackLevel - 1) {
+                                outline.add(new MocaTraceStackFrame(outlineId, p + 1, lineNum, relativeLineNum, "{",
+                                        "0", false, true, buildIndentString(indentStack, p + 1), indentStack));
+                                indentStack.push(outline.get(outline.size() - 1));
+                                p++;
                             }
-
-                            // We also need to process published/argument argument stack level change.
-                            if (previousStackLevel != stackLevel) {
-                                published.clear();
-                                arguments.clear();
+                        } else if (previousStackLevel > stackLevel) { // Coming up (3 -> 1).
+                            if (previousStackLevel > stackLevel + 1 && indentStack.size() > 0
+                                    && indentStack.peek().isNestedBraces) {
+                                processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
+                                        outlineId);
                             }
-
                         }
 
-                        this.previousStackLevelMap.put(outlineId, stackLevel);
+                        // We also need to process published/argument argument stack level change.
+                        if (previousStackLevel != stackLevel) {
+                            published.clear();
+                            arguments.clear();
+                        }
+
                     }
 
-                    // Returned rows analysis: we need to determine if stack elements need to be
-                    // popped due to stack level changes.
-                    // NOTE: For JDBC, we need to make sure current stack is less than returned rows
-                    // stack level due to where in the stack frame the JDBC returned rows regex
-                    // match occurs. Non JDBC matches at different timing, so less than or equal to
-                    // works.
-                    while (returnedRowsStack.size() > 0 && ((returnedRowsStack.peek().stackLevel >= stackLevel
-                            && !returnedRowsStack.peek().fromJDBC)
-                            || (returnedRowsStack.peek().stackLevel > stackLevel
-                                    && returnedRowsStack.peek().fromJDBC))) {
+                    this.previousStackLevelMap.put(outlineId, stackLevel);
+                }
 
-                        ReturnedRows poppedReturnedRows = returnedRowsStack.pop();
-                        // Let's make sure that we actually visited rows. We can tell by
-                        // comparing the visited rows to the total rows. If they dont equal eachother,
-                        // then we may not have actually visited any(maybe due to redirect or
-                        // semicolon). This is not perfect, but it should be
-                        // accurate enough.
-                        if (poppedReturnedRows.totalRows != poppedReturnedRows.visitedRows) {
-                            // Now we need to go back to all the stack frames that think they were visited
-                            // and clear them out.
-                            for (int i = outline.size() - 1; i >= 0; i--) {
-                                if (outline.get(i).stackLevel == poppedReturnedRows.stackLevel + 1 && outline
-                                        .get(i).previousStackLevelReturnedRows == poppedReturnedRows.totalRows) {
-                                    outline.get(i).previousStackLevelReturnedRows = 0;
-                                    outline.get(i).rowNumberToPreviousStackLevel = 0;
-                                } else if (outline.get(i).stackLevel <= poppedReturnedRows.stackLevel) {
-                                    break;
-                                }
+                // Returned rows analysis: we need to determine if stack elements need to be
+                // popped due to stack level changes.
+                // NOTE: For JDBC, we need to make sure current stack is less than returned rows
+                // stack level due to where in the stack frame the JDBC returned rows regex
+                // match occurs. Non JDBC matches at different timing, so less than or equal to
+                // works.
+                while (returnedRowsStack.size() > 0 && ((returnedRowsStack.peek().stackLevel >= stackLevel
+                        && !returnedRowsStack.peek().fromJDBC)
+                        || (returnedRowsStack.peek().stackLevel > stackLevel && returnedRowsStack.peek().fromJDBC))) {
+
+                    ReturnedRows poppedReturnedRows = returnedRowsStack.pop();
+                    // Let's make sure that we actually visited rows. We can tell by
+                    // comparing the visited rows to the total rows. If they dont equal eachother,
+                    // then we may not have actually visited any(maybe due to redirect or
+                    // semicolon). This is not perfect, but it should be
+                    // accurate enough.
+                    if (poppedReturnedRows.totalRows != poppedReturnedRows.visitedRows) {
+                        // Now we need to go back to all the stack frames that think they were visited
+                        // and clear them out.
+                        for (int i = outline.size() - 1; i >= 0; i--) {
+                            if (outline.get(i).stackLevel == poppedReturnedRows.stackLevel + 1
+                                    && outline.get(i).previousStackLevelReturnedRows == poppedReturnedRows.totalRows) {
+                                outline.get(i).previousStackLevelReturnedRows = 0;
+                                outline.get(i).rowNumberToPreviousStackLevel = 0;
+                            } else if (outline.get(i).stackLevel <= poppedReturnedRows.stackLevel) {
+                                break;
                             }
                         }
                     }
+                }
 
-                    // Process matches:
+                // Process matches:
 
-                    Matcher matcher;
+                Matcher matcher;
 
-                    // We can speed things up by narrowing down logger.
-                    // Also, we can assume that each line will only have 1 match(hence the switch
-                    // and else ifs). The way we have designed this should improve performance
-                    // greatly.
+                // We can speed things up by narrowing down logger.
+                // Also, we can assume that each line will only have 1 match(hence the switch
+                // and else ifs). The way we have designed this should improve performance
+                // greatly.
 
-                    switch (logger) {
-                        case "Argument":
-                            if ((matcher = MocaTraceOutliner.MESSAGE_PUBLISHED_REGEX_PATTERN.matcher(message)).find()) {
-                                published.put(matcher.group(2), matcher.group(4));
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_ARGUMENT_REGEX_PATTERN.matcher(message))
-                                    .find()) {
-                                arguments.put(matcher.group(2), matcher.group(4));
-                            }
-                            break;
-                        case "CommandStatement":
-                            if ((matcher = MocaTraceOutliner.MESSAGE_EVALUATING_CONDITIONAL_TEST_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                if (indentStack.size() > 0 && indentStack.peek().isCommandStatement
-                                        && outline.get(outline.size() - 2).instruction.compareTo("else") == 0
-                                        && outline.get(outline.size() - 2).stackLevel == stackLevel) {
-                                    // ^^^ -2 since we added an outline entry for "{".
+                switch (logger) {
+                    case "Argument":
+                        if ((matcher = MocaTraceOutliner.MESSAGE_PUBLISHED_REGEX_PATTERN.matcher(message)).find()) {
+                            published.put(matcher.group(2), matcher.group(4));
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_ARGUMENT_REGEX_PATTERN.matcher(message))
+                                .find()) {
+                            arguments.put(matcher.group(2), matcher.group(4));
+                        }
+                        break;
+                    case "CommandStatement":
+                        if ((matcher = MocaTraceOutliner.MESSAGE_EVALUATING_CONDITIONAL_TEST_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            if (indentStack.size() > 0 && indentStack.peek().isCommandStatement
+                                    && outline.get(outline.size() - 2).instruction.compareTo("else") == 0
+                                    && outline.get(outline.size() - 2).stackLevel == stackLevel) {
+                                // ^^^ -2 since we added an outline entry for "{".
 
-                                    // Get rid of preemptive indent.
-                                    processExplicitUnindentForLogicalIndentStrategy(indentStack, false);
-                                    // Get rid of outline entry "{".
-                                    outline.remove(outline.size() - 1);
+                                // Get rid of preemptive indent.
+                                processExplicitUnindentForLogicalIndentStrategy(indentStack, false);
+                                // Get rid of outline entry "{".
+                                outline.remove(outline.size() - 1);
 
-                                    String appendInstruction;
-
-                                    String conditionalTest = matcher.group(2);
-
-                                    Matcher extractConditionalTestValuesMatcher = MocaTraceOutliner.EXTRACT_CONDITIONAL_TEST_VALUES
-                                            .matcher(conditionalTest);
-
-                                    while (extractConditionalTestValuesMatcher.find()) {
-                                        String entireGroup = extractConditionalTestValuesMatcher.group(0);
-                                        String type = extractConditionalTestValuesMatcher.group(3);
-                                        String value = MocaTraceOutliner.adjustConditionalTestValue(type,
-                                                extractConditionalTestValuesMatcher.group(6));
-
-                                        conditionalTest = conditionalTest.replace(entireGroup, value);
-                                    }
-
-                                    appendInstruction = " if (" + conditionalTest + ")";
-
-                                    outline.get(outline.size() - 1).instruction += appendInstruction;
-
-                                } else {
-
-                                    processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
-                                            outlineId);
-
-                                    String instruction;
-
-                                    String conditionalTest = matcher.group(2);
-
-                                    Matcher extractConditionalTestValuesMatcher = MocaTraceOutliner.EXTRACT_CONDITIONAL_TEST_VALUES
-                                            .matcher(conditionalTest);
-
-                                    while (extractConditionalTestValuesMatcher.find()) {
-                                        String entireGroup = extractConditionalTestValuesMatcher.group(0);
-                                        String type = extractConditionalTestValuesMatcher.group(3);
-                                        String value = MocaTraceOutliner.adjustConditionalTestValue(type,
-                                                extractConditionalTestValuesMatcher.group(6));
-
-                                        conditionalTest = conditionalTest.replace(entireGroup, value);
-                                    }
-
-                                    instruction = "if (" + conditionalTest + ")";
-
-                                    outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
-                                            instruction, "0", true, false, buildIndentString(indentStack, stackLevel),
-                                            indentStack));
-                                    outline.get(outline.size() - 1).published.putAll(published);
-                                    outline.get(outline.size() - 1).arguments.putAll(arguments);
-                                    published.clear();
-                                    arguments.clear();
-
-                                    processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
-                                            outline.get(outline.size() - 1));
-
-                                }
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_IF_TEST_PASSED_EXECUTING_IF_BLOCK_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                outline.get(outline.size() - 1).instructionStatus = "Passed";
-
-                                outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
-                                        "{", "0", true, false, buildIndentString(indentStack, stackLevel),
-                                        indentStack));
-                                outline.get(outline.size() - 1).published.putAll(published);
-                                outline.get(outline.size() - 1).arguments.putAll(arguments);
-                                published.clear();
-                                arguments.clear();
-
-                                indentStack.push(outline.get(outline.size() - 1));
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_IF_TEST_FAILED_NO_ELSE_BLOCK_TO_EXECUTE_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                outline.get(outline.size() - 1).instructionStatus = "Failed";
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_IF_TEST_FAILED_EXECUTING_ELSE_BLOCK_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                outline.get(outline.size() - 1).instructionStatus = "Failed";
-
-                                String instruction = "else";
-
-                                outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
-                                        instruction, "0", true, false, buildIndentString(indentStack, stackLevel),
-                                        indentStack));
-                                outline.get(outline.size() - 1).published.putAll(published);
-                                outline.get(outline.size() - 1).arguments.putAll(arguments);
-                                published.clear();
-                                arguments.clear();
-
-                                outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
-                                        "{", "0", true, false, buildIndentString(indentStack, stackLevel),
-                                        indentStack));
-
-                                indentStack.push(outline.get(outline.size() - 1));
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_EVALUATING_TRY_CATCH_EXPRESSION_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                // Only process implicit undindent if current indent stack frame is nested brace
-                                // (likely try block!).
-                                if (indentStack.peek().isNestedBraces) {
-                                    processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
-                                            outlineId);
-                                }
+                                String appendInstruction;
 
                                 String conditionalTest = matcher.group(2);
 
@@ -708,57 +607,32 @@ public class MocaTraceOutliner {
                                     conditionalTest = conditionalTest.replace(entireGroup, value);
                                 }
 
-                                // May have to go back a few frames to find the correct stack frame.
-                                for (int i = outline.size() - 1; i >= 0; i--) {
-                                    // Should not be prepared statement.
-                                    if (outline.get(i).stackLevel == stackLevel && !outline.get(i).isPreparedStatement
-                                            && !outline.get(i).isCommandInitiated) {
+                                appendInstruction = " if (" + conditionalTest + ")";
 
-                                        // If outline at i is nested braces(which should indicate try block), use the
-                                        // outline before that instead, since it is likely the instruction that failed.
-                                        if (outline.get(i).isNestedBraces && outline.get(i).instruction == "}") {
-                                            // Should be i - 1 since i is "}".
-                                            outline.get(i - 1).evaluatingTryCatchCondition = "Caught ("
-                                                    + conditionalTest + ")";
-                                        } else {
-                                            outline.get(i).evaluatingTryCatchCondition = "Caught (" + conditionalTest
-                                                    + ")";
-                                        }
+                                outline.get(outline.size() - 1).instruction += appendInstruction;
 
-                                        break;
-                                    }
-                                }
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_CATCH_CONDITION_MET_EXECUTING_CATCH_BLOCK_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                // Now that we have met the catch condition, go back and set frame instruction
-                                // status to evaluated try-catch condition.
+                            } else {
 
-                                // May have to go back a few frames to find the correct stack frame.
-                                for (int i = outline.size() - 1; i >= 0; i--) {
-                                    // Should not be prepared statement.
-                                    if (outline.get(i).stackLevel == stackLevel && !outline.get(i).isPreparedStatement
-                                            && !outline.get(i).isCommandInitiated) {
-
-                                        // If outline at i is nested braces(which should indicate try block), use the
-                                        // outline before that instead, since it is likely the instruction that failed.
-                                        if (outline.get(i).isNestedBraces && outline.get(i).instruction == "}") {
-                                            // Should be i - 1 since i is "}".
-                                            outline.get(i - 1).instructionStatus = outline
-                                                    .get(i - 1).evaluatingTryCatchCondition;
-                                        } else {
-                                            outline.get(i).instructionStatus = outline
-                                                    .get(i).evaluatingTryCatchCondition;
-                                        }
-
-                                        break;
-                                    }
-                                }
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTING_FINALLY_BLOCK_REGEX_PATTERN
-                                    .matcher(message)).find()) {
                                 processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
                                         outlineId);
 
-                                String instruction = "finally";
+                                String instruction;
+
+                                String conditionalTest = matcher.group(2);
+
+                                Matcher extractConditionalTestValuesMatcher = MocaTraceOutliner.EXTRACT_CONDITIONAL_TEST_VALUES
+                                        .matcher(conditionalTest);
+
+                                while (extractConditionalTestValuesMatcher.find()) {
+                                    String entireGroup = extractConditionalTestValuesMatcher.group(0);
+                                    String type = extractConditionalTestValuesMatcher.group(3);
+                                    String value = MocaTraceOutliner.adjustConditionalTestValue(type,
+                                            extractConditionalTestValuesMatcher.group(6));
+
+                                    conditionalTest = conditionalTest.replace(entireGroup, value);
+                                }
+
+                                instruction = "if (" + conditionalTest + ")";
 
                                 outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                         instruction, "0", true, false, buildIndentString(indentStack, stackLevel),
@@ -768,463 +642,571 @@ public class MocaTraceOutliner {
                                 published.clear();
                                 arguments.clear();
 
-                                outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
-                                        "{", "0", true, false, buildIndentString(indentStack, stackLevel),
-                                        indentStack));
+                                processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                        outline.get(outline.size() - 1));
 
-                                indentStack.push(outline.get(outline.size() - 1));
                             }
-                            break;
-                        case "DefaultServerContext":
-                            if ((matcher = MocaTraceOutliner.MESSAGE_COMMAND_INITIATED_REGEX_PATTERN.matcher(message))
-                                    .find()) {
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_IF_TEST_PASSED_EXECUTING_IF_BLOCK_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            outline.get(outline.size() - 1).instructionStatus = "Passed";
 
-                                String instruction = matcher.group(3).trim().replace('\n', ' ');
+                            outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum, "{",
+                                    "0", true, false, buildIndentString(indentStack, stackLevel), indentStack));
+                            outline.get(outline.size() - 1).published.putAll(published);
+                            outline.get(outline.size() - 1).arguments.putAll(arguments);
+                            published.clear();
+                            arguments.clear();
 
-                                if (stackLevel == 0) {
+                            indentStack.push(outline.get(outline.size() - 1));
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_IF_TEST_FAILED_NO_ELSE_BLOCK_TO_EXECUTE_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            outline.get(outline.size() - 1).instructionStatus = "Failed";
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_IF_TEST_FAILED_EXECUTING_ELSE_BLOCK_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            outline.get(outline.size() - 1).instructionStatus = "Failed";
 
-                                    indentStack.clear();
+                            String instruction = "else";
 
-                                    outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
-                                            instruction, "0", false, false, "", indentStack));
-                                    outline.get(outline.size() - 1).isCommandInitiated = true;
+                            outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
+                                    instruction, "0", true, false, buildIndentString(indentStack, stackLevel),
+                                    indentStack));
+                            outline.get(outline.size() - 1).published.putAll(published);
+                            outline.get(outline.size() - 1).arguments.putAll(arguments);
+                            published.clear();
+                            arguments.clear();
 
-                                    indentStack.push(outline.get(outline.size() - 1));
-                                } else {
+                            outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum, "{",
+                                    "0", true, false, buildIndentString(indentStack, stackLevel), indentStack));
 
-                                    processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
-                                            outlineId);
-
-                                    outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
-                                            instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
-                                            indentStack));
-                                    outline.get(outline.size() - 1).isCommandInitiated = true;
-
-                                    indentStack.push(outline.get(outline.size() - 1));
-                                }
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTING_COMMAND_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-
+                            indentStack.push(outline.get(outline.size() - 1));
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_EVALUATING_TRY_CATCH_EXPRESSION_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            // Only process implicit undindent if current indent stack frame is nested brace
+                            // (likely try block!).
+                            if (indentStack.peek().isNestedBraces) {
                                 processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
                                         outlineId);
+                            }
 
-                                String[] instructionArr = matcher.group(2).trim().split("/");
-                                String cmplvl = instructionArr[0];
-                                String instruction = instructionArr[1];
+                            String conditionalTest = matcher.group(2);
 
-                                outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
-                                        instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
-                                        indentStack));
-                                outline.get(outline.size() - 1).componentLevel = cmplvl;
-                                outline.get(outline.size() - 1).published.putAll(published);
-                                outline.get(outline.size() - 1).arguments.putAll(arguments);
-                                published.clear();
-                                arguments.clear();
+                            Matcher extractConditionalTestValuesMatcher = MocaTraceOutliner.EXTRACT_CONDITIONAL_TEST_VALUES
+                                    .matcher(conditionalTest);
 
-                                processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
-                                        outline.get(outline.size() - 1));
+                            while (extractConditionalTestValuesMatcher.find()) {
+                                String entireGroup = extractConditionalTestValuesMatcher.group(0);
+                                String type = extractConditionalTestValuesMatcher.group(3);
+                                String value = MocaTraceOutliner.adjustConditionalTestValue(type,
+                                        extractConditionalTestValuesMatcher.group(6));
 
-                                indentStack.push(outline.get(outline.size() - 1));
+                                conditionalTest = conditionalTest.replace(entireGroup, value);
+                            }
 
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTED_COMMAND_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
-                                        outlineId);
+                            // May have to go back a few frames to find the correct stack frame.
+                            for (int i = outline.size() - 1; i >= 0; i--) {
+                                // Should not be prepared statement.
+                                if (outline.get(i).stackLevel == stackLevel && !outline.get(i).isPreparedStatement
+                                        && !outline.get(i).isCommandInitiated) {
 
-                                processExplicitUnindentForLogicalIndentStrategy(indentStack, true);
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_FIRING_TRIGGERS_REGEX_PATTERN
-                                    .matcher(message)).find()
-                                    && !MocaTraceOutliner.MESSAGE_DONE_FIRING_TRIGGERS_REGEX_PATTERN.matcher(message)
-                                            .find()) {
-                                processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
-                                        outlineId);
-
-                                String instruction = "";
-
-                                outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
-                                        instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
-                                        indentStack));
-                                outline.get(outline.size() - 1).isFiringTriggers = true;
-                                outline.get(outline.size() - 1).published.putAll(published);
-                                outline.get(outline.size() - 1).arguments.putAll(arguments);
-                                published.clear();
-                                arguments.clear();
-
-                                outline.get(outline.size() - 1)
-                                        .setInstructionPrefix(String.format("Firing triggers (%s)", matcher.group(3)));
-
-                                indentStack.push(outline.get(outline.size() - 1));
-                            } else if (outline.size() > 0 && outline.get(outline.size() - 1).isFiringTriggers
-                                    && outline.get(outline.size() - 1).relativeLineNum == relativeLineNum - 1) {
-                                // Line after firing triggers ^^^ should be the entire trigger instruction.
-                                // Let's grab it and overwrite the last outline stack frame instruction.
-                                outline.get(outline.size() - 1).instruction = message;
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_DONE_FIRING_TRIGGERS_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
-                                        outlineId);
-
-                                processExplicitUnindentForLogicalIndentStrategy(indentStack, false);
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTING_COMMAND_ON_REMOTE_HOST_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
-                                        outlineId);
-
-                                String instruction = "remote ('" + matcher.group(3) + "') "
-                                        + matcher.group(6).trim().replace('\n', ' ');
-
-                                outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
-                                        instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
-                                        indentStack));
-                                outline.get(outline.size() - 1).isRemote = true;
-                                outline.get(outline.size() - 1).published.putAll(published);
-                                outline.get(outline.size() - 1).arguments.putAll(arguments);
-                                published.clear();
-                                arguments.clear();
-
-                                processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
-                                        outline.get(outline.size() - 1));
-
-                                indentStack.push(outline.get(outline.size() - 1));
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_REMOTE_EXECUTION_COMPLETE_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
-                                        outlineId);
-
-                                processExplicitUnindentForLogicalIndentStrategy(indentStack, true);
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTING_PARALLEL_COMMAND_ON_REMOTE_HOSTS_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
-                                        outlineId);
-
-                                String instruction = "parallel ('" + matcher.group(3) + "') "
-                                        + matcher.group(6).trim().replace('\n', ' ');
-
-                                outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
-                                        instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
-                                        indentStack));
-                                outline.get(outline.size() - 1).isRemote = true;
-                                outline.get(outline.size() - 1).published.putAll(published);
-                                outline.get(outline.size() - 1).arguments.putAll(arguments);
-                                published.clear();
-                                arguments.clear();
-
-                                processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
-                                        outline.get(outline.size() - 1));
-
-                                indentStack.push(outline.get(outline.size() - 1));
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTING_INPARALLEL_COMMAND_ON_REMOTE_HOSTS_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
-                                        outlineId);
-
-                                String instruction = "inparallel ('" + matcher.group(3) + "') "
-                                        + matcher.group(6).trim().replace('\n', ' ');
-
-                                outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
-                                        instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
-                                        indentStack));
-                                outline.get(outline.size() - 1).isRemote = true;
-                                outline.get(outline.size() - 1).published.putAll(published);
-                                outline.get(outline.size() - 1).arguments.putAll(arguments);
-                                published.clear();
-                                arguments.clear();
-
-                                processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
-                                        outline.get(outline.size() - 1));
-
-                                indentStack.push(outline.get(outline.size() - 1));
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_PARALLEL_EXECUTION_COMPLETE_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
-                                        outlineId);
-
-                                processExplicitUnindentForLogicalIndentStrategy(indentStack, true);
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_RESUMING_EXECUTION_OF_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                // This is like a combo of explicit and implicit unindent.
-
-                                String[] instructionArr = matcher.group(2).trim().split("/");
-                                String cmplvl = instructionArr[0];
-                                String instruction = instructionArr[1];
-
-                                // Can assume we need to pop if current indent stack frame was command statement
-                                // or nested brace AND if current indent stack frame level is GE to our
-                                // current level, but we need to make sure that we do not pop the
-                                // command/cmplvl being resumed. Only pop 1 frame.
-                                if ((indentStack.peek().isCommandStatement || indentStack.peek().isNestedBraces)
-                                        && indentStack.peek().stackLevel >= stackLevel
-                                        && indentStack.peek().instruction.compareToIgnoreCase(instruction) != 0
-                                        && (indentStack.peek().componentLevel == null
-                                                || indentStack.peek().componentLevel
-                                                        .compareToIgnoreCase(cmplvl) != 0)) {
-                                    MocaTraceStackFrame poppedFrame = processExplicitUnindentForLogicalIndentStrategy(
-                                            indentStack, false);
-
-                                    if (poppedFrame.isCommandStatement) {
-                                        outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel,
-                                                poppedFrame.absoluteLineNum, poppedFrame.relativeLineNum, "}", "0",
-                                                true, false, buildIndentString(indentStack, poppedFrame.stackLevel),
-                                                indentStack));
-                                    } else if (poppedFrame.isNestedBraces) {
-                                        outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel,
-                                                poppedFrame.absoluteLineNum, poppedFrame.relativeLineNum, "}", "0",
-                                                false, true, buildIndentString(indentStack, poppedFrame.stackLevel),
-                                                indentStack));
+                                    // If outline at i is nested braces(which should indicate try block), use the
+                                    // outline before that instead, since it is likely the instruction that failed.
+                                    if (outline.get(i).isNestedBraces && outline.get(i).instruction == "}") {
+                                        // Should be i - 1 since i is "}".
+                                        outline.get(i - 1).evaluatingTryCatchCondition = "Caught (" + conditionalTest
+                                                + ")";
+                                    } else {
+                                        outline.get(i).evaluatingTryCatchCondition = "Caught (" + conditionalTest + ")";
                                     }
+
+                                    break;
                                 }
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTING_BUILTIN_COMMAND_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
-                                        outlineId);
+                            }
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_CATCH_CONDITION_MET_EXECUTING_CATCH_BLOCK_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            // Now that we have met the catch condition, go back and set frame instruction
+                            // status to evaluated try-catch condition.
 
-                                String instruction = matcher.group(2);
+                            // May have to go back a few frames to find the correct stack frame.
+                            for (int i = outline.size() - 1; i >= 0; i--) {
+                                // Should not be prepared statement.
+                                if (outline.get(i).stackLevel == stackLevel && !outline.get(i).isPreparedStatement
+                                        && !outline.get(i).isCommandInitiated) {
 
-                                outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
-                                        instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
-                                        indentStack));
-                                outline.get(outline.size() - 1).published.putAll(published);
-                                outline.get(outline.size() - 1).arguments.putAll(arguments);
-                                published.clear();
-                                arguments.clear();
-
-                                processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
-                                        outline.get(outline.size() - 1));
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_RAISING_ERROR_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                // For errors(for the most part), we need to look back through outline entries
-                                // and find the right outline instruction status to assign error to.
-                                // This error should only come up after a MOCA command fails.
-                                for (int i = outline.size() - 1; i >= 0; i--) {
-                                    if (stackLevel == outline.get(i).stackLevel
-                                            && outline.get(i).componentLevel != null) {
-                                        outline.get(i).instructionStatus = "-1403";
-                                        break;
+                                    // If outline at i is nested braces(which should indicate try block), use the
+                                    // outline before that instead, since it is likely the instruction that failed.
+                                    if (outline.get(i).isNestedBraces && outline.get(i).instruction == "}") {
+                                        // Should be i - 1 since i is "}".
+                                        outline.get(i - 1).instructionStatus = outline
+                                                .get(i - 1).evaluatingTryCatchCondition;
+                                    } else {
+                                        outline.get(i).instructionStatus = outline.get(i).evaluatingTryCatchCondition;
                                     }
+
+                                    break;
                                 }
                             }
-                            break;
-                        case "JDBCAdapter":
-                            if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTING_SQL_REGEX_PATTERN.matcher(message))
-                                    .find()) {
-                                // Need both exec sql and unbind sql since sometimes unbind will not occur.
-                                // If unbind comes through, we will just overwrite.
-                                processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
-                                        outlineId);
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTING_FINALLY_BLOCK_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
+                                    outlineId);
 
-                                String instruction = "[" + matcher.group(2).trim().replace('\n', ' ')
-                                        .replace(" N'", "'").replace("(N'", "('") + "]";
+                            String instruction = "finally";
 
-                                outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
-                                        instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
-                                        indentStack));
-                                outline.get(outline.size() - 1).published.putAll(published);
-                                outline.get(outline.size() - 1).arguments.putAll(arguments);
-                                published.clear();
-                                arguments.clear();
+                            outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
+                                    instruction, "0", true, false, buildIndentString(indentStack, stackLevel),
+                                    indentStack));
+                            outline.get(outline.size() - 1).published.putAll(published);
+                            outline.get(outline.size() - 1).arguments.putAll(arguments);
+                            published.clear();
+                            arguments.clear();
 
-                                processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
-                                        outline.get(outline.size() - 1));
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_UNBIND_SQL_REGEX_PATTERN.matcher(message))
-                                    .find()) {
-                                // Overwrite last outline frame if we get unbind.
-                                String instruction = "[" + matcher.group(2).trim().replace('\n', ' ')
-                                        .replace(" N'", "'").replace("(N'", "('") + "]";
+                            outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum, "{",
+                                    "0", true, false, buildIndentString(indentStack, stackLevel), indentStack));
 
-                                outline.get(outline.size() - 1).instruction = instruction;
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_CONNECTION_PREPARESTATEMENT_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
-                                        outlineId);
+                            indentStack.push(outline.get(outline.size() - 1));
+                        }
+                        break;
+                    case "DefaultServerContext":
+                        if ((matcher = MocaTraceOutliner.MESSAGE_COMMAND_INITIATED_REGEX_PATTERN.matcher(message))
+                                .find()) {
 
-                                String instruction = "["
-                                        + matcher.group(3).trim().replace('\n', ' ').replace("?", "'<var>'") + "]";
+                            String instruction = matcher.group(3).trim().replace('\n', ' ');
 
-                                outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
-                                        instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
-                                        indentStack));
-                                outline.get(outline.size() - 1).isPreparedStatement = true;
-                                outline.get(outline.size() - 1).published.putAll(published);
-                                outline.get(outline.size() - 1).arguments.putAll(arguments);
-                                published.clear();
-                                arguments.clear();
-
-                                processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
-                                        outline.get(outline.size() - 1));
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_PREPAREDSTATEMENT_EXECUTE_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                outline.get(outline.size() - 1).preparedStatementQuery = "["
-                                        + matcher.group(3).trim().replace('\n', ' ') + "]";
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_QUERY_RETURNED_X_ROWS_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                // This one should just be in regards to JDBCApapter queries.
-                                outline.get(outline.size() - 1).returnedRows = Integer.parseInt(matcher.group(2));
-
-                                if (outline.get(outline.size() - 1).returnedRows > 1) {
-                                    returnedRowsStack.push(new ReturnedRows(stackLevel,
-                                            outline.get(outline.size() - 1).returnedRows, true));
-                                }
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_SQL_EXCEPTION_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                outline.get(outline.size() - 1).instructionStatus = matcher.group();
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_THROWING_NOT_FOUND_EXCEPTION_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                // For errors(for the most part), we need to look back through outline entries
-                                // and find the right outline instruction status to assign error to.
-                                for (int i = outline.size() - 1; i >= 0; i--) {
-                                    if (stackLevel == outline.get(i).stackLevel && !outline.get(i).isCommandInitiated
-                                            && !outline.get(i).isNestedBraces && !outline.get(i).isCommandStatement) {
-                                        outline.get(i).instructionStatus = "-1403";
-                                        break;
-                                    }
-                                }
-                            }
-                            break;
-                        case "Performance":
-                            if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTE_TIME_REGEX_PATTERN.matcher(message))
-                                    .find()) {
-                                outline.get(outline.size() - 1).executionTime = Double.parseDouble(matcher.group(2));
-                            }
-                            break;
-                        case "CommandDispatcher":
-                            if ((matcher = MocaTraceOutliner.MESSAGE_SERVER_GOT_REGEX_PATTERN.matcher(message))
-                                    .find()) {
+                            if (stackLevel == 0) {
 
                                 indentStack.clear();
 
-                                String instruction = matcher.group(2).trim().replace('\n', ' ');
-
                                 outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                         instruction, "0", false, false, "", indentStack));
-                                outline.get(outline.size() - 1).isServerGot = true;
+                                outline.get(outline.size() - 1).isCommandInitiated = true;
 
                                 indentStack.push(outline.get(outline.size() - 1));
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_EXCEPTION_RAISED_FROM_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                // For errors(for the most part), we need to look back through outline entries
-                                // and find the right outline instruction status to assign error to.
-                                for (int i = outline.size() - 1; i >= 0; i--) {
-                                    if (stackLevel == outline.get(i).stackLevel && !outline.get(i).isCommandInitiated
-                                            && !outline.get(i).isNestedBraces && !outline.get(i).isCommandStatement) {
-                                        outline.get(i).instructionStatus = matcher.group(2);
-                                        break;
-                                    }
-                                }
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_RETURNING_X_ROWS_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                // Seems like we only see this in regards to the "Server got:"
-                                // match.
-                                // NOTE: not adding to returned rows stack here since we do not care to add for
-                                // "Server got:" match.
+                            } else {
 
-                                // Go back to last server got instruction.
-                                for (int i = outline.size() - 1; i >= 0; i--) {
-                                    if (outline.get(i).isServerGot) {
-                                        outline.get(i).returnedRows = Integer.parseInt(matcher.group(2));
-                                        break;
-                                    }
-                                }
-                            }
-                            break;
-                        case "GroovyScriptAdapter":
-                            if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTING_COMPILED_SCRIPT_REGEX_PATTERN
-                                    .matcher(message)).find()) {
                                 processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
                                         outlineId);
-
-                                String instruction = "[[ /* Groovy */ ]]";
 
                                 outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
                                         instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
                                         indentStack));
-                                outline.get(outline.size() - 1).published.putAll(published);
-                                outline.get(outline.size() - 1).arguments.putAll(arguments);
-                                published.clear();
-                                arguments.clear();
-
-                                outline.get(outline.size() - 1).isGroovy = true;
-
-                                processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
-                                        outline.get(outline.size() - 1));
+                                outline.get(outline.size() - 1).isCommandInitiated = true;
 
                                 indentStack.push(outline.get(outline.size() - 1));
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_SCRIPT_EXECUTION_COMPLETE_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
-                                        outlineId);
-
-                                processExplicitUnindentForLogicalIndentStrategy(indentStack, false);
                             }
-                            break;
-                        case "ComponentAdapter":
-                            if ((matcher = MocaTraceOutliner.MESSAGE_INVOKING_METHOD_REGEX_PATTERN.matcher(message))
-                                    .find()) {
-                                outline.get(outline.size() - 1).isJavaMethod = true;
-                            } else if ((matcher = MocaTraceOutliner.MESSAGE_EXCEPTION_THROWN_FROM_COMPONENT_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                // For errors(for the most part), we need to look back through outline entries
-                                // and find the right outline instruction status to assign error to.
-                                for (int i = outline.size() - 1; i >= 0; i--) {
-                                    if (stackLevel == outline.get(i).stackLevel && !outline.get(i).isCommandInitiated
-                                            && !outline.get(i).isNestedBraces && !outline.get(i).isCommandStatement) {
-                                        outline.get(i).instructionStatus = matcher.group(2);
-                                        break;
-                                    }
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTING_COMMAND_REGEX_PATTERN
+                                .matcher(message)).find()) {
+
+                            processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
+                                    outlineId);
+
+                            String[] instructionArr = matcher.group(2).trim().split("/");
+                            String cmplvl = instructionArr[0];
+                            String instruction = instructionArr[1];
+
+                            outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
+                                    instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
+                                    indentStack));
+                            outline.get(outline.size() - 1).componentLevel = cmplvl;
+                            outline.get(outline.size() - 1).published.putAll(published);
+                            outline.get(outline.size() - 1).arguments.putAll(arguments);
+                            published.clear();
+                            arguments.clear();
+
+                            processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                    outline.get(outline.size() - 1));
+
+                            indentStack.push(outline.get(outline.size() - 1));
+
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTED_COMMAND_REGEX_PATTERN.matcher(message))
+                                .find()) {
+                            processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
+                                    outlineId);
+
+                            processExplicitUnindentForLogicalIndentStrategy(indentStack, true);
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_RESUMING_EXECUTION_OF_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            // This is like a combo of explicit and implicit unindent.
+
+                            String[] instructionArr = matcher.group(2).trim().split("/");
+                            String cmplvl = instructionArr[0];
+                            String instruction = instructionArr[1];
+
+                            // Can assume we need to pop if current indent stack frame was command statement
+                            // or nested brace AND if current indent stack frame level is GE to our
+                            // current level, but we need to make sure that we do not pop the
+                            // command/cmplvl being resumed. Only pop 1 frame.
+                            if ((indentStack.peek().isCommandStatement || indentStack.peek().isNestedBraces)
+                                    && indentStack.peek().stackLevel >= stackLevel
+                                    && indentStack.peek().instruction.compareToIgnoreCase(instruction) != 0
+                                    && (indentStack.peek().componentLevel == null
+                                            || indentStack.peek().componentLevel.compareToIgnoreCase(cmplvl) != 0)) {
+                                MocaTraceStackFrame poppedFrame = processExplicitUnindentForLogicalIndentStrategy(
+                                        indentStack, false);
+
+                                if (poppedFrame.isCommandStatement) {
+                                    outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel,
+                                            poppedFrame.absoluteLineNum, poppedFrame.relativeLineNum, "}", "0", true,
+                                            false, buildIndentString(indentStack, poppedFrame.stackLevel),
+                                            indentStack));
+                                } else if (poppedFrame.isNestedBraces) {
+                                    outline.add(new MocaTraceStackFrame(outlineId, poppedFrame.stackLevel,
+                                            poppedFrame.absoluteLineNum, poppedFrame.relativeLineNum, "}", "0", false,
+                                            true, buildIndentString(indentStack, poppedFrame.stackLevel), indentStack));
                                 }
                             }
-                            break;
-                        case "ServerActivity":
-                            if ((matcher = MocaTraceOutliner.MESSAGE_SERVER_ACTIVITY_SUMMARY_REGEX_PATTERN
-                                    .matcher(message)).find()) {
-                                /*
-                                 * Example message: [MCSbase/list warehouses] [{}] [0.002] [0] [6]
-                                 * 
-                                 * Group 1: command, Group 2: args, Group 3: performance, Group 4: status, Group
-                                 * 5: rows
-                                 */
-
-                                // Segregate cmplvl and command, then find matching outline entry.
-                                String[] instructionArr = matcher.group(1).trim().split("/");
-                                String cmplvl = instructionArr[0];
-                                String instruction = instructionArr[1];
-
-                                for (int i = outline.size() - 1; i >= 0; i--) {
-                                    if (outline.get(i).stackLevel == stackLevel
-                                            && outline.get(i).instruction.compareTo(instruction) == 0
-                                            && outline.get(i).componentLevel.compareTo(cmplvl) == 0) {
-                                        outline.get(i).executionTime = Double.parseDouble(matcher.group(3));
-                                        if (outline.get(i).instructionStatus.isEmpty()) {
-                                            outline.get(i).instructionStatus = matcher.group(4);
-                                        }
-                                        outline.get(i).returnedRows = Integer.parseInt(matcher.group(5));
-
-                                        if (outline.get(i).returnedRows > 1) {
-                                            returnedRowsStack.push(
-                                                    new ReturnedRows(stackLevel, outline.get(i).returnedRows, false));
-                                        }
-
-                                        break;
-                                    }
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_RAISING_ERROR_REGEX_PATTERN.matcher(message))
+                                .find()) {
+                            // For errors(for the most part), we need to look back through outline entries
+                            // and find the right outline instruction status to assign error to.
+                            // This error should only come up after a MOCA command fails.
+                            for (int i = outline.size() - 1; i >= 0; i--) {
+                                if (stackLevel == outline.get(i).stackLevel && outline.get(i).componentLevel != null) {
+                                    outline.get(i).instructionStatus = "-1403";
+                                    break;
                                 }
                             }
-                            break;
-                        case "CFunctionCommand":
-                            if ((matcher = MocaTraceOutliner.MESSAGE_CALLING_C_FUNCTION_REGEX_PATTERN.matcher(message))
-                                    .find()) {
-                                outline.get(outline.size() - 1).isCFunction = true;
-                            }
-                            break;
-                        default:
-                            break;
-                    }
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_FIRING_TRIGGERS_REGEX_PATTERN.matcher(message))
+                                .find()
+                                && !MocaTraceOutliner.MESSAGE_DONE_FIRING_TRIGGERS_REGEX_PATTERN.matcher(message)
+                                        .find()) {
+                            processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
+                                    outlineId);
 
+                            String instruction = "";
+
+                            outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
+                                    instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
+                                    indentStack));
+                            outline.get(outline.size() - 1).isFiringTriggers = true;
+                            outline.get(outline.size() - 1).published.putAll(published);
+                            outline.get(outline.size() - 1).arguments.putAll(arguments);
+                            published.clear();
+                            arguments.clear();
+
+                            outline.get(outline.size() - 1)
+                                    .setInstructionPrefix(String.format("Firing triggers (%s)", matcher.group(3)));
+
+                            indentStack.push(outline.get(outline.size() - 1));
+                        } else if (outline.size() > 0 && outline.get(outline.size() - 1).isFiringTriggers
+                                && outline.get(outline.size() - 1).relativeLineNum == relativeLineNum - 1) {
+                            // Line after firing triggers ^^^ should be the entire trigger instruction.
+                            // Let's grab it and overwrite the last outline stack frame instruction.
+                            outline.get(outline.size() - 1).instruction = message;
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_DONE_FIRING_TRIGGERS_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
+                                    outlineId);
+
+                            processExplicitUnindentForLogicalIndentStrategy(indentStack, false);
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTING_BUILTIN_COMMAND_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
+                                    outlineId);
+
+                            String instruction = matcher.group(2);
+
+                            outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
+                                    instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
+                                    indentStack));
+                            outline.get(outline.size() - 1).published.putAll(published);
+                            outline.get(outline.size() - 1).arguments.putAll(arguments);
+                            published.clear();
+                            arguments.clear();
+
+                            processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                    outline.get(outline.size() - 1));
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTING_COMMAND_ON_REMOTE_HOST_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
+                                    outlineId);
+
+                            String instruction = "remote ('" + matcher.group(3) + "') "
+                                    + matcher.group(6).trim().replace('\n', ' ');
+
+                            outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
+                                    instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
+                                    indentStack));
+                            outline.get(outline.size() - 1).isRemote = true;
+                            outline.get(outline.size() - 1).published.putAll(published);
+                            outline.get(outline.size() - 1).arguments.putAll(arguments);
+                            published.clear();
+                            arguments.clear();
+
+                            processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                    outline.get(outline.size() - 1));
+
+                            indentStack.push(outline.get(outline.size() - 1));
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_REMOTE_EXECUTION_COMPLETE_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
+                                    outlineId);
+
+                            processExplicitUnindentForLogicalIndentStrategy(indentStack, true);
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTING_PARALLEL_COMMAND_ON_REMOTE_HOSTS_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
+                                    outlineId);
+
+                            String instruction = "parallel ('" + matcher.group(3) + "') "
+                                    + matcher.group(6).trim().replace('\n', ' ');
+
+                            outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
+                                    instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
+                                    indentStack));
+                            outline.get(outline.size() - 1).isRemote = true;
+                            outline.get(outline.size() - 1).published.putAll(published);
+                            outline.get(outline.size() - 1).arguments.putAll(arguments);
+                            published.clear();
+                            arguments.clear();
+
+                            processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                    outline.get(outline.size() - 1));
+
+                            indentStack.push(outline.get(outline.size() - 1));
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTING_INPARALLEL_COMMAND_ON_REMOTE_HOSTS_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
+                                    outlineId);
+
+                            String instruction = "inparallel ('" + matcher.group(3) + "') "
+                                    + matcher.group(6).trim().replace('\n', ' ');
+
+                            outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
+                                    instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
+                                    indentStack));
+                            outline.get(outline.size() - 1).isRemote = true;
+                            outline.get(outline.size() - 1).published.putAll(published);
+                            outline.get(outline.size() - 1).arguments.putAll(arguments);
+                            published.clear();
+                            arguments.clear();
+
+                            processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                    outline.get(outline.size() - 1));
+
+                            indentStack.push(outline.get(outline.size() - 1));
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_PARALLEL_EXECUTION_COMPLETE_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
+                                    outlineId);
+
+                            processExplicitUnindentForLogicalIndentStrategy(indentStack, true);
+                        }
+                        break;
+                    case "JDBCAdapter":
+                        if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTING_SQL_REGEX_PATTERN.matcher(message)).find()) {
+                            // Need both exec sql and unbind sql since sometimes unbind will not occur.
+                            // If unbind comes through, we will just overwrite.
+                            processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
+                                    outlineId);
+
+                            String instruction = "[" + matcher.group(2).trim().replace('\n', ' ').replace(" N'", "'")
+                                    .replace("(N'", "('") + "]";
+
+                            outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
+                                    instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
+                                    indentStack));
+                            outline.get(outline.size() - 1).published.putAll(published);
+                            outline.get(outline.size() - 1).arguments.putAll(arguments);
+                            published.clear();
+                            arguments.clear();
+
+                            processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                    outline.get(outline.size() - 1));
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_UNBIND_SQL_REGEX_PATTERN.matcher(message))
+                                .find()) {
+                            // Overwrite last outline frame if we get unbind.
+                            String instruction = "[" + matcher.group(2).trim().replace('\n', ' ').replace(" N'", "'")
+                                    .replace("(N'", "('") + "]";
+
+                            outline.get(outline.size() - 1).instruction = instruction;
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_CONNECTION_PREPARESTATEMENT_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
+                                    outlineId);
+
+                            String instruction = "["
+                                    + matcher.group(3).trim().replace('\n', ' ').replace("?", "'<var>'") + "]";
+
+                            outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
+                                    instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
+                                    indentStack));
+                            outline.get(outline.size() - 1).isPreparedStatement = true;
+                            outline.get(outline.size() - 1).published.putAll(published);
+                            outline.get(outline.size() - 1).arguments.putAll(arguments);
+                            published.clear();
+                            arguments.clear();
+
+                            processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                    outline.get(outline.size() - 1));
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_PREPAREDSTATEMENT_EXECUTE_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            outline.get(outline.size() - 1).preparedStatementQuery = "["
+                                    + matcher.group(3).trim().replace('\n', ' ') + "]";
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_QUERY_RETURNED_X_ROWS_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            // This one should just be in regards to JDBCApapter queries.
+                            outline.get(outline.size() - 1).returnedRows = Integer.parseInt(matcher.group(2));
+
+                            if (outline.get(outline.size() - 1).returnedRows > 1) {
+                                returnedRowsStack.push(new ReturnedRows(stackLevel,
+                                        outline.get(outline.size() - 1).returnedRows, true));
+                            }
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_SQL_EXCEPTION_REGEX_PATTERN.matcher(message))
+                                .find()) {
+                            outline.get(outline.size() - 1).instructionStatus = matcher.group();
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_THROWING_NOT_FOUND_EXCEPTION_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            // For errors(for the most part), we need to look back through outline entries
+                            // and find the right outline instruction status to assign error to.
+                            for (int i = outline.size() - 1; i >= 0; i--) {
+                                if (stackLevel == outline.get(i).stackLevel && !outline.get(i).isCommandInitiated
+                                        && !outline.get(i).isNestedBraces && !outline.get(i).isCommandStatement) {
+                                    outline.get(i).instructionStatus = "-1403";
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    case "Performance":
+                        if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTE_TIME_REGEX_PATTERN.matcher(message)).find()) {
+                            outline.get(outline.size() - 1).executionTime = Double.parseDouble(matcher.group(2));
+                        }
+                        break;
+                    case "CommandDispatcher":
+                        if ((matcher = MocaTraceOutliner.MESSAGE_SERVER_GOT_REGEX_PATTERN.matcher(message)).find()) {
+
+                            indentStack.clear();
+
+                            String instruction = matcher.group(2).trim().replace('\n', ' ');
+
+                            outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
+                                    instruction, "0", false, false, "", indentStack));
+                            outline.get(outline.size() - 1).isServerGot = true;
+
+                            indentStack.push(outline.get(outline.size() - 1));
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_EXCEPTION_RAISED_FROM_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            // For errors(for the most part), we need to look back through outline entries
+                            // and find the right outline instruction status to assign error to.
+                            for (int i = outline.size() - 1; i >= 0; i--) {
+                                if (stackLevel == outline.get(i).stackLevel && !outline.get(i).isCommandInitiated
+                                        && !outline.get(i).isNestedBraces && !outline.get(i).isCommandStatement) {
+                                    outline.get(i).instructionStatus = matcher.group(2);
+                                    break;
+                                }
+                            }
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_RETURNING_X_ROWS_REGEX_PATTERN.matcher(message))
+                                .find()) {
+                            // Seems like we only see this in regards to the "Server got:"
+                            // match.
+                            // NOTE: not adding to returned rows stack here since we do not care to add for
+                            // "Server got:" match.
+
+                            // Go back to last server got instruction.
+                            for (int i = outline.size() - 1; i >= 0; i--) {
+                                if (outline.get(i).isServerGot) {
+                                    outline.get(i).returnedRows = Integer.parseInt(matcher.group(2));
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    case "GroovyScriptAdapter":
+                        if ((matcher = MocaTraceOutliner.MESSAGE_EXECUTING_COMPILED_SCRIPT_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
+                                    outlineId);
+
+                            String instruction = "[[ /* Groovy */ ]]";
+
+                            outline.add(new MocaTraceStackFrame(outlineId, stackLevel, lineNum, relativeLineNum,
+                                    instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
+                                    indentStack));
+                            outline.get(outline.size() - 1).published.putAll(published);
+                            outline.get(outline.size() - 1).arguments.putAll(arguments);
+                            published.clear();
+                            arguments.clear();
+
+                            outline.get(outline.size() - 1).isGroovy = true;
+
+                            processReturnedRowsForNextStackLevel(returnedRowsStack, stackLevel,
+                                    outline.get(outline.size() - 1));
+
+                            indentStack.push(outline.get(outline.size() - 1));
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_SCRIPT_EXECUTION_COMPLETE_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            processImplicitUnindentForLogicalIndentStrategy(indentStack, stackLevel, outline,
+                                    outlineId);
+
+                            processExplicitUnindentForLogicalIndentStrategy(indentStack, false);
+                        }
+                        break;
+                    case "ComponentAdapter":
+                        if ((matcher = MocaTraceOutliner.MESSAGE_INVOKING_METHOD_REGEX_PATTERN.matcher(message))
+                                .find()) {
+                            outline.get(outline.size() - 1).isJavaMethod = true;
+                        } else if ((matcher = MocaTraceOutliner.MESSAGE_EXCEPTION_THROWN_FROM_COMPONENT_REGEX_PATTERN
+                                .matcher(message)).find()) {
+                            // For errors(for the most part), we need to look back through outline entries
+                            // and find the right outline instruction status to assign error to.
+                            for (int i = outline.size() - 1; i >= 0; i--) {
+                                if (stackLevel == outline.get(i).stackLevel && !outline.get(i).isCommandInitiated
+                                        && !outline.get(i).isNestedBraces && !outline.get(i).isCommandStatement) {
+                                    outline.get(i).instructionStatus = matcher.group(2);
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    case "ServerActivity":
+                        if ((matcher = MocaTraceOutliner.MESSAGE_SERVER_ACTIVITY_SUMMARY_REGEX_PATTERN.matcher(message))
+                                .find()) {
+                            /*
+                             * Example message: [MCSbase/list warehouses] [{}] [0.002] [0] [6]
+                             * 
+                             * Group 1: command, Group 2: args, Group 3: performance, Group 4: status, Group
+                             * 5: rows
+                             */
+
+                            // Segregate cmplvl and command, then find matching outline entry.
+                            String[] instructionArr = matcher.group(1).trim().split("/");
+                            String cmplvl = instructionArr[0];
+                            String instruction = instructionArr[1];
+
+                            for (int i = outline.size() - 1; i >= 0; i--) {
+                                if (outline.get(i).stackLevel == stackLevel
+                                        && outline.get(i).instruction.compareTo(instruction) == 0
+                                        && outline.get(i).componentLevel.compareTo(cmplvl) == 0) {
+                                    outline.get(i).executionTime = Double.parseDouble(matcher.group(3));
+                                    if (outline.get(i).instructionStatus.isEmpty()) {
+                                        outline.get(i).instructionStatus = matcher.group(4);
+                                    }
+                                    outline.get(i).returnedRows = Integer.parseInt(matcher.group(5));
+
+                                    if (outline.get(i).returnedRows > 1) {
+                                        returnedRowsStack
+                                                .push(new ReturnedRows(stackLevel, outline.get(i).returnedRows, false));
+                                    }
+
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    case "CFunctionCommand":
+                        if ((matcher = MocaTraceOutliner.MESSAGE_CALLING_C_FUNCTION_REGEX_PATTERN.matcher(message))
+                                .find()) {
+                            outline.get(outline.size() - 1).isCFunction = true;
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
 
             // Need to clear line text buf for next read line call.
             this.lineTextBuffer.setLength(0);
         }
-
     }
 
     private MocaTraceOutliningResult toResult() {

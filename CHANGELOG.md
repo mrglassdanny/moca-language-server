@@ -1,6 +1,9 @@
 # Changelog
 https://semver.org/
 
+## 1.7.16 (December ??, 2020)
+* Trace outline performance improvements
+
 ## 1.7.15 (December 19, 2020)
 * Trace outline performance improvements
 * MOCA Connection bug fix
