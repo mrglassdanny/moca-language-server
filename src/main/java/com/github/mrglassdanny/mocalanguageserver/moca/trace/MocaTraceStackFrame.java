@@ -1,7 +1,7 @@
 package com.github.mrglassdanny.mocalanguageserver.moca.trace;
 
-import java.util.HashMap;
 import java.util.Stack;
+import java.util.TreeMap;
 import java.util.Map.Entry;
 
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.format.MocaFormatter;
@@ -39,8 +39,8 @@ public class MocaTraceStackFrame {
     public int previousStackLevelReturnedRows; // How many rows did previous stack level return.
     public int rowNumberToPreviousStackLevel; // Which row am I in regards to previous stack level returned rows.
     public double executionTime; // Execution time for instruction.
-    public HashMap<String, String> published; // What is on the stack at time of instruction execution.
-    public HashMap<String, String> arguments; // What is being explicitly passed to instruction.
+    public TreeMap<String, String> stackArguments; // What is on the stack at time of instruction execution & what is
+                                                   // being explicitly passed to instruction.
     public boolean isServerGot; // Indicates if match was from "Server got:" regex in message.
     public boolean isCommandInitiated; // Indicates if match was from "Command initiated:" regex in message.
     public boolean isCommandStatement; // Indicates if logger was CommandStatement(includes "{" & "}" for command
@@ -75,8 +75,7 @@ public class MocaTraceStackFrame {
         this.previousStackLevelReturnedRows = 0;
         this.rowNumberToPreviousStackLevel = 0;
         this.executionTime = 0.0;
-        this.published = new HashMap<>();
-        this.arguments = new HashMap<>();
+        this.stackArguments = new TreeMap<>();
         this.isServerGot = false;
         this.isCommandInitiated = false;
         this.isCommandStatement = isCommandStatement;
@@ -168,32 +167,19 @@ public class MocaTraceStackFrame {
 
         // Stack args:
         StringBuilder stackArgsBuf = new StringBuilder(1024);
-        if (this.published.size() > 0) {
+        if (this.stackArguments.size() > 0) {
             stackArgsBuf.append("/* On stack */ ");
             stackArgsBuf.append("publish data where ");
-        }
 
-        for (Entry<String, String> entry : this.published.entrySet()) {
-            if (!entry.getKey().isEmpty()) {
+            for (Entry<String, String> entry : this.stackArguments.entrySet()) {
                 String value = adjustValue(entry.getValue().trim());
                 stackArgsBuf.append(String.format("%s = %s and ", entry.getKey(), value));
             }
-        }
 
-        if (stackArgsBuf.length() == 0 && this.arguments.size() > 0) {
-            stackArgsBuf.append("/* On stack */ ");
-            stackArgsBuf.append("publish data where ");
-        }
-
-        for (Entry<String, String> entry : this.arguments.entrySet()) {
-            if (!entry.getKey().isEmpty()) {
-                String value = adjustValue(entry.getValue().trim());
-                stackArgsBuf.append(String.format("%s = %s and ", entry.getKey(), value));
+            // Remove last ' and '.
+            if (stackArgsBuf.length() > 1) {
+                stackArgsBuf.delete(stackArgsBuf.length() - 5, stackArgsBuf.length() - 1);
             }
-        }
-        // Remove last ' and '.
-        if (stackArgsBuf.length() > 1) {
-            stackArgsBuf.delete(stackArgsBuf.length() - 5, stackArgsBuf.length() - 1);
         }
 
         // Instruction:
