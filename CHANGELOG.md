@@ -1,6 +1,9 @@
 # Changelog
 https://semver.org/
 
+## 1.7.18 (December 21, 2020)
+* Trace outline tweak
+
 ## 1.7.17 (December 21, 2020)
 * Trace outline tweak
 
