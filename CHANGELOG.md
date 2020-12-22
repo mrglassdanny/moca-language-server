@@ -1,17 +1,26 @@
 # Changelog
 https://semver.org/
 
-## 1.7.19 (December 22, 2020)
-* Trace outline tweaks
+## 1.7.19 (December ??, 2020)
+* Trace outline tweaks:
+    * Sort stack arguments alphabetically
+    * Return status tweak
+    * Lessen *unimportant* instruction opacity
+* Code reorganization:
+    * MOCA Connection
+    * MOCA Cache
 
 ## 1.7.18 (December 21, 2020)
-* Trace outline tweak
+* Trace outline tweak:
+    * Regex improvements
 
 ## 1.7.17 (December 21, 2020)
-* Trace outline tweak
+* Trace outline tweak:
+    * Regex improvements
 
 ## 1.7.16 (December 21, 2020)
 * Trace outline performance improvements
+    * **10X performance boost**
 
 ## 1.7.15 (December 19, 2020)
 * Trace outline performance improvements

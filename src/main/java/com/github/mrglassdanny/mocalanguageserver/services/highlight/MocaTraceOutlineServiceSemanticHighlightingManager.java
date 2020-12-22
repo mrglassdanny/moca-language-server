@@ -36,6 +36,7 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
     private static final int JAVA_METHOD_SCOPES_IDX = 20;
     private static final int INSTRUCTION_PREFIX_SCOPES_IDX = 21;
     private static final int INSTRUCTION_SUFFIX_SCOPES_IDX = 22;
+    private static final int UNIMPORTANT_INSTRUCTION_SCOPES_IDX = 23;
 
     public static List<List<String>> textmateScopes = new ArrayList<>();
 
@@ -89,6 +90,9 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
         List<String> mocaTraceOutlineInstructionSuffixScopes = new ArrayList<>();
         mocaTraceOutlineInstructionSuffixScopes.add("moca.traceoutline.instructionsuffix");
 
+        List<String> mocaTraceOutlineUnimportantInstructionScopes = new ArrayList<>();
+        mocaTraceOutlineUnimportantInstructionScopes.add("moca.traceoutline.unimportantinstruction");
+
         textmateScopes.add(mocaTraceOutlineOutlineIdScopes);
         textmateScopes.add(mocaTraceOutlineServerGotScopes);
         textmateScopes.add(mocaTraceOutlineCommandInitiatedScopes);
@@ -105,6 +109,7 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
         textmateScopes.add(mocaTraceOutlineJavaMethodScopes);
         textmateScopes.add(mocaTraceOutlineInstructionPrefixScopes);
         textmateScopes.add(mocaTraceOutlineInstructionSuffixScopes);
+        textmateScopes.add(mocaTraceOutlineUnimportantInstructionScopes);
 
     }
 
@@ -373,6 +378,20 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
                             ArrayList<Token> tokensArr = new ArrayList<>();
                             tokensArr.add(new Token(pos.getCharacter(), frame.getInstructionSuffixLen(),
                                     MocaTraceOutlineServiceSemanticHighlightingManager.INSTRUCTION_SUFFIX_SCOPES_IDX));
+                            preInfos.put(pos.getLine(), tokensArr);
+                        }
+                    }
+
+                    if (frame.isUnimportantInstruction) {
+                        Position pos = new Position(lineNum,
+                                frame.indentStr.length() + frame.getInstructionPrefixLen());
+                        if (preInfos.containsKey(pos.getLine())) {
+                            preInfos.get(pos.getLine()).add(new Token(pos.getCharacter(), frame.instruction.length(),
+                                    MocaTraceOutlineServiceSemanticHighlightingManager.UNIMPORTANT_INSTRUCTION_SCOPES_IDX));
+                        } else {
+                            ArrayList<Token> tokensArr = new ArrayList<>();
+                            tokensArr.add(new Token(pos.getCharacter(), frame.instruction.length(),
+                                    MocaTraceOutlineServiceSemanticHighlightingManager.UNIMPORTANT_INSTRUCTION_SCOPES_IDX));
                             preInfos.put(pos.getLine(), tokensArr);
                         }
                     }

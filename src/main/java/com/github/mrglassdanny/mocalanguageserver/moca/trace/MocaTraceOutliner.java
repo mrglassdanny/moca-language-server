@@ -788,6 +788,10 @@ public class MocaTraceOutliner {
                                     instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
                                     indentStack));
                             outline.get(outline.size() - 1).componentLevel = cmplvl;
+                            // TODO: find a better way to do this/add more component levels.
+                            if (cmplvl.compareToIgnoreCase("dcsdyncfg") == 0) {
+                                outline.get(outline.size() - 1).isUnimportantInstruction = true;
+                            }
                             outline.get(outline.size() - 1).stackArguments.putAll(stackArguments);
                             stackArguments.clear();
 

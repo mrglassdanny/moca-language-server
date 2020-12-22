@@ -57,6 +57,7 @@ public class MocaTraceStackFrame {
     public boolean isPreparedStatement; // Tells if instruction was JDBC prepared statement.
     public String preparedStatementQuery; // Actual query ran -- we will use this for hover instruction instead of
                                           // actual instruction(actual contains '?'s!).
+    public boolean isUnimportantInstruction; // Indicates if instruction is deemed unimportant.
 
     public MocaTraceStackFrame(String outlineId, int stackLevel, int lineNum, int relativeLineNum, String instruction,
             String instructionStatus, boolean isCommandStatement, boolean isNestedBraces, String indentStr,
@@ -89,14 +90,23 @@ public class MocaTraceStackFrame {
         this.isRemote = false;
         this.isPreparedStatement = false;
         this.preparedStatementQuery = null;
+        this.isUnimportantInstruction = false;
 
         // Passing in the indent stack so we can use it for setting certain fields.
         if (indentStack.size() > 0) {
             MocaTraceStackFrame curIndentStackFrame = indentStack.peek();
+
+            // Trigger analysis:
             if (curIndentStackFrame.isFiringTriggers && curIndentStackFrame.stackLevel == this.stackLevel - 1
                     && this.instruction != "}" && this.instruction != "{") {
                 this.isTrigger = true;
             }
+
+            // Unimportant instruction analysis:
+            if (curIndentStackFrame.isUnimportantInstruction) {
+                this.isUnimportantInstruction = true;
+            }
+
         }
     }
 
@@ -135,6 +145,8 @@ public class MocaTraceStackFrame {
     public String getMarkdownStr() {
 
         StringBuilder buf = new StringBuilder(2048);
+
+        buf.append(String.format("Thread-Session: **%s**\n\n", this.outlineId));
 
         buf.append(String.format("Stack Level: **%d**\n\n", this.stackLevel));
 
