@@ -1,11 +1,12 @@
 # Changelog
 https://semver.org/
 
-## 1.7.19 (December ??, 2020)
+## 1.7.19 (December 23, 2020)
 * Trace outline tweaks:
     * Sort stack arguments alphabetically
     * Return status tweak
     * Lessen *unimportant* instruction opacity
+    * View relative and absolute log
 * Code reorganization:
     * MOCA Connection
     * MOCA Cache
