@@ -117,6 +117,12 @@ public class MocaTraceOutliner {
             .compile("(Query returned) ([0-9]+) (rows)");
     private static final Pattern MESSAGE_EXECUTE_TIME_REGEX_PATTERN = Pattern.compile("(Execute Time:) ([0-9.]+) (s)");
 
+    private static final String[] UNIMPORTANT_COMPONENT_LEVEL_PREFIXES = { "mtf", "mcsdda", "mcsdoc", "mcsems",
+            "mcsi8n", "mcsmedia", "mcssecurity", "mcsshared", "mcsweb", "search", "dcsasync", "dcsdyncfg", "dcsbarcode",
+            "dcscontext", "dcsequip", "dscfilter", "dcsi18n", "dcsserv", "dcssource", "dcstools", "dcsutil_java",
+            "dcsutils_core", "mcsi", "mocaadmin", "mocacrud", "mocadbupgrade", "mocadbutl", "mocaems",
+            "mocaextensibility", "mocarepository", "mocasecurity", "mocaxml", "sl" };
+
     private String traceFileName;
     private MocaTraceOutlineOptions options;
     private StringBuilder lineTextBuffer;
@@ -782,10 +788,19 @@ public class MocaTraceOutliner {
                                     instruction, "0", false, false, buildIndentString(indentStack, stackLevel),
                                     indentStack));
                             outline.get(outline.size() - 1).componentLevel = cmplvl;
-                            // TODO: find a better way to do this/add more component levels.
-                            if (cmplvl.compareToIgnoreCase("dcsdyncfg") == 0) {
-                                outline.get(outline.size() - 1).isUnimportantInstruction = true;
+
+                            for (String unimportantComponentLevelPrefix : MocaTraceOutliner.UNIMPORTANT_COMPONENT_LEVEL_PREFIXES) {
+                                if (cmplvl.toLowerCase().startsWith(unimportantComponentLevelPrefix.toLowerCase())) {
+                                    outline.get(outline.size() - 1).isUnimportantInstruction = true;
+
+                                    if (indentStack.peek().isServerGot || indentStack.peek().isCommandInitiated) {
+                                        indentStack.peek().isUnimportantInstruction = true;
+                                    }
+
+                                    break;
+                                }
                             }
+
                             outline.get(outline.size() - 1).stackArguments.putAll(stackArguments);
                             stackArguments.clear();
 
