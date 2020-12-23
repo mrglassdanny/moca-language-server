@@ -428,8 +428,7 @@ public class ExecuteCommandProvider {
 
                             MocaTraceOutliningResult mocaTraceOutliningResult = MocaTraceOutliner.outlineTrace(
                                     openMocaTraceOutlineRequest.requestedTraceFileName,
-                                    openMocaTraceOutlineRequest.useLogicalIndentStrategy,
-                                    openMocaTraceOutlineRequest.minimumExecutionTime, res);
+                                    openMocaTraceOutlineRequest.options, res);
 
                             // Make sure string is not null.
                             String mocaTraceOutliningResultStr = mocaTraceOutliningResult.toString();
@@ -458,8 +457,7 @@ public class ExecuteCommandProvider {
                                 MocaTraceOutliningResult mocaTraceOutliningResult = MocaTraceOutliner.outlineTrace(
                                         openMocaTraceOutlineRequest.requestedTraceFileName.substring(
                                                 openMocaTraceOutlineRequest.requestedTraceFileName.lastIndexOf("/")),
-                                        openMocaTraceOutlineRequest.useLogicalIndentStrategy,
-                                        openMocaTraceOutlineRequest.minimumExecutionTime, reader);
+                                        openMocaTraceOutlineRequest.options, reader);
 
                                 // Make sure string is not null.
                                 String mocaTraceOutliningResultStr = mocaTraceOutliningResult.toString();

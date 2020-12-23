@@ -118,8 +118,7 @@ public class MocaTraceOutliner {
     private static final Pattern MESSAGE_EXECUTE_TIME_REGEX_PATTERN = Pattern.compile("(Execute Time:) ([0-9.]+) (s)");
 
     private String traceFileName;
-    private boolean useLogicalIndentStrategy;
-    private double minimumExecutionTime; // Used only for semantic highlighting.
+    private MocaTraceOutlineOptions options;
     private int lineNum;
     private StringBuilder lineTextBuffer;
     private ArrayList<String> absoluteTraceLines;
@@ -132,10 +131,9 @@ public class MocaTraceOutliner {
     private HashMap<String, HashMap<String, String>> stackArgumentsMap;
     private HashMap<String, Stack<ReturnedRows>> returnedRowsStackMap;
 
-    private MocaTraceOutliner(String traceFileName, boolean useLogicalIndentStrategy, double minimumExecutionTime) {
+    private MocaTraceOutliner(String traceFileName, MocaTraceOutlineOptions options) {
         this.traceFileName = traceFileName;
-        this.useLogicalIndentStrategy = useLogicalIndentStrategy;
-        this.minimumExecutionTime = minimumExecutionTime;
+        this.options = options;
         this.lineNum = 0;
         this.lineTextBuffer = new StringBuilder(8192);
         this.absoluteTraceLines = new ArrayList<>(4096);
@@ -150,7 +148,7 @@ public class MocaTraceOutliner {
 
     private String buildIndentString(Stack<MocaTraceStackFrame> indentStack, int stackLevel) {
 
-        if (this.useLogicalIndentStrategy) {
+        if (this.options.useLogicalIndentStrategy) {
             StringBuilder buf = new StringBuilder(indentStack.size());
             for (int i = 0; i < indentStack.size(); i++) {
                 buf.append('\t');
@@ -1178,14 +1176,13 @@ public class MocaTraceOutliner {
 
     private MocaTraceOutliningResult toResult() {
         return new MocaTraceOutliningResult(this.traceFileName, this.outlineMap, this.orderedOutlineIds,
-                this.absoluteTraceLines, this.relativeTraceLinesMap, this.minimumExecutionTime);
+                this.absoluteTraceLines, this.relativeTraceLinesMap, this.options);
     }
 
-    public static MocaTraceOutliningResult outlineTrace(String traceFileName, boolean useLogicalIndentStrategy,
-            double minimumExecutionTime, MocaResults res) throws InvalidMocaTraceFileException {
+    public static MocaTraceOutliningResult outlineTrace(String traceFileName, MocaTraceOutlineOptions options,
+            MocaResults res) throws InvalidMocaTraceFileException {
 
-        MocaTraceOutliner outliner = new MocaTraceOutliner(traceFileName, useLogicalIndentStrategy,
-                minimumExecutionTime);
+        MocaTraceOutliner outliner = new MocaTraceOutliner(traceFileName, options);
 
         // If no rows, let's quit.
         if (res == null || res.getRowCount() == 0) {
@@ -1207,12 +1204,10 @@ public class MocaTraceOutliner {
         return outliner.toResult();
     }
 
-    public static MocaTraceOutliningResult outlineTrace(String traceFileName, boolean useLogicalIndentStrategy,
-            double minimumExecutionTime, BufferedReader bufferedReader)
-            throws IOException, InvalidMocaTraceFileException {
+    public static MocaTraceOutliningResult outlineTrace(String traceFileName, MocaTraceOutlineOptions options,
+            BufferedReader bufferedReader) throws IOException, InvalidMocaTraceFileException {
 
-        MocaTraceOutliner outliner = new MocaTraceOutliner(traceFileName, useLogicalIndentStrategy,
-                minimumExecutionTime);
+        MocaTraceOutliner outliner = new MocaTraceOutliner(traceFileName, options);
 
         int lineNum = 1;
         String line = bufferedReader.readLine();

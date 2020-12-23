@@ -293,7 +293,7 @@ public class MocaTraceOutlineServiceSemanticHighlightingManager {
                         }
                     }
 
-                    if (frame.executionTime >= mocaTraceOutliningResult.minimumExecutionTime) {
+                    if (frame.executionTime >= mocaTraceOutliningResult.options.minimumExecutionTime) {
                         Position pos = new Position(lineNum,
                                 frame.indentStr.length() + frame.getInstructionPrefixLen());
                         if (preInfos.containsKey(pos.getLine())) {

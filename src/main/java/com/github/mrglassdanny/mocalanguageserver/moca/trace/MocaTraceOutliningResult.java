@@ -6,21 +6,24 @@ import java.util.HashMap;
 public class MocaTraceOutliningResult {
 
     public String traceFileName;
+    public MocaTraceOutlineOptions options;
     public ArrayList<MocaTraceOutline> outlines;
     public ArrayList<String> absoluteTraceLines;
+    public boolean hasWrittenAbsolute; // Field for definition provider to indicate if we have already written file
+                                       // for absolute trace file lines.
     // actualLinesMap will associate actual editor line number with trace stack
     // frame so that we do not have to spend time analyzing outlines to find correct
     // stack frame for actual line.
     public HashMap<Integer, MocaTraceStackFrame> actualLinesMap; // Line numbers start at 1.
     public ArrayList<Integer> outlineIdLineNumbers; // Easy way for decorations to be applied to outline ID lines.
-    public double minimumExecutionTime; // Used only for semantic highlighting.
 
     public MocaTraceOutliningResult(String traceFileName, HashMap<String, ArrayList<MocaTraceStackFrame>> outlineMap,
             ArrayList<String> orderedOutlineIds, ArrayList<String> absoluteTraceLines,
-            HashMap<String, ArrayList<String>> relativeTraceLinesMap, double minimumExecutionTime) {
+            HashMap<String, ArrayList<String>> relativeTraceLinesMap, MocaTraceOutlineOptions options) {
 
         // Remove .log from file name.
         this.traceFileName = traceFileName.replace(".log", "");
+        this.options = options;
         this.outlines = new ArrayList<>();
         this.absoluteTraceLines = new ArrayList<>();
         this.actualLinesMap = new HashMap<>();
@@ -33,8 +36,7 @@ public class MocaTraceOutliningResult {
         }
 
         this.absoluteTraceLines.addAll(absoluteTraceLines);
-
-        this.minimumExecutionTime = minimumExecutionTime;
+        this.hasWrittenAbsolute = false;
 
     }
 
@@ -67,12 +69,12 @@ public class MocaTraceOutliningResult {
         return buf.toString();
     }
 
-    public ArrayList<String> getRelativeTraceLinesForOutline(String outlineId) {
+    public MocaTraceOutline getOutline(String outlineId) {
         for (MocaTraceOutline outline : this.outlines) {
             if (outline.id.compareToIgnoreCase(outlineId) == 0) {
-                return outline.relativeTraceLines;
+                return outline;
             }
         }
-        return new ArrayList<>();
+        return null;
     }
 }

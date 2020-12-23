@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
+import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutline;
 import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutliningResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceStackFrame;
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
@@ -44,27 +45,64 @@ public class MocaTraceOutlineServiceDefinitionProvider {
 
         try {
 
-            String logFileName = MocaLanguageServer.globalStoragePath + "\\trace\\"
-                    + (mocaTraceOutliningResult.traceFileName + "_" + frame.outlineId) + ".log";
-            File logFile = new File(logFileName);
-            URI logFileUri = logFile.toURI();
-            BufferedWriter logFileBufferedWriter = new BufferedWriter(new FileWriter(logFile));
+            if (mocaTraceOutliningResult.options.viewRelativeLog) {
 
-            ArrayList<String> relativeTraceLines = mocaTraceOutliningResult
-                    .getRelativeTraceLinesForOutline(frame.outlineId);
+                MocaTraceOutline outline = mocaTraceOutliningResult.getOutline(frame.outlineId);
+                if (outline == null) {
+                    return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
+                }
 
-            for (String line : relativeTraceLines) {
-                logFileBufferedWriter.append(line + "\n");
+                String logFileName = MocaLanguageServer.globalStoragePath + "\\trace\\"
+                        + (mocaTraceOutliningResult.traceFileName + "_" + frame.outlineId) + ".log";
+                File logFile = new File(logFileName);
+                URI logFileUri = logFile.toURI();
+
+                if (!outline.hasWrittenRelative) {
+
+                    BufferedWriter logFileBufferedWriter = new BufferedWriter(new FileWriter(logFile));
+
+                    for (String line : outline.relativeTraceLines) {
+                        logFileBufferedWriter.append(line + "\n");
+                    }
+
+                    logFileBufferedWriter.close();
+
+                    outline.hasWrittenRelative = true;
+                }
+
+                // -1 since lsp position line nums start at 0 and stack frame relative line nums
+                // start at 1!
+                Position startPos = new Position(frame.relativeLineNum - 1, 0);
+                Position endPos = new Position(frame.relativeLineNum, 0);
+                Location location = new Location(logFileUri.toString(), new Range(startPos, endPos));
+                locations.add(location);
+            } else {
+
+                String logFileName = MocaLanguageServer.globalStoragePath + "\\trace\\"
+                        + (mocaTraceOutliningResult.traceFileName) + ".log";
+                File logFile = new File(logFileName);
+                URI logFileUri = logFile.toURI();
+
+                if (!mocaTraceOutliningResult.hasWrittenAbsolute) {
+
+                    BufferedWriter logFileBufferedWriter = new BufferedWriter(new FileWriter(logFile));
+
+                    for (String line : mocaTraceOutliningResult.absoluteTraceLines) {
+                        logFileBufferedWriter.append(line + "\n");
+                    }
+
+                    logFileBufferedWriter.close();
+
+                    mocaTraceOutliningResult.hasWrittenAbsolute = true;
+                }
+
+                // -1 since lsp position line nums start at 0 and stack frame relative line nums
+                // start at 1!
+                Position startPos = new Position(frame.absoluteLineNum - 1, 0);
+                Position endPos = new Position(frame.absoluteLineNum, 0);
+                Location location = new Location(logFileUri.toString(), new Range(startPos, endPos));
+                locations.add(location);
             }
-
-            logFileBufferedWriter.close();
-
-            // -1 since lsp position line nums start at 0 and stack frame relative line nums
-            // start at 1!
-            Position startPos = new Position(frame.relativeLineNum - 1, 0);
-            Position endPos = new Position(frame.relativeLineNum, 0);
-            Location location = new Location(logFileUri.toString(), new Range(startPos, endPos));
-            locations.add(location);
 
         } catch (IOException ioException) {
             return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
