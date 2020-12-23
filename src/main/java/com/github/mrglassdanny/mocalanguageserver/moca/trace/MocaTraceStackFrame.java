@@ -150,6 +150,9 @@ public class MocaTraceStackFrame {
 
         buf.append(String.format("Stack Level: **%d**\n\n", this.stackLevel));
 
+        buf.append(String.format("Absolute Line: **%d**\n\n", this.absoluteLineNum));
+        buf.append(String.format("Relative Line: **%d**\n\n", this.relativeLineNum));
+
         if (this.instructionStatus != "0") {
             buf.append(String.format("Status: **%s**\n\n", this.instructionStatus));
         }

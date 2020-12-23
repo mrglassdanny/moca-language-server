@@ -27,9 +27,8 @@ public class OpenMocaTraceOutlineRequest {
             this.isRemote = isRemoteJsonElem.getAsBoolean();
             JsonElement useLogicalIndentStrategyJsonElem = (JsonElement) args.get(3);
             JsonElement minimumExecutionTimeJsonElem = (JsonElement) args.get(4);
-            JsonElement viewRelativeLogJsonElem = (JsonElement) args.get(5);
             this.options = new MocaTraceOutlineOptions(useLogicalIndentStrategyJsonElem.getAsBoolean(),
-                    minimumExecutionTimeJsonElem.getAsDouble(), viewRelativeLogJsonElem.getAsBoolean());
+                    minimumExecutionTimeJsonElem.getAsDouble());
         }
     }
 }

@@ -45,64 +45,64 @@ public class MocaTraceOutlineServiceDefinitionProvider {
 
         try {
 
-            if (mocaTraceOutliningResult.options.viewRelativeLog) {
-
-                MocaTraceOutline outline = mocaTraceOutliningResult.getOutline(frame.outlineId);
-                if (outline == null) {
-                    return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
-                }
-
-                String logFileName = MocaLanguageServer.globalStoragePath + "\\trace\\"
-                        + (mocaTraceOutliningResult.traceFileName + "_" + frame.outlineId) + ".log";
-                File logFile = new File(logFileName);
-                URI logFileUri = logFile.toURI();
-
-                if (!outline.hasWrittenRelative) {
-
-                    BufferedWriter logFileBufferedWriter = new BufferedWriter(new FileWriter(logFile));
-
-                    for (String line : outline.relativeTraceLines) {
-                        logFileBufferedWriter.append(line + "\n");
-                    }
-
-                    logFileBufferedWriter.close();
-
-                    outline.hasWrittenRelative = true;
-                }
-
-                // -1 since lsp position line nums start at 0 and stack frame relative line nums
-                // start at 1!
-                Position startPos = new Position(frame.relativeLineNum - 1, 0);
-                Position endPos = new Position(frame.relativeLineNum, 0);
-                Location location = new Location(logFileUri.toString(), new Range(startPos, endPos));
-                locations.add(location);
-            } else {
-
-                String logFileName = MocaLanguageServer.globalStoragePath + "\\trace\\"
-                        + (mocaTraceOutliningResult.traceFileName) + ".log";
-                File logFile = new File(logFileName);
-                URI logFileUri = logFile.toURI();
-
-                if (!mocaTraceOutliningResult.hasWrittenAbsolute) {
-
-                    BufferedWriter logFileBufferedWriter = new BufferedWriter(new FileWriter(logFile));
-
-                    for (String line : mocaTraceOutliningResult.absoluteTraceLines) {
-                        logFileBufferedWriter.append(line + "\n");
-                    }
-
-                    logFileBufferedWriter.close();
-
-                    mocaTraceOutliningResult.hasWrittenAbsolute = true;
-                }
-
-                // -1 since lsp position line nums start at 0 and stack frame relative line nums
-                // start at 1!
-                Position startPos = new Position(frame.absoluteLineNum - 1, 0);
-                Position endPos = new Position(frame.absoluteLineNum, 0);
-                Location location = new Location(logFileUri.toString(), new Range(startPos, endPos));
-                locations.add(location);
+            // Relative:
+            MocaTraceOutline outline = mocaTraceOutliningResult.getOutline(frame.outlineId);
+            if (outline == null) {
+                return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
             }
+
+            String relLogFileName = MocaLanguageServer.globalStoragePath + "\\trace\\"
+                    + (mocaTraceOutliningResult.traceFileName + "_" + frame.outlineId) + ".log";
+            File relLogFile = new File(relLogFileName);
+            URI relLogFileUri = relLogFile.toURI();
+
+            // Only write file if we havent already.
+            if (!outline.hasWrittenRelative) {
+
+                BufferedWriter writer = new BufferedWriter(new FileWriter(relLogFile));
+
+                for (String line : outline.relativeTraceLines) {
+                    writer.append(line + "\n");
+                }
+
+                writer.close();
+
+                outline.hasWrittenRelative = true;
+            }
+
+            // -1 since lsp position line nums start at 0 and stack frame relative line nums
+            // start at 1!
+            Position relStartPos = new Position(frame.relativeLineNum - 1, 0);
+            Position relEndPos = new Position(frame.relativeLineNum, 0);
+            Location relLocation = new Location(relLogFileUri.toString(), new Range(relStartPos, relEndPos));
+            locations.add(relLocation);
+
+            // Absolute:
+            String absLogFileName = MocaLanguageServer.globalStoragePath + "\\trace\\"
+                    + (mocaTraceOutliningResult.traceFileName) + ".log";
+            File absLogFile = new File(absLogFileName);
+            URI absLogFileUri = absLogFile.toURI();
+
+            // Only write file if we havent already.
+            if (!mocaTraceOutliningResult.hasWrittenAbsolute) {
+
+                BufferedWriter writer = new BufferedWriter(new FileWriter(absLogFile));
+
+                for (String line : mocaTraceOutliningResult.absoluteTraceLines) {
+                    writer.append(line + "\n");
+                }
+
+                writer.close();
+
+                mocaTraceOutliningResult.hasWrittenAbsolute = true;
+            }
+
+            // -1 since lsp position line nums start at 0 and stack frame absolute line nums
+            // start at 1!
+            Position absStartPos = new Position(frame.absoluteLineNum - 1, 0);
+            Position absEndPos = new Position(frame.absoluteLineNum, 0);
+            Location absLocation = new Location(absLogFileUri.toString(), new Range(absStartPos, absEndPos));
+            locations.add(absLocation);
 
         } catch (IOException ioException) {
             return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
