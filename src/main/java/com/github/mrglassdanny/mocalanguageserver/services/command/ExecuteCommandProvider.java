@@ -197,7 +197,7 @@ public class ExecuteCommandProvider {
                         if (MocaServices.mocaConnection.needToApproveUnsafeScripts()) {
 
                             MocaCompilationResult mocaCompilationResult = MocaCompiler
-                                    .compileScript(mocaResultsRequest.script, mocaResultsRequest.fileName);
+                                    .compileScript(mocaResultsRequest.script);
 
                             if (mocaCompilationResult.isUnsafe()) {
                                 MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null, null, true);

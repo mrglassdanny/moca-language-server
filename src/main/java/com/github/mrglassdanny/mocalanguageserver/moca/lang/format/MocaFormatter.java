@@ -401,7 +401,7 @@ public class MocaFormatter {
     }
 
     public static String format(String script) {
-        return format(MocaCompiler.compileScript(script, ""));
+        return format(MocaCompiler.compileScript(script));
     }
 
     // This function will have the same formatting logic as ^. The only difference

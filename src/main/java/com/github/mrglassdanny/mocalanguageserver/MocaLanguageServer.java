@@ -163,6 +163,8 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
         // codeLensOptions.setResolveProvider(true);
         serverCapabilities.setCodeLensProvider(codeLensOptions);
 
+        serverCapabilities.setReferencesProvider(true);
+
         InitializeResult initializeResult = new InitializeResult(serverCapabilities);
         return CompletableFuture.completedFuture(initializeResult);
     }

@@ -86,6 +86,26 @@ public class MocaCompiler {
         return mocaCompilationResult;
     }
 
+    public static MocaCompilationResult compileScript(final String mocaScript) {
+        return compileScript(mocaScript, "");
+    }
+
+    public static MocaParseTreeListener generateMocaParseTreeListener(final String mocaScript) {
+
+        MocaParser mocaParser = new MocaParser(
+                new CommonTokenStream(new MocaLexer(CharStreams.fromString(mocaScript))));
+        MocaSyntaxErrorListener mocaSyntaxErrorListener = new MocaSyntaxErrorListener();
+        mocaParser.addErrorListener(mocaSyntaxErrorListener);
+        // Since we do not want errors printing to the console, remove this
+        // ConsoleErrorListener.
+        mocaParser.removeErrorListener(ConsoleErrorListener.INSTANCE);
+        ParseTree parseTree = mocaParser.moca_script();
+        MocaParseTreeListener mocaParseTreeListener = new MocaParseTreeListener();
+        new ParseTreeWalker().walk(mocaParseTreeListener, parseTree);
+
+        return mocaParseTreeListener;
+    }
+
     public static MocaCompilationResult compileScriptChanges(final String mocaScript, final String uriStr,
             ArrayList<Integer> changedLineNumbers, MocaCompilationResult previousMocaCompilationResult) {
 
