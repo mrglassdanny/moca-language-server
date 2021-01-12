@@ -8,8 +8,8 @@ public class MocaResults {
     // 0 - name
     // 1 - type
     // 2 - length
-    private Object[][] metadata;
-    private Object[][] values;
+    public Object[][] metadata;
+    public Object[][] values;
 
     private int getColumnIndex(String columnName) {
         for (int columnIdx = 0; columnIdx < this.metadata.length; columnIdx++) {
