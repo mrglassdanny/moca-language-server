@@ -13,6 +13,7 @@ import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaCommand;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaTrigger;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompiler;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaParseTreeListener;
@@ -66,9 +67,10 @@ public class MocaCompilationServiceReferencesProvider {
 
                                 verbNounClause = entry.getKey();
 
+                                ArrayList<Location> locations = new ArrayList<>();
+
                                 // Loop through all moca commands in cache and check syntax for reference to
                                 // verb noun clause.
-                                ArrayList<Location> locations = new ArrayList<>();
                                 for (ArrayList<MocaCommand> mcmds : MocaServices.mocaCache.commands.values()) {
                                     for (MocaCommand mcmd : mcmds) {
                                         if (mcmd.type.compareToIgnoreCase(MocaCommand.TYPE_LOCAL_SYNTAX) == 0) {
@@ -129,6 +131,66 @@ public class MocaCompilationServiceReferencesProvider {
                                         }
                                     }
                                 }
+
+                                // Loop through all moca triggers in cache and check syntax for reference to
+                                // verb noun clause.
+                                for (ArrayList<MocaTrigger> mtrgs : MocaServices.mocaCache.triggers.values()) {
+                                    for (MocaTrigger mtrg : mtrgs) {
+                                        if (mtrg.syntax.contains(verbNounClause.toString())) {
+
+                                            // If mtrg syntax contains verb noun clause, we need to validate actual
+                                            // verb noun clause reference via moca parse tree listener.
+
+                                            MocaParseTreeListener mocaParseTreeListener = MocaCompiler
+                                                    .generateMocaParseTreeListener(mtrg.syntax);
+
+                                            for (Map.Entry<StringBuilder, ArrayList<org.antlr.v4.runtime.Token>> entry2 : mocaParseTreeListener.verbNounClauses
+                                                    .entrySet()) {
+
+                                                if (entry2.getKey().toString()
+                                                        .compareToIgnoreCase(verbNounClause.toString()) == 0) {
+
+                                                    // Actual reference found -- create file and add location to
+                                                    // list.
+
+                                                    try {
+                                                        String mtrgFileName = MocaLanguageServer.globalStoragePath
+                                                                + "\\references\\"
+                                                                + (mtrg.command + "-" + mtrg.name).replace(" ", "_")
+                                                                + ".moca.readonly";
+                                                        File mtrgFile = new File(mtrgFileName);
+                                                        URI mtrgFileUri = mtrgFile.toURI();
+                                                        BufferedWriter mtrgBufferedWriter = new BufferedWriter(
+                                                                new FileWriter(mtrgFile));
+                                                        mtrgBufferedWriter.write(mtrg.syntax);
+                                                        mtrgBufferedWriter.close();
+
+                                                        Token startToken = entry2.getValue().get(0);
+                                                        Token endToken = entry2.getValue()
+                                                                .get(entry2.getValue().size() - 1);
+
+                                                        Position startPos = new Position(startToken.getLine() - 1,
+                                                                startToken.getCharPositionInLine());
+
+                                                        Position endPos = new Position(endToken.getLine() - 1,
+                                                                endToken.getCharPositionInLine()
+                                                                        + endToken.getText().length());
+
+                                                        Location location = new Location(mtrgFileUri.toString(),
+                                                                new Range(startPos, endPos));
+
+                                                        locations.add(location);
+
+                                                    } catch (IOException ioException) {
+                                                        return CompletableFuture
+                                                                .completedFuture(Collections.emptyList());
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
                                 return CompletableFuture.completedFuture(locations);
                             }
                         }
