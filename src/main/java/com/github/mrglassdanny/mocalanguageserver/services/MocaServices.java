@@ -30,6 +30,7 @@ import com.github.mrglassdanny.mocalanguageserver.services.format.MocaCompilatio
 import com.github.mrglassdanny.mocalanguageserver.services.command.ExecuteCommandProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.hover.MocaCompilationServiceHoverProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.hover.MocaTraceOutlineServiceHoverProvider;
+import com.github.mrglassdanny.mocalanguageserver.services.reference.MocaCompilationServiceReferencesProvider;
 import com.github.mrglassdanny.mocalanguageserver.services.signature.MocaCompilationServiceSignatureHelpProvider;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.StringDifferenceUtils;
@@ -59,6 +60,7 @@ import org.eclipse.lsp4j.MessageParams;
 import org.eclipse.lsp4j.MessageType;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.ReferenceParams;
 import org.eclipse.lsp4j.SignatureHelp;
 import org.eclipse.lsp4j.SignatureHelpParams;
 import org.eclipse.lsp4j.TextDocumentContentChangeEvent;
@@ -623,6 +625,20 @@ public class MocaServices implements TextDocumentService, WorkspaceService, Lang
             default:
                 return CompletableFuture.completedFuture(Collections.emptyList());
         }
+    }
+
+    @Override
+    public CompletableFuture<List<? extends Location>> references(ReferenceParams params) {
+
+        String uriStr = params.getTextDocument().getUri();
+
+        switch (getMocaServiceType(uriStr)) {
+            case MocaTraceOutline:
+                return CompletableFuture.completedFuture(Collections.emptyList());
+            default:
+                return MocaCompilationServiceReferencesProvider.provideReferences(params.getPosition());
+        }
+
     }
 
     public static void logToLanguageClient(String msg) {
