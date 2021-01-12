@@ -1,7 +1,8 @@
 # Changelog
 https://semver.org/
 
-## 1.8.19 (January ??, 2020)
+## 1.8.19 (January ??, 2021)
+* Execute to CSV feature
 * MOCA command references feature
 
 ## 1.7.19 (December 23, 2020)

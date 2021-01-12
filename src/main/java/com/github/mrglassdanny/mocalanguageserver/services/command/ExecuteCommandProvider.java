@@ -2,10 +2,8 @@ package com.github.mrglassdanny.mocalanguageserver.services.command;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
+import java.io.FileWriter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +11,7 @@ import java.util.concurrent.CompletableFuture;
 
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
+import com.github.mrglassdanny.mocalanguageserver.services.command.request.MocaCSVResultsRequest;
 import com.github.mrglassdanny.mocalanguageserver.services.command.request.MocaCommandLookupRequest;
 import com.github.mrglassdanny.mocalanguageserver.services.command.request.MocaConnectionRequest;
 import com.github.mrglassdanny.mocalanguageserver.services.command.request.MocaLanguageServerActivateRequest;
@@ -21,6 +20,7 @@ import com.github.mrglassdanny.mocalanguageserver.services.command.request.MocaR
 import com.github.mrglassdanny.mocalanguageserver.services.command.request.MocaTraceRequest;
 import com.github.mrglassdanny.mocalanguageserver.services.command.request.OpenMocaTraceOutlineRequest;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.LoadCacheResponse;
+import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaCSVResultsResponse;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaCommandLookupResponse;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaConnectionResponse;
 import com.github.mrglassdanny.mocalanguageserver.services.command.response.MocaLanguageServerActivateResponse;
@@ -36,11 +36,8 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompile
 import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutliningResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutliner;
 import com.github.mrglassdanny.mocalanguageserver.moca.trace.exceptions.InvalidMocaTraceFileException;
+import com.opencsv.CSVWriter;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.eclipse.lsp4j.ExecuteCommandParams;
 
 public class ExecuteCommandProvider {
@@ -51,7 +48,7 @@ public class ExecuteCommandProvider {
     public static final String CONNECT = "mocalanguageserver.connect";
     public static final String LOAD_CACHE = "mocalanguageserver.loadCache";
     public static final String EXECUTE = "mocalanguageserver.execute";
-    public static final String EXECUTE_TO_EXCEL = "mocalanguageserver.executeToExcel";
+    public static final String EXECUTE_TO_CSV = "mocalanguageserver.executeToCSV";
     public static final String TRACE = "mocalanguageserver.trace";
     public static final String COMMAND_LOOKUP = "mocalanguageserver.commandLookup";
     public static final String SET_LANGUAGE_SERVER_OPTIONS = "mocalanguageserver.setLanguageServerOptions";
@@ -63,7 +60,7 @@ public class ExecuteCommandProvider {
         mocaLanguageServerCommands.add(CONNECT);
         mocaLanguageServerCommands.add(LOAD_CACHE);
         mocaLanguageServerCommands.add(EXECUTE);
-        mocaLanguageServerCommands.add(EXECUTE_TO_EXCEL);
+        mocaLanguageServerCommands.add(EXECUTE_TO_CSV);
         mocaLanguageServerCommands.add(TRACE);
         mocaLanguageServerCommands.add(COMMAND_LOOKUP);
         mocaLanguageServerCommands.add(SET_LANGUAGE_SERVER_OPTIONS);
@@ -292,12 +289,12 @@ public class ExecuteCommandProvider {
                     MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null, exception, false);
                     return CompletableFuture.completedFuture(mocaResultsResponse);
                 }
-            case EXECUTE_TO_EXCEL:
+            case EXECUTE_TO_CSV:
 
                 if (!MocaServices.mocaConnection.isValid()) {
-                    MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null,
+                    MocaCSVResultsResponse mocaCSVResultsResponse = new MocaCSVResultsResponse(
                             new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER), false);
-                    return CompletableFuture.completedFuture(mocaResultsResponse);
+                    return CompletableFuture.completedFuture(mocaCSVResultsResponse);
                 }
 
                 try {
@@ -306,20 +303,20 @@ public class ExecuteCommandProvider {
                         return CompletableFuture.completedFuture(new Object());
                     }
 
-                    MocaResultsRequest mocaResultsRequest = new MocaResultsRequest(args);
+                    MocaCSVResultsRequest mocaCSVResultsRequest = new MocaCSVResultsRequest(args);
 
                     // If not approved for execution, check unsafe config for connection.
-                    if (!mocaResultsRequest.isApprovedForExecution) {
+                    if (!mocaCSVResultsRequest.isApprovedForExecution) {
                         // If approval of unsafe scripts for connection is configured, check if script
                         // is unsafe.
                         if (MocaServices.mocaConnection.needToApproveUnsafeScripts()) {
 
                             MocaCompilationResult mocaCompilationResult = MocaCompiler
-                                    .compileScript(mocaResultsRequest.script);
+                                    .compileScript(mocaCSVResultsRequest.script);
 
                             if (mocaCompilationResult.isUnsafe()) {
-                                MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null, null, true);
-                                return CompletableFuture.completedFuture(mocaResultsResponse);
+                                MocaCSVResultsResponse mocaCSVResultsResponse = new MocaCSVResultsResponse(null, true);
+                                return CompletableFuture.completedFuture(mocaCSVResultsResponse);
                             }
                         }
                     }
@@ -327,23 +324,22 @@ public class ExecuteCommandProvider {
                     // Adding elapsed time console logging.
                     long start = System.currentTimeMillis();
 
-                    MocaResultsResponse mocaResultsResponse = new MocaResultsResponse();
+                    MocaCSVResultsResponse mocaCSVResultsResponse = new MocaCSVResultsResponse();
+                    MocaResults mocaResults = null;
                     try {
-                        mocaResultsResponse.results = MocaServices.mocaConnection
-                                .executeCommand(mocaResultsRequest.script);
-                        mocaResultsResponse.exception = null;
-                        mocaResultsResponse.needsApprovalToExecute = false;
+                        mocaResults = MocaServices.mocaConnection.executeCommand(mocaCSVResultsRequest.script);
+                        mocaCSVResultsResponse.exception = null;
+                        mocaCSVResultsResponse.needsApprovalToExecute = false;
                     } catch (Exception e) {
-                        mocaResultsResponse.results = null;
-                        mocaResultsResponse.exception = e;
-                        mocaResultsResponse.needsApprovalToExecute = false;
+                        mocaCSVResultsResponse.exception = e;
+                        mocaCSVResultsResponse.needsApprovalToExecute = false;
                     }
 
                     // Check to see if our connection timed out. We will know whether or not this is
                     // the case based on the error message in the mocaResultsResponse.
-                    if (mocaResultsResponse.exception != null
-                            && mocaResultsResponse.exception instanceof MocaException) {
-                        MocaException resMocaException = (MocaException) mocaResultsResponse.exception;
+                    if (mocaCSVResultsResponse.exception != null
+                            && mocaCSVResultsResponse.exception instanceof MocaException) {
+                        MocaException resMocaException = (MocaException) mocaCSVResultsResponse.exception;
 
                         int curSts = resMocaException.getStatus();
                         if (curSts == 301 || curSts == 203 || curSts == 523) {
@@ -366,63 +362,25 @@ public class ExecuteCommandProvider {
                             // user. Otherwise, rerun the script. We should be able to reuse
                             // mocaResultsResponse initialized above in either case.
                             if (!reconnectResponse.eOk) {
-                                mocaResultsResponse.results = null;
-                                mocaResultsResponse.exception = reconnectResponse.exception;
+                                mocaCSVResultsResponse.exception = reconnectResponse.exception;
                             } else {
                                 try {
-                                    mocaResultsResponse.results = MocaServices.mocaConnection
-                                            .executeCommand(mocaResultsRequest.script);
-                                    mocaResultsResponse.exception = null;
+                                    mocaResults = MocaServices.mocaConnection
+                                            .executeCommand(mocaCSVResultsRequest.script);
+                                    mocaCSVResultsResponse.exception = null;
                                 } catch (Exception e) {
-                                    mocaResultsResponse.results = null;
-                                    mocaResultsResponse.exception = e;
+                                    mocaCSVResultsResponse.exception = e;
                                 }
                             }
                         }
                     }
 
-                    XSSFWorkbook workbook = new XSSFWorkbook();
-                    XSSFSheet sheet = workbook.createSheet(mocaResultsRequest.fileName);
-
-                    int rowNum = 0;
-
-                    {
-                        Row row = sheet.createRow(rowNum++);
-                        for (int i = 0; i < mocaResultsResponse.results.metadata.length; i++) {
-                            Cell cell = row.createCell(i);
-                            cell.setCellValue(mocaResultsResponse.results.metadata[i][0].toString());
-                        }
-                    }
-
-                    for (Object[] mocaRow : mocaResultsResponse.results.values) {
-                        Row row = sheet.createRow(rowNum++);
-                        int colNum = 0;
-                        for (int j = 0; j < mocaRow.length; j++) {
-                            Cell cell = row.createCell(colNum++);
-                            if (mocaRow[j] == null) {
-                                cell.setCellValue("");
-                            } else {
-                                if (mocaRow[j] instanceof Number) {
-                                    cell.setCellValue(((Number) mocaRow[j]).doubleValue());
-                                } else {
-                                    cell.setCellValue(String.valueOf(mocaRow[j]));
-                                }
-                            }
-                        }
-                    }
-
-                    try {
-                        FileOutputStream outputStream = new FileOutputStream(
-                                String.format("C:\\Users\\dglass\\OneDrive - Longbow Advantage\\Desktop\\%s.xlsx",
-                                        mocaResultsRequest.fileName));
-                        workbook.write(outputStream);
-                        // workbook.close();
-                    } catch (FileNotFoundException e) {
-                        mocaResultsResponse.results = null;
-                        mocaResultsResponse.exception = e;
-                    } catch (IOException e) {
-                        mocaResultsResponse.results = null;
-                        mocaResultsResponse.exception = e;
+                    // Only load csv if no exception.
+                    if (mocaCSVResultsResponse.exception == null) {
+                        CSVWriter writer = new CSVWriter(
+                                new FileWriter(new File(mocaCSVResultsRequest.fullFileName + ".csv")));
+                        writer.writeAll(mocaResults.toStringTable());
+                        writer.close();
                     }
 
                     // End will be a bit skewed if we had to reconnect due to timeout... but oh well
@@ -433,17 +391,17 @@ public class ExecuteCommandProvider {
                     double elapsedTime = ((double) (end - start) / 1000.0000);
 
                     int rowCount = 0;
-                    if (mocaResultsResponse.results != null) {
-                        rowCount = mocaResultsResponse.results.getRowCount();
+                    if (mocaResults != null) {
+                        rowCount = mocaResults.getRowCount();
                     }
 
                     MocaServices.logInfoToLanguageClient(String.format("%s: Returned %d rows in %.2f seconds",
-                            mocaResultsRequest.fileName, rowCount, elapsedTime));
+                            mocaCSVResultsRequest.fileName, rowCount, elapsedTime));
 
-                    return CompletableFuture.completedFuture(mocaResultsResponse);
+                    return CompletableFuture.completedFuture(mocaCSVResultsResponse);
                 } catch (Exception exception) {
-                    MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null, exception, false);
-                    return CompletableFuture.completedFuture(mocaResultsResponse);
+                    MocaCSVResultsResponse mocaCSVResultsResponse = new MocaCSVResultsResponse(exception, false);
+                    return CompletableFuture.completedFuture(mocaCSVResultsResponse);
                 }
 
             case TRACE:

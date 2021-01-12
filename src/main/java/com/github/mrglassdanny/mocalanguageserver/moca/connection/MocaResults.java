@@ -1,5 +1,7 @@
 package com.github.mrglassdanny.mocalanguageserver.moca.connection;
 
+import java.util.ArrayList;
+
 public class MocaResults {
 
     private static final int COLUMN_NOT_FOUND = -1;
@@ -8,8 +10,8 @@ public class MocaResults {
     // 0 - name
     // 1 - type
     // 2 - length
-    public Object[][] metadata;
-    public Object[][] values;
+    private Object[][] metadata;
+    private Object[][] values;
 
     private int getColumnIndex(String columnName) {
         for (int columnIdx = 0; columnIdx < this.metadata.length; columnIdx++) {
@@ -19,6 +21,33 @@ public class MocaResults {
         }
 
         return MocaResults.COLUMN_NOT_FOUND;
+    }
+
+    public ArrayList<String[]> toStringTable() {
+
+        ArrayList<String[]> data = new ArrayList<>(this.getRowCount());
+
+        String[] cols = new String[this.metadata.length];
+        for (int i = 0; i < this.metadata.length; i++) {
+            cols[i] = String.valueOf(this.metadata[i][0]);
+        }
+
+        data.add(cols);
+
+        for (int i = 0; i < this.values.length; i++) {
+            String[] row = new String[this.metadata.length];
+            for (int j = 0; j < this.values[i].length; j++) {
+                if (this.values[i][j] == null) {
+                    row[j] = "";
+                } else {
+                    row[j] = String.valueOf(this.values[i][j]);
+                }
+            }
+
+            data.add(row);
+        }
+
+        return data;
     }
 
     public int getRowCount() {

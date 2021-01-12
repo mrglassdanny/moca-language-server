@@ -51,7 +51,7 @@ Cross-platform Java based implementation of the [Language Server Protocol] for M
 - Initiated From Compiled Code
 
 #### Definition Lookup
-- .log Definition (relative to thread-session)
+- .log Definition
 
 #### Hover
 - Stack Level
