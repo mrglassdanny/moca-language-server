@@ -29,7 +29,8 @@ Cross-platform Java based implementation of the [Language Server Protocol] for M
 - [x] MOCA Connection
     - [ ] Direct (legacy)
     - [x] http/https
-        - [https SSLHandshakeException]
+        - [Fix https SSLHandshakeException demo]
+            - [https SSLHandshakeException StackOverflow thread]
 - [x] MOCA Script Execution
     - [x] Approve Unsafe Scripts
 - [x] MOCA Tracing
@@ -98,6 +99,7 @@ Please refer to the [contribution guide] for specifics.
 
 [Language Server Protocol]: https://langserver.org
 [vscode-moca-client]: https://github.com/mrglassdanny/vscode-moca-client
-[https SSLHandshakeException]: https://stackoverflow.com/questions/9619030/resolving-javax-net-ssl-sslhandshakeexception-sun-security-validator-validatore
+[Fix https SSLHandshakeException demo]: https://vimeo.com/500196466
+[https SSLHandshakeException StackOverflow thread]: https://stackoverflow.com/questions/9619030/resolving-javax-net-ssl-sslhandshakeexception-sun-security-validator-validatore
 [contribution guide]: https://github.com/mrglassdanny/moca-language-server/blob/master/CONTRIBUTE.md
 
