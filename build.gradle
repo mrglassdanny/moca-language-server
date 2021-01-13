@@ -10,7 +10,7 @@ repositories {
 }
 
 group 'com.github.mrglassdanny.mocalanguageserver'
-version '1.7.19'
+version '1.8.19'
 
 ext.mainClass = 'com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer'
 
@@ -22,6 +22,7 @@ dependencies {
     compile 'io.github.classgraph:classgraph:4.8.53'
     compile 'com.google.code.gson:gson:2.8.6'
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
+    compile 'com.opencsv:opencsv:4.1'
     antlr 'org.antlr:antlr4:4.8'
 }
 

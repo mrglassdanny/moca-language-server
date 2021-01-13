@@ -21,6 +21,7 @@ Cross-platform Java based implementation of the [Language Server Protocol] for M
 | **Formatting**            | on save, on paste, on type        | on save, on paste, on type                            |                                                   |
 | **Semantic Highlighting** | commands, streams(```;```)        | range(```[select..]```), tables/views                 | range(```[[..]]```)                               |
 | **Signature Help**        | functions                         |                                                       | methods/functions                                 |
+| **References**            | commands                          |                                                       |                                                   |
 
 
 ### Command Execution
@@ -50,7 +51,7 @@ Cross-platform Java based implementation of the [Language Server Protocol] for M
 - Initiated From Compiled Code
 
 #### Definition Lookup
-- .log Definition (relative to thread-session)
+- .log Definition
 
 #### Hover
 - Stack Level
