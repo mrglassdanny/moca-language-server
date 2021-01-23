@@ -3,9 +3,14 @@ package com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaCompilationResult;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.ast.MocaSqlSyntaxError;
+import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
+import com.github.mrglassdanny.mocalanguageserver.util.lsp.RangeUtils;
 
+import org.antlr.v4.runtime.Token;
 import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 
@@ -67,7 +72,6 @@ public class MocaSqlLanguageUtils {
     }
 
     public static Range syntaxExceptionToRange(MocaSqlSyntaxError err, Range scriptRange) {
-
         return new Range(createMocaPosition(err.line, err.charPositionInLine, scriptRange),
                 createMocaPosition(err.line, err.charPositionInLine, scriptRange));
     }
@@ -82,4 +86,35 @@ public class MocaSqlLanguageUtils {
 
     }
 
+    public static Token getMocaSqlTokenAtPosition(Position pos, MocaCompilationResult mocaCompilationResult) {
+        int posOffset = PositionUtils.getOffset(mocaCompilationResult.script, pos);
+
+        for (MocaSqlCompilationResult mocaSqlCompilationResult : mocaCompilationResult.mocaSqlCompilationResults
+                .values()) {
+
+            if (RangeUtils.contains(mocaSqlCompilationResult.range, pos)) {
+                for (int i = 0; i < mocaSqlCompilationResult.mocaSqlTokens.size(); i++) {
+                    Token mocasqlToken = mocaSqlCompilationResult.mocaSqlTokens.get(i);
+
+                    MocaServices.logInfoToLanguageClient(mocasqlToken.getText());
+
+                    // Have to manually calculate begin whitespace.
+                    int beginWhitespace = 0;
+                    if (i > 0) {
+                        beginWhitespace = MocaSqlTokenUtils.getAdjustedMocaSqlTokenStopIndex(
+                                mocaSqlCompilationResult.mocaSqlTokens.get(i - 1).getStopIndex());
+                    }
+
+                    if (beginWhitespace <= posOffset && MocaSqlTokenUtils
+                            .getAdjustedMocaSqlTokenStopIndex(mocasqlToken.getStopIndex()) >= posOffset) {
+                        MocaServices.logInfoToLanguageClient("FOUND: " + mocasqlToken.getText());
+                        return mocasqlToken;
+                    }
+                }
+            }
+
+        }
+
+        return null;
+    }
 }
