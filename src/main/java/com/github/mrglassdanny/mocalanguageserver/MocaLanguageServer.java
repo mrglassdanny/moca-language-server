@@ -76,10 +76,15 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
         documentOnTypeFormattingProvider.setFirstTriggerCharacter(".");
         List<String> additionalOnTypeFormattingTriggerChars = new ArrayList<>();
         {
+            additionalOnTypeFormattingTriggerChars.add(",");
             additionalOnTypeFormattingTriggerChars.add(";");
             additionalOnTypeFormattingTriggerChars.add("&");
             additionalOnTypeFormattingTriggerChars.add("(");
             additionalOnTypeFormattingTriggerChars.add(")");
+            additionalOnTypeFormattingTriggerChars.add("{");
+            additionalOnTypeFormattingTriggerChars.add("}");
+            additionalOnTypeFormattingTriggerChars.add("[");
+            additionalOnTypeFormattingTriggerChars.add("]");
             additionalOnTypeFormattingTriggerChars.add("a");
             additionalOnTypeFormattingTriggerChars.add("b");
             additionalOnTypeFormattingTriggerChars.add("c");
