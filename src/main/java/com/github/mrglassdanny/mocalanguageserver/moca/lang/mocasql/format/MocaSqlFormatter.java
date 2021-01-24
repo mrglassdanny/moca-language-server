@@ -119,7 +119,7 @@ public class MocaSqlFormatter {
         }
     }
 
-    public static boolean tokenPromptsFormat(Token token) {
+    public static boolean tokenHasFormatAction(Token token) {
 
         if (token == null) {
             return false;
