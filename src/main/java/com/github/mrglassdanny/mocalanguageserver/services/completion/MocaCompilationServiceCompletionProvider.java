@@ -541,6 +541,7 @@ public class MocaCompilationServiceCompletionProvider {
                         for (TableIndex indexForTableAlias : indexesForTableAlias) {
 
                             ArrayList<String> matchedColumnNames = new ArrayList<>();
+
                             for (String columnName : index.columnNames) {
                                 for (String columnNameForTableTokenIndex : indexForTableAlias.columnNames) {
 
@@ -551,11 +552,17 @@ public class MocaCompilationServiceCompletionProvider {
                                 }
                             }
 
-                            // Now add matched column names and indexe info to completion items.
-                            if (!matchedColumnNames.isEmpty()) {
-                                CompletionItem item = new CompletionItem(
-                                        String.format("%s -> %s", index.index_name, indexForTableAlias.index_name));
-                                String documentationStr = String.format("join **%s** on **%s**\n\n",
+                            // Now add completion item.
+                            // NOTE: only want to add completion item for indexes if at least one of the
+                            // indexes is fully represented -- meaning that all the columns for at least one
+                            // of the indexes must have matched the other index's columns. Otherwise, it is
+                            // not worth adding a completion item since neither of the indexes would be
+                            // complete.
+                            if (matchedColumnNames.size() == index.columnNames.length
+                                    || matchedColumnNames.size() == indexForTableAlias.columnNames.length) {
+                                CompletionItem item = new CompletionItem(String.format("%s = %s.%s", index.index_name,
+                                        otherTableAliasName, indexForTableAlias.index_name));
+                                String documentationStr = String.format("join **%s** to **%s**\n\n",
                                         completionItemTableName, otherTableAliasName);
                                 for (String columnName : matchedColumnNames) {
                                     documentationStr += String.format("* %s\n", columnName);
@@ -611,6 +618,7 @@ public class MocaCompilationServiceCompletionProvider {
                             for (TableIndex indexForTableToken : indexesForTableToken) {
 
                                 ArrayList<String> matchedColumnNames = new ArrayList<>();
+
                                 for (String columnName : index.columnNames) {
                                     for (String columnNameForTableTokenIndex : indexForTableToken.columnNames) {
                                         if (columnName.compareTo(columnNameForTableTokenIndex) == 0) {
@@ -620,11 +628,17 @@ public class MocaCompilationServiceCompletionProvider {
                                     }
                                 }
 
-                                // Now add matched column names and indexe info to completion items.
-                                if (!matchedColumnNames.isEmpty()) {
-                                    CompletionItem item = new CompletionItem(
-                                            String.format("%s -> %s", index.index_name, indexForTableToken.index_name));
-                                    String documentationStr = String.format("join **%s** on **%s**\n\n",
+                                // Now add completion item.
+                                // NOTE: only want to add completion item for indexes if at least one of the
+                                // indexes is fully represented -- meaning that all the columns for at least one
+                                // of the indexes must have matched the other index's columns. Otherwise, it is
+                                // not worth adding a completion item since neither of the indexes would be
+                                // complete.
+                                if (matchedColumnNames.size() == index.columnNames.length
+                                        || matchedColumnNames.size() == indexForTableToken.columnNames.length) {
+                                    CompletionItem item = new CompletionItem(String.format("%s = %s.%s",
+                                            index.index_name, tableTokenText, indexForTableToken.index_name));
+                                    String documentationStr = String.format("join **%s** to **%s**\n\n",
                                             completionItemTableName, tableTokenText);
                                     for (String columnName : matchedColumnNames) {
                                         documentationStr += String.format("* %s\n", columnName);
@@ -669,15 +683,16 @@ public class MocaCompilationServiceCompletionProvider {
         // Add an 'all columns' completion item, which will insert all the columns in
         // the table.
         CompletionItem allColItem = new CompletionItem("_all_columns");
-        allColItem.setDocumentation("Fill in all column names comma delimited.");
+        allColItem.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN,
+                String.format("insert all **%s** columns", (aliasName == null ? tableName : aliasName))));
         allColItem.setKind(CompletionItemKind.Constant);
         String insertText = "";
         String colPrefix = (aliasName != null && !aliasName.isEmpty() ? aliasName : tableName) + ".";
         for (TableColumn col : cols) {
             insertText += colPrefix + col.column_name + ", ";
         }
-        // Remove last 2 characters(", "):
-        insertText = insertText.substring(0, insertText.length() - 2);
+        // Remove last ", ":
+        insertText = insertText.substring(0, insertText.length() - ", ".length());
         // If we need to exclude col prefix via boolean passed in, do so now.
         if (excludeColPrefixForFirstForAllCols) {
             insertText = insertText.substring(colPrefix.length(), insertText.length());
