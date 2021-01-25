@@ -86,10 +86,9 @@ public class MocaConnection {
         String mocaRequest = MocaConnection.generateMocaRequestXmlString(true, this.sessionId,
                 this.environmentVariablesXmlStr, command);
 
-        // We will keep connect timeout at default 10 secs and read timeout/write
-        // timeout at 3 mins.
-        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(180, TimeUnit.SECONDS).writeTimeout(180, TimeUnit.SECONDS).build();
+        // We will set connect timeout to 1 min and read/write timeout to 10 mins.
+        OkHttpClient client = new OkHttpClient.Builder().connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(600, TimeUnit.SECONDS).writeTimeout(600, TimeUnit.SECONDS).build();
 
         MediaType mediaType = MediaType.parse("application/moca-xml");
         RequestBody body = RequestBody.create(mediaType, mocaRequest);
