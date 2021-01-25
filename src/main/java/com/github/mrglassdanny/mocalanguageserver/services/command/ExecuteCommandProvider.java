@@ -168,6 +168,13 @@ public class ExecuteCommandProvider {
                 });
 
                 CompletableFuture.runAsync(() -> {
+                    MocaServices.mocaCache.mocaSqlCache.loadIndexes();
+                    if (MocaServices.mocaCache.mocaSqlCache.indexes.isEmpty()) {
+                        MocaServices.mocaCache.mocaSqlCache.loadIndexes();
+                    }
+                });
+
+                CompletableFuture.runAsync(() -> {
                     MocaServices.mocaCache.mocaSqlCache.loadColumns();
                     if (MocaServices.mocaCache.mocaSqlCache.columns.isEmpty()) {
                         MocaServices.mocaCache.mocaSqlCache.loadColumns();

@@ -1,6 +1,9 @@
 # Changelog
 https://semver.org/
 
+## 1.9.19 (January ??, 2021)
+* SQL index completion feature -- https://github.com/mrglassdanny/moca-language-server/issues/62
+
 ## 1.8.19 (January 12, 2021)
 * Execute to CSV feature
 * MOCA command references feature

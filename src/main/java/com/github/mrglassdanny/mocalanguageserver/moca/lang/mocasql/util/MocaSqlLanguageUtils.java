@@ -92,17 +92,17 @@ public class MocaSqlLanguageUtils {
 
             if (RangeUtils.contains(mocaSqlCompilationResult.range, pos)) {
                 for (int i = 0; i < mocaSqlCompilationResult.mocaSqlTokens.size(); i++) {
-                    Token mocasqlToken = mocaSqlCompilationResult.mocaSqlTokens.get(i);
+                    Token mocaSqlToken = mocaSqlCompilationResult.mocaSqlTokens.get(i);
 
                     // Need to translate mocasqlToken positions into MOCA positions before we test
                     // whether or not this is our token.
-                    Position adjMocasqlBeginTokenPos = createMocaPosition(mocasqlToken.getLine(),
-                            mocasqlToken.getCharPositionInLine(), mocaSqlCompilationResult.range);
+                    Position adjMocasqlBeginTokenPos = createMocaPosition(mocaSqlToken.getLine(),
+                            mocaSqlToken.getCharPositionInLine(), mocaSqlCompilationResult.range);
                     Position adjMocasqlEndTokenPos = new Position(adjMocasqlBeginTokenPos.getLine(),
-                            adjMocasqlBeginTokenPos.getCharacter() + mocasqlToken.getText().length());
+                            adjMocasqlBeginTokenPos.getCharacter() + mocaSqlToken.getText().length());
 
                     if (RangeUtils.contains(new Range(adjMocasqlBeginTokenPos, adjMocasqlEndTokenPos), pos)) {
-                        return mocasqlToken;
+                        return mocaSqlToken;
                     }
                 }
             }

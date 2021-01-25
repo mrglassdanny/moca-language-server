@@ -148,7 +148,7 @@ public class MocaFormatter {
         int parenCounter = 0;
         Token token, prevToken = null, nextToken = null;
 
-        int mocasqlCompilationResultsVisited = 0;
+        int mocaSqlCompilationResultsVisited = 0;
         // Commenting out for now -- int groovyCompilationResultsVisited = 0;
 
         // Code is pretty self-explanatory -- just look at each condition for specifics.
@@ -190,7 +190,7 @@ public class MocaFormatter {
                         // Make sure moca language server options allow us to format.
                         if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlFormattingEnabled) {
                             MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompilationResult.mocaSqlCompilationResults
-                                    .get(mocasqlCompilationResultsVisited);
+                                    .get(mocaSqlCompilationResultsVisited);
 
                             // Go ahead and just make sure mocasql compilation result is not null. Should
                             // not be null, but we just want to be safe!
@@ -214,7 +214,7 @@ public class MocaFormatter {
                         }
 
                         // Increment mocasql compilation result visit count.
-                        mocasqlCompilationResultsVisited++;
+                        mocaSqlCompilationResultsVisited++;
 
                     } else {
                         buf.append(tokenText);
@@ -488,7 +488,7 @@ public class MocaFormatter {
         int parenCounter = 0;
         Token token, prevToken = null, nextToken = null;
 
-        int mocasqlCompilationResultsVisited = 0;
+        int mocaSqlCompilationResultsVisited = 0;
         // Commenting out for now -- int groovyCompilationResultsVisited = 0;
 
         // Code is pretty self-explanatory -- just look at each condition for specifics.
@@ -530,7 +530,7 @@ public class MocaFormatter {
                         // Make sure moca language server options allow us to format.
                         if (MocaLanguageServer.mocaLanguageServerOptions.mocasqlFormattingEnabled) {
                             MocaSqlCompilationResult mocaSqlCompilationResult = mocaCompilationResult.mocaSqlCompilationResults
-                                    .get(mocasqlCompilationResultsVisited);
+                                    .get(mocaSqlCompilationResultsVisited);
 
                             // Go ahead and just make sure mocasql compilation result is not null. Should
                             // not be null, but we just want to be safe!
@@ -560,7 +560,7 @@ public class MocaFormatter {
                         }
 
                         // Increment mocasql compilation result visit count.
-                        mocasqlCompilationResultsVisited++;
+                        mocaSqlCompilationResultsVisited++;
 
                     } else {
                         buf.append(tokenText);

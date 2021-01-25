@@ -17,6 +17,7 @@ public class MocaSqlCache {
                         + "       and description = nvl(@description, @table_name)\n"
                         + "       and table_comment = ''\n" + "}";
         private static final String VIEWS_SCRIPT = "list user views";
+        private static final String INDEXES_SCRIPT = "list user tables | list table indexes where table_name = @table_name catch(-1403)";
         private static final String COLUMNS_SCRIPT = "if (dbtype = 'ORACLE')\n" + "{\n"
                         + "    [select col.table_name,\n" + "            col.column_id,\n"
                         + "            col.column_name,\n" + "            col.data_type,\n"
@@ -46,12 +47,14 @@ public class MocaSqlCache {
 
         public HashMap<String, Table> tables;
         public HashMap<String, Table> views;
+        public HashMap<String, ArrayList<TableIndex>> indexes;
         public HashMap<String, ArrayList<TableColumn>> columns;
         public HashMap<String, MocaSqlFunction> functions;
 
         public MocaSqlCache() {
                 this.tables = new HashMap<>();
                 this.views = new HashMap<>();
+                this.indexes = new HashMap<>();
                 this.columns = new HashMap<>();
                 this.functions = new HashMap<>();
 
@@ -182,6 +185,34 @@ public class MocaSqlCache {
 
         }
 
+        public void loadIndexes() {
+
+                try {
+                        MocaResults res = MocaServices.mocaConnection.executeCommand(MocaSqlCache.INDEXES_SCRIPT);
+                        this.indexes.clear();
+
+                        if (res != null) {
+                                for (int rowIdx = 0; rowIdx < res.getRowCount(); rowIdx++) {
+                                        String tableName = res.getString(rowIdx, "table_name").toLowerCase();
+                                        String indexName = res.getString(rowIdx, "index_name");
+                                        String indexKeys = res.getString(rowIdx, "index_keys");
+
+                                        if (this.indexes.containsKey(tableName)) {
+                                                this.indexes.get(tableName)
+                                                                .add(new TableIndex(tableName, indexName, indexKeys));
+                                        } else {
+                                                ArrayList<TableIndex> indexesArrList = new ArrayList<>();
+                                                indexesArrList.add(new TableIndex(tableName, indexName, indexKeys));
+                                                this.indexes.put(tableName, indexesArrList);
+                                        }
+                                }
+                        }
+                } catch (Exception e) {
+                        MocaServices.logWarningToLanguageClient(
+                                        String.format("MOCA Cache: Failed to load indexes: %s", e.getMessage()));
+                }
+        }
+
         public void loadColumns() {
 
                 try {
@@ -244,6 +275,10 @@ public class MocaSqlCache {
                                         String.format("MOCA Cache: Failed to load columns: %s", e.getMessage()));
                 }
 
+        }
+
+        public ArrayList<TableIndex> getIndexesForTable(String tableName) {
+                return this.indexes.get(tableName);
         }
 
         public ArrayList<TableColumn> getColumnsForTable(String tableName) {
