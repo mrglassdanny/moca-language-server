@@ -488,6 +488,33 @@ public class MocaCompilationServiceCompletionProvider {
 
         String completionItemTableName = (tableAliasName == null ? tableName : tableAliasName);
 
+        // First we will create WHERE completion items.
+        for (TableIndex index : indexes) {
+
+            CompletionItem item = new CompletionItem(String.format("%s", index.index_name));
+            String documentationStr = String.format("index **%s**\n\n", index.index_name);
+            for (String columnName : index.columnNames) {
+                documentationStr += String.format("* %s\n", columnName);
+            }
+            item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, documentationStr));
+            item.setKind(CompletionItemKind.Constant);
+            String insertText = "";
+            for (String columnName : index.columnNames) {
+                insertText += String.format("%s.%s = '' and ", completionItemTableName, columnName);
+            }
+
+            // Remove first "table." since user already typed it.
+            insertText = insertText.substring((completionItemTableName.length() + 1), insertText.length());
+
+            // Remove last " and ".
+            insertText = insertText.substring(0, insertText.length() - " and ".length());
+
+            item.setInsertText(insertText);
+            items.add(item);
+        }
+
+        // Now let's create JOIN completion items.
+
         // Since table aliases and table tokens are stored separately, it
         // is possible that a table's index info gets added twice.
         // Therefore, we will use this list, `visitedTableNames`, to keep track of the
@@ -526,17 +553,15 @@ public class MocaCompilationServiceCompletionProvider {
 
                             // Now add matched column names and indexe info to completion items.
                             if (!matchedColumnNames.isEmpty()) {
-                                CompletionItem item = new CompletionItem(String.format("%s: %s -> %s: %s",
-                                        otherTableAliasName, indexForTableAlias.index_name, completionItemTableName,
-                                        index.index_name));
-                                String documentationStr = String.format("Join **%s**(%s) on **%s**(%s)\n\n",
-                                        completionItemTableName, index.index_name, otherTableAliasName,
-                                        indexForTableAlias.index_name);
+                                CompletionItem item = new CompletionItem(
+                                        String.format("%s -> %s", index.index_name, indexForTableAlias.index_name));
+                                String documentationStr = String.format("join **%s** on **%s**\n\n",
+                                        completionItemTableName, otherTableAliasName);
                                 for (String columnName : matchedColumnNames) {
                                     documentationStr += String.format("* %s\n", columnName);
                                 }
                                 item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, documentationStr));
-                                item.setKind(CompletionItemKind.Unit);
+                                item.setKind(CompletionItemKind.Enum);
                                 String insertText = "";
                                 for (String columnName : matchedColumnNames) {
                                     insertText += String.format("%s.%s = %s.%s and ", completionItemTableName,
@@ -597,17 +622,15 @@ public class MocaCompilationServiceCompletionProvider {
 
                                 // Now add matched column names and indexe info to completion items.
                                 if (!matchedColumnNames.isEmpty()) {
-                                    CompletionItem item = new CompletionItem(String.format("%s: %s -> %s: %s",
-                                            tableTokenText, indexForTableToken.index_name, completionItemTableName,
-                                            index.index_name));
-                                    String documentationStr = String.format("Join **%s**(%s) on **%s**(%s)\n\n",
-                                            completionItemTableName, index.index_name, tableTokenText,
-                                            indexForTableToken.index_name);
+                                    CompletionItem item = new CompletionItem(
+                                            String.format("%s -> %s", index.index_name, indexForTableToken.index_name));
+                                    String documentationStr = String.format("join **%s** on **%s**\n\n",
+                                            completionItemTableName, tableTokenText);
                                     for (String columnName : matchedColumnNames) {
                                         documentationStr += String.format("* %s\n", columnName);
                                     }
                                     item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, documentationStr));
-                                    item.setKind(CompletionItemKind.Unit);
+                                    item.setKind(CompletionItemKind.Enum);
                                     String insertText = "";
                                     for (String columnName : matchedColumnNames) {
                                         insertText += String.format("%s.%s = %s.%s and ", completionItemTableName,
@@ -631,6 +654,7 @@ public class MocaCompilationServiceCompletionProvider {
             }
 
         }
+
     }
 
     private static void populateMocaSqlColumnsFromTableName(String tableName, String aliasName,
@@ -646,7 +670,7 @@ public class MocaCompilationServiceCompletionProvider {
         // the table.
         CompletionItem allColItem = new CompletionItem("_all_columns");
         allColItem.setDocumentation("Fill in all column names comma delimited.");
-        allColItem.setKind(CompletionItemKind.Unit);
+        allColItem.setKind(CompletionItemKind.Constant);
         String insertText = "";
         String colPrefix = (aliasName != null && !aliasName.isEmpty() ? aliasName : tableName) + ".";
         for (TableColumn col : cols) {
