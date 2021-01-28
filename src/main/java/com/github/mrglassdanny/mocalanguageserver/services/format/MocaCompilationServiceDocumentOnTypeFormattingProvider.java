@@ -37,6 +37,12 @@ public class MocaCompilationServiceDocumentOnTypeFormattingProvider {
                 String formattedMocaScript = MocaFormatter.formatChange(MocaServices.mocaCompilationResult,
                                 changePosition);
 
+                // If old script equals new script, then nothing got formatted and we can just
+                // return an empty list.
+                if (MocaServices.mocaCompilationResult.script.equals(formattedMocaScript)) {
+                        return edits;
+                }
+
                 // Add to text doc edits and return!
                 edits.add(new TextEdit(
                                 new Range(new Position(0, 0),

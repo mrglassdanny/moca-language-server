@@ -17,6 +17,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.cache.MocaFunction;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.MocaSqlFunction;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.Table;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
+import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableIndex;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.SubqueryContext;
@@ -215,15 +216,24 @@ public class MocaCompilationServiceCompletionProvider {
                             // subquery.
                             populateMocaSqlColumnsFromTableName(lowerCaseWord, null, true, items);
 
+                            // Try table indexes as well.
+                            populateMocaSqlIndexesFromTableName(lowerCaseWord, null,
+                                    mocaSqlCompilationResult.mocaSqlParseTreeListener, items);
+
                             if (items.isEmpty()) { // Empty - must be alias or subquery.
 
                                 // Checking if table is aliased.
                                 if (mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames
                                         .containsKey(lowerCaseWord)) {
-                                    populateMocaSqlColumnsFromTableName(
-                                            mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames
-                                                    .get(lowerCaseWord),
-                                            lowerCaseWord, true, items);
+
+                                    String aliasedTableName = mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames
+                                            .get(lowerCaseWord);
+
+                                    populateMocaSqlColumnsFromTableName(aliasedTableName, lowerCaseWord, true, items);
+
+                                    // Try table indexes for alias as well.
+                                    populateMocaSqlIndexesFromTableName(aliasedTableName, lowerCaseWord,
+                                            mocaSqlCompilationResult.mocaSqlParseTreeListener, items);
                                 } else {
                                     // Must be a subquery.
                                     // See if match in map.
@@ -466,6 +476,201 @@ public class MocaCompilationServiceCompletionProvider {
         }
     }
 
+    private static void populateMocaSqlIndexesFromTableName(String tableName, String tableAliasName,
+            MocaSqlParseTreeListener mocaSqlParseTreeListener, List<CompletionItem> items) {
+
+        ArrayList<TableIndex> indexes = MocaServices.mocaCache.mocaSqlCache.getIndexesForTable(tableName);
+
+        // Could be null.
+        if (indexes == null) {
+            return;
+        }
+
+        String completionItemTableName = (tableAliasName == null ? tableName : tableAliasName);
+
+        // First we will create WHERE completion items.
+        for (TableIndex index : indexes) {
+
+            CompletionItem item = new CompletionItem(String.format("%s", index.index_name));
+            String documentationStr = String.format("index **%s**\n\n", index.index_name);
+            for (String columnName : index.columnNames) {
+                documentationStr += String.format("* %s\n", columnName);
+            }
+            item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, documentationStr));
+            item.setKind(CompletionItemKind.Constant);
+            String insertText = "";
+            for (String columnName : index.columnNames) {
+                insertText += String.format("%s.%s = '' and ", completionItemTableName, columnName);
+            }
+
+            // Remove first "table." since user already typed it.
+            insertText = insertText.substring((completionItemTableName.length() + 1), insertText.length());
+
+            // Remove last " and ".
+            insertText = insertText.substring(0, insertText.length() - " and ".length());
+
+            item.setInsertText(insertText);
+            items.add(item);
+        }
+
+        // Now let's create JOIN completion items.
+
+        // Since table aliases and table tokens are stored separately, it
+        // is possible that a table's index info gets added twice.
+        // Therefore, we will use this list, `visitedTableNames`, to keep track of the
+        // table names that we come across so that we do not accidentally add
+        // duplicates.
+        ArrayList<String> visitedTableNames = new ArrayList<>();
+
+        // Go through aliases first.
+        for (Map.Entry<String, String> entry : mocaSqlParseTreeListener.tableAliasNames.entrySet()) {
+
+            String otherTableAliasName = entry.getKey();
+            String otherTableName = entry.getValue();
+            visitedTableNames.add(otherTableName);
+
+            // Make sure we are not looking at ourself.
+            if (otherTableAliasName.compareToIgnoreCase(completionItemTableName) != 0) {
+
+                ArrayList<TableIndex> indexesForTableAlias = MocaServices.mocaCache.mocaSqlCache
+                        .getIndexesForTable(otherTableName);
+
+                if (indexesForTableAlias != null) {
+
+                    for (TableIndex index : indexes) {
+                        for (TableIndex indexForTableAlias : indexesForTableAlias) {
+
+                            ArrayList<String> matchedColumnNames = new ArrayList<>();
+
+                            for (String columnName : index.columnNames) {
+                                for (String columnNameForTableTokenIndex : indexForTableAlias.columnNames) {
+
+                                    if (columnName.compareTo(columnNameForTableTokenIndex) == 0) {
+                                        matchedColumnNames.add(columnName);
+                                        break;
+                                    }
+                                }
+                            }
+
+                            // Now add completion item.
+                            // NOTE: only want to add completion item for indexes if at least one of the
+                            // indexes is fully represented -- meaning that all the columns for at least one
+                            // of the indexes must have matched the other index's columns. Otherwise, it is
+                            // not worth adding a completion item since neither of the indexes would be
+                            // complete.
+                            if (matchedColumnNames.size() == index.columnNames.length
+                                    || matchedColumnNames.size() == indexForTableAlias.columnNames.length) {
+                                CompletionItem item = new CompletionItem(String.format("%s = %s.%s", index.index_name,
+                                        otherTableAliasName, indexForTableAlias.index_name));
+                                String documentationStr = String.format("join **%s** to **%s**\n\n",
+                                        completionItemTableName, otherTableAliasName);
+                                for (String columnName : matchedColumnNames) {
+                                    documentationStr += String.format("* %s\n", columnName);
+                                }
+                                item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, documentationStr));
+                                item.setKind(CompletionItemKind.Enum);
+                                String insertText = "";
+                                for (String columnName : matchedColumnNames) {
+                                    insertText += String.format("%s.%s = %s.%s and ", completionItemTableName,
+                                            columnName, otherTableAliasName, columnName);
+                                }
+
+                                // Remove first "table." since user already typed it.
+                                insertText = insertText.substring((completionItemTableName.length() + 1),
+                                        insertText.length());
+
+                                // Remove last " and ".
+                                insertText = insertText.substring(0, insertText.length() - " and ".length());
+
+                                item.setInsertText(insertText);
+                                items.add(item);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Now table tokens.
+        for (org.antlr.v4.runtime.Token tableToken : mocaSqlParseTreeListener.tableTokens) {
+
+            String tableTokenText = tableToken.getText();
+
+            // Check if table name has been visited. If so, we need to delete the element
+            // and move onto the next table token. Deleting the element will ensure that we
+            // do not accidentally fail to visit a non-aliased table.
+            if (visitedTableNames.contains(tableTokenText)) {
+                visitedTableNames.remove(tableTokenText);
+            } else {
+
+                // Now add to visited.
+                visitedTableNames.add(tableTokenText);
+
+                // Make sure we are not looking at ourself.
+                if (tableTokenText.compareToIgnoreCase(tableName) != 0) {
+
+                    ArrayList<TableIndex> indexesForTableToken = MocaServices.mocaCache.mocaSqlCache
+                            .getIndexesForTable(tableTokenText);
+
+                    if (indexesForTableToken != null) {
+
+                        for (TableIndex index : indexes) {
+                            for (TableIndex indexForTableToken : indexesForTableToken) {
+
+                                ArrayList<String> matchedColumnNames = new ArrayList<>();
+
+                                for (String columnName : index.columnNames) {
+                                    for (String columnNameForTableTokenIndex : indexForTableToken.columnNames) {
+                                        if (columnName.compareTo(columnNameForTableTokenIndex) == 0) {
+                                            matchedColumnNames.add(columnName);
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                // Now add completion item.
+                                // NOTE: only want to add completion item for indexes if at least one of the
+                                // indexes is fully represented -- meaning that all the columns for at least one
+                                // of the indexes must have matched the other index's columns. Otherwise, it is
+                                // not worth adding a completion item since neither of the indexes would be
+                                // complete.
+                                if (matchedColumnNames.size() == index.columnNames.length
+                                        || matchedColumnNames.size() == indexForTableToken.columnNames.length) {
+                                    CompletionItem item = new CompletionItem(String.format("%s = %s.%s",
+                                            index.index_name, tableTokenText, indexForTableToken.index_name));
+                                    String documentationStr = String.format("join **%s** to **%s**\n\n",
+                                            completionItemTableName, tableTokenText);
+                                    for (String columnName : matchedColumnNames) {
+                                        documentationStr += String.format("* %s\n", columnName);
+                                    }
+                                    item.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN, documentationStr));
+                                    item.setKind(CompletionItemKind.Enum);
+                                    String insertText = "";
+                                    for (String columnName : matchedColumnNames) {
+                                        insertText += String.format("%s.%s = %s.%s and ", completionItemTableName,
+                                                columnName, tableTokenText, columnName);
+                                    }
+
+                                    // Remove first "table." since user already typed it.
+                                    insertText = insertText.substring((completionItemTableName.length() + 1),
+                                            insertText.length());
+
+                                    // Remove last " and ".
+                                    insertText = insertText.substring(0, insertText.length() - " and ".length());
+
+                                    item.setInsertText(insertText);
+                                    items.add(item);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+    }
+
     private static void populateMocaSqlColumnsFromTableName(String tableName, String aliasName,
             boolean excludeColPrefixForFirstForAllCols, List<CompletionItem> items) {
         ArrayList<TableColumn> cols = MocaServices.mocaCache.mocaSqlCache.getColumnsForTable(tableName);
@@ -478,15 +683,16 @@ public class MocaCompilationServiceCompletionProvider {
         // Add an 'all columns' completion item, which will insert all the columns in
         // the table.
         CompletionItem allColItem = new CompletionItem("_all_columns");
-        allColItem.setDocumentation("Fill in all column names comma delimited.");
-        allColItem.setKind(CompletionItemKind.Unit);
+        allColItem.setDocumentation(new MarkupContent(MarkupKind.MARKDOWN,
+                String.format("insert all **%s** columns", (aliasName == null ? tableName : aliasName))));
+        allColItem.setKind(CompletionItemKind.Constant);
         String insertText = "";
         String colPrefix = (aliasName != null && !aliasName.isEmpty() ? aliasName : tableName) + ".";
         for (TableColumn col : cols) {
             insertText += colPrefix + col.column_name + ", ";
         }
-        // Remove last 2 characters(", "):
-        insertText = insertText.substring(0, insertText.length() - 2);
+        // Remove last ", ":
+        insertText = insertText.substring(0, insertText.length() - ", ".length());
         // If we need to exclude col prefix via boolean passed in, do so now.
         if (excludeColPrefixForFirstForAllCols) {
             insertText = insertText.substring(colPrefix.length(), insertText.length());

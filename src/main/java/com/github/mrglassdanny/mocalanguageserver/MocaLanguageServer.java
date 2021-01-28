@@ -72,14 +72,19 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
 
         serverCapabilities.setDocumentFormattingProvider(true);
         serverCapabilities.setDocumentRangeFormattingProvider(true);
-        DocumentOnTypeFormattingOptions documentOnTypeFormattingProvider = new DocumentOnTypeFormattingOptions();
-        documentOnTypeFormattingProvider.setFirstTriggerCharacter(".");
+        DocumentOnTypeFormattingOptions documentOnTypeFormattingOptions = new DocumentOnTypeFormattingOptions();
+        documentOnTypeFormattingOptions.setFirstTriggerCharacter(".");
         List<String> additionalOnTypeFormattingTriggerChars = new ArrayList<>();
         {
+            additionalOnTypeFormattingTriggerChars.add(",");
             additionalOnTypeFormattingTriggerChars.add(";");
             additionalOnTypeFormattingTriggerChars.add("&");
             additionalOnTypeFormattingTriggerChars.add("(");
             additionalOnTypeFormattingTriggerChars.add(")");
+            additionalOnTypeFormattingTriggerChars.add("{");
+            additionalOnTypeFormattingTriggerChars.add("}");
+            additionalOnTypeFormattingTriggerChars.add("[");
+            additionalOnTypeFormattingTriggerChars.add("]");
             additionalOnTypeFormattingTriggerChars.add("a");
             additionalOnTypeFormattingTriggerChars.add("b");
             additionalOnTypeFormattingTriggerChars.add("c");
@@ -143,8 +148,8 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
             additionalOnTypeFormattingTriggerChars.add("8");
             additionalOnTypeFormattingTriggerChars.add("9");
         }
-        documentOnTypeFormattingProvider.setMoreTriggerCharacter(additionalOnTypeFormattingTriggerChars);
-        serverCapabilities.setDocumentOnTypeFormattingProvider(documentOnTypeFormattingProvider);
+        documentOnTypeFormattingOptions.setMoreTriggerCharacter(additionalOnTypeFormattingTriggerChars);
+        serverCapabilities.setDocumentOnTypeFormattingProvider(documentOnTypeFormattingOptions);
 
         ExecuteCommandOptions executeCommandOptions = new ExecuteCommandOptions();
         executeCommandOptions.setCommands(ExecuteCommandProvider.mocaLanguageServerCommands);

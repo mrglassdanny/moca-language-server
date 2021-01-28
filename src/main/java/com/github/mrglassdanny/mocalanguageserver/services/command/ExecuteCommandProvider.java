@@ -50,9 +50,9 @@ public class ExecuteCommandProvider {
     public static final String EXECUTE = "mocalanguageserver.execute";
     public static final String EXECUTE_TO_CSV = "mocalanguageserver.executeToCSV";
     public static final String TRACE = "mocalanguageserver.trace";
+    public static final String OPEN_TRACE_OUTLINE = "mocalanguageserver.openTraceOutline";
     public static final String COMMAND_LOOKUP = "mocalanguageserver.commandLookup";
     public static final String SET_LANGUAGE_SERVER_OPTIONS = "mocalanguageserver.setLanguageServerOptions";
-    public static final String OPEN_TRACE_OUTLINE = "mocalanguageserver.openTraceOutline";
 
     public static ArrayList<String> mocaLanguageServerCommands = new ArrayList<>();
     static {
@@ -62,9 +62,9 @@ public class ExecuteCommandProvider {
         mocaLanguageServerCommands.add(EXECUTE);
         mocaLanguageServerCommands.add(EXECUTE_TO_CSV);
         mocaLanguageServerCommands.add(TRACE);
+        mocaLanguageServerCommands.add(OPEN_TRACE_OUTLINE);
         mocaLanguageServerCommands.add(COMMAND_LOOKUP);
         mocaLanguageServerCommands.add(SET_LANGUAGE_SERVER_OPTIONS);
-        mocaLanguageServerCommands.add(OPEN_TRACE_OUTLINE);
     }
 
     public static CompletableFuture<Object> provideCommandExecution(ExecuteCommandParams params) {
@@ -164,6 +164,13 @@ public class ExecuteCommandProvider {
                     MocaServices.mocaCache.mocaSqlCache.loadViews();
                     if (MocaServices.mocaCache.mocaSqlCache.views.isEmpty()) {
                         MocaServices.mocaCache.mocaSqlCache.loadViews();
+                    }
+                });
+
+                CompletableFuture.runAsync(() -> {
+                    MocaServices.mocaCache.mocaSqlCache.loadIndexes();
+                    if (MocaServices.mocaCache.mocaSqlCache.indexes.isEmpty()) {
+                        MocaServices.mocaCache.mocaSqlCache.loadIndexes();
                     }
                 });
 
@@ -454,44 +461,6 @@ public class ExecuteCommandProvider {
                             .completedFuture(new MocaTraceResponse(new MocaResultsResponse(null, exception, false)));
                 }
 
-            case COMMAND_LOOKUP:
-                try {
-                    List<Object> args = params.getArguments();
-
-                    MocaCommandLookupRequest mocaCommandLookupRequest = new MocaCommandLookupRequest(args);
-                    // If command is not passed in, then we will send all distinct commands.
-                    // Otherwise, we will send all the data for the requested command.
-                    MocaCommandLookupResponse mocaCommandLookupResponse;
-                    if (mocaCommandLookupRequest.requestedMocaCommand == null) {
-                        mocaCommandLookupResponse = new MocaCommandLookupResponse(
-                                MocaServices.mocaCache.distinctCommands, null, null, null);
-                    } else {
-                        mocaCommandLookupResponse = new MocaCommandLookupResponse(null,
-                                MocaServices.mocaCache.commands.get(mocaCommandLookupRequest.requestedMocaCommand),
-                                MocaServices.mocaCache.triggers.get(mocaCommandLookupRequest.requestedMocaCommand),
-                                null);
-                    }
-
-                    return CompletableFuture.completedFuture(mocaCommandLookupResponse);
-                } catch (Exception exception) {
-                    return CompletableFuture
-                            .completedFuture(new MocaCommandLookupResponse(null, null, null, exception));
-                }
-
-            case SET_LANGUAGE_SERVER_OPTIONS:
-                try {
-                    List<Object> args = params.getArguments();
-
-                    MocaLanguageServerOptionsRequest mocaLanguageServerOptionsRequest = new MocaLanguageServerOptionsRequest(
-                            args);
-
-                    MocaLanguageServer.mocaLanguageServerOptions = mocaLanguageServerOptionsRequest.mocaLanguageServerOptions;
-
-                    return CompletableFuture.completedFuture(new Object());
-                } catch (Exception exception) {
-                    return CompletableFuture.completedFuture(new MocaLanguageServerOptionsResponse(exception));
-                }
-
             case OPEN_TRACE_OUTLINE:
                 try {
                     List<Object> args = params.getArguments();
@@ -603,6 +572,43 @@ public class ExecuteCommandProvider {
                     return CompletableFuture.completedFuture(openMocaTraceOutlineResponse);
                 } catch (Exception exception) {
                     return CompletableFuture.completedFuture(new OpenMocaTraceOutlineResponse(null, null, exception));
+                }
+            case COMMAND_LOOKUP:
+                try {
+                    List<Object> args = params.getArguments();
+
+                    MocaCommandLookupRequest mocaCommandLookupRequest = new MocaCommandLookupRequest(args);
+                    // If command is not passed in, then we will send all distinct commands.
+                    // Otherwise, we will send all the data for the requested command.
+                    MocaCommandLookupResponse mocaCommandLookupResponse;
+                    if (mocaCommandLookupRequest.requestedMocaCommand == null) {
+                        mocaCommandLookupResponse = new MocaCommandLookupResponse(
+                                MocaServices.mocaCache.distinctCommands, null, null, null);
+                    } else {
+                        mocaCommandLookupResponse = new MocaCommandLookupResponse(null,
+                                MocaServices.mocaCache.commands.get(mocaCommandLookupRequest.requestedMocaCommand),
+                                MocaServices.mocaCache.triggers.get(mocaCommandLookupRequest.requestedMocaCommand),
+                                null);
+                    }
+
+                    return CompletableFuture.completedFuture(mocaCommandLookupResponse);
+                } catch (Exception exception) {
+                    return CompletableFuture
+                            .completedFuture(new MocaCommandLookupResponse(null, null, null, exception));
+                }
+
+            case SET_LANGUAGE_SERVER_OPTIONS:
+                try {
+                    List<Object> args = params.getArguments();
+
+                    MocaLanguageServerOptionsRequest mocaLanguageServerOptionsRequest = new MocaLanguageServerOptionsRequest(
+                            args);
+
+                    MocaLanguageServer.mocaLanguageServerOptions = mocaLanguageServerOptionsRequest.mocaLanguageServerOptions;
+
+                    return CompletableFuture.completedFuture(new Object());
+                } catch (Exception exception) {
+                    return CompletableFuture.completedFuture(new MocaLanguageServerOptionsResponse(exception));
                 }
             default:
                 break;
