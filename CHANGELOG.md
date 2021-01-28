@@ -4,7 +4,7 @@ https://semver.org/
 ## 1.9.19 (January 27, 2021)
 * SQL index completion feature -- https://github.com/mrglassdanny/moca-language-server/issues/62
 * Increase MOCA client timeout -- https://github.com/mrglassdanny/moca-language-server/issues/73
-* Format on type improvements **EXPERIMENTAL**
+* **EXPERIMENTAL** -- Format on type improvements
 
 ## 1.8.19 (January 12, 2021)
 * Execute to CSV feature
