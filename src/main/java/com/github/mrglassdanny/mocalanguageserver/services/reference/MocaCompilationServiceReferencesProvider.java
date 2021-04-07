@@ -20,6 +20,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.ast.MocaParseTreeLis
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
+import com.github.mrglassdanny.mocalanguageserver.util.os.OSUtils;
 
 import org.antlr.v4.runtime.Token;
 import org.eclipse.lsp4j.Location;
@@ -93,11 +94,23 @@ public class MocaCompilationServiceReferencesProvider {
                                                         // list.
 
                                                         try {
-                                                            String mcmdFileName = MocaLanguageServer.globalStoragePath
+                                                            
+                                                            String mcmdFileName = null;
+                                                            if(OSUtils.isWindows()) {
+                                                                mcmdFileName = MocaLanguageServer.globalStoragePath
                                                                     + "\\references\\"
                                                                     + (mcmd.cmplvl + "-" + mcmd.command).replace(" ",
                                                                             "_")
                                                                     + ".moca.readonly";
+                                                            } else {
+                                                                mcmdFileName = MocaLanguageServer.globalStoragePath
+                                                                    + "/references/"
+                                                                    + (mcmd.cmplvl + "-" + mcmd.command).replace(" ",
+                                                                            "_")
+                                                                    + ".moca.readonly";
+                                                            }
+
+
                                                             File mcmdFile = new File(mcmdFileName);
                                                             URI mcmdFileUri = mcmdFile.toURI();
                                                             BufferedWriter mcmdBufferedWriter = new BufferedWriter(
@@ -154,10 +167,19 @@ public class MocaCompilationServiceReferencesProvider {
                                                     // list.
 
                                                     try {
-                                                        String mtrgFileName = MocaLanguageServer.globalStoragePath
+                                                        String mtrgFileName = null;
+                                                        if(OSUtils.isWindows()) {
+                                                            mtrgFileName = MocaLanguageServer.globalStoragePath
                                                                 + "\\references\\"
                                                                 + (mtrg.command + "-" + mtrg.name).replace(" ", "_")
                                                                 + ".moca.readonly";
+                                                        } else {
+                                                            mtrgFileName = MocaLanguageServer.globalStoragePath
+                                                                + "/references/"
+                                                                + (mtrg.command + "-" + mtrg.name).replace(" ", "_")
+                                                                + ".moca.readonly";
+                                                        }
+
                                                         File mtrgFile = new File(mtrgFileName);
                                                         URI mtrgFileUri = mtrgFile.toURI();
                                                         BufferedWriter mtrgBufferedWriter = new BufferedWriter(
