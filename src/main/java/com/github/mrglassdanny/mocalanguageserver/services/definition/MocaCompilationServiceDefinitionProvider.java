@@ -20,6 +20,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyAS
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.PositionUtils;
+import com.github.mrglassdanny.mocalanguageserver.util.os.OSUtils;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.eclipse.lsp4j.Location;
@@ -82,10 +83,19 @@ public class MocaCompilationServiceDefinitionProvider {
                                         if (mcmd.type.compareToIgnoreCase(MocaCommand.TYPE_LOCAL_SYNTAX) == 0) {
                                             try {
 
-                                                String mcmdFileName = MocaLanguageServer.globalStoragePath
-                                                        + "\\command-lookup\\"
-                                                        + (mcmd.cmplvl + "-" + mcmd.command).replace(" ", "_")
-                                                        + ".moca.readonly";
+                                                String mcmdFileName = null;
+                                                if(OSUtils.isWindows()) {
+                                                    mcmdFileName = MocaLanguageServer.globalStoragePath
+                                                    + "\\command-lookup\\"
+                                                    + (mcmd.cmplvl + "-" + mcmd.command).replace(" ", "_")
+                                                    + ".moca.readonly";
+                                                } else {
+                                                    mcmdFileName = MocaLanguageServer.globalStoragePath
+                                                    + "/command-lookup/"
+                                                    + (mcmd.cmplvl + "-" + mcmd.command).replace(" ", "_")
+                                                    + ".moca.readonly";
+                                                }            
+
                                                 File mcmdFile = new File(mcmdFileName);
                                                 URI mcmdFileUri = mcmdFile.toURI();
                                                 BufferedWriter mcmdBufferedWriter = new BufferedWriter(

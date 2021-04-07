@@ -15,6 +15,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutline;
 import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceOutliningResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.trace.MocaTraceStackFrame;
 import com.github.mrglassdanny.mocalanguageserver.services.MocaServices;
+import com.github.mrglassdanny.mocalanguageserver.util.os.OSUtils;
 
 import org.eclipse.lsp4j.Location;
 import org.eclipse.lsp4j.LocationLink;
@@ -51,8 +52,15 @@ public class MocaTraceOutlineServiceDefinitionProvider {
                 return CompletableFuture.completedFuture(Either.forLeft(Collections.emptyList()));
             }
 
-            String relLogFileName = MocaLanguageServer.globalStoragePath + "\\trace\\"
-                    + (mocaTraceOutliningResult.traceFileName + "_" + frame.outlineId) + ".log";
+            String relLogFileName = null;
+            if(OSUtils.isWindows()) {
+                relLogFileName = MocaLanguageServer.globalStoragePath + "\\trace\\"
+                + (mocaTraceOutliningResult.traceFileName + "_" + frame.outlineId) + ".log";
+            } else {
+                relLogFileName = MocaLanguageServer.globalStoragePath + "/trace/"
+                + (mocaTraceOutliningResult.traceFileName + "_" + frame.outlineId) + ".log";
+            }
+
             File relLogFile = new File(relLogFileName);
             URI relLogFileUri = relLogFile.toURI();
 
@@ -78,8 +86,15 @@ public class MocaTraceOutlineServiceDefinitionProvider {
             locations.add(relLocation);
 
             // Absolute:
-            String absLogFileName = MocaLanguageServer.globalStoragePath + "\\trace\\"
+            String absLogFileName = null;
+            if(OSUtils.isWindows()) {
+                absLogFileName = MocaLanguageServer.globalStoragePath + "\\trace\\"
                     + (mocaTraceOutliningResult.traceFileName) + ".log";
+            } else {
+                absLogFileName = MocaLanguageServer.globalStoragePath + "/trace/"
+                    + (mocaTraceOutliningResult.traceFileName) + ".log";
+            }
+            
             File absLogFile = new File(absLogFileName);
             URI absLogFileUri = absLogFile.toURI();
 
