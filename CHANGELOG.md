@@ -1,6 +1,11 @@
 # Changelog
 https://semver.org/
 
+## 1.9.20 (April 7, 2021)
+* macOS fixes: 
+    * https://github.com/mrglassdanny/moca-language-server/issues/76
+    * https://github.com/mrglassdanny/moca-language-server/issues/72
+
 ## 1.9.19 (January 27, 2021)
 * SQL index completion feature -- https://github.com/mrglassdanny/moca-language-server/issues/62
 * Increase MOCA client timeout -- https://github.com/mrglassdanny/moca-language-server/issues/73
