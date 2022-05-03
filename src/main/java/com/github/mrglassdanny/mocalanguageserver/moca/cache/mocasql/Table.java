@@ -29,4 +29,8 @@ public class Table {
         return String.format("subquery **%s**", subqueryName);
     }
 
+    public static String getMarkdownStrForCTE(String cteName) {
+        return String.format("CTE **%s**", cteName);
+    }
+
 }
