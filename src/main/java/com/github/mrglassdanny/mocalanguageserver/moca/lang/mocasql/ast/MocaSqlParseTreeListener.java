@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser;
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlBaseListener;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Common_table_expressionContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Derived_tableContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Dml_clauseContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Expression_elemContext;
@@ -35,6 +36,8 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     public ArrayList<String> columnAliasNames;
     public HashMap<String, SubqueryContext> subqueries; // Key is subquery name.
     public HashMap<SubqueryContext, ArrayList<Token>> subqueryColumns;
+    public HashMap<String, Common_table_expressionContext> ctes; // Key is CTE name.
+    public HashMap<Common_table_expressionContext, ArrayList<Token>> cteColumns;
     public boolean isUpdateOrDeleteStatementWithoutWhereClause;
     public boolean isUnsafe;
 
@@ -45,6 +48,8 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         this.columnAliasNames = new ArrayList<>();
         this.subqueries = new HashMap<>();
         this.subqueryColumns = new HashMap<>();
+        this.ctes = new HashMap<>();
+        this.cteColumns = new HashMap<>();
         this.isUpdateOrDeleteStatementWithoutWhereClause = false;
         this.isUnsafe = false;
     }
@@ -219,7 +224,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             if (this.subqueryColumns.containsKey(subqueryCtx)) {
                 this.subqueryColumns.get(subqueryCtx).add(subqueryColumnToken);
             } else {
-                // Let's see if we have an value in the subquery map that matches.
+                // Let's see if we have a value in the subquery map that matches.
                 if (this.subqueries.values().contains(subqueryCtx)) {
                     // We need to put in a new sub query column map entry.
                     ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
@@ -232,6 +237,39 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                     ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
                     subqueryColumnTokens.add(subqueryColumnToken);
                     this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
+                }
+            }
+        }
+
+        // Now the goal is to see if this column elem is inside of a CTE.
+        // Let's try to find a CTE context parent and go from there.
+        Common_table_expressionContext cteCtx = (Common_table_expressionContext) getParentRuleContext(ctx,
+                Common_table_expressionContext.class);
+        if (cteCtx != null) {
+
+            // With CTE, we want to add the column alias if it exists.
+            Token cteColumnToken = columnToken;
+            if (ctx.as_column_alias() != null) {
+                cteColumnToken = ctx.as_column_alias().getStop();
+            }
+
+            // Check CTE columns map first.
+            if (this.cteColumns.containsKey(cteCtx)) {
+                this.cteColumns.get(cteCtx).add(cteColumnToken);
+            } else {
+                // Let's see if we have a value in the CTE map that matches.
+                if (this.ctes.values().contains(cteCtx)) {
+                    // We need to put in a new CTE column map entry.
+                    ArrayList<Token> cteColumnTokens = new ArrayList<>();
+                    cteColumnTokens.add(cteColumnToken);
+                    this.cteColumns.put(cteCtx, cteColumnTokens);
+                } else {
+                    // Looks like CTE context does not exist in CTEs map yet. Let's go
+                    // ahead and still add to CTE columns map.
+                    // We need to put in a new CTE column map entry.
+                    ArrayList<Token> cteColumnTokens = new ArrayList<>();
+                    cteColumnTokens.add(cteColumnToken);
+                    this.cteColumns.put(cteCtx, cteColumnTokens);
                 }
             }
         }
@@ -437,10 +475,10 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
     public void exitAsterisk(MocaSqlParser.AsteriskContext ctx) {
         // MocaSqlParser does not consider '*' a column element, though we want to treat
         // it like one. Instead of just adding it like a regular column elem, we
-        // will get all of the columns in the mocasql cache/subquery for the
-        // table/subquery that it refers to and add them to the column list. If there
-        // are no columns, we will not worry about adding anything -- including the
-        // asterisk.
+        // will get all of the columns in the mocasql cache/subquery/CTE for the
+        // table/subquery/CTE that it refers to and add them to the column list. If
+        // there are no columns, we will not worry about adding anything -- including
+        // the asterisk.
 
         if (ctx == null) {
             return;
@@ -509,7 +547,7 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
         // see what the table is.
         boolean processedAsteriskColumns = false;
 
-        // Check table/view cache first.
+        // Check table/view cache.
         if (!processedAsteriskColumns) {
 
             ArrayList<TableColumn> tableColumnsForAsterisk = MocaServices.mocaCache.mocaSqlCache
@@ -527,10 +565,11 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                     columnTokensForAsterisk.add((Token) commonToken);
                 }
             }
+
         }
 
-        // Check aliases next.
-        if (this.tableAliasNames.containsKey(tableName)) {
+        // Check aliases.
+        if (!processedAsteriskColumns && this.tableAliasNames.containsKey(tableName)) {
             processedAsteriskColumns = true;
 
             // Get all columns from cache for aliased table.
@@ -548,44 +587,92 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
             }
         }
 
-        // Finally, check subqueries.
+        // Check subqueries.
         if (!processedAsteriskColumns && this.subqueries.containsKey(tableName)) {
             processedAsteriskColumns = true;
 
-            ArrayList<Token> subqueryColumnTokens = this.subqueryColumns.get(this.subqueries.get(tableName));
-            if (subqueryColumnTokens != null) {
-                for (Token subqueryColumnToken : subqueryColumnTokens) {
-                    // Should be able to just use all the details for the asterisk token and just
-                    // change the text.
-                    CommonToken commonToken = new CommonToken(asteriskToken);
-                    commonToken.setText(subqueryColumnToken.getText());
-                    columnTokensForAsterisk.add((Token) commonToken);
+            {
+                ArrayList<Token> subqueryColumnTokens = this.subqueryColumns.get(this.subqueries.get(tableName));
+                if (subqueryColumnTokens != null) {
+                    for (Token subqueryColumnToken : subqueryColumnTokens) {
+                        // Should be able to just use all the details for the asterisk token and just
+                        // change the text.
+                        CommonToken commonToken = new CommonToken(asteriskToken);
+                        commonToken.setText(subqueryColumnToken.getText());
+                        columnTokensForAsterisk.add((Token) commonToken);
+                    }
+                }
+            }
+
+            // Now the goal is to see if this column elem is inside of a subquery.
+            // Let's try to find a subquery context parent and go from there.
+            SubqueryContext subqueryCtx = (SubqueryContext) getParentRuleContext(ctx, SubqueryContext.class);
+            if (subqueryCtx != null) {
+
+                // Check subquery columns map first.
+                if (this.subqueryColumns.containsKey(subqueryCtx)) {
+                    this.subqueryColumns.get(subqueryCtx).addAll(columnTokensForAsterisk);
+                } else {
+                    // Let's see if we have an value in the subquery map that matches.
+                    if (this.subqueries.values().contains(subqueryCtx)) {
+                        // We need to put in a new sub query column map entry.
+                        ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
+                        subqueryColumnTokens.addAll(columnTokensForAsterisk);
+                        this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
+                    } else {
+                        // Looks like subquery context does not exist in subqueries map yet. Let's go
+                        // ahead and still add to subquery columns map.
+                        // We need to put in a new sub query column map entry.
+                        ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
+                        subqueryColumnTokens.addAll(columnTokensForAsterisk);
+                        this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
+                    }
                 }
             }
         }
 
-        // Now the goal is to see if this column elem is inside of a subquery.
-        // Let's try to find a subquery context parent and go from there.
-        SubqueryContext subqueryCtx = (SubqueryContext) getParentRuleContext(ctx, SubqueryContext.class);
-        if (subqueryCtx != null) {
+        // Check CTEs.
+        if (!processedAsteriskColumns && this.ctes.containsKey(tableName)) {
+            processedAsteriskColumns = true;
 
-            // Check subquery columns map first.
-            if (this.subqueryColumns.containsKey(subqueryCtx)) {
-                this.subqueryColumns.get(subqueryCtx).addAll(columnTokensForAsterisk);
-            } else {
-                // Let's see if we have an value in the subquery map that matches.
-                if (this.subqueries.values().contains(subqueryCtx)) {
-                    // We need to put in a new sub query column map entry.
-                    ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
-                    subqueryColumnTokens.addAll(columnTokensForAsterisk);
-                    this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
+            {
+                ArrayList<Token> cteColumnTokens = this.cteColumns
+                        .get(this.ctes.get(tableName));
+                if (cteColumnTokens != null) {
+                    for (Token cteColumnToken : cteColumnTokens) {
+                        // Should be able to just use all the details for the asterisk token and just
+                        // change the text.
+                        CommonToken commonToken = new CommonToken(asteriskToken);
+                        commonToken.setText(cteColumnToken.getText());
+                        columnTokensForAsterisk.add((Token) commonToken);
+                    }
+                }
+            }
+
+            // Now the goal is to see if this column elem is inside of a CTE.
+            // Let's try to find a CTE context parent and go from there.
+            Common_table_expressionContext cteCtx = (Common_table_expressionContext) getParentRuleContext(ctx,
+                    Common_table_expressionContext.class);
+            if (cteCtx != null) {
+
+                // Check CTE columns map first.
+                if (this.cteColumns.containsKey(cteCtx)) {
+                    this.cteColumns.get(cteCtx).addAll(columnTokensForAsterisk);
                 } else {
-                    // Looks like subquery context does not exist in subqueries map yet. Let's go
-                    // ahead and still add to subquery columns map.
-                    // We need to put in a new sub query column map entry.
-                    ArrayList<Token> subqueryColumnTokens = new ArrayList<>();
-                    subqueryColumnTokens.addAll(columnTokensForAsterisk);
-                    this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
+                    // Let's see if we have a value in the CTE map that matches.
+                    if (this.ctes.values().contains(cteCtx)) {
+                        // We need to put in a new CTE column map entry.
+                        ArrayList<Token> cteColumnTokens = new ArrayList<>();
+                        cteColumnTokens.addAll(columnTokensForAsterisk);
+                        this.cteColumns.put(cteCtx, cteColumnTokens);
+                    } else {
+                        // Looks like CTE context does not exist in CTEs map yet. Let's go
+                        // ahead and still add to CTE columns map.
+                        // We need to put in a new CTE column map entry.
+                        ArrayList<Token> cteColumnTokens = new ArrayList<>();
+                        cteColumnTokens.addAll(columnTokensForAsterisk);
+                        this.cteColumns.put(cteCtx, cteColumnTokens);
+                    }
                 }
             }
         }
@@ -656,6 +743,26 @@ public class MocaSqlParseTreeListener extends MocaSqlBaseListener {
                             subqueryColumnTokens.add(columnToken);
                             this.subqueryColumns.put(subqueryCtx, subqueryColumnTokens);
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    // CTEs.
+    @Override
+    public void enterWith_expression(MocaSqlParser.With_expressionContext ctx) {
+
+        if (ctx == null) {
+            return;
+        }
+
+        if (ctx.common_table_expression() != null) {
+            for (Common_table_expressionContext cteCtx : ctx.common_table_expression()) {
+                if (cteCtx != null && cteCtx.getStart() != null) {
+                    String cteCtxText = cteCtx.getStart().getText();
+                    if (!this.ctes.containsKey(cteCtxText)) {
+                        this.ctes.put(cteCtxText, cteCtx);
                     }
                 }
             }

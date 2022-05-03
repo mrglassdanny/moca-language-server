@@ -39,11 +39,12 @@ public class MocaCompilationServiceDiagnosticManager {
     private static final String MOCA_SYNTAX_ERROR = "MOCA: line %d:%d %s";
     private static final String MOCA_COMMAND_DOES_NOT_EXIST_WARNING = "MOCA: Command '%s' does not exist";
     private static final String MOCASQL_SYNTAX_ERROR = "SQL: %s";
-    private static final String MOCASQL_TABLE_DOES_NOT_EXIST_WARNING = "SQL: Table/View/Subquery '%s' does not exist";
-    private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_TABLE_OR_VIEW_WARNING = "SQL: Column '%s' does not exist on Table/View/Subquery '%s'";
-    private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_SUBQUERY_WARNING = "SQL: Column '%s' does not exist on Subquery '%s'";
-    private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_ON_ANON_SUBQUERY_WARNING = "SQL: Column '%s' does not exist on anonymous Subquery";
-    private static final String MOCASQL_COLUMN_EXISTS_FOR_MULTIPLE_TABLES_WARNING = "SQL: Column '%s' exists for multiple tables(%s) in context; please specify table for column";
+    private static final String MOCASQL_TABLE_DOES_NOT_EXIST_WARNING = "SQL: Object '%s' does not exist";
+    private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_WARNING = "SQL: Column '%s' does not exist in object '%s'";
+    private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_IN_SUBQUERY_WARNING = "SQL: Column '%s' does not exist in subquery '%s'";
+    private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_IN_ANON_SUBQUERY_WARNING = "SQL: Column '%s' does not exist in anonymous subquery";
+    private static final String MOCASQL_COLUMN_DOES_NOT_EXIST_IN_CTE_WARNING = "SQL: Column '%s' does not exist in CTE '%s'";
+    private static final String MOCASQL_DUPLICATE_COLUMN_WARNING = "SQL: Duplicate column '%s'; column defined in (%s)";
     private static final String MOCASQL_UPDATE_OR_DELETE_STATEMENT_WITHOUT_WHERE_CLAUSE_WARNING = "SQL: UPDATE or DELETE statement does not have a WHERE clause";
     private static final String GROOVY_MESSAGE = "GROOVY: %s";
     private static final String GROOVY_ERROR = "GROOVY: %s";
@@ -379,6 +380,13 @@ public class MocaCompilationServiceDiagnosticManager {
                 }
             }
 
+            // Try CTEs.
+            if (!foundTable) {
+                if (sqlParseTreeListener.ctes.containsKey((tableTokenText))) {
+                    foundTable = true;
+                }
+            }
+
             if (!foundTable) {
 
                 Position beginPos = MocaSqlLanguageUtils.createMocaPosition(tableToken.getLine(),
@@ -469,7 +477,7 @@ public class MocaCompilationServiceDiagnosticManager {
                                 diagnostic.setRange(range);
                                 diagnostic.setSeverity(DiagnosticSeverity.Warning);
                                 diagnostic.setMessage(String.format(
-                                        MOCASQL_COLUMN_DOES_NOT_EXIST_ON_ANON_SUBQUERY_WARNING, columnTokenText));
+                                        MOCASQL_COLUMN_DOES_NOT_EXIST_IN_ANON_SUBQUERY_WARNING, columnTokenText));
                                 diagnostics.add(diagnostic);
                             }
                         }
@@ -477,11 +485,12 @@ public class MocaCompilationServiceDiagnosticManager {
                 }
             } else {
 
-                // Let's see if this table is a subquery.
+                // Let's see if this table is a subquery or CTE.
                 if (sqlParseTreeListener.subqueries.containsKey(tableName)) {
 
                     // Check columns in here.
-                    // NOTE: could see goofy stuff if multiple subqueries of the same name, but that
+                    // NOTE: could see goofy stuff if there are multiple subqueries of the same
+                    // name, but that
                     // is a risk I am willing to take!
                     ArrayList<org.antlr.v4.runtime.Token> subqueryColumnTokens = sqlParseTreeListener.subqueryColumns
                             .get(sqlParseTreeListener.subqueries.get(tableName));
@@ -525,7 +534,7 @@ public class MocaCompilationServiceDiagnosticManager {
                                     diagnostic.setRange(range);
                                     diagnostic.setSeverity(DiagnosticSeverity.Warning);
                                     diagnostic
-                                            .setMessage(String.format(MOCASQL_COLUMN_DOES_NOT_EXIST_ON_SUBQUERY_WARNING,
+                                            .setMessage(String.format(MOCASQL_COLUMN_DOES_NOT_EXIST_IN_SUBQUERY_WARNING,
                                                     columnTokenText, tableName));
                                     diagnostics.add(diagnostic);
                                 }
@@ -533,6 +542,62 @@ public class MocaCompilationServiceDiagnosticManager {
                         }
                     }
 
+                } else if (sqlParseTreeListener.ctes.containsKey(tableName)) {
+
+                    // Check columns in here.
+                    // NOTE: could see goofy stuff if there are multiple CTEs of the same name, but
+                    // that
+                    // is a risk I am willing to take!
+                    ArrayList<org.antlr.v4.runtime.Token> cteColumnTokens = sqlParseTreeListener.cteColumns
+                            .get(sqlParseTreeListener.ctes.get(tableName));
+
+                    if (cteColumnTokens != null) {
+                        for (org.antlr.v4.runtime.Token columnToken : entry.getValue()) {
+
+                            String columnTokenText = columnToken.getText();
+
+                            // Check if column token exists in CTE column token list.
+                            // Need to compare token text since objects are likely different instances.
+                            boolean foundColumn = false;
+
+                            for (org.antlr.v4.runtime.Token cteColumnToken : cteColumnTokens) {
+                                if (columnTokenText.compareToIgnoreCase(cteColumnToken.getText()) == 0) {
+                                    foundColumn = true;
+                                    break;
+                                }
+                            }
+
+                            // Make sure column does not exist in reserved column names array.
+                            boolean isReservedColumn = false;
+                            // Do not check if already found!
+                            if (!foundColumn) {
+                                for (String reservedColumnName : MOCASQL_RESERVED_COLUMN_NAMES) {
+                                    if (reservedColumnName.compareToIgnoreCase(columnTokenText) == 0) {
+                                        isReservedColumn = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (!foundColumn && !isReservedColumn) {
+                                Position beginPos = MocaSqlLanguageUtils.createMocaPosition(columnToken.getLine(),
+                                        columnToken.getCharPositionInLine(), sqlScriptRange);
+                                Position endPos = beginPos;
+
+                                if (beginPos != null && endPos != null) {
+                                    Range range = new Range(beginPos, endPos);
+                                    Diagnostic diagnostic = new Diagnostic();
+                                    diagnostic.setRange(range);
+                                    diagnostic.setSeverity(DiagnosticSeverity.Warning);
+                                    diagnostic
+                                            .setMessage(String.format(
+                                                    MOCASQL_COLUMN_DOES_NOT_EXIST_IN_CTE_WARNING,
+                                                    columnTokenText, tableName));
+                                    diagnostics.add(diagnostic);
+                                }
+                            }
+                        }
+                    }
                 } else {
 
                     // Do not worry about checking aliases -- we did so above and table name has
@@ -617,7 +682,7 @@ public class MocaCompilationServiceDiagnosticManager {
                                 // Remove trailing comma from tableNamesForWarnDiagnosticBuf.
                                 tableNamesForWarnDiagnosticBuf
                                         .deleteCharAt(tableNamesForWarnDiagnosticBuf.length() - 1);
-                                diagnostic.setMessage(String.format(MOCASQL_COLUMN_EXISTS_FOR_MULTIPLE_TABLES_WARNING,
+                                diagnostic.setMessage(String.format(MOCASQL_DUPLICATE_COLUMN_WARNING,
                                         columnTokenText, tableNamesForWarnDiagnosticBuf.toString()));
                                 diagnostics.add(diagnostic);
                             }
@@ -652,12 +717,11 @@ public class MocaCompilationServiceDiagnosticManager {
                                     diagnostic.setSeverity(DiagnosticSeverity.Warning);
 
                                     diagnostic.setMessage(
-                                            String.format(MOCASQL_COLUMN_DOES_NOT_EXIST_ON_TABLE_OR_VIEW_WARNING,
+                                            String.format(MOCASQL_COLUMN_DOES_NOT_EXIST_WARNING,
                                                     columnTokenText, tableNameForColumn));
                                     diagnostics.add(diagnostic);
                                 }
                             }
-
                         }
                     }
                 }
