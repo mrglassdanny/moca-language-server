@@ -1,6 +1,9 @@
 # Changelog
 https://semver.org/
 
+## 1.10.20 (May 4, 2022)
+* Common table expression support
+
 ## 1.9.20 (April 7, 2021)
 * macOS fixes: 
     * https://github.com/mrglassdanny/moca-language-server/issues/76

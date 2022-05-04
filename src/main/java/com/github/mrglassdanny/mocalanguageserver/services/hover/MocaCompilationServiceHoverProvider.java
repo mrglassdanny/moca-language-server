@@ -105,7 +105,7 @@ public class MocaCompilationServiceHoverProvider {
                 MocaSqlCompilationResult mocaSqlCompilationResult = MocaServices.mocaCompilationResult.mocaSqlCompilationResults
                         .get(mocaLanguageContext.compilationResultIdx);
 
-                // Tables, views, aliases, and subqueries - oh my!
+                // Tables, views, aliases, subqueries, and CTEs - oh my!
                 String mocaSqlWord = PositionUtils.getWordAtPosition(MocaServices.mocaCompilationResult.script,
                         position, "([a-zA-Z_0-9])");
 
@@ -126,21 +126,29 @@ public class MocaCompilationServiceHoverProvider {
                         return CompletableFuture.completedFuture(hover);
                     }
 
-                    // If not, check aliased tables/views/subqueries.
-                    if (mocaSqlCompilationResult != null && mocaSqlCompilationResult.mocaSqlParseTreeListener != null
-                            && mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames != null
-                            && mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames
-                                    .containsKey(mocaSqlWord)) {
-                        hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, Table.getMarkdownStrForAlias(
-                                mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames.get(mocaSqlWord))));
-                        return CompletableFuture.completedFuture(hover);
-                    }
-                    if (mocaSqlCompilationResult != null && mocaSqlCompilationResult.mocaSqlParseTreeListener != null
-                            && mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries != null
-                            && mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries.containsKey(mocaSqlWord)) {
-                        hover.setContents(
-                                new MarkupContent(MarkupKind.MARKDOWN, Table.getMarkdownStrForSubquery(mocaSqlWord)));
-                        return CompletableFuture.completedFuture(hover);
+                    // If not, check aliased tables/views, subqueries, and CTEs.
+                    if (mocaSqlCompilationResult != null && mocaSqlCompilationResult.mocaSqlParseTreeListener != null) {
+
+                        if (mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames != null
+                                && mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames
+                                        .containsKey(mocaSqlWord)) {
+                            hover.setContents(new MarkupContent(MarkupKind.MARKDOWN, Table.getMarkdownStrForAlias(
+                                    mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames
+                                            .get(mocaSqlWord))));
+                            return CompletableFuture.completedFuture(hover);
+                        } else if (mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries != null
+                                && mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries
+                                        .containsKey(mocaSqlWord)) {
+                            hover.setContents(
+                                    new MarkupContent(MarkupKind.MARKDOWN,
+                                            Table.getMarkdownStrForSubquery(mocaSqlWord)));
+                            return CompletableFuture.completedFuture(hover);
+                        } else if (mocaSqlCompilationResult.mocaSqlParseTreeListener.ctes != null
+                                && mocaSqlCompilationResult.mocaSqlParseTreeListener.ctes.containsKey(mocaSqlWord)) {
+                            hover.setContents(
+                                    new MarkupContent(MarkupKind.MARKDOWN, Table.getMarkdownStrForCTE(mocaSqlWord)));
+                            return CompletableFuture.completedFuture(hover);
+                        }
                     }
 
                     // Check if this is a mocasql function.

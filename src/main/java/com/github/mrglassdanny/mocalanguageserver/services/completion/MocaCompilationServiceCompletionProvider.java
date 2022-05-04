@@ -20,6 +20,7 @@ import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableColumn
 import com.github.mrglassdanny.mocalanguageserver.moca.cache.mocasql.TableIndex;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.MocaLanguageContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
+import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.Common_table_expressionContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaSqlParser.SubqueryContext;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.GroovyCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.groovy.util.GroovyASTUtils;
@@ -212,17 +213,17 @@ public class MocaCompilationServiceCompletionProvider {
                             // Make sure case sensitivity will not get in the way.
                             String lowerCaseWord = word.toLowerCase();
 
-                            // Now we need to determine if we are dealing with an alias, a table, or a
-                            // subquery.
+                            // Now we need to determine if we are dealing with an alias, a table, a
+                            // subquery, or a CTE.
                             populateMocaSqlColumnsFromTableName(lowerCaseWord, null, true, items);
 
                             // Try table indexes as well.
                             populateMocaSqlIndexesFromTableName(lowerCaseWord, null,
                                     mocaSqlCompilationResult.mocaSqlParseTreeListener, items);
 
-                            if (items.isEmpty()) { // Empty - must be alias or subquery.
+                            if (items.isEmpty()) { // Empty - must be alias, subquery, or CTE.
 
-                                // Checking if table is aliased.
+                                // Checking if table is aliased, is subquery, or is CTE.
                                 if (mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames
                                         .containsKey(lowerCaseWord)) {
 
@@ -234,17 +235,20 @@ public class MocaCompilationServiceCompletionProvider {
                                     // Try table indexes for alias as well.
                                     populateMocaSqlIndexesFromTableName(aliasedTableName, lowerCaseWord,
                                             mocaSqlCompilationResult.mocaSqlParseTreeListener, items);
-                                } else {
-                                    // Must be a subquery.
-                                    // See if match in map.
-                                    if (mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries
-                                            .containsKey(lowerCaseWord)) {
-                                        populateMocaSqlColumnsFromSubquery(
-                                                mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueryColumns.get(
-                                                        mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries
-                                                                .get(lowerCaseWord)),
-                                                items);
-                                    }
+                                } else if (mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries
+                                        .containsKey(lowerCaseWord)) {
+                                    populateMocaSqlColumnsFromSubquery(
+                                            mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueryColumns.get(
+                                                    mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries
+                                                            .get(lowerCaseWord)),
+                                            items);
+                                } else if (mocaSqlCompilationResult.mocaSqlParseTreeListener.ctes
+                                        .containsKey(lowerCaseWord)) {
+                                    populateMocaSqlColumnsFromCTE(
+                                            mocaSqlCompilationResult.mocaSqlParseTreeListener.cteColumns.get(
+                                                    mocaSqlCompilationResult.mocaSqlParseTreeListener.ctes
+                                                            .get(lowerCaseWord)),
+                                            items);
                                 }
                             }
                         }
@@ -284,6 +288,8 @@ public class MocaCompilationServiceCompletionProvider {
                         populateMocaSqlTableAliasNames(
                                 mocaSqlCompilationResult.mocaSqlParseTreeListener.tableAliasNames, items);
                         populateMocaSqlSubqueryNames(mocaSqlCompilationResult.mocaSqlParseTreeListener.subqueries,
+                                items);
+                        populateMocaSqlCTENames(mocaSqlCompilationResult.mocaSqlParseTreeListener.ctes,
                                 items);
 
                         // Get mocasql functions as well.
@@ -471,6 +477,22 @@ public class MocaCompilationServiceCompletionProvider {
             CompletionItem item = new CompletionItem(subqueryName);
             item.setDocumentation(
                     new MarkupContent(MarkupKind.MARKDOWN, Table.getMarkdownStrForSubquery(subqueryName)));
+            item.setKind(CompletionItemKind.Class);
+            items.add(item);
+        }
+    }
+
+    private static void populateMocaSqlCTENames(HashMap<String, Common_table_expressionContext> ctes,
+            List<CompletionItem> items) {
+
+        if (ctes == null) {
+            return;
+        }
+
+        for (String cteName : ctes.keySet()) {
+            CompletionItem item = new CompletionItem(cteName);
+            item.setDocumentation(
+                    new MarkupContent(MarkupKind.MARKDOWN, Table.getMarkdownStrForCTE(cteName)));
             item.setKind(CompletionItemKind.Class);
             items.add(item);
         }
@@ -725,6 +747,29 @@ public class MocaCompilationServiceCompletionProvider {
                 columnsAlreadyAdded.add(columnName);
                 CompletionItem item = new CompletionItem(columnName);
                 item.setDocumentation("from subquery");
+                item.setKind(CompletionItemKind.Field);
+                items.add(item);
+            }
+
+        }
+    }
+
+    private static void populateMocaSqlColumnsFromCTE(ArrayList<org.antlr.v4.runtime.Token> columnTokens,
+            List<CompletionItem> items) {
+
+        if (columnTokens == null) {
+            return;
+        }
+
+        // Could potentially be duplicates if UNION is used.
+        ArrayList<String> columnsAlreadyAdded = new ArrayList<>();
+
+        for (org.antlr.v4.runtime.Token columnToken : columnTokens) {
+            String columnName = columnToken.getText();
+            if (!columnsAlreadyAdded.contains(columnName)) {
+                columnsAlreadyAdded.add(columnName);
+                CompletionItem item = new CompletionItem(columnName);
+                item.setDocumentation("from CTE");
                 item.setKind(CompletionItemKind.Field);
                 items.add(item);
             }
