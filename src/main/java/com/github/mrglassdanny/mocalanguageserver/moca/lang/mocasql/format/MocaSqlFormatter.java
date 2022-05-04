@@ -371,6 +371,12 @@ public class MocaSqlFormatter {
                     curQuery.clauseIndentBuf.append(' ');
                     curQuery.clauseIndentBuf.append(' ');
 
+                    if (prevToken != null) {
+                        if (prevToken.getType() == MocaSqlLexer.RR_BRACKET) {
+                            buf.append('\n');
+                        }
+                    }
+
                     buf.append(tokenText);
 
                     break;
