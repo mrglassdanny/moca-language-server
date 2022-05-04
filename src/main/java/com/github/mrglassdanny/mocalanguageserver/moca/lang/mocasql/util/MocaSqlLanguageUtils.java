@@ -16,7 +16,7 @@ import org.eclipse.lsp4j.Range;
 public class MocaSqlLanguageUtils {
 
     public static final Pattern MOCA_SQL_RANGE_START_WORD_PATTERN = Pattern
-            .compile("(?i)\\b(select|update|delete|insert|create|alter|drop)\\b");
+            .compile("(?i)\\b(select|update|delete|insert|create|alter|drop|with)\\b");
 
     public static Position createMocaPosition(int line, int column, Range scriptRange) {
         int lspLine = line;
