@@ -1025,10 +1025,8 @@ public class MocaTraceOutliner {
                             // This one should just be in regards to JDBCApapter queries.
                             outline.get(outline.size() - 1).returnedRows = Integer.parseInt(matcher.group(2));
 
-                            if (outline.get(outline.size() - 1).returnedRows > 1) {
-                                returnedRowsStack.push(new ReturnedRows(stackLevel,
-                                        outline.get(outline.size() - 1).returnedRows, true));
-                            }
+                            returnedRowsStack.push(new ReturnedRows(stackLevel,
+                                    outline.get(outline.size() - 1).returnedRows, true));
                         } else if ((matcher = MocaTraceOutliner.MESSAGE_SQL_EXCEPTION_REGEX_PATTERN.matcher(message))
                                 .find()) {
                             outline.get(outline.size() - 1).instructionStatus = matcher.group();

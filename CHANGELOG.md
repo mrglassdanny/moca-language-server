@@ -1,6 +1,9 @@
 # Changelog
 https://semver.org/
 
+## 1.10.21 (October 25, 2022)
+* Trace outline bug fix -- https://github.com/mrglassdanny/moca-language-server/issues/81
+
 ## 1.10.20 (May 4, 2022)
 * Common table expression support
 
