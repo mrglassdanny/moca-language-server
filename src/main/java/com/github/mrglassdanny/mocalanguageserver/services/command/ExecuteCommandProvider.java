@@ -205,8 +205,8 @@ public class ExecuteCommandProvider {
 
                     // If not approved for execution, check unsafe config/super user for connection.
                     if (!mocaResultsRequest.isApprovedForExecution) {
-                        // If approval of unsafe scripts for connection is configured/user is not super
-                        // user, check if script is unsafe.
+                        // If approval of unsafe scripts for connection is configured or user is not
+                        // super user, check if script is unsafe.
                         if (MocaServices.mocaConnection.needToApproveUnsafeScripts()
                                 || !MocaServices.mocaConnection.isSuperUser()) {
 
