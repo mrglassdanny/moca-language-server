@@ -21,6 +21,7 @@ public class MocaConnection {
     private String userId;
     private String password;
     private String sessionId;
+    private boolean superUser;
     private String environmentVariablesXmlStr;
     private boolean approveUnsafeScripts;
 
@@ -29,6 +30,7 @@ public class MocaConnection {
         this.userId = null;
         this.password = null;
         this.sessionId = null;
+        this.superUser = false;
         this.environmentVariablesXmlStr = null;
         this.approveUnsafeScripts = false;
     }
@@ -37,10 +39,12 @@ public class MocaConnection {
         MocaResults res = this.executeCommand(
                 String.format("login user where usr_id = '%s' and usr_pswd = '%s'", this.userId, this.password));
 
-        String localeId = res.getString(0, "locale_id");
         String usrId = res.getString(0, "usr_id");
+        String localeId = res.getString(0, "locale_id");
         String sessionKey = res.getString(0, "session_key");
+        int superUsrFlg = res.getInt(0, "super_usr_flg");
 
+        this.superUser = superUsrFlg == 1;
         this.environmentVariablesXmlStr = String.format(
                 "<var name=\"LOCALE_ID\" value=\"%s\"/><var name=\"USR_ID\" value=\"%s\"/><var name=\"SESSION_KEY\" value=\"%s\"/>",
                 localeId, usrId, sessionKey);
@@ -52,6 +56,7 @@ public class MocaConnection {
         this.userId = userId;
         this.password = password;
         this.sessionId = "";
+        this.superUser = false;
         this.environmentVariablesXmlStr = "";
         this.approveUnsafeScripts = approveUnsafeScripts;
 
@@ -138,6 +143,10 @@ public class MocaConnection {
 
     public final String getPassword() {
         return this.password;
+    }
+
+    public final boolean isSuperUser() {
+        return this.superUser;
     }
 
     public final boolean needToApproveUnsafeScripts() {

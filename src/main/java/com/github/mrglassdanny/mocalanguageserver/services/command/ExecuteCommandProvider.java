@@ -203,17 +203,19 @@ public class ExecuteCommandProvider {
 
                     MocaResultsRequest mocaResultsRequest = new MocaResultsRequest(args);
 
-                    // If not approved for execution, check unsafe config for connection.
+                    // If not approved for execution, check unsafe config/super user for connection.
                     if (!mocaResultsRequest.isApprovedForExecution) {
-                        // If approval of unsafe scripts for connection is configured, check if script
-                        // is unsafe.
-                        if (MocaServices.mocaConnection.needToApproveUnsafeScripts()) {
+                        // If approval of unsafe scripts for connection is configured or user is not
+                        // super user, check if script is unsafe.
+                        if (MocaServices.mocaConnection.needToApproveUnsafeScripts()
+                                || !MocaServices.mocaConnection.isSuperUser()) {
 
                             MocaCompilationResult mocaCompilationResult = MocaCompiler
                                     .compileScript(mocaResultsRequest.script);
 
                             if (mocaCompilationResult.isUnsafe()) {
-                                MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null, null, true);
+                                MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null, null, true,
+                                        MocaServices.mocaConnection.isSuperUser());
                                 return CompletableFuture.completedFuture(mocaResultsResponse);
                             }
                         }
