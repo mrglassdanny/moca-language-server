@@ -191,7 +191,8 @@ public class ExecuteCommandProvider {
 
                 if (!MocaServices.mocaConnection.isValid()) {
                     MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null,
-                            new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER), false);
+                            new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER), false,
+                            MocaServices.mocaConnection.isSuperUser());
                     return CompletableFuture.completedFuture(mocaResultsResponse);
                 }
 
@@ -295,7 +296,8 @@ public class ExecuteCommandProvider {
 
                     return CompletableFuture.completedFuture(mocaResultsResponse);
                 } catch (Exception exception) {
-                    MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null, exception, false);
+                    MocaResultsResponse mocaResultsResponse = new MocaResultsResponse(null, exception, false,
+                            MocaServices.mocaConnection.isSuperUser());
                     return CompletableFuture.completedFuture(mocaResultsResponse);
                 }
             case EXECUTE_TO_CSV:
@@ -417,7 +419,8 @@ public class ExecuteCommandProvider {
 
                 if (!MocaServices.mocaConnection.isValid()) {
                     MocaTraceResponse mocaTraceResponse = new MocaTraceResponse(
-                            new MocaResultsResponse(null, new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER), false));
+                            new MocaResultsResponse(null, new Exception(ERR_NOT_CONNECTED_TO_MOCA_SERVER), false,
+                                    MocaServices.mocaConnection.isSuperUser()));
                     return CompletableFuture.completedFuture(mocaTraceResponse);
                 }
 
@@ -460,7 +463,8 @@ public class ExecuteCommandProvider {
                     return CompletableFuture.completedFuture(new MocaTraceResponse(mocaResultsResponse));
                 } catch (Exception exception) {
                     return CompletableFuture
-                            .completedFuture(new MocaTraceResponse(new MocaResultsResponse(null, exception, false)));
+                            .completedFuture(new MocaTraceResponse(new MocaResultsResponse(null, exception, false,
+                                    MocaServices.mocaConnection.isSuperUser())));
                 }
 
             case OPEN_TRACE_OUTLINE:
