@@ -42,9 +42,9 @@ public class MocaConnection {
         String usrId = res.getString(0, "usr_id");
         String localeId = res.getString(0, "locale_id");
         String sessionKey = res.getString(0, "session_key");
-        int superUsrFlg = res.getInt(0, "super_usr_flg");
+        String superUsrFlg = res.getString(0, "super_usr_flg");
 
-        this.superUser = superUsrFlg == 1;
+        this.superUser = superUsrFlg.compareToIgnoreCase("true") == 0;
         this.environmentVariablesXmlStr = String.format(
                 "<var name=\"LOCALE_ID\" value=\"%s\"/><var name=\"USR_ID\" value=\"%s\"/><var name=\"SESSION_KEY\" value=\"%s\"/>",
                 localeId, usrId, sessionKey);

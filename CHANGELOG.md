@@ -1,6 +1,9 @@
 # Changelog
 https://semver.org/
 
+## 1.11.22 (August 9, 2023)
+* Disallow unsafe script execution for non-super users -- bug fix
+
 ## 1.11.21 (August 5, 2023)
 * Disallow unsafe script execution for non-super users -- https://github.com/mrglassdanny/vscode-moca-client/issues/23
 
