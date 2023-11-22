@@ -1,6 +1,9 @@
 # Changelog
 https://semver.org/
 
+## 1.11.23 (November 22, 2023)
+* Groovy compilation bug fix
+
 ## 1.11.22 (August 9, 2023)
 * Disallow unsafe script execution for non-super users -- bug fix
 

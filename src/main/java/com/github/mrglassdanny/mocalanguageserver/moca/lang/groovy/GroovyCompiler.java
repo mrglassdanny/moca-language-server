@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import com.github.mrglassdanny.mocalanguageserver.MocaLanguageServer;
 
 import org.codehaus.groovy.GroovyBugError;
+import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.control.MultipleCompilationErrorsException;
 import org.codehaus.groovy.control.Phases;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer;
@@ -46,11 +46,8 @@ public class GroovyCompiler {
                 groovyCompilationResult.compilationUnit.compile(Phases.CANONICALIZATION);
             }
 
-        } catch (MultipleCompilationErrorsException e) {
+        } catch (CompilationFailedException e) {
             // ignore
-        } catch (GroovyBugError e) {
-            System.err.println("Unexpected exception in language server when compiling Groovy.");
-            e.printStackTrace(System.err);
         } catch (Exception e) {
             System.err.println("Unexpected exception in language server when compiling Groovy.");
             e.printStackTrace(System.err);

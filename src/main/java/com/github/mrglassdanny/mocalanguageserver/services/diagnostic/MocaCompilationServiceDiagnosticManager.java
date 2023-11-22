@@ -762,8 +762,7 @@ public class MocaCompilationServiceDiagnosticManager {
             return diagnostics;
         }
 
-        @SuppressWarnings("unchecked")
-        List<Message> errors = groovyCompilationResult.compilationUnit.getErrorCollector().getErrors();
+        List<?> errors = groovyCompilationResult.compilationUnit.getErrorCollector().getErrors();
         // For whatever reason, we are getting duplicate messages. Lets log the already
         // added messages to make sure we are not duplicating.
         ArrayList<String> alreadyAddedMessages = new ArrayList<>();

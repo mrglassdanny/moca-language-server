@@ -401,7 +401,7 @@ public class GroovyASTNodeVisitor extends ClassCodeVisitorSupport {
         }
     }
 
-    protected void visitEmptyStatement(EmptyStatement node) {
+    public void visitEmptyStatement(EmptyStatement node) {
         this.pushASTNode(node);
         try {
             super.visitEmptyStatement(node);
