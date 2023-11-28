@@ -1,6 +1,9 @@
 # Changelog
 https://semver.org/
 
+## 1.11.25 (November 28, 2023)
+* Trace outliner bug fix
+
 ## 1.11.24 (November 28, 2023)
 * Trace outliner bug fix
 

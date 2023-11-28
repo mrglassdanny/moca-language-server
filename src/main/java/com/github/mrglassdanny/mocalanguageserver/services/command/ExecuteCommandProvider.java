@@ -518,7 +518,7 @@ public class ExecuteCommandProvider {
 
                             // Read trace file requested.
                             MocaResults res = MocaServices.mocaConnection
-                                    .executeCommand(String.format("read file where filnam = '${LESDIR}/log/%s'",
+                                    .executeCommand(String.format("read file where filnam = '$LESDIR/log/%s'",
                                             openMocaTraceOutlineRequest.requestedTraceFileName));
 
                             MocaTraceOutliningResult mocaTraceOutliningResult = MocaTraceOutliner.outlineTrace(
