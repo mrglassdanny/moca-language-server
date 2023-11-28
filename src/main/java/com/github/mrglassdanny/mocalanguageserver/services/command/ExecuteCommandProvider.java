@@ -490,7 +490,7 @@ public class ExecuteCommandProvider {
                         // Read file names from LESDIR/log/*.log
                         // A little over-complicated because we want to sort by modified date.
                         MocaResults res = MocaServices.mocaConnection.executeCommand(
-                                "{ sl_get dir where path = '${LESDIR}/log/' and filter = '*.log' | get file info where pathname = '${LESDIR}/log/' || @file_name | publish data where file_name = @file_name and file_typ = @file_typ and modified = @modified } >> res | sort result set where result_set = @res and sort_list = 'modified desc'");
+                                "{ sl_get dir where path = '$LESDIR/log/' and filter = '*.log' | get file info where pathname = '$LESDIR/log/' || @file_name | publish data where file_name = @file_name and file_typ = @file_typ and modified = @modified } >> res | sort result set where result_set = @res and sort_list = 'modified desc'");
 
                         ArrayList<String> traceFileNames = new ArrayList<>(res.getRowCount());
                         // Should have dirs and files in result set -- let's make sure to only add files
