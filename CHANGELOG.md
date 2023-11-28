@@ -1,6 +1,9 @@
 # Changelog
 https://semver.org/
 
+## 1.11.24 (November 28, 2023)
+* Trace outliner bug fix
+
 ## 1.11.23 (November 22, 2023)
 * Groovy compilation bug fix
 
