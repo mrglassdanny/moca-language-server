@@ -14,7 +14,6 @@ import com.github.mrglassdanny.mocalanguageserver.moca.lang.antlr.MocaLexer;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.MocaSqlCompilationResult;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.format.MocaSqlFormatter;
 import com.github.mrglassdanny.mocalanguageserver.moca.lang.mocasql.util.MocaSqlLanguageUtils;
-import com.github.mrglassdanny.mocalanguageserver.moca.lang.util.MocaLanguageUtils;
 import com.github.mrglassdanny.mocalanguageserver.util.lsp.RangeUtils;
 
 public class MocaFormatter {
@@ -67,57 +66,6 @@ public class MocaFormatter {
             case MocaLexer.RIGHT_BRACE:
             case MocaLexer.WHERE:
             case MocaLexer.AND:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    private static boolean tokenHasFormatAction(MocaCompilationResult mocaCompilationResult, Position pos) {
-        Token token = MocaLanguageUtils.getMocaTokenAtPosition(pos, mocaCompilationResult);
-        switch (token.getType()) {
-            case MocaLexer.DOUBLE_BRACKET_STRING:
-                return false;
-            case MocaLexer.SINGLE_BRACKET_STRING:
-                if (MocaSqlFormatter.tokenHasFormatAction(
-                        MocaSqlLanguageUtils.getMocaSqlTokenAtPosition(pos, mocaCompilationResult))) {
-                    return true;
-                } else {
-                    return false;
-                }
-            case MocaLexer.LEFT_PAREN:
-            case MocaLexer.RIGHT_PAREN:
-            case MocaLexer.LEFT_BRACE:
-            case MocaLexer.RIGHT_BRACE:
-            case MocaLexer.EQUAL:
-            case MocaLexer.NOT_EQUAL:
-            case MocaLexer.LESS:
-            case MocaLexer.GREATER:
-            case MocaLexer.LESS_EQUAL:
-            case MocaLexer.GREATER_EQUAL:
-            case MocaLexer.DIV:
-            case MocaLexer.STAR:
-            case MocaLexer.MOD:
-            case MocaLexer.PLUS:
-            case MocaLexer.MINUS:
-            case MocaLexer.COMMA:
-            case MocaLexer.DOUBLE_PIPE:
-            case MocaLexer.SEMI_COLON:
-            case MocaLexer.PIPE:
-            case MocaLexer.AMPERSAND:
-            case MocaLexer.DOUBLE_GREATER:
-            case MocaLexer.WHERE:
-            case MocaLexer.AND:
-            case MocaLexer.IF:
-            case MocaLexer.ELSE:
-            case MocaLexer.OR:
-            case MocaLexer.TRY:
-            case MocaLexer.CATCH:
-            case MocaLexer.FINALLY:
-            case MocaLexer.REMOTE:
-            case MocaLexer.PARALLEL:
-            case MocaLexer.INPARALLEL:
-            case MocaLexer.BLOCK_COMMENT:
                 return true;
             default:
                 return false;
@@ -461,15 +409,6 @@ public class MocaFormatter {
     // format moca(we always need to do moca regardless of change position) and just
     // the embedded language range that it is contained in, if any.
     public static String formatChange(MocaCompilationResult mocaCompilationResult, Position changePosition) {
-
-        // Make sure we actually need to format right now -- we only want to go through
-        // with on type formatting if we come across a token that triggers a format
-        // action. This includes mocasql and groovy.
-        // If we decide that we do not need to format right now, we can just return the
-        // current script.
-        if (!tokenHasFormatAction(mocaCompilationResult, changePosition)) {
-            return mocaCompilationResult.script;
-        }
 
         // Need to copy existing list into new list for processing. Reason is that we do
         // not want to modify moca compilation result's token list since other processes

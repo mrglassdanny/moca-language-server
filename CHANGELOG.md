@@ -1,6 +1,11 @@
 # Changelog
 https://semver.org/
 
+## 1.12.25 (October 18, 2024)
+* Simplify SQL grammar
+* Trace outliner bug fix
+* Format on type fix
+
 ## 1.11.25 (November 28, 2023)
 * Trace outliner bug fix
 

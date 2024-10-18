@@ -102,7 +102,8 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
             additionalOnTypeFormattingTriggerChars.add("o");
             additionalOnTypeFormattingTriggerChars.add("p");
             additionalOnTypeFormattingTriggerChars.add("q");
-            additionalOnTypeFormattingTriggerChars.add("r");
+            // Removing 'r' because I am tired of `or` being formatted on type.
+            // additionalOnTypeFormattingTriggerChars.add("r");
             additionalOnTypeFormattingTriggerChars.add("s");
             additionalOnTypeFormattingTriggerChars.add("t");
             additionalOnTypeFormattingTriggerChars.add("u");
@@ -128,7 +129,8 @@ public class MocaLanguageServer implements LanguageServer, LanguageClientAware {
             additionalOnTypeFormattingTriggerChars.add("O");
             additionalOnTypeFormattingTriggerChars.add("P");
             additionalOnTypeFormattingTriggerChars.add("Q");
-            additionalOnTypeFormattingTriggerChars.add("R");
+            // Removing 'R' because I am tired of `OR` being formatted on type.
+            // additionalOnTypeFormattingTriggerChars.add("R");
             additionalOnTypeFormattingTriggerChars.add("S");
             additionalOnTypeFormattingTriggerChars.add("T");
             additionalOnTypeFormattingTriggerChars.add("U");

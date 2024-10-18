@@ -488,18 +488,15 @@ public class ExecuteCommandProvider {
                         }
 
                         // Read file names from LESDIR/log/*.log
-                        // A little over-complicated because we want to sort by modified date.
+                        // A little over-complicated because we want to exclude directories and sort by
+                        // modified date.
                         MocaResults res = MocaServices.mocaConnection.executeCommand(
-                                "{ sl_get dir where path = '$LESDIR/log/' and filter = '*.log' | get file info where pathname = '$LESDIR/log/' || @file_name | publish data where file_name = @file_name and file_typ = @file_typ and modified = @modified } >> res | sort result set where result_set = @res and sort_list = 'modified desc'");
+                                "{ sl_get dir where path = '$LESDIR/log/' and filter = '*.log' | if (@file_typ = 'FILE') { get file info where pathname = '$LESDIR/log/' || @file_name | publish data where file_name = @file_name and file_typ = @file_typ and modified = @modified } } >> res | sort result set where result_set = @res and sort_list = 'modified desc'");
 
                         ArrayList<String> traceFileNames = new ArrayList<>(res.getRowCount());
-                        // Should have dirs and files in result set -- let's make sure to only add files
-                        // to the list.
                         for (int i = 0; i < res.getRowCount(); i++) {
-                            if (res.getString(i, "file_typ").compareToIgnoreCase("FILE") == 0) {
-                                String fileName = res.getString(i, "file_name");
-                                traceFileNames.add(fileName);
-                            }
+                            String fileName = res.getString(i, "file_name");
+                            traceFileNames.add(fileName);
                         }
 
                         openMocaTraceOutlineResponse = new OpenMocaTraceOutlineResponse(traceFileNames, null, null);
